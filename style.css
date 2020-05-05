@@ -6,7 +6,7 @@
     }
     
     .navbar {
-        background: rgb(250, 250, 250);
+        background: rgb(151, 83, 83);
         position: fixed;
         width: 100%;
         height: 55px;
@@ -21,13 +21,14 @@
         font-size: 26px;
         float: left;
         margin-left: 2px;
+        color: white;
     }
     
     .menubar {
         width: 50px;
         margin-left: 5px;
         height: 50px;
-        border: 2.5px solid rgb(250, 250, 250);
+        border: 2.5px solid rgba(250, 250, 250, 0);
         transition: all 0.2s;
         cursor: pointer;
         float: left;
