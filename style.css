@@ -48,6 +48,13 @@ a.login {
     float: left;
     margin-left: 2px;
     color: white;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.navbartitle:hover {
+    color: rgb(220, 220, 220);
 }
 
 .menubar {
