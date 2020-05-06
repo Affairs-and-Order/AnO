@@ -26,7 +26,5 @@ $(document).ready(function() {
 
 
 
-    $(".navbartitle").click(function() {
-        window.location.href = "index.html";
-    });
+
 });
