@@ -13,7 +13,7 @@
         padding: 0;
         margin: 0;
         font-family: 'Baloo 2';
-        animation: textload 0.2s;
+        animation: textload 0.5s;
     }
     
     .navbar {
@@ -131,4 +131,10 @@
     .loginButton:hover {
         background-color: rgb(167, 91, 91);
         color: rgb(240, 240, 240);
+    }
+    /*LOGINSIGNUP*/
+    
+    .loginsignupdiv {
+        opacity: 0;
+        pointer-events: none;
     }
