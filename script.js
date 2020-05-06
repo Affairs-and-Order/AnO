@@ -22,3 +22,12 @@ function menubardrop() {
 
     document.getElementById("bar3").style.transition = "all 0.2s";
 }
+
+$(document).ready(function () {
+    console.log("jQuery ready");
+    $(".loginContainer").hover(function () {
+        $(".loginContainer").css("background-color", "rgb(167, 91, 91)");
+    }, function () {
+        $(".loginContainer").css("background-color", "rgb(128, 71, 71)");
+    });
+});
