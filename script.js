@@ -1,3 +1,4 @@
+//navbar events
 function menubardrop() {
 
     document.getElementById("menubar").classList.toggle("menubarclick");
@@ -20,7 +21,7 @@ function menubardrop() {
 
     document.getElementById("bar3").style.transition = "all 0.2s";
 }
-
+//
 $(document).ready(function() {
     console.log("jQuery ready");
 
