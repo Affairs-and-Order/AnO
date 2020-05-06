@@ -4,6 +4,20 @@
         margin: 0;
         font-family: sans-serif;
     }
+
+    a.login {
+        font-size: 25px;
+    }
+
+    .loginContainer {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-top: 12px;
+        background-color: rgb(128, 71, 71);
+        margin-right: 25px;
+        float: right;
+    }
+
     
     .navbar {
         background: rgb(151, 83, 83);
