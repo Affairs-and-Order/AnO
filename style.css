@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
-a:link {
+a.login:link {
     color: whitesmoke;
 }
 
-a:visited {
+a.login:visited {
     color: whitesmoke;
 }
 
-a:hover {
+a.login:hover {
     color: rgb(189, 189, 189)
 }
 
