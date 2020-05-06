@@ -94,8 +94,6 @@ a.login {
 .loginButton {
     float: right;
     width: fit-content;
-    padding: 8px;
-    background: brown;
     margin-top: 10px;
     margin-right: 10px;
 }
