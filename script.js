@@ -31,4 +31,8 @@ $(document).ready(function() {
     }, function() {
         $(".loginContainer").css("background-color", "rgb(128, 71, 71)");
     });
+
+    $(".navbartitle").click(function () {
+        window.location.href = "index.html";
+    });
 });
