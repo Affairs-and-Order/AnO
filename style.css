@@ -91,6 +91,36 @@ a.login {
     top: -2.5px;
 }
 
+.menubardiv {
+    width: 200px;
+    background: rgb(230, 230, 230);
+    position: fixed;
+    left: 0px;
+    top: 55px;
+    height: 100%;
+    margin-left: -10px;
+    z-index: 1;
+    overflow: hidden;
+    transition: all 0.2s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media all and (max-width: 600px) {
+    .menubardiv {
+        width: 100%;
+    }
+}
+
+.menubardivshow {
+    pointer-events: all;
+    opacity: 1;
+    margin: 0;
+    -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+}
+
 .loginButton {
     float: right;
     width: fit-content;

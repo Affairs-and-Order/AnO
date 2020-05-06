@@ -4,8 +4,6 @@ function menubardrop() {
 
     document.getElementById("menubardiv").classList.toggle("menubardivshow");
 
-    document.getElementById("menubardiv").style.transition = "margin 0.2s";
-
     //    
 
     document.getElementById("bar1").classList.toggle("barclick1");
@@ -23,14 +21,14 @@ function menubardrop() {
     document.getElementById("bar3").style.transition = "all 0.2s";
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
     console.log("jQuery ready");
 
     $(".loginContainer").css("background-color", "rgb(128, 71, 71)");
 
-    $(".loginContainer").hover(function () {
+    $(".loginContainer").hover(function() {
         $(".loginContainer").css("background-color", "rgb(167, 91, 91)");
-    }, function () {
+    }, function() {
         $(".loginContainer").css("background-color", "rgb(128, 71, 71)");
     });
 });
