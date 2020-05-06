@@ -24,8 +24,6 @@ function menubardrop() {
 $(document).ready(function() {
     console.log("jQuery ready");
 
-
-
     $(".navbartitle").click(function() {
         window.location.href = "index.html";
     });
