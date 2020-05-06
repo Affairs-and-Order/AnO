@@ -1,20 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
-
-/* unvisited link */
-
 a:link {
     color: whitesmoke;
 }
 
-
-/* visited link */
-
 a:visited {
     color: whitesmoke;
 }
-
-
-/* mouse over link */
 
 a:hover {
     color: rgb(189, 189, 189)
@@ -25,6 +16,19 @@ body {
     padding: 0;
     margin: 0;
     font-family: 'Baloo 2', cursive;
+}
+
+a.login {
+    font-size: 25px;
+}
+
+.loginContainer {
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 12px;
+    background-color: rgb(128, 71, 71);
+    margin-right: 25px;
+    float: right;
 }
 
 .navbar {
@@ -40,7 +44,7 @@ body {
 
 .navbartitle {
     margin-top: 12px;
-    font-size: 30px;
+    font-size: 26px;
     float: left;
     margin-left: 2px;
     color: white;
@@ -90,7 +94,7 @@ body {
 .loginButton {
     float: right;
     width: fit-content;
-    padding: 5px;
+    padding: 8px;
     background: brown;
     margin-top: 10px;
     margin-right: 10px;
@@ -98,60 +102,3 @@ body {
 
 
 /*
-
-    */
-
-.menubardiv {
-    width: 200px;
-    background: rgb(230, 230, 230);
-    position: fixed;
-    left: 0px;
-    top: 55px;
-    height: 100%;
-    margin-left: -100%;
-    z-index: 1;
-    overflow: hidden;
-}
-
-@media all and (max-width: 600px) {
-    .menubardiv {
-        width: 100%;
-    }
-}
-
-.menubardivshow {
-    margin: 0;
-    -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-    -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-    box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-}
-
-.menubara {
-    width: 100%;
-    padding: 10px 40px;
-    text-decoration: none;
-    color: black;
-    margin: 15px 0px;
-    display: block;
-    font-size: 17px;
-    font-weight: bold;
-    background-repeat: no-repeat;
-    transition: all 0.2s;
-    background: rgb(151, 83, 83);
-}
-
-.menubara:hover {
-    background: rgb(245, 245, 245);
-}
-
-@media all and (max-width: 600px) {
-    .menubara {
-        width: fit-content;
-        margin: 15px auto;
-    }
-}
-
-
-/*
-
-    */
