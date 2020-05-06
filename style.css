@@ -1,14 +1,12 @@
-    /* unvisited link */
+
     
     a:link {
         color: whitesmoke;
     }
-    /* visited link */
     
     a:visited {
         color: whitesmoke;
     }
-    /* mouse over link */
     
     a:hover {
         color: rgb(189, 189, 189)
