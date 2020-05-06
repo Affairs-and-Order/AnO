@@ -24,15 +24,9 @@ function menubardrop() {
 $(document).ready(function() {
     console.log("jQuery ready");
 
-    $(".loginContainer").css("background-color", "rgb(128, 71, 71)");
 
-    $(".loginContainer").hover(function() {
-        $(".loginContainer").css("background-color", "rgb(167, 91, 91)");
-    }, function() {
-        $(".loginContainer").css("background-color", "rgb(128, 71, 71)");
-    });
 
-    $(".navbartitle").click(function () {
+    $(".navbartitle").click(function() {
         window.location.href = "index.html";
     });
 });

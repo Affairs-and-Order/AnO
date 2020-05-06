@@ -22,15 +22,6 @@ a.login {
     font-size: 25px;
 }
 
-.loginContainer {
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-top: 12px;
-    background-color: rgb(128, 71, 71);
-    margin-right: 25px;
-    float: right;
-}
-
 .navbar {
     background: rgb(151, 83, 83);
     position: fixed;
@@ -133,6 +124,14 @@ a.login {
     width: fit-content;
     margin-top: 10px;
     margin-right: 10px;
+    background-color: rgb(128, 71, 71);
+    transition: all 0.2s;
+    padding: 0px 8px;
+    text-decoration: none;
+}
+
+.loginButton:hover {
+    background-color: rgb(167, 91, 91);
 }
 
 
