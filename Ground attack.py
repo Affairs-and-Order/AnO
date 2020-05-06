@@ -1,19 +1,45 @@
 import random
-#gets amount of soldiers in a given nation 
-#will be upated once DB is setup
-Nat1 = int(input("amount"))
-Nat2 = int(input("amount"))
-#rolls a random number between one and the amount 
-#will be changed so num cant be less than 30% of amount
-random_roll_nat1 = random.randint(1, Nat1)
-random_roll_nat2 = random.randint(1, Nat2)
-#compares roll and subracts differance from the smaller one
-goto_war = abs(random_roll_nat1 - random_roll_nat2)
-#subtracts 12% of smaller amount from larger one
-percent_subtract = (goto_war * 1.12) - goto_war
-print(f"This is Nat1 input: {Nat1}")
-print(f"This is Nat2 input: {Nat2}")
-print(f"This is random output of soldiers going to war for Nat1: {random_roll_nat1} out of {Nat1} soldiers..")
-print(f"This is random output of soldiers going to war for Nat2: {random_roll_nat2} out of {Nat2} soldiers..")
-print(f"This is the output after the battle: {goto_war}")
-print(f"This is the 12 perecent value from the battle: {percent_subtract}")
+
+Nat1 = 2000 # get from database for now lets call it 2000
+Nat2 = 1000 # get from database for now lets call it 1000
+#TODO: get nation namees from DB
+random_roll_nat1 = random.randint(1,Nat1)
+random_roll_nat2 = random.randint(1,Nat1)
+
+# print statements
+
+nat1_roll_wins = 0
+nat2_roll_wins = 0
+for roll in range(0,3):
+    nat1_roll = random.randint(1,Nat1)
+    nat2_roll = random.randint(1,Nat2)
+    print(f"This is random output of soldiers going to war for Nat1: {nat1_roll} out of {Nat1} soldiers..")
+    print(f"This is random output of soldiers going to war for Nat2: {nat2_roll} out of {Nat2} soldiers..")
+    # difference between the two rolls
+    difference = abs(nat1_roll - nat2_roll)
+    
+    if nat1_roll > nat2_roll:
+        nat1_roll_wins += 1
+        # subtract difference from the nations maximum if they rolled higher
+        Nat1 -= difference
+        # the twelve percent stored in new variable so it can be printed
+        twelve_percent_loss = int(Nat2*0.12)
+        Nat2 -= twelve_percent_loss
+    else:
+        nat2_roll_wins += 1 
+        # subtract difference from the nations maximum if they rolled higher
+        Nat2 -= difference
+        # the twelve percent stored in new variable so it can be printed
+        twelve_percent_loss = int(Nat1*0.12)
+        Nat1 -= twelve_percent_loss
+        
+    print(f"This is the output after the battle: {difference}")
+    print(f"This is the 12 perecent value from the battle: {twelve_percent_loss}")
+    
+    
+    
+    
+if nat1_roll_wins > nat2_roll_wins:
+    print("Nation 1 won the battle")
+else:
+    print("Nation 2 won the battle")
