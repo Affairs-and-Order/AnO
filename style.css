@@ -42,6 +42,7 @@ a.login {
     user-select: none;
     cursor: pointer;
     transition: all 0.2s;
+    text-decoration: none;
 }
 
 .navbartitle:hover {
@@ -133,6 +134,3 @@ a.login {
 .loginButton:hover {
     background-color: rgb(167, 91, 91);
 }
-
-
-/*
