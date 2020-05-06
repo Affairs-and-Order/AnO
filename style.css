@@ -1,3 +1,19 @@
+    /* unvisited link */
+    
+    a:link {
+        color: whitesmoke;
+    }
+    /* visited link */
+    
+    a:visited {
+        color: whitesmoke;
+    }
+    /* mouse over link */
+    
+    a:hover {
+        color: rgb(189, 189, 189)
+    }
+    
     body {
         background: rgb(230, 230, 230);
         padding: 0;
@@ -79,10 +95,13 @@
         top: -2.5px;
     }
     
-    .resourcesicon {
+    .loginButton {
         float: right;
-        margin-top: 5px;
-        margin-right: 25px;
+        width: fit-content;
+        padding: 8px;
+        background: brown;
+        margin-top: 10px;
+        margin-right: 10px;
     }
     /*
 
@@ -124,6 +143,7 @@
         font-weight: bold;
         background-repeat: no-repeat;
         transition: all 0.2s;
+        background: rgb(151, 83, 83);
     }
     
     .menubara:hover {
