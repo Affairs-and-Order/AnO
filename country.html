@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="simple-grid.css" rel="stylesheet" type="text/css" />
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="icon" href="images/favicon.png" type="image/png">
+
+    <title>Affairs And Order</title>
+
+
+
+</head>
+
+<body>
+    <div class="navbar">
+
+        <div class="menubar" onclick="menubardrop()" id="menubar">
+            <div class="bar1" id="bar1"></div>
+            <div class="bar2" id="bar2"></div>
+            <div class="bar3" id="bar3"></div>
+        </div>
+
+        <a class="navbartitle" href="index.html">Affairs and Order</a>
+
+
+
+
+        <h2 class="loginsignup" onclick="loginshow()">Login
+        </h2>
+
+        <h2 class="loginsignup" onclick="signupshow()">Signup</h2>
+
+    </div>
+
+    <div class="menubardiv" id="menubardiv">
+
+        <a class="menubara" href="country.html">Country</a>
+
+        <a class="menubara" href="index.html">Coalition</a>
+
+        <a class="menubara" href="index.html">Account</a>
+
+    </div>
+    <!--loginsignup-->
+    <div class="loginsignupdiv" id="logindiv">
+        <div class="loginsignuptopper">
+
+            <p class="signup loginsignupforgot" onclick="signupshow()">Signup</p>
+
+            <h3 class="loginsignupclose" onclick="loginclose()">&#10005;</h3>
+            <h1 class="loginsignuptitle center">LOGIN
+            </h1>
+        </div>
+
+        <form class="loginsignupform">
+            <input class="loginsignupinput" placeholder="Username / Email" />
+
+            <input class="loginsignupinput" placeholder="Passcode" type="passcode" />
+
+            <a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">Forgot passcode</a>
+
+            <input class="loginsignupbutton" value="Login" type="submit" />
+        </form>
+    </div>
+
+    <div class="loginsignupdiv" id="signupdiv">
+        <div class="loginsignuptopper">
+
+            <p class="login loginsignupforgot" onclick="loginshow()">Login</p>
+
+            <h3 class="loginsignupclose" onclick="signupclose()">&#10005;</h3>
+            <h1 class="loginsignuptitle center">SIGNUP
+            </h1>
+        </div>
+
+        <form class="loginsignupform">
+            <input class="loginsignupinput" placeholder="Nation name" />
+
+            <input class="loginsignupinput" placeholder="Email" />
+
+            <input class="loginsignupinput" placeholder="Passcode" type="passcode" />
+
+            <input class="loginsignupinput" placeholder="Confirm passcode" type="passcode" />
+
+            <input class="loginsignupbutton" value="Signup" type="submit" />
+        </form>
+    </div>
+
+    <!-- START------------------------------------------------------------------------->
+
+    <div class="templatediv">
+
+        <div class="templatedivtopper">
+            <h1 class="templatedivtitle">Country Name</h1>
+        </div>
+
+        <div class="templatedivcontent">
+
+            <div class="countryimagediv">
+
+                <img class="countryimage" src="files/images/file.svg" />
+
+            </div>
+            <div class="templatedivflex2">
+                <div class="templatedivflex2left">
+                    <h2 class="templatecontentheaderleft">Country info</h2>
+                </div>
+                <div class="templatedivflex2right">
+                    <h2 class="templatecontentheaderleft">Country info</h2>
+                </div>
+            </div>
+
+
+        </div>
+    </div>

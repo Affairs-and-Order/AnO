@@ -436,7 +436,7 @@ body {
 .templatedivflex2right {}
 
 
-/*CUSTOM - LANDING PAGE*/
+/*LANDING PAGE*/
 
 .discordlink {
     width: 50%;
@@ -455,16 +455,22 @@ body {
 }
 
 
-.flexContainer {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
+/*COUNTRY*/
+
+.countryimagediv {
+    padding: 5px;
+    margin: 15px auto;
+    display: block;
+    width: fit-content;
+    transition: all 0.2s;
+    cursor: pointer;
 }
 
-.flexItem {
-    flex-grow: 1;
+.countryimagediv:hover {
+    background: rgb(220, 220, 220);
 }
+
+.countryimage {}
 
 
 /*FOOTER*/
