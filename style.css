@@ -389,6 +389,27 @@ body {
     font-size: 18px;
 }
 
+.templatedivflex2 {
+    display: flex;
+    justify-content: center;
+}
+
+.templatedivflex2left,
+.templatedivflex2right {
+    background: rgb(220, 220, 220);
+    width: 50%;
+    margin: 20px;
+    padding: 8px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: 4px;
+    box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, .15);
+}
+
+.templatedivflex2left {}
+
+.templatedivflex2left {}
+
 
 /*FOOTER*/
 
