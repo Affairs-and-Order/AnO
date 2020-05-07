@@ -1,0 +1,5 @@
+We are using MySQL 8.0.
+
+The users table can be found under 'users.idb'
+
+If you need more tables or help with SQL please contact t0dd#3074 on Discord.
