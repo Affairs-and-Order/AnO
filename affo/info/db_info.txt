@@ -1,3 +1,7 @@
+IMPORTANT: To save new changes to the database on your local pc use:
+mysqldump -u root -p affo > db.sql
+
+
 We are using 8.0.19 MySQL Community Server - GPL.
 
 The users table can be found under 'aao/users.idb'
