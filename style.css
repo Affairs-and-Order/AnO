@@ -52,6 +52,10 @@
         cursor: pointer;
         float: left;
     }
+
+    .headingCard {
+        background-color: beige;
+    }
     
     .menubar:hover {
         background: rgb(230, 230, 230);
@@ -103,6 +107,11 @@
         .menubardiv {
             width: 100%;
         }
+
+        .Introflag {
+            visibility: hidden;
+        }
+
     }
     
     .menubardivshow {
