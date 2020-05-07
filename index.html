@@ -52,26 +52,47 @@
 
     <div class="loginsignupdiv" id="logindiv">
         <div class="loginsignuptopper">
-            <h3 class="loginclose" onclick="loginclose()">&#10005;</h3>
-            <h2 class="loginsignuptitle center">Login
-            </h2>
+            <h3 class="loginsignupclose" onclick="loginclose()">&#10005;</h3>
+            <h1 class="loginsignuptitle center">LOGIN
+            </h1>
         </div>
 
         <form class="loginsignupform">
-            <input class="loginsignupinput" placeholder="Username / Email">
+            <input class="loginsignupinput" placeholder="Username / Email" />
 
-            <input class="loginsignupinput" placeholder="Passcode">
+            <input class="loginsignupinput" placeholder="Passcode" type="passcode" />
 
-            <button class="loginsignupbutton"></button>
+            <a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">Forgot passcode</a>
+
+            <input class="loginsignupbutton" value="Login" type="submit" />
         </form>
     </div>
 
+    <div class="loginsignupdiv" id="signupdiv">
+        <div class="loginsignuptopper">
+            <h3 class="loginsignupclose" onclick="signupclose()">&#10005;</h3>
+            <h1 class="loginsignuptitle center">SIGNUP
+            </h1>
+        </div>
+
+        <form class="loginsignupform">
+            <input class="loginsignupinput" placeholder="Nation name" />
+
+            <input class="loginsignupinput" placeholder="Email" />
+
+            <input class="loginsignupinput" placeholder="Passcode" type="passcode" />
+
+            <input class="loginsignupinput" placeholder="Confirm passcode" type="passcode" />
+
+            <input class="loginsignupbutton" value="Signup" type="submit" />
+        </form>
     </div>
+
     <!-- START----------------------------------------------------------------------- -->
 
-    <div class="container " style="padding-top: 100px; text-align: center; ">
-        <div class="row ">
-            <div class="col-12 ">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
                 tets
             </div>
         </div>

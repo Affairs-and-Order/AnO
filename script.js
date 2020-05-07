@@ -39,6 +39,12 @@ function signupshow() {
     document.getElementById("signupdiv").classList.toggle("signupdivshow");
 
 }
+//signupclose
+function signupclose() {
+
+    document.getElementById("signupdiv").classList.toggle("signupdivshow");
+
+}
 //
 $(document).ready(function() {
     console.log("jQuery ready");
