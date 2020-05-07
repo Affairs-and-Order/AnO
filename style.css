@@ -435,6 +435,38 @@ body {
 
 .templatedivflex2right {}
 
+.templatetable {
+    border: 1.8px solid rgb(128, 71, 71);
+    border-collapse: collapse;
+    margin: 5px auto;
+    width: 80%;
+}
+
+.templatetable th {
+    height: 40px;
+    background-color: rgb(167, 91, 91);
+    color: white;
+    font-size: 20px;
+    column-span: 1;
+}
+
+.templatetable tr:nth-child(even) {
+    background: rgb(230, 230, 230);
+}
+
+.templatetable td {
+    padding: 8px;
+    margin: 8px 1%;
+    display: table;
+    width: 48%;
+    float: left;
+}
+
+.templatetable td:nth-child(even) {
+    float: right;
+    text-align: right;
+}
+
 
 /*LANDING PAGE*/
 
@@ -464,6 +496,7 @@ body {
     width: fit-content;
     transition: all 0.2s;
     cursor: pointer;
+    overflow: hidden;
 }
 
 .countryimagediv:hover {
