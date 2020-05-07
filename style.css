@@ -496,7 +496,7 @@ body {
     padding: 15px;
     color: black;
     display: flex;
-    min-height: 7.5vh;
+    min-height: 10vh;
 }
 
 .footerleft,
