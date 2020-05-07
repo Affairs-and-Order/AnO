@@ -455,6 +455,18 @@ body {
 }
 
 
+.flexContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+}
+
+.flexItem {
+    flex-grow: 1;
+}
+
+
 /*FOOTER*/
 
 .footer {
