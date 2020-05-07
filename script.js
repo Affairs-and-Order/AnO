@@ -12,19 +12,13 @@ function menubardrop() {
     document.getElementById("bar2").classList.toggle("barclick2");
 
     document.getElementById("bar3").classList.toggle("barclick3");
-
-    //
-
-    document.getElementById("bar1").style.transition = "all 0.2s";
-
-    document.getElementById("bar2").style.transition = "all 0.2s";
-
-    document.getElementById("bar3").style.transition = "all 0.2s";
 }
 //loginshow
 function loginshow() {
 
     document.getElementById("logindiv").classList.toggle("logindivshow");
+
+    document.getElementById("signupdiv").classList.remove("signupdivshow");
 
 }
 //loginclose
@@ -37,6 +31,8 @@ function loginclose() {
 function signupshow() {
 
     document.getElementById("signupdiv").classList.toggle("signupdivshow");
+
+    document.getElementById("logindiv").classList.remove("logindivshow");
 
 }
 //signupclose

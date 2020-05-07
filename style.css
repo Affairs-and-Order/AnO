@@ -1,267 +1,346 @@
-                @font-face {
-                    font-family: nexabold;
-                    src: url("images/nexabold.otf");
-                }
-                
-                @keyframes textload {
-                    from {
-                        opacity: 0;
-                    }
-                    to {
-                        opacity: 1;
-                    }
-                }
-                
-                body {
-                    background: rgb(230, 230, 230);
-                    padding: 0;
-                    margin: 0;
-                    font-family: "";
-                    animation: textload 0.5s;
-                    color: white;
-                }
-                /*NAVBAR*/
-                
-                .navbar {
-                    background: rgb(151, 83, 83);
-                    position: fixed;
-                    width: 100%;
-                    height: 55px;
-                    box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8);
-                    z-index: 1000;
-                    top: 0;
-                    overflow: hidden;
-                }
-                
-                .navbartitle {
-                    margin-top: 12px;
-                    font-size: 26px;
-                    float: left;
-                    margin-left: 2px;
-                    color: white;
-                    user-select: none;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    text-decoration: none;
-                }
-                
-                .navbartitle:hover {
-                    color: rgb(220, 220, 220);
-                }
-                
-                .menubar {
-                    width: 50px;
-                    margin-left: 5px;
-                    height: 50px;
-                    border: 2.5px solid rgba(250, 250, 250, 0);
-                    transition: all 0.2s;
-                    cursor: pointer;
-                    float: left;
-                }
-                
-                .menubar:hover {
-                    background: rgb(230, 230, 230);
-                }
-                
-                .bar1,
-                .bar2,
-                .bar3 {
-                    width: 30px;
-                    height: 4.5px;
-                    background-color: rgb(32, 32, 32);
-                    margin-top: 10px;
-                    margin-bottom: 10px;
-                    margin-left: 10px;
-                }
-                
-                .barclick1 {
-                    transform: rotate(-45deg);
-                    position: relative;
-                    top: 12px;
-                }
-                
-                .barclick2 {
-                    display: none;
-                }
-                
-                .barclick3 {
-                    transform: rotate(45deg);
-                    position: relative;
-                    top: -2.5px;
-                }
-                
-                .menubardiv {
-                    width: 200px;
-                    background: rgb(230, 230, 230);
-                    position: fixed;
-                    left: 0px;
-                    top: 55px;
-                    height: 100%;
-                    margin-left: -10px;
-                    z-index: 1;
-                    overflow: hidden;
-                    transition: all 0.2s;
-                    opacity: 0;
-                    pointer-events: none;
-                }
-                
-                @media all and (max-width: 600px) {
-                    .menubardiv {
-                        width: 100%;
-                    }
-                }
-                
-                .menubardivshow {
-                    pointer-events: all;
-                    opacity: 1;
-                    margin: 0;
-                    -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                    -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                    box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                }
-                
-                .loginsignup {
-                    float: right;
-                    width: fit-content;
-                    margin-top: 10px;
-                    margin-right: 10px;
-                    background-color: rgb(128, 71, 71);
-                    transition: all 0.2s;
-                    padding: 0px 8px;
-                    text-decoration: none;
-                    font-size: 14px;
-                    color: white;
-                    font-size: 20px;
-                    height: 32.5px;
-                    cursor: pointer;
-                    user-select: none;
-                }
-                
-                .loginsignup:hover {
-                    background-color: rgb(167, 91, 91);
-                    color: rgb(240, 240, 240);
-                }
-                /*LOGINSIGNUP*/
-                
-                .loginsignupdiv {
-                    opacity: 0;
-                    pointer-events: none;
-                    position: fixed;
-                    left: 0;
-                    right: 0;
-                    margin: auto;
-                    top: 0;
-                    bottom: 0;
-                    width: 60%;
-                    background: rgb(240, 240, 240);
-                    height: fit-content;
-                    border-radius: 4px;
-                    transition: all 0.2s;
-                    top: 10px;
-                    z-index: 1000;
-                    overflow: hidden;
-                    -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                    -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                    box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                }
-                
-                @media all and (max-width: 600px) {
-                    .loginsignupdiv {
-                        width: 80%;
-                    }
-                }
-                
-                .logindivshow,
-                .signupdivshow {
-                    opacity: 1;
-                    pointer-events: all;
-                    top: 0;
-                }
-                
-                .loginsignupclose {
-                    position: absolute;
-                    top: -15px;
-                    right: 5px;
-                    cursor: pointer;
-                    border-radius: 100%;
-                    padding: 4px 10px;
-                    transition: all 0.2s;
-                    user-select: none;
-                }
-                
-                .loginsignupclose:hover {
-                    background: rgba(0, 0, 0, 0.5);
-                }
-                
-                .loginsignuptopper {
-                    z-index: 1;
-                    padding: 20px;
-                    padding-top: 10px;
-                    background-image: linear-gradient(316deg, rgb(128, 71, 71) 0%, rgb(151, 83, 83) 74%);
-                }
-                
-                .loginsignuptitle {
-                    color: rgb(255, 255, 255);
-                    font-size: 35px;
-                }
-                
-                .loginsignupinput {
-                    border: 4px solid rgb(220, 220, 220);
-                    padding: 6px;
-                    outline: none;
-                    font-size: 16px;
-                    transition: all 0.2s;
-                    display: block;
-                    margin: 12px auto;
-                }
-                
-                .loginsignupinput:hover {
-                    background: rgb(245, 245, 245);
-                }
-                
-                .loginsignupinput:focus {
-                    background: rgb(245, 245, 245);
-                }
-                
-                .loginsignupbutton {
-                    float: right;
-                    width: min-content;
-                    margin: 5px;
-                    background-color: rgb(167, 91, 91);
-                    transition: all 0.2s;
-                    padding: 10px 20px;
-                    text-decoration: none;
-                    font-size: 14px;
-                    color: rgb(255, 255, 255);
-                    font-size: 18px;
-                    cursor: pointer;
-                    user-select: none;
-                    outline: none;
-                    font-weight: bold;
-                    border: none;
-                    text-align: center;
-                }
-                
-                .loginsignupbutton::placeholder {
-                    color: white;
-                }
-                
-                .loginsignupbutton:hover {
-                    background-color: rgb(128, 71, 71);
-                }
-                
-                .loginsignupforgot {
-                    color: rgb(88, 196, 231);
-                    padding: 2px;
-                    transition: all 0.2s;
-                }
-                
-                .loginsignupforgot:hover {
-                    color: rgb(74, 150, 175);
-                }
-                
-                .login .signup .forgotpasscode {
-                    display: block;
-                    text-align: center;
-                    margin: auto;
-                }
+                                        @font-face {
+                                            font-family: nexabold;
+                                            src: url("images/nexabold.otf");
+                                        }
+                                        
+                                        @keyframes textload {
+                                            from {
+                                                opacity: 0;
+                                            }
+                                            to {
+                                                opacity: 1;
+                                            }
+                                        }
+                                        
+                                        @keyframes bar1 {
+                                            0% {
+                                                background: rgb(32, 32, 32);
+                                            }
+                                            50% {
+                                                width: 0px;
+                                                opacity: 0;
+                                                background: rgb(32, 32, 32);
+                                            }
+                                            100% {
+                                                background: rgb(240, 240, 240);
+                                            }
+                                        }
+                                        
+                                        @keyframes bar2 {
+                                            0% {
+                                                background: rgb(32, 32, 32);
+                                            }
+                                            50% {
+                                                width: 0px;
+                                                opacity: 0;
+                                                background: rgb(32, 32, 32);
+                                            }
+                                            100% {
+                                                width: 20px;
+                                                background: rgb(240, 240, 240);
+                                            }
+                                        }
+                                        
+                                        @keyframes bar3 {
+                                            0% {
+                                                background: rgb(32, 32, 32);
+                                            }
+                                            50% {
+                                                width: 0px;
+                                                opacity: 0;
+                                                background: rgb(32, 32, 32);
+                                            }
+                                            100% {
+                                                background: rgb(240, 240, 240);
+                                            }
+                                        }
+                                        
+                                        body {
+                                            background: rgb(230, 230, 230);
+                                            padding: 0;
+                                            margin: 0;
+                                            font-family: "";
+                                            animation: textload 0.5s;
+                                            color: white;
+                                        }
+                                        /*NAVBAR*/
+                                        
+                                        .navbar {
+                                            background: rgb(151, 83, 83);
+                                            position: fixed;
+                                            width: 100%;
+                                            height: 55px;
+                                            box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8);
+                                            z-index: 1000;
+                                            top: 0;
+                                            overflow: hidden;
+                                        }
+                                        
+                                        .navbartitle {
+                                            margin-top: 12px;
+                                            font-size: 26px;
+                                            float: left;
+                                            margin-left: 10px;
+                                            color: white;
+                                            user-select: none;
+                                            cursor: pointer;
+                                            transition: all 0.2s;
+                                            text-decoration: none;
+                                        }
+                                        
+                                        .navbartitle:hover {
+                                            color: rgb(220, 220, 220);
+                                        }
+                                        
+                                        .menubar {
+                                            width: 45px;
+                                            margin-left: 5px;
+                                            height: 45px;
+                                            margin-top: 5px;
+                                            transition: all 0.2s;
+                                            cursor: pointer;
+                                            float: left;
+                                        }
+                                        
+                                        .menubar:hover {
+                                            background-color: rgb(128, 71, 71);
+                                        }
+                                        
+                                        .menubarclick {
+                                            background-color: rgb(128, 71, 71);
+                                        }
+                                        
+                                        .bar1,
+                                        .bar2,
+                                        .bar3 {
+                                            width: 30px;
+                                            height: 4.5px;
+                                            background-color: rgb(32, 32, 32);
+                                            margin: 8.5px;
+                                            transition: all 0.2s;
+                                        }
+                                        
+                                        .barclick1 {
+                                            animation: bar1 0.5s;
+                                            background: rgb(240, 240, 240);
+                                        }
+                                        
+                                        .barclick2 {
+                                            width: 20px;
+                                            animation: bar2 0.5s;
+                                            background: rgb(240, 240, 240);
+                                        }
+                                        
+                                        .barclick3 {
+                                            animation: bar1 0.5s;
+                                            background: rgb(240, 240, 240);
+                                        }
+                                        
+                                        .menubardiv {
+                                            width: 200px;
+                                            background: rgb(240, 240, 240);
+                                            position: fixed;
+                                            left: 0px;
+                                            top: 55px;
+                                            height: 100%;
+                                            margin-left: -10px;
+                                            z-index: 1;
+                                            overflow: hidden;
+                                            transition: all 0.2s;
+                                            opacity: 0;
+                                            pointer-events: none;
+                                        }
+                                        
+                                        @media all and (max-width: 600px) {
+                                            .menubardiv {
+                                                width: 100%;
+                                            }
+                                        }
+                                        
+                                        .menubardivshow {
+                                            pointer-events: all;
+                                            opacity: 1;
+                                            margin: 0;
+                                            -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+                                            -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+                                            box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+                                        }
+                                        
+                                        .menubara {
+                                            text-decoration: none;
+                                            color: black;
+                                            font-size: 17px;
+                                            font-weight: bolder;
+                                            transition: all 0.2s;
+                                            display: block;
+                                            margin: 15px 15px;
+                                            padding: 10px 0px;
+                                            text-align: center;
+                                        }
+                                        
+                                        .menubara:hover {
+                                            background-color: rgb(167, 91, 91);
+                                            margin: 15px 0px;
+                                            padding: 10px 15px;
+                                            color: white;
+                                        }
+                                        
+                                        @media all and (max-width: 600px) {
+                                            .menubara {
+                                                margin: 15px 0px;
+                                            }
+                                        }
+                                        
+                                        .loginsignup {
+                                            float: right;
+                                            width: fit-content;
+                                            margin-top: 10px;
+                                            margin-right: 10px;
+                                            background-color: rgb(128, 71, 71);
+                                            transition: all 0.2s;
+                                            padding: 0px 8px;
+                                            text-decoration: none;
+                                            font-size: 14px;
+                                            color: white;
+                                            font-size: 20px;
+                                            height: 32.5px;
+                                            cursor: pointer;
+                                            user-select: none;
+                                        }
+                                        
+                                        .loginsignup:hover {
+                                            background-color: rgb(167, 91, 91);
+                                            color: rgb(240, 240, 240);
+                                        }
+                                        /*LOGINSIGNUP*/
+                                        
+                                        .loginsignupdiv {
+                                            opacity: 0;
+                                            pointer-events: none;
+                                            position: fixed;
+                                            left: 0;
+                                            right: 0;
+                                            margin: auto;
+                                            top: 0;
+                                            bottom: 0;
+                                            width: 60%;
+                                            background: rgb(240, 240, 240);
+                                            height: fit-content;
+                                            border-radius: 4px;
+                                            transition: all 0.2s;
+                                            top: 10px;
+                                            z-index: 1000;
+                                            overflow: hidden;
+                                            -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+                                            -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+                                            box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+                                        }
+                                        
+                                        @media all and (max-width: 600px) {
+                                            .loginsignupdiv {
+                                                width: 80%;
+                                            }
+                                        }
+                                        
+                                        .logindivshow,
+                                        .signupdivshow {
+                                            opacity: 1;
+                                            pointer-events: all;
+                                            top: 0;
+                                        }
+                                        
+                                        .loginsignupclose {
+                                            position: absolute;
+                                            top: -15px;
+                                            right: 5px;
+                                            cursor: pointer;
+                                            border-radius: 100%;
+                                            padding: 4px 10px;
+                                            transition: all 0.2s;
+                                            user-select: none;
+                                        }
+                                        
+                                        .loginsignupclose:hover {
+                                            background: rgba(0, 0, 0, 0.5);
+                                        }
+                                        
+                                        .loginsignuptopper {
+                                            z-index: 1;
+                                            padding: 20px;
+                                            padding-top: 10px;
+                                            background-image: linear-gradient(316deg, rgb(128, 71, 71) 0%, rgb(151, 83, 83) 74%);
+                                        }
+                                        
+                                        .loginsignuptitle {
+                                            color: rgb(255, 255, 255);
+                                            font-size: 35px;
+                                        }
+                                        
+                                        .loginsignupinput {
+                                            border: 4px solid rgb(220, 220, 220);
+                                            padding: 6px;
+                                            outline: none;
+                                            font-size: 16px;
+                                            transition: all 0.2s;
+                                            display: block;
+                                            margin: 12px auto;
+                                        }
+                                        
+                                        .loginsignupinput:hover {
+                                            background: rgb(245, 245, 245);
+                                        }
+                                        
+                                        .loginsignupinput:focus {
+                                            background: rgb(245, 245, 245);
+                                        }
+                                        
+                                        .loginsignupbutton {
+                                            float: right;
+                                            width: min-content;
+                                            margin: 5px;
+                                            background-color: rgb(167, 91, 91);
+                                            transition: all 0.2s;
+                                            padding: 10px 20px;
+                                            text-decoration: none;
+                                            font-size: 14px;
+                                            color: rgb(255, 255, 255);
+                                            font-size: 18px;
+                                            cursor: pointer;
+                                            user-select: none;
+                                            outline: none;
+                                            font-weight: bold;
+                                            border: none;
+                                            text-align: center;
+                                        }
+                                        
+                                        .loginsignupbutton::placeholder {
+                                            color: white;
+                                        }
+                                        
+                                        .loginsignupbutton:hover {
+                                            background-color: rgb(128, 71, 71);
+                                        }
+                                        
+                                        .loginsignupforgot {
+                                            color: rgb(88, 196, 231);
+                                            padding: 2px;
+                                            transition: all 0.2s;
+                                            text-decoration: underline;
+                                            cursor: pointer;
+                                        }
+                                        
+                                        .loginsignupforgot:hover {
+                                            color: rgb(74, 150, 175);
+                                        }
+                                        
+                                        .login,
+                                        .signup {
+                                            position: absolute;
+                                            top: 0px;
+                                            left: 5px;
+                                        }
+                                        
+                                        .forgotpasscode {
+                                            display: block;
+                                            text-align: center;
+                                        }
