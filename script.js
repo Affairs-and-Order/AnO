@@ -21,28 +21,47 @@ function menubardrop() {
 
     document.getElementById("bar3").style.transition = "all 0.2s";
 }
+
+var modalOpen = false;
+
 //loginshow
 function loginshow() {
 
-    document.getElementById("logindiv").classList.toggle("logindivshow");
+    // this is required so people cant open multiple modals at once
+
+    if (modalOpen == false) {
+        document.getElementById("logindiv").classList.toggle("logindivshow");
+        modalOpen = true;
+    } else {
+        return;
+    }
 
 }
 //loginclose
 function loginclose() {
 
     document.getElementById("logindiv").classList.toggle("logindivshow");
+    modalOpen = false;
 
 }
 //signupshow
 function signupshow() {
 
-    document.getElementById("signupdiv").classList.toggle("signupdivshow");
+     // this is required so people cant open multiple modals at once
+
+    if (modalOpen == false) {
+        document.getElementById("signupdiv").classList.toggle("signupdivshow");
+        modalOpen = true;
+    } else {
+        return;
+    }
 
 }
 //signupclose
 function signupclose() {
 
     document.getElementById("signupdiv").classList.toggle("signupdivshow");
+    modalOpen = false;
 
 }
 //

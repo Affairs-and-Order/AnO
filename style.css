@@ -165,7 +165,7 @@
                     background: rgb(230, 230, 230);
                     padding: 0;
                     margin: 0;
-                    font-family: "";
+                    font-family: sans-serif;
                     animation: textload 0.5s;
                     color: white;
                 }
@@ -413,4 +413,22 @@
                     display: block;
                     text-align: center;
                     margin: auto;
+                }
+
+
+                .CardHeader {
+                    float: left;
+                    margin-left: 10px;
+                    margin-top: 10px;
+                    color: black;
+                    text-decoration: underline;
+                    position: absolute;
+                }
+
+                .CardBody {
+                    text-align: left;
+                    color: black;
+                    padding-top: 70px;
+                    margin-left: 10px;
+                    padding-bottom: 20px;
                 }
