@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="style.css" rel="stylesheet" type="text/css" />
-    <link href="simple-grid.css" rel="stylesheet" type="text/css"/>
-    
+    <link href="simple-grid.css" rel="stylesheet" type="text/css" />
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="script.js"></script>
-    <link rel="icon" href="files/images/favicon.png" type="image/png">
+    <link rel="icon" href="images/favicon.png" type="image/png">
 
-    <title>Lord of Regimes</title>
+    <title>Affairs And Order</title>
 
 
 
@@ -33,17 +33,20 @@
 
 
 
-        <a href="#" class="loginContainer login loginButton">Login</a>
+        <h2 class="loginsignup" onclick="loginshow()">Login
+        </h2>
+
+        <h2 class="loginsignup" onclick="signupshow()">Signup</h2>
 
     </div>
 
-    <div class="menubardiv" id="menubardiv">
+    <div class=" menubardiv" id="menubardiv ">
 
-        <a class="menubara" href="index.php">Nation</a>
+        <a class="menubara" href="index.php ">Nation</a>
 
-        <a class="menubara" href="index.php">Alliance</a>
+        <a class="menubara" href="index.php ">Alliance</a>
 
-        <a class="menubara" href="index.php">Account</a>
+        <a class="menubara" href="index.php ">Account</a>
 
     </div>
 
@@ -62,8 +65,22 @@
         </div>
 
         <div class="col-1" style="background-color: yellow;">
+    <div class="loginsignupdiv" id="logindiv">
+        <div class="loginsignuptopper">
+            <h3 class="loginsignupclose" onclick="loginclose()">&#10005;</h3>
+            <h1 class="loginsignuptitle center">LOGIN
+            </h1>
         </div>
-      </div>
+
+        <form class="loginsignupform">
+            <input class="loginsignupinput" placeholder="Username / Email" />
+
+            <input class="loginsignupinput" placeholder="Passcode" type="passcode" />
+
+            <a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">Forgot passcode</a>
+
+            <input class="loginsignupbutton" value="Login" type="submit" />
+        </form>
     </div>
 
     <div style=" padding-left: 50px; padding-right: 50px; position: relative;;">
@@ -73,21 +90,35 @@
     </div>
           
     <div class="loginsignupdiv">
+    <div class="loginsignupdiv" id="signupdiv">
         <div class="loginsignuptopper">
-            <h3 class="loginsignupclose">&#10005;</h3>
-            <h2 class="loginsignuptitle">
-            </h2>
+            <h3 class="loginsignupclose" onclick="signupclose()">&#10005;</h3>
+            <h1 class="loginsignuptitle center">SIGNUP
+            </h1>
         </div>
 
         <form class="loginsignupform">
-            <input class="loginsignupinput">
-            <button class="loginsignupbutton"></button>
+            <input class="loginsignupinput" placeholder="Nation name" />
+
+            <input class="loginsignupinput" placeholder="Email" />
+
+            <input class="loginsignupinput" placeholder="Passcode" type="passcode" />
+
+            <input class="loginsignupinput" placeholder="Confirm passcode" type="passcode" />
+
+            <input class="loginsignupbutton" value="Signup" type="submit" />
         </form>
     </div>
 
-    </div>
     <!-- START----------------------------------------------------------------------- -->
 
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                tets
+            </div>
+        </div>
+    </div>
 
 </body>
 
