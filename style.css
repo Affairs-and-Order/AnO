@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
 @font-face {
     font-family: nexabold;
-    src: url("images/nexabold.otf");
+    src: url("fonts/nexabold.otf");
 }
 
 @keyframes textload {
@@ -96,7 +96,7 @@ body {
     background: rgb(230, 230, 230);
     padding: 0;
     margin: 0;
-    font-family: "";
+    font-family: "nexabold";
     animation: textload 0.5s;
     color: white;
 }
