@@ -21,6 +21,24 @@ function menubardrop() {
 
     document.getElementById("bar3").style.transition = "all 0.2s";
 }
+//loginshow
+function loginshow() {
+
+    document.getElementById("logindiv").classList.toggle("logindivshow");
+
+}
+//loginclose
+function loginclose() {
+
+    document.getElementById("logindiv").classList.toggle("logindivshow");
+
+}
+//signupshow
+function signupshow() {
+
+    document.getElementById("signupdiv").classList.toggle("signupdivshow");
+
+}
 //
 $(document).ready(function() {
     console.log("jQuery ready");

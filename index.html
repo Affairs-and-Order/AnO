@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link href="style.css" rel="stylesheet" type="text/css" />
-    <link href="simple-grid.css" rel="stylesheet" type="text/css"/>
-    
+    <link href="simple-grid.css" rel="stylesheet" type="text/css" />
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="script.js"></script>
-    <link rel="icon" href="files/images/favicon.png" type="image/png">
+    <link rel="icon" href="images/favicon.png" type="image/png">
 
     <title>Affairs And Order</title>
 
@@ -33,41 +33,35 @@
 
 
 
-        <a href="#" class="loginContainer login loginButton">Login</a>
+        <h2 class="loginsignup" onclick="loginshow()">Login
+        </h2>
+
+        <h2 class="loginsignup" onclick="signupshow()">Signup</h2>
 
     </div>
 
-    <div class="menubardiv" id="menubardiv">
+    <div class=" menubardiv" id="menubardiv ">
 
-        <a class="menubara" href="index.php">Nation</a>
+        <a class="menubara" href="index.php ">Nation</a>
 
-        <a class="menubara" href="index.php">Alliance</a>
+        <a class="menubara" href="index.php ">Alliance</a>
 
-        <a class="menubara" href="index.php">Account</a>
+        <a class="menubara" href="index.php ">Account</a>
 
     </div>
 
-    <!--
-        Content
-    -->
-
-    <div class="container" style="padding-top: 100px; text-align: center;">
-      <div class="row">
-        <div class="col-12">
-          tets
-        </div>
-      </div>
-    </div>
-          
-    <div class="loginsignupdiv">
+    <div class="loginsignupdiv" id="logindiv">
         <div class="loginsignuptopper">
-            <h3 class="loginsignupclose">&#10005;</h3>
-            <h2 class="loginsignuptitle">
+            <h3 class="loginclose" onclick="loginclose()">&#10005;</h3>
+            <h2 class="loginsignuptitle center">Login
             </h2>
         </div>
 
         <form class="loginsignupform">
-            <input class="loginsignupinput">
+            <input class="loginsignupinput" placeholder="Username / Email">
+
+            <input class="loginsignupinput" placeholder="Passcode">
+
             <button class="loginsignupbutton"></button>
         </form>
     </div>
@@ -75,6 +69,13 @@
     </div>
     <!-- START----------------------------------------------------------------------- -->
 
+    <div class="container " style="padding-top: 100px; text-align: center; ">
+        <div class="row ">
+            <div class="col-12 ">
+                tets
+            </div>
+        </div>
+    </div>
 
 </body>
 
