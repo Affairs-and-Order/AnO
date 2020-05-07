@@ -56,6 +56,42 @@
     }
 }
 
+@keyframes templatedivtitleload {
+    0% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    50% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    100% {
+        opacity: 1;
+        pointer-events: all;
+        top: 0px;
+    }
+}
+
+@keyframes templatedivcontentload {
+    0% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    50% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    100% {
+        opacity: 1;
+        pointer-events: all;
+        top: 0px;
+    }
+}
+
 body {
     background: rgb(230, 230, 230);
     padding: 0;
@@ -179,6 +215,7 @@ body {
     margin: 15px 15px;
     padding: 10px 0px;
     text-align: center;
+    font-weight: bolder;
 }
 
 .menubara:hover {
@@ -371,11 +408,17 @@ body {
 .templatedivtitle {
     text-align: center;
     font-size: 40px;
+    animation: templatedivtitleload 0.25s;
+    margin: 0;
+    padding: 20px;
+    position: relative;
 }
 
 .templatedivcontent {
     color: black;
     padding: 8px;
+    animation: templatedivcontentload 0.35s;
+    position: relative;
 }
 
 .templatecontentheaderleft {
@@ -501,6 +544,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     background-position-y: 50%;
+    box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, 0.3);
 }
 
 .countryimage {}
