@@ -270,10 +270,9 @@ body {
 }
 
 .loginsignuptopper {
-    z-index: 1;
     padding: 20px;
     padding-top: 10px;
-    background-image: linear-gradient(316deg, rgb(128, 71, 71) 0%, rgb(151, 83, 83) 74%);
+    background-image: linear-gradient(316deg, rgb(128, 71, 71) 0%, rgb(179, 102, 102) 74%);
 }
 
 .loginsignuptitle {
@@ -353,19 +352,50 @@ body {
 
 /*CONTENT*/
 
-.CardHeader {
-    float: left;
-    margin-left: 10px;
-    margin-top: 10px;
-    color: black;
-    text-decoration: underline;
-    position: absolute;
+.templatediv {
+    background: rgb(240, 240, 240);
+    width: 90%;
+    margin: 50px auto;
+    margin-top: 90px;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, .15);
 }
 
-.CardBody {
-    text-align: left;
-    color: black;
-    padding-top: 70px;
-    margin-left: 10px;
-    padding-bottom: 20px;
+.templatedivtopper {
+    padding: 20px;
+    padding-top: 10px;
+    background-image: linear-gradient(316deg, rgb(128, 71, 71) 0%, rgb(179, 102, 102) 74%);
 }
+
+.templatedivtitle {
+    text-align: center;
+    font-size: 40px;
+}
+
+.templatedivcontent {
+    color: black;
+    padding: 8px;
+}
+
+.templatecontentheader {
+    border-bottom: 5px solid rgb(220, 220, 220);
+    padding: 6px;
+    font-size: 25px;
+}
+
+.templatecontentp {
+    text-indent: 25px;
+    font-size: 18px;
+}
+
+
+/*FOOTER*/
+
+.footer {
+    border-top: 3px solid gray;
+}
+
+.footerleft {}
+
+.footerright {}
