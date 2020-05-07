@@ -254,84 +254,6 @@ body {
 }
 
 
-/*LOGINSIGNUP*/
-
-.loginsignupinput {
-    border: 4px solid rgb(220, 220, 220);
-    padding: 6px;
-    outline: none;
-    font-size: 16px;
-    transition: all 0.2s;
-    display: block;
-    margin: 12px auto;
-}
-
-.loginsignupinput:hover {
-    background: rgb(245, 245, 245);
-}
-
-.loginsignupinput:focus {
-    background: rgb(245, 245, 245);
-}
-
-.loginsignupbutton {
-    float: right;
-    width: min-content;
-    margin: 5px;
-    background-color: rgb(167, 91, 91);
-    transition: all 0.2s;
-    padding: 10px 20px;
-    text-decoration: none;
-    font-size: 14px;
-    color: rgb(255, 255, 255);
-    font-size: 18px;
-    cursor: pointer;
-    user-select: none;
-    outline: none;
-    font-weight: bold;
-    border: none;
-    text-align: center;
-}
-
-.loginsignupbutton::placeholder {
-    color: white;
-}
-
-.loginsignupbutton:hover {
-    background-color: rgb(128, 71, 71);
-}
-
-.loginsignupforgot {
-    color: rgb(88, 196, 231);
-    padding: 2px;
-    transition: all 0.2s;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.loginsignupforgot:hover {
-    color: rgb(74, 150, 175);
-}
-
-.login,
-.signup {
-    position: absolute;
-    top: 0px;
-    left: 5px;
-}
-
-.forgotpasscode {
-    display: block;
-    text-align: center;
-}
-
-
-/*LOGIN*/
-
-
-/*SIGNUP*/
-
-
 /*CONTENT*/
 
 .templatediv {
@@ -453,6 +375,78 @@ body {
 .templatetable td:nth-child(even) {
     float: right;
     text-align: right;
+}
+
+
+/*LOGINSIGNUP*/
+
+.loginsignupinput {
+    border: 4px solid rgb(220, 220, 220);
+    padding: 6px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.2s;
+    display: block;
+    margin: 12px auto;
+}
+
+.loginsignupinput:hover {
+    background: rgb(245, 245, 245);
+}
+
+.loginsignupinput:focus {
+    background: rgb(245, 245, 245);
+}
+
+.loginsignupbutton {
+    float: right;
+    width: min-content;
+    margin: 5px;
+    background-color: rgb(167, 91, 91);
+    transition: all 0.2s;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    font-weight: bold;
+    border: none;
+    text-align: center;
+}
+
+.loginsignupbutton::placeholder {
+    color: white;
+}
+
+.loginsignupbutton:hover {
+    background-color: rgb(128, 71, 71);
+}
+
+.loginsignupforgot {
+    color: rgb(88, 196, 231);
+    padding: 2px;
+    transition: all 0.2s;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.loginsignupforgot:hover {
+    color: rgb(74, 150, 175);
+}
+
+.login,
+.signup {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+}
+
+.forgotpasscode {
+    display: block;
+    text-align: center;
 }
 
 
