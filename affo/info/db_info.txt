@@ -1,0 +1,11 @@
+We are using 8.0.19 MySQL Community Server - GPL.
+
+The users table can be found under 'aao/users.idb'
+
+To install the database on your local computer please navigate  to:
+C:\ProgramData\MySQL\MySQL Server 8.0\Data, create a folder called 'aao',
+navigate there and place all the '.ibd' files from the repo's 'aao' folder.
+
+Type 'SHOW databases' in your MySQL terminal and you should see 'aao' under there.
+
+If you need help with SQL please contact t0dd#3074 on Discord.
