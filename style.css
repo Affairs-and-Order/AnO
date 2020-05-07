@@ -492,7 +492,18 @@ body {
 /*FOOTER*/
 
 .footer {
-    border-top: 3px solid gray;
+    background: rgb(215, 215, 215);
+    padding: 15px;
+    color: black;
+    display: flex;
+    min-height: 7.5vh;
+}
+
+.footerleft,
+.footerright {
+    width: 50%;
+    flex-direction: column;
+    flex-wrap: wrap;
 }
 
 .footerleft {}
