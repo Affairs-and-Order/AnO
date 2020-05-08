@@ -277,6 +277,13 @@
             position: relative;
         }
         
+        .templatedivad {
+            width: 80%;
+            height: 20vh;
+            margin: 20px auto;
+            background: black;
+        }
+        
         .templatedivcontent {
             color: black;
             padding: 8px;
