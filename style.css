@@ -390,7 +390,7 @@
         
         .loginsignupinput {
             border: 4px solid rgb(220, 220, 220);
-            padding: 6px;
+            padding: 10px;
             outline: none;
             font-size: 16px;
             transition: all 0.2s;
