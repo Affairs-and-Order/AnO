@@ -12,7 +12,18 @@ Session(app)
 
 @app.route("/")
 def index():
-    if request.method == "POST":
-        print('b')
-    else:
+    if request.method == "GET":
         return render_template("index.html")
+
+@app.route("/signup")
+def signup():
+    if request.method == "POST":
+        print("todo")
+    else:
+        return render_template("signup.html")
+@app.route("/login")
+def login():
+    if request.method == "POST":
+        print("todo")
+    else:
+        return render_template("login.html")
