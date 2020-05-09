@@ -5,19 +5,6 @@
 {% endblock %}
 
 {% block body%}
-    <div class="menubardiv" id="menubardiv">
-
-        <a class="menubara" href="country.html">Country</a>
-
-        <a class="menubara" href="index.html">Market</a>
-
-        <a class="menubara" href="index.html">Coalition</a>
-
-        <a class="menubara" href="index.html">World</a>
-
-    </div>
-
-
     <!-- START------------------------------------------------------------------------->
 
     <div class="templatediv">
@@ -27,15 +14,17 @@
         </div>
 
         <div class="templatedivcontent">
-            <a class="login loginsignupforgot" href="login.html">Login</a>
-            <form class="loginsignupform">
-                <input class="loginsignupinput" placeholder="Country name" />
+            <a class="login loginsignupforgot" href="/login">Login</a>
 
-                <input class="loginsignupinput" placeholder="Email" />
+            <form class="loginsignupform" action="/signup" method="POST">
+                
+                <input class="loginsignupinput" name="username" placeholder="Country name" />
 
-                <input class="loginsignupinput" placeholder="Passcode" type="passcode" />
+                <input class="loginsignupinput" name="email" placeholder="Email" />
 
-                <input class="loginsignupinput" placeholder="Confirm passcode" type="passcode" />
+                <input class="loginsignupinput" name="password" placeholder="Passcode" type="passcode" />
+
+                <input class="loginsignupinput" name="confirmation" placeholder="Confirm passcode" type="passcode" />
 
                 <input class="loginsignupbutton" value="Signup" type="submit" />
             </form>
