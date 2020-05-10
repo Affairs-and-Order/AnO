@@ -25,19 +25,20 @@ for roll in range(0,3):
         # gives a 12% casualty rate for the nation that rolled larger 
         twelve_percent_loss = int(Nat2*0.12)
         Nat1 -= twelve_percent_loss
+        print(f"This is the Nation 2's casualties after the battle: {difference}")
+        print(f"This is the is Nation 1's casualties from the battle: {twelve_percent_loss}")
     else:
         nat2_roll_wins += 1 
         # subtract difference from the nations maximum if they rolled lower
         Nat1 -= difference
         # the twelve percent stored in new variable so it can be printed
         twelve_percent_loss = int(Nat1*0.12)
-        Nat2 -= twelve_percent_loss
-        
-    print(f"This is the output after the battle: {difference}")
-    print(f"This is the 12 perecent value from the battle: {twelve_percent_loss}")
+        Nat2 -= twelve_percent_loss  
+        print(f"This is the Nation 1's casualties after the battle: {difference}")
+        print(f"This is the is Nation 2's casualties from the battle: {twelve_percent_loss}")
     
     
-    
+  
     
 if nat1_roll_wins > nat2_roll_wins:
     print("Nation 1 won the battle")
