@@ -4,6 +4,7 @@ from tempfile import mkdtemp
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
+from helpers import login_required
 
 
 app = Flask(__name__)
@@ -38,6 +39,7 @@ def login():
 
         if user is not None and check_password_hash(user[3], password):
             session["user_id"] = user[0]
+            session["username"] = user[1]
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
@@ -73,3 +75,9 @@ def signup():
             return redirect("/")
     else:
         return render_template("signup.html")
+
+@login_required
+@app.route("/profile")
+def profile():
+    username = session["username"]
+    return render_template("profile.html", username=username)
