@@ -77,7 +77,8 @@ def signup():
         return render_template("signup.html")
 
 @login_required
-@app.route("/profile")
-def profile():
+@app.route("/country")
+def country():
     username = session["username"]
-    return render_template("profile.html", username=username)
+    cId = session["user_id"]
+    return render_template("country.html", username=username, cId=cId)

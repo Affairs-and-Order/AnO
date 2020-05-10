@@ -1,64 +1,14 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html"%}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+{% block title %}
+    Country
+{% endblock %}
 
-    <link href="style.css" rel="stylesheet" type="text/css" />
-    <link href="simple-grid.css" rel="stylesheet" type="text/css" />
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="script.js"></script>
-    <link rel="icon" href="images/favicon.png" type="image/png">
-
-    <title>Affairs And Order</title>
-
-
-
-</head>
-
-<body>
-    <div class="navbar">
-
-        <div class="menubar" onclick="menubardrop()" id="menubar">
-            <div class="bar1" id="bar1"></div>
-            <div class="bar2" id="bar2"></div>
-            <div class="bar3" id="bar3"></div>
-        </div>
-
-        <a class="navbartitle" href="index.html">Affairs and Order</a>
-
-
-
-
-        <a class="loginsignup" href="login.html">Login
-        </a>
-
-        <a class="loginsignup" href="signup.html">Signup</a>
-
-    </div>
-
-    <div class="menubardiv" id="menubardiv">
-
-        <a class="menubara" href="country.html">Country</a>
-
-        <a class="menubara" href="index.html">Market</a>
-
-        <a class="menubara" href="index.html">Coalition</a>
-
-        <a class="menubara" href="index.html">World</a>
-
-    </div>
-
-
-    <!-- START------------------------------------------------------------------------->
-
+{% block body %}
     <div class="templatediv">
 
         <div class="templatedivtopper">
-            <h1 class="templatedivtitle">Country Name</h1>
+            <h1 class="templatedivtitle">{{ username }}</h1>
         </div>
 
         <div class="templatedivcontent">
@@ -82,11 +32,11 @@
                         </tr>
                         <tr>
                             <td>Country name:</td>
-                            <td>Name</td>
+                            <td>{{ username }}</td>
                         </tr>
                         <tr>
                             <td>Country ID:</td>
-                            <td>ID</td>
+                            <td>{{ cId }}</td>
                         </tr>
                         <tr>
                             <td>Country location:</td>
@@ -140,3 +90,4 @@
 
         </div>
     </div>
+{% endblock %}
