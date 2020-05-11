@@ -9,6 +9,7 @@ from helpers import login_required
 
 app = Flask(__name__)
 
+# basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -17,59 +18,55 @@ Session(app)
 @app.route("/")
 def index():
     if request.method == "GET":
-        return render_template("index.html")
+        return render_template("index.html") # renders index.html when "/" is accesed
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
-    session.clear()
-
     if request.method == "POST":
 
-        connection = sqlite3.connect('affo/aao.db')
+        connection = sqlite3.connect('affo/aao.db') # connects to db
         db = connection.cursor()
 
-        password = request.form.get("password")
-        username = request.form.get("username")
+        password = request.form.get("password") # gets the password input from the form
+        username = request.form.get("username") # gets the username input from the forms
 
-        if not username or not password:
+        if not username or not password: # checks if inputs are blank
             return redirect("/error_no_pw_or_un") #TODO change to actual error
-        user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone()
+        user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone() # selects data about user, from users
         connection.commit()
 
-        if user is not None and check_password_hash(user[3], password):
-            session["user_id"] = user[0]
+        if user is not None and check_password_hash(user[3], password): # checks if user exists and if the password is correct
+            session["user_id"] = user[0] # sets session's user_id to current user's id
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
             return redirect("/")
         return redirect("/error_wrong_pw")
     else:
-        return render_template("login.html")
+        return render_template("login.html") # renders login.html when "/login" is acessed via get
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
         
         # connects the db to the signup function
-        connection = sqlite3.connect('affo/aao.db')
+        connection = sqlite3.connect('affo/aao.db') # connects to db
         db = connection.cursor()
 
-        username = request.form.get("username")
+        username = request.form.get("username") # gets corresponding form inputs
         email = request.form.get("email")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
         connection.commit()
-        if not confirmation or not password or not email or not username:
+        if not confirmation or not password or not email or not username: # checks for blank inputs
             return redirect("/error_blank") #TODO change to actual error
-        elif password != confirmation:
+        elif password != confirmation: # checks if password is = to confirmation password
             return redirect("/error_wrong_cn") #TODO change to actual error
         else:
-            hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16)
-            db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,))
+            hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
+            db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
             connection.commit()
-            for row in db.execute("SELECT * FROM users"):
-                print(row)
             connection.close()
             return redirect("/")
     else:
@@ -81,6 +78,6 @@ def country():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
-    username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+    username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
     return render_template("country.html", username=username, cId=cId)
