@@ -66,6 +66,8 @@ def signup():
         else:
             hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
             db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
+            user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
+            session["user_id"] = user[0]
             connection.commit()
             connection.close()
             return redirect("/")
