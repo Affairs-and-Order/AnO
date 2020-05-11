@@ -39,7 +39,6 @@ def login():
 
         if user is not None and check_password_hash(user[3], password):
             session["user_id"] = user[0]
-            session["username"] = user[1]
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
@@ -79,6 +78,9 @@ def signup():
 @login_required
 @app.route("/country")
 def country():
-    username = session["username"]
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
     cId = session["user_id"]
+    username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+    connection.commit()
     return render_template("country.html", username=username, cId=cId)
