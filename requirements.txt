@@ -1,0 +1,4 @@
+Flask==1.1.2
+Werkzeug==0.16.0
+requests==2.23.0
+Flask_Session==0.3.1
