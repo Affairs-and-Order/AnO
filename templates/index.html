@@ -1,10 +1,4 @@
-{% extends "layout.html" %}
-
-{% block title %}
-    Home
-{% endblock %}
-
-{% block body %}
+{% extends "layout.html" %} {% block title %} Home {% endblock %} {% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper">
@@ -22,10 +16,8 @@
                 {% if uId == False %}
                 <a class="loginsignuplink templatedivbutton" href="/login">LOGIN</a>
                 <h2 class="templatecontentheadercenter">Or create one!</h2>
-                <a class="loginsignuplink templatedivbutton" href="/signup">SIGNUP</a>
-                {% elif uId == True %}
-                <a class="loginsignuplink templatedivbutton" href="/country">COUNTRY</a>
-                {% endif %}
+                <a class="loginsignuplink templatedivbutton" href="/signup">SIGNUP</a> {% elif uId == True %}
+                <a class="loginsignuplink templatedivbutton" href="/country">COUNTRY</a> {% endif %}
             </div>
             <div class="templatedivflex2right">
                 <h2 class="templatecontentheaderleft">126,564 Active players!</h2>
