@@ -20,6 +20,7 @@ def index():
     if request.method == "GET":
         try: 
             uId = session["user_id"]
+            uId = True
             return render_template("index.html", uId=uId)
         except KeyError:
             uId = False
