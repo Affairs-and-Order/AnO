@@ -18,7 +18,12 @@ Session(app)
 @app.route("/")
 def index():
     if request.method == "GET":
-        return render_template("index.html") # renders index.html when "/" is accesed
+        try: 
+            uId = session["user_id"]
+            return render_template("index.html", uId=uId)
+        except KeyError:
+            uId = False
+            return render_template("index.html", uId=uId) # renders index.html when "/" is accesed
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
