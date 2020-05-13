@@ -299,9 +299,9 @@
                         
                         .templatecontentheaderleft {
                             border-bottom: 5px solid rgb(220, 220, 220);
-                            padding: 6px;
+                            padding-bottom: 6px;
                             font-size: 25px;
-                            margin: 2px;
+                            width: 98%;
                         }
                         
                         .templatecontentheadercenter {
