@@ -89,3 +89,8 @@ def country():
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
     return render_template("country.html", username=username, cId=cId)
+
+
+if __name__ == "__main__":
+
+    app.run(debug=True)
