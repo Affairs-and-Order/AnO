@@ -24,8 +24,12 @@
         </div>
 
         <a class="navbartitle" href="/">Affairs and Order</a>
+        {% if uId == False %}
         <a class="loginsignup" href="/login">Login</a>
         <a class="loginsignup" href="/signup">Signup</a>
+        {% elif uId == True %}
+        <a class="loginsignup" href="/country">Country</a>
+        {% endif %}
 
     </div>
     
