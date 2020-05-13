@@ -5,6 +5,24 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required
+from celery import Celery
+from celery.schedules import crontab
+import datetime
+
+
+
+celeryApp = Celery()
+
+@celeryApp.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+
+    sender.add_periodic_task(3600, , expires=10)
+
+@celery.task()
+def turn_allowed_task():
+    logger = turn_allowed_task.get_logger()
+    logger.info("user can now turn")
+
 
 
 app = Flask(__name__)
@@ -37,7 +55,7 @@ def login():
         password = request.form.get("password") # gets the password input from the form
         username = request.form.get("username") # gets the username input from the forms
 
-        if not username or not password: # checks if inputs are blank
+        if not username or not password or len(username) < 3 or len(password) < 8: # checks if inputs are blank
             return redirect("/error_no_pw_or_un") #TODO change to actual error
         user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone() # selects data about user, from users
         connection.commit()
@@ -91,6 +109,7 @@ def country():
     return render_template("country.html", username=username, cId=cId)
 
 
+# available to run if double click the file
 if __name__ == "__main__":
 
     app.run(debug=True)

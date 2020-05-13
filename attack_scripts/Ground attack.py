@@ -1,4 +1,5 @@
 import random
+import sqlite3
 
 Nat1 = 2000 # get from database for now lets call it 2000
 Nat2 = 1000 # get from database for now lets call it 1000
