@@ -1,35 +1,29 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block title %} Signup {% endblock %} {% block body%}
+<!-- START------------------------------------------------------------------------->
 
-{% block title %}
-    Signup
-{% endblock %}
+<div class="templatediv">
 
-{% block body%}
-    <!-- START------------------------------------------------------------------------->
-
-    <div class="templatediv">
-
-        <div class="templatedivtopper">
-            <h1 class="templatedivtitle">Signup</h1>
-        </div>
-
-        <div class="templatedivcontent">
-            <a class="login loginsignupforgot" href="/login">Login</a>
-
-            <form class="loginsignupform" action="/signup" method="POST">
-                
-                <input class="loginsignupinput" autocomplete="off" name="username" placeholder="Country Name" required/>
-
-                <input class="loginsignupinput" autocomplete="off" name="email" placeholder="Email" required />
-
-                <input class="loginsignupinput" autocomplete="off" type="password" name="password" placeholder="Password" required/>
-
-                <input class="loginsignupinput" autocomplete="off" type="password" name="confirmation" placeholder="Confirm Password" required/>
-
-                <input class="loginsignupbutton" value="Signup" type="submit" />
-            </form>
-
-
-        </div>
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Signup</h1>
     </div>
+
+    <div class="templatedivcontent">
+        <a class="login loginsignupforgot" href="/login">Login</a>
+
+        <form class="loginsignupform" action="/signup" method="POST">
+
+            <input class="loginsignupinput" autocomplete="off" name="username" placeholder="Country Name" required/>
+
+            <input class="loginsignupinput" autocomplete="off" name="email" placeholder="Email" required />
+
+            <input class="loginsignupinput" autocomplete="off" type="password" name="password" placeholder="Password" required/>
+
+            <input class="loginsignupinput" autocomplete="off" type="password" name="confirmation" placeholder="Confirm Password" required/>
+
+            <input class="templatedivbutton loginsignupbutton" value="Signup" type="submit" />
+        </form>
+
+
+    </div>
+</div>
 {% endblock %}
