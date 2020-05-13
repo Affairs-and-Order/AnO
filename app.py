@@ -19,9 +19,9 @@ Session(app)
 def index():
     if request.method == "GET":
         try: 
-            uId = session["user_id"]
+            seshId = session["user_id"]
             uId = True
-            return render_template("index.html", uId=uId)
+            return render_template("index.html", uId=uId, seshId=seshId)
         except KeyError:
             uId = False
             return render_template("index.html", uId=uId) # renders index.html when "/" is accesed
@@ -81,16 +81,14 @@ def signup():
         return render_template("signup.html")
 
 @login_required
-@app.route("/country")
-def country():
+@app.route("/country/id=<cId>")
+def country(cId):
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    cId = session["user_id"]
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
     return render_template("country.html", username=username, cId=cId)
 
 
 if __name__ == "__main__":
-
     app.run(debug=True)
