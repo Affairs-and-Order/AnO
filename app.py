@@ -16,7 +16,7 @@ celeryApp = Celery()
 @celeryApp.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
 
-    sender.add_periodic_task(3600, , expires=10)
+    sender.add_periodic_task(3600, turn_allowed_task, expires=10)
 
 @celery.task()
 def turn_allowed_task():
