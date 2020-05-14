@@ -7,6 +7,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from helpers import login_required
 from celery import Celery
 from celery.schedules import crontab
+from flask_mail import Mail, Message
 import datetime
 
 
@@ -18,14 +19,31 @@ def setup_periodic_tasks(sender, **kwargs):
 
     sender.add_periodic_task(3600, turn_allowed_task, expires=10)
 
-@celery.task()
+@celeryApp.task()
 def turn_allowed_task():
     logger = turn_allowed_task.get_logger()
     logger.info("user can now turn")
 
 
-
 app = Flask(__name__)
+
+app.config["MAIL_SERVER"] = None # replace this with the domain of the email
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USE_SSL"] = True
+
+mail = Mail(app)
+
+
+# code for sending custom email messages to users
+def sendEmail(title, content, user):
+
+    conn = sqlite3.connect('affo/aao.db')
+
+    msg = Message(title)
+    msg.add_recipient("somebodyelse@example.com")
+    msg.html = content
+    mail.send(msg)
+
 
 # basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -37,9 +55,9 @@ Session(app)
 def index():
     if request.method == "GET":
         try: 
-            uId = session["user_id"]
+            seshId = session["user_id"]
             uId = True
-            return render_template("index.html", uId=uId)
+            return render_template("index.html", uId=uId, seshId=seshId)
         except KeyError:
             uId = False
             return render_template("index.html", uId=uId) # renders index.html when "/" is accesed
@@ -99,11 +117,10 @@ def signup():
         return render_template("signup.html")
 
 @login_required
-@app.route("/country")
-def country():
+@app.route("/country/id=<cId>")
+def country(cId):
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    cId = session["user_id"]
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
     return render_template("country.html", username=username, cId=cId)
@@ -111,5 +128,4 @@ def country():
 
 # available to run if double click the file
 if __name__ == "__main__":
-
     app.run(debug=True)

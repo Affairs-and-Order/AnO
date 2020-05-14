@@ -1,4 +1,5 @@
-{% extends "layout.html" %} {% block title %} Home {% endblock %} {% block body %}
+{% extends "layout.html"%} {% block title %} Home {% endblock %} {% block body %}
+
 <div class="templatediv">
 
     <div class="templatedivtopper">
@@ -6,9 +7,9 @@
     </div>
 
     <div class="templatedivcontent">
-        <div class="templatedivad"></div>
+
         <h2 class="templatecontentheaderleft">Welcome!</h2>
-        <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war.</p>
+        <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war!</p>
 
         <div class="templatedivflex2">
             <div class="templatedivflex2left">
@@ -17,7 +18,7 @@
                 <a class="loginsignuplink templatedivbutton" href="/login">LOGIN</a>
                 <h2 class="templatecontentheadercenter">Or create one!</h2>
                 <a class="loginsignuplink templatedivbutton" href="/signup">SIGNUP</a> {% elif uId == True %}
-                <a class="loginsignuplink templatedivbutton" href="/country">COUNTRY</a> {% endif %}
+                <a class="loginsignuplink templatedivbutton" href="/country/id={{ seshId }}">COUNTRY</a> {% endif %}
             </div>
             <div class="templatedivflex2right">
                 <h2 class="templatecontentheaderleft">126,564 Active players!</h2>

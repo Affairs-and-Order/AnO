@@ -1,93 +1,95 @@
-{% extends "layout.html"%}
+{% extends "layout.html"%} 
 
 {% block title %}
-    Country
-{% endblock %}
+    Country 
+{% endblock %} 
 
 {% block body %}
-    <div class="templatediv">
 
-        <div class="templatedivtopper">
-            <h1 class="templatedivtitle">{{ username }}</h1>
-        </div>
+<div class="templatediv">
 
-        <div class="templatedivcontent">
-
-
-            <!-- <div class="countryimagediv">
-
-                <img class="countryimage" src="files/images/file.svg" /> // currently turned this off since we dont store any country images
-
-            </div> -->
-
-            <h2 class="templatecontentheaderleft">Country info</h2>
-
-            <div class="templatedivflex2">
-                <div class="templatedivflex2left">
-
-
-                    <table class="templatetable">
-                        <tr>
-                            <th>General</th>
-                        </tr>
-                        <tr>
-                            <td>Country name:</td>
-                            <td>{{ username }}</td>
-                        </tr>
-                        <tr>
-                            <td>Country ID:</td>
-                            <td>{{ cId }}</td>
-                        </tr>
-                        <tr>
-                            <td>Country location:</td>
-                            <td>Location</td>
-                        </tr>
-                        <tr>
-                            <td>Population:</td>
-                            <td>#</td>
-                        </tr>
-                        <tr>
-                            <td>Happiness:</td>
-                            <td>%</td>
-                        </tr>
-                    </table>
-                    <table class="templatetable">
-                        <tr>
-                            <th>Affairs</th>
-                        </tr>
-                        <tr>
-                            <td>Coalition name:</td>
-                            <td>Name</td>
-                        </tr>
-                        <tr>
-                            <td>Coalition role:</td>
-                            <td>role</td>
-                        </tr>
-                        <tr>
-                            <td>Allied:</td>
-                            <td>Yes/No</td>
-                        </tr>
-                    </table>
-                    <table class="templatetable">
-                        <tr>
-                            <th>Military</th>
-                        </tr>
-                        <tr>
-                            <td>Military power:</td>
-                            <td>power#</td>
-                        </tr>
-                        <tr>
-                            <td>In your war range:</td>
-                            <td>Yes/No</td>
-                        </tr>
-                    </table>
-
-                </div>
-                <div class="templatedivflex2right">
-                </div>
-            </div>
-
-
-        </div>
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">{{ username }}</h1>
     </div>
+
+    <div class="templatedivcontent">
+
+        <div class="templatedivad"></div>
+
+        <!--<div class="countryimagediv">
+
+            <img class="countryimage" src="files/images/file.svg" /> // currently turned this off because it looks broken
+
+        </div> -->
+
+        <h2 class="templatecontentheaderleft">Country info</h2>
+
+        <div class="templatedivflex2">
+            <div class="templatedivflex2left">
+
+
+                <table class="templatetable">
+                    <tr>
+                        <th>General</th>
+                    </tr>
+                    <tr>
+                        <td>Country name:</td>
+                        <td>{{ username }}</td>
+                    </tr>
+                    <tr>
+                        <td>Country ID:</td>
+                        <td>{{ cId }}</td>
+                    </tr>
+                    <tr>
+                        <td>Country location:</td>
+                        <td>Location</td>
+                    </tr>
+                    <tr>
+                        <td>Population:</td>
+                        <td>#</td>
+                    </tr>
+                    <tr>
+                        <td>Happiness:</td>
+                        <td>%</td>
+                    </tr>
+                </table>
+                <table class="templatetable">
+                    <tr>
+                        <th>Affairs</th>
+                    </tr>
+                    <tr>
+                        <td>Coalition name:</td>
+                        <td>Name</td>
+                    </tr>
+                    <tr>
+                        <td>Coalition role:</td>
+                        <td>role</td>
+                    </tr>
+                    <tr>
+                        <td>Allied:</td>
+                        <td>Yes/No</td>
+                    </tr>
+                </table>
+                <table class="templatetable">
+                    <tr>
+                        <th>Military</th>
+                    </tr>
+                    <tr>
+                        <td>Military power:</td>
+                        <td>power#</td>
+                    </tr>
+                    <tr>
+                        <td>In your war range:</td>
+                        <td>Yes/No</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="templatedivflex2right">
+            </div>
+        </div>
+
+
+    </div>
+</div>
 {% endblock %}
