@@ -272,7 +272,7 @@
                                     padding: 20px;
                                     padding-top: 10px;
                                     /*background-image: linear-gradient(316deg, #163d77 0%, #1662a0 74%);*/
-                                    background-image: linear-gradient(316deg, #632f2f 0%, #963b3b 74%);
+                                    background-image: linear-gradient(316deg, #753636 0%, #963b3b 74%);
                                 }
                                 
                                 .templatedivtitle {
@@ -303,7 +303,6 @@
                                     border-bottom: 5px solid rgb(220, 220, 220);
                                     padding-bottom: 6px;
                                     font-size: 25px;
-                                    width: 98%;
                                     margin-top: 0px;
                                 }
                                 
