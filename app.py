@@ -73,8 +73,10 @@ def signup():
             hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
             db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
             user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
-            session["user_id"] = user[0]
             connection.commit()
+            session["user_id"] = user[0]
+            db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location
+            connection.commit()                                                                             # "Bosfront" to something else
             connection.close()
             return redirect("/")
     else:
