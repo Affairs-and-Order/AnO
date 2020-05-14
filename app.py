@@ -77,6 +77,8 @@ def signup():
             session["user_id"] = user[0]
             db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location
             connection.commit()                                                                             # "Bosfront" to something else
+            db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+            connection.commit()
             connection.close()
             return redirect("/")
     else:
