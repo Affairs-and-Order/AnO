@@ -9,4 +9,4 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 3. Type `flask run` in this repo's folder on your own PC.
 4. Navigate to `http://127.0.0.1:5000/` or the url flask gave you in your browser. The website should run
 
-does not work on Repl.it use CS50
+Does not work on Repl.it use CS50 IDE, or run it on your own machine
