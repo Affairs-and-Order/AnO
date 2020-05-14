@@ -373,6 +373,10 @@
                                 
                                 .templatedivflex2right {}
                                 
+                                .flex2rightfloatright {
+                                    text-align: right;
+                                }
+                                
                                 .templatetable {
                                     border: 1.8px solid rgb(128, 71, 71);
                                     border-collapse: collapse;

@@ -136,7 +136,11 @@ def country(cId):
     return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
     location=location, soldiers=soldiers, tanks=tanks)
 
+@app.route("/military")
+def military():
+    return render_template("military.html")
 
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
+
