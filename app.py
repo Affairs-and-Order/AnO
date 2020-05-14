@@ -89,7 +89,11 @@ def country(cId):
     db = connection.cursor()
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
-    return render_template("country.html", username=username, cId=cId)
+    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0] 
+    location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
+    location=location)
 
 
 if __name__ == "__main__":
