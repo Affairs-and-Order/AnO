@@ -92,10 +92,13 @@ def country(cId):
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0] 
+    happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    connection.commit()
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+    tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
     return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-    location=location)
+    location=location, soldiers=soldiers, tanks=tanks)
 
 
 if __name__ == "__main__":
