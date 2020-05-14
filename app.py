@@ -109,7 +109,11 @@ def signup():
             hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
             db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
             user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
+            connection.commit()
             session["user_id"] = user[0]
+            db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location
+            connection.commit()                                                                             # "Bosfront" to something else
+            db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             connection.commit()
             connection.close()
             return redirect("/")
@@ -123,7 +127,14 @@ def country(cId):
     db = connection.cursor()
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
-    return render_template("country.html", username=username, cId=cId)
+    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    connection.commit()
+    location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+    tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+    return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
+    location=location, soldiers=soldiers, tanks=tanks)
 
 
 # available to run if double click the file
