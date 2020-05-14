@@ -294,7 +294,6 @@
                                 
                                 .templatedivcontent {
                                     color: black;
-                                    padding: 8px;
                                     animation: templatedivcontentload 0.45s;
                                     position: relative;
                                 }
@@ -304,12 +303,13 @@
                                     padding-bottom: 6px;
                                     font-size: 25px;
                                     margin-top: 0px;
+                                    margin: 8px;
                                 }
                                 
                                 .templatecontentheadercenter {
                                     text-align: center;
                                     font-size: 20px;
-                                    margin-top: 10px;
+                                    margin-top: 16px;
                                 }
                                 
                                 .templatecontentpleft {
@@ -318,7 +318,7 @@
                                 }
                                 
                                 .templatedivbutton {
-                                    width: min-content;
+                                    width: fit-content;
                                     margin: 5px;
                                     background-color: #963b3b;
                                     transition: all 0.2s;
@@ -334,10 +334,20 @@
                                     border: none;
                                     text-align: center;
                                     text-shadow: 2px 2px 1px #00000020, 3px 3px 2px #00000020;
+                                    text-transform: uppercase;
                                 }
                                 
                                 .templatedivbutton:hover {
-                                    background-color: #632f2f;
+                                    background-color: #753636;
+                                }
+                                
+                                .smallactionbutton {
+                                    text-transform: capitalize;
+                                    margin: 2px;
+                                }
+                                
+                                .smallheader {
+                                    font-size: 18px;
                                 }
                                 
                                 .templatedivflex2 {
@@ -349,6 +359,11 @@
                                     .templatedivflex2 {
                                         display: block;
                                     }
+                                }
+                                
+                                .divflex2full {
+                                    background: rgb(230, 230, 230);
+                                    border-bottom: 5px solid rgb(220, 220, 220);
                                 }
                                 
                                 .templatedivflex2left,
