@@ -1,7 +1,7 @@
                                 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
                                 @font-face {
                                     font-family: nexabold;
-                                    src: url("fonts/nexabold.otf");
+                                    src: url("fonts/nexabold.otf") format('opentype');
                                 }
                                 
                                 @keyframes textload {
