@@ -1,6 +1,6 @@
-celery==4.4.2
-Werkzeug==0.16.0
 requests==2.23.0
-Flask==1.1.2
-Flask_Mail==0.9.1
 Flask_Session==0.3.1
+celery==4.4.2
+Flask_Mail==0.9.1
+Werkzeug==0.16.0
+Flask==1.1.2
