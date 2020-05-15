@@ -11,7 +11,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="icon" href="static/images/favicon.png" type="image/png">
     <title>Affairs & Order | {% block title %}{% endblock %}</title>
 </head>
 
@@ -24,6 +24,7 @@
             <div class="bar3" id="bar3"></div>
         </div>
 
+        <img src="static/images/favicon.png" class="navbartitleimage" />
         <a class="navbartitle" href="/">Affairs and Order</a> {% if uId == False %}
         <a class="loginsignup" href="/login">Login</a>
         <a class="loginsignup" href="/signup">Signup</a> {% elif uId == True %}
