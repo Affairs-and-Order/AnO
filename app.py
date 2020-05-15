@@ -4,26 +4,12 @@ from tempfile import mkdtemp
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
-from helpers import login_required
+from helpers import login_required, make_celery
 from celery import Celery
 from celery.schedules import crontab
 from flask_mail import Mail, Message
 import datetime
-
-
-
-celeryApp = Celery()
-
-@celeryApp.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-
-    sender.add_periodic_task(3600, turn_allowed_task, expires=10)
-
-@celeryApp.task()
-def turn_allowed_task():
-    logger = turn_allowed_task.get_logger()
-    logger.info("user can now turn")
-
+from celery import Celery
 
 app = Flask(__name__)
 
@@ -31,8 +17,20 @@ app.config["MAIL_SERVER"] = None # replace this with the domain of the email
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 
-mail = Mail(app)
+app.config.update(
+    CELERY_BROKER_URL='redis://localhost:6379',
+    CELERY_RESULT_BACKEND='redis://localhost:6379'
+)
+celery = make_celery(app)
 
+@celery.task()
+def add_together(a, b):
+    return a + b
+
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config)
+
+mail = Mail(app)
 
 # code for sending custom email messages to users
 def sendEmail(title, content, user):
@@ -119,6 +117,13 @@ def signup():
             return redirect("/")
     else:
         return render_template("signup.html")
+@celery.task()
+def populationGrowth(a, b):
+    # connection = sqlite3.connect('affo/aao.db')
+    # db = connection.cursor()
+    # population = db.execute("SELECT population FROM stats").fetchall()
+    result = a + b
+    return result
 
 @login_required
 @app.route("/country/id=<cId>")
@@ -131,6 +136,7 @@ def country(cId):
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    # task =  populationGrowth.delay(10, 20)
     soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
     tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
     return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
