@@ -7,6 +7,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from helpers import login_required
 from celery import Celery
 from flask_mail import Mail, Message
+from celery.schedules import crontab
 import datetime
 
 app = Flask(__name__)
@@ -16,10 +17,20 @@ app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+app.config['result_backend'] = 'redis://localhost:6379/0'
 
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config) # celery -A app.celery worker
+celery.conf.update(app.config) # celery -A app.celery worker -l info -P gevent
+
+celery.conf.beat_schedule = {
+    # executes every 3 minutes
+    'every-three-min': {
+        'task': 'celery.task',
+        'schedule': crontab(minute='*/3')
+    },
+}
+
+celery.conf.update(app.config)
 
 mail = Mail(app)
 
