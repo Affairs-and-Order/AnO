@@ -73,7 +73,7 @@ def login():
         password = request.form.get("password") # gets the password input from the form
         username = request.form.get("username") # gets the username input from the forms
 
-        if not username or not password or len(username) < 3 or len(password) < 8: # checks if inputs are blank
+        if not username or not password: # checks if inputs are blank
             return redirect("/error_no_pw_or_un") #TODO change to actual error
         user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone() # selects data about user, from users
         connection.commit()
