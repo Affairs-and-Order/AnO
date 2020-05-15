@@ -138,7 +138,13 @@ def country(cId):
 
 @app.route("/military")
 def military():
-    return render_template("military.html")
+    try: 
+        seshId = session["user_id"]
+        uId = True
+        return render_template("military.html", seshId=seshId, uId=uId)
+    except KeyError:
+        uId = False
+    return render_template("military.html", uId=uId)
 
 # available to run if double click the file
 if __name__ == "__main__":
