@@ -18,11 +18,13 @@
 <body>
     <div class="navbar">
 
+        {% if uId == True%}
         <div class="menubar" onclick="menubardrop()" id="menubar">
             <div class="bar1" id="bar1"></div>
             <div class="bar2" id="bar2"></div>
             <div class="bar3" id="bar3"></div>
         </div>
+        {% endif %}
 
         <img src="{{ url_for('static', filename='images/favicon.png') }}" class="navbartitleimage" />
         <a class="navbartitle" href="/">Affairs and Order</a> {% if uId == False %}
@@ -32,6 +34,7 @@
 
     </div>
 
+    {% if uId == True%}
     <div class="menubardiv" id="menubardiv">
 
         <a class="menubara" href="/country/id={{ seshId }}">Country</a>
@@ -41,6 +44,7 @@
         <a class="menubara" href="world.html">World</a>
 
     </div>
+    {% endif %}
     <!--
     <div class="menubardiv" id="menubardiv">
 
