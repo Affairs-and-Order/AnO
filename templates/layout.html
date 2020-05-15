@@ -26,7 +26,7 @@
         </div>
         {% endif %}
 
-        <img src="{{ url_for('static', filename='images/favicon.png') }}" class="navbartitleimage" />
+        <img src="{{ url_for('static', filename='images/titleimage.png') }}" class="navbartitleimage" />
         <a class="navbartitle" href="/">Affairs and Order</a> {% if uId == False %}
         <a class="loginsignup" href="/login">Login</a>
         <a class="loginsignup" href="/signup">Signup</a> {% elif uId == True %}
