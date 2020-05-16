@@ -22,6 +22,14 @@ app.config['result_backend'] = 'redis://localhost:6379/0'
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config) # celery -A app.celery worker -l info -P gevent
 
+@celery.on_after_configure.connect
+def setup_periodic_tasks(sender, **kwargs):
+    # Executes every minute
+    sender.add_periodic_task(
+        crontab(minute='*/1'),
+        populationGrowth.s(),
+    )
+
 mail = Mail(app)
 
 # code for sending custom email messages to users
@@ -133,8 +141,8 @@ def country(cId):
     db = connection.cursor()
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
-    
-    population =  populationGrowth()
+
+    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
