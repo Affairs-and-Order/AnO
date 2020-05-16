@@ -22,16 +22,6 @@ app.config['result_backend'] = 'redis://localhost:6379/0'
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 celery.conf.update(app.config) # celery -A app.celery worker -l info -P gevent
 
-celery.conf.beat_schedule = {
-    # executes every 3 minutes
-    'every-three-min': {
-        'task': 'celery.task',
-        'schedule': crontab(minute='*/3')
-    },
-}
-
-celery.conf.update(app.config)
-
 mail = Mail(app)
 
 # code for sending custom email messages to users
@@ -124,14 +114,13 @@ def signup():
 def populationGrowth():
     conn = sqlite3.connect('affo/aao.db')
     db = conn.cursor()
-
     pop = db.execute("SELECT population, id FROM stats").fetchall()
 
     for row in pop:
         user_id = row[1]
         curPop = row[0]
         newPop = curPop + (int(curPop/10))
-        ple = db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,))
+        db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,))
         conn.commit()
 
     pop = db.execute("SELECT population FROM stats").fetchall()[0]
@@ -144,7 +133,9 @@ def country(cId):
     db = connection.cursor()
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
+    
     population =  populationGrowth()
+
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
