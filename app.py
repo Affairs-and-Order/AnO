@@ -35,14 +35,18 @@ mail = Mail(app)
 
 
 # code for sending custom email messages to users
-def sendEmail(title, content, user):
+#def sendEmail(title, content, user):
 
-    conn = sqlite3.connect('affo/aao.db')
+    #database = sqlite3.connect('affo/aao.db')
+    #email = database.execute("SELECT email FROM users WHERE id=(?)", (user,)).fetchone()[0]
+    #print(email)
 
-    msg = Message(title)
-    msg.add_recipient("somebodyelse@example.com")
-    msg.html = content
-    mail.send(msg)
+    #msg = Message(title)
+    #msg.add_recipient("somebodyelse@example.com")
+    #msg.html = content
+    #mail.send(msg)
+
+#sendEmail("bloob", "<p>some content</p>", )
 
 
 # basic cache configuration
