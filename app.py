@@ -141,8 +141,13 @@ def country(cId):
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
     tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-    return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-    location=location, soldiers=soldiers, tanks=tanks)
+    try: 
+        uId = True 
+        return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
+        location=location, soldiers=soldiers, tanks=tanks, uId=uId)
+    except KeyError:
+        uId = False
+        return render_template("country.html", uId=uId)
 
 @app.route("/military")
 def military():
