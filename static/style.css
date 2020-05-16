@@ -114,11 +114,11 @@
                                 }
                                 
                                 .navbartitle {
-                                    margin-top: 12px;
+                                    margin-top: 15px;
                                     font-weight: bold;
                                     font-size: 26px;
                                     float: left;
-                                    margin-left: 10px;
+                                    margin-left: 2px;
                                     color: white;
                                     user-select: none;
                                     cursor: pointer;
@@ -128,6 +128,14 @@
                                 
                                 .navbartitle:hover {
                                     color: rgba(255, 255, 255, 0.7);
+                                }
+                                
+                                .navbartitleimage {
+                                    height: 50px;
+                                    width: 50px;
+                                    margin: 2.5px;
+                                    float: left;
+                                    margin-left: 15px;
                                 }
                                 
                                 .menubar {
@@ -232,11 +240,12 @@
                                 .loginsignup {
                                     float: right;
                                     width: fit-content;
-                                    margin-top: 10px;
+                                    margin-top: 7.5px;
                                     margin-right: 10px;
                                     background-color: #632f2f;
                                     transition: all 0.2s;
                                     padding: 0px 8px;
+                                    padding-top: 5px;
                                     text-decoration: none;
                                     font-size: 14px;
                                     color: white;
@@ -271,7 +280,7 @@
                                     padding: 20px;
                                     padding-top: 10px;
                                     /*background-image: linear-gradient(316deg, #163d77 0%, #1662a0 74%);*/
-                                    background-image: linear-gradient(316deg, #632f2f 0%, #963b3b 74%);
+                                    background-image: linear-gradient(135deg, #b84646 0%, #753636 100%);
                                 }
                                 
                                 .templatedivtitle {
@@ -293,7 +302,6 @@
                                 
                                 .templatedivcontent {
                                     color: black;
-                                    padding: 8px;
                                     animation: templatedivcontentload 0.45s;
                                     position: relative;
                                 }
@@ -302,14 +310,14 @@
                                     border-bottom: 5px solid rgb(220, 220, 220);
                                     padding-bottom: 6px;
                                     font-size: 25px;
-                                    width: 98%;
                                     margin-top: 0px;
+                                    margin: 8px;
                                 }
                                 
                                 .templatecontentheadercenter {
                                     text-align: center;
                                     font-size: 20px;
-                                    margin-top: 10px;
+                                    margin-top: 16px;
                                 }
                                 
                                 .templatecontentpleft {
@@ -318,7 +326,7 @@
                                 }
                                 
                                 .templatedivbutton {
-                                    width: min-content;
+                                    width: fit-content;
                                     margin: 5px;
                                     background-color: #963b3b;
                                     transition: all 0.2s;
@@ -334,10 +342,20 @@
                                     border: none;
                                     text-align: center;
                                     text-shadow: 2px 2px 1px #00000020, 3px 3px 2px #00000020;
+                                    text-transform: uppercase;
                                 }
                                 
                                 .templatedivbutton:hover {
-                                    background-color: #632f2f;
+                                    box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.20);
+                                }
+                                
+                                .smallactionbutton {
+                                    text-transform: capitalize;
+                                    margin: 2px;
+                                }
+                                
+                                .smallheader {
+                                    font-size: 18px;
                                 }
                                 
                                 .templatedivflex2 {
@@ -349,6 +367,11 @@
                                     .templatedivflex2 {
                                         display: block;
                                     }
+                                }
+                                
+                                .divflex2full {
+                                    background: rgb(230, 230, 230);
+                                    border-bottom: 5px solid rgb(220, 220, 220);
                                 }
                                 
                                 .templatedivflex2left,
@@ -372,6 +395,10 @@
                                 .templatedivflex2left {}
                                 
                                 .templatedivflex2right {}
+                                
+                                .flex2rightfloatright {
+                                    text-align: right;
+                                }
                                 
                                 .templatetable {
                                     border: 1.8px solid rgb(128, 71, 71);

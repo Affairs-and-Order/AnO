@@ -6,24 +6,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required
 from celery import Celery
-from celery.schedules import crontab
 from flask_mail import Mail, Message
+from celery.schedules import crontab
 import datetime
-
-
-
-celeryApp = Celery()
-
-@celeryApp.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-
-    sender.add_periodic_task(3600, turn_allowed_task, expires=10)
-
-@celeryApp.task()
-def turn_allowed_task():
-    logger = turn_allowed_task.get_logger()
-    logger.info("user can now turn")
-
 
 app = Flask(__name__)
 
@@ -31,8 +16,23 @@ app.config["MAIL_SERVER"] = None # replace this with the domain of the email
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 
-mail = Mail(app)
+app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+app.config['result_backend'] = 'redis://localhost:6379/0'
 
+celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+celery.conf.update(app.config) # celery -A app.celery worker -l info -P gevent
+
+celery.conf.beat_schedule = {
+    # executes every 3 minutes
+    'every-three-min': {
+        'task': 'celery.task',
+        'schedule': crontab(minute='*/3')
+    },
+}
+
+celery.conf.update(app.config)
+
+mail = Mail(app)
 
 # code for sending custom email messages to users
 #def sendEmail(title, content, user):
@@ -77,7 +77,7 @@ def login():
         password = request.form.get("password") # gets the password input from the form
         username = request.form.get("username") # gets the username input from the forms
 
-        if not username or not password or len(username) < 3 or len(password) < 8: # checks if inputs are blank
+        if not username or not password: # checks if inputs are blank
             return redirect("/error_no_pw_or_un") #TODO change to actual error
         user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone() # selects data about user, from users
         connection.commit()
@@ -124,6 +124,23 @@ def signup():
     else:
         return render_template("signup.html")
 
+@celery.task()
+def populationGrowth():
+    conn = sqlite3.connect('affo/aao.db')
+    db = conn.cursor()
+
+    pop = db.execute("SELECT population, id FROM stats").fetchall()
+
+    for row in pop:
+        user_id = row[1]
+        curPop = row[0]
+        newPop = curPop + (int(curPop/10))
+        ple = db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,))
+        conn.commit()
+
+    pop = db.execute("SELECT population FROM stats").fetchall()[0]
+    return pop
+
 @login_required
 @app.route("/country/id=<cId>")
 def country(cId):
@@ -131,7 +148,7 @@ def country(cId):
     db = connection.cursor()
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
-    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    population =  populationGrowth()
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -140,7 +157,17 @@ def country(cId):
     return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
     location=location, soldiers=soldiers, tanks=tanks)
 
+@app.route("/military")
+def military():
+    try: 
+        seshId = session["user_id"]
+        uId = True
+        return render_template("military.html", seshId=seshId, uId=uId)
+    except KeyError:
+        uId = False
+    return render_template("military.html", uId=uId)
 
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
+

@@ -11,19 +11,22 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-    <link rel="icon" href="images/favicon.png" type="image/png">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.png') }}" type="image/png">
     <title>Affairs & Order | {% block title %}{% endblock %}</title>
 </head>
 
 <body>
     <div class="navbar">
 
+        {% if uId == True%}
         <div class="menubar" onclick="menubardrop()" id="menubar">
             <div class="bar1" id="bar1"></div>
             <div class="bar2" id="bar2"></div>
             <div class="bar3" id="bar3"></div>
         </div>
+        {% endif %}
 
+        <img src="{{ url_for('static', filename='images/titleimage.png') }}" class="navbartitleimage" />
         <a class="navbartitle" href="/">Affairs and Order</a> {% if uId == False %}
         <a class="loginsignup" href="/login">Login</a>
         <a class="loginsignup" href="/signup">Signup</a> {% elif uId == True %}
@@ -31,15 +34,17 @@
 
     </div>
 
+    {% if uId == True%}
     <div class="menubardiv" id="menubardiv">
 
         <a class="menubara" href="/country/id={{ seshId }}">Country</a>
         <a class="menubara" href="market.html">Market</a>
-
+        <a class="menubara" href="/military">Military</a>
         <a class="menubara" href="coalition.html">Coalition</a>
         <a class="menubara" href="world.html">World</a>
 
     </div>
+    {% endif %}
     <!--
     <div class="menubardiv" id="menubardiv">
 
