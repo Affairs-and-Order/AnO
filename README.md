@@ -4,9 +4,12 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 
 # Repo installation.
 
+1. Install Git and add Git to PATH. https://stackoverflow.com/questions/26620312/installing-git-in-path-with-github-client-for-windows
+2. Type `git clone https://github.com/Djcoldcrown/Affairs-and-Order.git` in the folder you want the repo to be cloned in.
+
 # Flask
 
-1. Install Python.
+1. Install Python (Preferrably 3.8) https://www.python.org/downloads/release/python-380/.
 2. Run `pip install -r requirements.txt`, this will install all the modules needed for this repo.
 3. Type `flask run` in this repo's folder on your own PC.
 4. Navigate to `http://127.0.0.1:5000/` or the url flask gave you in your browser. The website should run
