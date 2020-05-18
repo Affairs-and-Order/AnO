@@ -32,7 +32,7 @@ for roll in range(0, 3):
 		nat1_roll_wins += 1
 		# subtract difference from the nations maximum if they rolled lower
 		Nat2 -= difference
-		# gives a 12% casualty rate for the nation that rolled larger 
+		# gives a 6% casualty rate for the nation that rolled larger 
 		six_percent_loss = int(Nat2 * 0.06)
 		Nat1 -= six_percent_loss
 	else:
