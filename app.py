@@ -5,9 +5,9 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required
-from celery import Celery
 from flask_mail import Mail, Message
-from celery.schedules import crontab
+# from celery import Celery
+# from celery.schedules import crontab
 import datetime
 
 app = Flask(__name__)
@@ -16,19 +16,19 @@ app.config["MAIL_SERVER"] = None # replace this with the domain of the email
 app.config["MAIL_PORT"] = 465
 app.config["MAIL_USE_SSL"] = True
 
-app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-app.config['result_backend'] = 'redis://localhost:6379/0'
+# app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
+# app.config['result_backend'] = 'redis://localhost:6379/0'
 
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config) # celery -A app.celery worker -l info -P gevent
+# celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
+# celery.conf.update(app.config)
 
-@celery.on_after_configure.connect
+"""@celery.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     # Executes every minute
     sender.add_periodic_task(
         crontab(minute='*/1'),
         populationGrowth.s(),
-    )
+    )"""
 
 mail = Mail(app)
 
@@ -118,7 +118,7 @@ def signup():
     else:
         return render_template("signup.html")
 
-@celery.task()
+# @celery.task()
 def populationGrowth():
     conn = sqlite3.connect('affo/aao.db')
     db = conn.cursor()
@@ -157,6 +157,7 @@ def country(cId):
         uId = False
         return render_template("country.html", uId=uId)
 
+@login_required
 @app.route("/military")
 def military():
     try: 

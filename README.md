@@ -15,6 +15,9 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 4. Navigate to `http://127.0.0.1:5000/` or the url flask gave you in your browser. The website should run
 
 # Celery
+
+# we currently don't use celery so no need to install it
+
 1. Install redis from here https://github.com/microsoftarchive/redis
 2. Navigate to the installation path and run `redis-server`
 3. Run celery in another terminal window using `celery -A app.celery worker -l info -P gevent`
