@@ -8,7 +8,6 @@ from helpers import login_required
 from flask_mail import Mail, Message
 # from celery import Celery
 # from celery.schedules import crontab
-import datetime
 
 app = Flask(__name__)
 
@@ -66,7 +65,7 @@ def login():
     if request.method == "POST":
 
         connection = sqlite3.connect('affo/aao.db') # connects to db
-        db = connection.cursor()
+        db = connection.cursor() # creates the cursor for db connection
 
         password = request.form.get("password") # gets the password input from the form
         username = request.form.get("username") # gets the username input from the forms
@@ -81,7 +80,7 @@ def login():
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
-            return redirect("/")
+            return redirect("/") # redirects user to homepage
         return redirect("/error_wrong_pw")
     else:
         return render_template("login.html") # renders login.html when "/login" is acessed via get
@@ -108,10 +107,10 @@ def signup():
             db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
             user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
             connection.commit()
-            session["user_id"] = user[0]
+            session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
             db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location
             connection.commit()                                                                             # "Bosfront" to something else
-            db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+            db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
             connection.commit()
             connection.close()
             return redirect("/")
@@ -119,20 +118,21 @@ def signup():
         return render_template("signup.html")
 
 # @celery.task()
+# TODO: create a celery task so this task would do itself every midnight or so
 def populationGrowth():
-    conn = sqlite3.connect('affo/aao.db')
+    conn = sqlite3.connect('affo/aao.db') # connects to db
     db = conn.cursor()
-    pop = db.execute("SELECT population, id FROM stats").fetchall()
+    pop = db.execute("SELECT population, id FROM stats").fetchall() # selects id, population from the stats table and gets all the results for it
 
-    for row in pop:
-        user_id = row[1]
-        curPop = row[0]
-        newPop = curPop + (int(curPop/10))
-        db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,))
+    for row in pop: # iterates over every result in population
+        user_id = row[1] # sets the user_id variable to the "id" result from the query
+        curPop = row[0]  # sets the current population variable to the "population" result from the query
+        newPop = curPop + (int(curPop/10)) # gets the current population value and adds the same value / 10 to it
+        db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,)) # updates the db with the new value for population
         conn.commit()
 
-    pop = db.execute("SELECT population FROM stats").fetchall()[0]
-    return pop
+    pop = db.execute("SELECT population FROM stats").fetchall()[0] # selects the population
+    return pop # returns population TODO: change it so it wouldn't return population, just update the stats
 
 @login_required
 @app.route("/country/id=<cId>")
@@ -148,12 +148,12 @@ def country(cId):
     connection.commit()
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-    tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-    try: 
+    tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0] # gets tanks from ground military table
+    try: # sees if user is logged in
         uId = True 
         return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
         location=location, soldiers=soldiers, tanks=tanks, uId=uId)
-    except KeyError:
+    except KeyError: # if user isnt logged in
         uId = False
         return render_template("country.html", uId=uId)
 
