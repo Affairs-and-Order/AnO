@@ -50,14 +50,13 @@ Session(app)
 
 @app.route("/")
 def index():
-    if request.method == "GET":
-        try: 
-            seshId = session["user_id"]
-            uId = True
-            return render_template("index.html", uId=uId, seshId=seshId)
-        except KeyError:
-            uId = False
-            return render_template("index.html", uId=uId) # renders index.html when "/" is accesed
+    try: 
+        seshId = session["user_id"]
+        uId = True
+        return render_template("index.html", uId=uId, seshId=seshId)
+    except KeyError:
+        uId = False
+        return render_template("index.html", uId=uId) # renders index.html when "/" is accesed
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
