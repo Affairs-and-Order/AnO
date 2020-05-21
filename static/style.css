@@ -258,6 +258,22 @@
                                     .loginsignup:hover {
                                         background-color: #b84646;
                                     }
+                                    
+                                    .resourceicon {
+                                        height: 45px;
+                                        width: 45px;
+                                        background: #632f2f;
+                                        margin: 5px 15px;
+                                        float: right;
+                                        border: none;
+                                        user-select: none;
+                                        transition: all 0.2s;
+                                        cursor: pointer;
+                                    }
+                                    
+                                    .resourceicon:hover {
+                                        background: #b84646;
+                                    }
                                     /*CONTENT*/
                                     
                                     .templatediv {
@@ -404,12 +420,12 @@
                                         border: 1.8px solid rgb(128, 71, 71);
                                         border-collapse: collapse;
                                         margin: 5px auto;
-                                        width: 80%;
+                                        width: 90%;
                                     }
                                     
                                     .templatetable th {
                                         height: 40px;
-                                        background-color: rgb(167, 91, 91);
+                                        background-color: #963b3b;
                                         color: white;
                                         font-size: 20px;
                                         column-span: 1;
