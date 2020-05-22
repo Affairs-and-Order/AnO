@@ -164,6 +164,22 @@ def military():
         uId = False
     return render_template("military.html", uId=uId)
 
+@login_required
+@app.route("/market")
+def market():
+    return render_template("market.html")
+
+@login_required
+@app.route("/coalition")
+def coalition(): 
+    return render_template("coalition.html")
+
+@login_required
+@app.route("/world")
+def world(): 
+    return render_template("world.html")
+
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
