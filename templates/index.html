@@ -1,4 +1,10 @@
-{% extends "layout.html"%} {% block title %} Home {% endblock %} {% block body %}
+{% extends "layout.html"%}
+
+{% block title %} 
+    Home 
+{% endblock %} 
+
+{% block body %}
 
 <div class="templatediv">
 
@@ -14,15 +20,13 @@
         <div class="templatedivflex2">
             <div class="templatedivflex2left">
                 <h2 class="templatecontentheadercenter">Go to your nation</h2>
-                {% if uId == False %}
+                {% if session.get("logged_in") != True %}
                 <a class="loginsignuplink templatedivbutton" href="/login">LOGIN</a>
                 <h2 class="templatecontentheadercenter">Or create one!</h2>
-                <a class="loginsignuplink templatedivbutton" href="/signup">SIGNUP</a> {% elif uId == True %}
+                <a class="loginsignuplink templatedivbutton" href="/signup">SIGNUP</a> {% elif session.get("logged_in") == True %}
                 <a class="loginsignuplink templatedivbutton" href="/country/id={{ seshId }}">COUNTRY</a> {% endif %}
 
                 <div>
-
-
 
                     graph of global population / happiness / GPD / Distribution of wealth / other</div>
 

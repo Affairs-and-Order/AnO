@@ -50,13 +50,7 @@ Session(app)
 
 @app.route("/")
 def index():
-    try: 
-        seshId = session["user_id"]
-        uId = True
-        return render_template("index.html", uId=uId, seshId=seshId)
-    except KeyError:
-        uId = False
-        return render_template("index.html", uId=uId) # renders index.html when "/" is accesed
+    return render_template("index.html") # renders index.html when "/" is accesed
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -76,6 +70,7 @@ def login():
 
         if user is not None and check_password_hash(user[3], password): # checks if user exists and if the password is correct
             session["user_id"] = user[0] # sets session's user_id to current user's id
+            session["logged_in"] = True
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
@@ -107,6 +102,7 @@ def signup():
             user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
             connection.commit()
             session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
+            session["logged_in"] = True
             db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location
             connection.commit()                                                                             # "Bosfront" to something else
             db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
