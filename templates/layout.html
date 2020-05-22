@@ -41,10 +41,10 @@
     <div class="menubardiv" id="menubardiv">
 
         <a class="menubara" href="/country/id={{ session['user_id'] }}">Country</a>
-        <a class="menubara" href="market.html">Market</a>
+        <a class="menubara" href="/market">Market</a>
         <a class="menubara" href="/military">Military</a>
-        <a class="menubara" href="coalition.html">Coalition</a>
-        <a class="menubara" href="world.html">World</a>
+        <a class="menubara" href="/coalition">Coalition</a>
+        <a class="menubara" href="/world">World</a>
 
     </div>
     {% endif %}
@@ -62,7 +62,10 @@
         <a class="menubara" href="index.html">World</a>
     
     </div>
-    -->{% block body %} {% endblock %}
+    -->
+    {% block body %}
+    
+    {% endblock %}
 </body>
 
 </html>
