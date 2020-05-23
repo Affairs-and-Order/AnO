@@ -76,6 +76,7 @@ def login():
             connection.close()
             return redirect("/") # redirects user to homepage
         return redirect("/error_wrong_pw")
+
     else:
         return render_template("login.html") # renders login.html when "/login" is acessed via get
 
@@ -150,48 +151,28 @@ def country(cId):
         return render_template("country.html", uId=uId)
 
 @login_required
-@app.route("/military")
+@app.route("/military", methods=["GET", "POST"])
 def military():
-    try: 
-        seshId = session["user_id"]
-        uId = True
-        return render_template("military.html", seshId=seshId, uId=uId)
-    except KeyError:
-        uId = False
-    return render_template("military.html", uId=uId)
+    if request.method == "GET":
+        return render_template("military.html")
 
 @login_required
-@app.route("/market")
+@app.route("/market", methods=["GET", "POST"])
 def market():
-    try: 
-        seshId = session["user_id"]
-        uId = True
-        return render_template("market.html", uId=uId, seshId=seshId)
-    except KeyError:
-        uId = False
-    return render_template("market.html", uId=uId)
+    if request.method == "GET":
+        return render_template("market.html")
 
 @login_required
-@app.route("/coalition")
-def coalition(): 
-    try: 
-        seshId = session["user_id"]
-        uId = True
-        return render_template("coalition.html", uId=uId, seshId=seshId)
-    except KeyError:
-        uId = False
-    return render_template("coalition.html", uId=uId)
+@app.route("/coalition", methods=["GET", "POST"])
+def coalition():
+    if request.method == "GET":
+        return render_template("coalition.html")
 
 @login_required
-@app.route("/world")
-def world(): 
-    try: 
-        seshId = session["user_id"]
-        uId = True
-        return render_template("world.html", uId=uId, seshId=seshId)
-    except KeyError:
-        uId = False
-    return render_template("world.html", uId=uId)
+@app.route("/world", methods=["GET", "POST"])
+def world():
+    if request.method == "GET":
+        return render_template("world.html")
 
 # available to run if double click the file
 if __name__ == "__main__":
