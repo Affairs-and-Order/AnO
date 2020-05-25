@@ -175,10 +175,16 @@ def establishcoalition():
         return render_template("establishcoalition.html")
 
 @login_required
-@app.route("/countries", methods=["GET", "POST"])
+@app.route("/countries")
 def countries():
     if request.method == "GET":
-        return render_template("countries.html")
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        name = db.execute("SELECT username FROM users").fetchall()
+        population = db.execute("SELECT population FROM stats").fetchall()
+        connection.commit()
+        zipped = zip(name, population)
+        return render_template("countries.html", name=name, population=population, zipped=zipped)
 
 @login_required
 @app.route("/coalitions", methods=["GET", "POST"])

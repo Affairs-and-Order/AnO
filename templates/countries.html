@@ -17,13 +17,16 @@
                 <th>Population</th>
                 <th>Alliance</th>
             </tr>
+            {% for name, pop in zipped%}
             <tr>
-                <td>name</td>
+
+                <td>{{ name[0] }}</td>
                 <td>105,565</td>
-                <td>1,850,943</td>
+                <td>{{ pop[0] }}</td>
                 <td>alliance name w/ link</td>
 
             </tr>
+            {% endfor %}
         </table>
 
     </div>
