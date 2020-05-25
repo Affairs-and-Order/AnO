@@ -1,24 +1,44 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block title %} Market {% endblock %} {% block body %}
 
-{% block title %}
-    Market
-{% endblock %}
+<div class="templatediv">
 
-
-{% block body %}
-
-    <div class="templatediv">
-
-        <div class="templatedivtopper">
-            <h1 class="templatedivtitle">Market</h1>
-        </div>
-
-        <div class="templatedivcontent">
-            <h2 class="templatecontentheaderleft"></h2>
-            <p class="templatecontentpleft"></p>
-
-
-        </div>
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Market</h1>
     </div>
+
+    <div class="templatedivcontent">
+
+        <div class="templatedivflex2 divflex2full">
+            <div class="templatedivflex2left">
+
+                <input type="" class="templatefilter" />
+
+            </div>
+            <div class="templatedivflex2right flex2rightfloatright">
+
+                <button class="templatedivbutton smallactionbutton">Submit</button>
+
+            </div>
+        </div>
+
+        <table class="templatetable templatetable2">
+            <tr>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Seller / Buyer</th>
+                <th>Purchase</th>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>Amount</td>
+                <td>Country Name</td>
+                <td>a</td>
+
+            </tr>
+        </table>
+
+
+    </div>
+</div>
 
 {% endblock%}

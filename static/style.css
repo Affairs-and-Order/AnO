@@ -320,7 +320,6 @@
                                         color: black;
                                         animation: templatedivcontentload 0.45s;
                                         position: relative;
-                                        padding: 8px;
                                     }
                                     
                                     .templatecontentheaderleft {
@@ -365,6 +364,12 @@
                                         box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.20);
                                     }
                                     
+                                    .templatecenteredbutton {
+                                        transition: all 0.2s;
+                                        display: block;
+                                        margin: auto;
+                                    }
+                                    
                                     .smallactionbutton {
                                         text-transform: capitalize;
                                         margin: 2px;
@@ -388,6 +393,19 @@
                                     .divflex2full {
                                         background: rgb(230, 230, 230);
                                         border-bottom: 5px solid rgb(220, 220, 220);
+                                        align-items: center;
+                                    }
+                                    
+                                    .divflex2center {
+                                        align-items: center;
+                                        width: fit-content;
+                                        margin: auto;
+                                    }
+                                    
+                                    @media all and (max-width: 600px) {
+                                        .divflex2center {
+                                            width: 100%;
+                                        }
                                     }
                                     
                                     .templatedivflex2left,
@@ -438,14 +456,35 @@
                                     .templatetable td {
                                         padding: 8px;
                                         margin: 8px 1%;
-                                        display: table;
                                         width: 48%;
                                         float: left;
+                                        display: table;
                                     }
                                     
                                     .templatetable td:nth-child(even) {
                                         float: right;
                                         text-align: right;
+                                    }
+                                    
+                                    .templatetable2 {
+                                        margin: 25px auto;
+                                    }
+                                    
+                                    .templatetable2 th {
+                                        column-span: all;
+                                    }
+                                    
+                                    .templatetable2 td {
+                                        text-align: center;
+                                        height: 45px;
+                                        width: 23%;
+                                        float: none;
+                                        display: table-cell !important;
+                                    }
+                                    
+                                    .templatetable2 td:nth-child(even) {
+                                        text-align: center;
+                                        float: none;
                                     }
                                     /*LOGINSIGNUP*/
                                     

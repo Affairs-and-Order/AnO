@@ -169,10 +169,22 @@ def coalition():
         return render_template("coalition.html")
 
 @login_required
-@app.route("/world", methods=["GET", "POST"])
-def world():
+@app.route("/establishcoalition", methods=["GET", "POST"])
+def establishcoalition():
     if request.method == "GET":
-        return render_template("world.html")
+        return render_template("establishcoalition.html")
+
+@login_required
+@app.route("/countries", methods=["GET", "POST"])
+def countries():
+    if request.method == "GET":
+        return render_template("countries.html")
+
+@login_required
+@app.route("/coalitions", methods=["GET", "POST"])
+def coalitions():
+    if request.method == "GET":
+        return render_template("coalitions.html")
 
 # available to run if double click the file
 if __name__ == "__main__":
