@@ -175,6 +175,12 @@ def establishcoalition():
         return render_template("establishcoalition.html")
 
 @login_required
+@app.route("/createprovince", methods=["GET", "POST"])
+def createprovince():
+    if request.method == "GET":
+        return render_template("createprovince.html")
+
+@login_required
 @app.route("/countries")
 def countries():
     if request.method == "GET":
