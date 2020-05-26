@@ -23,19 +23,19 @@
 
 
         <div class="templatedivflex2 militaryflex2">
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left" id="militaryleft" onclick="militaryleft()">
 
-                <h3 class="smallheader militaryleft" id="militaryleft">Land</h3>
-
-            </div>
-            <div class="templatedivflex2left">
-
-                <h3 class="smallheader militarycenter" id="militarycenter">Air</h3>
+                <h3 class="smallheader">Land</h3>
 
             </div>
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left" id="militarycenter" onclick="militarycenter()">
 
-                <h3 class="smallheader militaryright" id="militaryright">Water</h3>
+                <h3 class="smallheader">Air</h3>
+
+            </div>
+            <div class="templatedivflex2left" id="militaryright" onclick="militaryright()">
+
+                <h3 class="smallheader">Water</h3>
 
             </div>
         </div>
@@ -49,97 +49,127 @@
                 <div class="templatedivflex2 unitflex">
                     <div class="templatedivflex2left">
 
-
-
-                        <img class="unitimage" src="static/images/soldier.jpg" />
-                    </div>
-                    <div class="templatedivflex2left">
-
                         <h3 class="unitcount">You have X Soldiers</h3>
 
                         <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
 
 
                         <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="username" placeholder="Buy / Sell" required/>
+                            <input class="loginsignupinput" autocomplete="off" name="username" type="number" placeholder="Buy / Sell" required/>
 
-                            <button class="templatedivbutton templatecenteredbutton">Confirm</button>
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton">Sell</button>
+
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
+                    <div class="templatedivflex2left">
 
+
+
+                        <img class="unitimage" src="static/images/soldier.jpg" />
+                    </div>
                 </div>
-
             </div>
         </div>
+
         <!--AIR-->
         <div class="air" id="air">
 
             <div class="unitdiv">
 
-                <h2 class="templatecontentheaderleft">Soldiers</h2>
+                <h2 class="templatecontentheaderleft">Flying Fortress</h2>
 
                 <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have X Flying Fortresses</h3>
+
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
+
+
+                        <div class="purchasemilitarydiv">
+
+                            <input class="loginsignupinput" autocomplete="off" name="username" type="number" placeholder="Buy / Sell" required/>
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton">Sell</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
                     <div class="templatedivflex2left">
 
 
 
                         <img class="unitimage" src="static/images/soldier.jpg" />
                     </div>
-                    <div class="templatedivflex2left">
-
-                        <h3 class="unitcount">You have X Soldiers</h3>
-
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
-
-
-                        <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="username" placeholder="Buy / Sell" required/>
-
-                            <button class="templatedivbutton templatecenteredbutton">Buy</button>
-                            <button class="templatedivbutton templatecenteredbutton">Sell</button>
-
-                        </div>
-
-                    </div>
-
                 </div>
 
             </div>
         </div>
+
         <!--WATER-->
         <div class="water" id="water">
 
             <div class="unitdiv">
 
-                <h2 class="templatecontentheaderleft">Soldiers</h2>
+                <h2 class="templatecontentheaderleft">Destroyer</h2>
 
                 <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have X Destroyers</h3>
+
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
+
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="username" type="number" placeholder="Buy / Sell" required/>
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton">Sell</button>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
                     <div class="templatedivflex2left">
 
 
 
                         <img class="unitimage" src="static/images/soldier.jpg" />
                     </div>
-                    <div class="templatedivflex2left">
-
-                        <h3 class="unitcount">You have X Soldiers</h3>
-
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
-
-
-                        <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="username" placeholder="Buy / Sell" required/>
-
-                            <button class="templatedivbutton templatecenteredbutton">Confirm</button>
-                        </div>
-
-                    </div>
-
                 </div>
-
             </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
