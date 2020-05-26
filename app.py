@@ -153,8 +153,13 @@ def country(cId):
 @login_required
 @app.route("/military", methods=["GET", "POST"])
 def military():
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
     if request.method == "GET":
-        return render_template("military.html")
+        tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        return render_template("military.html", tanks=tanks, soldiers=soldiers)
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
