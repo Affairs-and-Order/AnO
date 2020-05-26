@@ -1,690 +1,713 @@
-                                                            @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
-                                                            @font-face {
-                                                                font-family: nexabold;
-                                                                src: url("fonts/nexabold.otf") format('opentype');
-                                                            }
-                                                            
-                                                            @keyframes textload {
-                                                                from {
-                                                                    opacity: 0;
-                                                                }
-                                                                to {
-                                                                    opacity: 1;
-                                                                }
-                                                            }
-                                                            
-                                                            @keyframes bar1 {
-                                                                0% {
-                                                                    background: rgb(32, 32, 32);
-                                                                }
-                                                                50% {
-                                                                    width: 0px;
-                                                                    opacity: 0;
-                                                                    background: rgb(32, 32, 32);
-                                                                }
-                                                                100% {
-                                                                    background: rgb(240, 240, 240);
-                                                                }
-                                                            }
-                                                            
-                                                            @keyframes bar2 {
-                                                                0% {
-                                                                    background: rgb(32, 32, 32);
-                                                                }
-                                                                50% {
-                                                                    width: 0px;
-                                                                    opacity: 0;
-                                                                    background: rgb(32, 32, 32);
-                                                                }
-                                                                100% {
-                                                                    width: 20px;
-                                                                    background: rgb(240, 240, 240);
-                                                                }
-                                                            }
-                                                            
-                                                            @keyframes bar3 {
-                                                                0% {
-                                                                    background: rgb(32, 32, 32);
-                                                                }
-                                                                50% {
-                                                                    width: 0px;
-                                                                    opacity: 0;
-                                                                    background: rgb(32, 32, 32);
-                                                                }
-                                                                100% {
-                                                                    background: rgb(240, 240, 240);
-                                                                }
-                                                            }
-                                                            
-                                                            @keyframes templatedivtitleload {
-                                                                0% {
-                                                                    opacity: 0;
-                                                                    pointer-events: none;
-                                                                    top: 15px;
-                                                                }
-                                                                50% {
-                                                                    opacity: 0;
-                                                                    pointer-events: none;
-                                                                    top: 15px;
-                                                                }
-                                                                100% {
-                                                                    opacity: 1;
-                                                                    pointer-events: all;
-                                                                    top: 0px;
-                                                                }
-                                                            }
-                                                            
-                                                            @keyframes templatedivcontentload {
-                                                                0% {
-                                                                    opacity: 0;
-                                                                    pointer-events: none;
-                                                                    top: 15px;
-                                                                }
-                                                                50% {
-                                                                    opacity: 0;
-                                                                    pointer-events: none;
-                                                                    top: 15px;
-                                                                }
-                                                                100% {
-                                                                    opacity: 1;
-                                                                    pointer-events: all;
-                                                                    top: 0px;
-                                                                }
-                                                            }
-                                                            
-                                                            body {
-                                                                background: rgb(230, 230, 230);
-                                                                padding: 0;
-                                                                margin: 0;
-                                                                font-family: "nexabold";
-                                                                animation: textload 0.5s;
-                                                                color: white;
-                                                            }
-                                                            /*NAVBAR*/
-                                                            
-                                                            .navbar {
-                                                                background: #963b3b;
-                                                                position: fixed;
-                                                                width: 100%;
-                                                                height: 55px;
-                                                                box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8);
-                                                                z-index: 1000;
-                                                                top: 0;
-                                                                overflow: hidden;
-                                                            }
-                                                            
-                                                            .navbartitle {
-                                                                margin-top: 15px;
-                                                                font-weight: bold;
-                                                                font-size: 26px;
-                                                                float: left;
-                                                                margin-left: 2px;
-                                                                color: white;
-                                                                user-select: none;
-                                                                cursor: pointer;
-                                                                transition: all 0.2s;
-                                                                text-decoration: none;
-                                                            }
-                                                            
-                                                            .navbartitle:hover {
-                                                                color: rgba(255, 255, 255, 0.7);
-                                                            }
-                                                            
-                                                            .navbartitleimage {
-                                                                height: 50px;
-                                                                width: 50px;
-                                                                margin: 2.5px;
-                                                                float: left;
-                                                                margin-left: 15px;
-                                                            }
-                                                            
-                                                            .menubar {
-                                                                width: 45px;
-                                                                margin-left: 5px;
-                                                                height: 45px;
-                                                                margin-top: 5px;
-                                                                transition: all 0.2s;
-                                                                cursor: pointer;
-                                                                float: left;
-                                                            }
-                                                            
-                                                            .menubar:hover {
-                                                                opacity: 0.5;
-                                                            }
-                                                            
-                                                            .menubarclick {}
-                                                            
-                                                            .bar1,
-                                                            .bar2,
-                                                            .bar3 {
-                                                                width: 30px;
-                                                                height: 4.5px;
-                                                                background-color: rgb(32, 32, 32);
-                                                                margin: 8.5px;
-                                                                transition: all 0.2s;
-                                                                border-radius: 2px;
-                                                            }
-                                                            
-                                                            .barclick1 {
-                                                                animation: bar1 0.5s;
-                                                                background: rgb(240, 240, 240);
-                                                            }
-                                                            
-                                                            .barclick2 {
-                                                                width: 20px;
-                                                                animation: bar2 0.5s;
-                                                                background: rgb(240, 240, 240);
-                                                            }
-                                                            
-                                                            .barclick3 {
-                                                                animation: bar1 0.5s;
-                                                                background: rgb(240, 240, 240);
-                                                            }
-                                                            
-                                                            .menubardiv {
-                                                                width: 200px;
-                                                                background: rgb(240, 240, 240);
-                                                                position: fixed;
-                                                                left: 0px;
-                                                                top: 55px;
-                                                                height: 100%;
-                                                                margin-left: -10px;
-                                                                z-index: 1;
-                                                                overflow: hidden;
-                                                                transition: all 0.2s;
-                                                                opacity: 0;
-                                                                pointer-events: none;
-                                                            }
-                                                            
-                                                            @media all and (max-width: 600px) {
-                                                                .menubardiv {
-                                                                    width: 100%;
-                                                                }
-                                                            }
-                                                            
-                                                            .menubardivshow {
-                                                                pointer-events: all;
-                                                                opacity: 1;
-                                                                margin: 0;
-                                                                -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                                                                -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                                                                box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
-                                                            }
-                                                            
-                                                            .menubara {
-                                                                text-decoration: none;
-                                                                color: black;
-                                                                font-size: 17px;
-                                                                font-weight: bolder;
-                                                                transition: all 0.2s;
-                                                                display: block;
-                                                                margin: 10px 15px;
-                                                                padding: 10px 0px;
-                                                                text-align: center;
-                                                                font-weight: bolder;
-                                                            }
-                                                            
-                                                            .menubara:hover {
-                                                                background: #963b3b;
-                                                                margin: 10px 0px;
-                                                                padding: 10px 15px;
-                                                                color: white;
-                                                            }
-                                                            
-                                                            @media all and (max-width: 600px) {
-                                                                .menubara {
-                                                                    margin: 10px 0px;
-                                                                }
-                                                            }
-                                                            
-                                                            .loginsignup {
-                                                                float: right;
-                                                                width: fit-content;
-                                                                margin-top: 7.5px;
-                                                                margin-right: 10px;
-                                                                background-color: #632f2f;
-                                                                transition: all 0.2s;
-                                                                padding: 0px 8px;
-                                                                padding-top: 5px;
-                                                                text-decoration: none;
-                                                                font-size: 14px;
-                                                                color: white;
-                                                                font-size: 20px;
-                                                                height: 32.5px;
-                                                                cursor: pointer;
-                                                                user-select: none;
-                                                            }
-                                                            
-                                                            .loginsignup:hover {
-                                                                background-color: #b84646;
-                                                            }
-                                                            
-                                                            .resourceicon {
-                                                                height: 45px;
-                                                                width: 45px;
-                                                                background: #632f2f;
-                                                                margin: 5px 15px;
-                                                                float: right;
-                                                                border: none;
-                                                                user-select: none;
-                                                                transition: all 0.2s;
-                                                                cursor: pointer;
-                                                            }
-                                                            
-                                                            .resourceicon:hover {
-                                                                background: #b84646;
-                                                            }
-                                                            /*CONTENT*/
-                                                            
-                                                            .templatediv {
-                                                                background: rgb(240, 240, 240);
-                                                                width: 90%;
-                                                                margin: 50px auto;
-                                                                margin-top: 90px;
-                                                                overflow: hidden;
-                                                                border-radius: 4px;
-                                                                box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, .15);
-                                                            }
-                                                            
-                                                            @media all and (max-width: 600px) {
-                                                                .templatediv {
-                                                                    width: 95%;
-                                                                }
-                                                            }
-                                                            
-                                                            .templatedivtopper {
-                                                                padding: 20px;
-                                                                padding-top: 10px;
-                                                                /*background-image: linear-gradient(316deg, #163d77 0%, #1662a0 74%);*/
-                                                                background-image: linear-gradient(135deg, #b84646 0%, #753636 100%);
-                                                            }
-                                                            
-                                                            .templatedivtitle {
-                                                                text-align: center;
-                                                                font-size: 40px;
-                                                                animation: templatedivtitleload 0.25s;
-                                                                margin: 0;
-                                                                padding: 20px;
-                                                                position: relative;
-                                                                /*text-shadow: 2px 2px 1px #00000050, 3px 3px 2px #00000050;*/
-                                                            }
-                                                            
-                                                            .templatedivad {
-                                                                width: 80%;
-                                                                height: 20vh;
-                                                                margin: 20px auto;
-                                                                background: black;
-                                                            }
-                                                            
-                                                            .templatedivcontent {
-                                                                color: black;
-                                                                animation: templatedivcontentload 0.45s;
-                                                                position: relative;
-                                                            }
-                                                            
-                                                            .templatecontentheaderleft {
-                                                                border-bottom: 5px solid rgb(220, 220, 220);
-                                                                padding-bottom: 6px;
-                                                                font-size: 25px;
-                                                                margin: 20px 8px;
-                                                            }
-                                                            
-                                                            .templatecontentheadercenter {
-                                                                text-align: center;
-                                                                font-size: 20px;
-                                                                margin-top: 16px;
-                                                            }
-                                                            
-                                                            .templatecontentpleft {
-                                                                text-indent: 25px;
-                                                                font-size: 17px;
-                                                            }
-                                                            
-                                                            .templatedivbutton {
-                                                                width: fit-content;
-                                                                margin: 5px;
-                                                                background-color: #963b3b;
-                                                                transition: all 0.2s;
-                                                                padding: 10px 20px;
-                                                                text-decoration: none;
-                                                                font-size: 14px;
-                                                                color: rgb(255, 255, 255);
-                                                                font-size: 18px;
-                                                                cursor: pointer;
-                                                                user-select: none;
-                                                                outline: none;
-                                                                font-weight: bold;
-                                                                border: none;
-                                                                text-align: center;
-                                                                text-shadow: 2px 2px 1px #00000020, 3px 3px 2px #00000020;
-                                                                text-transform: uppercase;
-                                                            }
-                                                            
-                                                            .templatedivbutton:hover {
-                                                                box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.20);
-                                                            }
-                                                            
-                                                            .templatecenteredbutton {
-                                                                transition: all 0.2s;
-                                                                display: block;
-                                                                margin: auto;
-                                                            }
-                                                            
-                                                            .smallactionbutton {
-                                                                text-transform: capitalize;
-                                                                margin: 2px;
-                                                            }
-                                                            
-                                                            .smallheader {
-                                                                font-size: 18px;
-                                                            }
-                                                            
-                                                            .templatedivflex2 {
-                                                                display: flex;
-                                                                justify-content: center;
-                                                            }
-                                                            
-                                                            @media all and (max-width: 600px) {
-                                                                .templatedivflex2 {
-                                                                    display: block;
-                                                                }
-                                                            }
-                                                            
-                                                            .divflex2full {
-                                                                background: rgb(230, 230, 230);
-                                                                border-bottom: 5px solid rgb(220, 220, 220);
-                                                                align-items: center;
-                                                            }
-                                                            
-                                                            .divflex2center {
-                                                                align-items: center;
-                                                                width: fit-content;
-                                                                margin: auto;
-                                                            }
-                                                            
-                                                            @media all and (max-width: 600px) {
-                                                                .divflex2center {
-                                                                    width: 100%;
-                                                                }
-                                                            }
-                                                            
-                                                            .templatedivflex2left,
-                                                            .templatedivflex2right {
-                                                                width: 50%;
-                                                                margin: 20px;
-                                                                padding: 8px;
-                                                                flex-direction: column;
-                                                                flex-wrap: wrap;
-                                                                border-radius: 4px;
-                                                            }
-                                                            
-                                                            @media all and (max-width: 600px) {
-                                                                .templatedivflex2left,
-                                                                .templatedivflex2right {
-                                                                    width: 90%;
-                                                                    margin: 20px auto;
-                                                                }
-                                                            }
-                                                            
-                                                            .templatedivflex2left {}
-                                                            
-                                                            .templatedivflex2right {}
-                                                            
-                                                            .flex2rightfloatright {
-                                                                text-align: right;
-                                                            }
-                                                            
-                                                            .flexchildvanilla {
-                                                                margin: 6px;
-                                                                padding: 0;
-                                                            }
-                                                            
-                                                            .templatetable {
-                                                                border: 1.8px solid rgb(128, 71, 71);
-                                                                border-collapse: collapse;
-                                                                margin: 5px auto;
-                                                                width: 90%;
-                                                            }
-                                                            
-                                                            .templatetable th {
-                                                                height: 40px;
-                                                                background-color: #963b3b;
-                                                                color: white;
-                                                                font-size: 20px;
-                                                                column-span: 1;
-                                                            }
-                                                            
-                                                            .templatetable tr:nth-child(odd) {
-                                                                background: rgb(230, 230, 230);
-                                                            }
-                                                            
-                                                            .templatetable td {
-                                                                padding: 8px;
-                                                                margin: 8px 1%;
-                                                                width: 48%;
-                                                                float: left;
-                                                                display: table;
-                                                            }
-                                                            
-                                                            .templatetable td:nth-child(even) {
-                                                                float: right;
-                                                                text-align: right;
-                                                            }
-                                                            
-                                                            .templatetable2 {
-                                                                margin: 25px auto;
-                                                            }
-                                                            
-                                                            .templatetable2 th {
-                                                                column-span: all;
-                                                            }
-                                                            
-                                                            .templatetable2 td {
-                                                                text-align: center;
-                                                                height: 45px;
-                                                                width: 23%;
-                                                                float: none;
-                                                                display: table-cell !important;
-                                                            }
-                                                            
-                                                            .templatetable2 td:nth-child(even) {
-                                                                text-align: center;
-                                                                float: none;
-                                                            }
-                                                            /*LOGINSIGNUP*/
-                                                            
-                                                            .loginsignupinput {
-                                                                border: 4px solid rgb(220, 220, 220);
-                                                                padding: 10px;
-                                                                outline: none;
-                                                                font-size: 16px;
-                                                                transition: all 0.2s;
-                                                                display: block;
-                                                                margin: 12px auto;
-                                                            }
-                                                            
-                                                            .loginsignupinput:hover {
-                                                                background: rgb(245, 245, 245);
-                                                            }
-                                                            
-                                                            .loginsignupinput:focus {
-                                                                background: rgb(245, 245, 245);
-                                                            }
-                                                            
-                                                            .loginsignupbutton {
-                                                                float: right;
-                                                                width: min-content;
-                                                                margin: 5px;
-                                                                background-color: rgb(167, 91, 91);
-                                                                transition: all 0.2s;
-                                                                padding: 10px 20px;
-                                                                text-decoration: none;
-                                                                font-size: 14px;
-                                                                color: rgb(255, 255, 255);
-                                                                font-size: 18px;
-                                                                cursor: pointer;
-                                                                user-select: none;
-                                                                outline: none;
-                                                                font-weight: bold;
-                                                                border: none;
-                                                                text-align: center;
-                                                            }
-                                                            
-                                                            .loginsignupbutton::placeholder {
-                                                                color: white;
-                                                            }
-                                                            
-                                                            .loginsignupbutton:hover {
-                                                                background-color: rgb(128, 71, 71);
-                                                            }
-                                                            
-                                                            .loginsignupforgot {
-                                                                color: rgb(88, 196, 231);
-                                                                padding: 2px;
-                                                                transition: all 0.2s;
-                                                                text-decoration: underline;
-                                                                cursor: pointer;
-                                                            }
-                                                            
-                                                            .loginsignupforgot:hover {
-                                                                color: rgb(74, 150, 175);
-                                                            }
-                                                            
-                                                            .login,
-                                                            .signup {
-                                                                position: absolute;
-                                                                top: 0px;
-                                                                left: 5px;
-                                                            }
-                                                            
-                                                            .forgotpasscode {
-                                                                display: block;
-                                                                text-align: center;
-                                                                width: fit-content;
-                                                                margin: auto;
-                                                            }
-                                                            /*LANDING PAGE*/
-                                                            
-                                                            .discordlink {
-                                                                width: 65%;
-                                                                border: none;
-                                                                display: block;
-                                                                margin: 10px auto;
-                                                                height: 450px;
-                                                            }
-                                                            
-                                                            .loginsignuplink {
-                                                                padding: 18px;
-                                                                width: 50%;
-                                                                font-size: 25px;
-                                                                display: block;
-                                                                margin: 15px auto;
-                                                            }
-                                                            /*COUNTRY*/
-                                                            
-                                                            .countryimagediv {
-                                                                padding: 5px;
-                                                                margin: 15px auto;
-                                                                display: block;
-                                                                width: 90%;
-                                                                transition: all 0.2s;
-                                                                overflow: hidden;
-                                                                text-align: center;
-                                                                background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
-                                                                background-repeat: no-repeat;
-                                                                background-size: cover;
-                                                                background-position-y: 50%;
-                                                                box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, 0.3);
-                                                            }
-                                                            
-                                                            .countryimage {}
-                                                            /*MILITARY*/
-                                                            
-                                                            .militaryflex2 {
-                                                                justify-content: center;
-                                                                text-align: center;
-                                                                border-radius: 30px;
-                                                                width: 80%;
-                                                                margin: 10px auto;
-                                                                box-shadow: inset 0px 0px 0px 2px #963b3b;
-                                                                padding: 0;
-                                                                overflow: hidden;
-                                                            }
-                                                            
-                                                            .militaryflex2 div {
-                                                                cursor: pointer;
-                                                                padding: 10px;
-                                                                margin: 0px;
-                                                                transition: all 0.2s;
-                                                                border-radius: 0px;
-                                                                text-transform: uppercase;
-                                                                user-select: none;
-                                                            }
-                                                            
-                                                            .militaryflex2 div h3 {
-                                                                margin: 0;
-                                                                font-size: 17px;
-                                                            }
-                                                            
-                                                            .militaryflex2 div:hover {
-                                                                background: #963b3b;
-                                                                color: white;
-                                                            }
-                                                            
-                                                            .unitflex {
-                                                                align-items: center;
-                                                                justify-content: center;
-                                                            }
-                                                            
-                                                            .unitflex div {
-                                                                text-align: center;
-                                                            }
-                                                            
-                                                            .unitimage {
-                                                                width: 80%;
-                                                                box-shadow: 0 0 50px 0 rgba(39, 41, 59, 0.3);
-                                                                user-select: none;
-                                                            }
-                                                            
-                                                            .land,
-                                                            .air,
-                                                            .water {
-                                                                display: none;
-                                                            }
-                                                            
-                                                            .purchasemilitarydiv {}
-                                                            
-                                                            .militaryleftclick,
-                                                            .militarycenterclick,
-                                                            .militaryrightclick {
-                                                                background: #963b3b;
-                                                                color: white;
-                                                            }
-                                                            
-                                                            .landclick,
-                                                            .airclick,
-                                                            .waterclick {
-                                                                display: initial;
-                                                            }
-                                                            /*FOOTER*/
-                                                            
-                                                            .footer {
-                                                                background: rgb(215, 215, 215);
-                                                                padding: 15px;
-                                                                color: black;
-                                                                display: flex;
-                                                                min-height: 10vh;
-                                                            }
-                                                            
-                                                            .footerleft,
-                                                            .footerright {
-                                                                width: 50%;
-                                                                flex-direction: column;
-                                                                flex-wrap: wrap;
-                                                            }
-                                                            
-                                                            .footerleft {}
-                                                            
-                                                            .footerright {
-                                                                text-align: right;
-                                                            }
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
+@font-face {
+    font-family: nexabold;
+    src: url("fonts/nexabold.otf") format('opentype');
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Ubuntu&display=swap');
+
+/*KEYFRAMES*/
+
+@keyframes textload {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes bar1 {
+    0% {
+        background: rgb(32, 32, 32);
+    }
+    50% {
+        width: 0px;
+        opacity: 0;
+        background: rgb(32, 32, 32);
+    }
+    100% {
+        background: rgb(240, 240, 240);
+    }
+}
+
+@keyframes bar2 {
+    0% {
+        background: rgb(32, 32, 32);
+    }
+    50% {
+        width: 0px;
+        opacity: 0;
+        background: rgb(32, 32, 32);
+    }
+    100% {
+        width: 20px;
+        background: rgb(240, 240, 240);
+    }
+}
+
+@keyframes bar3 {
+    0% {
+        background: rgb(32, 32, 32);
+    }
+    50% {
+        width: 0px;
+        opacity: 0;
+        background: rgb(32, 32, 32);
+    }
+    100% {
+        background: rgb(240, 240, 240);
+    }
+}
+
+@keyframes templatedivtitleload {
+    0% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    50% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    100% {
+        opacity: 1;
+        pointer-events: all;
+        top: 0px;
+    }
+}
+
+@keyframes templatedivcontentload {
+    0% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    50% {
+        opacity: 0;
+        pointer-events: none;
+        top: 15px;
+    }
+    100% {
+        opacity: 1;
+        pointer-events: all;
+        top: 0px;
+    }
+}
+
+body {
+    background: rgb(230, 230, 230);
+    padding: 0;
+    margin: 0;
+    font-family: "nexabold";
+    animation: textload 0.5s;
+    color: white;
+}
+
+
+/*NAVBAR*/
+
+.navbar {
+    background: #963b3b;
+    position: fixed;
+    width: 100%;
+    height: 55px;
+    box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8);
+    z-index: 1000;
+    top: 0;
+    overflow: hidden;
+}
+
+.navbartitle {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 26px;
+    float: left;
+    margin-left: 2px;
+    color: white;
+    user-select: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.navbartitle:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.navbartitleimage {
+    height: 50px;
+    width: 50px;
+    margin: 2.5px;
+    float: left;
+    margin-left: 15px;
+}
+
+.menubar {
+    width: 45px;
+    margin-left: 5px;
+    height: 45px;
+    margin-top: 5px;
+    transition: all 0.2s;
+    cursor: pointer;
+    float: left;
+}
+
+.menubar:hover {
+    opacity: 0.5;
+}
+
+.menubarclick {}
+
+.bar1,
+.bar2,
+.bar3 {
+    width: 30px;
+    height: 4.5px;
+    background-color: rgb(32, 32, 32);
+    margin: 8.5px;
+    transition: all 0.2s;
+    border-radius: 2px;
+}
+
+.barclick1 {
+    animation: bar1 0.5s;
+    background: rgb(240, 240, 240);
+}
+
+.barclick2 {
+    width: 20px;
+    animation: bar2 0.5s;
+    background: rgb(240, 240, 240);
+}
+
+.barclick3 {
+    animation: bar1 0.5s;
+    background: rgb(240, 240, 240);
+}
+
+.menubardiv {
+    width: 200px;
+    background: rgb(240, 240, 240);
+    position: fixed;
+    left: 0px;
+    top: 55px;
+    height: 100%;
+    margin-left: -10px;
+    z-index: 1;
+    overflow: hidden;
+    transition: all 0.2s;
+    opacity: 0;
+    pointer-events: none;
+}
+
+@media all and (max-width: 600px) {
+    .menubardiv {
+        width: 100%;
+    }
+}
+
+.menubardivshow {
+    pointer-events: all;
+    opacity: 1;
+    margin: 0;
+    -webkit-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
+}
+
+.menubara {
+    text-decoration: none;
+    color: black;
+    font-size: 17px;
+    font-weight: bolder;
+    transition: all 0.2s;
+    display: block;
+    margin: 10px 15px;
+    padding: 10px 0px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.menubara:hover {
+    background: #963b3b;
+    margin: 10px 0px;
+    padding: 10px 15px;
+    color: white;
+}
+
+@media all and (max-width: 600px) {
+    .menubara {
+        margin: 10px 0px;
+    }
+}
+
+.loginsignup {
+    float: right;
+    width: fit-content;
+    margin-top: 7.5px;
+    margin-right: 10px;
+    background-color: #632f2f;
+    transition: all 0.2s;
+    padding: 0px 8px;
+    padding-top: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    color: white;
+    font-size: 20px;
+    height: 32.5px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.loginsignup:hover {
+    background-color: #b84646;
+}
+
+.resourceicon {
+    height: 45px;
+    width: 45px;
+    background: #632f2f;
+    margin: 5px 15px;
+    float: right;
+    border: none;
+    user-select: none;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.resourceicon:hover {
+    background: #b84646;
+}
+
+
+/*CONTENT*/
+
+.templatediv {
+    background: rgb(240, 240, 240);
+    width: 90%;
+    margin: 50px auto;
+    margin-top: 90px;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, .15);
+}
+
+@media all and (max-width: 600px) {
+    .templatediv {
+        width: 95%;
+    }
+}
+
+.templatedivtopper {
+    padding: 20px;
+    padding-top: 10px;
+    /*background-image: linear-gradient(316deg, #163d77 0%, #1662a0 74%);*/
+    background-image: linear-gradient(135deg, #b84646 0%, #753636 100%);
+}
+
+.templatedivtitle {
+    text-align: center;
+    font-size: 40px;
+    animation: templatedivtitleload 0.25s;
+    margin: 0;
+    padding: 20px;
+    position: relative;
+    /*text-shadow: 2px 2px 1px #00000050, 3px 3px 2px #00000050;*/
+}
+
+.templatedivad {
+    width: 80%;
+    height: 20vh;
+    margin: 20px auto;
+    background: black;
+}
+
+.templatedivcontent {
+    color: black;
+    animation: templatedivcontentload 0.45s;
+    position: relative;
+}
+
+.templatecontentheaderleft {
+    border-bottom: 5px solid rgb(220, 220, 220);
+    padding-bottom: 6px;
+    font-size: 25px;
+    margin: 20px 8px;
+}
+
+.templatecontentheadercenter {
+    text-align: center;
+    font-size: 20px;
+    margin-top: 16px;
+}
+
+.templatecontentpleft {
+    text-indent: 25px;
+    font-size: 17px;
+    color: rgb(0, 0, 0);
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.templatedivbutton {
+    width: fit-content;
+    margin: 5px;
+    background-color: #963b3b;
+    transition: all 0.2s;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    font-weight: bold;
+    border: none;
+    text-align: center;
+    text-shadow: 2px 2px 1px #00000020, 3px 3px 2px #00000020;
+    text-transform: uppercase;
+}
+
+.templatedivbutton:hover {
+    box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.20);
+}
+
+.templatecenteredbutton {
+    transition: all 0.2s;
+    display: block;
+    margin: auto;
+}
+
+.smallactionbutton {
+    text-transform: capitalize;
+    margin: 2px;
+}
+
+.smallheader {
+    font-size: 18px;
+}
+
+.templatedivflex2 {
+    display: flex;
+    justify-content: center;
+}
+
+@media all and (max-width: 600px) {
+    .templatedivflex2 {
+        display: block;
+    }
+}
+
+.divflex2full {
+    background: rgb(230, 230, 230);
+    border-bottom: 5px solid rgb(220, 220, 220);
+    align-items: center;
+}
+
+.divflex2center {
+    align-items: center;
+    width: fit-content;
+    margin: auto;
+}
+
+@media all and (max-width: 600px) {
+    .divflex2center {
+        width: 100%;
+    }
+}
+
+.templatedivflex2left,
+.templatedivflex2right {
+    width: 50%;
+    margin: 20px;
+    padding: 8px;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border-radius: 4px;
+}
+
+@media all and (max-width: 600px) {
+    .templatedivflex2left,
+    .templatedivflex2right {
+        width: 90%;
+        margin: 20px auto;
+    }
+}
+
+.templatedivflex2left {}
+
+.templatedivflex2right {}
+
+.flex2rightfloatright {
+    text-align: right;
+}
+
+.flexchildvanilla {
+    margin: 6px;
+    padding: 0;
+}
+
+.templatetable {
+    border: 1.8px solid rgb(128, 71, 71);
+    border-collapse: collapse;
+    margin: 5px auto;
+    width: 90%;
+}
+
+.templatetable th {
+    height: 40px;
+    background-color: #963b3b;
+    color: white;
+    font-size: 20px;
+    column-span: 1;
+}
+
+.templatetable tr:nth-child(odd) {
+    background: rgb(230, 230, 230);
+}
+
+.templatetable td {
+    padding: 8px;
+    margin: 8px 1%;
+    width: 48%;
+    float: left;
+    display: table;
+    font-weight: 550;
+    color: rgba(50, 50, 50);
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.templatetable td:nth-child(even) {
+    float: right;
+    text-align: right;
+}
+
+.templatetable2 {
+    margin: 25px auto;
+}
+
+.templatetable2 th {
+    column-span: all;
+}
+
+.templatetable2 td {
+    text-align: center;
+    height: 45px;
+    width: 23%;
+    float: none;
+    display: table-cell !important;
+}
+
+.templatetable2 td:nth-child(even) {
+    text-align: center;
+    float: none;
+}
+
+
+/*LOGINSIGNUP*/
+
+.loginsignupinput {
+    border: 4px solid rgb(220, 220, 220);
+    padding: 10px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.2s;
+    display: block;
+    margin: 12px auto;
+}
+
+.loginsignupinput:hover {
+    background: rgb(245, 245, 245);
+}
+
+.loginsignupinput:focus {
+    background: rgb(245, 245, 245);
+}
+
+.loginsignupbutton {
+    float: right;
+    width: min-content;
+    margin: 5px;
+    background-color: rgb(167, 91, 91);
+    transition: all 0.2s;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    font-size: 18px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    font-weight: bold;
+    border: none;
+    text-align: center;
+}
+
+.loginsignupbutton::placeholder {
+    color: white;
+}
+
+.loginsignupbutton:hover {
+    background-color: rgb(128, 71, 71);
+}
+
+.loginsignupforgot {
+    color: rgb(88, 196, 231);
+    padding: 2px;
+    transition: all 0.2s;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.loginsignupforgot:hover {
+    color: rgb(74, 150, 175);
+}
+
+.login,
+.signup {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+}
+
+.forgotpasscode {
+    display: block;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
+}
+
+
+/*LANDING PAGE*/
+
+.discordlink {
+    width: 65%;
+    border: none;
+    display: block;
+    margin: 10px auto;
+    height: 450px;
+}
+
+.loginsignuplink {
+    padding: 18px;
+    width: 50%;
+    font-size: 25px;
+    display: block;
+    margin: 15px auto;
+}
+
+
+/*COUNTRY*/
+
+.countryimagediv {
+    padding: 5px;
+    margin: 15px auto;
+    display: block;
+    width: 90%;
+    transition: all 0.2s;
+    overflow: hidden;
+    text-align: center;
+    background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: 50%;
+    box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, 0.3);
+}
+
+.countryimage {}
+
+
+/*MILITARY*/
+
+.militaryflex2 {
+    justify-content: center;
+    text-align: center;
+    border-radius: 30px;
+    width: 80%;
+    margin: 10px auto;
+    box-shadow: inset 0px 0px 0px 2px #963b3b;
+    padding: 0;
+    overflow: hidden;
+}
+
+.militaryflex2 div {
+    cursor: pointer;
+    padding: 10px;
+    margin: 0px;
+    transition: all 0.2s ease-out;
+    border-radius: 0px;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.militaryflex2 div h3 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.militaryflex2 div:hover {
+    background: #963b3b;
+    color: white;
+}
+
+.unitflex {
+    align-items: center;
+    justify-content: center;
+}
+
+.unitflex div {
+    text-align: center;
+}
+
+.unitimage {
+    width: 80%;
+    box-shadow: 0 0 50px 0 rgba(39, 41, 59, 0.3);
+    user-select: none;
+}
+
+.land,
+.air,
+.water {
+    display: none;
+}
+
+.purchasemilitarydiv {}
+
+.militaryleftclick,
+.militarycenterclick,
+.militaryrightclick {
+    background: #963b3b;
+    color: white;
+}
+
+.landclick,
+.airclick,
+.waterclick {
+    display: initial;
+}
+
+
+/*FOOTER*/
+
+.footer {
+    background: rgb(215, 215, 215);
+    padding: 15px;
+    color: black;
+    display: flex;
+    min-height: 10vh;
+}
+
+.footerleft,
+.footerright {
+    width: 50%;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.footerleft {}
+
+.footerright {
+    text-align: right;
+}
