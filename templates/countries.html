@@ -19,10 +19,10 @@
                 <th>Population</th>
                 <th>Alliance</th>
             </tr>
-            {% for name, pop in zipped%}
+            {% for name, pop, id in zipped%}
             <tr>
 
-                <td>{{ name[0] }}</td>
+                <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
                 <td>105,565</td>
                 <td>{{ pop[0] }}</td>
                 <td>alliance name w/ link</td>
