@@ -206,7 +206,7 @@ def coalitions():
 
 @login_required
 @app.route("/buy/soldiers", methods=["POST"])
-def buy_tanks():
+def buy_soldiers():
     if request.method == "POST":
 
         cId = session["user_id"]
@@ -231,7 +231,32 @@ def buy_tanks():
         connection.commit()
 
         return redirect("/military")
-        
+
+@login_required
+@app.route("/sell/soldiers", methods=["POST"])
+def sell_soldiers():
+    if request.method == "POST":
+    
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        soldierPrice = 50
+        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedSoldiers = request.form.get("soldiers")
+        currentSoldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+
+        if int(wantedSoldiers) > int(currentSoldiers):
+            return redirect("/too_much_to_sell")
+
+        db.execute("UPDATE ground SET soldiers=(?) WHERE id=(?)", (int(currentSoldiers) - int(wantedSoldiers), cId,))
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedSoldiers) * int(soldierPrice)), cId,))
+
+        connection.commit()
+
+        return redirect("/military")
 
 # available to run if double click the file
 if __name__ == "__main__":

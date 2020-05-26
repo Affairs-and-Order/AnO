@@ -54,7 +54,7 @@
 
                         <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 soldier / 50 gold)</p>
 
-                        <form action="/buy/soldiers" method="POST">
+                        <form action="/soldiers" method="POST">
                             <div class="purchasemilitarydiv">
 
                                 <input class="loginsignupinput" autocomplete="off" name="soldiers" type="number" placeholder="Amount" required/>
@@ -63,14 +63,14 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton">Buy</button>
-                        </form>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/soldiers" >Buy</button>
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/soldiers" >Sell</button>
 
                                 </div>
+                        </form>
                             </div>
                             <ul>You can purchase X more Soldiers today
                                 <br />You can sell X more Soldiers today
