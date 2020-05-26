@@ -188,9 +188,10 @@ def countries():
         db = connection.cursor()
         name = db.execute("SELECT username FROM users").fetchall()
         population = db.execute("SELECT population FROM stats").fetchall()
+        countryId = db.execute("SELECT id FROM users").fetchall()
         connection.commit()
-        zipped = zip(name, population)
-        return render_template("countries.html", name=name, population=population, zipped=zipped)
+        zipped = zip(name, population, countryId)
+        return render_template("countries.html", zipped=zipped)
 
 @login_required
 @app.route("/coalitions", methods=["GET", "POST"])
