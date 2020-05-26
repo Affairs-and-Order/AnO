@@ -52,29 +52,33 @@
 
                         <h3 class="unitcount">You have {{ soldiers }} Soldiers</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 soldier / 50 gold)</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
+
+                        <ul>Soldiers cost 100 gold and 50 food to recruit
+                            <br />Soldiers cost 2 gold and 1 food every day to mantain
+                        </ul>
 
                         <form action="/soldiers" method="POST">
                             <div class="purchasemilitarydiv">
 
                                 <input class="loginsignupinput" autocomplete="off" name="soldiers" type="number" placeholder="Amount" required/>
-                                
+
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/soldiers" >Buy</button>
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/soldiers">Buy</button>
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/soldiers" >Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/soldiers">Sell</button>
 
-                                </div>
+                                    </div>
                         </form>
-                            </div>
-                            <ul>You can purchase X more Soldiers today
-                                <br />You can sell X more Soldiers today
-                            </ul>
+                        </div>
+                        <ul>You can purchase X more Soldiers today
+                            <br />You can sell X more Soldiers today
+                        </ul>
                         </div>
 
                     </div>
@@ -183,6 +187,7 @@
                         <h3 class="unitcount">You have X Flying Fortresses</h3>
 
                         <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 flying fortress / 500 gold)</p>
+
 
 
                         <div class="purchasemilitarydiv">
