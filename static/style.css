@@ -326,7 +326,7 @@ body {
 
 .templatedivcontent {
     color: black;
-    animation: templatedivcontentload 0.45s;
+    animation: templatedivcontentload 0.65s;
     position: relative;
 }
 
@@ -368,7 +368,7 @@ body {
     text-align: center;
     text-shadow: 2px 2px 1px #00000020, 3px 3px 2px #00000020;
     text-transform: uppercase;
-    box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.0), #75363630 0px 3px 5px -1px, #75363635 0px 6px 10px 0px, #75363632 0px 1px 18px 0px;
+    box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.0), #75363630 0px 3px 3.5px -1px, #75363635 0px 6px 6px 0px, #75363632 0px 1px 10px 0px;
 }
 
 .templatedivbutton:hover {
@@ -411,6 +411,11 @@ body {
     align-items: center;
     width: fit-content;
     margin: auto;
+}
+
+.divflex2center div {
+    align-items: center;
+    width: fit-content;
 }
 
 @media all and (max-width: 600px) {
