@@ -663,7 +663,7 @@ body {
 
 .unitimage {
     width: 80%;
-    box-shadow: 0 0 50px 0 rgba(39, 41, 59, 0.3);
+    box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.2);
     user-select: none;
 }
 
@@ -710,4 +710,28 @@ body {
 
 .footerright {
     text-align: right;
+}
+
+.footer div a {
+    display: block;
+    width: fit-content;
+    text-decoration: underline;
+    transition: all 0.2s;
+    color: rgb(88, 196, 231);
+    padding: 2px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.footer .footerright a {
+    float: right;
+    margin-left: 100%;
+    width: max-content;
+}
+
+.footer div a:hover {
+    color: rgb(74, 150, 175);
+}
+
+
 }
