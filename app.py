@@ -239,8 +239,8 @@ def buy_soldiers():
         return redirect("/military")
 
 @login_required
-@app.route("/sell/soldiers", methods=["POST"])
-def sell_soldiers():
+@app.route("/sell/<units>", methods=["POST"])
+def sell(units):
     if request.method == "POST":
     
         cId = session["user_id"]
@@ -248,17 +248,26 @@ def sell_soldiers():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        soldierPrice = 50
+        allUnits = ["soldiers", "tanks"]
+        if units not in allUnits:
+            return redirect("/no_such_unit")
+
+        if units == "soldiers":
+            table = "ground"
+            price = 100
+
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-        wantedSoldiers = request.form.get("soldiers")
-        currentSoldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedUnits = request.form.get(units)
+        curUnitsStatement = f'SELECT {units} FROM {table} WHERE id=?'
+        currentUnits = db.execute(curUnitsStatement,(cId,)).fetchone()[0] #  seems to work
 
-        if int(wantedSoldiers) > int(currentSoldiers):
-            return redirect("/too_much_to_sell")
+        if int(wantedUnits) > int(currentUnits): # checks if unit is legits
+            return redirect("/too_much_to_sell") # seems to work
 
-        db.execute("UPDATE ground SET soldiers=(?) WHERE id=(?)", (int(currentSoldiers) - int(wantedSoldiers), cId,))
+        unitUpd = f"UPDATE {table} SET soldiers=(?) WHERE id=(?)"
+        db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
 
-        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedSoldiers) * int(soldierPrice)), cId,))
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
 
         connection.commit()
 
