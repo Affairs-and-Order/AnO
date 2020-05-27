@@ -104,9 +104,10 @@ def signup():
             connection.commit()
             session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
             session["logged_in"] = True
-            db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location
-            connection.commit()                                                                             # "Bosfront" to something else
+            db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location                                                                          # "Bosfront" to something else
             db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
+            db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+            db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             connection.commit()
             connection.close()
             return redirect("/")
@@ -160,8 +161,11 @@ def military():
         tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
-        return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery)
+        return render_template("military.html", tanks=tanks, soldiers=soldiers,
+        artillery=artillery, destroyers=destroyers, flying_fortresses=flying_fortresses)
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
@@ -222,11 +226,11 @@ def buy(units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks", "artillery"]
+        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses", "destroyers"] # all allowed units
         if units not in allUnits:
             return redirect("/no_such_unit")
 
-        if units == "soldiers":
+        if units == "soldiers": # maybe change this to a dict later on
             table = "ground"
             price = 50
         elif units == "tanks":
@@ -235,6 +239,12 @@ def buy(units):
         elif units == "artillery":
             table = "ground"
             price = 300
+        elif units == "flying_fortresses":
+            table = "air"
+            price = 500
+        elif units == "destroyers":
+            table = "water"
+            price = 500
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -243,7 +253,7 @@ def buy(units):
         curUnStat = f"SELECT {units} FROM {table} WHERE id=(?)"
         currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
 
-        if int(totalPrice) > int(gold):
+        if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
             return redirect("/too_many_units")
 
         db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
@@ -265,11 +275,11 @@ def sell(units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks", "artillery"]
+        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses", "destroyers"]
         if units not in allUnits:
             return redirect("/no_such_unit")
 
-        if units == "soldiers":
+        if units == "soldiers": # maybe change this to a dict later on
             table = "ground"
             price = 50
         elif units == "tanks":
@@ -278,6 +288,12 @@ def sell(units):
         elif units == "artillery":
             table = "ground"
             price = 300
+        elif units == "flying_fortresses":
+            table = "air"
+            price = 500
+        elif units == "destroyers":
+            table = "water"
+            price = 500
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
