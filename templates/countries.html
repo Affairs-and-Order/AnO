@@ -17,7 +17,7 @@
                 <th>Name</th>
                 <th>Influence</th>
                 <th>Population</th>
-                <th>Alliance</th>
+                <th>Coalition</th>
             </tr>
             {% for name, pop, id in zipped%}
             <tr>
@@ -25,7 +25,7 @@
                 <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
                 <td>105,565</td>
                 <td>{{ pop[0] }}</td>
-                <td>alliance name w/ link</td>
+                <td>coalition name w/ link</td>
 
             </tr>
             {% endfor %}

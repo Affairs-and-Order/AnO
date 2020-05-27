@@ -186,6 +186,12 @@ def createprovince():
         return render_template("createprovince.html")
 
 @login_required
+@app.route("/marketoffer", methods=["GET", "POST"])
+def marketoffer():
+    if request.method == "GET":
+        return render_template("marketoffer.html")
+
+@login_required
 @app.route("/countries")
 def countries():
     if request.method == "GET":
