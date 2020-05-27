@@ -139,23 +139,23 @@
                 <div class="templatedivflex2 unitflex">
                     <div class="templatedivflex2left">
 
-                        <h3 class="unitcount">You have X Artillery</h3>
+                        <h3 class="unitcount">You have {{ artillery }} Artillery</h3>
 
                         <p class="templatecontentpleft">Artillery are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 artillery / 300 gold)</p>
 
-
+                    <form action="/artillery" method="POST">
                         <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="username" type="number" placeholder="Amount" required/>
+                            <input class="loginsignupinput" autocomplete="off" name="artillery" type="number" placeholder="Amount" required/>
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/artillery" >Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/artillery">Sell</button>
 
                                 </div>
                             </div>
@@ -163,6 +163,7 @@
                                 <br />You can sell X more Artillery today
                             </ul>
                         </div>
+                    </form>
 
                     </div>
                     <div class="templatedivflex2left">

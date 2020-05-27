@@ -159,7 +159,9 @@ def military():
     if request.method == "GET":
         tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        return render_template("military.html", tanks=tanks, soldiers=soldiers)
+        artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+        return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery)
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
@@ -212,7 +214,7 @@ def coalitions():
 
 @login_required
 @app.route("/buy/<units>", methods=["POST"])
-def buy_soldiers(units):
+def buy(units):
     if request.method == "POST":
 
         cId = session["user_id"]
@@ -220,7 +222,7 @@ def buy_soldiers(units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks"]
+        allUnits = ["soldiers", "tanks", "artillery"]
         if units not in allUnits:
             return redirect("/no_such_unit")
 
@@ -230,6 +232,9 @@ def buy_soldiers(units):
         elif units == "tanks":
             table = "ground"
             price = 150
+        elif units == "artillery":
+            table = "ground"
+            price = 300
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -260,7 +265,7 @@ def sell(units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks"]
+        allUnits = ["soldiers", "tanks", "artillery"]
         if units not in allUnits:
             return redirect("/no_such_unit")
 
@@ -270,6 +275,9 @@ def sell(units):
         elif units == "tanks":
             table = "ground"
             price = 150
+        elif units == "artillery":
+            table = "ground"
+            price = 300
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
