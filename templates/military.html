@@ -54,8 +54,8 @@
 
                         <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
 
-                        <ul>Soldiers cost 100 gold and 50 food to recruit
-                            <br />Soldiers cost 2 gold and 1 food every day to mantain
+                        <ul>Soldiers cost 50 gold to recruit
+                            <br/>
                         </ul>
 
                         <form action="/soldiers" method="POST">
@@ -101,22 +101,23 @@
 
                         <p class="templatecontentpleft">Tanks are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 tank / 150 gold)</p>
 
-
+                    <form action="/tanks" method="POST">
                         <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="username" type="number" placeholder="Amount" required/>
+                            <input class="loginsignupinput" autocomplete="off" name="tanks" type="number" placeholder="Amount" required/>
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/tanks" >Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/tanks">Sell</button>
 
                                 </div>
                             </div>
+                    </form>
                             <ul>You can purchase X more Tanks today
                                 <br />You can sell X more Tanks today
                             </ul>

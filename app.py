@@ -254,7 +254,10 @@ def sell(units):
 
         if units == "soldiers":
             table = "ground"
-            price = 100
+            price = 50
+        elif units == "tanks":
+            table = "ground"
+            price = 150
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
@@ -264,9 +267,8 @@ def sell(units):
         if int(wantedUnits) > int(currentUnits): # checks if unit is legits
             return redirect("/too_much_to_sell") # seems to work
 
-        unitUpd = f"UPDATE {table} SET soldiers=(?) WHERE id=(?)"
-        db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
-
+        unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+        db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId)) # not working
         db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
 
         connection.commit()
