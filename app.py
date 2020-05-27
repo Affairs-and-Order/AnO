@@ -211,8 +211,8 @@ def coalitions():
         return render_template("coalitions.html")
 
 @login_required
-@app.route("/buy/soldiers", methods=["POST"])
-def buy_soldiers():
+@app.route("/buy/<units>", methods=["POST"])
+def buy_soldiers(units):
     if request.method == "POST":
 
         cId = session["user_id"]
@@ -220,19 +220,31 @@ def buy_soldiers():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        soldierPrice = 50
+        allUnits = ["soldiers", "tanks"]
+        if units not in allUnits:
+            return redirect("/no_such_unit")
+
+        if units == "soldiers":
+            table = "ground"
+            price = 50
+        elif units == "tanks":
+            table = "ground"
+            price = 150
+
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
-        wantedSoldiers = request.form.get("soldiers")
-        priceForSoldiers = int(wantedSoldiers) * soldierPrice
-        currentSoldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedUnits = request.form.get(units)
+        totalPrice = int(wantedUnits) * price
+        curUnStat = f"SELECT {units} FROM {table} WHERE id=(?)"
+        currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
 
-        if int(priceForSoldiers) > int(gold):
-            return redirect("/too_many_soldiers")
+        if int(totalPrice) > int(gold):
+            return redirect("/too_many_units")
 
-        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(priceForSoldiers), cId,))
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
 
-        db.execute("UPDATE ground SET soldiers=(?) WHERE id=(?)", ((int(currentSoldiers) + int(wantedSoldiers)), cId,))
+        updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+        db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
 
         connection.commit()
 
