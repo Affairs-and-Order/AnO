@@ -95,8 +95,20 @@
         }
     }
     
+    @keyframes toppergradient {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    
     body {
-        background: rgb(230, 230, 230);
+        background: #f5f9fd;
         padding: 0;
         margin: 0;
         font-family: "nexabold";
@@ -114,7 +126,7 @@
     /*NAVBAR*/
     
     .navbar {
-        background: #963b3b;
+        background: rgb(148, 19, 168);
         position: fixed;
         width: 100%;
         height: 55px;
@@ -170,7 +182,7 @@
     .bar3 {
         width: 30px;
         height: 4.5px;
-        background-color: rgb(32, 32, 32);
+        background: rgb(240, 240, 240);
         margin: 8.5px;
         transition: all 0.2s;
         border-radius: 2px;
@@ -178,18 +190,18 @@
     
     .barclick1 {
         animation: bar1 0.5s;
-        background: rgb(240, 240, 240);
+        background-color: #ff623b;
     }
     
     .barclick2 {
         width: 20px;
         animation: bar2 0.5s;
-        background: rgb(240, 240, 240);
+        background-color: #ff623b;
     }
     
     .barclick3 {
         animation: bar1 0.5s;
-        background: rgb(240, 240, 240);
+        background-color: #ff623b;
     }
     
     .menubardiv {
@@ -228,7 +240,6 @@
     
     .menubardiv::-webkit-scrollbar-thumb {
         background: #999797;
-        border-radius: 4px;
         width: 100%;
     }
     
@@ -258,10 +269,11 @@
     }
     
     .menubardiv a:hover {
-        background: #963b3b;
+        background: #ff623b;
         margin: 10px 0px;
         padding: 10px 15px;
         color: white;
+        box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.15);
     }
     
     @media all and (max-width: 600px) {
@@ -275,7 +287,6 @@
         width: fit-content;
         margin-top: 7.5px;
         margin-right: 10px;
-        background-color: #632f2f;
         transition: all 0.2s;
         padding: 0px 8px;
         padding-top: 5px;
@@ -289,13 +300,12 @@
     }
     
     .loginsignup:hover {
-        background-color: #b84646;
+        color: #d43c17;
     }
     
     .resourceicon {
         height: 45px;
         width: 45px;
-        background: #632f2f;
         margin: 5px 15px;
         float: right;
         border: none;
@@ -310,7 +320,7 @@
     /*CONTENT*/
     
     .templatediv {
-        background: rgb(240, 240, 240);
+        background: #ffffff;
         width: 90%;
         margin: 50px auto;
         margin-top: 90px;
@@ -329,12 +339,15 @@
     .templatedivtopper {
         padding: 20px;
         padding-top: 10px;
-        /*background-image: linear-gradient(316deg, #163d77 0%, #1662a0 74%);*/
-        background-image: linear-gradient(135deg, #b84646 0%, #753636 100%);
+        animation: toppergradient 12s ease infinite;
+        transition: all 0.2s;
+        background: linear-gradient(-45deg, #d43c17 0%, rgb(148, 19, 168) 100%);
+        background-size: 400% 400%;
     }
     
     .templatedivtitle {
         text-align: center;
+        color: rgb(255, 255, 255);
         font-size: 40px;
         animation: templatedivtitleload 0.25s;
         margin: 0;
@@ -357,7 +370,7 @@
     }
     
     .templatecontentheaderleft {
-        border-bottom: 5px solid rgb(220, 220, 220);
+        border-bottom: 5px solid #e1e7ec;
         padding-bottom: 6px;
         font-size: 25px;
         margin: 20px 8px;
@@ -379,8 +392,9 @@
     .templatedivbutton {
         width: fit-content;
         margin: 5px;
-        background-color: #963b3b;
-        transition: all 0.2s ease-in-out;
+        background-image: linear-gradient(360deg, rgb(148, 19, 168) 50%, #d43c17 50%);
+        background-size: 200% 200%;
+        background-position: 0% 0%;
         padding: 10px 20px;
         text-decoration: none;
         font-size: 14px;
@@ -394,11 +408,11 @@
         text-align: center;
         text-shadow: 2px 2px 1px #00000020, 3px 3px 2px #00000020;
         text-transform: uppercase;
-        box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.0), #75363630 0px 3px 3.5px -1px, #75363635 0px 6px 6px 0px, #75363632 0px 1px 10px 0px;
+        transition: all 0.3s ease;
     }
     
     .templatedivbutton:hover {
-        box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.20), 0 5px 5px 2px #75363600;
+        background-position: 0% 100%;
     }
     
     .templatecenteredbutton {
@@ -446,9 +460,12 @@
     }
     
     .divflex2full {
-        background: rgb(230, 230, 230);
-        border-bottom: 5px solid rgb(220, 220, 220);
+        background: #e1e7ec;
         align-items: center;
+    }
+    
+    .divflex2full div {
+        padding: 5px;
     }
     
     .divflex2center {
@@ -515,7 +532,11 @@
     }
     
     .templatetable tr:nth-child(odd) {
-        background: rgb(230, 230, 230);
+        background: #e1e7ec;
+    }
+    
+    .templatetable tr:nth-child(even) {
+        background: #f5f9fd;
     }
     
     .templatetable td {
@@ -742,7 +763,7 @@
     /*FOOTER*/
     
     .footer {
-        background: rgb(215, 215, 215);
+        background: #e1e7ec;
         padding: 15px;
         color: black;
         display: flex;
