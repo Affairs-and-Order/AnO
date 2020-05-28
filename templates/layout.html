@@ -40,14 +40,23 @@
     {% if session.get("logged_in") == True%}
     <div class="menubardiv" id="menubardiv">
 
+        <h3>Internal Affairs</h3>
         <a class="menubara" href="/country/id={{ session['user_id'] }}">Country</a>
-        <a class="menubara" href="/provinces/id={{ session['user_id'] }}">Provinces</a>
+        <a class="menubara" href="/provinces">Provinces</a>
         <a class="menubara" href="/market">Market</a>
         <a class="menubara" href="/military">Military</a>
-        <a class="menubara" href="/coalition">Coalition</a>
-        <a class="menubara" href="/establishcoalition">Establish a Coalition</a>
+
+        <h3>Global Affairs</h3>
+        <a class="menubara" href="/coalition">My Coalition</a>
         <a class="menubara" href="/countries">Countries</a>
         <a class="menubara" href="/coalitions">Coalitions</a>
+
+        <h3>Other</h3>
+        <div class="menubarotherdiv">
+            <a class="menubara" href="/tutorial">Tutorial</a>
+            <a class="menubara" href="/links">Links</a>
+            <a class="menubara" href="/statistics">Statistics</a>
+        </div>
 
     </div>
     {% endif %}
