@@ -24,3 +24,4 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 4. Run Flask in yet another terminal window
 
 Does not work on Repl.it use CS50 IDE, or run it on your own machine
+if you are using CS50 use "flask run --host=0.0.0.0 --port=8080" instead of flask run and add "https://"  at the front and a / at the end of the link
