@@ -17,45 +17,39 @@
     }
     
     @keyframes bar1 {
-        0% {
-            background: rgb(32, 32, 32);
-        }
+        0% {}
         50% {
             width: 0px;
             opacity: 0;
-            background: rgb(32, 32, 32);
+            background: white;
         }
         100% {
-            background: rgb(240, 240, 240);
+            background: #ff623b;
         }
     }
     
     @keyframes bar2 {
-        0% {
-            background: rgb(32, 32, 32);
-        }
+        0% {}
         50% {
             width: 0px;
             opacity: 0;
-            background: rgb(32, 32, 32);
+            background: white;
         }
         100% {
             width: 20px;
-            background: rgb(240, 240, 240);
+            background: #ff623b;
         }
     }
     
     @keyframes bar3 {
-        0% {
-            background: rgb(32, 32, 32);
-        }
+        0% {}
         50% {
             width: 0px;
             opacity: 0;
-            background: rgb(32, 32, 32);
+            background: white;
         }
         100% {
-            background: rgb(240, 240, 240);
+            background: #ff623b;
         }
     }
     
