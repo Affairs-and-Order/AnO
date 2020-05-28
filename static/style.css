@@ -219,7 +219,18 @@
         overflow: scroll;
     }
     
-    .menubara {
+    .menubardiv h3 {
+        color: black;
+        margin-left: 10px;
+    }
+    
+    @media all and (max-width: 600px) {
+        .menubardiv h3 {
+            margin: auto;
+        }
+    }
+    
+    .menubardiv a {
         text-decoration: none;
         color: black;
         font-size: 17px;
@@ -232,7 +243,7 @@
         font-weight: bolder;
     }
     
-    .menubara:hover {
+    .menubardiv a:hover {
         background: #963b3b;
         margin: 10px 0px;
         padding: 10px 15px;
@@ -240,7 +251,7 @@
     }
     
     @media all and (max-width: 600px) {
-        .menubara {
+        .menubardiv a {
             margin: 10px 0px;
         }
     }
