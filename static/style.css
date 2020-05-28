@@ -104,6 +104,10 @@
         color: white;
     }
     
+    .body {
+        overflow: hidden;
+    }
+    
     ul {
         font-family: "Ubuntu";
     }
@@ -189,18 +193,18 @@
     }
     
     .menubardiv {
-        width: 200px;
+        width: 210px;
         background: rgb(240, 240, 240);
         position: fixed;
         left: 0px;
         top: 55px;
-        height: 100%;
+        bottom: 0;
         margin-left: -10px;
         z-index: 1;
         transition: all 0.2s;
         opacity: 0;
         pointer-events: none;
-        overflow: scroll;
+        overflow: auto;
     }
     
     @media all and (max-width: 600px) {
@@ -218,14 +222,25 @@
         box-shadow: 0px 0px 300px 10000px rgba(0, 0, 0, 0.75);
     }
     
+    .menubardiv::-webkit-scrollbar {
+        width: 10px;
+    }
+    
+    .menubardiv::-webkit-scrollbar-thumb {
+        background: #999797;
+        border-radius: 4px;
+        width: 100%;
+    }
+    
     .menubardiv h3 {
-        color: black;
+        color: #999797;
         margin-left: 10px;
     }
     
     @media all and (max-width: 600px) {
         .menubardiv h3 {
             margin: auto;
+            text-align: center;
         }
     }
     
@@ -539,6 +554,18 @@
         text-align: center;
         float: none;
     }
+    
+    .templatetable a,
+    .templatetable2 a {
+        color: rgb(74, 150, 175);
+        transition: all 0.2s;
+        font-weight: bolder;
+    }
+    
+    .templatetable a:hover,
+    .templatetable2 a:hover {
+        color: rgb(88, 196, 231);
+    }
     /*LOGINSIGNUP*/
     
     .loginsignupinput {
@@ -585,7 +612,7 @@
     .loginsignupbutton:hover {}
     
     .loginsignupforgot {
-        color: rgb(88, 196, 231);
+        color: rgb(74, 150, 175);
         padding: 2px;
         transition: all 0.2s;
         text-decoration: underline;
@@ -593,7 +620,7 @@
     }
     
     .loginsignupforgot:hover {
-        color: rgb(74, 150, 175);
+        color: rgb(88, 196, 231);
     }
     
     .login,
@@ -740,7 +767,7 @@
         width: fit-content;
         text-decoration: underline;
         transition: all 0.2s;
-        color: rgb(88, 196, 231);
+        color: rgb(74, 150, 175);
         padding: 2px;
         transition: all 0.2s;
         cursor: pointer;
@@ -753,5 +780,5 @@
     }
     
     .footer div a:hover {
-        color: rgb(74, 150, 175);
+        color: rgb(88, 196, 231);
     }

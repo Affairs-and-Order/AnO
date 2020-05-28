@@ -12,6 +12,8 @@ function menubardrop() {
     document.getElementById("bar2").classList.toggle("barclick2");
 
     document.getElementById("bar3").classList.toggle("barclick3");
+
+    document.body.classList.toggle("body");
 }
 
 
