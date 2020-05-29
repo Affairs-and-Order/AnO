@@ -335,6 +335,9 @@
         transition: all 0.2s;
         background: linear-gradient(-45deg, #d43c17 0%, rgb(148, 19, 168) 100%);
         background-size: 400% 400%;
+        transform: skewY(-3deg);
+        transform-origin: top left;
+        min-height: 20vh;
     }
     
     .templatedivtitle {
@@ -345,7 +348,9 @@
         margin: 0;
         padding: 20px;
         position: relative;
-        /*text-shadow: 2px 2px 1px #00000050, 3px 3px 2px #00000050;*/
+        transform: skewY(3deg);
+        transform-origin: top left;
+        margin-top: 3vh;
     }
     
     .templatedivad {
@@ -754,12 +759,24 @@
     }
     /*FOOTER*/
     
+    .footerbefore {
+        transform: skewY(3deg);
+        transform-origin: top right;
+        height: 17.5vh;
+        background: #e1e7ec;
+        position: relative;
+        top: 12vh;
+        z-index: 0;
+    }
+    
     .footer {
         background: #e1e7ec;
-        padding: 15px;
+        z-index: 1;
+        padding: 2vw 2vh;
         color: black;
         display: flex;
         min-height: 10vh;
+        position: relative;
     }
     
     .footerleft,
@@ -767,6 +784,7 @@
         width: 50%;
         flex-direction: column;
         flex-wrap: wrap;
+        margin-top: -5vh;
     }
     
     .footerleft {}
