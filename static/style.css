@@ -408,7 +408,6 @@
             .templatedivbutton:hover {
                 background-position: 0% 100%;
                 color: white;
-                border-radius: 0px;
                 border-bottom: 2px solid rgba(0, 0, 0, 0);
             }
             
@@ -600,13 +599,13 @@
             
             .landingpagebutton {
                 background-color: none;
-                border: 1.5px solid #e3e9f0;
+                border: 2px solid #e3e9f0;
                 background: #f5f9fd00;
             }
             
             .landingpagebutton:hover {
                 background: #00a7e1;
-                border: 1.5px solid #36394500;
+                border: 2px solid #36394500;
             }
             /*LOGINSIGNUP*/
             
@@ -714,7 +713,7 @@
                 border-radius: 30px;
                 width: 85%;
                 margin: 10px auto;
-                box-shadow: inset 0px 0px 0px 2px #963b3b;
+                box-shadow: inset 0px 0px 0px 2px #e3e9f0;
                 padding: 0;
                 overflow: hidden;
             }
@@ -735,7 +734,7 @@
             }
             
             .militaryflex2 div:hover {
-                background: #963b3b;
+                background: #178db8;
                 color: white;
             }
             
@@ -765,7 +764,7 @@
             .militaryleftclick,
             .militarycenterclick,
             .militaryrightclick {
-                background: #963b3b;
+                background: #178db8;
                 color: white;
             }
             
