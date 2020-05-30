@@ -133,7 +133,7 @@
             }
             
             .navbartitle {
-                margin-top: 15px;
+                margin-top: 10px;
                 font-weight: bold;
                 font-size: 26px;
                 float: left;
@@ -585,9 +585,8 @@
             
             .templatetable a,
             .templatetable2 a {
-                color: rgb(74, 150, 175);
+                color: #00a7e1;
                 transition: all 0.2s;
-                font-weight: bold;
                 text-decoration: none;
             }
             
@@ -608,6 +607,21 @@
                 border: 2px solid #36394500;
             }
             /*LOGINSIGNUP*/
+            
+            .signupdiv div {
+                margin: 4px;
+                margin: auto;
+            }
+            
+            .mapselect {
+                background: rgba(0, 0, 0, 0.75);
+                width: 90%;
+                height: 50vh;
+                border: 2px solid #e3e9f0;
+                margin-top: 0px;
+                margin: 10px auto;
+                box-shadow: rgba(39, 41, 59, 0.2) 0px 20px 50px 10px;
+            }
             
             .loginsignupinput {
                 border: 4px solid #e3e9f0;
