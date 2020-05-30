@@ -107,7 +107,7 @@
                 padding: 0;
                 margin: 0;
                 /*font-family: "nexabold";*/
-                font-family: 'Baloo Chettan 2';
+                font-family: 'Baloo 2';
                 animation: textload 0.5s;
                 color: white;
             }
@@ -335,7 +335,7 @@
                 padding: 3vh;
                 animation: toppergradient 6s ease infinite;
                 transition: all 0.2s;
-                background: linear-gradient(-45deg, #40E0D0 0%, #00a7e1 20%, #00a7e1 80%, #AFEEEE 100%);
+                background: linear-gradient(-45deg, #40E0D0 0%, #178db8 15%, #178db8 85%, #AFEEEE 100%);
                 background-size: 400% 400%;
             }
             
