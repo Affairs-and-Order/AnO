@@ -182,8 +182,18 @@ def coalition():
 @login_required
 @app.route("/establishcoalition", methods=["GET", "POST"])
 def establishcoalition():
-    if request.method == "GET":
+    if request.method == "POST":
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        name = request.form.get("name")
+
+        db.execute("INSERT INTO colNames (name) VALUES (?)", (name,))
+        connection.commit()
+        return redirect("/coalition")
+    else:
         return render_template("establishcoalition.html")
+
 
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
