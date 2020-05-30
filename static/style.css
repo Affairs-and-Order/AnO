@@ -335,7 +335,7 @@
                 padding: 3vh;
                 animation: toppergradient 6s ease infinite;
                 transition: all 0.2s;
-                background: linear-gradient(-45deg, #40E0D0 0%, #00a7e1 10%, #00a7e1 90%, #AFEEEE 100%);
+                background: linear-gradient(-45deg, #40E0D0 0%, #00a7e1 20%, #00a7e1 80%, #AFEEEE 100%);
                 background-size: 400% 400%;
             }
             
@@ -385,7 +385,7 @@
             .templatedivbutton {
                 width: fit-content;
                 margin: 5px;
-                background-image: linear-gradient(180deg, #f5f9fd 50%, #0094c8 50%);
+                background-image: linear-gradient(180deg, #f5f9fd 50%, #00a7e1 50%);
                 background-size: 200% 200%;
                 background-position: 0% 0%;
                 padding: 10px 20px;
@@ -590,12 +590,13 @@
             
             .landingpagebutton {
                 background-color: none;
-                border: 1.5px solid #00a7e1;
-                background: none;
+                border: 1.5px solid #363945;
+                background: #f5f9fd;
             }
             
             .landingpagebutton:hover {
                 background: #00a7e1;
+                border: 1.5px solid #36394500;
             }
             /*LOGINSIGNUP*/
             
@@ -661,7 +662,6 @@
                 width: fit-content;
                 margin: auto;
             }
-            /*LANDING PAGE*/
             
             .discordlink {
                 width: 65%;
