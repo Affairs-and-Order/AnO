@@ -385,7 +385,7 @@
             .templatedivbutton {
                 width: fit-content;
                 margin: 5px;
-                background-image: linear-gradient(180deg, #f5f9fd 50%, #00a7e1 50%);
+                background-image: linear-gradient(180deg, #f5f9fd00 50%, #00a7e1 50%);
                 background-size: 200% 200%;
                 background-position: 0% 0%;
                 padding: 10px 20px;
@@ -516,10 +516,14 @@
             }
             
             .templatetable {
-                border: 1.8px solid #363945;
-                border-collapse: collapse;
-                margin: 5px auto;
+                padding: 12px;
+                margin: 8px auto;
                 width: 90%;
+                box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
+            }
+            
+            .templatetable tr {
+                border-collapse: collapse;
             }
             
             .templatetable th {
@@ -553,9 +557,14 @@
                 float: right;
                 text-align: right;
             }
+            /*table2*/
             
             .templatetable2 {
                 margin: 25px auto;
+            }
+            
+            .templatetable2 tbody {
+                border-collapse: collapse;
             }
             
             .templatetable2 th {
@@ -579,7 +588,8 @@
             .templatetable2 a {
                 color: rgb(74, 150, 175);
                 transition: all 0.2s;
-                font-weight: bolder;
+                font-weight: bold;
+                text-decoration: none;
             }
             
             .templatetable a:hover,
@@ -591,7 +601,7 @@
             .landingpagebutton {
                 background-color: none;
                 border: 1.5px solid #363945;
-                background: #f5f9fd;
+                background: #f5f9fd00;
             }
             
             .landingpagebutton:hover {
@@ -601,7 +611,7 @@
             /*LOGINSIGNUP*/
             
             .loginsignupinput {
-                border: 4px solid rgb(220, 220, 220);
+                border: 4px solid #e3e9f0;
                 padding: 10px;
                 outline: none;
                 font-size: 16px;
