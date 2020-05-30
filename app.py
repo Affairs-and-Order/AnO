@@ -174,10 +174,20 @@ def market():
         return render_template("market.html")
 
 @login_required
-@app.route("/coalition", methods=["GET", "POST"])
+@app.route("/coalition", methods=["GET"])
 def coalition():
     if request.method == "GET":
-        return render_template("coalition.html")
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        try: 
+            colId = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (session["user_id"], )).fetchone()[0]
+            if colId != None:
+                inCol = True
+                colName = colId
+        except TypeError:
+            inCol = False
+            colName = ""
+        return render_template("coalition.html", inCol=inCol, colName=colName)
 
 @login_required
 @app.route("/establish_coalition", methods=["GET", "POST"])
