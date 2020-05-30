@@ -224,10 +224,15 @@ def countries():
         return render_template("countries.html", zipped=zipped)
 
 @login_required
-@app.route("/coalitions", methods=["GET", "POST"])
+@app.route("/coalitions", methods=["GET"])
 def coalitions():
     if request.method == "GET":
-        return render_template("coalitions.html")
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        colNames = db.execute("SELECT name FROM colNames").fetchall()
+
+        return render_template("coalitions.html", colNames=colNames)
 
 @login_required
 @app.route("/buy/<units>", methods=["POST"])
