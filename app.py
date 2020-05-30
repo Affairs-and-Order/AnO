@@ -180,8 +180,8 @@ def coalition():
         return render_template("coalition.html")
 
 @login_required
-@app.route("/establishcoalition", methods=["GET", "POST"])
-def establishcoalition():
+@app.route("/establish_coalition", methods=["GET", "POST"])
+def establish_coalition():
     if request.method == "POST":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
@@ -189,10 +189,13 @@ def establishcoalition():
         name = request.form.get("name")
 
         db.execute("INSERT INTO colNames (name) VALUES (?)", (name,))
+        colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
+        db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
+
         connection.commit()
         return redirect("/coalition")
     else:
-        return render_template("establishcoalition.html")
+        return render_template("establish_coalition.html")
 
 
 @login_required
