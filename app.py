@@ -174,16 +174,39 @@ def market():
         return render_template("market.html")
 
 @login_required
-@app.route("/coalition", methods=["GET", "POST"])
+@app.route("/coalition", methods=["GET"])
 def coalition():
     if request.method == "GET":
-        return render_template("coalition.html")
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        try: 
+            colId = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (session["user_id"], )).fetchone()[0]
+            if colId != None:
+                inCol = True
+                colName = colId
+        except TypeError:
+            inCol = False
+            colName = ""
+        return render_template("coalition.html", inCol=inCol, colName=colName)
 
 @login_required
-@app.route("/establishcoalition", methods=["GET", "POST"])
-def establishcoalition():
-    if request.method == "GET":
-        return render_template("establishcoalition.html")
+@app.route("/establish_coalition", methods=["GET", "POST"])
+def establish_coalition():
+    if request.method == "POST":
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        name = request.form.get("name")
+
+        db.execute("INSERT INTO colNames (name) VALUES (?)", (name,))
+        colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
+        db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
+
+        connection.commit()
+        return redirect("/coalition")
+    else:
+        return render_template("establish_coalition.html")
+
 
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
@@ -211,10 +234,15 @@ def countries():
         return render_template("countries.html", zipped=zipped)
 
 @login_required
-@app.route("/coalitions", methods=["GET", "POST"])
+@app.route("/coalitions", methods=["GET"])
 def coalitions():
     if request.method == "GET":
-        return render_template("coalitions.html")
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        colNames = db.execute("SELECT name FROM colNames").fetchall()
+
+        return render_template("coalitions.html", colNames=colNames)
 
 @login_required
 @app.route("/buy/<units>", methods=["POST"])

@@ -9,6 +9,11 @@
     <div class="templatedivcontent">
         <h2 class="templatecontentheaderleft"></h2>
         <p class="templatecontentpleft"></p>
+        {% if inCol == False %}
+            <p>You aren't in a coalition, you can <a href="/establish_coalition">establish one</a> or join one</p>
+        {% else %}
+            <p>You are in "{{ colName }}"</p>
+        {% endif %}
 
 
 
