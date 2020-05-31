@@ -9,13 +9,17 @@
     <div class="templatedivcontent">
 
         <h2 class="templatecontentheaderleft">Welcome!</h2>
-        <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war!</p>
+        <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war!
+            <a class="templatelink">Learn More</a>
+        </p>
 
         <div class="templatedivflex2">
             <div class="templatedivflex2left">
                 <h2 class="templatecontentheadercenter">Go to your nation</h2>
                 {% if session.get("logged_in") != True %}
-                <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login">LOGIN</a>
+                <div class="landingpagebuttondiv">
+                    <a class="landingpagebutton" href="/login">LOGIN</a>
+                </div>
                 <h2 class="templatecontentheadercenter">Or create one!</h2>
                 <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup">SIGNUP</a> {% elif session.get("logged_in") == True %}
                 <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}">COUNTRY</a> {% endif %}
@@ -37,7 +41,7 @@
 
     <div class="footerleft">
 
-        <a href="#">Discord</a>
+        <a href="https://discord.gg/bvSVudc">Discord</a>
         <a href="#">Forum</a>
         <a href="#">Wiki</a>
         <a href="#">Reddit</a>
