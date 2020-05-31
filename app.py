@@ -5,15 +5,15 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required
-from flask_mail import Mail, Message
+# from flask_mail import Mail, Message
 # from celery import Celery
 # from celery.schedules import crontab
 
 app = Flask(__name__)
 
-app.config["MAIL_SERVER"] = None # replace this with the domain of the email
-app.config["MAIL_PORT"] = 465
-app.config["MAIL_USE_SSL"] = True
+# app.config["MAIL_SERVER"] = None # replace this with the domain of the email
+# app.config["MAIL_PORT"] = 465
+# app.config["MAIL_USE_SSL"] = True
 
 # app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
 # app.config['result_backend'] = 'redis://localhost:6379/0'
@@ -29,17 +29,17 @@ def setup_periodic_tasks(sender, **kwargs):
         populationGrowth.s(),
     )"""
 
-mail = Mail(app)
+# mail = Mail(app)
 
 # code for sending custom email messages to users
-def sendEmail(title, content, user):
+"""def sendEmail(title, content, user):
 
     conn = sqlite3.connect('affo/aao.db')
 
     msg = Message(title)
     msg.add_recipient("somebodyelse@example.com")
     msg.html = content
-    mail.send(msg)
+    mail.send(msg)"""
 
 
 # basic cache configuration
@@ -207,43 +207,6 @@ def establish_coalition():
     else:
         return render_template("establish_coalition.html")
 
-
-@login_required
-@app.route("/createprovince", methods=["GET", "POST"])
-def createprovince():
-    if request.method == "GET":
-        return render_template("createprovince.html")
-
-@login_required
-@app.route("/marketoffer", methods=["GET", "POST"])
-def marketoffer():
-    if request.method == "GET":
-        return render_template("marketoffer.html")
-
-@login_required
-@app.route("/countries")
-def countries():
-    if request.method == "GET":
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-        name = db.execute("SELECT username FROM users").fetchall()
-        population = db.execute("SELECT population FROM stats").fetchall()
-        countryId = db.execute("SELECT id FROM users").fetchall()
-        connection.commit()
-        zipped = zip(name, population, countryId)
-        return render_template("countries.html", zipped=zipped)
-
-@login_required
-@app.route("/coalitions", methods=["GET"])
-def coalitions():
-    if request.method == "GET":
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-
-        colNames = db.execute("SELECT name FROM colNames").fetchall()
-
-        return render_template("coalitions.html", colNames=colNames)
-
 @login_required
 @app.route("/buy/<units>", methods=["POST"])
 def buy(units):
@@ -296,6 +259,7 @@ def buy(units):
 @login_required
 @app.route("/sell/<units>", methods=["POST"])
 def sell(units):
+
     if request.method == "POST":
     
         cId = session["user_id"]
@@ -338,6 +302,51 @@ def sell(units):
         connection.commit()
 
         return redirect("/military")
+
+@login_required
+@app.route("/createprovince", methods=["GET", "POST"])
+def createprovince():
+    if request.method == "GET":
+        return render_template("createprovince.html")
+
+@login_required
+@app.route("/join_coalition", methods=["GET", "POST"])
+def join_coalition():
+    if request.method == "POST":
+        print('Under Construction')
+    else:
+        return render_template("join_coalition.html")
+
+
+@login_required
+@app.route("/marketoffer", methods=["GET", "POST"])
+def marketoffer():
+    if request.method == "GET":
+        return render_template("marketoffer.html")
+
+@login_required
+@app.route("/countries")
+def countries():
+    if request.method == "GET":
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        name = db.execute("SELECT username FROM users").fetchall()
+        population = db.execute("SELECT population FROM stats").fetchall()
+        countryId = db.execute("SELECT id FROM users").fetchall()
+        connection.commit()
+        zipped = zip(name, population, countryId)
+        return render_template("countries.html", zipped=zipped)
+
+@login_required
+@app.route("/coalitions", methods=["GET"])
+def coalitions():
+    if request.method == "GET":
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        colNames = db.execute("SELECT name FROM colNames").fetchall()
+
+        return render_template("coalitions.html", colNames=colNames)
 
 # available to run if double click the file
 if __name__ == "__main__":
