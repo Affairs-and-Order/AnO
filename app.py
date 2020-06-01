@@ -198,14 +198,18 @@ def establish_coalition():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = request.form.get("name")
+        try: 
+            db.execute("SELECT userId FROM coalitions WHERE userId=(?)", (session["user_id"],)).fetchone()[0]
+            return error(403, "You are already in a coalition")
+        except:
+            name = request.form.get("name")
 
-        db.execute("INSERT INTO colNames (name) VALUES (?)", (name,))
-        colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
-        db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
+            db.execute("INSERT INTO colNames (name) VALUES (?)", (name,))
+            colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
+            db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
-        connection.commit()
-        return redirect("/coalition")
+            connection.commit()
+            return redirect("/coalition")
     else:
         return render_template("establish_coalition.html")
 
