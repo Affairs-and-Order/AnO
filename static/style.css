@@ -637,8 +637,8 @@
                             height: 100vh;
                             animation: toppergradient 3s ease-in-out infinite;
                             transition: all 0.2s;
-                            background: linear-gradient(145deg, #178db8 10%, #00a7e1 50%, #AFEEEE 100%);
-                            background-size: 120% 120%;
+                            background: linear-gradient(145deg, #178db8 5%, #00a7e190 85%, #AFEEEE 100%);
+                            background-size: 130% 130%;
                             padding: 0;
                             box-shadow: 0px 6px 8px 2px #178db830;
                         }
@@ -647,6 +647,8 @@
                             animation: none;
                             padding-top: 75px;
                             font-size: 55px;
+                            color: rgb(255, 255, 255);
+                            text-shadow: 0px 2px 5px #00000070;
                         }
                         
                         .landingpagetopper div {
@@ -667,17 +669,20 @@
                         
                         .landingpageinforight,
                         .landingpageinfoleft {
-                            color: black;
+                            color: black !important;
                             height: fit-content;
                         }
                         
                         .landingpageinfoleft {
                             width: 70% !important;
                             color: white;
+                            text-shadow: 0px 2px 3px #00000070;
                         }
                         
                         .landingpageinfoleft h1 {
                             font-size: 55px !important;
+                            padding: 6px !important;
+                            color: white !important;
                         }
                         
                         .landingpageinfoleft p {
@@ -701,8 +706,8 @@
                             color: white;
                             border-radius: 190px;
                             position: relative;
-                            top: -2px;
-                            box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 6px 8px 2px #00a7e130;
+                            top: -3px;
+                            box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 6px 12px 4px #00a7e130;
                             transition: all 0.2.5s linear;
                             width: 65% !important;
                             height: 35px;
@@ -712,7 +717,7 @@
                         .landingpagebutton:hover {
                             background: #00a7e1;
                             background-position: 0;
-                            box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3);
+                            box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3), 0px 6px 8px 2px #00a7e120;
                             border: none;
                             top: 0;
                         }
