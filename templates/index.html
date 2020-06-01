@@ -17,9 +17,7 @@
             <div class="templatedivflex2left">
                 <h2 class="templatecontentheadercenter">Go to your nation</h2>
                 {% if session.get("logged_in") != True %}
-                <div class="landingpagebuttondiv">
-                    <a class="landingpagebutton" href="/login">LOGIN</a>
-                </div>
+                <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login">LOGIN</a>
                 <h2 class="templatecontentheadercenter">Or create one!</h2>
                 <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup">SIGNUP</a> {% elif session.get("logged_in") == True %}
                 <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}">COUNTRY</a> {% endif %}

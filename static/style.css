@@ -624,44 +624,32 @@
                 }
                 /*LANDING PAGE*/
                 
-                .landingpagebuttondiv {
-                    width: 300px;
-                    margin: 0 auto;
-                    padding: 2px;
-                    background-color: #807047;
-                    background-image: gold, gold, white;
-                    background-repeat: no-repeat;
-                    background-size: 0 2px, 0 100%, 0% 2px;
-                    background-position: top center, top center, bottom center;
-                    animation: drawBorderFromCenter 4s;
-                }
-                
-                @keyframes drawBorderFromCenter {
-                    0% {
-                        background-size: 0 2px, 0 0, 100% 100%;
-                    }
-                    20% {
-                        background-size: 100% 2px, 100% 0, 100% 100%;
-                    }
-                    66% {
-                        background-size: 100% 2px, 100% 98%, 100% 100%;
-                    }
-                    99% {
-                        background-size: 100% 2px, 100% 98%, 0 2px;
-                    }
-                }
-                
-                .landingpagebuttondiv:hover {
-                    border: 2px solid rgba(0, 0, 0, 0);
-                }
-                
                 .landingpagebutton {
-                    color: black;
-                    font-size: 25px;
-                    text-decoration: none;
+                    background: #00a7e1;
+                    border: none;
+                    background-position: 0;
+                    color: white;
+                    border-radius: 190px;
+                    position: relative;
+                    top: -2px;
+                    box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 6px 8px 2px #00a7e130;
                 }
                 
-                .landingpagebutton:hover {}
+                .landingpagebutton:hover {
+                    background: #00a7e1;
+                    background-position: 0;
+                    box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3);
+                    border: none;
+                    top: 0;
+                }
+                
+                .landingpagebutton:focus {
+                    background: #00a7e1;
+                    background-position: 0;
+                    box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3);
+                    border: none;
+                    top: 0;
+                }
                 /*LOGINSIGNUP*/
                 
                 .signupdiv div {
