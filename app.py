@@ -4,7 +4,7 @@ from tempfile import mkdtemp
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
-from helpers import login_required
+from helpers import login_required, error
 # from flask_mail import Mail, Message
 # from celery import Celery
 # from celery.schedules import crontab
@@ -64,7 +64,8 @@ def login():
         username = request.form.get("username") # gets the username input from the forms
 
         if not username or not password: # checks if inputs are blank
-            return redirect("/error_no_pw_or_un") #TODO change to actual error
+            return error(400, "No Password or Username")
+
         user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone() # selects data about user, from users
         connection.commit()
 
@@ -75,7 +76,8 @@ def login():
             connection.commit()
             connection.close()
             return redirect("/") # redirects user to homepage
-        return redirect("/error_wrong_pw")
+
+        return error(403, "Wrong password")
 
     else:
         return render_template("login.html") # renders login.html when "/login" is acessed via get
@@ -94,9 +96,9 @@ def signup():
         confirmation = request.form.get("confirmation")
         connection.commit()
         if not confirmation or not password or not email or not username: # checks for blank inputs
-            return redirect("/error_blank") #TODO change to actual error
-        elif password != confirmation: # checks if password is = to confirmation password
-            return redirect("/error_wrong_cn") #TODO change to actual error
+            return error(400, "Blank Input")
+        elif password != confirmation: # checks if password is = to confirmation passwordr
+            return error(400, "Passwords must match.")
         else:
             hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
             db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
