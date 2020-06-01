@@ -1,9 +1,39 @@
 {% extends "layout.html"%} {% block title %} Home {% endblock %} {% block body %}
 
-<div class="templatediv">
+<div class="templatediv landingpagediv">
 
-    <div class="templatedivtopper">
+    <div class="templatedivtopper landingpagetopper">
         <h1 class="templatedivtitle">Affairs and Order</h1>
+
+        <div class="templatedivflex2">
+            <div class="templatedivflex2left">
+
+                <div class="landingpageinfoleft">
+
+                    <h1>Welcome!</h1>
+                    <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war!
+
+                    </p>
+
+                </div>
+            </div>
+            <div class="templatedivflex2right">
+
+                <div class="landingpageinforight">
+
+                    <h2 class="templatecontentheadercenter">Go to your nation</h2>
+                    {% if session.get("logged_in") != True %}
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login">LOGIN</a>
+                    <h2 class="templatecontentheadercenter">Or create one!</h2>
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup">SIGNUP</a> {% elif session.get("logged_in") == True %}
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}">COUNTRY</a> {% endif %}
+
+
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <div class="templatedivcontent">
@@ -15,12 +45,6 @@
 
         <div class="templatedivflex2">
             <div class="templatedivflex2left">
-                <h2 class="templatecontentheadercenter">Go to your nation</h2>
-                {% if session.get("logged_in") != True %}
-                <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login">LOGIN</a>
-                <h2 class="templatecontentheadercenter">Or create one!</h2>
-                <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup">SIGNUP</a> {% elif session.get("logged_in") == True %}
-                <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}">COUNTRY</a> {% endif %}
 
                 <div>
 
