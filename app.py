@@ -12,10 +12,6 @@ import datetime
 
 app = Flask(__name__)
 
-app.config["MAIL_SERVER"] = None # replace this with the domain of the email
-app.config["MAIL_PORT"] = 465
-app.config["MAIL_USE_SSL"] = True
-
 app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
 app.config['result_backend'] = 'redis://localhost:6379/0'
 
@@ -34,19 +30,24 @@ celery.conf.update(app.config)
 
 mail = Mail(app)
 
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_USERNAME"] = "250wattmixer@gmail.com"
+app.config["MAIL_PASSWORD"] = "minecrab1"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_USE_TLS"] = True
+
 # code for sending custom email messages to users
-#def sendEmail(title, content, user):
+def sendEmail(title, content, user):
 
-    #database = sqlite3.connect('affo/aao.db')
-    #email = database.execute("SELECT email FROM users WHERE id=(?)", (user,)).fetchone()[0]
-    #print(email)
+    database = sqlite3.connect('affo/aao.db')
+    email = database.execute("SELECT email FROM users WHERE id=(?)", (user,)).fetchone()[0]
+    print(email)
 
-    #msg = Message(title)
-    #msg.add_recipient("somebodyelse@example.com")
-    #msg.html = content
-    #mail.send(msg)
+    msg = Message(title, recipients=['andreisva2023@gmail.com'])
+    msg.html = content
 
-#sendEmail("bloob", "<p>some content</p>", )
+sendEmail("bloob", "<p>some content</p>", 2)
 
 
 # basic cache configuration
