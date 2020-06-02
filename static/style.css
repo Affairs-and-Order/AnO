@@ -731,6 +731,14 @@
                             border: none;
                             top: 0;
                         }
+                        
+                        .discordlink {
+                            width: 65%;
+                            border: none;
+                            display: block;
+                            margin: 10px auto;
+                            height: 450px;
+                        }
                         /*LOGINSIGNUP*/
                         
                         .signupdiv div {
@@ -813,14 +821,6 @@
                             margin: auto;
                         }
                         
-                        .discordlink {
-                            width: 65%;
-                            border: none;
-                            display: block;
-                            margin: 10px auto;
-                            height: 450px;
-                        }
-                        
                         .loginsignuplink {
                             padding: 18px;
                             width: 50%;
@@ -851,18 +851,11 @@
                         .militaryflex2 {
                             justify-content: center;
                             text-align: center;
-                            border-radius: 30px;
                             width: 85%;
                             margin: 10px auto;
-                            box-shadow: inset 0px 0px 0px 2px #e3e9f0;
+                            box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), 0 2px 5px 0 rgba(0, 0, 0, .1), 0 10px 20px 0 rgba(0, 0, 0, .1);
                             padding: 0;
                             overflow: hidden;
-                        }
-                        
-                        @media all and (max-width: 600px) {
-                            .militaryflex2 {
-                                border-radius: 0px;
-                            }
                         }
                         
                         .militaryflex2 div {
@@ -873,6 +866,9 @@
                             border-radius: 0px;
                             text-transform: uppercase;
                             user-select: none;
+                            border-collapse: collapse;
+                            border-left: 0.75px solid rgb(246.5, 246.5, 246.5);
+                            border-right: 0.75px solid rgb(246.5, 246.5, 246.5);
                         }
                         
                         @media all and (max-width: 600px) {
@@ -888,8 +884,7 @@
                         }
                         
                         .militaryflex2 div:hover {
-                            background: #178db8;
-                            color: white;
+                            background: rgb(246.5, 246.5, 246.5);
                         }
                         
                         .unitflex {
@@ -922,8 +917,8 @@
                         .militaryleftclick,
                         .militarycenterclick,
                         .militaryrightclick {
-                            background: #178db8;
-                            color: white;
+                            background: #178db8 !important;
+                            color: white !important;
                         }
                         
                         .landclick,
@@ -931,6 +926,7 @@
                         .waterclick {
                             display: initial;
                         }
+                        /*Coalition*/
                         /*FOOTER*/
                         
                         .footer {
