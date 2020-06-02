@@ -5,18 +5,17 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
-# from flask_mail import Mail, Message
+from flask_mail import Mail, Message
 # from celery import Celery
 # from celery.schedules import crontab
 
 app = Flask(__name__)
 
-# app.config["MAIL_SERVER"] = None # replace this with the domain of the email
-# app.config["MAIL_PORT"] = 465
-# app.config["MAIL_USE_SSL"] = True
-
-# app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-# app.config['result_backend'] = 'redis://localhost:6379/0'
+#basic cache configuration
+app.config["SESSION_FILE_DIR"] = mkdtemp()
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
 # celery.conf.update(app.config)
@@ -29,24 +28,30 @@ def setup_periodic_tasks(sender, **kwargs):
         populationGrowth.s(),
     )"""
 
-# mail = Mail(app)
+
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_USERNAME"] = None#username
+app.config["MAIL_PASSWORD"] = None #password
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_USE_TLS"] = True
+
+mail = Mail(app)
 
 # code for sending custom email messages to users
-"""def sendEmail(title, content, user):
+def sendEmail(title, content, user):
+    with app.app_context():
+        database = sqlite3.connect('affo/aao.db')
+        email = database.execute("SELECT email FROM users WHERE id=(?)", (user,)).fetchone()
+        print(email)
+        if email != None:
+            email = email[0]
+            msg = Message(title, recipients=[email])
+            msg.html = content
+            mail.send(msg)
 
-    conn = sqlite3.connect('affo/aao.db')
+sendEmail("new user signed up", "<h1>test HTML</h1>", 4)
 
-    msg = Message(title)
-    msg.add_recipient("somebodyelse@example.com")
-    msg.html = content
-    mail.send(msg)"""
-
-
-# basic cache configuration
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
 @app.route("/")
 def index():
@@ -168,6 +173,9 @@ def military():
         connection.commit()
         return render_template("military.html", tanks=tanks, soldiers=soldiers,
         artillery=artillery, destroyers=destroyers, flying_fortresses=flying_fortresses)
+
+person = {"name": "galaxy"}
+person["message"] = "Thanks guys :D, you are all so amazing."
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
