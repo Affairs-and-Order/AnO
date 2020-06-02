@@ -6,6 +6,7 @@
                         
                         @import url('https://fonts.googleapis.com/css2?family=Rubik&family=Ubuntu&display=swap');
                         @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap');
+                        @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
                         /*KEYFRAMES*/
                         
                         @keyframes textload {
@@ -106,18 +107,16 @@
                             background: #f5f9fd;
                             padding: 0;
                             margin: 0;
-                            /*font-family: "nexabold";*/
+                            /*font-family: "nexabold";
                             font-family: 'Baloo 2';
+                            */
+                            font-family: "Poppins";
                             animation: textload 0.5s;
                             color: white;
                         }
                         
                         .body {
                             overflow: hidden;
-                        }
-                        
-                        ul {
-                            font-family: "Ubuntu";
                         }
                         /*NAVBAR*/
                         
@@ -334,7 +333,7 @@
                             padding: 3vh;
                             animation: toppergradient 5s ease infinite;
                             transition: all 0.2s;
-                            background: linear-gradient(-45deg, #40E0D0 0%, #178db8 10%, #178db8 90%, #AFEEEE 100%);
+                            background: linear-gradient(145deg, #00a7e1 10%, #149dc7 40%, #149dc7 60%, #00a7e1 90%);
                             background-size: 400% 400%;
                         }
                         
@@ -635,10 +634,10 @@
                         
                         .landingpagetopper {
                             height: 100vh;
-                            animation: toppergradient 3s ease-in-out infinite;
+                            animation: toppergradient 5s ease-in-out infinite;
                             transition: all 0.2s;
-                            background: linear-gradient(145deg, #178db8 5%, #00a7e190 85%, #AFEEEE 100%);
-                            background-size: 130% 130%;
+                            background: linear-gradient(145deg, #00a7e1 10%, #178db8 40%, #178db8 60%, #00a7e1 90%);
+                            background-size: 200% 200%;
                             padding: 0;
                             box-shadow: 0px 6px 8px 2px #178db830;
                         }
@@ -648,7 +647,7 @@
                             padding-top: 75px;
                             font-size: 55px;
                             color: rgb(255, 255, 255);
-                            text-shadow: 0px 2px 5px #00000070;
+                            text-shadow: 0px 1px 4px #084955;
                         }
                         
                         .landingpagetopper div {
@@ -674,21 +673,24 @@
                         }
                         
                         .landingpageinfoleft {
-                            width: 70% !important;
+                            width: 90% !important;
                             color: white;
-                            text-shadow: 0px 2px 3px #00000070;
+                            padding-left: 10% !important;
+                            text-shadow: 0px 1px 4px #084955;
                         }
                         
                         .landingpageinfoleft h1 {
                             font-size: 55px !important;
                             padding: 6px !important;
                             color: white !important;
+                            text-shadow: 0px 1px 4px #084955;
                         }
                         
                         .landingpageinfoleft p {
                             color: rgb(240, 240, 240) !important;
                             font-size: 24px;
                             font-weight: 550;
+                            text-indent: 0;
                         }
                         
                         .landingpageinforight {
