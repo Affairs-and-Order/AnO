@@ -677,6 +677,7 @@
                             color: white;
                             padding-left: 10% !important;
                             text-shadow: 0px 1px 4px #084955;
+                            animation: templatedivtitleload 0.25s;
                         }
                         
                         .landingpageinfoleft h1 {
@@ -691,6 +692,8 @@
                             font-size: 24px;
                             font-weight: 550;
                             text-indent: 0;
+                            animation: templatedivtitleload 0.4s;
+                            position: relative;
                         }
                         
                         .landingpageinforight {
@@ -698,7 +701,9 @@
                             box-shadow: 0px 6px 20px 8px #178db860;
                             color: black;
                             padding: 10px !important;
+                            padding-bottom: 20px !important;
                             width: 60% !important;
+                            animation: templatedivtitleload 1.25s;
                         }
                         
                         .landingpagebutton {
