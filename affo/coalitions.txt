@@ -1,0 +1,13 @@
+create an id for each coalition
+
+have 2 columns, coalition id and user_id
+
+unlimited members in coalition, dont have to have 50 columns
+
+example table:
+
+colId		user_id
+1		2
+1		8
+1		6
+2		12

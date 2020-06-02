@@ -1,30 +1,54 @@
 {% extends "layout.html"%} {% block title %} Home {% endblock %} {% block body %}
 
-<div class="templatediv">
+<div class="templatediv landingpagediv">
 
-    <div class="templatedivtopper">
+    <div class="templatedivtopper landingpagetopper">
         <h1 class="templatedivtitle">Affairs and Order</h1>
+
+        <div class="templatedivflex2">
+            <div class="templatedivflex2left">
+
+                <div class="landingpageinfoleft">
+
+                    <h1>Welcome!</h1>
+                    <p class="templatecontentpleft">
+                        In Affairs and Order you can lead a country, developing its economy, fighting in epic battles against other players, and joining a coalition with your friends to trade and conquer.
+                    </p>
+
+                </div>
+            </div>
+            <div class="templatedivflex2right">
+
+                <div class="landingpageinforight">
+
+                    <h2 class="templatecontentheadercenter">Go to your country</h2>
+                    {% if session.get("logged_in") != True %}
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login">LOGIN</a>
+                    <h2 class="templatecontentheadercenter">Or create one!</h2>
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup">SIGNUP</a> {% elif session.get("logged_in") == True %}
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}">COUNTRY</a> {% endif %}
+
+
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
     <div class="templatedivcontent">
 
         <h2 class="templatecontentheaderleft">Welcome!</h2>
-        <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war!</p>
+        <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war!
+            <a class="templatelink">Learn More</a>
+        </p>
 
         <div class="templatedivflex2">
             <div class="templatedivflex2left">
-                <h2 class="templatecontentheadercenter">Go to your nation</h2>
-                {% if uId == False %}
-                <a class="loginsignuplink templatedivbutton" href="/login">LOGIN</a>
-                <h2 class="templatecontentheadercenter">Or create one!</h2>
-                <a class="loginsignuplink templatedivbutton" href="/signup">SIGNUP</a> {% elif uId == True %}
-                <a class="loginsignuplink templatedivbutton" href="/country/id={{ seshId }}">COUNTRY</a> {% endif %}
 
                 <div>
 
-
-
-                    graph of global population / happiness / GPD / Distribution of wealth / other</div>
+                    graph of global population / happiness / GDP / Distribution of wealth / other</div>
 
             </div>
             <div class="templatedivflex2right">
@@ -35,17 +59,21 @@
         </div>
     </div>
 </div>
-
 <div class="footer">
 
     <div class="footerleft">
 
-        Footer Left
+        <a href="https://discord.gg/bvSVudc">Discord</a>
+        <a href="#">Forum</a>
+        <a href="#">Wiki</a>
+        <a href="#">Reddit</a>
 
     </div>
     <div class="footerright">
 
-        Footer Right
+        <a>Copyright Claim</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Support</a>
 
     </div>
 </div>

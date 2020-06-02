@@ -21,31 +21,260 @@
             </div>
         </div>
 
-        <h2 class="templatecontentheaderleft">Hire Military</h2>
+        <div class="templatedivad"></div>
 
-        <div class="templatedivflex2">
-            <div class="templatedivflex2left">
+        <div class="templatedivflex2 militaryflex2">
+            <div class="templatedivflex2left" id="militaryleft" onclick="militaryleft()">
 
-                <h3 class="smallheader">Military Power #</h3>
-
-            </div>
-            <div class="templatedivflex2right">
-
-                <h3 class="smallheader">Military Power #</h3>
+                <h3 class="smallheader">Land</h3>
 
             </div>
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left" id="militarycenter" onclick="militarycenter()">
 
-                <h3 class="smallheader">Military Power #</h3>
+                <h3 class="smallheader">Air</h3>
 
             </div>
-            <div class="templatedivflex2right">
+            <div class="templatedivflex2left" id="militaryright" onclick="militaryright()">
 
-                <h3 class="smallheader">Military Power #</h3>
+                <h3 class="smallheader">Water</h3>
+
+            </div>
+            <div class="templatedivflex2left" id="militaryspecial" onclick="militaryspecial()">
+
+                <h3 class="smallheader">Special</h3>
+
+            </div>
+        </div>
+        <!--LAND-->
+        <div class="land" id="land">
+
+            <div class="unitdiv">
+
+                <h2 class="templatecontentheaderleft">Soldiers</h2>
+
+                <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ soldiers }} Soldiers</h3>
+
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
+
+                        <ul>Soldiers cost 50 gold to recruit
+                            <br/>
+                        </ul>
+
+                        <form action="/soldiers" method="POST">
+                            <div class="purchasemilitarydiv">
+
+                                <input class="loginsignupinput" autocomplete="off" name="soldiers" type="number" placeholder="Amount" required/>
+
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/soldiers">Buy</button>
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/soldiers">Sell</button>
+
+                                    </div>
+                        </form>
+                        </div>
+                        <ul>You can purchase X more Soldiers today
+                            <br />You can sell X more Soldiers today
+                        </ul>
+                        </div>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/soldier.jpg" />
+                    </div>
+                </div>
+            </div>
+            <div class="unitdiv">
+
+                <h2 class="templatecontentheaderleft">Tanks</h2>
+
+                <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ tanks }} Tanks</h3>
+
+                        <p class="templatecontentpleft">Tanks are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 tank / 150 gold)</p>
+
+                        <form action="/tanks" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="tanks" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/tanks">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/tanks">Sell</button>
+
+                                    </div>
+                                </div>
+                        </form>
+                        <ul>You can purchase X more Tanks today
+                            <br />You can sell X more Tanks today
+                        </ul>
+                        </div>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/tank.jpg" />
+                    </div>
+                </div>
+            </div>
+            <div class="unitdiv">
+
+                <h2 class="templatecontentheaderleft">Artillery</h2>
+
+                <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ artillery }} Artillery</h3>
+
+                        <p class="templatecontentpleft">Artillery are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 artillery / 300 gold)</p>
+
+                        <form action="/artillery" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="artillery" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/artillery">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/artillery">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>You can purchase X more Artillery today
+                                    <br />You can sell X more Artillery today
+                                </ul>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/artillery.jpg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--AIR-->
+        <div class="air" id="air">
+
+            <div class="unitdiv">
+
+                <h2 class="templatecontentheaderleft">Flying Fortress</h2>
+
+                <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ flying_fortresses }} Flying Fortresses</h3>
+
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 flying fortress / 500 gold)</p>
+
+
+                        <form action="/flying_fortresses" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>You can purchase X more Flying Fortresses today
+                                    <br />You can sell X more Flying Fortresses today
+                                </ul>
+                            </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/flyingfortress.jpg" />
+                    </div>
+                </div>
 
             </div>
         </div>
 
+        <!--WATER-->
+        <div class="water" id="water">
+
+            <div class="unitdiv">
+
+                <h2 class="templatecontentheaderleft">Destroyer</h2>
+
+                <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ destroyers }} Destroyers</h3>
+
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 destroyer / 500 gold)</p>
+
+                        <form action="/destroyers" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="destroyers" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/destroyers">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/destroyers">Sell</button>
+
+                                    </div>
+                                </div>
+                        </form>
+                        <ul>You can purchase X more Destroyers today
+                            <br />You can sell X more Destroyers today
+                        </ul>
+                        </div>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/destroyer.jpg" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

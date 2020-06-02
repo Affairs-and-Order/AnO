@@ -1,0 +1,23 @@
+{% extends "layout.html" %} {% block title %} Coalition {% endblock %} {% block body %}
+
+<div class="templatediv">
+
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Coalition</h1>
+    </div>
+
+    <div class="templatedivcontent">
+        <h2 class="templatecontentheaderleft"></h2>
+        <p class="templatecontentpleft"></p>
+        {% if inCol == False %}
+            <p>You aren't in a coalition, you can <a href="/establish_coalition"> establish one</a> or <a href="/join_coalition">join one</a></p>
+        {% else %}
+            <p>You are in {{ colName }}</p>
+        {% endif %}
+
+
+
+    </div>
+</div>
+
+{% endblock%}

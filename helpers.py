@@ -4,7 +4,6 @@ import urllib.parse
 
 from flask import redirect, render_template, request, session
 from functools import wraps
-from celery import Celery
 
 def login_required(f):
     """
@@ -18,3 +17,6 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
+
+def error(code, message):
+    return render_template("error.html", code=code, message=message)

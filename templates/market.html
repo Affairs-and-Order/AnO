@@ -1,70 +1,66 @@
-<!DOCTYPE html>
-<html>
+{% extends "layout.html" %} {% block title %} Market {% endblock %} {% block body %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<div class="templatediv">
 
-    <link href="style.css" rel="stylesheet" type="text/css" />
-    <link href="simple-grid.css" rel="stylesheet" type="text/css" />
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="script.js"></script>
-    <link rel="icon" href="images/favicon.png" type="image/png">
-
-    <title>Affairs And Order</title>
-
-
-
-</head>
-
-<body>
-    <div class="navbar">
-
-        <div class="menubar" onclick="menubardrop()" id="menubar">
-            <div class="bar1" id="bar1"></div>
-            <div class="bar2" id="bar2"></div>
-            <div class="bar3" id="bar3"></div>
-        </div>
-
-        <a class="navbartitle" href="index.html">Affairs and Order</a>
-
-
-
-
-        <a class="loginsignup" href="login.html">Login
-        </a>
-
-        <a class="loginsignup" href="signup.html">Signup</a>
-
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Market</h1>
     </div>
 
-    <div class="menubardiv" id="menubardiv">
+    <div class="templatedivcontent">
 
-        <a class="menubara" href="country.html">Country</a>
+        <div class="templatedivflex2 divflex2full">
+            <div class="templatedivflex2left">
 
-        <a class="menubara" href="market.html">Market</a>
+                <select class="templateselect">
 
-        <a class="menubara" href="coalition.html">Coalition</a>
+    <option class="templateoption">Gold</option>
+    <option class="templateoption">Food</option>
 
-        <a class="menubara" href="world.html">World</a>
+                </select>
 
-    </div>
+            </div>
+            <div class="templatedivflex2right flex2rightfloatright">
 
+                <button class="templatedivbutton smallactionbutton">Submit</button>
 
-    <!-- START------------------------------------------------------------------------->
-
-    <div class="templatediv">
-
-        <div class="templatedivtopper">
-            <h1 class="templatedivtitle">Market</h1>
+            </div>
         </div>
 
-        <div class="templatedivcontent">
-            <h2 class="templatecontentheaderleft"></h2>
-            <p class="templatecontentpleft"></p>
+        <div class="templatedivad"></div>
 
+        <div class="templatedivflex2 divflex2center">
+            <div class="templatedivflex2left">
 
+                <a href="marketoffer" class="templatedivbutton templatecenteredbutton">Create Offer</a></h1>
+
+            </div>
+            <div class="templatedivflex2right">
+
+                <a href="myoffers" class="templatedivbutton templatecenteredbutton">View My Offers</a></h1>
+
+            </div>
         </div>
+
+        <table class="templatetable templatetable2">
+            <tr>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Offering Party</th>
+                <th>Purchase</th>
+            </tr>
+            <tr>
+                <td>Price:</td>
+                <td>Amount</td>
+                <td>Buying / Selling</td>
+                <td>Country Name /w link</td>
+                <td>button</td>
+
+            </tr>
+        </table>
+
+
     </div>
+</div>
+
+{% endblock%}

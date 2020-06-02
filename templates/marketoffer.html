@@ -1,0 +1,50 @@
+{% extends "layout.html" %} {% block title %} MarketOffer {% endblock %} {% block body %}
+<div class="templatediv">
+
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Market Offer</h1>
+    </div>
+
+    <div class="templatedivcontent">
+        <p class="templatecontentpleft">this is what trading is all about</p>
+
+        <div class="templatedivflex2 divflex2center">
+            <div class="templatedivflex2left flexchildvanilla">
+
+                <select class="templateselect">
+
+                    <option class="templateoption">Gold</option>
+                    <option class="templateoption">Food</option>
+
+
+                </select>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price" required/>
+
+            </div>
+        </div>
+        <div class="templatedivflex2 divflex2center">
+            <div class="templatedivflex2left">
+
+                <button class="templatedivbutton templatecenteredbutton">Buy offer</button>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <button class="templatedivbutton templatecenteredbutton">Sell Offer</button>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

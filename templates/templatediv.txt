@@ -1,3 +1,4 @@
+{% extends "layout.html" %} {% block title %} Template {% endblock %} {% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper">
@@ -11,3 +12,4 @@
 
     </div>
 </div>
+{% endblock %}

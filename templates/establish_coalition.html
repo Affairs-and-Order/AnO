@@ -1,0 +1,32 @@
+{% extends "layout.html" %} {% block title %} EstablishCoalition {% endblock %} {% block body %}
+<div class="templatediv">
+
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Establish a Coalition</h1>
+    </div>
+
+    <div class="templatedivad"></div>
+
+    <div class="templatedivcontent">
+
+        <p class="templatecontentpleft">information about coalitions</p>
+
+        <div class="templatedivflex2 divflex2center">
+            <div class="templatedivflex2left">
+
+                <form action="/establish_coalition" method="POST">
+
+                    <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Coalition Name" required/>
+
+            </div>
+            <div class="templatedivflex2right">
+
+                <button class="templatedivbutton templatecenteredbutton">Establish</button>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
