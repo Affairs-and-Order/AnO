@@ -30,8 +30,8 @@ def setup_periodic_tasks(sender, **kwargs):
 
 
 app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_USERNAME"] = None#username
-app.config["MAIL_PASSWORD"] = None #password
+app.config["MAIL_USERNAME"] = "temp.aao@gmail.com" # username
+app.config["MAIL_PASSWORD"] = "J75-rN-V+suCc6ff" # password
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_SSL"] = False
 app.config["MAIL_USE_TLS"] = True
@@ -49,9 +49,6 @@ def sendEmail(title, content, user):
             msg = Message(title, recipients=[email])
             msg.html = content
             mail.send(msg)
-
-sendEmail("new user signed up", "<h1>test HTML</h1>", 4)
-
 
 @app.route("/")
 def index():
@@ -116,6 +113,7 @@ def signup():
             db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             connection.commit()
+            sendEmail("new user signed up", "<h1>test HTML</h1>", session["user_id"])
             connection.close()
             return redirect("/")
     else:
