@@ -42,10 +42,9 @@ mail = Mail(app)
 def sendEmail(title, content, user):
     with app.app_context():
         database = sqlite3.connect('affo/aao.db')
-        email = database.execute("SELECT email FROM users WHERE id=(?)", (user,)).fetchone()
+        email = database.execute("SELECT email FROM users WHERE id=(?)", (user,)).fetchone()[0]
         print(email)
         if email != None:
-            email = email[0]
             msg = Message(title, recipients=[email])
             msg.html = content
             mail.send(msg)
