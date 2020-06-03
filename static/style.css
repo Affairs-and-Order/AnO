@@ -305,10 +305,43 @@
                             user-select: none;
                             transition: all 0.2s;
                             cursor: pointer;
+                            display: none;
                         }
                         
                         .resourceicon:hover {
                             background: #00a7e1;
+                        }
+                        
+                        .resourcebar {
+                            bottom: 0;
+                            height: 35px;
+                            background: #ffffff;
+                            position: fixed;
+                            box-shadow: 0 0 4px 0.5px rgba(58, 59, 69, .15);
+                            z-index: 1;
+                            padding: 0;
+                            margin: 0;
+                            left: 0;
+                            right: 0;
+                            margin: auto;
+                            padding: 0px 10px;
+                        }
+                        
+                        .resourcebar div {
+                            margin: auto;
+                            width: fit-content;
+                        }
+                        
+                        .resourcebar div p {
+                            font-size: 14px;
+                            font-weight: 500;
+                            width: fit-content;
+                            color: rgba(0, 0, 0, 0.8);
+                            margin: auto;
+                            padding: 4px 6px;
+                            text-align: center;
+                            float: left;
+                            cursor: pointer;
                         }
                         
                         .purchasediv {
@@ -426,7 +459,7 @@
                             font-weight: bold;
                             text-align: center;
                             text-transform: uppercase;
-                            transition: all 0.3s;
+                            transition: all 0.3s ease;
                             background-color: rgba(255, 255, 255, 0);
                         }
                         
@@ -614,8 +647,9 @@
                             float: left;
                             display: table;
                             font-weight: 550;
-                            color: rgba(50, 50, 50);
+                            color: rgba(50, 50, 50, 0.8);
                             font-family: 'Ubuntu', sans-serif;
+                            font-size: 15px;
                         }
                         
                         .templatetable td:nth-child(even) {
@@ -790,7 +824,7 @@
                             color: white;
                             border-radius: 190px;
                             position: relative;
-                            top: -3px;
+                            top: -2.5px;
                             box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 6px 12px 4px #00a7e130;
                             transition: all 0.2.5s linear;
                             width: 65% !important;
@@ -801,7 +835,7 @@
                         .landingpagebutton:hover {
                             background: #00a7e1;
                             background-position: 0;
-                            box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3), 0px 6px 8px 2px #00a7e120;
+                            box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3), 0px 6px 8px 2px #00a7e110;
                             border: none;
                             top: 0;
                         }
