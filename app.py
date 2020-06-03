@@ -186,9 +186,15 @@ def coalition(colId):
         totalGold = []
         for i in peopleGold:
             totalGold.append(i[0])
-
         peopleGold = sum(totalGold)
-        return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold)
+
+        peoplePop = db.execute("SELECT population FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (colId,)).fetchall()
+        totalPop = []
+        for i in peoplePop:
+            totalPop.append(i[0])
+        peoplePop = sum(totalPop)
+
+        return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold, peoplePop=peoplePop)
 
 @login_required
 @app.route("/establish_coalition", methods=["GET", "POST"])
