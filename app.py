@@ -5,7 +5,6 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
-from flask_mail import Mail, Message
 # from celery import Celery
 # from celery.schedules import crontab
 
@@ -27,27 +26,6 @@ def setup_periodic_tasks(sender, **kwargs):
         crontab(minute='*/1'),
         populationGrowth.s(),
     )"""
-
-
-app.config["MAIL_SERVER"] = "smtp.gmail.com"
-app.config["MAIL_USERNAME"] = "temp.aao@gmail.com" # username
-app.config["MAIL_PASSWORD"] = "J75-rN-V+suCc6ff" # password
-app.config["MAIL_PORT"] = 587
-app.config["MAIL_USE_SSL"] = False
-app.config["MAIL_USE_TLS"] = True
-
-mail = Mail(app)
-
-# code for sending custom email messages to users
-def sendEmail(title, content, user):
-    with app.app_context():
-        database = sqlite3.connect('affo/aao.db')
-        email = database.execute("SELECT email FROM users WHERE id=(?)", (user,)).fetchone()[0]
-        print(email)
-        if email != None:
-            msg = Message(title, recipients=[email])
-            msg.html = content
-            mail.send(msg)
 
 @app.route("/")
 def index():
@@ -112,7 +90,6 @@ def signup():
             db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             connection.commit()
-            sendEmail("new user signed up", "<h1>test HTML</h1>", session["user_id"])
             connection.close()
             return redirect("/")
     else:
