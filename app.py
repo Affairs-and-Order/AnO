@@ -195,12 +195,12 @@ def establish_coalition():
         except:
             name = request.form.get("name")
 
-            db.execute("INSERT INTO colNames (name) VALUES (?)", (name,))
+            db.execute("INSERT INTO colNames (name, leader) VALUES (?, ?)", (name, session["user_id"]))
             colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
             db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
             connection.commit()
-            return redirect("/coalition")
+            return redirect("/my_coalition")
     else:
         return render_template("establish_coalition.html")
 
