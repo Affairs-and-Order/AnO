@@ -181,7 +181,14 @@ def coalition(colId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        return render_template("coalition.html", name=name, colId=colId)
+
+        peopleGold = db.execute("SELECT gold FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (colId,)).fetchall()
+        totalGold = []
+        for i in peopleGold:
+            totalGold.append(i[0])
+
+        peopleGold = sum(totalGold)
+        return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold)
 
 @login_required
 @app.route("/establish_coalition", methods=["GET", "POST"])
