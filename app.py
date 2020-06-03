@@ -158,8 +158,8 @@ def market():
         return render_template("market.html")
 
 @login_required
-@app.route("/coalition", methods=["GET"])
-def coalition():
+@app.route("/my_coalition", methods=["GET"])
+def my_coalition():
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
@@ -171,7 +171,16 @@ def coalition():
         except TypeError:
             inCol = False
             colName = ""
-        return render_template("coalition.html", inCol=inCol, colName=colName)
+        return render_template("my_coalition.html", inCol=inCol, colName=colName)
+
+@login_required
+@app.route("/coalition/<colId>", methods=["GET"])
+def coalition(colId):
+    if request.method == "GET":
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        return render_template("coalition.html", name=name, colId=colId)
 
 @login_required
 @app.route("/establish_coalition", methods=["GET", "POST"])
@@ -332,9 +341,12 @@ def coalitions():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
+        colIds = db.execute("SELECT id FROM colNames").fetchall()
         colNames = db.execute("SELECT name FROM colNames").fetchall()
 
-        return render_template("coalitions.html", colNames=colNames)
+        colBoth = zip(colIds, colNames)
+
+        return render_template("coalitions.html", colBoth=colBoth)
 
 # available to run if double click the file
 if __name__ == "__main__":

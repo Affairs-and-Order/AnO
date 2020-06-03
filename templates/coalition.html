@@ -1,23 +1,82 @@
-{% extends "layout.html" %} {% block title %} Coalition {% endblock %} {% block body %}
+{% extends "layout.html"%} 
+
+{% block title %}
+    Country 
+{% endblock %} 
+
+{% block body %}
 
 <div class="templatediv">
 
     <div class="templatedivtopper">
-        <h1 class="templatedivtitle">Coalition</h1>
+        <h1 class="templatedivtitle">{{ name }}</h1>
     </div>
 
     <div class="templatedivcontent">
-        <h2 class="templatecontentheaderleft"></h2>
-        <p class="templatecontentpleft"></p>
-        {% if inCol == False %}
-            <p>You aren't in a coalition, you can <a href="/establish_coalition"> establish one</a> or <a href="/join_coalition">join one</a></p>
-        {% else %}
-            <p>You are in {{ colName }}</p>
-        {% endif %}
 
+        <div class="templatedivad"></div>
+
+        <!--<div class="countryimagediv">
+
+            <img class="countryimage" src="files/images/file.svg" /> // currently turned this off because it looks broken
+
+        </div> -->
+
+        <h2 class="templatecontentheaderleft">Coalition Info</h2>
+
+        <div class="templatedivflex2">
+            <div class="templatedivflex2left">
+
+
+                <table class="templatetable">
+                    <tr>
+                        <th>General</th>
+                    </tr>
+                    <tr>
+                        <td>Coalition name:</td>
+                        <td>{{ name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Country ID:</td>
+                        <td>{{ colId }}</td>
+                    </tr>
+                    <tr>
+                        <td>Gold:</td>
+                        <td>g</td>
+                    </tr>
+                    <tr>
+                        <td>Country location:</td>
+                        <td>l</td>
+                    </tr>
+                    <tr>
+                        <td>Population:</td>
+                        <td>l</td>
+                    </tr>
+                    <tr>
+                        <td>Happiness:</td>
+                        <td>l%</td>
+                    </tr>
+                </table>
+                <table class="templatetable">
+                    <tr>
+                        <th>Military</th>
+                    </tr>
+                    <tr>
+                        <td>Military power:</td>
+                        <td>power#</td>
+                    </tr>
+                    <tr>
+                        <td>In your war range:</td>
+                        <td>Yes/No</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="templatedivflex2right">
+            </div>
+        </div>
 
 
     </div>
 </div>
-
-{% endblock%}
+{% endblock %}
