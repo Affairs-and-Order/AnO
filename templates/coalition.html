@@ -1,10 +1,4 @@
-{% extends "layout.html"%} 
-
-{% block title %}
-    Country 
-{% endblock %} 
-
-{% block body %}
+{% extends "layout.html"%} {% block title %} Country {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -16,13 +10,30 @@
 
         <div class="templatedivad"></div>
 
-        <!--<div class="countryimagediv">
+        <!--<div class="coalitionimagediv">
 
-            <img class="countryimage" src="files/images/file.svg" /> // currently turned this off because it looks broken
+            <img class="coalitionimage" src="files/images/file.svg" /> // currently turned this off because it looks broken
 
         </div> -->
 
-        <h2 class="templatecontentheaderleft">Coalition Info</h2>
+
+        <div class="templatedivflex2 menuflex2">
+            <div class="templatedivflex2left" id="coalitiongeneral" onclick="coalitioninfo()">
+
+                <h3 class="smallheader">Info</h3>
+
+            </div>
+            <div class="templatedivflex2left" id="coalitionabout" onclick="coalitionabout()">
+
+                <h3 class="smallheader">About</h3>
+
+            </div>
+            <div class="templatedivflex2left" id="coalitionjoin" onclick="coalitionjoin()">
+
+                <h3 class="smallheader">Join</h3>
+
+            </div>
+        </div>
 
         <div class="templatedivflex2">
             <div class="templatedivflex2left">

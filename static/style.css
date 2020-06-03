@@ -622,6 +622,45 @@
                         .templatetable2 a:hover {
                             color: rgb(88, 196, 231);
                         }
+                        
+                        .menuflex2 {
+                            justify-content: center;
+                            text-align: center;
+                            width: 85%;
+                            margin: 10px auto;
+                            box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), 0 2px 5px 0 rgba(0, 0, 0, .1), 0 10px 20px 0 rgba(0, 0, 0, .1);
+                            padding: 0;
+                            overflow: hidden;
+                        }
+                        
+                        .menuflex2 div {
+                            cursor: pointer;
+                            padding: 10px;
+                            margin: 0px;
+                            transition: all 0.2s ease-out;
+                            border-radius: 0px;
+                            text-transform: uppercase;
+                            user-select: none;
+                            border-collapse: collapse;
+                            border-left: 0.75px solid rgb(246.5, 246.5, 246.5);
+                            border-right: 0.75px solid rgb(246.5, 246.5, 246.5);
+                        }
+                        
+                        @media all and (max-width: 600px) {
+                            .menuflex2 div {
+                                width: 100%;
+                            }
+                        }
+                        
+                        .menuflex2 div h3 {
+                            margin: 0;
+                            font-size: 19px;
+                            font-weight: normal;
+                        }
+                        
+                        .menuflex2 div:hover {
+                            background: rgb(246.5, 246.5, 246.5);
+                        }
                         /*LANDING PAGE*/
                         
                         .landingpagediv {
@@ -853,45 +892,6 @@
                         .countryimage {}
                         /*MILITARY*/
                         
-                        .militaryflex2 {
-                            justify-content: center;
-                            text-align: center;
-                            width: 85%;
-                            margin: 10px auto;
-                            box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), 0 2px 5px 0 rgba(0, 0, 0, .1), 0 10px 20px 0 rgba(0, 0, 0, .1);
-                            padding: 0;
-                            overflow: hidden;
-                        }
-                        
-                        .militaryflex2 div {
-                            cursor: pointer;
-                            padding: 10px;
-                            margin: 0px;
-                            transition: all 0.2s ease-out;
-                            border-radius: 0px;
-                            text-transform: uppercase;
-                            user-select: none;
-                            border-collapse: collapse;
-                            border-left: 0.75px solid rgb(246.5, 246.5, 246.5);
-                            border-right: 0.75px solid rgb(246.5, 246.5, 246.5);
-                        }
-                        
-                        @media all and (max-width: 600px) {
-                            .militaryflex2 div {
-                                width: 100%;
-                            }
-                        }
-                        
-                        .militaryflex2 div h3 {
-                            margin: 0;
-                            font-size: 19px;
-                            font-weight: normal;
-                        }
-                        
-                        .militaryflex2 div:hover {
-                            background: rgb(246.5, 246.5, 246.5);
-                        }
-                        
                         .unitflex {
                             align-items: center;
                             justify-content: center;
@@ -913,22 +913,27 @@
                         
                         .land,
                         .air,
-                        .water {
+                        .water,
+                        .special {
                             display: none;
                         }
                         
-                        .purchasemilitarydiv {}
+                        .purchasemilitarydiv {
+                            height: min-content;
+                        }
                         
-                        .militaryleftclick,
-                        .militarycenterclick,
-                        .militaryrightclick {
+                        .militarylandclick,
+                        .militaryairclick,
+                        .militarywaterclick,
+                        .militaryspecialclick {
                             background: #178db8 !important;
                             color: white !important;
                         }
                         
                         .landclick,
                         .airclick,
-                        .waterclick {
+                        .waterclick,
+                        .specialclick {
                             display: initial;
                         }
                         /*Coalition*/

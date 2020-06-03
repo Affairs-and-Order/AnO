@@ -23,18 +23,18 @@
 
         <div class="templatedivad"></div>
 
-        <div class="templatedivflex2 militaryflex2">
-            <div class="templatedivflex2left" id="militaryleft" onclick="militaryleft()">
+        <div class="templatedivflex2 menuflex2">
+            <div class="templatedivflex2left" id="militaryland" onclick="militaryland()">
 
                 <h3 class="smallheader">Land</h3>
 
             </div>
-            <div class="templatedivflex2left" id="militarycenter" onclick="militarycenter()">
+            <div class="templatedivflex2left" id="militaryair" onclick="militaryair()">
 
                 <h3 class="smallheader">Air</h3>
 
             </div>
-            <div class="templatedivflex2left" id="militaryright" onclick="militaryright()">
+            <div class="templatedivflex2left" id="militarywater" onclick="militarywater()">
 
                 <h3 class="smallheader">Water</h3>
 
@@ -79,14 +79,13 @@
                                         <button class="templatedivbutton templatecenteredbutton" formaction="/sell/soldiers">Sell</button>
 
                                     </div>
-                        </form>
-                        </div>
-                        <ul>You can purchase X more Soldiers today
-                            <br />You can sell X more Soldiers today
-                        </ul>
-                        </div>
-
+                                </div>
+                                <ul>You can purchase X more Soldiers today
+                                    <br />You can sell X more Soldiers today
+                                </ul>
+                            </div>
                     </div>
+                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -96,7 +95,6 @@
                 </div>
             </div>
             <div class="unitdiv">
-
                 <h2 class="templatecontentheaderleft">Tanks</h2>
 
                 <div class="templatedivflex2 unitflex">
@@ -122,13 +120,12 @@
 
                                     </div>
                                 </div>
-                        </form>
-                        <ul>You can purchase X more Tanks today
-                            <br />You can sell X more Tanks today
-                        </ul>
-                        </div>
-
+                                <ul>You can purchase X more Tanks today
+                                    <br />You can sell X more Tanks today
+                                </ul>
+                            </div>
                     </div>
+                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -168,19 +165,16 @@
                                     <br />You can sell X more Artillery today
                                 </ul>
                             </div>
-                        </form>
-
                     </div>
+                    </form>
                     <div class="templatedivflex2left">
 
-
-
                         <img class="unitimage" src="static/images/artillery.jpg" />
+
                     </div>
                 </div>
             </div>
         </div>
-
         <!--AIR-->
         <div class="air" id="air">
 
@@ -260,13 +254,13 @@
 
                                     </div>
                                 </div>
-                        </form>
-                        <ul>You can purchase X more Destroyers today
-                            <br />You can sell X more Destroyers today
-                        </ul>
-                        </div>
+                            </div>
 
+                            <ul>You can purchase X more Destroyers today
+                                <br />You can sell X more Destroyers today
+                            </ul>
                     </div>
+                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -276,5 +270,54 @@
                 </div>
             </div>
         </div>
+        <!--SPECIAL-->
+        <div class="special" id="special">
+
+            <div class="unitdiv">
+
+                <h2 class="templatecontentheaderleft">ICBM</h2>
+
+                <div class="templatedivflex2 unitflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ icbms }} ICBMs</h3>
+
+                        <p class="templatecontentpleft">(ICBMs) Inter-Coninental Ballistic Missiles as very good at damaging city morale. (1 flying fortress / 500 gold)</p>
+
+
+                        <form action="/icbm" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="icbm" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/icbm">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/icbm">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>You can purchase X more ICBMs today
+                                    <br />You can sell X more ICBMs today
+                                </ul>
+                            </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/soldier.jpg" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end-->
     </div>
-    {% endblock %}
+</div>
+{% endblock %}

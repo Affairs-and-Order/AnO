@@ -20,51 +20,77 @@ function menubardrop() {
 //
 $(document).ready(function() {
 
-    document.getElementById("militaryleft").classList.add("militaryleftclick");
+    document.getElementById("militaryland").classList.add("militarylandclick");
     document.getElementById("land").classList.add("landclick");
 
     console.log("jQuery ready");
 
 });
 //
-function militaryleft() {
+function militaryland() {
 
-    document.getElementById("militaryleft").classList.add("militaryleftclick");
+    document.getElementById("militaryland").classList.add("militarylandclick");
     document.getElementById("land").classList.add("landclick");
 
     //
 
-    document.getElementById("militarycenter").classList.remove("militarycenterclick");
+    document.getElementById("militaryair").classList.remove("militaryairclick");
     document.getElementById("air").classList.remove("airclick");
 
-    document.getElementById("militaryright").classList.remove("militaryrightclick");
+    document.getElementById("militarywater").classList.remove("militarywaterclick");
     document.getElementById("water").classList.remove("waterclick");
+
+    document.getElementById("militaryspecial").classList.remove("militaryspecialclick");
+    document.getElementById("special").classList.remove("specialclick");
 }
 //
-function militarycenter() {
-
-    document.getElementById("militarycenter").classList.add("militarycenterclick");
+function militaryair() {
+    document.getElementById("militaryair").classList.add("militaryairclick");
     document.getElementById("air").classList.add("airclick");
 
     //
 
-    document.getElementById("militaryleft").classList.remove("militaryleftclick");
+    document.getElementById("militaryland").classList.remove("militarylandclick");
     document.getElementById("land").classList.remove("landclick");
 
-    document.getElementById("militaryright").classList.remove("militaryrightclick");
+    document.getElementById("militarywater").classList.remove("militarywaterclick");
     document.getElementById("water").classList.remove("waterclick");
+
+    document.getElementById("militaryspecial").classList.remove("militaryspecialclick");
+    document.getElementById("special").classList.remove("specialclick");
 }
 //
-function militaryright() {
+function militarywater() {
 
-    document.getElementById("militaryright").classList.add("militaryrightclick");
+    document.getElementById("militarywater").classList.add("militarywaterclick");
     document.getElementById("water").classList.add("waterclick");
 
     //
 
-    document.getElementById("militaryleft").classList.remove("militaryleftclick");
+    document.getElementById("militaryland").classList.remove("militarylandclick");
     document.getElementById("land").classList.remove("landclick");
 
-    document.getElementById("militarycenter").classList.remove("militarycenterclick");
+    document.getElementById("militaryair").classList.remove("militaryairclick");
     document.getElementById("air").classList.remove("airclick");
+
+    document.getElementById("militaryspecial").classList.remove("militaryspecialclick");
+    document.getElementById("special").classList.remove("specialclick");
+}
+//
+function militaryspecial() {
+
+
+    document.getElementById("militaryspecial").classList.add("militaryspecialclick");
+    document.getElementById("special").classList.add("specialclick");
+
+    //
+    document.getElementById("militaryland").classList.remove("militarylandclick");
+    document.getElementById("land").classList.remove("landclick");
+
+    document.getElementById("militaryair").classList.remove("militaryairclick");
+    document.getElementById("air").classList.remove("airclick");
+
+    document.getElementById("militarywater").classList.remove("militarywaterclick");
+    document.getElementById("water").classList.remove("waterclick");
+
 }
