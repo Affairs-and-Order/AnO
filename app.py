@@ -164,14 +164,15 @@ def my_coalition():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         try: 
-            colId = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (session["user_id"], )).fetchone()[0]
-            if colId != None:
+            colName = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (session["user_id"], )).fetchone()[0]
+            if colName != None:
                 inCol = True
-                colName = colId
+                colId = db.execute('SELECT colId FROM coalitions WHERE userId=(?)', (session["user_id"], )).fetchone()[0]
         except TypeError:
             inCol = False
             colName = ""
-        return render_template("my_coalition.html", inCol=inCol, colName=colName)
+            colId = None
+        return render_template("my_coalition.html", inCol=inCol, colName=colName, colId=colId)
 
 @login_required
 @app.route("/coalition/<colId>", methods=["GET"])
