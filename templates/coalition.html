@@ -18,9 +18,9 @@
 
 
         <div class="templatedivflex2 menuflex2">
-            <div class="templatedivflex2left" id="coalitiongeneral" onclick="coalitioninfo()">
+            <div class="templatedivflex2left" id="coalitiongeneral" onclick="coalitiongeneral()">
 
-                <h3 class="smallheader">Info</h3>
+                <h3 class="smallheader">General</h3>
 
             </div>
             <div class="templatedivflex2left" id="coalitionabout" onclick="coalitionabout()">
@@ -31,58 +31,139 @@
             <div class="templatedivflex2left" id="coalitionjoin" onclick="coalitionjoin()">
 
                 <h3 class="smallheader">Join</h3>
+                <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
+
+            </div>
+            <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
+
+                <h3 class="smallheader">Leader Panel</h3>
+                <!--SHOW THIS TO GOVERNMENT ONLY-->
+
+            </div>
+            <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
+
+                <h3 class="smallheader">Member Panel</h3>
+                <!--SHOW THIS TO MEMBERS ONLY NOT GOVERNMENT-->
 
             </div>
         </div>
+        <!--GENERAL-->
+        <div class="general" id="general">
 
-        <div class="templatedivflex2">
-            <div class="templatedivflex2left">
+
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
+
+                    <table class="templatetable">
+                        <tr>
+                            <th>General</th>
+                        </tr>
+                        <tr>
+                            <td>Coalition name:</td>
+                            <td>{{ name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Coalition ID:</td>
+                            <td>{{ colId }}</td>
+                        </tr>
+                        <tr>
+                            <td>Population:</td>
+                            <td>{{ peoplePop }}</td>
+                        </tr>
+                        <tr>
+                            <td>Happiness:</td>
+                            <td>{{ peopleHp }}%</td>
+                        </tr>
+                    </table>
+                    <table class="templatetable">
+                        <tr>
+                            <th>Military</th>
+                        </tr>
+                        <tr>
+                            <td>Military power:</td>
+                            <td>power#</td>
+                        </tr>
+                        <tr>
+                            <td>In your war range:</td>
+                            <td>Yes/No</td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="templatedivflex2left">
 
 
-                <table class="templatetable">
-                    <tr>
-                        <th>General</th>
-                    </tr>
-                    <tr>
-                        <td>Coalition name:</td>
-                        <td>{{ name }}</td>
-                    </tr>
-                    <tr>
-                        <td>Coalition ID:</td>
-                        <td>{{ colId }}</td>
-                    </tr>
-                    <tr>
-                        <td>Total Gold:</td>
-                        <td>{{ peopleGold }}</td>
-                    </tr>
-                    <tr>
-                        <td>Population:</td>
-                        <td>{{ peoplePop }}</td>
-                    </tr>
-                    <tr>
-                        <td>Happiness:</td>
-                        <td>{{ peopleHp }}%</td>
-                    </tr>
-                </table>
-                <table class="templatetable">
-                    <tr>
-                        <th>Military</th>
-                    </tr>
-                    <tr>
-                        <td>Military power:</td>
-                        <td>power#</td>
-                    </tr>
-                    <tr>
-                        <td>In your war range:</td>
-                        <td>Yes/No</td>
-                    </tr>
-                </table>
 
-            </div>
-            <div class="templatedivflex2right">
+                </div>
             </div>
         </div>
+        <!--ABOUT-->
+        <div class="about" id="about">
 
+
+
+            <!--<div class="coalitionimagediv">
+
+            <img class="coalitionimage" src="files/images/file.svg" /> // currently turned this off because it looks broken
+
+        </div> -->
+
+            <div class="coalitiondescription">
+                Coalition Description
+            </div>
+        </div>
+        <!--JOIN-->
+        <div class="join" id="join">
+
+            <div class="templatedivflex2 divflex2center">
+                <form>
+                    <!--Hide / deactvate certian buttons depending on the alliance type-->
+                    <!--will become deactivated if the user doesnt meet the specified influence-->
+                    <button class="templatedivbutton templatecenteredbutton">Join</button>
+                    <button class="templatedivbutton templatecenteredbutton">Request to join</button>
+                    <!--There buttons will be deactivated-->
+                    <button class="templatedivbutton templatecenteredbutton templateclosedbutton" disabled="disabled">Closed</button>
+                    <button class="templatedivbutton templatecenteredbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
+                    <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
+                </form>
+            </div>
+
+        </div>
+        <!--LEADER PANEL-->
+        <div class="leader" id="leader">
+
+            <div class="templatedivflex2">
+                <div class="templatedivflex2left">
+
+
+
+                </div>
+                <div class="templatedivflex2right">
+
+
+
+                </div>
+            </div>
+
+        </div>
+        <!--MEMBER-->
+        <div class="member" id="member">
+
+            <div class="templatedivflex2">
+                <div class="templatedivflex2left">
+
+
+
+                </div>
+                <div class="templatedivflex2right">
+
+
+
+                </div>
+            </div>
+
+        </div>
+        <!--END-->
 
     </div>
 </div>

@@ -310,6 +310,32 @@
                         .resourceicon:hover {
                             background: #00a7e1;
                         }
+                        
+                        .purchasediv {
+                            position: fixed;
+                            right: 26px;
+                            bottom: 8px;
+                            width: fit-content;
+                            z-index: 1000;
+                            margin: auto 0;
+                        }
+                        
+                        .purchasediv div {
+                            width: 100%;
+                            background: #363945;
+                            color: #24c8ff;
+                            box-shadow: 0 0 20px 0 rgba(58, 59, 69, .55);
+                            padding: 8px;
+                            font-size: 22px;
+                            justify-self: end;
+                            height: min-content;
+                            display: none;
+                        }
+                        
+                        .purchasediv div h3 {
+                            margin: 0;
+                            padding: 0;
+                        }
                         /*CONTENT*/
                         
                         .templatediv {
@@ -427,6 +453,17 @@
                             margin: 2px;
                         }
                         
+                        .templateclosedbutton:disabled {
+                            background-image: linear-gradient(180deg, #f7f7f7 50%, #f7f7f7 50%);
+                            background-size: 100%;
+                            border: none;
+                            cursor: not-allowed;
+                        }
+                        
+                        .templateclosedbutton:disabled:hover {
+                            color: black;
+                        }
+                        
                         .smallheader {
                             font-size: 18px;
                         }
@@ -488,21 +525,22 @@
                         }
                         
                         .divflex2center {
-                            align-items: center;
                             justify-content: center;
                             justify-items: center;
                             width: fit-content;
-                            margin: auto;
                             text-align: center;
                             height: min-content;
+                            margin: auto;
                         }
                         
                         .divflex2center div {
                             width: fit-content;
+                            height: min-content;
                             justify-items: center;
                             justify-self: center;
                             padding: 6px;
                             margin: auto;
+                            float: none;
                         }
                         
                         @media all and (max-width: 600px) {
@@ -892,16 +930,16 @@
                         .countryimage {}
                         /*MILITARY*/
                         
-                        .unitflex {
+                        .menuflex {
                             align-items: center;
                             justify-content: center;
                         }
                         
-                        .unitflex p {
+                        .menuflex p {
                             text-align: left;
                         }
                         
-                        .unitflex div {
+                        .menuflex div {
                             text-align: center;
                         }
                         
@@ -911,6 +949,12 @@
                             user-select: none;
                         }
                         
+                        .purchasemilitarydiv {
+                            height: min-content;
+                        }
+                        
+                        .flexrow {}
+                        
                         .land,
                         .air,
                         .water,
@@ -918,8 +962,11 @@
                             display: none;
                         }
                         
-                        .purchasemilitarydiv {
-                            height: min-content;
+                        .landclick,
+                        .airclick,
+                        .waterclick,
+                        .specialclick {
+                            display: initial;
                         }
                         
                         .militarylandclick,
@@ -929,14 +976,32 @@
                             background: #178db8 !important;
                             color: white !important;
                         }
+                        /*Coalition*/
                         
-                        .landclick,
-                        .airclick,
-                        .waterclick,
-                        .specialclick {
+                        .general,
+                        .about,
+                        .join,
+                        .leader,
+                        .member {
+                            display: none;
+                        }
+                        
+                        .generalclick,
+                        .aboutclick,
+                        .joinclick,
+                        .leaderclick,
+                        .memberclick {
                             display: initial;
                         }
-                        /*Coalition*/
+                        
+                        .coalitiongeneralclick,
+                        .coalitionaboutclick,
+                        .coalitionjoinclick,
+                        .coalitionleaderclick,
+                        .coalitionmemberclick {
+                            background: #178db8 !important;
+                            color: white !important;
+                        }
                         /*FOOTER*/
                         
                         .footer {

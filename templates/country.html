@@ -1,10 +1,4 @@
-{% extends "layout.html"%} 
-
-{% block title %}
-    Country 
-{% endblock %} 
-
-{% block body %}
+{% extends "layout.html"%} {% block title %} Country {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -15,6 +9,24 @@
     <div class="templatedivcontent">
 
         <div class="templatedivad"></div>
+
+        <div class="templatedivflex2 menuflex2">
+            <div class="templatedivflex2left" id="countryview" onclick="countryview()">
+
+                <h3 class="smallheader">View</h3>
+
+            </div>
+            <div class="templatedivflex2left" id="countryrevenue" onclick="countryrevenue()">
+
+                <h3 class="smallheader">Revenue</h3>
+
+            </div>
+            <div class="templatedivflex2left" id="countryfeed" onclick="countryfeed()">
+
+                <h3 class="smallheader">News</h3>
+
+            </div>
+        </div>
 
         <!--<div class="countryimagediv">
 
@@ -39,10 +51,6 @@
                     <tr>
                         <td>Country ID:</td>
                         <td>{{ cId }}</td>
-                    </tr>
-                    <tr>
-                        <td>Gold:</td>
-                        <td>{{ gold }}</td>
                     </tr>
                     <tr>
                         <td>Country location:</td>

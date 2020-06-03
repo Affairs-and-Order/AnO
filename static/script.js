@@ -17,13 +17,11 @@ function menubardrop() {
 }
 
 
-//
+//MILITARY SLIDER
 $(document).ready(function() {
 
     document.getElementById("militaryland").classList.add("militarylandclick");
     document.getElementById("land").classList.add("landclick");
-
-    console.log("jQuery ready");
 
 });
 //
@@ -92,5 +90,124 @@ function militaryspecial() {
 
     document.getElementById("militarywater").classList.remove("militarywaterclick");
     document.getElementById("water").classList.remove("waterclick");
+
+}
+//COALITION SLIDER
+$(document).ready(function() {
+
+    document.getElementById("coalitiongeneral").classList.add("coalitiongeneralclick");
+    document.getElementById("general").classList.add("generalclick");
+
+});
+//
+function coalitiongeneral() {
+
+
+    document.getElementById("coalitiongeneral").classList.add("coalitiongeneralclick");
+    document.getElementById("general").classList.add("generalclick");
+
+    //
+
+    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
+    document.getElementById("about").classList.remove("aboutclick");
+
+    document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
+    document.getElementById("join").classList.remove("joinclick");
+
+    document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
+    document.getElementById("leader").classList.remove("leaderclick");
+
+    document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
+    document.getElementById("member").classList.remove("member");
+
+
+}
+//
+function coalitionabout() {
+
+
+
+    document.getElementById("coalitionabout").classList.add("coalitionaboutclick");
+    document.getElementById("about").classList.add("aboutclick");
+
+    //
+
+    document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
+    document.getElementById("general").classList.remove("generalclick");
+
+    document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
+    document.getElementById("join").classList.remove("joinclick");
+
+    document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
+    document.getElementById("leader").classList.remove("leaderclick");
+
+    document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
+    document.getElementById("member").classList.remove("member");
+
+
+}
+//
+function coalitionjoin() {
+
+    document.getElementById("coalitionjoin").classList.add("coalitionjoinclick");
+    document.getElementById("join").classList.add("joinclick");
+
+    //
+
+    document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
+    document.getElementById("general").classList.remove("generalclick");
+
+    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
+    document.getElementById("about").classList.remove("aboutclick");
+
+    document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
+    document.getElementById("leader").classList.remove("leaderclick");
+
+    document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
+    document.getElementById("member").classList.remove("member");
+
+
+}
+//
+function coalitionleader() {
+
+    document.getElementById("coalitionleader").classList.add("coalitionleaderclick");
+    document.getElementById("leader").classList.add("leaderclick");
+
+    //
+
+    document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
+    document.getElementById("general").classList.remove("generalclick");
+
+    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
+    document.getElementById("about").classList.remove("aboutclick");
+
+    document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
+    document.getElementById("join").classList.remove("joinclick");
+
+    document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
+    document.getElementById("member").classList.remove("member");
+
+
+}
+
+function coalitionmember() {
+
+    document.getElementById("coalitionmember").classList.add("coalitionmemberclick");
+    document.getElementById("member").classList.add("member");
+
+    //
+
+    document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
+    document.getElementById("general").classList.remove("generalclick");
+
+    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
+    document.getElementById("about").classList.remove("aboutclick");
+
+    document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
+    document.getElementById("join").classList.remove("joinclick");
+
+    document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
+    document.getElementById("leader").classList.remove("leaderclick");
 
 }
