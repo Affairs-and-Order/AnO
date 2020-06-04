@@ -16,6 +16,28 @@
 </head>
 
 <body>
+    {% if session.get("logged_in") == True%}
+    <div class="resourcebar">
+        <div>
+
+            <p class="resourcebargold">Gold</p>
+            <p class="resourcebargold">Consumables</p>
+            <p class="resourcebargold">Raw ore</p>
+            <p class="resourcebargold">Coal</p>
+            <p class="resourcebargold">Oil</p>
+            <p class="resourcebargold">Power</p>
+
+            <p class="resourcebargold">Aluminum</p>
+            <p class="resourcebargold">Fuel</p>
+            <p class="resourcebargold">Steel</p>
+
+            <p class="resourcebargold">Components</p>
+            <p class="resourcebargold">Ammunition</p>
+
+
+        </div>
+    </div>
+    {% endif %}
     <div class="navbar">
 
         {% if session.get("logged_in") == True %}
@@ -61,26 +83,6 @@
             <a class="menubara" href="/links">Links</a>
         </div>
 
-    </div>
-    <div class="resourcebar">
-        <div>
-
-            <p class="resourcebargold">Gold</p>
-            <p class="resourcebargold">Consumables</p>
-            <p class="resourcebargold">Raw ore</p>
-            <p class="resourcebargold">Coal</p>
-            <p class="resourcebargold">Oil</p>
-            <p class="resourcebargold">Power</p>
-
-            <p class="resourcebargold">Aluminum</p>
-            <p class="resourcebargold">Fuel</p>
-            <p class="resourcebargold">Steel</p>
-
-            <p class="resourcebargold">Components</p>
-            <p class="resourcebargold">Ammunition</p>
-
-
-        </div>
     </div>
     <div class="purchasediv">
         <div class="purchasenotif">
