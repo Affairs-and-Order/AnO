@@ -167,7 +167,7 @@ def military():
         )
 
 person = {"name": "galaxy"}
-person["message"] = "Thanks guys :D, you are all so amazing."
+person["message"] = "Thanks guys :D, you are all so amazing." # easter egg probably or it has something to do with mail xD
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
@@ -255,11 +255,12 @@ def buy(units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses", "destroyers"] # all allowed units
+        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses",
+        "bombers", "destroyers", "cruisers", "submarines", "spies", "icbms", "nukes"] # all allowed units
         if units not in allUnits:
             return redirect("/no_such_unit")
 
-        if units == "soldiers": # maybe change this to a dict later on
+        if units == "soldiers": # maybe change this to a dictionary later on
             table = "ground"
             price = 50
         elif units == "tanks":
@@ -271,9 +272,27 @@ def buy(units):
         elif units == "flying_fortresses":
             table = "air"
             price = 500
+        elif units == "bombers":
+            table = "air"
+            price = 500
         elif units == "destroyers":
             table = "water"
             price = 500
+        elif units == "cruisers":
+            table = "water"
+            price = 650
+        elif units == "submarines":
+            table = "water"
+            price = 450
+        elif units == "spies":
+            table = "special"
+            price = 500
+        elif units == "icbms":
+            table = "special"
+            price = 750
+        elif units == "nukes":
+            table = "special"
+            price = 1000
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -305,11 +324,12 @@ def sell(units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses", "destroyers"]
+        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses",
+        "bombers", "destroyers", "cruisers", "submarines", "spies", "icbms", "nukes"] # all allowed units
         if units not in allUnits:
             return redirect("/no_such_unit")
 
-        if units == "soldiers": # maybe change this to a dict later on
+        if units == "soldiers": # maybe change this to a dictionary later on
             table = "ground"
             price = 50
         elif units == "tanks":
@@ -321,9 +341,27 @@ def sell(units):
         elif units == "flying_fortresses":
             table = "air"
             price = 500
+        elif units == "bombers":
+            table = "air"
+            price = 500
         elif units == "destroyers":
             table = "water"
             price = 500
+        elif units == "cruisers":
+            table = "water"
+            price = 650
+        elif units == "submarines":
+            table = "water"
+            price = 450
+        elif units == "spies":
+            table = "special"
+            price = 500
+        elif units == "icbms":
+            table = "special"
+            price = 750
+        elif units == "nukes":
+            table = "special"
+            price = 1000
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
