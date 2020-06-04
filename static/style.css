@@ -314,7 +314,7 @@
                         .resourcebar {
                             bottom: 0;
                             height: 35px;
-                            background: #ffffff;
+                            background: #178db8;
                             position: fixed;
                             box-shadow: 0 0 4px 0.5px rgba(58, 59, 69, .15);
                             z-index: 1;
@@ -335,7 +335,7 @@
                             font-size: 14px;
                             font-weight: 500;
                             width: fit-content;
-                            color: black;
+                            color: rgb(255, 255, 255);
                             margin: auto;
                             padding: 4px 6px;
                             text-align: center;
@@ -393,6 +393,7 @@
                             transition: all 0.2s;
                             background: linear-gradient(145deg, #00a7e1 10%, #149dc7 40%, #149dc7 60%, #00a7e1 90%);
                             background-size: 400% 400%;
+                            box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.15);
                         }
                         
                         .templatedivtitle {
@@ -816,6 +817,7 @@
                             padding-bottom: 20px !important;
                             width: 60% !important;
                             animation: templatedivtitleload 1.2s;
+                            border-radius: 4px;
                         }
                         
                         .landingpagebutton {
@@ -825,9 +827,9 @@
                             color: white;
                             border-radius: 190px;
                             position: relative;
-                            top: -2.5px;
+                            top: -5px;
                             box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 6px 12px 4px #00a7e130;
-                            transition: all 0.2.5s linear;
+                            transition: all 0.1.5s linear;
                             width: 65% !important;
                             padding-top: 15.5px !important;
                         }
