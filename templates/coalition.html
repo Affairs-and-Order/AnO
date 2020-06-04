@@ -1,4 +1,4 @@
-{% extends "layout.html"%} {% block title %} Country {% endblock %} {% block body %}
+{% extends "layout.html"%} {% block title %} Coalition {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -185,6 +185,10 @@
                     <ul>
                         [coalition name] is a [coalition type (economic, war, trade)] coalition.
                     </ul>
+                    <!--if not at war don't show the warning below-->
+                    <ul class="warning">
+                        [coalition name] is currently at war!
+                    </ul>
                 </div>
                 <div class="templatedivflex2left">
                     <form>
@@ -208,7 +212,7 @@
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
 
-
+                    leader
 
                 </div>
                 <div class="templatedivflex2right">
@@ -221,9 +225,11 @@
         </div>
         <!--MEMBER-->
         <div class="member" id="member">
-
+            hi
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
+
+                    member
 
                 </div>
                 <div class="templatedivflex2right">

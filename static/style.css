@@ -393,7 +393,7 @@
                             padding: 3vh;
                             animation: toppergradient 5s ease infinite;
                             transition: all 0.2s;
-                            background: linear-gradient(145deg, #00a7e1 10%, #149dc7 40%, #149dc7 60%, #00a7e1 90%);
+                            background: linear-gradient(145deg, #00a7e1 30%, #149dc7 70%);
                             background-size: 400% 400%;
                             box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.15);
                         }
@@ -798,6 +798,10 @@
                         
                         .menuflex2 div:hover {
                             background: rgb(246.5, 246.5, 246.5);
+                        }
+                        
+                        .warning {
+                            color: red !important;
                         }
                         /*LANDING PAGE*/
                         
