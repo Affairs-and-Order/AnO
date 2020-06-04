@@ -222,6 +222,50 @@
                 </div>
 
             </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Bombers</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ flying_fortresses }} Bombers</h3>
+
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 flying fortress / 500 gold)</p>
+
+
+                        <form action="/flying_fortresses" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>You can purchase X more Flying Fortresses today
+                                    <br />You can sell X more Flying Fortresses today
+                                </ul>
+                            </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/bomber.jpg" />
+                    </div>
+                </div>
+
+            </div>
         </div>
 
         <!--WATER-->
@@ -266,6 +310,48 @@
 
 
                         <img class="unitimage" src="static/images/destroyer.jpg" />
+                    </div>
+                </div>
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Cruisers</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ destroyers }} Cruisers</h3>
+
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 destroyer / 500 gold)</p>
+
+                        <form action="/destroyers" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="destroyers" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/destroyers">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/destroyers">Sell</button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <ul>You can purchase X more Destroyers today
+                                <br />You can sell X more Destroyers today
+                            </ul>
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/cruiser.jpg" />
                     </div>
                 </div>
             </div>
