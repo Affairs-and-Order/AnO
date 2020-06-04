@@ -348,25 +348,27 @@
                             right: 26px;
                             bottom: 8px;
                             width: fit-content;
-                            z-index: 1000;
+                            z-index: 1;
                             margin: auto 0;
+                            border-left: 3px solid #00a7e1;
+                            margin-bottom: 40px;
                         }
                         
                         .purchasediv div {
                             width: 100%;
                             background: #363945;
-                            color: #24c8ff;
+                            color: #ffffff;
                             box-shadow: 0 0 20px 0 rgba(58, 59, 69, .55);
                             padding: 8px;
-                            font-size: 22px;
                             justify-self: end;
                             height: min-content;
-                            display: none;
+                            margin: auto;
                         }
                         
                         .purchasediv div h3 {
                             margin: 0;
                             padding: 0;
+                            font-size: 20px;
                         }
                         /*CONTENT*/
                         
@@ -647,6 +649,7 @@
                             margin: 8px 1%;
                             width: 48%;
                             float: left;
+                            text-align: left;
                             display: table;
                             font-weight: 550;
                             color: rgba(50, 50, 50, 0.9);
@@ -657,6 +660,31 @@
                         .templatetable td:nth-child(even) {
                             float: right;
                             text-align: right;
+                        }
+                        
+                        .templatetable .anchor,
+                        .templatetable2 .anchor {
+                            color: #00a7e1;
+                            transition: all 0.2s;
+                            text-decoration: none;
+                            text-align: center;
+                            float: none;
+                            justify-self: center;
+                            width: 100%;
+                            margin: 3px auto;
+                            font-weight: normal;
+                        }
+                        
+                        .templatetable .anchor a,
+                        .templatetable2 .anchor a {
+                            display: block;
+                            width: fit-content;
+                            padding: 12px 15%;
+                        }
+                        
+                        .templatetable .anchor a:hover,
+                        .templatetable2 .anchor a:hover {
+                            background: #f7f7f7;
                         }
                         /*table2*/
                         
@@ -690,6 +718,7 @@
                             color: #00a7e1;
                             transition: all 0.2s;
                             text-decoration: none;
+                            text-align: center;
                         }
                         
                         .templatetable a:hover,

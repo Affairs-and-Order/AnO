@@ -44,13 +44,6 @@
 
                 <h3 class="smallheader">Member Panel</h3>
                 <!--SHOW THIS TO MEMBERS ONLY NOT GOVERNMENT-->
-                <div class="templatedivflex2left">
-                    {% for i in names %}
-                    look at comment in coalition.html
-                    <h1>{{ i[0] }}</h1>
-                    {% endfor %}
-                </div> <!-- lol i know this is broken please paste those 3 lines under the content section of member panel -->
-
 
             </div>
         </div>
@@ -66,21 +59,18 @@
                             <th>General</th>
                         </tr>
                         <tr>
-                            <td>Coalition name:</td>
-                            <td>{{ name }}</td>
+                            <td>Members:</td>
+                            <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="">{{ coalitionmembers }}</a></td>
                         </tr>
                         <tr>
-                            <td>Coalition ID:</td>
-                            <td>{{ colId }}</td>
+                            <td>Influence:</td>
+                            <td>{{ coalitioninfluence }}</td>
                         </tr>
                         <tr>
-                            <td>Population:</td>
-                            <td>{{ peoplePop }}</td>
+                            <td>Average Influence:</td>
+                            <td>{{ coalitionAverageInfluence }}</td>
                         </tr>
-                        <tr>
-                            <td>Happiness:</td>
-                            <td>{{ peopleHp }}%</td>
-                        </tr>
+
                     </table>
                     <table class="templatetable">
                         <tr>
@@ -91,8 +81,70 @@
                             <td>power#</td>
                         </tr>
                         <tr>
-                            <td>In your war range:</td>
-                            <td>Yes/No</td>
+                            <td>Land Military:</td>
+                            <td>30%</td>
+                        </tr>
+                        <tr>
+                            <td>Air Military:</td>
+                            <td>60%</td>
+                        </tr>
+                        <tr>
+                            <td>Water Military:</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                            <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="nationstats">View stats</a></td>
+                        </tr>
+                        <tr>
+                    </table>
+                    <table class="templatetable">
+                        <th>Affairs</th>
+                        </tr>
+                        <tr>
+                            <td>Allied:</td>
+                            <td>Y / N</td>
+                        </tr>
+                        <!--ONLY display ally TYPE (below) if nation IS in an ALLIED coalition-->
+                        <tr>
+                            <td>Ally Type:</td>
+                            <td>{{ treatyType }}</td>
+                        </tr>
+                        <tr>
+                            <td>Allies:</td>
+                            <td>View allies</td>
+                        </tr>
+                        <tr>
+                            <td>Water Military:</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                    </table>
+                    <table class="templatetable">
+                        <th>More Info</th>
+                        </tr>
+                        <tr>
+                            <td>Provinces:</td>
+                            <td>{{ coalitionProvinces }}</td>
+                        </tr>
+                        <tr>
+                            <td>Average Provinces:</td>
+                            <td>{{ coalitionAverageProvinces }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cities:</td>
+                            <td>{{ coalitionCities }}</td>
+                        </tr>
+                        <tr>
+                            <td>Average Cities:</td>
+                            <td>{{ coalitionAverageCities }}</td>
+                        </tr>
+                        <tr>
+                            <td>GPD:</td>
+                            <td>{{ coalitiongpd }}</td>
+                        </tr>
+                        <tr>
+                            <td>GDP Per Capita:</td>
+                            <td>{{ coalitiongpdPerCapita }}</td>
                         </tr>
                     </table>
 
