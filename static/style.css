@@ -110,7 +110,7 @@
                             /*font-family: "nexabold";
                             font-family: 'Baloo 2';
                             */
-                            font-family: "Poppins";
+                            font-family: "Ubuntu", sans-serif;
                             animation: textload 0.5s;
                             color: white;
                         }
@@ -132,7 +132,7 @@
                         }
                         
                         .navbartitle {
-                            margin-top: 10px;
+                            margin-top: 15px;
                             font-weight: bold;
                             font-size: 26px;
                             float: left;
@@ -142,7 +142,6 @@
                             cursor: pointer;
                             transition: all 0.2s;
                             text-decoration: none;
-                            text-shadow: 0px 1px 4px #084955;
                         }
                         
                         .navbartitle:hover {
@@ -282,12 +281,11 @@
                             margin-top: 10px;
                             margin-right: 10px;
                             transition: all 0.2s;
-                            padding: 0px 8px;
+                            padding: 6px 12px;
                             text-decoration: none;
                             font-size: 14px;
                             color: white;
                             font-size: 20px;
-                            height: 32.5px;
                             cursor: pointer;
                             user-select: none;
                             border-radius: 4px;
@@ -337,7 +335,7 @@
                             font-size: 14px;
                             font-weight: 500;
                             width: fit-content;
-                            color: rgba(0, 0, 0, 0.8);
+                            color: black;
                             margin: auto;
                             padding: 4px 6px;
                             text-align: center;
@@ -395,7 +393,6 @@
                             transition: all 0.2s;
                             background: linear-gradient(145deg, #00a7e1 10%, #149dc7 40%, #149dc7 60%, #00a7e1 90%);
                             background-size: 400% 400%;
-                            text-shadow: 0px 1px 4px #084955;
                         }
                         
                         .templatedivtitle {
@@ -406,6 +403,7 @@
                             margin: 0;
                             padding: 20px;
                             position: relative;
+                            text-shadow: 0px 1px 4px #084955;
                         }
                         
                         .templatedivad {
@@ -516,6 +514,7 @@
                         
                         .templatediv ul {
                             font-weight: 550;
+                            color: black;
                         }
                         
                         .templateselect {
@@ -649,7 +648,7 @@
                             float: left;
                             display: table;
                             font-weight: 550;
-                            color: rgba(50, 50, 50, 0.8);
+                            color: rgba(50, 50, 50, 0.9);
                             font-family: 'Ubuntu', sans-serif;
                             font-size: 15px;
                         }
@@ -810,7 +809,7 @@
                         }
                         
                         .landingpageinforight {
-                            background: #f7f7f7;
+                            background: white;
                             box-shadow: 0px 6px 20px 8px #178db860;
                             color: black;
                             padding: 10px !important;
@@ -830,7 +829,6 @@
                             box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 6px 12px 4px #00a7e130;
                             transition: all 0.2.5s linear;
                             width: 65% !important;
-                            height: 35px;
                             padding-top: 15.5px !important;
                         }
                         
@@ -1044,6 +1042,7 @@
                             background: #363945;
                             z-index: 1;
                             padding: 2vw 2vh;
+                            padding-bottom: 35px;
                             color: black;
                             display: flex;
                             min-height: 10vh;
