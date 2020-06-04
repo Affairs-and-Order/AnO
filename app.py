@@ -198,6 +198,8 @@ def coalition(colId):
         db = connection.cursor()
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
+        names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
+
         peopleGold = db.execute("SELECT gold FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (colId,)).fetchall()
         totalGold = []
         for i in peopleGold:
@@ -219,7 +221,7 @@ def coalition(colId):
         peopleHp = sum(totalHp) / len(totalHp)
 
         return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold, peoplePop=peoplePop,
-        peopleHp=peopleHp)
+        peopleHp=peopleHp, names=names)
 
 @login_required
 @app.route("/establish_coalition", methods=["GET", "POST"])
@@ -373,9 +375,13 @@ def countries():
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
+
         name = db.execute("SELECT username FROM users").fetchall()
         population = db.execute("SELECT population FROM stats").fetchall()
         countryId = db.execute("SELECT id FROM users").fetchall()
+        colName = db.execute("SELECT name FROM colNames").fetchall()
+        colId = db.execute("SELECT colId FROM coalitions").fetch
+
         connection.commit()
         zipped = zip(name, population, countryId)
         return render_template("countries.html", zipped=zipped)
