@@ -89,6 +89,7 @@ def signup():
             db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
             db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+            db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
             connection.commit()
             connection.close()
             return redirect("/")
@@ -138,15 +139,32 @@ def military():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
-    if request.method == "GET":
+    if request.method == "GET": # maybe optimise this later with css anchors
+        # ground
         tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
+        # air
+        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+        # water
+        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+        # special
+        spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+
         return render_template("military.html", tanks=tanks, soldiers=soldiers,
-        artillery=artillery, destroyers=destroyers, flying_fortresses=flying_fortresses)
+        artillery=artillery, flying_fortresses=flying_fortresses, bombers=bombers,
+        destroyers=destroyers, cruisers=cruisers, submarines=submarines,
+        spies=spies, icbms=icbms, nukes=nukes
+        )
 
 person = {"name": "galaxy"}
 person["message"] = "Thanks guys :D, you are all so amazing."
