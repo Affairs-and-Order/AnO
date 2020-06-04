@@ -29,7 +29,22 @@ def setup_periodic_tasks(sender, **kwargs):
 
 @app.route("/")
 def index():
+    try:
+        connection = sqlite3.connect('affo/aao.db') # connects to db
+        db = connection.cursor() # creates the cursor for db connection
+
+        inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+        # TODO: fix this because this might causes errors when user is not in a coalition
+        inCol = f"/coalition/{inColit}"
+        app.add_template_global(inCol, name='inCol')
+    except:
+        inCol = "/error"
+        app.add_template_global(inCol, name='inCol')
     return render_template("index.html") # renders index.html when "/" is accesed
+
+@app.route("/error")
+def errorito(): # fancy view for error, because error function is used
+    error(400, "Unknown Error")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -176,23 +191,6 @@ def market():
         return render_template("market.html")
 
 @login_required
-@app.route("/my_coalition", methods=["GET"])
-def my_coalition():
-    if request.method == "GET":
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-        try: 
-            colName = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (session["user_id"], )).fetchone()[0]
-            if colName != None:
-                inCol = True
-                colId = db.execute('SELECT colId FROM coalitions WHERE userId=(?)', (session["user_id"], )).fetchone()[0]
-        except TypeError:
-            inCol = False
-            colName = ""
-            colId = None
-        return render_template("my_coalition.html", inCol=inCol, colName=colName, colId=colId)
-
-@login_required
 @app.route("/coalition/<colId>", methods=["GET"])
 def coalition(colId):
     if request.method == "GET":
@@ -241,9 +239,28 @@ def establish_coalition():
             db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
             connection.commit()
-            return redirect("/my_coalition")
+            return render_template("/coalition", colId=colId)
     else:
         return render_template("establish_coalition.html")
+
+"""@app.context_processor
+def get_status(unit, table, userId):
+
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    try:
+        statStat = f"SELECT {unit} FROM {table} WHERE {userId} = (?)"
+        db.execute(statStat, (cId,))
+        return True
+    except:
+        return False
+
+    updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+        db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table"""
+
 
 @login_required
 @app.route("/buy/<units>", methods=["POST"])
