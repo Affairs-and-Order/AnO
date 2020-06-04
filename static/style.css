@@ -368,7 +368,7 @@
                         .purchasediv div h3 {
                             margin: 0;
                             padding: 0;
-                            font-size: 20px;
+                            font-size: 19px;
                         }
                         /*CONTENT*/
                         
@@ -537,6 +537,41 @@
                         
                         .templateselect:focus {
                             background-position: -100% 0%;
+                        }
+                        
+                        .templatetextarea {
+                            border: 1.5px solid #e3e9f0;
+                            border-radius: 0px;
+                            padding: 10px;
+                            outline: none;
+                            font-size: 16px;
+                            transition: all 0.2s;
+                            background: white;
+                            background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
+                            background-size: 200% 200%;
+                            background-position: 0% 0%;
+                            min-width: 40vw;
+                            min-height: 40vh;
+                            max-width: 40vw;
+                            max-height: 40vh;
+                            font-family: "Ubuntu";
+                            box-shadow: rgba(58, 59, 69, 0.10) 0px 3px 4px 0px;
+                        }
+                        
+                        @media all and (max-width: 600px) {
+                            .templatetextarea {
+                                min-width: 60vw;
+                                max-width: 60vw;
+                            }
+                        }
+                        
+                        .templatetextarea:hover {
+                            box-shadow: rgba(58, 59, 69, 0.10) 0px 12px 18px 0px;
+                        }
+                        
+                        .templatetextarea:focus {
+                            background-position: -100% 0%;
+                            box-shadow: rgba(58, 59, 69, 0.10) 0px 12px 18px 0px;
                         }
                         
                         .templatedivflex2 {

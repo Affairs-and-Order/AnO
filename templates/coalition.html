@@ -60,7 +60,7 @@
                         </tr>
                         <tr>
                             <td>Members:</td>
-                            <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="">{{ coalitionmembers }}</a></td>
+                            <td><a href="{{ alinktocoalitionmembers }}">{{ coalitionmembers }}</a></td>
                         </tr>
                         <tr>
                             <td>Influence:</td>
@@ -173,20 +173,34 @@
         </div>
         <!--JOIN-->
         <div class="join" id="join">
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
 
-            <div class="templatedivflex2 divflex2center">
-                <form>
-                    <!--Hide / deactvate certian buttons depending on the alliance type-->
-                    <!--will become deactivated if the user doesnt meet the specified influence-->
-                    <button class="templatedivbutton templatecenteredbutton">Join</button>
-                    <button class="templatedivbutton templatecenteredbutton">Request to join</button>
-                    <!--There buttons will be deactivated-->
-                    <button class="templatedivbutton templatecenteredbutton templateclosedbutton" disabled="disabled">Closed</button>
-                    <button class="templatedivbutton templatecenteredbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
-                    <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
-                </form>
+                    <h3 class="unitcount">[Applying for / Joining] [coalition name]</h3>
+
+                    <p class="templatecontentpleft">
+                        You are
+                        <!--applying if invite only, joining if not-->[applying for / joining] [coalition name] please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
+                    </p>
+                    <ul>
+                        [coalition name] is a [coalition type (economic, war, trade)] coalition.
+                    </ul>
+                </div>
+                <div class="templatedivflex2left">
+                    <form>
+                        <textarea class="templatetextarea" placeholder="Your message"></textarea>
+
+                </div>
             </div>
 
+            <!--Hide / deactvate certian buttons depending on the coalition type-->
+            <!--will become deactivated if the user doesnt meet the specified influence-->
+            <button class="templatedivbutton loginsignupbutton">Join</button>
+            <button class="templatedivbutton loginsignupbutton">Request to join</button>
+            <!--There buttons will be deactivated-->
+            <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
+            <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
+            </form>
         </div>
         <!--LEADER PANEL-->
         <div class="leader" id="leader">

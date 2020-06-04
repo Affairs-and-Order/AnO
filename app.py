@@ -182,13 +182,19 @@ def military():
         )
 
 person = {"name": "galaxy"}
-person["message"] = "Thanks guys :D, you are all so amazing." # easter egg probably or it has something to do with mail xD
+person["message"] = "Thanks guys :D, you are all so amazing." # easter egg probably or it has something to do with mail xD || aw thats nice
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
 def market():
     if request.method == "GET":
         return render_template("market.html")
+
+@login_required
+@app.route("/provinces", methods=["GET", "POST"])
+def provinces():
+    if request.method == "GET":
+        return render_template("provinces.html")
 
 @login_required
 @app.route("/coalition/<colId>", methods=["GET"])
