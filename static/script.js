@@ -215,8 +215,8 @@ function coalitionmember() {
 var loadFile = function(event) {
     var output = document.getElementById('output');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "40%";
-    output.style.height = "22.5%";
+    output.style.width = "40vw";
+    output.style.height = "22.5vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }

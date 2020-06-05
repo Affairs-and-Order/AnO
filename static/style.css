@@ -497,7 +497,7 @@
                         
                         .smallactionbutton {
                             text-transform: capitalize;
-                            margin: 2px;
+                            margin: auto 2px;
                         }
                         
                         .templateclosedbutton:disabled {
@@ -601,10 +601,8 @@
                             align-items: center;
                             width: 98%;
                             margin: auto;
-                        }
-                        
-                        .divflex2full div {
-                            padding: 5px;
+                            height: 100px;
+                            justify-content: center;
                         }
                         
                         .divflex2center {
@@ -630,6 +628,19 @@
                             .divflex2center {
                                 width: 100%;
                             }
+                        }
+                        
+                        .divflex2full select,
+                        input,
+                        button {
+                            margin: auto 2%;
+                            float: none;
+                        }
+                        
+                        .templateflexfullinput {
+                            margin: 1px !important;
+                            float: none;
+                            margin: auto 2% !important;
                         }
                         
                         .templatedivflex2left,
@@ -965,6 +976,7 @@
                             background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
                             background-size: 200% 200%;
                             background-position: 0% 0%;
+                            float: none;
                         }
                         
                         .loginsignupinput:hover {}
