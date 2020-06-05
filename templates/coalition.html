@@ -51,7 +51,7 @@
         <div class="general" id="general">
 
 
-            <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2">
                 <div class="templatedivflex2left">
 
                     <table class="templatetable">
@@ -75,6 +75,34 @@
                         </tr>
 
                     </table>
+
+                    <table class="templatetable">
+                        <th>Affairs</th>
+                        </tr>
+                        <tr>
+                            <td>Allied:</td>
+                            <td>Y / N</td>
+                        </tr>
+                        <!--ONLY display ally TYPE (below) if nation IS in an ALLIED coalition-->
+                        <tr>
+                            <td>Ally Type:</td>
+                            <td>{{ treatyType }}</td>
+                        </tr>
+                        <tr>
+                            <td>Allies:</td>
+                            <td>View allies</td>
+                        </tr>
+                        <tr>
+                            <td>Water Military:</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                    </table>
+
+
+                </div>
+                <div class="templatedivflex2left">
+
                     <table class="templatetable">
                         <tr>
                             <th>Military</th>
@@ -97,28 +125,6 @@
                         </tr>
                         <tr>
                             <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="nationstats">View stats</a></td>
-                        </tr>
-                        <tr>
-                    </table>
-                    <table class="templatetable">
-                        <th>Affairs</th>
-                        </tr>
-                        <tr>
-                            <td>Allied:</td>
-                            <td>Y / N</td>
-                        </tr>
-                        <!--ONLY display ally TYPE (below) if nation IS in an ALLIED coalition-->
-                        <tr>
-                            <td>Ally Type:</td>
-                            <td>{{ treatyType }}</td>
-                        </tr>
-                        <tr>
-                            <td>Allies:</td>
-                            <td>View allies</td>
-                        </tr>
-                        <tr>
-                            <td>Water Military:</td>
-                            <td>10%</td>
                         </tr>
                         <tr>
                     </table>
@@ -150,11 +156,6 @@
                             <td>{{ coalitiongpdPerCapita }}</td>
                         </tr>
                     </table>
-
-                </div>
-                <div class="templatedivflex2left">
-
-
 
                 </div>
             </div>
@@ -195,7 +196,7 @@
                 </div>
                 <div class="templatedivflex2left">
                     <!-- <form> temporarily commented out this form-->
-                        <textarea class="templatetextarea" placeholder="Your message"></textarea>
+                    <textarea class="templatetextarea" placeholder="Your message"></textarea>
 
                 </div>
             </div>
@@ -205,14 +206,14 @@
 
             <!-- currently only added join for open coalitions, without message-->
             <form action="/join/{{ colId }}/">
-            <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
+                <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
             </form>
 
             <button class="templatedivbutton loginsignupbutton">Request to join</button>
             <!--There buttons will be deactivated-->
             <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
             <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
-            
+
             <!-- </form> temporarily commented out this form-->
         </div>
         <!--LEADER PANEL-->
