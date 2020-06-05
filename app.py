@@ -248,7 +248,7 @@ def establish_coalition():
             db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
             connection.commit()
-            return render_template("/coalition", colId=colId)
+            return render_template("coalition.html", colId=colId)
     else:
         return render_template("establish_coalition.html")
 
