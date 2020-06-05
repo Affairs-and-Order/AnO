@@ -230,6 +230,7 @@ def coalition(colId):
         peopleHp=peopleHp, names=names)
 
 @login_required
+# estCol (this is so the function would be easier to find in code)
 @app.route("/establish_coalition", methods=["GET", "POST"])
 def establish_coalition():
     if request.method == "POST":
@@ -385,8 +386,6 @@ def countries():
         name = db.execute("SELECT username FROM users").fetchall()
         population = db.execute("SELECT population FROM stats").fetchall()
         countryId = db.execute("SELECT id FROM users").fetchall()
-        colName = db.execute("SELECT name FROM colNames").fetchall()
-        colId = db.execute("SELECT colId FROM coalitions").fetch
 
         connection.commit()
         zipped = zip(name, population, countryId)
