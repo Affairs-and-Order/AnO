@@ -437,6 +437,7 @@
                         
                         .templatecontentpleft {
                             text-indent: 25px;
+                            padding: 8px;
                             font-size: 17px;
                             color: rgb(0, 0, 0);
                             font-family: 'Ubuntu', sans-serif;
@@ -1079,6 +1080,19 @@
                         .militaryspecialclick {
                             background: #178db8 !important;
                             color: white !important;
+                        }
+                        /*create_coalition*/
+                        
+                        .coalitionimagepreview {
+                            margin: auto;
+                            height: auto;
+                            text-align: center;
+                            justify-content: center;
+                            text-align: center;
+                        }
+                        
+                        .coalitionimagepreview image {
+                            margin: auto;
                         }
                         /*Coalition*/
                         

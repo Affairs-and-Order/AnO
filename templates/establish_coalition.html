@@ -9,23 +9,69 @@
 
     <div class="templatedivcontent">
 
-        <p class="templatecontentpleft">information about coalitions</p>
+        <div class="menuflex">
+            <p class="templatecontentpleft">Coalitions allow you to work together with other players, sharing resources, helping each other in war, and receiving bonuses through projects and the chosen coalition type.
+                <br /> You can learn more about types of coalitions
+                <a class="templatelink" href="/coalition_types">here</a>
+            </p>
+        </div>
 
-        <div class="templatedivflex2 divflex2center">
-            <div class="templatedivflex2left">
+        <div class="coalitionimagepreview">
+            <img id="output" />
+        </div>
 
-                <form action="/establish_coalition" method="POST">
+        <form action="/establish_coalition" method="POST">
+
+            <div class="templatedivflex2 divflex2center">
+                <div class="templatedivflex2left">
 
                     <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Coalition Name" required/>
 
-            </div>
-            <div class="templatedivflex2right">
+                </div>
+                <div class="templatedivflex2right">
 
-                <button class="templatedivbutton templatecenteredbutton">Establish</button>
-                </form>
+                    <input class="loginsignupinput" type="file" accept="image/*" onchange="loadFile(event)" required/>
 
+                </div>
             </div>
-        </div>
+            <div class="templatedivflex2 menuflex ">
+                <div class="templatedivflex2left ">
+
+                    <div class="templatedivflex2 menuflex ">
+                        <div class="templatedivflex2left ">
+
+                            <select class="templateselect ">
+        
+                                <option disabled="true " selected="selected ">Alliance Type</option>
+                                <option class="templateoption ">Economic</option>
+                                <option class="templateoption ">Trade</option>
+                                <option class="templateoption ">War</option>
+                            
+                            </select>
+
+
+
+                        </div>
+                        <div class="templatedivflex2left ">
+
+                            <input class="loginsignupinput " autocomplete="off " name="name " placeholder="Leader Title " required/>
+                            <input class="loginsignupinput " autocomplete="off " name="name " placeholder="2nd in Command Title " required/>
+                            <input class="loginsignupinput " autocomplete="off " name="name " placeholder="3rd In Command Title " required/>
+                            <input class="loginsignupinput " autocomplete="off " name="name " placeholder="Member Title " required/>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="templatedivflex2left ">
+
+                    <textarea class="templatetextarea " placeholder="Description "></textarea>
+
+                </div>
+            </div>
+
+            <button class="templatedivbutton templatecenteredbutton ">Establish</button>
+        </form>
+
 
     </div>
 </div>
