@@ -444,6 +444,16 @@
                             font-weight: normal;
                         }
                         
+                        .templatecontentpcenter {
+                            text-indent: 25px;
+                            padding: 8px;
+                            font-size: 17px;
+                            color: rgb(0, 0, 0);
+                            font-family: 'Ubuntu', sans-serif;
+                            font-weight: normal;
+                            text-align: center;
+                        }
+                        
                         .templatedivbutton {
                             width: fit-content;
                             margin: 5px;
