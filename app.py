@@ -204,7 +204,9 @@ def coalition(colId):
         db = connection.cursor()
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
-        names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
+        # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
+
+        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
 
         peopleGold = db.execute("SELECT gold FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (colId,)).fetchall()
         totalGold = []
@@ -227,7 +229,7 @@ def coalition(colId):
         peopleHp = sum(totalHp) / len(totalHp)
 
         return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold, peoplePop=peoplePop,
-        peopleHp=peopleHp, names=names)
+        peopleHp=peopleHp,  members=members)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
