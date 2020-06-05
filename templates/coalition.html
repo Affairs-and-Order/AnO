@@ -194,7 +194,7 @@
                     </ul>
                 </div>
                 <div class="templatedivflex2left">
-                    <form>
+                    <!-- <form> temporarily commented out this form-->
                         <textarea class="templatetextarea" placeholder="Your message"></textarea>
 
                 </div>
@@ -202,12 +202,18 @@
 
             <!--Hide / deactvate certian buttons depending on the coalition type-->
             <!--will become deactivated if the user doesnt meet the specified influence-->
-            <button class="templatedivbutton loginsignupbutton">Join</button>
+
+            <!-- currently only added join for open coalitions, without message-->
+            <form action="/join/{{ colId }}/">
+            <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
+            </form>
+
             <button class="templatedivbutton loginsignupbutton">Request to join</button>
             <!--There buttons will be deactivated-->
             <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
             <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
-            </form>
+            
+            <!-- </form> temporarily commented out this form-->
         </div>
         <!--LEADER PANEL-->
         <div class="leader" id="leader">

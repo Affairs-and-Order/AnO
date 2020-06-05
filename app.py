@@ -407,6 +407,20 @@ def coalitions():
 
         return render_template("coalitions.html", colBoth=colBoth)
 
+@login_required
+@app.route("/join/<colid>/?", methods=["POST"])
+def join_col(colId):
+    
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    usId = session["user_id"]
+
+    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, usId))
+
+    return render_template("coalition.html", colId=colId)
+
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
