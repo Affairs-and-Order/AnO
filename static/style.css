@@ -701,6 +701,13 @@
             padding: 0px;
         }
         
+        .stickyflexmenu {
+            position: sticky;
+            width: fit-content;
+            height: 100%;
+            background: #f7f7f7;
+        }
+        
         .templatetable {
             padding: 8px;
             margin: 8px auto;
