@@ -118,7 +118,7 @@ function coalitiongeneral() {
     document.getElementById("leader").classList.remove("leaderclick");
 
     document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
-    document.getElementById("member").classList.remove("member");
+    document.getElementById("member").classList.remove("memberclick");
 
 
 }
@@ -142,7 +142,7 @@ function coalitionabout() {
     document.getElementById("leader").classList.remove("leaderclick");
 
     document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
-    document.getElementById("member").classList.remove("member");
+    document.getElementById("member").classList.remove("memberclick");
 
 
 }
@@ -164,7 +164,7 @@ function coalitionjoin() {
     document.getElementById("leader").classList.remove("leaderclick");
 
     document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
-    document.getElementById("member").classList.remove("member");
+    document.getElementById("member").classList.remove("memberclick");
 
 
 }
@@ -186,7 +186,7 @@ function coalitionleader() {
     document.getElementById("join").classList.remove("joinclick");
 
     document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
-    document.getElementById("member").classList.remove("member");
+    document.getElementById("member").classList.remove("memberclick");
 
 
 }
@@ -194,7 +194,7 @@ function coalitionleader() {
 function coalitionmember() {
 
     document.getElementById("coalitionmember").classList.add("coalitionmemberclick");
-    document.getElementById("member").classList.add("member");
+    document.getElementById("member").classList.add("memberclick");
 
     //
 
