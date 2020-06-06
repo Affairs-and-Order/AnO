@@ -5,12 +5,8 @@ Nat1Bomb = 66
 Nat2Bomb = 6
 #TODO: get nation names from DB, get amount of fighters and bombers from DB,add infra damage,make aircraft consume resources
 #TODO: figure out how calculate bomber and fighter losses seperatly 
-Nat1Bomb = Nat1Bomb * 5
-Nat2Bomb = Nat2Bomb * 5
-Nat2 = Nat2 + Nat2Bomb
-Nat1 = Nat1Bomb + Nat1
-random_roll_nat1 = random.randint(1, Nat1)
-random_roll_nat2 = random.randint(1, Nat2)
+random_roll_nat1 = random.randint(1, nat1 + 5*nat1bomb)
+random_roll_nat2 = random.randint(1, nat2 + 5*nat2bomb)
 
 # print statements
 
