@@ -379,6 +379,12 @@ def marketoffer():
         return render_template("marketoffer.html")
 
 @login_required
+@app.route("/account", methods=["GET", "POST"])
+def account():
+    if request.method == "GET":
+        return render_template("account.html")
+
+@login_required
 @app.route("/countries")
 def countries():
     if request.method == "GET":
