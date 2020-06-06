@@ -7,24 +7,40 @@
 
     <div class="templatedivcontent">
 
-        <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left">
 
-                <select class="templateselect">
+        <div class="menudiv">
 
-                    <option class="templateoption" selected>Defualt</option>
-                    <option class="templateoption">Light Blue</option>
-                    <option class="templateoption">Dark Blue</option>
-                    <option class="templateoption">Red</option>
-                
-                </select>
+            <h2 class="templatecontentheaderleft">Background Color</h2>
 
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
+
+                    <select class="templateselect">
+
+                        <option class="templateoption" selected>Defualt</option>
+                        <option class="templateoption">Gray</option>
+                        <option class="templateoption">Light Blue</option>
+                        <option class="templateoption">Dark Blue</option>
+                        <option class="templateoption">Red</option>
+                        <option class="templateoption">Dark Gray</option>
+                        <option class="templateoption">Black</option>
+                        <option class="templateoption">Green</option>
+                    
+                    </select>
+
+                </div>
+                <div class="templatedivflex2left">
+
+                    <div class="coalitionimagepreview">
+                        <img id="output" />
+                    </div>
+
+                    <label for="coalitionflag">Custom image</label>
+                    <input class="loginsignupinput" type="file" name="coalitionflag" accept="image/*" onchange="loadFile(event)" required/>
+
+                </div>
             </div>
-            <div class="templatedivflex2left">
-
-
-
-            </div>
+            <input class="templatedivbutton loginsignupbutton" value="Change Background" type="submit" />
         </div>
     </div>
 </div>
