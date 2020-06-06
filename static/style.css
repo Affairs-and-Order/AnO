@@ -372,7 +372,6 @@ label {
     width: fit-content;
     z-index: 1;
     margin: auto 0;
-    border-left: 3px solid #00a7e1;
     margin-bottom: 40px;
 }
 
@@ -385,6 +384,10 @@ label {
     justify-self: end;
     height: min-content;
     margin: auto;
+    margin-right: -50%;
+    opacity: 0;
+    pointer-events: none;
+    border-left: 3px solid #00a7e1;
 }
 
 .purchasediv div h3 {
