@@ -208,7 +208,7 @@
         
         .barclick1 {
             background-color: #00a7e1;
-            top: 7.5px;
+            top: 8px;
             transform: rotate(-30deg);
             width: 20px;
         }
@@ -220,7 +220,7 @@
         
         .barclick3 {
             background-color: #00a7e1;
-            top: -7.5px;
+            top: -8px;
             transform: rotate(30deg);
             width: 20px;
         }
