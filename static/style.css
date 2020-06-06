@@ -1187,8 +1187,8 @@ button {
 }
 
 .applicanttable {
-    max-height: 50vh;
-    overflow: scroll;
+    max-height: 20vh;
+    overflow: hidden;
 }
 
 
