@@ -16,6 +16,8 @@
                 <h3 class="smallheader">View</h3>
 
             </div>
+            
+            {% if status == True %}
             <div class="templatedivflex2left" id="countryrevenue" onclick="countryrevenue()">
 
                 <h3 class="smallheader">Revenue</h3>
@@ -28,18 +30,23 @@
                 <!--Hide when vising other nations-->
 
             </div>
+            {% endif %}
+            {% if status == False %}
             <div class="templatedivflex2left" id="countryactions" onclick="countryactions()">
 
                 <h3 class="smallheader">Actions</h3>
                 <!--show ONLY when vising other nations-->
 
             </div>
+            {% endif %}
+            {% if status == True %}
             <div class="templatedivflex2left" id="countryedit" onclick="countryedit()">
 
                 <h3 class="smallheader">Edit</h3>
                 <!--Hide when vising other nations-->
 
             </div>
+            {% endif %}
         </div>
 
         <!--<div class="countryimagediv">

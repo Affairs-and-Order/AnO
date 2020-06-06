@@ -135,15 +135,24 @@ def country(cId):
     db = connection.cursor()
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
     connection.commit()
+
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
+
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    connection.commit()
+
+    if cId == session["user_id"]:
+        status = True
+    else:
+        status = False
+        
     try: # sees if user is logged in
         uId = True 
         return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-        location=location, gold=gold, uId=uId)
+        location=location, gold=gold, uId=uId, status=status)
     except KeyError: # if user isnt logged in
         uId = False
         return render_template("country.html", uId=uId)
