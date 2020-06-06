@@ -42,16 +42,20 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <select class="templateselect">
+                            <!-- <select name="type" class="templateselect">
         
                                 <option disabled="true" selected="selected">Alliance Type</option>
                                 <option class="templateoption">Economic</option>
                                 <option class="templateoption">Trade</option>
                                 <option class="templateoption">War</option>
                             
+                            </select>  will implement this later for now we'll have invite only/closed -->
+
+                            <select name="type" class="templateselect">
+                            <option disabled="true" selected="selected">Alliance Type</option>
+                            <option class="templateoption">Open</option>
+                            <option class="templateoption">Invite Only</option>
                             </select>
-
-
 
                         </div>
                         <!-- <div class="templatedivflex2left">
@@ -66,7 +70,7 @@
                 </div>
                 <div class="templatedivflex2left">
 
-                    <textarea class="templatetextarea" placeholder="Description"></textarea>
+                    <textarea class="templatetextarea" name="description" placeholder="Description"></textarea> <!-- CURRENT CHAR LIMIT: 240-->
 
                 </div>
             </div>
