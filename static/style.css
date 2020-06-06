@@ -169,6 +169,7 @@ body {
     margin: 2.5px;
     float: left;
     margin-left: 15px;
+    user-select: none;
 }
 
 .menubar {

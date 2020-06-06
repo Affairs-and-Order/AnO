@@ -221,3 +221,13 @@ var loadFile = function(event) {
         URL.revokeObjectURL(output.src) // free memory
     }
 };
+//
+var imageBackground = function(event) {
+    var output = document.getElementById('imageBackground');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.style.width = "30vw";
+    output.style.height = "30vh";
+    output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+    }
+};
