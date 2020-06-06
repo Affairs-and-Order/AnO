@@ -217,32 +217,25 @@ def coalition(colId):
 
         members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
 
-        peopleGold = db.execute("SELECT gold FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (colId,)).fetchall()
-        totalGold = []
-        for i in peopleGold:
-            totalGold.append(i[0])
-        peopleGold = sum(totalGold)
+        """def avgStat(unit):
+            peopleUnit = db.execute("SELECT (?) FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (unit, colId,)).fetchall()
+            totalUnit = []
+            for i in peopleUnit:
+                totalUnit.append(i[0])
+            peopleUnit = sum(totalUnit)
+            return peopleUnit
 
-        # TODO: fix this bad not oop approach later on
+        gold = avgStat("gold")
+        happiness = avgStat("happiness")
+        population = avgStat("population")"""
 
-        peoplePop = db.execute("SELECT population FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (colId,)).fetchall()
-        totalPop = []
-        for i in peoplePop:
-            totalPop.append(i[0])
-        peoplePop = sum(totalPop)
-
-        peopleHp = db.execute("SELECT happiness FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (colId,)).fetchall()
-        totalHp = []
-        for i in peopleHp:
-            totalHp.append(i[0])
-        peopleHp = sum(totalHp) / len(totalHp)
 
         description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
-        return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold, peoplePop=peoplePop,
-        peopleHp=peopleHp,  members=members, description=description, colType=colType)
+        return render_template("coalition.html", name=name, colId=colId, members=members,
+        description=description, colType=colType)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
