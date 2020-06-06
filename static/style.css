@@ -104,6 +104,18 @@
     }
 }
 
+@keyframes borderpulse {
+    20% {
+        border-color: #e3e9f0;
+    }
+    50% {
+        border-color: #00a7e1;
+    }
+    80% {
+        border-color: #e3e9f0;
+    }
+}
+
 body {
     background: #f5f9fd;
     padding: 0;
@@ -608,6 +620,7 @@ body {
     margin: auto;
     height: 100px;
     justify-content: center;
+    animation: borderpulse 4s infinite;
 }
 
 .divflex2center {
