@@ -180,6 +180,7 @@
             <div class="templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
 
+                    {% if colType == "Invite Only" %}
                     <h3 class="unitcount">[Applying for / Joining] [coalition name]</h3>
 
                     <p class="templatecontentpleft">
@@ -197,8 +198,10 @@
                 <div class="templatedivflex2left">
                     <!-- <form> temporarily commented out this form-->
                     <textarea class="templatetextarea" placeholder="Your message"></textarea>
-
                 </div>
+
+                    {% endif %}
+
             </div>
 
             <!--Hide / deactvate certian buttons depending on the coalition type-->
@@ -206,14 +209,18 @@
 
             <!-- currently only added join for open coalitions, without message-->
 
+            {% if colType == "Open" %}
             <form action="/join/{{ colId }}" method="POST">
                 <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
             </form>
+            {% endif %}
 
+            {% if colType == "Invite Only" %}
             <button class="templatedivbutton loginsignupbutton">Request to join</button>
             <!--There buttons will be deactivated-->
             <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
             <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
+            {% endif %}
 
             <!-- </form> temporarily commented out this form-->
         </div>

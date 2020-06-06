@@ -239,8 +239,10 @@ def coalition(colId):
 
         description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
+        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
         return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold, peoplePop=peoplePop,
-        peopleHp=peopleHp,  members=members, description=description)
+        peopleHp=peopleHp,  members=members, description=description, colType=colType)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
