@@ -237,8 +237,10 @@ def coalition(colId):
             totalHp.append(i[0])
         peopleHp = sum(totalHp) / len(totalHp)
 
+        description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
         return render_template("coalition.html", name=name, colId=colId, peopleGold=peopleGold, peoplePop=peoplePop,
-        peopleHp=peopleHp,  members=members)
+        peopleHp=peopleHp,  members=members, description=description)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
