@@ -148,7 +148,7 @@ def country(cId):
         status = True
     else:
         status = False
-        
+
     try: # sees if user is logged in
         uId = True 
         return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
@@ -427,17 +427,21 @@ def coalitions():
         return render_template("coalitions.html", colBoth=colBoth)
 
 @login_required
-@app.route("/join/<colid>/?", methods=["POST"])
+@app.route("/join/<colId>", methods=["POST"])
 def join_col(colId):
-    
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
 
-    usId = session["user_id"]
+    if request.method == "POST":
 
-    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, usId))
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
 
-    return render_template("coalition.html", colId=colId)
+        cId = session["user_id"]
+
+        db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
+
+        connection.commit()
+
+        return redirect(f"/coalition/{colId}")
 
 
 # available to run if double click the file

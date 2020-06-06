@@ -205,7 +205,8 @@
             <!--will become deactivated if the user doesnt meet the specified influence-->
 
             <!-- currently only added join for open coalitions, without message-->
-            <form action="/join/{{ colId }}/">
+
+            <form action="/join/{{ colId }}" method="POST">
                 <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
             </form>
 
