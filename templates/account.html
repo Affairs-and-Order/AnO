@@ -7,7 +7,24 @@
 
     <div class="templatedivcontent">
 
+        <div class="menudiv">
 
+            <h2 class="templatecontentheaderleft">Account information</h2>
+
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
+
+
+
+                </div>
+                <div class="templatedivflex2left">
+
+
+
+                </div>
+            </div>
+            <input class="templatedivbutton loginsignupbutton" value="Update" type="submit" />
+        </div>
         <div class="menudiv">
 
             <h2 class="templatecontentheaderleft">Background Color</h2>
@@ -15,7 +32,8 @@
             <div class="templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
 
-                    <select class="templateselect">
+                    <label for="bgcolor">Choose a color</label>
+                    <select class="templateselect" name="bgcolor">
 
                         <option class="templateoption" selected>Defualt</option>
                         <option class="templateoption">Gray</option>
@@ -35,12 +53,13 @@
                         <img id="imageBackground" />
                     </div>
 
-                    <label for="coalitionflag">Custom image</label>
-                    <input class="loginsignupinput" type="file" name="coalitionflag" accept="image/*" onchange="imageBackground(event)" required/>
+                    <label for="bgimage">Or a custom image</label>
+                    <input class="loginsignupinput" type="file" name="bgimage" accept="image/*" onchange="imageBackground(event)" required/>
 
                 </div>
             </div>
-            <input class="templatedivbutton loginsignupbutton" value="Change Background" type="submit" />
+            <!--if both an image and color are selected the image overrides the color-->
+            <input class="templatedivbutton loginsignupbutton" value="Change" type="submit" />
         </div>
     </div>
 </div>

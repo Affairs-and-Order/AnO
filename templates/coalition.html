@@ -218,18 +218,130 @@
         </div>
         <!--LEADER PANEL-->
         <div class="leader" id="leader">
+            <div class="menudiv">
 
-            <div class="templatedivflex2">
-                <div class="templatedivflex2left">
+                <h2 class="templatecontentheaderleft">Diplomacy</h2>
 
-                    leader
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
 
+                        <select class="templateselect" name="diplomacy">
+    <!--hovering over the options tags will tell the users what they do-->
+                            <option class="templateoption" selected disabled>Choose Treaty</option>
+                            <option class="templateoption">Protecterate</option>
+                            <option class="templateoption">MDP</option>
+                            <option class="templateoption">MDOAP</option>
+                            <option class="templateoption">ODP</option>
+                            <option class="templateoption">ODOAP</option>
+                            <option class="templateoption">NAP</option>
+                            <option class="templateoption">Open Markets</option>
+                        
+                        </select>
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Filter Applicants" />
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                <button class="templatedivbutton templatecenteredbutton" required>Go</button>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <table class="templatetable templatetable2 applicanttable">
+                            <tr>
+                                <th>Action</th>
+                                <th>Name</th>
+                            </tr>
+                            <!--for every applicant make a row-->
+                            <tr>
+                                <td>flexbox with remove / add icons</td>
+                                <td>Coalition Name</td>
+                            </tr>
+                        </table>
+
+                    </div>
                 </div>
-                <div class="templatedivflex2right">
+            </div>
+            <!--HIDE if alliance type is "open"-->
+            <div class="menudiv">
 
+                <h2 class="templatecontentheaderleft">Applicants</h2>
 
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
 
+                                <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Filter Applicants" />
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                <button class="templatedivbutton templatecenteredbutton" required>Go</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <table class="templatetable templatetable2 applicanttable">
+                            <tr>
+                                <th>Action</th>
+                                <th>Name</th>
+                                <th>Influence</th>
+                            </tr>
+                            <!--for every applicant make a row-->
+                            <tr>
+                                <td>flexbox with remove / add icons</td>
+                                <td>Country Name</td>
+                                <td>Influence</td>
+                            </tr>
+                        </table>
+
+                    </div>
                 </div>
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Coalition Background</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="bgcolor">Choose a color</label>
+                        <select class="templateselect" name="bgcolor">
+    
+                            <option class="templateoption" selected>Defualt</option>
+                            <option class="templateoption">Gray</option>
+                            <option class="templateoption">Light Blue</option>
+                            <option class="templateoption">Dark Blue</option>
+                            <option class="templateoption">Red</option>
+                            <option class="templateoption">Dark Gray</option>
+                            <option class="templateoption">Black</option>
+                            <option class="templateoption">Green</option>
+                        
+                        </select>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <div class="coalitionimagepreview">
+                            <img id="imageBackground" />
+                        </div>
+
+                        <label for="bgimage">Or a custom image</label>
+                        <input class="loginsignupinput" type="file" name="bgimage" accept="image/*" onchange="imageBackground(event)" required/>
+
+                    </div>
+                </div>
+                <input class="templatedivbutton loginsignupbutton" value="Change" type="submit" />
             </div>
 
         </div>
