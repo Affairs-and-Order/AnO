@@ -5,25 +5,62 @@
         <h1 class="templatedivtitle">Provinces</h1>
     </div>
 
+
+
     <div class="templatedivcontent">
 
         <div class="templatedivad"></div>
 
         <a href="/createprovince" class="templatedivbutton templatecenteredbutton">Create Province</a>
 
-        <div class="templatedivflex2">
-            <div class="templatedivflex2left stickyflexmenu">
 
-                <a class="templatediva">Hello</a>
+        <div class="templatedivflex2 templatesidemenuflexparent">
+            <div class="stickyflexmenu">
+
+                <!--make an anchor for every province the player has-->
+                <a class="templatediva" href="{{ provinceName }}">{{ provinceName }}</a>
 
             </div>
-            <div class="templatedivflex2right">
+            <div class="templatefullwidthflexchild">
+                <!--make a div for every province the player has-->
+                <div class="menudiv" id="{{ provinceName }}">
+
+                    <h2 class="templatecontentheaderleft">{{ provinceName }}</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <a class="forgotpasscode loginsignupforgot" href="/forgotpasscode">Visit Province</a>
+
+                            <table class="templatetable">
+                                <tr>
+                                    <th>General</th>
+                                </tr>
+                                <tr>
+                                    <td>City count:</td>
+                                    <td>{{ provinceCities }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Population:</td>
+                                    <td>{{ provincePopulation }}</td>
+                                </tr>
+                                <tr>
+                                    <td>:</td>
+                                    <td>{{ province }}</td>
+                                </tr>
+                            </table>
+
+                        </div>
+                        <div class="templatedivflex2left">
+
+                            <img class="unitimage" src="static/images/province.jpg" />
+
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
-
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br
-        /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
 
     </div>
 </div>
