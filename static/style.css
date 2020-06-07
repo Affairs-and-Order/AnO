@@ -408,6 +408,8 @@
             overflow: hidden;
             border-radius: 4px;
             box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, .15);
+            overflow: hidden;
+            position: relative;
         }
         
         @media all and (max-width: 600px) {
@@ -703,10 +705,41 @@
         }
         
         .stickyflexmenu {
-            position: sticky;
+            margin: 0;
+            padding: 0;
             width: fit-content;
             height: 100%;
             background: #f7f7f7;
+            border-radius: 0px;
+            position: sticky;
+            left: 5%;
+        }
+        
+        .templatediva {
+            position: sticky;
+            top: 150px;
+            text-decoration: none;
+            color: black;
+            font-size: 19px;
+            transition: all 0.2s;
+            display: block;
+            margin: 8px 15px;
+            padding: 8px 0px;
+            text-align: center;
+        }
+        
+        .templatediva:hover {
+            background: #00a7e1;
+            margin: 8px 0px;
+            padding: 8px 15px;
+            color: white;
+            box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.25);
+        }
+        
+        @media all and (max-width: 600px) {
+            .templatediva {
+                margin: 10px 0px;
+            }
         }
         
         .templatetable {
