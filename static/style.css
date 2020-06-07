@@ -241,6 +241,7 @@
         @media all and (max-width: 600px) {
             .menubardiv {
                 width: 100%;
+                margin-left: -100%;
             }
         }
         
