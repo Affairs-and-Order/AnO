@@ -200,7 +200,7 @@
                     <textarea class="templatetextarea" placeholder="Your message"></textarea>
                 </div>
 
-                    {% endif %}
+                {% endif %}
 
             </div>
 
@@ -213,9 +213,7 @@
             <form action="/join/{{ colId }}" method="POST">
                 <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
             </form>
-            {% endif %}
-
-            {% if colType == "Invite Only" %}
+            {% endif %} {% if colType == "Invite Only" %}
             <button class="templatedivbutton loginsignupbutton">Request to join</button>
             <!--There buttons will be deactivated-->
             <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
@@ -383,11 +381,11 @@
         </div>
         <!--MEMBER-->
         <div class="member" id="member">
-            hi
+
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
 
-                    member
+
 
                 </div>
                 <div class="templatedivflex2right">
