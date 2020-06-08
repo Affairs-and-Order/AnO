@@ -378,7 +378,12 @@ def sell_buy(way, units):
 @app.route("/createprovince", methods=["GET", "POST"])
 def createprovince():
     if request.method == "POST":
-        print("test")
+        
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
     else:
         return render_template("createprovince.html")
 
