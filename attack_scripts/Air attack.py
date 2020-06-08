@@ -31,9 +31,16 @@ for roll in range(0, 3):
 		#calulates bomber losses
 		Bombloss = random.randint (1, Nat2Bomb // 5) * 5
 		Nat2Bomb = Nat2Bomb - Bombloss / 5
+		displayloss = Bombloss / 5
+		print("Nation 1 lost {displayloss} Bombers")
 		# gives a 6% casualty rate for the nation that rolled larger 
 		six_percent_loss = int(Nat2 * 0.06)
 		Nat1 -= six_percent_loss
+		if  Nat2 and Nat2Bomb <= 0:
+			Nat2 = 0
+			Nat2Bomb = 0
+			break
+			print("nation 1 won the battle")
 	else:
 		nat2_roll_wins += 1
 		# subtract difference from the nations maximum if they rolled lower
@@ -41,8 +48,15 @@ for roll in range(0, 3):
 		# the twelve percent stored in new variable so it can be printed
 		Bombloss = random.randint (1, Nat1Bomb // 5) * 5
 		Nat1Bomb = Nat1Bomb - Bombloss / 5
+		displayloss = Bombloss / 5
 		six_percent_loss = int(Nat1 * 0.06)
 		Nat2 -= six_percent_loss
+		print("Nation 1 lost {displayloss} Bombers")
+		if  Nat1 and Nat1Bomb <= 0:
+			Nat1 = 0
+			Nat1Bomb = 0
+			break
+			print("nation 2 won the battle")
 
 	print(f"This is the output after the battle: {difference}")
 	print(f"This is the 6 percent value from the battle: {six_percent_loss}")
