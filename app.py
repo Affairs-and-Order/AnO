@@ -377,16 +377,15 @@ def sell_buy(way, units):
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
 def createprovince():
-    if request.method == "GET":
+    if request.method == "POST":
+        print("test")
+    else:
         return render_template("createprovince.html")
 
 @login_required
-@app.route("/join_coalition", methods=["GET", "POST"])
+@app.route("/join_coalition", methods=["GET"])
 def join_coalition():
-    if request.method == "POST":
-        print('Under Construction')
-    else:
-        return render_template("join_coalition.html")
+    return render_template("join_coalition.html")
 
 
 @login_required
@@ -433,19 +432,17 @@ def coalitions():
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
 def join_col(colId):
+    
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
 
-    if request.method == "POST":
+    cId = session["user_id"]
 
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
+    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
 
-        cId = session["user_id"]
+    connection.commit()
 
-        db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
-
-        connection.commit()
-
-        return redirect(f"/coalition/{colId}")
+    return redirect(f"/coalition/{colId}")
 
 
 # available to run if double click the file
