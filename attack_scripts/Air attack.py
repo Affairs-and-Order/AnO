@@ -32,7 +32,7 @@ for roll in range(0, 3):
 		Bombloss = random.randint (1, Nat2Bomb // 5) * 5
 		Nat2Bomb = Nat2Bomb - Bombloss / 5
 		displayloss = Bombloss / 5
-		print("Nation 1 lost {displayloss} Bombers")
+		print(f"Nation 2 lost {displayloss} Bombers")
 		# gives a 6% casualty rate for the nation that rolled larger 
 		six_percent_loss = int(Nat2 * 0.06)
 		Nat1 -= six_percent_loss
@@ -51,7 +51,7 @@ for roll in range(0, 3):
 		displayloss = Bombloss / 5
 		six_percent_loss = int(Nat1 * 0.06)
 		Nat2 -= six_percent_loss
-		print("Nation 1 lost {displayloss} Bombers")
+		print(f"Nation 1 lost {displayloss} Bombers")
 		if  Nat1 and Nat1Bomb <= 0:
 			Nat1 = 0
 			Nat1Bomb = 0
