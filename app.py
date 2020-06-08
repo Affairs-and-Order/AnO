@@ -212,8 +212,9 @@ def provinces():
         cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?)", (cId,)).fetchall()
         population = db.execute("SELECT population FROM provinces WHERE userId=(?)", (cId,)).fetchall()
         name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+        pId = db.execute("SELECT provinceId FROM provinces WHERE userId=(?)", (cId,)).fetchall()
 
-        pAll = zip(cityCount, population, name)
+        pAll = zip(cityCount, population, name, pId)
 
         return render_template("provinces.html", pAll=pAll)
 

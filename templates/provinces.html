@@ -15,19 +15,19 @@
             add_circle_outline
             </span>Create Province</a>
 
-        {% for i, j, k in pAll %}
+        {% for i, j, k, l in pAll %}
         <div class="templatedivflex2 templatesidemenuflexparent">
             <div class="stickyflexmenu">
 
                 <!--make an anchor for every province the player has-->
-                <a class="templatediva" href="{{ provinceName }}">{{ provinceName }}</a>
+                <a class="templatediva" href="/province/{{ l[0] }}">{{ k[0] }}</a>
 
             </div>
             <div class="templatefullwidthflexchild">
                 <!--make a div for every province the player has-->
                 <div class="menudiv" id="{{ provinceName }}">
 
-                    <h2 class="templatecontentheaderleft">{{ provinceName }}</h2>
+                    <h2 class="templatecontentheaderleft">{{ k[0] }}</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -37,10 +37,6 @@
                             <table class="templatetable">
                                 <tr>
                                     <th>General</th>
-                                </tr>
-                                <tr>
-                                    <td>Province Name:</td>
-                                    <td>{{ k[0] }}</td>
                                 </tr>
                                 <tr>
                                     <td>City Count:</td>
