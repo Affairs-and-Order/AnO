@@ -38,7 +38,7 @@ def index():
         inCol = f"/coalition/{inColit}"
         app.add_template_global(inCol, name='inCol')
     except:
-        inCol = "/error"
+        inCol = error(404, "Page Not Found")
         app.add_template_global(inCol, name='inCol')
     return render_template("index.html") # renders index.html when "/" is accesed
 
@@ -458,8 +458,9 @@ def coalitions():
 
         colIds = db.execute("SELECT id FROM colNames").fetchall()
         colNames = db.execute("SELECT name FROM colNames").fetchall()
+        colTypes = db.execute("SELECT type FROM colNames").fetchall()
 
-        colBoth = zip(colIds, colNames)
+        colBoth = zip(colIds, colNames, colTypes)
 
         return render_template("coalitions.html", colBoth=colBoth)
 

@@ -43,12 +43,12 @@
                     <th>Members</th>
                     <th>Type</th>
                 </tr>
-                {% for id, name in colBoth %}
+                {% for id, name, type in colBoth %}
                 <tr>
                     <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
                     <td>Influence</td>
                     <td>105,565</td>
-                    <td>Open / Closed / invite only</td>
+                    <td>{{ type[0] }}</td>
                 </tr>
                 {% endfor %}
             </table>
