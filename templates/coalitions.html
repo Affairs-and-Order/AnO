@@ -35,23 +35,24 @@
 
         <div class="templatedivad"></div>
 
-        <table class="templatetable templatetable2">
-            <tr>
-                <th>Name</th>
-                <th>Influence</th>
-                <th>Members</th>
-                <th>Type</th>
-            </tr>
-            {% for id, name in colBoth %}
-            <tr>
-                <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
-                <td>Influence</td>
-                <td>105,565</td>
-                <td>Open / Closed / invite only</td>
-            </tr>
-            {% endfor %}
-        </table>
-
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Name</th>
+                    <th>Influence</th>
+                    <th>Members</th>
+                    <th>Type</th>
+                </tr>
+                {% for id, name in colBoth %}
+                <tr>
+                    <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
+                    <td>Influence</td>
+                    <td>105,565</td>
+                    <td>Open / Closed / invite only</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 

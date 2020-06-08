@@ -823,16 +823,25 @@
         .templatetable .anchor a:hover,
         .templatetable2 .anchor a:hover {
             background: #f7f7f7;
+            box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
         }
         /*table2*/
         
-        .templatetable2 {
+        .templateoutertablediv {
+            padding: 8px;
+            width: 90%;
             margin: 25px auto;
+            box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
         }
         
-        .templatetable2 tr {
+        .templatetable2 {
+            margin: 0px auto;
+            width: 100%;
+            box-shadow: none;
             border-collapse: collapse;
         }
+        
+        .templatetable2 tr {}
         
         .templatetable2 th {
             column-span: all;
@@ -843,7 +852,7 @@
             height: 45px;
             width: 23%;
             float: none;
-            display: table-cell !important;
+            display: table-cell;
         }
         
         .templatetable2 td:nth-child(even) {

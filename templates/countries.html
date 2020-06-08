@@ -11,26 +11,26 @@
         <p class="templatecontentpleft"></p>
 
         <div class="templatedivad"></div>
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Name</th>
+                    <th>Influence</th>
+                    <th>Population</th>
+                    <th>Coalition</th>
+                </tr>
+                {% for name, pop, id in zipped%}
+                <tr>
 
-        <table class="templatetable templatetable2">
-            <tr>
-                <th>Name</th>
-                <th>Influence</th>
-                <th>Population</th>
-                <th>Coalition</th>
-            </tr>
-            {% for name, pop, id in zipped%}
-            <tr>
+                    <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
+                    <td>105,565</td>
+                    <td>{{ pop[0] }}</td>
+                    <td>coalition name w/ link</td>
 
-                <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
-                <td>105,565</td>
-                <td>{{ pop[0] }}</td>
-                <td>coalition name w/ link</td>
-
-            </tr>
-            {% endfor %}
-        </table>
-
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 </div>
 {% endblock%}
