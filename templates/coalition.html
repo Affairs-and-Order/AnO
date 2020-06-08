@@ -36,12 +36,14 @@
 
             </div>
             {% endif %}
+            {% if userLeader == True %}
             <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
 
                 <h3 class="smallheader">Leader Panel</h3>
                 <!--SHOW THIS TO GOVERNMENT ONLY-->
 
             </div>
+            {% endif %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
 
                 <h3 class="smallheader">Member Panel</h3>
@@ -231,7 +233,6 @@
 
             <!-- </form> temporarily commented out this form-->
         </div>
-        {% if userLeader == True %}
         <!--LEADER PANEL-->
         <div class="leader" id="leader"> <!-- fix not being able to go here from /coalition even if user is leader-->
             <div class="menudiv">
@@ -423,7 +424,6 @@
             </div>
             <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
         </div>
-        {% endif %}
         <!--END-->
 
     </div>

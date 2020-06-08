@@ -282,7 +282,7 @@ def coalition(colId):
 
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
-        description=description, colType=colType, userInCol=userInCol)
+        description=description, colType=colType, userInCol=userInCol, userLeader=userLeader)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
