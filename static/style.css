@@ -935,6 +935,14 @@
         .redactionbutton {
             background-image: linear-gradient(180deg, rgba(255, 0, 0, 0.1) 50%, red 50%);
         }
+        
+        .redactionbutton:hover {
+            border-bottom: 2px solid red;
+        }
+        
+        .redactionbutton:focus {
+            border-bottom: 2px solid red;
+        }
         /*LANDING PAGE*/
         
         .landingpagediv {
