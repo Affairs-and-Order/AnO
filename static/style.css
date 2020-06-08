@@ -255,13 +255,13 @@
         }
         
         .menubardiv {
-            width: 220px;
+            width: 250px;
             background: rgb(255, 255, 255);
             position: fixed;
             left: 0px;
             top: 55px;
             bottom: 0;
-            margin-left: -220px;
+            margin-left: -250px;
             z-index: 1;
             transition: all 0.5s ease;
             overflow: hidden;
