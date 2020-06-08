@@ -28,12 +28,14 @@
                 <h3 class="smallheader">About</h3>
 
             </div>
+            {% if userInCol == False %}
             <div class="templatedivflex2left" id="coalitionjoin" onclick="coalitionjoin()">
 
                 <h3 class="smallheader">Join</h3>
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
 
             </div>
+            {% endif %}
             <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
 
                 <h3 class="smallheader">Leader Panel</h3>

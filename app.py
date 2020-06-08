@@ -237,6 +237,7 @@ def province(pId):
 @app.route("/coalition/<colId>", methods=["GET"])
 def coalition(colId):
     if request.method == "GET":
+
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
@@ -258,13 +259,20 @@ def coalition(colId):
         happiness = avgStat("happiness")
         population = avgStat("population")"""
 
-
         description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
+        try:
+            userInCol= db.execute("SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (session["user_id"], colId)).fetchone()[0]
+            userInCol = True
+        except:
+            userInCol = False
+
+        print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB" + str(userInCol))
+
         return render_template("coalition.html", name=name, colId=colId, members=members,
-        description=description, colType=colType)
+        description=description, colType=colType, userInCol=userInCol)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
