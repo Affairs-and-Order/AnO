@@ -35,8 +35,7 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
 
             </div>
-            {% endif %}
-            {% if userLeader == True %}
+            {% endif %} {% if userLeader == False %}
             <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
 
                 <h3 class="smallheader">Leader Panel</h3>
@@ -186,55 +185,57 @@
         </div>
         <!--JOIN-->
         <form action="/join/{{ colId }}" method="POST">
-        <div class="join" id="join">
-            <div class="templatedivflex2 menuflex">
-                <div class="templatedivflex2left">
+            <div class="join" id="join">
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
 
-                    {% if colType == "Invite Only" %}
-                    <h3 class="unitcount">Applying for {{ name }}</h3>
+                        {% if colType == "Invite Only" %}
+                        <h3 class="unitcount">Applying for {{ name }}</h3>
 
-                    <p class="templatecontentpleft">
-                        You are
-                        <!--applying if invite only, joining if not-->applying for {{ name }} please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
-                    </p>
-                    <ul>
-                        {{ name }} is a [coalition type (economic, war, trade)] coalition.
-                    </ul>
-                    <!--if not at war don't show the warning below-->
-                    <ul class="warning">
-                        {{ name }} is currently at war!
-                    </ul>
+                        <p class="templatecontentpleft">
+                            You are
+                            <!--applying if invite only, joining if not-->applying for {{ name }} please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
+                        </p>
+                        <ul>
+                            {{ name }} is a [coalition type (economic, war, trade)] coalition.
+                        </ul>
+                        <!--if not at war don't show the warning below-->
+                        <ul class="warning">
+                            {{ name }} is currently at war!
+                        </ul>
+                    </div>
+                    <div class="templatedivflex2left">
+                        <!-- <form> temporarily commented out this form-->
+                        <textarea name="message" class="templatetextarea" autocomplete="off" placeholder="Your message"></textarea>
+                    </div>
+
+                    {% endif %}
+
                 </div>
-                <div class="templatedivflex2left">
-                    <!-- <form> temporarily commented out this form-->
-                    <input name="message" class="templatetextarea" autocomplete="off" placeholder="Your message"></input>
-                </div>
 
-                {% endif %}
+                <!--Hide / deactvate certian buttons depending on the coalition type-->
+                <!--will become deactivated if the user doesnt meet the specified influence-->
 
-            </div>
+                <!-- currently only added join for open coalitions, without message-->
 
-            <!--Hide / deactvate certian buttons depending on the coalition type-->
-            <!--will become deactivated if the user doesnt meet the specified influence-->
+                {% if colType == "Open" %}
+                <form action="/join/{{ colId }}" method="POST">
+                    <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
+                </form>
+                {% endif %} {% if colType == "Invite Only" %}
+                <button type="submit" value="submit" class="templatedivbutton loginsignupbutton">Request to join</button>
+        </form>
+        {% endif %}
+        <!--There buttons will be deactivated-->
+        <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
+        <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
 
-            <!-- currently only added join for open coalitions, without message-->
 
-            {% if colType == "Open" %}
-            <form action="/join/{{ colId }}" method="POST">
-                <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
-            </form>
-            {% endif %} {% if colType == "Invite Only" %}
-            <button type="submit" value="submit" class="templatedivbutton loginsignupbutton">Request to join</button>
-            </form>
-            <!--There buttons will be deactivated-->
-            <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
-            <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
-            {% endif %}
-
-            <!-- </form> temporarily commented out this form-->
+        <!-- </form> temporarily commented out this form-->
         </div>
         <!--LEADER PANEL-->
-        <div class="leader" id="leader"> <!-- fix not being able to go here from /coalition even if user is leader-->
+        <div class="leader" id="leader">
+            <!-- fix not being able to go here from /coalition even if user is leader-->
             <div class="menudiv">
 
                 <h2 class="templatecontentheaderleft">Diplomacy</h2>
@@ -363,7 +364,24 @@
                                 </tr>
                                 <!--for every applicant make a row-->
                                 <tr>
-                                    <td>flexbox with remove / add icons</td>
+                                    <td>
+                                        <div class="templatedivflex2 menuflex">
+                                            <div class="templatedivflex2left flexchildvanilla">
+
+                                                <span class="material-icons iconblue">
+                                                    add_circle_outline
+                                                    </span>
+
+                                            </div>
+                                            <div class="templatedivflex2left flexchildvanilla">
+
+                                                <span class="material-icons iconred">
+                                                    highlight_off
+                                                    </span>
+
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>Country Name</td>
                                     <td>Influence</td>
                                 </tr>
@@ -405,7 +423,7 @@
 
                     </div>
                 </div>
-                <input class="templatedivbutton loginsignupbutton" value="Change" type="submit" />
+                <input class="templatedivbutton templatecenteredbutton" value="Change" type="submit" />
             </div>
 
         </div>

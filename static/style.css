@@ -36,6 +36,16 @@
             /* Support for IE. */
             font-feature-settings: 'liga';
         }
+        
+        .iconblue {
+            color: #00a7e1 !important;
+            font-size: 30px !important;
+        }
+        
+        .iconred {
+            color: red !important;
+            font-size: 30px !important;
+        }
         /*KEYFRAMES*/
         
         @keyframes textload {
