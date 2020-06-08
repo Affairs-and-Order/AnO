@@ -218,10 +218,19 @@ def provinces():
         return render_template("provinces.html", pAll=pAll)
 
 @login_required
-@app.route("/province", methods=["GET", "POST"])
-def province():
+@app.route("/province/<pId>", methods=["GET", "POST"])
+def province(pId):
     if request.method == "GET":
-        return render_template("province.html")
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        name = db.execute("SELECT provinceName FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE provinceId = (?)", (pId, )).fetchone()[0]
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
+
+        connection.commit()
+
+        return render_template("province.html", pId=pId, population=population, name=name, cityCount=cityCount)
 
 @login_required
 @app.route("/coalition/<colId>", methods=["GET"])
