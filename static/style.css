@@ -40,11 +40,20 @@
         .iconblue {
             color: #00a7e1 !important;
             font-size: 30px !important;
+            cursor: pointer;
+            transition: all 0.2s linear;
         }
         
         .iconred {
             color: red !important;
             font-size: 30px !important;
+            cursor: pointer;
+            transition: all 0.2s linear;
+        }
+        
+        .iconblue:hover,
+        .iconred:hover {
+            opacity: 0.6;
         }
         /*KEYFRAMES*/
         
@@ -510,13 +519,13 @@
         .templatedivbutton:hover {
             background-position: 0% 100%;
             color: white;
-            border-bottom: 2px solid rgba(0, 0, 0, 0);
+            border-bottom: 2px solid #00a7e1;
         }
         
         .templatedivbutton:focus {
             background-position: 0% 100%;
             color: white;
-            border-bottom: 2px solid rgba(0, 0, 0, 0);
+            border-bottom: 2px solid #00a7e1;
         }
         
         .templatecenteredbutton {
@@ -1088,7 +1097,7 @@
         
         .loginsignupbutton {
             float: right;
-            width: min-content;
+            width: fit-content;
             margin: 10px;
             margin-bottom: -15px;
             transition: all 0.2s;
