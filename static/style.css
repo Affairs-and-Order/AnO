@@ -357,6 +357,7 @@
             font-size: 14px;
             color: white;
             font-size: 20px;
+            user-select: none;
             cursor: pointer;
             border-radius: 4px;
         }
