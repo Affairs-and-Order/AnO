@@ -803,6 +803,10 @@
             text-align: right;
         }
         
+        .templatesmalltd {
+            font-size: 12px !important;
+        }
+        
         .templatetable .anchor,
         .templatetable2 .anchor {
             color: #00a7e1;
