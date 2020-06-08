@@ -183,28 +183,29 @@
             </div>
         </div>
         <!--JOIN-->
+        <form action="/join/{{ colId }}" method="POST">
         <div class="join" id="join">
             <div class="templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
 
                     {% if colType == "Invite Only" %}
-                    <h3 class="unitcount">[Applying for / Joining] [coalition name]</h3>
+                    <h3 class="unitcount">Applying for {{ name }}</h3>
 
                     <p class="templatecontentpleft">
                         You are
-                        <!--applying if invite only, joining if not-->[applying for / joining] [coalition name] please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
+                        <!--applying if invite only, joining if not-->applying for {{ name }} please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
                     </p>
                     <ul>
-                        [coalition name] is a [coalition type (economic, war, trade)] coalition.
+                        {{ name }} is a [coalition type (economic, war, trade)] coalition.
                     </ul>
                     <!--if not at war don't show the warning below-->
                     <ul class="warning">
-                        [coalition name] is currently at war!
+                        {{ name }} is currently at war!
                     </ul>
                 </div>
                 <div class="templatedivflex2left">
                     <!-- <form> temporarily commented out this form-->
-                    <textarea class="templatetextarea" placeholder="Your message"></textarea>
+                    <input name="message" class="templatetextarea" placeholder="Your message"></input>
                 </div>
 
                 {% endif %}
@@ -221,7 +222,8 @@
                 <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
             </form>
             {% endif %} {% if colType == "Invite Only" %}
-            <button class="templatedivbutton loginsignupbutton">Request to join</button>
+            <button type="submit" value="submit" class="templatedivbutton loginsignupbutton">Request to join</button>
+            </form>
             <!--There buttons will be deactivated-->
             <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
             <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->

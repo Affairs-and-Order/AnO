@@ -269,8 +269,6 @@ def coalition(colId):
         except:
             userInCol = False
 
-        print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBB" + str(userInCol))
-
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol)
 
@@ -425,12 +423,6 @@ def createprovince():
         return render_template("createprovince.html")
 
 @login_required
-@app.route("/join_coalition", methods=["GET"])
-def join_coalition():
-    return render_template("join_coalition.html")
-
-
-@login_required
 @app.route("/marketoffer", methods=["GET", "POST"])
 def marketoffer():
     if request.method == "GET":
@@ -481,9 +473,21 @@ def join_col(colId):
 
     cId = session["user_id"]
 
-    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
+    colType = db.execute("SELECT type FROM colNames WHERE id = (?)", (colId,)).fetchone()[0]
 
-    connection.commit()
+    if colType == "Open":
+
+        db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
+
+        connection.commit()
+
+    else:
+
+        message = request.form.get("message")
+
+        db.execute("INSERT INTO requests (colId, reqId, message ) VALUES (?, ?, ?)", (colId, cId, message))
+
+        connection.commit()
 
     return redirect(f"/coalition/{colId}")
 
