@@ -203,7 +203,19 @@ def market():
 @app.route("/provinces", methods=["GET", "POST"])
 def provinces():
     if request.method == "GET":
-        return render_template("provinces.html")
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        cId = session["user_id"]
+
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+        population = db.execute("SELECT population FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+
+        pAll = zip(cityCount, population, name)
+
+        return render_template("provinces.html", pAll=pAll)
 
 @login_required
 @app.route("/province", methods=["GET", "POST"])
@@ -352,7 +364,7 @@ def sell_buy(way, units):
                 return redirect("/too_much_to_sell") # seems to work
 
             unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId)) # not working
+            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
 
         elif way == "buy":
@@ -384,6 +396,13 @@ def createprovince():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
+        pName = request.form.get("name")
+
+        db.execute("INSERT INTO provinces (userId, provinceName) VALUES (?, ?)", (cId, pName))
+
+        connection.commit()
+
+        return redirect("/provinces")
     else:
         return render_template("createprovince.html")
 

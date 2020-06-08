@@ -15,7 +15,7 @@
             add_circle_outline
             </span>Create Province</a>
 
-
+        {% for i, j, k in pAll %}
         <div class="templatedivflex2 templatesidemenuflexparent">
             <div class="stickyflexmenu">
 
@@ -40,15 +40,15 @@
                                 </tr>
                                 <tr>
                                     <td>City count:</td>
-                                    <td>{{ provinceCities }}</td>
+                                    <td>{{ i[0] }}</td>
                                 </tr>
                                 <tr>
                                     <td>Population:</td>
-                                    <td>{{ provincePopulation }}</td>
+                                    <td>{{ j[0] }}</td>
                                 </tr>
                                 <tr>
                                     <td>Infrastructure slots:</td>
-                                    <td>{{ provinceSlots }}</td>
+                                    <td>{{ k[0] }}</td>
                                 </tr>
                             </table>
                         </div>
@@ -62,6 +62,7 @@
 
             </div>
         </div>
+        {% endfor %}
 
     </div>
 </div>

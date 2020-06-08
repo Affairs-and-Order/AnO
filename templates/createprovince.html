@@ -21,16 +21,20 @@
 
 
                             <label for="newProvince">Your next province costs {{ x }}</label>
-                            <input class="loginsignupinput" autocomplete="off" name="newProvince" placeholder="Province Name" required/>
+                        <form action="/createprovince" method="POST">
+
+                            <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Province Name" required/>
 
                         </div>
                         <div class="templatedivflex2right">
 
-                            <button class="templatedivbutton templatecenteredbutton"><span class="material-icons">
+                            <button type="submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons">
                                 add_circle_outline
                                 </span>Create</button>
 
                         </div>
+
+                        </form>
                     </div>
 
                 </div>
