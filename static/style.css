@@ -789,7 +789,7 @@
             float: left;
             text-align: left;
             display: table;
-            font-weight: 550;
+            font-weight: 500;
             color: rgba(50, 50, 50, 0.9);
             font-family: 'Ubuntu', sans-serif;
             font-size: 15px;
@@ -830,7 +830,7 @@
             margin: 25px auto;
         }
         
-        .templatetable2 tbody {
+        .templatetable2 tr {
             border-collapse: collapse;
         }
         
@@ -1140,6 +1140,11 @@
         }
         
         .countryimage {}
+        
+        .countryanthem {
+            width: 16vw;
+            height: 9vw;
+        }
         /*MILITARY*/
         
         .menuflex {

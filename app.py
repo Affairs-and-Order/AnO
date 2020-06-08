@@ -206,6 +206,12 @@ def provinces():
         return render_template("provinces.html")
 
 @login_required
+@app.route("/province", methods=["GET", "POST"])
+def province():
+    if request.method == "GET":
+        return render_template("province.html")
+
+@login_required
 @app.route("/coalition/<colId>", methods=["GET"])
 def coalition(colId):
     if request.method == "GET":

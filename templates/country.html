@@ -16,7 +16,7 @@
                 <h3 class="smallheader">View</h3>
 
             </div>
-            
+
             {% if status == True %}
             <div class="templatedivflex2left" id="countryrevenue" onclick="countryrevenue()">
 
@@ -30,16 +30,14 @@
                 <!--Hide when vising other nations-->
 
             </div>
-            {% endif %}
-            {% if status == False %}
+            {% endif %} {% if status == False %}
             <div class="templatedivflex2left" id="countryactions" onclick="countryactions()">
 
                 <h3 class="smallheader">Actions</h3>
                 <!--show ONLY when vising other nations-->
 
             </div>
-            {% endif %}
-            {% if status == True %}
+            {% endif %} {% if status == True %}
             <div class="templatedivflex2left" id="countryedit" onclick="countryedit()">
 
                 <h3 class="smallheader">Edit</h3>
@@ -70,12 +68,8 @@
                         <td>{{ location }}</td>
                     </tr>
                     <tr>
-                        <td>Total GDP:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td>GDP Per Capita:</td>
-                        <td>{{ happiness }}%</td>
+                        <td>Provinces:</td>
+                        <td>{{ countryProvinces }}</td>
                     </tr>
                     <tr>
                         <td>Population:</td>
@@ -84,6 +78,12 @@
                     <tr>
                         <td>Average Happiness:</td>
                         <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Anthem:</td>
+                        <td>
+                            <img src="{{ countryAnthem }}" class="countryanthem" />
+                        </td>
                     </tr>
                 </table>
 
@@ -131,6 +131,23 @@
                     <tr>
                         <td>Allied:</td>
                         <td>Yes/No</td>
+                    </tr>
+                </table>
+                <table class="templatetable">
+                    <tr>
+                        <th>Other</th>
+                    </tr>
+                    <tr>
+                        <td>Avialable Resources:</td>
+                        <td>{{ countryResources }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total GDP:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td>GDP Per Capita:</td>
+                        <td>{{ happiness }}%</td>
                     </tr>
                 </table>
 
