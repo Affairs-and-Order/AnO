@@ -7,6 +7,35 @@
         @import url('https://fonts.googleapis.com/css2?family=Rubik&family=Ubuntu&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://example.com/MaterialIcons-Regular.eot);
+            /* For IE6-8 */
+            src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'), url(https://example.com/MaterialIcons-Regular.woff) format('woff'), url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+        }
+        
+        .material-icons {
+            font-family: 'Material Icons';
+            position: relative;
+            top: 5px;
+            right: 5px;
+            font-size: inherit;
+            /* Preferred icon size */
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            /* Support for all WebKit browsers. */
+            -webkit-font-smoothing: antialiased;
+            /* Support for Safari and Chrome. */
+            text-rendering: optimizeLegibility;
+            /* Support for Firefox. */
+            -moz-osx-font-smoothing: grayscale;
+            /* Support for IE. */
+            font-feature-settings: 'liga';
+        }
         /*KEYFRAMES*/
         
         @keyframes textload {
@@ -302,7 +331,7 @@
         .loginsignup {
             float: right;
             width: fit-content;
-            margin-top: 12px;
+            margin-top: 10px;
             margin-right: 10px;
             transition: all 0.2s;
             padding: 4px 12px;
@@ -316,55 +345,19 @@
         }
         
         .loginsignup:hover {
-            background: #00a7e1;
+            color: rgba(255, 255, 255, 0.5);
         }
         
         .resourceicon {
-            height: 45px;
-            width: 45px;
-            margin: 5px 15px;
             float: right;
-            border: none;
-            user-select: none;
-            transition: all 0.2s;
+            margin-top: 5px;
+            font-size: 40px !important;
             cursor: pointer;
-            display: none;
+            transition: all 0.2s;
         }
         
         .resourceicon:hover {
-            background: #00a7e1;
-        }
-        
-        .resourcebar {
-            bottom: 0;
-            height: 40px;
-            background: #178db8;
-            position: fixed;
-            box-shadow: 0 0 4px 0.5px rgba(58, 59, 69, .15);
-            z-index: 1;
-            padding: 0;
-            margin: 0;
-            left: 0;
-            right: 0;
-            margin: auto;
-            padding: 0px 10px;
-        }
-        
-        .resourcebar div {
-            margin: auto;
-            width: fit-content;
-        }
-        
-        .resourcebar div p {
-            font-size: 14px;
-            font-weight: 500;
-            width: fit-content;
-            color: rgb(255, 255, 255);
-            margin: auto;
-            padding: 6.5px 6px;
-            text-align: center;
-            float: left;
-            cursor: pointer;
+            color: rgba(255, 255, 255, 0.5);
         }
         
         .purchasediv {

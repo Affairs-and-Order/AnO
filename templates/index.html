@@ -23,10 +23,16 @@
 
                     <h2 class="templatecontentheadercenter">Go to your country</h2>
                     {% if session.get("logged_in") != True %}
-                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login">LOGIN</a>
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login"><span class="material-icons">
+                        login
+                        </span>LOGIN</a>
                     <h2 class="templatecontentheadercenter">Or create one!</h2>
-                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup">SIGNUP</a> {% elif session.get("logged_in") == True %}
-                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}">COUNTRY</a> {% endif %}
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup"><span class="material-icons">
+                        add_circle_outline
+                        </span>SIGNUP</a> {% elif session.get("logged_in") == True %}
+                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}"><span class="material-icons">
+                        assistant_photo
+                        </span>COUNTRY</a> {% endif %}
 
 
                 </div>

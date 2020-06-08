@@ -8,6 +8,7 @@
 
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ url_for('static', filename='simple-grid.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
@@ -17,26 +18,6 @@
 
 <body>
     {% if session.get("logged_in") == True%}
-    <div class="resourcebar">
-        <div>
-
-            <p class="resourcebargold">Gold</p>
-            <p class="resourcebargold">Consumables</p>
-            <p class="resourcebargold">Raw ore</p>
-            <p class="resourcebargold">Coal</p>
-            <p class="resourcebargold">Oil</p>
-            <p class="resourcebargold">Power</p>
-
-            <p class="resourcebargold">Aluminum</p>
-            <p class="resourcebargold">Fuel</p>
-            <p class="resourcebargold">Steel</p>
-
-            <p class="resourcebargold">Components</p>
-            <p class="resourcebargold">Ammunition</p>
-
-
-        </div>
-    </div>
     <div class="purchasediv">
         <div class="purchasenotif">
 
@@ -60,10 +41,19 @@
 
 
 
-        <a class="loginsignup" href="/login">Login</a>
-        <a class="loginsignup" href="/signup">Signup</a> {% elif session.get("logged_in") == True %}
-        <img class="resourceicon" onclick="resourcebar()" src="" />
-        <a class="loginsignup" href="/country/id={{ session['user_id'] }}">Country</a> {% endif %}
+        <a class="loginsignup" href="/login"><span class="material-icons">
+            login
+            </span>Login</a>
+        <a class="loginsignup" href="/signup"><span class="material-icons">
+            add_circle_outline
+            </span>Signup</a> {% elif session.get("logged_in") == True %}
+        <span class="material-icons resourceicon">
+            monetization_on
+            </span>
+        <a class="loginsignup" href="/country/id={{ session['user_id'] }}">
+            <span class="material-icons">
+            assistant_photo
+            </span>Country</a> {% endif %}
 
     </div>
 
@@ -71,22 +61,44 @@
     <div class="menubardiv" id="menubardiv">
 
         <h3>Internal Affairs</h3>
-        <a class="menubara" href="/country/id={{ session['user_id'] }}">Country</a>
-        <a class="menubara" href="/provinces">Provinces</a>
-        <a class="menubara" href="/market">Market</a>
-        <a class="menubara" href="/military">Military</a>
+        <a class="menubara" href="/country/id={{ session['user_id'] }}"><span class="material-icons">
+            assistant_photo
+            </span>Country</a>
+        <a class="menubara" href="/provinces"><span class="material-icons">
+            map
+            </span>Provinces</a>
+        <a class="menubara" href="/market"><span class="material-icons">
+            local_grocery_store
+            </span>Market</a>
+        <a class="menubara" href="/military"><span class="material-icons">
+            military_tech
+            </span>Military</a>
 
         <h3>Global Affairs</h3>
-        <a class="menubara" href="{{ inCol }}">My Coalition</a>
-        <a class="menubara" href="/coalitions">Coalitions</a>
-        <a class="menubara" href="/establish_coalition">Establish a Coalition</a>
-        <a class="menubara" href="/countries">Countries</a>
+        <a class="menubara" href="{{ inCol }}"><span class="material-icons">
+            account_balance
+            </span>My Coalition</a>
+        <a class="menubara" href="/coalitions"><span class="material-icons">
+            people_alt
+            </span>Coalitions</a>
+        <a class="menubara" href="/establish_coalition"><span class="material-icons">
+            group_add
+            </span>Establish a Coalition</a>
+        <a class="menubara" href="/countries"><span class="material-icons">
+            person_search
+            </span>Countries</a>
 
         <h3>Other</h3>
         <div class="menubarotherdiv">
-            <a class="menubara" href="/account">Account</a>
-            <a class="menubara" href="/tutorial">Tutorial</a>
-            <a class="menubara" href="/statistics">Statistics</a>
+            <a class="menubara" href="/account"><span class="material-icons">
+                account_circle
+                </span>Account</a>
+            <a class="menubara" href="/tutorial"><span class="material-icons">
+                school
+                </span>Tutorial</a>
+            <a class="menubara" href="/statistics"><span class="material-icons">
+                bar_chart
+                </span>Statistics</a>
         </div>
 
     </div>
