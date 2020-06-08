@@ -116,7 +116,7 @@
         }
         
         body {
-            background: #f5f9fd;
+            background: #f7f9fd;
             padding: 0;
             margin: 0;
             /*font-family: "nexabold";
@@ -484,7 +484,7 @@
         .templatedivbutton {
             width: fit-content;
             margin: 5px;
-            background-image: linear-gradient(180deg, #00a7e110 50%, #00a7e1 50%);
+            background-image: linear-gradient(180deg, #77ddff15 50%, #00a7e1 50%);
             background-size: 200% 200%;
             background-position: 0% 0%;
             padding: 10px 20px;
