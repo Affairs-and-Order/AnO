@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS 'provinces' 
+('userId' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+'provinceId' INTEGER NOT NULL,
+'provinceName' VARCHAR(240),
+'cityCount' INTEGER NOT NULL,
+'population' INTEGER NOT NULL);
