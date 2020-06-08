@@ -36,6 +36,7 @@ for roll in range(0, 3):
 		# gives a 6% casualty rate for the nation that rolled larger 
 		six_percent_loss = int(Nat2 * 0.06)
 		Nat1 -= six_percent_loss
+		#ends battle if aircraft are destroyed
 		if  Nat2 and Nat2Bomb <= 0:
 			Nat2 = 0
 			Nat2Bomb = 0
@@ -51,6 +52,7 @@ for roll in range(0, 3):
 		displayloss = Bombloss / 5
 		six_percent_loss = int(Nat1 * 0.06)
 		Nat2 -= six_percent_loss
+		#ends battle if all aircraft are destroyed
 		print(f"Nation 1 lost {displayloss} Bombers")
 		if  Nat1 and Nat1Bomb <= 0:
 			Nat1 = 0
