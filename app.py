@@ -218,6 +218,7 @@ def coalition(colId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
 
