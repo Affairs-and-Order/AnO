@@ -138,6 +138,7 @@ def country(cId):
 
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    provinces = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
     connection.commit()
 
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -149,13 +150,9 @@ def country(cId):
     else:
         status = False
 
-    try: # sees if user is logged in
-        uId = True 
-        return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-        location=location, gold=gold, uId=uId, status=status)
-    except KeyError: # if user isnt logged in
-        uId = False
-        return render_template("country.html", uId=uId)
+
+    return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
+    location=location, gold=gold, status=status, provinces=provinces)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
