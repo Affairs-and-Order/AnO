@@ -1,14 +1,17 @@
 {% extends "layout.html" %} {% block title %} Login {% endblock %} {% block body %}
 <!-- START------------------------------------------------------------------------->
+<img class="background" id="background" />
 
-<div class="templatediv">
+<div class="templatediv loginsignupdiv">
 
     <div class="templatedivtopper">
         <h1 class="templatedivtitle">Login</h1>
     </div>
 
     <div class="templatedivcontent">
-        <a class="login loginsignupforgot" href="/signup">Signup</a>
+
+        <a class="signup loginsignupforgot" href="/signup">Signup</a>
+
         <form class="loginsignupform" action="/login" method="POST">
 
             <input class="loginsignupinput" name="username" placeholder="Country Name" type="text" required/>

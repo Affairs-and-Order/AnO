@@ -1,4 +1,13 @@
-//navbar events
+window.onload = function background() {
+
+        var randomPicture = "static/images/" + [Math.floor(Math.random() * 3) + 1 + '.jpg'];
+
+        document.getElementById("background").src = randomPicture;
+
+
+
+    }
+    //navbar events
 function menubardrop() {
 
     document.getElementById("menubar").classList.toggle("menubarclick");
