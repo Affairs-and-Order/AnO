@@ -1,5 +1,6 @@
 import random
 import sqlite3
+import os
 
 class Military:
     def __init__(self, spies, troops, tanks, artillery, flyingForts, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
@@ -17,15 +18,18 @@ class Military:
 
 class Economy:
     # TODO: expand this to cover all resources
-    def __init__(self, nationID, gold):
-        self.gold = gold
+    def __init__(self, nationID):
+        self.nationID = nationID
 
     def get_economy(self):
-        connection = sqlite3.connect('affo/aao.db')
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, '/affo/aao.db')
+        print(filename)
+        connection = sqlite3.connect("C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db")
         db = connection.cursor()
 
         # TODO fix this when the databases changes and update to include all resources
-        self.gold = db.execute('SELECT gold FROM stats WHERE id=($), (nationID,)').fetchone()[0]
+        self.gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
 
 class Nation:
     def __init__(self, nationID, military, economy):
@@ -40,18 +44,23 @@ class Nation:
 
 
     def fight(self, enemyNation, attackTypes):
+        #attackTypes is a tuple
+        attackList = ["water", "ground", "air"]
+        attackTypesHash = {"water": 1 ,"ground": 2 ,"air": 3}
 
-        attackTypes = {"water": 0.5 ,"ground": 1 ,"air": 0.75}
-        for attack in attackTypes:
+        currentAttacks = list(attackTypes)
+
+        for attack in attackList:
             if attackTypes[0] == attack:
-                attackTypes[0] = attack
+                currentAttacks[0] = attackTypesHash[attack]
             if attackTypes[1] == attack:
-                attackTypes[1] = attack
+                currentAttacks[1] = attackTypesHash[attack]
 
 
         # super simple fight between two nations troops
-        enemyScore = enemyNation.military.troops + random.randint(-2 * attackTypes[1], 2 * attackTypes[1])
-        homeScore = self.military.troops + random.randint(-2 * attackTypes[0], 2 * attackTypes[0])
+        print(attackTypes[1])
+        enemyScore = enemyNation.military.troops + abs(random.randrange(-2 * currentAttacks[1], 2 * currentAttacks[1]))
+        homeScore = self.military.troops + abs(random.randrange(-2 * currentAttacks[0], 2 * currentAttacks[0]))
 
         if enemyScore > homeScore:
             print("Enemy Win | ID " + str(enemyNation.id))
@@ -67,7 +76,7 @@ class Nation:
 
 # temporary definitions for nations economy and military
 nat1M = Military(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-nat1E = Economy(0)
+nat1E = Economy(2).get_economy()
 # create nation1
 nation1 = Nation(1, nat1M, nat1E)
 
@@ -80,7 +89,7 @@ nation2 = Nation(2, nat2M, nat2E)
 
 if __name__ == "__main__":
     for i in range(0, 3):
-        nation1.fight(nation2)
+        nation1.fight(nation2, ("water", "air"))
 
     nation1.printStatistics()
     nation2.printStatistics()
