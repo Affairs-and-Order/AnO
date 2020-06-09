@@ -1,9 +1,6 @@
 import random
 
-Nat1 = 50  # get from database for now lets call it 50
-Nat2 = 350  # get from database for now lets call it 60
-Nat1Bomb = 66
-Nat2Bomb = 6
+
 nat1_fighters = Nat1
 nat2_fighters = Nat2
 nat1_name = Danzig
@@ -68,6 +65,8 @@ for roll in range(0, 3):
 	print(f"This is the 6 percent value from the battle: {six_percent_loss}")
   
 if nat1_roll_wins > nat2_roll_wins:
-	print("Nation 1 won the battle")
+	print(f"{nat1_name} won the battle")
 else:
-	print("Nation 2 won the battle")
+	print(f"{Nat2_name} won the battle")
+	ground_attack("Danzig", "Konigsburg", 630, 380,4,10)
+
