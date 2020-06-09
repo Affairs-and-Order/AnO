@@ -88,26 +88,33 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
+        key = request.form.get("key")
+
+        allKeys = db.execute("SELECT key FROM keys").fetchall()
+
         connection.commit()
-        if not confirmation or not password or not email or not username: # checks for blank inputs
-            return error(400, "Blank Input")
-        elif password != confirmation: # checks if password is = to confirmation passwordr
+        if password != confirmation: # checks if password is = to confirmation passwordr
             return error(400, "Passwords must match.")
-        else:
-            hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
-            db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
-            user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
-            connection.commit()
-            session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
-            session["logged_in"] = True
-            db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location                                                                          # "Bosfront" to something else
-            db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
-            db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-            db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-            db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-            connection.commit()
-            connection.close()
-            return redirect("/")
+        for i in allKeys:
+            print(i[0])
+            if key == i[0]:
+                hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
+                db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
+                user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
+                connection.commit()
+                session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
+                session["logged_in"] = True
+                db.execute("INSERT INTO stats (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) # change the default location                                                                          # "Bosfront" to something else
+                db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
+                db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+                db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+                db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+                db.execute("DELETE FROM keys WHERE key=(?)", (i[0],))
+                connection.commit()
+                connection.close()
+                return redirect("/")
+            else:
+                return redirect("/")
     else:
         return render_template("signup.html")
 
