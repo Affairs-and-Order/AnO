@@ -1,15 +1,16 @@
 import random
-Nat1 = 50  # get from database for now lets call it 50
-Nat2 = 350  # get from database for now lets call it 60
-Nat1Bomb = 66
-Nat2Bomb = 6
+
+
+nat1_fighters = Nat1
+nat2_fighters = Nat2
+nat1_name = Danzig
+nat2_name = Konigsburg
 #TODO: get nation names from DB, get amount of fighters and bombers from DB,add infra damage,make aircraft consume resources
 #TODO: figure out how calculate bomber and fighter losses seperatly 
-random_roll_nat1 = random.randint(1, Nat1 + 5*Nat1Bomb)
-random_roll_nat2 = random.randint(1, Nat2 + 5*Nat2Bomb)
+
 
 # print statements
-
+def ground_attack(nat1_name, nat2_name, nat1_fighters, nat2_fighters,Nat1Bomb,Nat2Bomb):
 nat1_roll_wins = 0
 nat2_roll_wins = 0
 for roll in range(0, 3):
@@ -64,6 +65,8 @@ for roll in range(0, 3):
 	print(f"This is the 6 percent value from the battle: {six_percent_loss}")
   
 if nat1_roll_wins > nat2_roll_wins:
-	print("Nation 1 won the battle")
+	print(f"{nat1_name} won the battle")
 else:
-	print("Nation 2 won the battle")
+	print(f"{Nat2_name} won the battle")
+	ground_attack("Danzig", "Konigsburg", 630, 380,4,10)
+
