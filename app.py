@@ -88,16 +88,15 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
+
         key = request.form.get("key")
 
         allKeys = db.execute("SELECT key FROM keys").fetchall()
-
-        connection.commit()
+        
         if password != confirmation: # checks if password is = to confirmation passwordr
             return error(400, "Passwords must match.")
-        for i in allKeys:
-            print(i[0])
-            if key == i[0]:
+        for keys in allKeys:
+            if key == keys[0]:
                 hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
                 db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
                 user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
@@ -109,11 +108,9 @@ def signup():
                 db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-                db.execute("DELETE FROM keys WHERE key=(?)", (i[0],))
+                db.execute("DELETE FROM keys WHERE key=(?)", (key,))
                 connection.commit()
                 connection.close()
-                return redirect("/")
-            else:
                 return redirect("/")
     else:
         return render_template("signup.html")
