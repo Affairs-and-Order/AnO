@@ -116,13 +116,14 @@
             </div>
             <div class="templatedivflex2right">
 
+                {% if colName != "" %}
                 <table class="templatetable">
                     <tr>
                         <th>Affairs</th>
                     </tr>
                     <tr>
                         <td>Coalition name:</td>
-                        <td>Name</td>
+                        <td>{{ colName }}</td>
                     </tr>
                     <tr>
                         <td>Coalition role:</td>
@@ -133,6 +134,7 @@
                         <td>Yes/No</td>
                     </tr>
                 </table>
+                {% endif %}
                 <table class="templatetable">
                     <tr>
                         <th>Other</th>
