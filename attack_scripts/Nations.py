@@ -1,4 +1,5 @@
 import random
+import sqlite3
 
 class Military:
     def __init__(self, spies, troops, tanks, artillery, flyingForts, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
@@ -16,8 +17,15 @@ class Military:
 
 class Economy:
     # TODO: expand this to cover all resources
-    def __init__(self, gold):
+    def __init__(self, nationID, gold):
         self.gold = gold
+
+    def get_economy(self):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        # TODO fix this when the databases changes and update to include all resources
+        self.gold = db.execute('SELECT gold FROM stats WHERE id=($), (nationID,)').fetchone()[0]
 
 class Nation:
     def __init__(self, nationID, military, economy):
@@ -30,10 +38,20 @@ class Nation:
         self.wins = 0
         self.losses = 0
 
-    def fight(self, enemyNation):
+
+    def fight(self, enemyNation, attackTypes):
+
+        attackTypes = {"water": 0.5 ,"ground": 1 ,"air": 0.75}
+        for attack in attackTypes:
+            if attackTypes[0] == attack:
+                attackTypes[0] = attack
+            if attackTypes[1] == attack:
+                attackTypes[1] = attack
+
+
         # super simple fight between two nations troops
-        enemyScore = enemyNation.military.troops + random.randint(-2, 2)
-        homeScore = self.military.troops + random.randint(-2, 2)
+        enemyScore = enemyNation.military.troops + random.randint(-2 * attackTypes[1], 2 * attackTypes[1])
+        homeScore = self.military.troops + random.randint(-2 * attackTypes[0], 2 * attackTypes[0])
 
         if enemyScore > homeScore:
             print("Enemy Win | ID " + str(enemyNation.id))
