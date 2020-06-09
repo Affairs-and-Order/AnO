@@ -254,7 +254,7 @@ def coalition(colId):
 
         # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
 
-        leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,))
+        leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         if leader == cId:
             userLeader = True
@@ -285,6 +285,7 @@ def coalition(colId):
         except:
             userInCol = False
 
+        print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" + str(userLeader))
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader)
