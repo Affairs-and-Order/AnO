@@ -3,7 +3,7 @@ import sqlite3
 conn = sqlite3.connect('aao.db')
 db = conn.cursor()
 
-tables = ["air", "coalitions", "colNames", "ground", "keys", "provinces",
+tables = ["air", "coalitions", "colNames", "ground", "provinces",
 "requests", "special", "stats", "users", "water"]
 
 for i in tables:

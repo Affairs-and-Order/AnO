@@ -35,20 +35,25 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
 
             </div>
-            {% endif %} {% if userLeader == False %}
+            {% endif %}
+            
+            {% if userLeader == True %}
             <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
 
                 <h3 class="smallheader">Leader Panel</h3>
                 <!--SHOW THIS TO GOVERNMENT ONLY-->
+                <!-- somewhy doesnt work, no idea why -->
 
             </div>
             {% endif %}
+            {% if userLeader == False %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
 
                 <h3 class="smallheader">Member Panel</h3>
                 <!--SHOW THIS TO MEMBERS ONLY NOT GOVERNMENT-->
 
             </div>
+            {% endif %}
         </div>
         <!--GENERAL-->
         <div class="general" id="general">
@@ -233,6 +238,7 @@
 
         <!-- </form> temporarily commented out this form-->
         </div>
+
         <!--LEADER PANEL-->
         <div class="leader" id="leader">
             <!-- fix not being able to go here from /coalition even if user is leader-->

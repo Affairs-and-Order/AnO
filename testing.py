@@ -1,21 +1,21 @@
 import sqlite3
 
-def populationGrowth():
-    
-    conn = sqlite3.connect('affo/aao.db')
-    db = conn.cursor()
+conn = sqlite3.connect('affo/aao.db')
+db = conn.cursor()
 
-    pop = db.execute("SELECT population, id FROM stats").fetchall()
+key = input("Enter Key:\n")
 
-    for row in pop:
-        user_id = row[1]
-        curPop = row[0]
-        newPop = curPop + (int(curPop/10))
-        ple = db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,))
-        conn.commit()
+allKeys = db.execute("SELECT key FROM keys").fetchall()
 
-    pop = db.execute("SELECT population FROM stats").fetchall()[0]
-    print(pop)
+for keys in allKeys:
+    print(keys[0])
+    if key == keys[0]:
+        print("LOGGED IN")
 
-populationGrowth()
+"""for key in keys:
+  if key == keys[0]:
+      print("eyy")"""
 
+"""for key in keys:
+  if user_input is key[0]:
+      print("eyy")"""
