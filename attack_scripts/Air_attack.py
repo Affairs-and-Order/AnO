@@ -30,7 +30,7 @@ def ground_attack(nat1_name, nat2_name, nat1_fighters, nat2_fighters,Nat1Bomb,Na
 			# subtract difference from the nations maximum if they rolled lower
 			Nat2 -= difference
 			#calulates bomber losses
-			Bombloss1 = random.randint (1, Nat1Bomb // 5) * 5
+			Bombloss = random.randint (1, Nat1Bomb // 5) * 5
 			Nat1Bomb = Nat1Bomb - Bombloss / 5
 			displayloss1 = Bombloss1 / 5
 			Bombloss2 = random.randint (1, Nat2Bomb // 5) * 5
@@ -73,9 +73,9 @@ def ground_attack(nat1_name, nat2_name, nat1_fighters, nat2_fighters,Nat1Bomb,Na
 		print(f"This is the 6 percent value from the battle: {six_percent_loss}")
 	
 	if nat1_roll_wins > nat2_roll_wins:
-		return "Nat1 won the battle"
+		return f"{nat1_name}won the battle"
 	else:
-		return "Nat2 won the battle"
+		return f"{nat2_name} won the battle"
 
 ground_attack("Danzig", "Konigsburg", 630, 380,4,10)
 
