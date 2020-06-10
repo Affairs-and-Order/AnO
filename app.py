@@ -456,7 +456,7 @@ def marketoffer():
         if amount.isnumeric() == False or price.isnumeric() == False:
             return error(400, "You can only type numeric values into /marketoffer ")
 
-        if amount < 1:
+        if int(amount) < 1:
             return error(400, "Amount must be greater than 0")
 
         rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into thi
@@ -465,6 +465,9 @@ def marketoffer():
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
+        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price)))
+
+        connection.commit()
         return redirect("/market")
     else:
         return render_template("marketoffer.html")
