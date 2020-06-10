@@ -488,6 +488,7 @@ def account():
 @app.route("/countries")
 def countries():
     if request.method == "GET":
+
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
@@ -497,7 +498,41 @@ def countries():
 
         connection.commit()
         zipped = zip(name, population, countryId)
-        return render_template("countries.html", zipped=zipped)
+
+
+
+        users = db.execute("SELECT id FROM users ORDER BY id").fetchall()
+
+        population = []
+        ids = []
+        names = []
+        coalition_ids = []
+
+        for i in users:
+
+            ids.append(i[0])
+            print("IDDDDDDDDDDD:" + str(i[0]))
+
+            indPop = db.execute("SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            population.append(indPop)
+            print("POOOOOOOOOOOOP:" + str(indPop))
+
+            name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            names.append(name)
+            print("NAAAAAAAAAAAAAAAME:" + name)
+
+            try:
+                coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
+                coalition_ids.append(coalition_id)
+            except:
+                coalition_id = "No Coalition"
+                coalition_ids.append(coalition_id)
+
+        connection.commit()
+
+        new_zipped = zip(population, ids, names, coalition_ids)
+
+        return render_template("countries.html", zipped=zipped, new_zipped=new_zipped)
 
 @login_required
 @app.route("/coalitions", methods=["GET"])

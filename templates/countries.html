@@ -19,13 +19,13 @@
                     <th>Population</th>
                     <th>Coalition</th>
                 </tr>
-                {% for name, pop, id in zipped%}
+                {% for pop, id, name, colId  in new_zipped%}
                 <tr>
 
-                    <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
-                    <td>105,565</td>
-                    <td>{{ pop[0] }}</td>
-                    <td>coalition name w/ link</td>
+                    <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
+                    <td>Influence</td>
+                    <td>{{ pop }}</td>
+                    <td><a href="/coalition/{{ colId[0] }}">{{ colId }}</a></td>
 
                 </tr>
                 {% endfor %}
