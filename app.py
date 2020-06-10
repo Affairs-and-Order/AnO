@@ -287,7 +287,7 @@ def coalition(colId):
         colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         try:
-            userInCol= db.execute("SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
+            userInCol= db.execute("SELECT userId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
             userInCol = True
         except:
             userInCol = False
