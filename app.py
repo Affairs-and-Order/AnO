@@ -108,6 +108,7 @@ def signup():
                 db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+                db.execute("INSERT INTO resources (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("DELETE FROM keys WHERE key=(?)", (key,))
                 connection.commit()
                 connection.close()
@@ -441,7 +442,26 @@ def createprovince():
 @login_required
 @app.route("/marketoffer", methods=["GET", "POST"])
 def marketoffer():
-    if request.method == "GET":
+    if request.method == "POST":
+
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        resource = request.form.get("resource")
+        amount = request.form.get("amount")
+        price = request.form.get("price")
+
+        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into thi
+        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]  #TODO: fix this not working
+
+        if amount > realAmount:
+            return error("400", "Selling amount is higher than actual amount You have.")
+
+        print("OK i will do this step when i create offers")
+
+    else:
         return render_template("marketoffer.html")
 
 @login_required

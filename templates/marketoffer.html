@@ -17,24 +17,25 @@
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left flexchildvanilla">
 
+            <form action="/marketoffer" method="POST">
                 <select class="templateselect">
 
-                    <option disabled="true" selected="selected">Choose one</option>
-                    <option class="templateoption">Gold</option>
-                    <option class="templateoption">Bauxite</option>
-                    <option class="templateoption">Plutionium</option>
-                    <option class="templateoption">Consumer Goods</option>
-                    <option class="templateoption">Uranium</option>
-                    <option class="templateoption">Thorium</option>
-                    <option class="templateoption">Iron</option>
-                    <option class="templateoption">Coal</option>
-                    <option class="templateoption">Oil</option>
-                    <option class="templateoption">Lead</option>
-                    <option class="templateoption">Silicon</option>
-                    <option class="templateoption">Copper</option>
-
+                    <option name="resource" disabled="true" selected="selected">Choose one</option>
+                    <option value="gold" class="templateoption">Gold</option>
+                    <option value="bauxite" class="templateoption">Bauxite</option>
+                    <option value="plutonium" class="templateoption">Plutionium</option>
+                    <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+                    <option value="uranium" class="templateoption">Uranium</option>
+                    <option value="thorium" class="templateoption">Thorium</option>
+                    <option value="iron" class="templateoption">Iron</option>
+                    <option value="coal"class="templateoption">Coal</option>
+                    <option value="oil" class="templateoption">Oil</option>
+                    <option value="lead" class="templateoption">Lead</option>
+                    <option value="silicon" class="templateoption">Silicon</option>
+                    <option value="copper" class="templateoption">Copper</option>
                 </select>
 
+        
             </div>
             <div class="templatedivflex2left">
 
@@ -59,13 +60,14 @@
         -->
             <div class="templatedivflex2left">
 
-                <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     payments
                     </span>Sell Offer</button>
 
             </div>
 
         </div>
+        </form>
     </div>
 
 </div>
