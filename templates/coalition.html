@@ -52,10 +52,27 @@
 
             </div>
             {% endif %}
+
             {% if userLeader == False %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
 
                 <h3 class="smallheader">Member Panel</h3>
+                                <!--MEMBER-->
+                <div class="member" id="member">
+
+                    <div class="templatedivflex2">
+                        <div class="templatedivflex2left">
+
+
+
+                        </div>
+                        <div class="templatedivflex2right">
+
+                        </div>
+                    </div>
+                    <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
+                </div>
+        <!--END-->
                 <!--SHOW THIS TO MEMBERS ONLY NOT GOVERNMENT-->
 
             </div>
@@ -220,32 +237,32 @@
                         <textarea name="message" class="templatetextarea" autocomplete="off" placeholder="Your message"></textarea>
                     </div>
 
-                    {% endif %}
-
                 </div>
+
+                        <form action="/join/{{ colId }}" method="POST">
+                            <button type="submit" value="submit" class="templatedivbutton loginsignupbutton">Request to join</button>
+                        </form>
+                        {% endif %}
 
                 <!--Hide / deactvate certian buttons depending on the coalition type-->
                 <!--will become deactivated if the user doesnt meet the specified influence-->
 
                 <!-- currently only added join for open coalitions, without message-->
 
-                {% if colType == "Open" %}
-                <form action="/join/{{ colId }}" method="POST">
-                    <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
-                </form>
-                {% endif %} {% if colType == "Invite Only" %}
-                <button type="submit" value="submit" class="templatedivbutton loginsignupbutton">Request to join</button>
+        </form>
+        
+        {% if colType == "Open" %}
+        <form action="/join/{{ colId }}" method="POST">
+            <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
         </form>
         {% endif %}
         <!--There buttons will be deactivated-->
-        <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button>
+        <!-- <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button> -->
         <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
-
-
-        <!-- </form> temporarily commented out this form-->
         </div>
 
         <!--LEADER PANEL-->
+        
         <div class="leader" id="leader">
             <!-- fix not being able to go here from /coalition even if user is leader-->
             <div class="menudiv">
@@ -466,6 +483,7 @@
             <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
         </div>
         <!--END-->
+        
 
     </div>
 </div>
