@@ -541,6 +541,26 @@ def join_col(colId):
 
     return redirect(f"/coalition/{colId}")
 
+@login_required
+@app.route("/leave/<colId>", methods=["POST"])
+def leave_col(colId):
+    
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if cId == leader:
+        return error(400, "Can't leave coalition, you're the leader")
+
+    db.execute("DELETE FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId))
+
+    connection.commit()
+
+    return redirect("/coalitions")
+
 
 # available to run if double click the file
 if __name__ == "__main__":

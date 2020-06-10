@@ -57,22 +57,22 @@
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
 
                 <h3 class="smallheader">Member Panel</h3>
-                                <!--MEMBER-->
+                <!--MEMBER-->
                 <div class="member" id="member">
 
                     <div class="templatedivflex2">
                         <div class="templatedivflex2left">
 
-
-
                         </div>
-                        <div class="templatedivflex2right">
+                        <div class="templatedivflex2right"> <!-- carson could you fix the weird formatting ? i suspect this has something to do with divs-->
 
                         </div>
                     </div>
+                    <form action="/leave/{{ colId }}" method="POST">
                     <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
+                    </form>
                 </div>
-        <!--END-->
+                <!--END--> 
                 <!--SHOW THIS TO MEMBERS ONLY NOT GOVERNMENT-->
 
             </div>
@@ -250,7 +250,7 @@
                 <!-- currently only added join for open coalitions, without message-->
 
         </form>
-        
+
         {% if colType == "Open" %}
         <form action="/join/{{ colId }}" method="POST">
             <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
@@ -468,6 +468,7 @@
 
         </div>
         <!--MEMBER-->
+        <!--
         <div class="member" id="member">
 
             <div class="templatedivflex2">
@@ -482,6 +483,7 @@
             </div>
             <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
         </div>
+        --> <!-- currently disabled this because of bug, moved it elsewhere-->
         <!--END-->
         
 
