@@ -97,7 +97,7 @@ def signup():
             return error(400, "Passwords must match.")
         for keys in allKeys:
             if key == keys[0]:
-                hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=16) # hashes the inputted password
+                hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
                 db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
                 user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
                 connection.commit()
@@ -284,8 +284,6 @@ def coalition(colId):
             userInCol = True
         except:
             userInCol = False
-
-        print("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" + str(userLeader))
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader)
