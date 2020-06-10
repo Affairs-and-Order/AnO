@@ -203,7 +203,13 @@ person["message"] = "Thanks guys :D, you are all so amazing." # easter egg proba
 @app.route("/market", methods=["GET", "POST"])
 def market():
     if request.method == "GET":
-        return render_template("market.html")
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        
+        offers = db.execute("SELECT * FROM offers").fetchall()
+
+        return render_template("market.html", offers=offers)
 
 @login_required
 @app.route("/provinces", methods=["GET", "POST"])

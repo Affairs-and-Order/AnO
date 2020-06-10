@@ -53,14 +53,16 @@
                     <th>Amount</th>
                     <th>Purchase</th>
                 </tr>
+                {% for i in offers %}
                 <tr>
-                    <td>Country Name /w link</td>
-                    <td>Buying / Selling</td>
-                    <td>Price:</td>
-                    <td>Amount</td>
+                    <td><a href="/country/id={{ i[1] }}">{{ i[1] }}</a></td>
+                    <td>Selling</td>
+                    <td>{{ i[4] }}</td>
+                    <td>{{ i[3] }}</td>
                     <td>button</td>
 
                 </tr>
+                {% endfor %}
             </table>
         </div>
     </div>
