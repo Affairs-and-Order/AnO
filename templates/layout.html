@@ -75,15 +75,16 @@
             </span>War</a>
 
         <h3>Global Affairs</h3>
+        {% if userInCol == True %}
         <a class="menubara" href="{{ inCol }}"><span class="material-icons-outlined">
             group
-            </span>My Coalition</a>
+            </span>My Coalition</a> {% endif %}
         <a class="menubara" href="/coalitions"><span class="material-icons-outlined">
             public
-            </span>Coalitions</a>
+            </span>Coalitions</a> {% if userInCol == False %}
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">
             group_add
-            </span>Establish a Coalition</a>
+            </span>Establish a Coalition</a> {% endif %}
         <a class="menubara" href="/countries"><span class="material-icons-outlined">
             person_search
             </span>Countries</a>
