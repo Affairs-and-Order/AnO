@@ -207,7 +207,38 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         
-        offers = db.execute("SELECT * FROM offers").fetchall()
+        user_ids = db.execute("SELECT user_id FROM offers").fetchall()
+        
+        ids = []
+        names = []
+        resources = []
+        amounts = []
+        prices = []
+
+        for i in user_ids:
+
+            ids.append(i)
+            
+            name = db.execute("SELECT username FROM users WHERE id=(?)", (i[0],)).fetchone()[0]
+            
+            names.append(name)
+
+            resource = db.execute("SELECT resource FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            resources.append(resource)
+
+            amount = db.execute("SELECT amount FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            amounts.append(amount)
+
+            price = db.execute("SELECT price FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            prices.append(price)
+
+        print(names, ids, resources, amounts, prices)
+
+        offers = zip(ids, names, resources, amounts, prices)
+
+
+
+        
 
         return render_template("market.html", offers=offers)
 

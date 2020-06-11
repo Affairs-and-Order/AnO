@@ -48,18 +48,19 @@
             <table class="templatetable templatetable2">
                 <tr>
                     <th>Offering Party</th>
-                    <th>Type</th>
+                    <th>Resource</th>
                     <th>Price</th>
                     <th>Amount</th>
                     <th>Purchase</th>
                 </tr>
-                {% for i in offers %}
+
+                {% for id, name, resource, amount, price in offers %}
                 <tr>
-                    <td><a href="/country/id={{ i[1] }}">{{ i[1] }}</a></td>
-                    <td>Selling</td>
-                    <td>{{ i[4] }}</td>
-                    <td>{{ i[3] }}</td>
-                    <td>button</td>
+                    <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
+                    <td>{{ resource }}</td>
+                    <td>{{ price }}</td>
+                    <td>{{ amount }}</td>
+                    <td>button</td> <!-- add button here -->
 
                 </tr>
                 {% endfor %}
