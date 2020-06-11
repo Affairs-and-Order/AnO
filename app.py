@@ -502,47 +502,39 @@ def countries():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = db.execute("SELECT username FROM users").fetchall()
-        population = db.execute("SELECT population FROM stats").fetchall()
-        countryId = db.execute("SELECT id FROM users").fetchall()
-
-        connection.commit()
-        zipped = zip(name, population, countryId)
-
-
-
         users = db.execute("SELECT id FROM users ORDER BY id").fetchall()
 
         population = []
         ids = []
         names = []
         coalition_ids = []
+        coalition_names = []
 
         for i in users:
 
             ids.append(i[0])
-            print("IDDDDDDDDDDD:" + str(i[0]))
 
             indPop = db.execute("SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             population.append(indPop)
-            print("POOOOOOOOOOOOP:" + str(indPop))  # r u ok
 
             name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             names.append(name)
-            print("NAAAAAAAAAAAAAAAME:" + name)
 
             try:
                 coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
                 coalition_ids.append(coalition_id)
+
+                coalition_name = db.execute("SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
+                coalition_names.append(coalition_name)
             except:
-                coalition_id = "No Coalition"
-                coalition_ids.append(coalition_id)
+                coalition_ids.append("No Coalition")
+                coalition_names.append("No Coalition")
 
         connection.commit()
 
-        new_zipped = zip(population, ids, names, coalition_ids)
+        new_zipped = zip(population, ids, names, coalition_ids, coalition_names)
 
-        return render_template("countries.html", zipped=zipped, new_zipped=new_zipped)
+        return render_template("countries.html", new_zipped=new_zipped)
 
 @login_required
 @app.route("/coalitions", methods=["GET"])

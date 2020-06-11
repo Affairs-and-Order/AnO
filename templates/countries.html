@@ -19,14 +19,15 @@
                     <th>Population</th>
                     <th>Coalition</th>
                 </tr>
-                {% for pop, id, name, colId  in new_zipped%}
+                {% for pop, id, name, colId, colName  in new_zipped%}
                 <tr>
 
-                    <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
+                    <td><a href="/country/id={{ id }}">{{ name }}</a></td>
                     <td>Influence</td>
                     <td>{{ pop }}</td>
-                    <td><a href="/coalition/{{ colId[0] }}">{{ colId }}</a></td>
-
+                    {% if colName != "No Coalition" %}
+                    <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </table>
