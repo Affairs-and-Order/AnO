@@ -3,25 +3,27 @@
 
     <div class="templatedivtopper">
         <h1 class="templatedivtitle">Provinces</h1>
+        <div class="templatedivad"></div>
     </div>
 
 
 
     <div class="templatedivcontent">
 
-        <div class="templatedivad"></div>
-
         <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
             add_circle_outline
-            </span>Create Province</a> {% for i, j, k, l in pAll %}
+            </span>Create Province</a>
         <div class="templatedivflex2 templatesidemenuflexparent">
             <div class="stickyflexmenu">
-
+                {% for i, j, k, l in pAll %}
                 <!--make an anchor for every province the player has-->
-                <a class="templatediva" href="/province/{{ l[0] }}">{{ k[0] }}</a>
-
+                <a class="menubara" href="/province/{{ l[0] }}"><span class="material-icons-outlined">
+                    account_balance
+                    </span>{{ k[0] }}</a> {% endfor %}
             </div>
+
             <div class="templatefullwidthflexchild">
+                {% for i, j, k, l in pAll %}
                 <!--make a div for every province the player has-->
                 <div class="menudiv" id="{{ provinceName }}">
 
@@ -30,7 +32,9 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <a class="forgotpasscode loginsignupforgot" href="/province">Visit Province</a>
+                            <a class="forgotpasscode loginsignupforgot" href="/province/{{ l[0] }}"><span class="material-icons-outlined">
+                                account_balance
+                                </span>Visit Province</a>
 
                             <table class="templatetable">
                                 <tr>
@@ -57,11 +61,9 @@
                         </div>
                     </div>
                 </div>
-
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
-
     </div>
 </div>
 {% endblock %}

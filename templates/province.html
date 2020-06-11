@@ -1,23 +1,18 @@
-{% extends "layout.html" %}
+{% extends "layout.html" %} {% block title %} Province {{ pId }} {% endblock %} {% block body %}
 
-{% block title %}
-Province {{ pId }}
-{% endblock %}
 
-{% block body %}
-<div class="templatediv">
+<div class="templatedivtopper">
+    <h1 class="templatedivtitle">Province {{ pId }}</h1>
+    <div class="templatedivad"></div>
+</div>
 
-    <div class="templatedivtopper">
-        <h1 class="templatedivtitle">Province {{ pId }}</h1>
-    </div>
+<div class="templatedivcontent">
+    <h2 class="templatecontentheaderleft"></h2>
+    <p class="templatecontentpleft"></p>
+    <h2>Name: {{ name }}</h2>
+    <h2>Population: {{ population }}</h2>
+    <h2>City Count: {{ cityCount }}</h2>
 
-    <div class="templatedivcontent">
-        <h2 class="templatecontentheaderleft"></h2>
-        <p class="templatecontentpleft"></p>
-        <h2>Name: {{ name }}</h2>
-        <h2>Population: {{ population }}</h2>
-        <h2>City Count: {{ cityCount }}</h2>
-
-    </div>
+</div>
 </div>
 {% endblock %}

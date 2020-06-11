@@ -332,7 +332,7 @@
             }
         }
         
-        .menubardiv a {
+        .menubara {
             text-decoration: none;
             color: rgba(0, 0, 0, 0.75);
             font-size: 19px;
@@ -343,7 +343,7 @@
             text-align: center;
         }
         
-        .menubardiv a:hover {
+        .menubara:hover {
             background: #178db8;
             margin: 8px 0px;
             padding: 8px 15px;
@@ -353,7 +353,7 @@
         }
         
         @media all and (max-width: 600px) {
-            .menubardiv a {
+            .menubara {
                 margin: 10px 0px;
             }
         }
@@ -448,6 +448,7 @@
             background: linear-gradient(145deg, #00a7e1 30%, #149dc7 70%);
             background-size: 400% 400%;
             box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.15);
+            margin-bottom: 10px;
         }
         
         .templatedivtitle {
@@ -521,7 +522,7 @@
             color: #363945;
             border: none;
             border-bottom: 2px solid #e3e9f0;
-            font-size: 18px;
+            font-size: 1.1rem;
             cursor: pointer;
             user-select: none;
             outline: none;
@@ -567,7 +568,7 @@
         }
         
         .smallheader {
-            font-size: 18px;
+            font-size: 1.2rem;
         }
         
         .templatelink {
@@ -709,20 +710,23 @@
             border-radius: 4px;
         }
         
-        @media all and (max-width: 600px) {
-            .templatedivflex2left,
-            .templatedivflex2right {
-                width: 90%;
-                margin: 20px auto;
-            }
-        }
-        
         .templatedivflex2left {}
         
         .templatedivflex2right {}
         
         .flex2rightfloatright {
             text-align: right;
+        }
+        
+        @media all and (max-width: 600px) {
+            .templatedivflex2left,
+            .templatedivflex2right {
+                width: 90%;
+                margin: 20px auto;
+                float: none;
+                justify-content: center;
+                text-align: center;
+            }
         }
         
         .flexchildvanilla {
@@ -755,32 +759,6 @@
             .stickyflexmenu {
                 left: 2.5%;
             }
-        }
-        
-        .templatediva {
-            position: static;
-            text-decoration: none;
-            color: black;
-            font-size: 19px;
-            transition: all 0.2s;
-            display: block;
-            margin: 8px 15px;
-            padding: 8px 0px;
-            text-align: center;
-        }
-        
-        @media all and (max-width: 600px) {
-            .templatediva {
-                margin: 10px 0px;
-            }
-        }
-        
-        .templatediva:hover {
-            background: #00a7e1;
-            margin: 8px 0px;
-            padding: 8px 15px;
-            color: white;
-            box-shadow: inset 0px 0px 50px 50px rgba(0, 0, 0, 0.25);
         }
         
         .templatetable {
@@ -982,7 +960,7 @@
         .landingpagetopper h1 {
             animation: none;
             padding-top: 75px;
-            font-size: 55px;
+            font-size: 2rem;
             color: rgb(255, 255, 255);
             text-shadow: 0px 1px 4px #084955;
         }

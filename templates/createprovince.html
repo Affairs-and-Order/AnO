@@ -3,9 +3,8 @@
 
     <div class="templatedivtopper">
         <h1 class="templatedivtitle">New Province</h1>
+        <div class="templatedivad"></div>
     </div>
-
-    <div class="templatedivad"></div>
 
     <div class="templatedivcontent">
 
@@ -23,7 +22,7 @@
                             <label for="newProvince">Your next province costs {{ x }}</label>
                             <form action="/createprovince" method="POST">
 
-                                <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Province Name" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Province Name" maxlength="15" required/>
 
                         </div>
                         <div class="templatedivflex2right">
