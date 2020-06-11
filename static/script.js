@@ -197,7 +197,6 @@ function coalitionleader() {
     document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
     document.getElementById("member").classList.remove("memberclick");
 
-
 }
 
 function coalitionmember() {

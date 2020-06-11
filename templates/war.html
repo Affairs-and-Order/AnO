@@ -1,0 +1,65 @@
+{% extends "layout.html"%} {% block title %} Military {% endblock %} {% block body %}
+
+<div class="templatediv">
+
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Military</h1>
+        <div class="templatedivad"></div>
+    </div>
+
+    <div class="templatedivcontent">
+
+        <div class="templatedivflex2 divflex2full">
+            <div class="templatedivflex2left">
+
+                <a class="templatedivbutton smallactionbutton" href="/military">Purchase Military</a>
+
+            </div>
+            <div class="templatedivflex2right flex2rightfloatright">
+
+                <a class="templatedivbutton smallactionbutton" href="/findtargets">Find Target</a>
+
+            </div>
+        </div>
+
+        <h2 class="templatecontentheaderleft">Standing Military</h2>
+
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Land</th>
+                    <th>Air</th>
+                    <th>Water</th>
+                    <th>Special</th>
+                </tr>
+                <tr>
+                    <td>[soldiers] Soldiers</td>
+                    <td>[fighter jets] Fighter Jets</td>
+                    <td>[submarines] Submarines</td>
+                    <td>[spies] Spies</td>
+                </tr>
+                <tr>
+                    <td>[artillery] Artillery</td>
+                    <td>[flying fortresses] Flying Fortresses</td>
+                    <td>[cruisers] Cruisers</td>
+                    <td>[icbms] ICBMs</td>
+                </tr>
+                <tr>
+                    <td>[tanks] Tanks</td>
+                    <td>[apaches] Apaches</td>
+                    <td>[destroyers] Destroyers</td>
+                    <td>[nukes] Nukes</td>
+                </tr>
+            </table>
+        </div>
+
+
+        <!--if wars == False-->
+        you have no ongoing wars
+        <!--if wars == True-->
+
+        <h2 class="templatecontentheaderleft">[your country] VS [enemy country]</h2>
+
+    </div>
+</div>
+{% endblock %}

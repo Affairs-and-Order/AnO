@@ -312,13 +312,17 @@ def establish_coalition():
             name = request.form.get("name")
             desc = request.form.get("description")
 
-            db.execute("INSERT INTO colNames (name, leader, type, description) VALUES (?, ?, ?, ?)", (name, session["user_id"], cType, desc))
-            colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
-            db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
+            if len(str(name)) > 15:
+                return error(500, "name too long! the coalition name needs to be under 15 characters")
+                # TODO add a better error message that renders inside the establish_coalition page
+            else:
+                # TODO gives a key error, look into this
+                db.execute("INSERT INTO colNames (name, leader, type, description) VALUES (?, ?, ?, ?)", (name, session["user_id"], cType, desc))
+                colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
+                db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
-            connection.commit()
-
-            return redirect(f"/coalition/{colId}")
+                connection.commit()
+                return redirect(f"/coalition/{colId}")
     else:
         return render_template("establish_coalition.html")
 
@@ -485,6 +489,12 @@ def account():
         return render_template("account.html")
 
 @login_required
+@app.route("/war", methods=["GET", "POST"])
+def war():
+    if request.method == "GET":
+        return render_template("war.html")
+
+@login_required
 @app.route("/countries")
 def countries():
     if request.method == "GET":
@@ -515,7 +525,7 @@ def countries():
 
             indPop = db.execute("SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             population.append(indPop)
-            print("POOOOOOOOOOOOP:" + str(indPop))
+            print("POOOOOOOOOOOOP:" + str(indPop))  # r u ok
 
             name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             names.append(name)

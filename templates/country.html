@@ -4,11 +4,10 @@
 
     <div class="templatedivtopper">
         <h1 class="templatedivtitle">{{ username }}</h1>
+        <div class="templatedivad"></div>
     </div>
 
     <div class="templatedivcontent">
-
-        <div class="templatedivad"></div>
 
         <div class="templatedivflex2 menuflex2">
             <div class="templatedivflex2left" id="countryview" onclick="countryview()">
@@ -47,19 +46,20 @@
             {% endif %}
         </div>
 
-        <!--<div class="countryimagediv">
+        <div class="countryimagediv">
+            <!--country flag-->
+            <img class="countryimage" src="static/images/testflag.png" />
+            <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
+            <img class="countrycoalitionimage" src="static/images/testflag.png" />
+        </div>
 
-            <img class="countryimage" src="files/images/file.svg" /> // currently turned this off because it looks broken
+        <h2 class="templatecontentheaderleft ">Country info</h2>
 
-        </div> -->
-
-        <h2 class="templatecontentheaderleft">Country info</h2>
-
-        <div class="templatedivflex2">
-            <div class="templatedivflex2left">
+        <div class="templatedivflex2 ">
+            <div class="templatedivflex2left ">
 
 
-                <table class="templatetable">
+                <table class="templatetable ">
                     <tr>
                         <th>General</th>
                     </tr>
@@ -82,12 +82,12 @@
                     <tr>
                         <td>Anthem:</td>
                         <td>
-                            <img src="{{ countryAnthem }}" class="countryanthem" />
+                            <img src="{{ countryAnthem }} " class="countryanthem " />
                         </td>
                     </tr>
                 </table>
 
-                <table class="templatetable">
+                <table class="templatetable ">
                     <tr>
                         <th>Military</th>
                     </tr>
@@ -108,16 +108,16 @@
                         <td>10%</td>
                     </tr>
                     <tr>
-                        <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">View Stats</a></td>
+                        <td class="anchor "><a class="forgotpasscode loginsignupforgot " href="forgotpasscode.html ">View Stats</a></td>
                     </tr>
 
                 </table>
 
             </div>
-            <div class="templatedivflex2right">
+            <div class="templatedivflex2right ">
 
-                {% if colName != "" %}
-                <table class="templatetable">
+                {% if colName != " " %}
+                <table class="templatetable ">
                     <tr>
                         <th>Affairs</th>
                     </tr>
@@ -135,7 +135,7 @@
                     </tr>
                 </table>
                 {% endif %}
-                <table class="templatetable">
+                <table class="templatetable ">
                     <tr>
                         <th>Other</th>
                     </tr>

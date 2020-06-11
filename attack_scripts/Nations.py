@@ -2,6 +2,8 @@ import random
 import sqlite3
 import os
 
+path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
+
 class Military:
     def __init__(self, spies, troops, tanks, artillery, flyingForts, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
         self.spies = spies
@@ -25,11 +27,37 @@ class Economy:
         dirname = os.path.dirname(__file__)
         filename = os.path.join(dirname, '/affo/aao.db')
         print(filename)
-        connection = sqlite3.connect("C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db")
+        # TODO find a way to get the database to work on relative directories
+        connection = sqlite3.connect(path)
         db = connection.cursor()
 
         # TODO fix this when the databases changes and update to include all resources
         self.gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
+
+    def grant_resources(self, resource, amount):
+        connection = sqlite3.connect(path)  # TODO find a way to get the database to work on relative directories
+        db = connection.cursor()
+        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)", (resource, amount, self.nationID))
+
+        connection.commit()
+
+    def transfer_resources(self, resource, amount, destinationID):
+        connection = sqlite3.connect(path) #TODO find a way to get the database to work on relative directories
+        db = connection.cursor()
+
+        # get amount of resource
+        originalUser = db.execute("SELECT (?) FROM stats WHERE id=(?)", (resource, self.nationID)).fetchone()[0]
+        destinationUser = db.execute("SELECT (?) FROM stats WHERE id=(?)", (resource, destinationID)).fetchone()[0]
+
+        # subtracts the resource from one nation to another
+        originalUser -= amount
+        destinationUser += amount
+
+        # writes changes in db
+        db.execute("UPDATE stats SET (?) = (?) WHERE id=(?)", (resource, originalUser, self.nationID))
+        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)", (resource, destinationUser, destinationID))
+
+        connection.commit()
 
 class Nation:
     def __init__(self, nationID, military, economy):
