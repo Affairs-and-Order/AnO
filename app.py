@@ -522,8 +522,35 @@ def account():
 @login_required
 @app.route("/war", methods=["GET", "POST"])
 def war():
-    if request.method == "GET":
-        return render_template("war.html")
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+    if request.method == "GET": # maybe optimise this later with css anchors
+        # ground
+        tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+        # air
+        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+        # water
+        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+        # special
+        spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.commit()
+
+        return render_template("war.html", tanks=tanks, soldiers=soldiers,
+        artillery=artillery, flying_fortresses=flying_fortresses, bombers=bombers,
+        destroyers=destroyers, cruisers=cruisers, submarines=submarines,
+        spies=spies, icbms=icbms, nukes=nukes
+        )
 
 @login_required
 @app.route("/countries")
