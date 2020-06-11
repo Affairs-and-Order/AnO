@@ -5,7 +5,7 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 # Repo installation.
 
 1. Install Git and add Git to PATH. https://stackoverflow.com/questions/26620312/installing-git-in-path-with-github-client-for-windows
-2. Type `git clone https://github.com/Djcoldcrown/Affairs-and-Order.git` in the folder you want the repo to be cloned in.
+2. Type `git clone https://github.com/delivey/AnO.git` in the folder you want the repo to be cloned in.
 
 # Flask
 
