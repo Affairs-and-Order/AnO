@@ -81,46 +81,6 @@
                 </div>
             </div>
             <div class="menudiv">
-                <h2 class="templatecontentheaderleft">Tanks</h2>
-
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <h3 class="unitcount">You have {{ tanks }} Tanks</h3>
-
-                        <p class="templatecontentpleft">Tanks are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 tank / 150 gold)</p>
-
-                        <form action="/tanks" method="POST">
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="tanks" type="number" placeholder="Amount" required/>
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/tanks">Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/tanks">Sell</button>
-
-                                    </div>
-                                </div>
-                                <ul>You can purchase X more Tanks today
-                                    <br />You can sell X more Tanks today
-                                </ul>
-                            </div>
-                    </div>
-                    </form>
-                    <div class="templatedivflex2left">
-
-
-
-                        <img class="unitimage" src="static/images/tank.jpg" />
-                    </div>
-                </div>
-            </div>
-            <div class="menudiv">
 
                 <h2 class="templatecontentheaderleft">Artillery</h2>
 
@@ -157,6 +117,46 @@
 
                         <img class="unitimage" src="static/images/artillery.jpg" />
 
+                    </div>
+                </div>
+            </div>
+            <div class="menudiv">
+                <h2 class="templatecontentheaderleft">Tanks</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ tanks }} Tanks</h3>
+
+                        <p class="templatecontentpleft">Tanks are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 tank / 150 gold)</p>
+
+                        <form action="/tanks" method="POST">
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="tanks" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/tanks">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/tanks">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>You can purchase X more Tanks today
+                                    <br />You can sell X more Tanks today
+                                </ul>
+                            </div>
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/tank.jpg" />
                     </div>
                 </div>
             </div>
@@ -300,38 +300,37 @@
 
         <!--WATER-->
         <div class="water" id="water">
-
             <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Destroyers</h2>
+                <h2 class="templatecontentheaderleft">Submarines</h2>
 
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <h3 class="unitcount">You have {{ destroyers }} Destroyers</h3>
+                        <h3 class="unitcount">You have {{ submarines }} Submarines</h3>
 
                         <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 destroyer / 500 gold)</p>
 
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="destroyers" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="submarines" type="number" placeholder="Amount" required/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/destroyers">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/submarines">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/destroyers">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/submarines">Sell</button>
 
                                     </div>
                                 </div>
                             </div>
 
-                            <ul>You can purchase X more Destroyers today
-                                <br />You can sell X more Destroyers today
+                            <ul>You can purchase X more Submarines today
+                                <br />You can sell X more Submarines today
                             </ul>
                     </div>
                     </form>
@@ -339,7 +338,7 @@
 
 
 
-                        <img class="unitimage" src="static/images/destroyer.jpg" />
+                        <img class="unitimage" src="static/images/submarine.jpg" />
                     </div>
                 </div>
             </div>
@@ -387,35 +386,35 @@
             </div>
             <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Submarines</h2>
+                <h2 class="templatecontentheaderleft">Destroyers</h2>
 
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <h3 class="unitcount">You have {{ submarines }} Submarines</h3>
+                        <h3 class="unitcount">You have {{ destroyers }} Destroyers</h3>
 
                         <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 destroyer / 500 gold)</p>
 
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="submarines" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="destroyers" type="number" placeholder="Amount" required/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/submarines">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/destroyers">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/submarines">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/destroyers">Sell</button>
 
                                     </div>
                                 </div>
                             </div>
 
-                            <ul>You can purchase X more Submarines today
-                                <br />You can sell X more Submarines today
+                            <ul>You can purchase X more Destroyers today
+                                <br />You can sell X more Destroyers today
                             </ul>
                     </div>
                     </form>
@@ -423,7 +422,7 @@
 
 
 
-                        <img class="unitimage" src="static/images/submarine.jpg" />
+                        <img class="unitimage" src="static/images/destroyer.jpg" />
                     </div>
                 </div>
             </div>
