@@ -520,6 +520,12 @@ def account():
         return render_template("account.html")
 
 @login_required
+@app.route("/recruitments", methods=["GET", "POST"])
+def recruitments():
+    if request.method == "GET":
+        return render_template("recruitments.html")
+
+@login_required
 @app.route("/war", methods=["GET", "POST"])
 def war():
     connection = sqlite3.connect('affo/aao.db')
