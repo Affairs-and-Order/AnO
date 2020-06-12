@@ -1,0 +1,36 @@
+{% extends "layout.html" %} {% block title %} Businesses {% endblock %} {% block body %}
+
+<div class="templatediv">
+
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Businesses</h1>
+        <div class="templatedivad"></div>
+    </div>
+
+    <div class="templatedivcontent">
+
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Age</th>
+                    <th>Coalition</th>
+                </tr>
+                {% for pop, id, name, colId, colName in new_zipped%}
+                <tr>
+
+                    <td><a href="/country/id={{ id }}">{{ name }}</a></td>
+                    <td>Name</td>
+                    <td>{{ age }}</td>
+                    {% if colName == "No Coalition" %}
+                    <td><a>No Coalition</a></td> {% endif %} {% if colName != "No Coalition" %}
+                    <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock%}

@@ -526,6 +526,12 @@ def recruitments():
         return render_template("recruitments.html")
 
 @login_required
+@app.route("/businesses", methods=["GET", "POST"])
+def businesses():
+    if request.method == "GET":
+        return render_template("businesses.html")
+
+@login_required
 @app.route("/war", methods=["GET", "POST"])
 def war():
     connection = sqlite3.connect('affo/aao.db')
