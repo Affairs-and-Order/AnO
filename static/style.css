@@ -425,6 +425,12 @@
             
             .right {
                 text-align: right;
+                display: block;
+            }
+            
+            .vanilla {
+                margin: 2px;
+                padding: 0px;
             }
             
             .templatediv {
@@ -512,6 +518,16 @@
                 font-family: 'Ubuntu', sans-serif;
                 font-weight: normal;
                 text-align: center;
+            }
+            
+            .templatehr {
+                border: 2px solid #e3e9f0;
+            }
+            
+            .templateinfodiv {
+                padding: 4px 0px;
+                background: #f7f7f7;
+                color: rgba(0, 0, 0, 0.7);
             }
             
             .templatedivbutton {
