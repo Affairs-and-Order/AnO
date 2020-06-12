@@ -25,7 +25,38 @@ function menubardrop() {
     document.body.classList.toggle("body");
 }
 
+//PROVINCE SLIDER
+$(document).ready(function() {
 
+    document.getElementById("provincecity").classList.add("provincecityclick");
+    document.getElementById("city").classList.add("cityclick");
+
+});
+//
+function provincecity() {
+
+
+    document.getElementById("provincecity").classList.add("provincecityclick");
+    document.getElementById("city").classList.add("cityclick");
+
+    //
+
+    document.getElementById("provinceland").classList.remove("provincelandclick");
+    document.getElementById("land").classList.remove("landclick");
+
+}
+//
+function provinceland() {
+
+
+    document.getElementById("provinceland").classList.add("provincelandclick");
+    document.getElementById("land").classList.add("landclick");
+
+    //
+
+    document.getElementById("provincecity").classList.remove("provincecityclick");
+    document.getElementById("city").classList.remove("cityclick");
+}
 //MILITARY SLIDER
 $(document).ready(function() {
 

@@ -1,17 +1,134 @@
-{% extends "layout.html" %} {% block title %} Province {{ pId }} {% endblock %} {% block body %}
+{% extends "layout.html" %} {% block title %} [Province Name] {% endblock %} {% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper">
-        <h1 class="templatedivtitle">Province {{ pId }}</h1>
+        <h1 class="templatedivtitle">[Province Name]</h1>
         <div class="templatedivad"></div>
     </div>
 
     <div class="templatedivcontent">
-        <h2 class="templatecontentheaderleft"></h2>
-        <p class="templatecontentpleft"></p>
-        <h2>Name: {{ name }}</h2>
-        <h2>Population: {{ population }}</h2>
-        <h2>City Count: {{ cityCount }}</h2>
+
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
+
+                <table class="templatetable">
+                    <tr>
+                        <th>Province Information</th>
+                    </tr>
+                    <tr>
+                        <td>Population:</td>
+                        <td>{{ population }}</td>
+                    </tr>
+                    <tr>
+                        <td>Happiness:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Productivity:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Cities:</td>
+                        <td>{{ cityCount }}</td>
+                    </tr>
+                    <tr>
+                        <td>land:</td>
+                        <td>{{ land }}k2</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
+
+                        <input class="loginsignupinput" autocomplete="off" name="city" placeholder="City Amount" required/>
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <a class="templatedivbutton templatecenteredbutton">Purchase Cities</a>
+
+                    </div>
+                </div>
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
+
+                        <input class="loginsignupinput" autocomplete="off" name="land" placeholder="Land Amount" required/>
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <a class="templatedivbutton templatecenteredbutton">Purchase Land</a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="templatedivflex2 menuflex2">
+            <div class="templatedivflex2left" id="provincecity" onclick="provincecity()">
+
+                <h3 class="smallheader">City</h3>
+
+            </div>
+            <div class="templatedivflex2left" id="provinceland" onclick="provinceland()">
+
+                <h3 class="smallheader">Land</h3>
+
+            </div>
+        </div>
+        <!--Cities-->
+        <div class="city" id="city">
+
+            <h2 class="templatecontentheadercenter">You have [city slots] city slots</h2>
+
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Oil Plantations</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
+
+                        <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+
+                        <ul>Oil plants cost [ oilPlantCost ] </ul>
+                        <ul>Oil produce 12(electricity icon) a day from 4(oil icon)</ul>
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                </div>
+                            </div>
+                            <ul>[ buyOilPlant ] Oil Plantations will cost you $[ buyOilPlantPrice ]</ul>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="static/images/fighterjet.jpg" />
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 </div>
