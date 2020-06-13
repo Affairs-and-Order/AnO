@@ -451,8 +451,8 @@
             }
             
             .templatedivtopper {
-                padding: 0.5vh;
-                padding-top: 2vh;
+                padding: 0.75vh;
+                padding-top: 2.5vh;
                 animation: toppergradient 5s ease infinite;
                 transition: all 0.2s;
                 background: linear-gradient(145deg, #00a7e1 30%, #149dc7 70%);
@@ -461,14 +461,58 @@
                 margin-bottom: 10px;
             }
             
+            .provincetopper {
+                overflow: hidden;
+                text-align: center;
+                background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                object-fit: cover;
+                background-position-y: 50%;
+            }
+            
+            .markettopper {
+                overflow: hidden;
+                text-align: center;
+                background-image: url("images/market.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                object-fit: cover;
+                background-position-y: 50%;
+            }
+            
+            .wartopper {
+                overflow: hidden;
+                text-align: center;
+                background-image: url("images/war.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                object-fit: cover;
+                background-position-y: 50%;
+            }
+            
+            .militarytopper {
+                overflow: hidden;
+                text-align: center;
+                background-image: url("images/military.jpg");
+                background-repeat: no-repeat;
+                background-size: cover;
+                object-fit: cover;
+                background-position-y: 50%;
+            }
+            
             .templatedivtitle {
                 text-align: center;
                 color: rgb(255, 255, 255);
                 font-size: 40px;
                 animation: templatedivtitleload 0.25s;
                 margin: 0;
-                padding: 10px;
+                padding: 0px;
                 position: relative;
+                box-shadow: inset 0px 0px 100vw 0 #00000050;
+                width: fit-content;
+                margin: auto;
+                padding: 10px 20px;
                 text-shadow: 0px 1px 4px #084955;
             }
             
@@ -1225,16 +1269,6 @@
                 height: 9vw;
             }
             /*PROVINCE*/
-            
-            .provincetopper {
-                overflow: hidden;
-                text-align: center;
-                background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
-                background-repeat: no-repeat;
-                background-size: cover;
-                object-fit: cover;
-                background-position-y: 50%;
-            }
             
             .provinceimage {
                 margin-top: -15px;
