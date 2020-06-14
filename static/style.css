@@ -478,6 +478,12 @@
                 margin-bottom: 10px;
             }
             
+            .noboxshadowtopper h1 {
+                box-shadow: none;
+                padding-bottom: 2.5rem;
+                padding-top: 1.5rem;
+            }
+            
             .provincestopper {
                 overflow: hidden;
                 text-align: center;
@@ -730,6 +736,74 @@
                 color: black;
                 padding: 0;
                 text-align: center;
+            }
+            /* Customize the label (the container) */
+            
+            .templatecheckmarklabel {
+                display: block;
+                position: relative;
+                padding-left: 35px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                font-size: 22px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            /* Hide the browser's default checkbox */
+            
+            .templatecheckmarklabel input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+                height: 0;
+                width: 0;
+            }
+            /* Create a custom checkbox */
+            
+            .templatecheckmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 25px;
+                width: 25px;
+                background-color: #eee;
+            }
+            /* On mouse-over, add a grey background color */
+            
+            .templatecheckmarklabel:hover input~.templatecheckmark {
+                background-color: #ccc;
+            }
+            /* When the checkbox is checked, add a blue background */
+            
+            .templatecheckmarklabel input:checked~.templatecheckmark {
+                background-color: #2196F3;
+            }
+            /* Create the checkmark/indicator (hidden when not checked) */
+            
+            .templatecheckmarklabel:after {
+                content: "";
+                position: absolute;
+                display: none;
+            }
+            /* Show the checkmark when checked */
+            
+            .templatecheckmarklabel input:checked~.templatecheckmark:after {
+                display: block;
+            }
+            /* Style the checkmark/indicator */
+            
+            .templatecheckmarklabel .templatecheckmark:after {
+                left: 9px;
+                top: 5px;
+                width: 5px;
+                height: 10px;
+                border: solid white;
+                border-width: 0 3px 3px 0;
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
             }
             
             .templateselect {
