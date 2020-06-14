@@ -61,26 +61,44 @@
 
                 <table class="templatetable">
                     <tr>
-                        <th>General</th>
+                        <th><span class="material-icons-outlined">
+                            info
+                            </span>General</th>
                     </tr>
                     <tr>
-                        <td>Country location:</td>
+                        <td><span class="material-icons-outlined">
+                            room
+                            </span>Country location:</td>
                         <td>{{ location }}</td>
                     </tr>
                     <tr>
-                        <td>Provinces:</td>
+                        <td><span class="material-icons-outlined">
+                            account_balance
+                            </span>Provinces:</td>
                         <td>{{ provinces }}</td>
                     </tr>
                     <tr>
-                        <td>Population:</td>
+                        <td><span class="material-icons-outlined">
+                            people_alt
+                            </span>Population:</td>
                         <td>{{ population }}</td>
                     </tr>
                     <tr>
-                        <td>Average Happiness:</td>
+                        <td><span class="material-icons-outlined">
+                            sentiment_satisfied
+                            </span>Average Happiness:</td>
                         <td>{{ happiness }}%</td>
                     </tr>
                     <tr>
-                        <td>Anthem:</td>
+                        <td><span class="material-icons-outlined">
+                            arrow_circle_up
+                            </span>Average Productivity:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            library_music
+                            </span>Anthem:</td>
                         <td>
                             <img src="{{ countryAnthem }}" class="countryanthem" />
                         </td>
@@ -89,7 +107,9 @@
 
                 <table class="templatetable">
                     <tr>
-                        <th>Military</th>
+                        <th><span class="material-icons-outlined">
+                            military_tech
+                            </span>Military</th>
                     </tr>
                     <tr>
                         <td>Military power:</td>
@@ -119,25 +139,35 @@
                 {% if colName !="" %}
                 <table class="templatetable">
                     <tr>
-                        <th>Affairs</th>
+                        <th><span class="material-icons-outlined">
+                            public
+                            </span>Affairs</th>
                     </tr>
                     <tr>
-                        <td>Coalition name:</td>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Coalition name:</td>
                         <td>{{ colName }}</td>
                     </tr>
                     <tr>
-                        <td>Coalition role:</td>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Coalition role:</td>
                         <td>role</td>
                     </tr>
                     <tr>
-                        <td>Allied:</td>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Allied:</td>
                         <td>Yes/No</td>
                     </tr>
                 </table>
                 {% endif %}
                 <table class="templatetable">
                     <tr>
-                        <th>Other</th>
+                        <th><span class="material-icons-outlined">
+                            article
+                            </span>Other</th>
                     </tr>
                     <tr>
                         <td>Avialable Resources:</td>

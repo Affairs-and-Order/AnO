@@ -423,6 +423,19 @@
             }
             /*CONTENT*/
             
+            .floatleft {
+                float: left;
+            }
+            
+            .floatright {
+                float: right;
+            }
+            
+            .left {
+                text-align: left;
+                display: block;
+            }
+            
             .right {
                 text-align: right;
                 display: block;
@@ -431,6 +444,10 @@
             .vanilla {
                 margin: 2px;
                 padding: 0px;
+            }
+            
+            .min {
+                width: min-content;
             }
             
             .templatediv {

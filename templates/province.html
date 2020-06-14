@@ -13,27 +13,39 @@
 
                 <table class="templatetable">
                     <tr>
-                        <th>Province Information</th>
+                        <th><span class="material-icons-outlined">
+                            account_balance
+                            </span>Province Information</th>
                     </tr>
                     <tr>
-                        <td>Population:</td>
+                        <td><span class="material-icons-outlined">
+                            people_alt
+                            </span>Population:</td>
                         <td>{{ population }}</td>
                     </tr>
                     <tr>
-                        <td>Happiness:</td>
+                        <td><span class="material-icons-outlined">
+                            sentiment_satisfied
+                            </span>Happiness:</td>
                         <td>{{ happiness }}%</td>
                     </tr>
                     <tr>
-                        <td>Productivity:</td>
+                        <td><span class="material-icons-outlined">
+                            arrow_circle_up
+                            </span>Productivity:</td>
                         <td>{{ happiness }}%</td>
                     </tr>
                     <tr>
-                        <td>Cities:</td>
+                        <td><span class="material-icons-outlined">
+                            business
+                            </span>Cities:</td>
                         <td>{{ cityCount }}</td>
                     </tr>
                     <tr>
-                        <td>land:</td>
-                        <td>{{ land }}k2</td>
+                        <td><span class="material-icons-outlined">
+                            landscape
+                            </span>land:</td>
+                        <td>{{ landAmount }}km2</td>
                     </tr>
                 </table>
 
@@ -49,7 +61,7 @@
                     <div class="templatedivflex2right">
 
                         <a class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-                            add_circle_outline
+                            business
                             </span>Purchase Cities</a>
 
                     </div>
@@ -63,7 +75,7 @@
                     <div class="templatedivflex2right">
 
                         <a class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-                            add_circle_outline
+                            landscape
                             </span>Purchase Land</a>
 
                     </div>
@@ -80,12 +92,18 @@
         <div class="templatedivflex2 menuflex2">
             <div class="templatedivflex2left" id="provincecity" onclick="provincecity()">
 
-                <h3 class="smallheader">City</h3>
+                <h3 class="smallheader"><span class="material-icons-outlined">
+                    business
+                    </span>City - {{ CityCount }}
+                </h3>
 
             </div>
             <div class="templatedivflex2left" id="provinceland" onclick="provinceland()">
 
-                <h3 class="smallheader">Land</h3>
+                <h3 class="smallheader"><span class="material-icons-outlined">
+                    landscape
+                    </span>Land - {{ landAmount }} km2
+                </h3>
 
             </div>
         </div>
