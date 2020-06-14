@@ -446,8 +446,18 @@
                 padding: 0px;
             }
             
+            .fit {
+                width: fit-content;
+            }
+            
             .min {
                 width: min-content;
+            }
+            
+            .center {
+                margin: auto;
+                text-align: center;
+                justify-self: center;
             }
             
             .templatediv {
@@ -742,10 +752,9 @@
             .templatecheckmarklabel {
                 display: block;
                 position: relative;
-                padding-left: 35px;
-                margin-bottom: 12px;
+                padding-left: 25px;
+                margin: 12px;
                 cursor: pointer;
-                font-size: 22px;
                 -webkit-user-select: none;
                 -moz-user-select: none;
                 -ms-user-select: none;
@@ -764,21 +773,22 @@
             
             .templatecheckmark {
                 position: absolute;
+                margin: auto;
                 top: 0;
+                bottom: 0;
                 left: 0;
-                height: 25px;
-                width: 25px;
-                background-color: #eee;
+                height: 15px;
+                width: 15px;
+                background-image: linear-gradient(180deg, #f7f7f7 50%, #00a7e1 50%);
+                background-size: 200% 200%;
+                background-position: 0% 0%;
+                transition: all 0.3s ease;
             }
             /* On mouse-over, add a grey background color */
-            
-            .templatecheckmarklabel:hover input~.templatecheckmark {
-                background-color: #ccc;
-            }
             /* When the checkbox is checked, add a blue background */
             
             .templatecheckmarklabel input:checked~.templatecheckmark {
-                background-color: #2196F3;
+                background-position: 0% 100%;
             }
             /* Create the checkmark/indicator (hidden when not checked) */
             
