@@ -494,7 +494,7 @@ def marketoffer():
         amount = request.form.get("amount")
         price = request.form.get("price")
 
-        if amount.isnumeric() == False or price.isnumeric() == False:
+        if amount.isnumeric() is False or price.isnumeric() is False:
             return error(400, "You can only type numeric values into /marketoffer ")
 
         if int(amount) < 1:
