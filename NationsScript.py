@@ -174,8 +174,3 @@ class Nation:
 
     def printStatistics(self):
         print("Nation {}:\nWins {}\nLosses: {}".format(self.id, self.wins, self.losses))
-
-
-carsonsEconomy = Economy(1)
-carsonsMilitary = Military(1)
-carsonsMilitary.get_military()
