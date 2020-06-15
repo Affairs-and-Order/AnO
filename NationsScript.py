@@ -3,25 +3,29 @@ import sqlite3
 import os
 
 path = "affo/aao.db"
-def ping(): # delete this before launch
+
+
+def ping():  # delete this before launch
     print("found nations script")
+
 
 class Military:
     def __init__(self, nationID=None):
+        # getting kind of big, might want to move to db
         self.units = {
-            "spies": {"type": "ground", "amount": 0, "damage": 1, "inBattle": 0},
-            "troops": {"type": "ground", "amount": 0, "damage": 2, "inBattle": 0},
-            "tanks": {"type": "ground", "amount": 0, "damage": 3, "inBattle": 0},
-            "artillery": {"type": "ground", "amount": 0, "damage": 1, "inBattle": 0},
-            "flyingForts": {"type": "air", "amount": 0, "damage": 2, "inBattle": 0},
-            "bomberJets": {"type": "air", "amount": 0, "damage": 3, "inBattle": 0},
-            "destroyers": {"type": "water", "amount": 0, "damage": 1, "inBattle": 0},
-            "cruisers": {"type": "water", "amount": 0, "damage": 2, "inBattle": 0},
-            "submarines": {"type": "water", "amount": 0, "damage": 3, "inBattle": 0},
-            "ICMBs": {"type": "special", "amount": 0, "damage": 4, "inBattle": 0},
-            "nukes": {"type": "special", "amount": 0, "damage": 4, "inBattle": 0}
+            "spies": {"type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
+            "troops": {"type": "ground", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
+            "tanks": {"type": "ground", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+            "artillery": {"type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
+            "flyingForts": {"type": "air", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
+            "bomberJets": {"type": "air", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+            "destroyers": {"type": "water", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
+            "cruisers": {"type": "water", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
+            "submarines": {"type": "water", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+            "ICMBs": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
+            "nukes": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0}
         }
-        nationID = nationID
+        self.nationID = nationID
 
     # inits the military variables
     def get_military(self):
@@ -29,9 +33,12 @@ class Military:
         db = connection.cursor()
         i = 0
         for unit in self.units:
-            self.units[unit]["amount"] = db.execute("SELECT (?) FROM (?) WHERE id=(?)", (self.units.keys()[i], self.units[unit]["type"] ,self.nationID,)).fetchone()[0]
-            self.units[unit]["inBattle"] = db.execute("SELECT (?) FROM inBattle WHERE id=(?)", (self.units.keys()[i], self.nationID)).fetchone()[0]
+            self.units[unit]["amount"] = db.execute("SELECT (?) FROM (?) WHERE id=(?)", (
+            self.units.keys()[i], self.units[unit]["type"], self.nationID,)).fetchone()[0]
+            self.units[unit]["inBattle"] = \
+            db.execute("SELECT (?) FROM inBattle WHERE id=(?)", (self.units.keys()[i], self.nationID)).fetchone()[0]
             i += 1
+
 
 class Economy:
     # TODO: expand this to cover all resources
@@ -46,14 +53,15 @@ class Economy:
             "iron": 0,
             "coal": 0,
             "coal": 0,
-            "oil":  0,
+            "oil": 0,
             "lead": 0,
             "ilicon": 0,
             "copper": 0,
             "bauxite": 0,
         }
 
-        self.resourcesNames = ["gold", "plutonium", "consumer_goods", "uranium", "iron", "coal", "coal", "oil", "lead", "ilicon", "copper", "bauxite"]
+        self.resourcesNames = ["gold", "plutonium", "consumer_goods", "uranium", "iron", "coal", "coal", "oil", "lead",
+                               "ilicon", "copper", "bauxite"]
 
     def get_economy(self):
         # TODO find a way to get the database to work on relative directories
@@ -64,73 +72,36 @@ class Economy:
         # TODO fix this when the databases changes and update to include all resources
         i = 0
         for resou in self.resources:
-            self.resources[resou] = db.execute(f"SELECT {self.resourcesNames[i]} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
+            self.resources[resou] = \
+            db.execute(f"SELECT {self.resourcesNames[i]} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
             resourceList.append(self.resources[resou])
             i += 1
 
         return resourceList
 
     # doesnt work at the moment, do not use
-    def buy_sell(self, way, units , cId):
+    def buy_sell(self, way, requested, military):
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses",
-                    "bombers", "destroyers", "cruisers", "submarines", "spies", "icbms", "nukes"]  # all allowed units
-
-        if units == "soldiers":
-            table = "ground"
-            price = 50
-        elif units == "tanks":
-            table = "ground"
-            price = 150
-        elif units == "artillery":
-            table = "ground"
-            price = 300
-        elif units == "flying_fortresses":
-            table = "air"
-            price = 500
-        elif units == "bombers":
-            table = "air"
-            price = 500
-        elif units == "destroyers":
-            table = "water"
-            price = 500
-        elif units == "cruisers":
-            table = "water"
-            price = 650
-        elif units == "submarines":
-            table = "water"
-            price = 450
-        elif units == "spies":
-            table = "special"
-            price = 500
-        elif units == "icbms":
-            table = "special"
-            price = 750
-        elif units == "nukes":
-            table = "special"
-            price = 1000
-
-        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-        wantedUnits = units
-        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
-        totalPrice = int(wantedUnits) * price
-        currentUnits = db.execute(curUnStat, (cId,)).fetchone()[0]
+        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (military.nationID,)).fetchone()[0]
+        wantedUnits = military.units[requested]
+        curUnStat = f'SELECT {military.units[requested]} FROM {military.units[requested]["type"]} WHERE id=?'
+        totalPrice = int(wantedUnits) * military.units[requested]["cost"]
+        currentUnits = db.execute(curUnStat, (military.nationID,)).fetchone()[0]
 
         if way == "sell":
 
-            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-            db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), cId))
+            unitUpd = f"UPDATE {military.units[requested]['type']} SET {military.units[requested]}=(?) WHERE id=(?)"
+            db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), military.nationID))
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)",
-                       ((int(gold) + int(wantedUnits) * int(price)), cId,))  # clean
+                       ((int(gold) + int(wantedUnits) * int(military.units[requested]["cost"])), military.nationID,))  # clean
 
         elif way == "buy":
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold) - int(totalPrice), cId,))
-            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-            db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))  # fix weird table
-
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold) - int(totalPrice), military.nationID,))
+            updStat = f"UPDATE {military.units[requested]['type']} SET {military.units[requested]}=(?) WHERE id=(?)"
+            db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), military.nationID))  # fix weird table
 
     def grant_resources(self, resource, amount):
         connection = sqlite3.connect(path)  # TODO find a way to get the database to work on relative directories
@@ -205,4 +176,4 @@ class Nation:
 carsonsEconomy = Economy(1)
 carsonsEconomy.get_economy()
 carsonsEconomy.grant_resources("gold", 20)
-#carsonsEconomy.get_economy()
+# carsonsEconomy.get_economy()
