@@ -5,6 +5,10 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
+import NationsScript as Game
+
+Game.ping()
+
 # from celery import Celery
 # from celery.schedules import crontab
 

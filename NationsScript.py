@@ -6,7 +6,7 @@ path = "affo/aao.db"
 
 
 def ping():  # delete this before launch
-    print("found nations script")
+    print("found game script")
 
 
 class Military:
