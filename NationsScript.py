@@ -1,6 +1,5 @@
 import random
 import sqlite3
-import os
 
 path = "affo/aao.db"
 
@@ -13,17 +12,21 @@ class Military:
     def __init__(self, nationID=None):
         # getting kind of big, might want to move to db
         self.units = {
-            "spies": {"type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
-            "troops": {"type": "ground", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
+            "soldiers": {"type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
             "tanks": {"type": "ground", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
             "artillery": {"type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
-            "flyingForts": {"type": "air", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
-            "bomberJets": {"type": "air", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+
+            "flying_fortresses": {"type": "air", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
+            "fighter_jets": {"type": "air", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+            "apaches": {"type": "air", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+
             "destroyers": {"type": "water", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
             "cruisers": {"type": "water", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
             "submarines": {"type": "water", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
-            "ICMBs": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
-            "nukes": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0}
+
+            "ICBMs": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
+            "nukes": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
+            "spies": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0}
         }
         self.nationID = nationID
 
@@ -33,10 +36,10 @@ class Military:
         db = connection.cursor()
         i = 0
         for unit in self.units:
-            self.units[unit]["amount"] = db.execute("SELECT (?) FROM (?) WHERE id=(?)", (
-            self.units.keys()[i], self.units[unit]["type"], self.nationID,)).fetchone()[0]
-            self.units[unit]["inBattle"] = \
-            db.execute("SELECT (?) FROM inBattle WHERE id=(?)", (self.units.keys()[i], self.nationID)).fetchone()[0]
+            print(self.units[unit]["type"])
+            self.units[unit]["amount"] = db.execute(f"SELECT {unit} FROM {self.units[unit]['type']} WHERE id={self.nationID}",())
+            # delete this line and uncomment the line below this after the attack system is finished
+            #self.units[unit]["inBattle"] = db.execute(f"SELECT {unit} FROM inBattle WHERE id={self.nationID}",()).fetchone()[0]
             i += 1
 
 
@@ -174,6 +177,5 @@ class Nation:
 
 
 carsonsEconomy = Economy(1)
-carsonsEconomy.get_economy()
-carsonsEconomy.grant_resources("gold", 20)
-# carsonsEconomy.get_economy()
+carsonsMilitary = Military(1)
+carsonsMilitary.get_military()
