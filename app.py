@@ -93,9 +93,9 @@ def signup():
 
         allKeys = db.execute("SELECT key FROM keys").fetchall()
         
-        if password != confirmation: # checks if password is = to confirmation passwordr
+        if password != confirmation: # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
-        for keys in allKeys:
+        for keys in allKeys: # lmao shitty way to do idk why i did this
             if key == keys[0]:
                 hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
                 db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
@@ -607,7 +607,7 @@ def countries():
         return render_template("countries.html", new_zipped=new_zipped)
 
 @login_required
-@app.route("/coalitions", methods=["GET"])
+@app.route("/coalitions", methods=["GET", "POST"])
 def coalitions():
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
@@ -619,7 +619,24 @@ def coalitions():
 
         colBoth = zip(colIds, colNames, colTypes)
 
-        return render_template("coalitions.html", colBoth=colBoth)
+        exRes = False
+
+        return render_template("coalitions.html", colBoth=colBoth, exRes=exRes)
+    
+    else:
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        
+        search = request.form.get("search")
+
+        resultName = db.execute("SELECT name FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
+        resultId = db.execute("SELECT id FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
+
+        resultAll = zip(resultName, resultId)
+        exRes = True
+
+        return render_template("coalitions.html", resultAll=resultAll, exRes=exRes)
 
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
