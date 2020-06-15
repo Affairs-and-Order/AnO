@@ -516,7 +516,6 @@ def marketoffer():
 
         rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into thi
         realAmount = db.execute(rStatement, (cId,)).fetchone()[0]  #TODO: fix this not working
-
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
