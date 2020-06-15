@@ -517,7 +517,15 @@ def marketoffer():
 @app.route("/account", methods=["GET", "POST"])
 def account():
     if request.method == "GET":
-        return render_template("account.html")
+        
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        name = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+        return render_template("account.html", name=name)
 
 @login_required
 @app.route("/recruitments", methods=["GET", "POST"])
