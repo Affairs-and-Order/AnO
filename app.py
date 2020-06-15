@@ -177,7 +177,8 @@ def military():
         connection.commit()
         # air
         flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
         # water
         destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
@@ -190,8 +191,8 @@ def military():
         nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
 
-        return render_template("military.html", tanks=tanks, soldiers=soldiers,
-        artillery=artillery, flying_fortresses=flying_fortresses, bombers=bombers,
+        return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
+        flying_fortresses=flying_fortresses, apaches=apaches, fighter_jets=fighter_jets,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
         spies=spies, icbms=icbms, nukes=nukes
         )
@@ -386,8 +387,11 @@ def sell_buy(way, units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses",
-        "bombers", "destroyers", "cruisers", "submarines", "spies", "icbms", "nukes"] # all allowed units
+        allUnits = ["soldiers", "tanks", "artillery",
+        "flying_fortresses", "fighter_jets", "apaches"
+        "destroyers", "cruisers", "submarines",
+        "spies", "icbms", "nukes"] # all allowed units
+
         if units not in allUnits:
             return redirect("/no_such_unit")
 
@@ -400,12 +404,17 @@ def sell_buy(way, units):
         elif units == "artillery":
             table = "ground"
             price = 300
+
         elif units == "flying_fortresses":
             table = "air"
             price = 500
-        elif units == "bombers":
+        elif units == "fighter_jets":
             table = "air"
-            price = 500
+            price = 450
+        elif units == "apaches":
+            table = "air"
+            price = 350
+
         elif units == "destroyers":
             table = "water"
             price = 500
@@ -415,6 +424,7 @@ def sell_buy(way, units):
         elif units == "submarines":
             table = "water"
             price = 450
+            
         elif units == "spies":
             table = "special"
             price = 500
