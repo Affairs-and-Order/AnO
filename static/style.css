@@ -899,7 +899,7 @@
                 width: 20%;
                 padding: 0;
                 text-align: center;
-                margin: 10px auto
+                margin: 10px auto;
             }
             
             @media all and (max-width: 600px) {
