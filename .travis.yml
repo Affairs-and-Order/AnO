@@ -1,12 +1,6 @@
-[
-  {
-    "python": "3.8", 
-    "before_install": [
-      "choco install python3", 
-      "export PATH=\"/c/Python38:/c/Python38/Scripts:$PATH\"", 
-      "python -m pip install --upgrade pip wheel"
-    ], 
-    "os": "windows", 
-    "language": "sh"
-  }
-]
+language: python
+python:
+  - "3.7"
+# command to install dependencies
+install:
+  - pip install -r requirements.txt
