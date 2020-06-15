@@ -1,5 +1,7 @@
 # Affairs-and-Order
 
+[![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/delivey/AnO/?ref=repository-badge)
+
 Affairs & order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war.
 
 # Repo installation.

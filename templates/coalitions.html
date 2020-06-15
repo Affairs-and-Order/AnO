@@ -26,11 +26,11 @@
                 
                 </select>
 
+            <form action="/coalitions" method="POST">
             <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="Search" />
+            <button class="templatedivbutton smallactionbutton" type="submit">Submit</button>
+            </form>
 
-
-
-            <button class="templatedivbutton smallactionbutton">Submit</button>
 
         </div>
 
@@ -49,6 +49,7 @@
             </div>
         </div>
 
+        {% if exRes == False %}
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
@@ -67,6 +68,26 @@
                 {% endfor %}
             </table>
         </div>
+        {% else %}
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Name</th>
+                    <th>Influence</th>
+                    <th>Members</th>
+                    <th>Type</th>
+                </tr>
+                {% for name, id in resultAll %}
+                <tr>
+                    <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
+                    <td>Influence</td>
+                    <td>105,565</td>
+                    <td>fix dis</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
     </div>
 </div>
 

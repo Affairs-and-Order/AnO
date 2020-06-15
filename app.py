@@ -93,9 +93,9 @@ def signup():
 
         allKeys = db.execute("SELECT key FROM keys").fetchall()
         
-        if password != confirmation: # checks if password is = to confirmation passwordr
+        if password != confirmation: # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
-        for keys in allKeys:
+        for keys in allKeys: # lmao shitty way to do idk why i did this
             if key == keys[0]:
                 hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
                 db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
@@ -177,7 +177,8 @@ def military():
         connection.commit()
         # air
         flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
         # water
         destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
@@ -190,8 +191,8 @@ def military():
         nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
 
-        return render_template("military.html", tanks=tanks, soldiers=soldiers,
-        artillery=artillery, flying_fortresses=flying_fortresses, bombers=bombers,
+        return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
+        flying_fortresses=flying_fortresses, apaches=apaches, fighter_jets=fighter_jets,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
         spies=spies, icbms=icbms, nukes=nukes
         )
@@ -386,8 +387,11 @@ def sell_buy(way, units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["soldiers", "tanks", "artillery", "flying_fortresses",
-        "bombers", "destroyers", "cruisers", "submarines", "spies", "icbms", "nukes"] # all allowed units
+        allUnits = ["soldiers", "tanks", "artillery",
+        "flying_fortresses", "fighter_jets", "apaches"
+        "destroyers", "cruisers", "submarines",
+        "spies", "icbms", "nukes"] # all allowed units
+
         if units not in allUnits:
             return redirect("/no_such_unit")
 
@@ -400,12 +404,17 @@ def sell_buy(way, units):
         elif units == "artillery":
             table = "ground"
             price = 300
+
         elif units == "flying_fortresses":
             table = "air"
             price = 500
-        elif units == "bombers":
+        elif units == "fighter_jets":
             table = "air"
-            price = 500
+            price = 450
+        elif units == "apaches":
+            table = "air"
+            price = 350
+
         elif units == "destroyers":
             table = "water"
             price = 500
@@ -415,6 +424,7 @@ def sell_buy(way, units):
         elif units == "submarines":
             table = "water"
             price = 450
+            
         elif units == "spies":
             table = "special"
             price = 500
@@ -494,7 +504,7 @@ def marketoffer():
         amount = request.form.get("amount")
         price = request.form.get("price")
 
-        if amount.isnumeric() == False or price.isnumeric() == False:
+        if amount.isnumeric() is False or price.isnumeric() is False:
             return error(400, "You can only type numeric values into /marketoffer ")
 
         if int(amount) < 1:
@@ -517,7 +527,15 @@ def marketoffer():
 @app.route("/account", methods=["GET", "POST"])
 def account():
     if request.method == "GET":
-        return render_template("account.html")
+        
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        name = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+        return render_template("account.html", name=name)
 
 @login_required
 @app.route("/recruitments", methods=["GET", "POST"])
@@ -537,6 +555,7 @@ def war():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
+
     if request.method == "GET": # maybe optimise this later with css anchors
         # ground
         tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
@@ -545,7 +564,8 @@ def war():
         connection.commit()
         # air
         flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
         # water
         destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
@@ -558,8 +578,8 @@ def war():
         nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
 
-        return render_template("war.html", tanks=tanks, soldiers=soldiers,
-        artillery=artillery, flying_fortresses=flying_fortresses, bombers=bombers,
+        return render_template("war.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
+        flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
         spies=spies, icbms=icbms, nukes=nukes
         )
@@ -607,7 +627,7 @@ def countries():
         return render_template("countries.html", new_zipped=new_zipped)
 
 @login_required
-@app.route("/coalitions", methods=["GET"])
+@app.route("/coalitions", methods=["GET", "POST"])
 def coalitions():
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
@@ -619,7 +639,24 @@ def coalitions():
 
         colBoth = zip(colIds, colNames, colTypes)
 
-        return render_template("coalitions.html", colBoth=colBoth)
+        exRes = False
+
+        return render_template("coalitions.html", colBoth=colBoth, exRes=exRes)
+    
+    else:
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        
+        search = request.form.get("search")
+
+        resultName = db.execute("SELECT name FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
+        resultId = db.execute("SELECT id FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
+
+        resultAll = zip(resultName, resultId)
+        exRes = True
+
+        return render_template("coalitions.html", resultAll=resultAll, exRes=exRes)
 
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
