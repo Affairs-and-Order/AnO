@@ -7,6 +7,3 @@ install:
 script:
   - coverage erase
   - coverage run app.py && coverage html
-
-after_success:
-  - codecov
