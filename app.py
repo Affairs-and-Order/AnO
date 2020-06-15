@@ -545,6 +545,7 @@ def war():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
+
     if request.method == "GET": # maybe optimise this later with css anchors
         # ground
         tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
@@ -553,7 +554,8 @@ def war():
         connection.commit()
         # air
         flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
         # water
         destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
@@ -566,8 +568,8 @@ def war():
         nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
 
-        return render_template("war.html", tanks=tanks, soldiers=soldiers,
-        artillery=artillery, flying_fortresses=flying_fortresses, bombers=bombers,
+        return render_template("war.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
+        flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
         spies=spies, icbms=icbms, nukes=nukes
         )
