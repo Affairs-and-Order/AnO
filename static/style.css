@@ -292,7 +292,7 @@
                 bottom: 0;
                 margin-left: -250px;
                 z-index: 1;
-                transition: all 0.5s ease;
+                transition: all 0.5s;
                 overflow: hidden;
             }
             
@@ -458,6 +458,10 @@
                 margin: auto;
                 text-align: center;
                 justify-self: center;
+            }
+            
+            .hidden {
+                display: none;
             }
             
             .templatediv {
