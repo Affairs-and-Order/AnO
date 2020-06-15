@@ -354,7 +354,7 @@
             
             @media all and (max-width: 600px) {
                 .menubara {
-                    margin: 10px 0px;
+                    margin: 8px 0px;
                 }
             }
             
@@ -888,9 +888,24 @@
                 align-items: center;
                 width: 98%;
                 margin: auto;
-                height: 100px;
+                height: min-content;
                 justify-content: center;
                 animation: borderpulse 4s infinite;
+                display: flex;
+                flex-wrap: wrap;
+            }
+            
+            .divflex2full div {
+                width: 20%;
+                padding: 0;
+                text-align: center;
+                margin: 10px auto;
+            }
+            
+            @media all and (max-width: 600px) {
+                .divflex2full div {
+                    width: 46%;
+                }
             }
             
             .divflex2center {
