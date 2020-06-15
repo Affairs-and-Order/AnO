@@ -28,27 +28,45 @@
 
             </div>
             {% if userInCol == False %}
-            <div class="templatedivflex2left" id="coalitionjoin" onclick="coalitionjoin()">
+            <script>
+                $(document).ready(function() {
 
+                    joinhide();
+
+                });
+            </script>{% endif %}
+
+            <div class="templatedivflex2left" id="coalitionjoin" onclick="coalitionjoin()">
                 <h3 class="smallheader">Join</h3>
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
-
             </div>
-            {% endif %} {% if userLeader == True %}
-            <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
+            {% if userLeader == True %}
+            <script>
+                $(document).ready(function() {
 
+                    leaderhide();
+
+                });
+            </script>{% endif %}
+
+            <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
                 <h3 class="smallheader">Leader Panel</h3>
                 <!--SHOW THIS TO GOVERNMENT ONLY-->
                 <!-- somewhy doesnt work, no idea why -->
-
             </div>
-            {% endif %} {% if userLeader == False %}
+            {% if userLeader == False %}
+            <script>
+                $(document).ready(function() {
+
+                    memberhide();
+
+                });
+            </script>{% endif %}
+
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
-
                 <h3 class="smallheader">Member Panel</h3>
-
             </div>
-            {% endif %}
+
         </div>
         <!--GENERAL-->
         <div class="general" id="general">

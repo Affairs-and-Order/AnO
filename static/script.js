@@ -132,27 +132,6 @@ function militaryspecial() {
     document.getElementById("water").classList.remove("waterclick");
 
 }
-
-function joinhide() {
-
-    document.getElementById("join").classList.remove("joinclick");
-    document.getElementById("join").classList.replace("hidden");
-
-}
-
-function leaderhide() {
-
-    document.getElementById("leader").classList.remove("leaderclick");
-    document.getElementById("leader").classList.replace("hidden");
-
-}
-
-function memberhide() {
-
-    document.getElementById("member").classList.remove("memberclick");
-    document.getElementById("member").classList.replace("hidden");
-
-}
 //COALITION SLIDER
 $(document).ready(function() {
 
@@ -160,6 +139,24 @@ $(document).ready(function() {
     document.getElementById("general").classList.add("generalclick");
 
 });
+
+function joinhide() {
+
+    document.getElementById("coalitionjoin").classList.add("hidden");
+
+}
+
+function leaderhide() {
+
+    document.getElementById("coalitionleader").classList.add("hidden");
+
+}
+
+function memberhide() {
+
+    document.getElementById("coalitionmember").classList.add("hidden");
+
+}
 //
 function coalitiongeneral() {
 
