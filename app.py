@@ -11,9 +11,6 @@ import datetime
 import _pickle as pickle
 import random
 
-# from celery import Celery
-# from celery.schedules import crontab
-
 Game.ping()
 
 def warPing():
@@ -40,6 +37,10 @@ def eventCheck():
 # eventChecker = BackgroundScheduler()
 # uncomment when war ping is finished
 # warChecker.add_job()
+
+
+# from celery import Celery
+# from celery.schedules import crontab
 
 app = Flask(__name__)
 
@@ -74,6 +75,11 @@ def index():
         inCol = error(404, "Page Not Found")
         app.add_template_global(inCol, name='inCol')
     return render_template("index.html") # renders index.html when "/" is accesed
+
+@app.route("/error")
+def errorito(): # fancy view for error, because error function is used
+    error(400, "Unknown Error")
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
