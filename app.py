@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
 import NationsScript as Game
-from apscheduler.schedulers.background import BackgroundScheduler
+# from apscheduler.schedulers.background import BackgroundScheduler
 import datetime
 import _pickle as pickle
 import random
@@ -33,8 +33,8 @@ def eventCheck():
     # will decide if natural disasters occure
 
 
-warChecker = BackgroundScheduler()
-eventChecker = BackgroundScheduler()
+# warChecker = BackgroundScheduler() # wont be using this <
+# eventChecker = BackgroundScheduler()
 # uncomment when war ping is finished
 # warChecker.add_job()
 
