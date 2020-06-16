@@ -7,7 +7,6 @@ path = "affo/aao.db"
 def ping():  # delete this before launch
     print("found game script")
 
-
 class Military:
     def __init__(self, nationID=None):
         # getting kind of big, might want to move to db
@@ -142,35 +141,38 @@ class Nation:
         self.military = military
         self.economy = economy
 
-        self.wins = 0
-        self.losses = 0
+        self.provinceAmount = 12
+        self.warList = []
 
-    def fight(self, enemyNation, attackTypes):
-        # attackTypes is a tuple
-        attackList = ["water", "ground", "air"]
-        attackTypesHash = {"water": 1, "ground": 2, "air": 3}
-
-        currentAttacks = list(attackTypes)
-
-        for attack in attackList:
-            if attackTypes[0] == attack:
-                currentAttacks[0] = attackTypesHash[attack]
-            if attackTypes[1] == attack:
-                currentAttacks[1] = attackTypesHash[attack]
-
-        # super simple fight between two nations troops
-        print(attackTypes[1])
-        enemyScore = enemyNation.military.troops + abs(random.randrange(-2 * currentAttacks[1], 2 * currentAttacks[1]))
-        homeScore = self.military.troops + abs(random.randrange(-2 * currentAttacks[0], 2 * currentAttacks[0]))
-
-        if enemyScore > homeScore:
-            print("Enemy Win | ID " + str(enemyNation.id))
-            self.losses += 1
-            enemyNation.wins += 1
+    # currently reworking this
+    def attack(self, category, unitType, unitAmount, enemyNation):
+        if enemyNation.province > self.provinceAmount:
+            raise Exception("enemy province number cannot be higher than the attacker's province number!")
         else:
-            print("Home win | ID " + str(self.id))
-            enemyNation.losses += 1
-            self.wins += 1
+            self.warList.append(enemyNation)
+            connection = sqlite3.connect(path)
+            cursor = connection.cursor()
 
-    def printStatistics(self):
-        print("Nation {}:\nWins {}\nLosses: {}".format(self.id, self.wins, self.losses))
+            currentUnits = cursor.execute(f"SELECT {unitType} FROM {unitType['type']} WHERE id={self.id}").fetchone()[0]
+            duringAttack = currentUnits - unitAmount
+
+            cursor.execute(f"UPDATE {unitType['type']} SET {unitType} = {duringAttack} WHERE id={self.id}", ())
+            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id})", ())
+
+
+    def checkWar(self, war):
+        connection = sqlite3.connect(path)
+        cursor = connection.cursor()
+
+        attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
+        defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
+
+        if attackerMorale == 0:
+            return self
+        elif attackerMorale > 0 and defenderMorale > 0:
+            return 0
+        elif defenderMorale == 0:
+            a = Economy(self.warList[war])
+            b = Military(self.warList[war])
+            c = Nation(self.warList[war], b, a)
+            return c
