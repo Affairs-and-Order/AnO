@@ -186,3 +186,10 @@ class Nation:
         cursor.execute(f"INSERT INTO users (nation) VALUES ({nationObject})")
         print(f"saved object to database for user {self.id}")
         return 1
+
+    def loadFromDB(self):
+
+        connection = sqlite3.connect(path)
+        cursor = connection.cursor()
+
+        nationObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={self.id}"))

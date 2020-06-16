@@ -6,8 +6,37 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
 import NationsScript as Game
+from apscheduler.schedulers.background import BackgroundScheduler
+import datetime
+import _pickle as pickle
+import random
 
 Game.ping()
+
+def warPing():
+    connection = sqlite3.connect("affo/aoo.db")
+    cursor = connection.cursor()
+    for user in cursor.execute(f"SELECT id FROM war", ()).fetchall():
+        if cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] > 3:
+            nationObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={user}").fetchone()[0])
+            enemyID = cursor.execute(f"SELECT enemy FROM war WHERE id={user}").fetchone()[0]
+
+            enemyObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={enemyID}").fetchone()[0])
+
+
+def eventCheck():
+    rng = random.randint(1, 100)
+    events = {
+    }
+    if rng == 50:
+        pass
+
+
+warChecker = BackgroundScheduler()
+eventChecker = BackgroundScheduler()
+# uncomment when war ping is finished
+# warChecker.add_job()
+
 
 # from celery import Celery
 # from celery.schedules import crontab
@@ -102,7 +131,7 @@ def signup():
         for keys in allKeys: # lmao shitty way to do idk why i did this
             if key == keys[0]:
                 hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
-                db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, hashed,)) # creates a new user
+                db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, datetime.date.today())) # creates a new user || added account creation date
                 user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
                 connection.commit()
                 session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
