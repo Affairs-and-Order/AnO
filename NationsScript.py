@@ -1,5 +1,6 @@
 import random
 import sqlite3
+import _pickle as pickle
 
 path = "affo/aao.db"
 
@@ -157,7 +158,7 @@ class Nation:
             duringAttack = currentUnits - unitAmount
 
             cursor.execute(f"UPDATE {unitType['type']} SET {unitType} = {duringAttack} WHERE id={self.id}", ())
-            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id})", ())
+            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, 0)", ())
 
 
     def checkWar(self, war):
@@ -176,3 +177,12 @@ class Nation:
             b = Military(self.warList[war])
             c = Nation(self.warList[war], b, a)
             return c
+
+    def saveToDB(self):
+        connection = sqlite3.connect(path)
+        cursor = connection.cursor()
+
+        nationObject = pickle.dump(self)
+        cursor.execute(f"INSERT INTO users (nation) VALUES ({nationObject})")
+        print(f"saved object to database for user {self.id}")
+        return 1
