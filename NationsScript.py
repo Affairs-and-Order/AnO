@@ -175,6 +175,8 @@ class Nation:
         elif defenderMorale == 0:
             a = Economy(self.warList[war])
             b = Military(self.warList[war])
+
+            # the final object
             c = Nation(self.warList[war], b, a)
             return c
 

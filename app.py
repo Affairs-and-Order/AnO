@@ -30,6 +30,7 @@ def eventCheck():
     }
     if rng == 50:
         pass
+    # will decide if natural disasters occure
 
 
 warChecker = BackgroundScheduler()
