@@ -267,8 +267,6 @@ def market():
             price = db.execute("SELECT price FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
-        print(names, ids, resources, amounts, prices)
-
         offers = zip(ids, names, resources, amounts, prices)
 
 
@@ -738,6 +736,18 @@ def leave_col(colId):
 
     return redirect("/coalitions")
 
+@login_required
+@app.route("/my_offers", methods=["GET"])
+def my_offers():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    offers = db.execute("SELECT resource, price, amount FROM offers WHERE user_id=(?)", (cId,)).fetchall()
+
+    return render_template("my_offers.html", offers=offers)
 
 # available to run if double click the file
 if __name__ == "__main__":
