@@ -732,15 +732,31 @@ def coalitions():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        colIds = db.execute("SELECT id FROM colNames").fetchall()
-        colNames = db.execute("SELECT name FROM colNames").fetchall()
-        colTypes = db.execute("SELECT type FROM colNames").fetchall()
+        coalitions = db.execute("SELECT id FROM colNames").fetchall()
 
-        colBoth = zip(colIds, colNames, colTypes)
+        names = []
+        ids = []
+        members = []
+        types = []
 
-        exRes = False
+        for i in coalitions:
 
-        return render_template("coalitions.html", colBoth=colBoth, exRes=exRes)
+            ids.append(i[0])
+
+            idd = str(i[0])
+
+            colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+            types.append(colType)
+
+            colName = db.execute("SELECT name FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+            names.append(colName)
+
+            colMembers = db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
+            members.append(colMembers)
+
+        colStats = zip(ids, names, members, types)
+
+        return render_template("coalitions.html", colStats=colStats)
     
     else:
 
