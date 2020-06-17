@@ -698,6 +698,7 @@ def countries():
         names = []
         coalition_ids = []
         coalition_names = []
+        dates = []
 
         for i in users:
 
@@ -708,6 +709,9 @@ def countries():
 
             name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             names.append(name)
+
+            date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            dates.append(date)
 
             try:
                 coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
@@ -721,7 +725,7 @@ def countries():
 
         connection.commit()
 
-        new_zipped = zip(population, ids, names, coalition_ids, coalition_names)
+        new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates)
 
         return render_template("countries.html", new_zipped=new_zipped)
 
