@@ -1,0 +1,39 @@
+{% extends "layout.html" %} 
+
+{% block title %}
+My Offers
+{% endblock %}
+
+{% block body %}
+<div class="templatediv">
+
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">My Offers</h1>
+        <div class="templatedivad"></div>
+    </div>
+
+    <div class="templatedivcontent">
+        <h2 class="templatecontentheaderleft"></h2>
+        <p class="templatecontentpleft"></p>
+
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Resource</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                </tr>
+
+                {% for resource, price, amount in offers %}
+                <tr>
+                    <td>{{ resource }}</td>
+                    <td>{{ price }}</td>
+                    <td>{{ amount }}</td>
+
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

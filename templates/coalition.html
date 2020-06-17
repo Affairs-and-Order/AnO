@@ -27,7 +27,7 @@
                 <h3 class="smallheader">About</h3>
 
             </div>
-            {% if userInCol == False %}
+            {% if userInCol == True %} <!-- if user isnt in coalition, maybe this is wrong ?-->
             <script>
                 $(document).ready(function() {
 
@@ -40,28 +40,31 @@
                 <h3 class="smallheader">Join</h3>
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
-            {% if userLeader == True %}
+            {% if userLeader == False %}
             <script>
                 $(document).ready(function() {
 
                     leaderhide();
 
                 });
-            </script>{% endif %}
+            </script>
+            {% endif %}
 
             <div class="templatedivflex2left" id="coalitionleader" onclick="coalitionleader()">
                 <h3 class="smallheader">Leader Panel</h3>
                 <!--SHOW THIS TO GOVERNMENT ONLY-->
                 <!-- somewhy doesnt work, no idea why -->
             </div>
-            {% if userLeader == False %}
+
+            {% if userInCol == True %} <!--TODO: fix this lul-->
             <script>
                 $(document).ready(function() {
 
                     memberhide();
 
                 });
-            </script>{% endif %}
+            </script>
+            {% endif %}
 
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
