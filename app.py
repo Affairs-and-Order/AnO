@@ -298,9 +298,13 @@ def buy_market_offer(offer_id):
     if offer_id.isnumeric() == False or amount_wanted.isnumeric() == False:
         return error(400, "Values must be numeric")
 
-    offer = db.execute("SELECT resource, amount, price FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+    offer = db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
-    if int(amount_wanted) > int(offer[0]):
+    seller_id = int(offer[3])
+
+    resource = offer[0]
+
+    if int(amount_wanted) > int(offer[1]):
         return error(400, "Amount wanted cant be higher than total amount")
 
     user_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -309,9 +313,36 @@ def buy_market_offer(offer_id):
 
         return error(400, "You don't have enough gold")
 
+    gold_sold = user_gold - (int(amount_wanted) * int(offer[2]))
+
+    sellResStat = f"SELECT {resource} FROM resources WHERE id=(?)"
+    sellTotRes = db.execute(sellResStat, (seller_id,)).fetchone()[0]
+
+    newSellerresource = (int(sellTotRes) - int(amount_wanted))
+    
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
+
+    resRemStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)" # statement for resource removal for seller
+    db.execute(resRemStat, (newSellerresource, seller_id)) # removes the resources the seller sold
+
+
+    currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)"
+    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0]
+
+    newBuyerResource = int(buyerResource) + int(amount_wanted)
+    print("NNNNNNNN" + str(newBuyerResource))
+
+    print("RRRRRRRRRRR" + str(resource))
+    buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+    db.execute(buyUpdStat, (newBuyerResource, cId))
+
+    db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", ((int(offer[1]) - int(amount_wanted)), offer_id))
+
+    connection.commit()
+
+    # lol this whole function is a fucking shitstorm ill comment it later hopefully
+
     return redirect("/market")
-
-
 
 @login_required
 @app.route("/provinces", methods=["GET", "POST"])
