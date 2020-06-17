@@ -166,7 +166,7 @@ class Nation:
 
 
 
-    def fortify(self):
+    # def fortify(self):
 
     # sets up a war
     def attack(self, unitType, unitAmount, enemyNation):
@@ -204,7 +204,7 @@ class Nation:
         # do we have a totalNumberofTroops in the DB?
         # totalUnitsAvailable = all unit types amount combined
         totalUnitsAvailable = 100
-        if numberOfUnits <= totalUnitsAvailable:
+        #if numberOfUnits <= totalUnitsAvailable:
 
         ''' 
             total = 0
