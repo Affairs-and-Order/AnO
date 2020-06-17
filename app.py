@@ -11,8 +11,6 @@ import datetime
 import _pickle as pickle
 import random
 
-Game.ping()
-
 # this is the war checker, it will update on going wars between nations
 # runs once a day
 def warPing():

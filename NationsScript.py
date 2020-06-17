@@ -143,11 +143,37 @@ class Nation:
         self.provinceAmount = 12
         self.warList = []
         self.allies = []
+                            # province id
+    def turn(self, unitType, usedSupplies, attackedProvince):
+        connection = sqlite3.connect(path)
+        cursor = connection.cursor()
 
-    # currently reworking this
-    def attack(self, category, unitType, unitAmount, enemyNation):
+        supplies = cursor.execute(f"SELECT supplies FROM war WHERE id={self.id}").fetchone()[0]
+
+        # if supplies is 200 or more then allow turn
+        if supplies >= 200:
+            # effectiveness multiplier < 100
+            effectiveness = 0.09 * usedSupplies
+            provincePopulation = cursor.execute("SELECT population FROM provinces WHERE provinceId=?", (attackedProvince)).fetchone()[0]
+            PopulationLoss = provincePopulation - effectiveness * 10
+
+
+
+        # else return -1
+        else:
+            return -1
+
+
+
+
+    def fortify(self):
+
+    # sets up a war
+    def attack(self, unitType, unitAmount, enemyNation):
         if enemyNation.province > self.provinceAmount:
             raise Exception("enemy province number cannot be higher than the attacker's province number!")
+        elif len(self.warList) == 5:
+            raise Exception("user can only be in 5 wars at a time")
         else:
             self.warList.append(enemyNation)
             connection = sqlite3.connect(path)
