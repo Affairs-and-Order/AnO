@@ -311,9 +311,9 @@ def buy_market_offer(offer_id):
 
     user_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
-    if int(amount_wanted) * int(offer[2]) > int(user_gold):
+    if int(amount_wanted) * int(offer[2]) > int(user_gold): # checks if buyer doesnt have enough gold for buyin 
 
-        return error(400, "You don't have enough gold")
+        return error(400, "You don't have enough gold") # returns error if buyer doesnt have enough gold for buying
 
     gold_sold = user_gold - (int(amount_wanted) * int(offer[2]))
 
@@ -322,25 +322,22 @@ def buy_market_offer(offer_id):
 
     newSellerresource = (int(sellTotRes) - int(amount_wanted))
     
-    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId)) 
 
     resRemStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)" # statement for resource removal for seller
     db.execute(resRemStat, (newSellerresource, seller_id)) # removes the resources the seller sold
 
+    currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)" # statement for getting the current resource from the buyer
+    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0] # executes the statement
 
-    currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)"
-    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0]
+    newBuyerResource = int(buyerResource) + int(amount_wanted) # generates the number of the resource the buyer should have
 
-    newBuyerResource = int(buyerResource) + int(amount_wanted)
-    print("NNNNNNNN" + str(newBuyerResource))
-
-    print("RRRRRRRRRRR" + str(resource))
-    buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
-    db.execute(buyUpdStat, (newBuyerResource, cId))
+    buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)" # statement for giving the user the resource bought
+    db.execute(buyUpdStat, (newBuyerResource, cId)) # executes the statement
 
     db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", ((int(offer[1]) - int(amount_wanted)), offer_id))
 
-    connection.commit()
+    connection.commit() # commits the connection
 
     # lol this whole function is a fucking shitstorm ill comment it later hopefully
 
