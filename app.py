@@ -13,15 +13,24 @@ import random
 
 Game.ping()
 
+# this is the war checker, it will update on going wars between nations
+# runs once a day
 def warPing():
     connection = sqlite3.connect("affo/aoo.db")
     cursor = connection.cursor()
     for user in cursor.execute(f"SELECT id FROM war", ()).fetchall():
+        # war has lasted more than 3 days, end the war
         if cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] > 3:
             nationObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={user}").fetchone()[0])
             enemyID = cursor.execute(f"SELECT enemy FROM war WHERE id={user}").fetchone()[0]
 
             enemyObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={enemyID}").fetchone()[0])
+
+        # otherwise, update the duration of the war
+        elif cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] < 3:
+            currentDuration = cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0]
+            cursor.execute(f"INSERT INTO war (duration)  VALUES ({currentDuration + 1},)", ())
+            connection.commit()
 
 
 def eventCheck():

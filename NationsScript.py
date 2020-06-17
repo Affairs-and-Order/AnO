@@ -27,7 +27,7 @@ class Military:
             "ICBMs": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
             "nukes": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
             "spies": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0}
-        }
+        } 
         self.nationID = nationID
 
     # inits the military variables
@@ -44,7 +44,6 @@ class Military:
 
 
 class Economy:
-    # TODO: expand this to cover all resources
     def __init__(self, nationID):
         self.nationID = nationID
 
@@ -67,12 +66,10 @@ class Economy:
                                "ilicon", "copper", "bauxite"]
 
     def get_economy(self):
-        # TODO find a way to get the database to work on relative directories
         connection = sqlite3.connect(path)
-        db = connection.cursor()
+        db = connection.cursor() 
         resourceList = []
 
-        # TODO fix this when the databases changes and update to include all resources
         i = 0
         for resou in self.resources:
             self.resources[resou] = \
@@ -142,8 +139,10 @@ class Nation:
         self.military = military
         self.economy = economy
 
+        # needs to be reworked soon
         self.provinceAmount = 12
         self.warList = []
+        self.allies = []
 
     # currently reworking this
     def attack(self, category, unitType, unitAmount, enemyNation):
@@ -158,16 +157,82 @@ class Nation:
             duringAttack = currentUnits - unitAmount
 
             cursor.execute(f"UPDATE {unitType['type']} SET {unitType} = {duringAttack} WHERE id={self.id}", ())
-            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, 0)", ())
+            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)", ())
 
+
+    # what does it do, is it just check war?
+    def compareStats (a, b):
+        if a > b:
+            return True
+        else:
+            return False
 
     def checkWar(self, war):
+        '''checks who is winning a war'''
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
 
         attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
         defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
 
+        # do we have a totalNumberofTroops in the DB?
+        # totalUnitsAvailable = all unit types amount combined
+        totalUnitsAvailable = 100
+        if numberOfUnits <= totalUnitsAvailable:
+
+        ''' 
+            total = 0
+            for troop in military.units:
+                total += military.units[troop]["cost"]
+            print(total)
+           
+        '''
+
+
+        """
+
+        Things to add:
+        - ongoing global wars in app.py
+        - add current war (ie. in Nation.attack) to DB
+        
+
+
+        psuedo code (using get(for db access))
+
+
+        def compareStats (a, b):
+            if 
+
+        def attack (unitType, numberOfUnits, enemyNation):
+            self.warlist.append(enemyNation.id)
+
+            # it would have to be a dict and we would use JSON to store it to the db
+
+            battleAdvantage = 0
+
+            totalTroops = get(totalTroops) # total number of troops available
+            if numberOfUnits <= totalTroops:
+                attackerMorale = get(morale, self)
+                defenderMorale = get(morale, enemy)
+                if attackerMorale > defenderMorale:
+                    battleAdvantage ++
+                else:
+                    battleAdvantage --
+
+
+                nation stats
+                - morale
+                - economy
+                    - resources
+                    - value (inflation / deflation)
+                - military
+                    - units
+                    - tech
+                    - leadership 
+                        # (can be determined by how many previous wins/losses they have, the more wins, the better the leadership,  less = worse)
+                        # basically the win:loss ratio
+        """
+        
         if attackerMorale == 0:
             return self
         elif attackerMorale > 0 and defenderMorale > 0:
@@ -179,7 +244,8 @@ class Nation:
             # the final object
             c = Nation(self.warList[war], b, a)
             return c
-
+            
+    # this saves the nation obj to the database using pickle (in bytes) 
     def saveToDB(self):
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
@@ -190,7 +256,6 @@ class Nation:
         return 1
 
     def loadFromDB(self):
-
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
 
