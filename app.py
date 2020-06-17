@@ -106,7 +106,7 @@ def login():
         user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone() # selects data about user, from users
         connection.commit()
 
-        if user is not None and check_password_hash(user[3], password): # checks if user exists and if the password is correct
+        if user is not None and check_password_hash(user[4], password): # checks if user exists and if the password is correct
             session["user_id"] = user[0] # sets session's user_id to current user's id
             session["logged_in"] = True
             print('User has succesfully logged in.')
