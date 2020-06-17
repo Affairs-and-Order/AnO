@@ -141,7 +141,7 @@ def signup():
         for keys in allKeys: # lmao shitty way to do idk why i did this
             if key == keys[0]:
                 hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
-                db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, datetime.date.today())) # creates a new user || added account creation date
+                db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(datetime.date.today()))) # creates a new user || added account creation date
                 user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
                 connection.commit()
                 session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
