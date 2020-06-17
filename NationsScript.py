@@ -178,15 +178,14 @@ class Nation:
         # do we have a totalNumberofTroops in the DB?
         # totalUnitsAvailable = all unit types amount combined
         totalUnitsAvailable = 100
-        if numberOfUnits <= totalUnitsAvailable:
+        # if numberOfUnits <= totalUnitsAvailable: # undefined variable numberOfUnits (idk why)
 
-        ''' 
+        """
             total = 0
             for troop in military.units:
                 total += military.units[troop]["cost"]
             print(total)
-           
-        '''
+        """
 
 
         """
