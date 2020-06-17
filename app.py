@@ -251,36 +251,38 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         
-        user_ids = db.execute("SELECT user_id FROM offers").fetchall()
+        offer_ids = db.execute("SELECT offer_id FROM offers").fetchall()
         
         ids = []
         names = []
         resources = []
         amounts = []
         prices = []
-        offer_ids = []
+        offer_ids_list = []
 
-        for i in user_ids:
+        print(offer_ids)
 
-            ids.append(i)
+        for i in offer_ids:
+
+            offer_ids_list.append(i[0])
             
-            name = db.execute("SELECT username FROM users WHERE id=(?)", (i[0],)).fetchone()[0]
-            
+            user_id = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            ids.append(user_id)
+
+            name = db.execute("SELECT username FROM users WHERE id=(?)", (user_id,)).fetchone()[0]
             names.append(name)
 
-            resource = db.execute("SELECT resource FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             resources.append(resource)
 
-            amount = db.execute("SELECT amount FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             amounts.append(amount)
 
-            price = db.execute("SELECT price FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
-            offer_id = db.execute("SELECT offer_id FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
-            offer_ids.append(offer_id)
 
-        offers = zip(ids, names, resources, amounts, prices, offer_ids)
+        offers = zip(ids, names, resources, amounts, prices, offer_ids_list)
 
         return render_template("market.html", offers=offers)
 

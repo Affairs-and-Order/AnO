@@ -48,6 +48,7 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
+                    <th>Offer Id</th>
                     <th>Offering Party</th>
                     <th>Resource</th>
                     <th>Price</th>
@@ -57,6 +58,7 @@
 
                 {% for id, name, resource, amount, price, offer_id in offers %}
                 <tr>
+                    <td>{{ offer_id }}</td>
                     <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
                     <td>{{ resource }}</td>
                     <td>{{ price }}</td>
@@ -74,7 +76,6 @@
                         </form>
                     </td>
                     <!-- add button here -->
-
                 </tr>
                 {% endfor %}
             </table>
