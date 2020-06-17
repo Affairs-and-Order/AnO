@@ -297,7 +297,7 @@ def buy_market_offer(offer_id):
 
     amount_wanted = request.form.get(f"amount_{offer_id}")
 
-    if offer_id.isnumeric() == False or amount_wanted.isnumeric() == False:
+    if offer_id.isnumeric() is False or amount_wanted.isnumeric() is False:
         return error(400, "Values must be numeric")
 
     offer = db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
