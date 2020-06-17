@@ -258,6 +258,7 @@ def market():
         resources = []
         amounts = []
         prices = []
+        offer_ids = []
 
         for i in user_ids:
 
@@ -276,13 +277,41 @@ def market():
             price = db.execute("SELECT price FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
-        offers = zip(ids, names, resources, amounts, prices)
+            offer_id = db.execute("SELECT offer_id FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            offer_ids.append(offer_id)
 
-
-
-        
+        offers = zip(ids, names, resources, amounts, prices, offer_ids)
 
         return render_template("market.html", offers=offers)
+
+@login_required
+@app.route("/buy_offer/<offer_id>", methods=["POST"])
+def buy_market_offer(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    
+    cId = session["user_id"]
+
+    amount_wanted = request.form.get(f"amount_{offer_id}")
+
+    if offer_id.isnumeric() == False or amount_wanted.isnumeric() == False:
+        return error(400, "Values must be numeric")
+
+    offer = db.execute("SELECT resource, amount, price FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+
+    if int(amount_wanted) > int(offer[0]):
+        return error(400, "Amount wanted cant be higher than total amount")
+
+    user_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+
+    if int(amount_wanted) * int(offer[2]) > int(user_gold):
+
+        return error(400, "You don't have enough gold")
+
+    return redirect("/market")
+
+
 
 @login_required
 @app.route("/provinces", methods=["GET", "POST"])
