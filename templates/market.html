@@ -48,7 +48,6 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
-                    <th>Offer Id</th>
                     <th>Offering Party</th>
                     <th>Resource</th>
                     <th>Price</th>
@@ -58,21 +57,20 @@
 
                 {% for id, name, resource, amount, price, offer_id in offers %}
                 <tr>
-                    <td>{{ offer_id }}</td>
                     <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
                     <td>{{ resource }}</td>
-                    <td>{{ price }}</td>
+                    <td>{{ price }} Each<br />{{ total_Price }} Total</td>
                     <td>{{ amount }}</td>
                     <td>
                         <form method="POST">
-                        <div class="templatedivflex2 divflex2center signupdiv">
-                            <div class="templatedivflex2left">
-                                <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="Purchase Amount" required/>
+                            <div class="templatedivflex2 divflex2center signupdiv">
+                                <div class="templatedivflex2left">
+                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="Purchase Amount" required/>
+                                </div>
+                                <div class="templatedivflex2left">
+                                    <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton">Confirm</button>
+                                </div>
                             </div>
-                            <div class="templatedivflex2left">
-                                <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton">Confirm</button>
-                            </div>
-                        </div>
                         </form>
                     </td>
                     <!-- add button here -->

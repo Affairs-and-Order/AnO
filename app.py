@@ -258,6 +258,7 @@ def market():
         resources = []
         amounts = []
         prices = []
+        total_Prices = []
         offer_ids_list = []
 
         print(offer_ids)
@@ -281,8 +282,11 @@ def market():
             price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
+            total_Price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            total_Prices.append(total_Price)
 
-        offers = zip(ids, names, resources, amounts, prices, offer_ids_list)
+
+        offers = zip(ids, names, resources, amounts, prices, total_Prices, offer_ids_list)
 
         return render_template("market.html", offers=offers)
 
@@ -300,7 +304,7 @@ def buy_market_offer(offer_id):
     if offer_id.isnumeric() is False or amount_wanted.isnumeric() is False:
         return error(400, "Values must be numeric")
 
-    offer = db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+    offer = db.execute("SELECT resource, amount, price, total_Price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
     seller_id = int(offer[3])
 
@@ -603,6 +607,7 @@ def marketoffer():
         resource = request.form.get("resource")
         amount = request.form.get("amount")
         price = request.form.get("price")
+        price = request.form.get("total_Price")
 
         if amount.isnumeric() is False or price.isnumeric() is False:
             return error(400, "You can only type numeric values into /marketoffer ")
@@ -615,7 +620,7 @@ def marketoffer():
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
-        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price)))
+        db.execute("INSERT INTO offers (user_id, resource, amount, price, total_Price) VALUES (?, ?, ?, ?, ?)", (cId, resource, int(amount), int(price), int(total_Price)))
 
         connection.commit()
         return redirect("/market")
