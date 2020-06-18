@@ -392,6 +392,7 @@
                                     <th>Message</th>
                                 </tr>
                                 <!--for every applicant make a row-->
+                                {% for id, name, message in requests %}
                                 <tr>
                                     <td>
                                         <div class="templatedivflex2 menuflex">
@@ -411,10 +412,11 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td>Country name</td>
-                                    <td>Influence</td>
-                                    <td class="templatesmalltd">message</td>
+                                    <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
+                                    <td></td>
+                                    <td class="templatesmalltd">{{ message[0] }}</td>
                                 </tr>
+                                {% endfor %}
                             </table>
                         </div>
                     </div>

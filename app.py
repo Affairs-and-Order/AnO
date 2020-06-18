@@ -406,6 +406,12 @@ def coalition(colId):
 
         members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
 
+        requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
+        requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
+        requestNames = db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(?))", (colId,)).fetchall()
+
+        requests = zip(requestIds, requestNames, requestMessages)
+
         """def avgStat(unit):
             peopleUnit = db.execute("SELECT (?) FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (unit, colId,)).fetchall()
             totalUnit = []
@@ -429,7 +435,8 @@ def coalition(colId):
             userInCol = False
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
-        description=description, colType=colType, userInCol=userInCol, userLeader=userLeader)
+        description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
+        requests=requests)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
