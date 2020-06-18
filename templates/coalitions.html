@@ -61,6 +61,7 @@
             </div>
         </div>
 
+        {% if exRes == False %}
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
@@ -69,16 +70,36 @@
                     <th>Members</th>
                     <th>Type</th>
                 </tr>
-                {% for id, name, members, type in colStats %}
+                {% for id, name, type in colBoth %}
                 <tr>
-                    <td><a href="/coalition/{{ id }}">{{ name }}</a> </td>
+                    <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
                     <td>Influence</td>
-                    <td>{{ members }}</td>
-                    <td>{{ type }}</td>
+                    <td>105,565</td>
+                    <td>{{ type[0] }}</td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
+        {% else %}
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Name</th>
+                    <th>Influence</th>
+                    <th>Members</th>
+                    <th>Type</th>
+                </tr>
+                {% for name, id in resultAll %}
+                <tr>
+                    <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
+                    <td>Influence</td>
+                    <td>105,565</td>
+                    <td>fix dis</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
     </div>
 </div>
 
