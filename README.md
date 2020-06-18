@@ -17,11 +17,12 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 
 # Celery
 
-# we currently don't use celery so no need to install it
+# Arch
 
-1. Install redis from here https://github.com/microsoftarchive/redis
-2. Navigate to the installation path and run `redis-server`
-3. Run celery in another terminal window using `celery -A app.celery worker -l info -P gevent`
+1. Install rabbitmq by typing `pacman -S rabbitmq`
+2. Follow this guide: https://docs.celeryproject.org/en/stable/getting-started/brokers/rabbitmq.html and name your username, password and vhost `ano`
+3. Run rabbitmq by typing: sudo rabbitmq-server
+4. Run Celery in another window by typing this command: `celery worker -B app.celery --logleve=info`
 4. Run Flask in yet another terminal window
 
 Does not work on `repl.it` use `CS50 IDE` or run it on your own machine.
