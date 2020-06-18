@@ -1499,6 +1499,44 @@
                 background: #178db8 !important;
                 color: white !important;
             }
+            
+            .electricity,
+            .retail,
+            .works {
+                display: none;
+            }
+            
+            .electricityclick,
+            .retailclick,
+            .worksclick {
+                display: initial;
+            }
+            
+            .cityelectricityclick,
+            .cityretailclick,
+            .cityworksclick {
+                background: #178db8 !important;
+                color: white !important;
+            }
+            
+            .military,
+            .industry,
+            .processing {
+                display: none;
+            }
+            
+            .militaryclick,
+            .industryclick,
+            .processingclick {
+                display: initial;
+            }
+            
+            .landmilitaryclick,
+            .landindustryclick,
+            .landprocessingclick {
+                background: #178db8 !important;
+                color: white !important;
+            }
             /*MILITARY*/
             
             .menuflex {
