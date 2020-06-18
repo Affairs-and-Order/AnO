@@ -1030,6 +1030,12 @@
                 }
             }
             
+            .smalltable td {
+                height: 12px !important;
+                margin: 0;
+                padding: 0;
+            }
+            
             .templatetable {
                 padding: 8px;
                 margin: 8px auto;
@@ -1155,7 +1161,7 @@
                 text-align: center;
                 width: 85%;
                 margin: 10px auto;
-                box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), 0 2px 5px 0 rgba(0, 0, 0, .1), 0 10px 20px 0 rgba(0, 0, 0, .1);
+                box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.1) 0px 0px 16px 0px;
                 padding: 0;
                 overflow: hidden;
             }
@@ -1169,8 +1175,7 @@
                 text-transform: uppercase;
                 user-select: none;
                 border-collapse: collapse;
-                border-left: 0.75px solid rgb(246.5, 246.5, 246.5);
-                border-right: 0.75px solid rgb(246.5, 246.5, 246.5);
+                box-shadow: inset 0px 0px 0px 0.75px rgb(246.5, 246.5, 246.5);
             }
             
             @media all and (max-width: 600px) {

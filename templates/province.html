@@ -94,7 +94,7 @@
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
                     business
-                    </span>City - {{ CityCount }}
+                    </span>City - {{ citySlots }} Slots
                 </h3>
 
             </div>
@@ -102,7 +102,7 @@
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
                     landscape
-                    </span>Land - {{ landAmount }} km2
+                    </span>Land - {{ landSlots }} Slots
                 </h3>
 
             </div>
@@ -110,41 +110,71 @@
         <!--Cities-->
         <div class="city" id="city">
 
-            <h2 class="templatecontentheadercenter">You have [city slots] city slots</h2>
 
-            <div class="templatedivflex2 menuflex2">
-                <div class="templatedivflex2left" id="cityelectricity" onclick="cityelectricity()">
+            <div class="templateoutertablediv">
+                <table class="templatetable templatetable2 smalltable">
+                    <tr>
+                        <div class="templatedivflex2 menuflex2">
+                            <div class="templatedivflex2left" id="cityelectricity" onclick="cityelectricity()">
 
-                    <h3 class="smallheader">Electricity</h3>
+                                <h3 class="smallheader">Electricity</h3>
 
-                </div>
-                <div class="templatedivflex2left" id="cityretail" onclick="cityretail()">
+                            </div>
+                            <div class="templatedivflex2left" id="cityretail" onclick="cityretail()">
 
-                    <h3 class="smallheader">Retail</h3>
+                                <h3 class="smallheader">Retail</h3>
 
-                </div>
-                <div class="templatedivflex2left" id="cityworks" onclick="cityworks()">
+                            </div>
+                            <div class="templatedivflex2left" id="cityworks" onclick="cityworks()">
 
-                    <h3 class="smallheader">Public Works</h3>
+                                <h3 class="smallheader">Public Works</h3>
 
-                </div>
+                            </div>
+                        </div>
+                    </tr>
+                    <tr>
+                        <td>1 Coal Burners</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Oil Burners</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Solar Fields</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Hydro Dams</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Nuclear Reactors</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
             </div>
             <!--Electricity-->
             <div id="electricity" class="electricity">
 
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Oil Plantations</h2>
+                    <h2 class="templatecontentheaderleft">Oil Burners</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
+                            <h3 class="unitcount">You have {{ oil_burners }} Oil Burners</h3>
 
-                            <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                            <p class="templatecontentpleft">Oil burners convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
 
-                            <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                            <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                            <ul>Oil burners cost [ oilBurnerCost ] Each</ul>
+                            <ul>Oil burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
                                 <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
@@ -161,7 +191,7 @@
 
                                     </div>
                                 </div>
-                                <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
+                                <ul>[ buyOilBurner ] Oil burners will cost you $[ buyOilBurnerPrice ]</ul>
                             </div>
 
                         </div>
@@ -170,19 +200,19 @@
 
 
 
-                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            <img class="unitimage" src="{{ url_for('static', filename='images/tutorial.jpg') }}" />
                         </div>
                     </div>
 
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Hydroelectric Dam</h2>
+                    <h2 class="templatecontentheaderleft">Hydroelectric Dams</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dam</h3>
+                            <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dams</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -529,24 +559,53 @@
         <!--Land-->
         <div class="land" id="land">
 
-            <h2 class="templatecontentheadercenter">You have [land slots] land slots</h2>
+            <div class="templateoutertablediv">
+                <table class="templatetable templatetable2 smalltable">
+                    <tr>
+                        <div class="templatedivflex2 menuflex2">
+                            <div class="templatedivflex2left" id="landmilitary" onclick="landmilitary()">
 
-            <div class="templatedivflex2 menuflex2">
-                <div class="templatedivflex2left" id="landmilitary" onclick="landmilitary()">
+                                <h3 class="smallheader">Military</h3>
 
-                    <h3 class="smallheader">Military</h3>
+                            </div>
+                            <div class="templatedivflex2left" id="landindustry" onclick="landindustry()">
 
-                </div>
-                <div class="templatedivflex2left" id="landindustry" onclick="landindustry()">
+                                <h3 class="smallheader">industry</h3>
 
-                    <h3 class="smallheader">industry</h3>
+                            </div>
+                            <div class="templatedivflex2left" id="landprocessing" onclick="landprocessing()">
 
-                </div>
-                <div class="templatedivflex2left" id="landprocessing" onclick="landprocessing()">
+                                <h3 class="smallheader">Processing</h3>
 
-                    <h3 class="smallheader">Processing</h3>
-
-                </div>
+                            </div>
+                        </div>
+                    </tr>
+                    <tr>
+                        <td>1 Coal Burners</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Oil Burners</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Solar Fields</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Hydro Dams</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>1 Nuclear Reactors</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </table>
             </div>
 
             <!--Military-->
