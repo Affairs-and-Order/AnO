@@ -70,22 +70,11 @@ def setup_periodic_tasks(sender, **kwargs):
         populationGrowth.s(),
     )"""
 
-@app.route("/")
+@app.route("/", methods=["GET"])
 def index():
-    try:
-        connection = sqlite3.connect('affo/aao.db') # connects to db
-        db = connection.cursor() # creates the cursor for db connection
-
-        inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-        # TODO: fix this because this might causes errors when user is not in a coalition
-        inCol = f"/coalition/{inColit}"
-        app.add_template_global(inCol, name='inCol')
-    except:
-        inCol = error(404, "Page Not Found")
-        app.add_template_global(inCol, name='inCol')
     return render_template("index.html") # renders index.html when "/" is accesed
 
-@app.route("/error")
+@app.route("/error", methods=["GET"])
 def errorito(): # fancy view for error, because error function is used
     error(400, "Unknown Error")
 
@@ -433,6 +422,15 @@ def coalition(colId):
             userInCol = True
         except:
             userInCol = False
+
+        try:
+            inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+            # TODO: fix this because this might causes errors when user is not in a coalition
+            inCol = f"/coalition/{inColit}"
+            app.add_template_global(inCol, name='inCol')
+        except:
+            inCol = error(404, "Page Not Found")
+            app.add_template_global(inCol, name='inCol')
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
