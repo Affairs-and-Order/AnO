@@ -875,6 +875,14 @@ def adding(uId):
 
     return redirect("/coalition/colId")
 
+@app.route("/tutorial", methods=["GET"])
+def tutorial():
+    return render_template("tutorial.html")
+
+@app.route("/statistics", methods=["GET"])
+def statistics():
+    return render_template("statistics.html")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
