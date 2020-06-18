@@ -1161,7 +1161,7 @@
                 text-align: center;
                 width: 85%;
                 margin: 10px auto;
-                box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.1) 0px 0px 16px 0px;
+                box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.05) 0px 0px 6px 0px;
                 padding: 0;
                 overflow: hidden;
             }
