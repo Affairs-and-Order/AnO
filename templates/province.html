@@ -108,159 +108,163 @@
             </div>
         </div>
         <!--Cities-->
-        <div class="city" id="city">
 
-            <h2 class="templatecontentheadercenter">You have [city slots] city slots</h2>
-
-            <div class="templatedivflex2 menuflex2">
-                <div class="templatedivflex2left" id="cityelectricity" onclick="cityelectricity()">
-
-                    <h3 class="smallheader">Electricity</h3>
-
-                </div>
-                <div class="templatedivflex2left" id="cityretail" onclick="cityretail()">
-
-                    <h3 class="smallheader">Retail</h3>
-
-                </div>
-                <div class="templatedivflex2left" id="cityprojects" onclick="cityprojects()">
-
-                    <h3 class="smallheader">Projects</h3>
-
+        <div class="templatedivflex2 templatesidemenuflexparent">
+            <div class="stickyflexmenudiv">
+                <div class="stickyflexmenu">
+                    <!--make an anchor for every province the player has-->
+                    <h3>Electricity</h3>
+                    <a class="menubara" href=""><span class="material-icons-outlined">
+                    account_balance
+                    </span>Oil Plants</a>
+                    <a class="menubara" href=""><span class="material-icons-outlined">
+                        account_balance
+                        </span>Hydro Dams</a>
+                    <a class="menubara" href=""><span class="material-icons-outlined">
+                            account_balance
+                            </span>Nuclear Reactors</a>
+                    <h3>Retial</h3>
+                    <h3>Projects</h3>
                 </div>
             </div>
+            <div class="templatefullwidthflexchild">
+                <div class="city" id="city">
 
-            <div class="menudiv">
+                    <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Oil Plantations</h2>
+                        <h2 class="templatecontentheaderleft">Oil Plantations</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                        <div class="templatedivflex2 menuflex">
+                            <div class="templatedivflex2left">
 
-                        <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
+                                <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
 
-                        <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
 
-                        <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                        <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Oil plants cost [ oilPlantCost ] Each</ul>
+                                <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
-                        <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
 
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                        </div>
+                                    </div>
+                                    <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
                                 </div>
-                                <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                </div>
                             </div>
-                            <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
+                            </form>
+                            <div class="templatedivflex2left">
+
+
+
+                                <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            </div>
                         </div>
 
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
+                    <div class="menudiv">
 
+                        <h2 class="templatecontentheaderleft">Hydroelectric Dam</h2>
 
+                        <div class="templatedivflex2 menuflex">
+                            <div class="templatedivflex2left">
 
-                        <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
-                    </div>
-                </div>
+                                <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dam</h3>
 
-            </div>
-            <div class="menudiv">
+                                <p class="templatecontentpleft"></p>
 
-                <h2 class="templatecontentheaderleft">Hydroelectric Dam</h2>
+                                <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
+                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
 
-                        <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dam</h3>
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
 
-                        <p class="templatecontentpleft"></p>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
 
-                        <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                        <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
 
-                        <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
+                                        </div>
+                                    </div>
+                                    <ul>[ buyHydroDam ] hydro dams will cost you $[ buyHydroDamPrice ]</ul>
                                 </div>
-                                <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                </div>
                             </div>
-                            <ul>[ buyHydroDam ] hydro dams will cost you $[ buyHydroDamPrice ]</ul>
+                            </form>
+                            <div class="templatedivflex2left">
+
+
+
+                                <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            </div>
                         </div>
 
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
+                    <div class="menudiv">
 
+                        <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
 
+                        <div class="templatedivflex2 menuflex">
+                            <div class="templatedivflex2left">
 
-                        <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
-                    </div>
-                </div>
+                                <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
 
-            </div>
-            <div class="menudiv">
+                                <p class="templatecontentpleft"></p>
 
-                <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
+                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
 
-                        <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
 
-                        <p class="templatecontentpleft"></p>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
 
-                        <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                        <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
 
-                        <div class="purchasemilitarydiv">
-                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
+                                        </div>
+                                    </div>
+                                    <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
                                 </div>
-                                <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                </div>
                             </div>
-                            <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                            </form>
+                            <div class="templatedivflex2left">
+
+
+
+                                <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            </div>
                         </div>
 
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
 
-
-
-                        <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
-                    </div>
                 </div>
-
             </div>
-
         </div>
+
+
 
     </div>
 </div>

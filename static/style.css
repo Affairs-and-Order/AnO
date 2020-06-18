@@ -988,6 +988,17 @@
                 padding: 0;
             }
             
+            .stickyflexmenudiv {
+                margin: 0;
+                padding: 0;
+                min-width: 10% !important;
+                height: 100%;
+                background: #f7f7f7;
+                border-radius: 0px;
+                overflow: hidden;
+                position: sticky;
+            }
+            
             .stickyflexmenu {
                 margin: 0;
                 padding: 0;
@@ -995,11 +1006,27 @@
                 height: 100%;
                 background: #f7f7f7;
                 border-radius: 0px;
+                overflow: hidden;
+                position: sticky;
+                top: 70px;
             }
             
             @media all and (max-width: 600px) {
                 .stickyflexmenu {
                     left: 2.5%;
+                }
+            }
+            
+            .stickyflexmenu h3 {
+                color: #00a9e1e1;
+                margin-left: 10px;
+                margin: 18px;
+            }
+            
+            @media all and (max-width: 600px) {
+                .stickyflexmenu h3 {
+                    margin: auto;
+                    text-align: center;
                 }
             }
             
