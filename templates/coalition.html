@@ -395,14 +395,17 @@
                                 {% for id, name, message in requests %}
                                 <tr>
                                     <td>
+                                        <form method="POST">
                                         <div class="templatedivflex2 menuflex">
+                                            <!-- plus sign-->
                                             <div class="templatedivflex2left flexchildvanilla">
 
-                                                <span class="material-icons iconblue">
+                                                <button formaction="/add/{{ id[0] }}"><span class="material-icons iconblue">
                                                     add_circle_outline
-                                                    </span>
+                                                    </span></button>
 
                                             </div>
+                                            <!-- minus sign-->
                                             <div class="templatedivflex2left flexchildvanilla">
 
                                                 <span class="material-icons iconred">
@@ -411,6 +414,7 @@
 
                                             </div>
                                         </div>
+                                        </form>
                                     </td>
                                     <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
                                     <td></td>

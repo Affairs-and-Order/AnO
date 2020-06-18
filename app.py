@@ -849,6 +849,32 @@ def my_offers():
 
     return render_template("my_offers.html", offers=offers)
 
+@login_required
+@app.route("/add/<uId>", methods=["POST"])
+def adding(uId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    try:
+        colId = db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
+    except TypeError:
+        return error(400, "User hasn't posted a request to join")
+
+    cId = session["user_id"]
+
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if leader != cId:
+
+        return error(400, "You are not the leader of the coalition")
+
+    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
+    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
+    connection.commit()
+
+    return redirect("/coalition/colId")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
