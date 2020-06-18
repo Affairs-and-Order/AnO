@@ -16,15 +16,15 @@
                 <tr>
                     <th>Name</th>
                     <th>Influence</th>
-                    <th>Age</th>
+                    <th>Country created</th>
                     <th>Coalition</th>
                 </tr>
-                {% for pop, id, name, colId, colName in new_zipped%}
+                {% for pop, id, name, colId, colName, date in new_zipped%}
                 <tr>
 
                     <td><a href="/country/id={{ id }}">{{ name }}</a></td>
                     <td>Influence</td>
-                    <td>{{ age }}</td>
+                    <td>{{ date }}</td>
                     {% if colName == "No Coalition" %}
                     <td><p>No Coalition</p></td> {% endif %} {% if colName != "No Coalition" %}
                     <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>

@@ -11,6 +11,8 @@ import datetime
 import _pickle as pickle
 import random
 
+Game.ping()
+
 # this is the war checker, it will update on going wars between nations
 # runs once a day
 def warPing():
@@ -139,7 +141,7 @@ def signup():
         for keys in allKeys: # lmao shitty way to do idk why i did this
             if key == keys[0]:
                 hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
-                db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, datetime.date.today())) # creates a new user || added account creation date
+                db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(datetime.date.today()))) # creates a new user || added account creation date
                 user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
                 connection.commit()
                 session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
@@ -249,38 +251,101 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         
-        user_ids = db.execute("SELECT user_id FROM offers").fetchall()
+        offer_ids = db.execute("SELECT offer_id FROM offers").fetchall()
         
         ids = []
         names = []
         resources = []
         amounts = []
         prices = []
+        total_Prices = []
+        offer_ids_list = []
 
-        for i in user_ids:
+        print(offer_ids)
 
-            ids.append(i)
+        for i in offer_ids:
+
+            offer_ids_list.append(i[0])
             
-            name = db.execute("SELECT username FROM users WHERE id=(?)", (i[0],)).fetchone()[0]
-            
+            user_id = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            ids.append(user_id)
+
+            name = db.execute("SELECT username FROM users WHERE id=(?)", (user_id,)).fetchone()[0]
             names.append(name)
 
-            resource = db.execute("SELECT resource FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             resources.append(resource)
 
-            amount = db.execute("SELECT amount FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             amounts.append(amount)
 
-            price = db.execute("SELECT price FROM offers WHERE user_id=(?)", (i[0],)).fetchone()[0]
+            price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
-        offers = zip(ids, names, resources, amounts, prices)
+            total_Price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            total_Prices.append(total_Price)
 
 
-
-        
+        offers = zip(ids, names, resources, amounts, prices, total_Prices, offer_ids_list)
 
         return render_template("market.html", offers=offers)
+
+@login_required
+@app.route("/buy_offer/<offer_id>", methods=["POST"])
+def buy_market_offer(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    
+    cId = session["user_id"]
+
+    amount_wanted = request.form.get(f"amount_{offer_id}")
+
+    if offer_id.isnumeric() is False or amount_wanted.isnumeric() is False:
+        return error(400, "Values must be numeric")
+
+    offer = db.execute("SELECT resource, amount, price, total_Price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+
+    seller_id = int(offer[3])
+
+    resource = offer[0]
+
+    if int(amount_wanted) > int(offer[1]):
+        return error(400, "Amount wanted cant be higher than total amount")
+
+    user_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+
+    if int(amount_wanted) * int(offer[2]) > int(user_gold): # checks if buyer doesnt have enough gold for buyin 
+
+        return error(400, "You don't have enough gold") # returns error if buyer doesnt have enough gold for buying
+
+    gold_sold = user_gold - (int(amount_wanted) * int(offer[2]))
+
+    sellResStat = f"SELECT {resource} FROM resources WHERE id=(?)"
+    sellTotRes = db.execute(sellResStat, (seller_id,)).fetchone()[0]
+
+    newSellerresource = (int(sellTotRes) - int(amount_wanted))
+    
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId)) 
+
+    resRemStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)" # statement for resource removal for seller
+    db.execute(resRemStat, (newSellerresource, seller_id)) # removes the resources the seller sold
+
+    currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)" # statement for getting the current resource from the buyer
+    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0] # executes the statement
+
+    newBuyerResource = int(buyerResource) + int(amount_wanted) # generates the number of the resource the buyer should have
+
+    buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)" # statement for giving the user the resource bought
+    db.execute(buyUpdStat, (newBuyerResource, cId)) # executes the statement
+
+    db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", ((int(offer[1]) - int(amount_wanted)), offer_id))
+
+    connection.commit() # commits the connection
+
+    # lol this whole function is a fucking shitstorm ill comment it later hopefully
+
+    return redirect("/market")
 
 @login_required
 @app.route("/provinces", methods=["GET", "POST"])
@@ -341,12 +406,6 @@ def coalition(colId):
 
         members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
 
-        requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
-        requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
-        requestNames = db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(?))", (colId,)).fetchall()
-       
-        requests = zip(requestIds, requestNames, requestMessages)
-
         """def avgStat(unit):
             peopleUnit = db.execute("SELECT (?) FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (unit, colId,)).fetchall()
             totalUnit = []
@@ -370,8 +429,7 @@ def coalition(colId):
             userInCol = False
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
-        description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-        requests=requests)
+        description=description, colType=colType, userInCol=userInCol, userLeader=userLeader)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
@@ -549,6 +607,7 @@ def marketoffer():
         resource = request.form.get("resource")
         amount = request.form.get("amount")
         price = request.form.get("price")
+        price = request.form.get("total_Price")
 
         if amount.isnumeric() is False or price.isnumeric() is False:
             return error(400, "You can only type numeric values into /marketoffer ")
@@ -561,7 +620,7 @@ def marketoffer():
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
-        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price)))
+        db.execute("INSERT INTO offers (user_id, resource, amount, price, total_Price) VALUES (?, ?, ?, ?, ?)", (cId, resource, int(amount), int(price), int(total_Price)))
 
         connection.commit()
         return redirect("/market")
@@ -644,6 +703,7 @@ def countries():
         names = []
         coalition_ids = []
         coalition_names = []
+        dates = []
 
         for i in users:
 
@@ -654,6 +714,9 @@ def countries():
 
             name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             names.append(name)
+
+            date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            dates.append(date)
 
             try:
                 coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
@@ -667,7 +730,7 @@ def countries():
 
         connection.commit()
 
-        new_zipped = zip(population, ids, names, coalition_ids, coalition_names)
+        new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates)
 
         return render_template("countries.html", new_zipped=new_zipped)
 
@@ -678,15 +741,31 @@ def coalitions():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        colIds = db.execute("SELECT id FROM colNames").fetchall()
-        colNames = db.execute("SELECT name FROM colNames").fetchall()
-        colTypes = db.execute("SELECT type FROM colNames").fetchall()
+        coalitions = db.execute("SELECT id FROM colNames").fetchall()
 
-        colBoth = zip(colIds, colNames, colTypes)
+        names = []
+        ids = []
+        members = []
+        types = []
 
-        exRes = False
+        for i in coalitions:
 
-        return render_template("coalitions.html", colBoth=colBoth, exRes=exRes)
+            ids.append(i[0])
+
+            idd = str(i[0])
+
+            colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+            types.append(colType)
+
+            colName = db.execute("SELECT name FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+            names.append(colName)
+
+            colMembers = db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
+            members.append(colMembers)
+
+        colStats = zip(ids, names, members, types)
+
+        return render_template("coalitions.html", colStats=colStats)
     
     else:
 
