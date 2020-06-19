@@ -34,6 +34,16 @@ def warPing():
             cursor.execute(f"INSERT INTO war (duration)  VALUES ({currentDuration + 1},)", ())
             connection.commit()
 
+# runs once every hour
+def increaseSupplies():
+    connection = sqlite3.connect("affo/aoo.db")
+    cursor = connection.cursor()
+    for user in cursor.execute(f"SELECT id FROM users").fetchall():
+        for supplies in cursor.execute(f"SELECT supplies FROM war WHERE id={user[0]}").fetchall():
+            increasedSupplies = supplies[0] + 100
+            cursor.execute(f"INSERT INTO war (supplies) VALUES ({increasedSupplies} WHERE id={user[0]})")
+            connection.commit()
+
 
 def eventCheck():
     rng = random.randint(1, 100)

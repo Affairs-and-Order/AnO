@@ -1,6 +1,8 @@
 import random
 import sqlite3
 import _pickle as pickle
+import json
+import random
 
 path = "affo/aao.db"
 
@@ -8,26 +10,28 @@ path = "affo/aao.db"
 def ping():  # delete this before launch
     print("found game script")
 
+
 class Military:
     def __init__(self, nationID=None):
-        # getting kind of big, might want to move to db
         self.units = {
-            "soldiers": {"type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
-            "tanks": {"type": "ground", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
-            "artillery": {"type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
+            "soldiers": {"name": "soldiers", "type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
+            "tanks": {"name": "tanks", "type": "ground", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+            "artillery": {"name": "artillery", "type": "ground", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
 
-            "flying_fortresses": {"type": "air", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
-            "fighter_jets": {"type": "air", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
-            "apaches": {"type": "air", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+            "flying_fortresses": {"name": "flying_fortresses", "type": "air", "amount": 0, "damage": 2, "cost": 50,
+                                  "inBattle": 0},
+            "fighter_jets": {"name": "fighter_jets", "type": "air", "amount": 0, "damage": 3, "cost": 50,
+                             "inBattle": 0},
+            "apaches": {"name": "apaches", "type": "air", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
 
-            "destroyers": {"type": "water", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
-            "cruisers": {"type": "water", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
-            "submarines": {"type": "water", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
+            "destroyers": {"name": "destroyers", "type": "water", "amount": 0, "damage": 1, "cost": 50, "inBattle": 0},
+            "cruisers": {"name": "cruisers", "type": "water", "amount": 0, "damage": 2, "cost": 50, "inBattle": 0},
+            "submarines": {"name": "submarines", "type": "water", "amount": 0, "damage": 3, "cost": 50, "inBattle": 0},
 
-            "ICBMs": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
-            "nukes": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
-            "spies": {"type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0}
-        } 
+            "ICBMs": {"name": "ICBMs", "type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
+            "nukes": {"name": "nukes", "type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0},
+            "spies": {"name": "spies", "type": "special", "amount": 0, "damage": 4, "cost": 50, "inBattle": 0}
+        }
         self.nationID = nationID
 
     # inits the military variables
@@ -37,9 +41,10 @@ class Military:
         i = 0
         for unit in self.units:
             print(self.units[unit]["type"])
-            self.units[unit]["amount"] = db.execute(f"SELECT {unit} FROM {self.units[unit]['type']} WHERE id={self.nationID}",())
+            self.units[unit]["amount"] = db.execute(
+                f"SELECT {unit} FROM {self.units[unit]['type']} WHERE id={self.nationID}", ())
             # delete this line and uncomment the line below this after the attack system is finished
-            #self.units[unit]["inBattle"] = db.execute(f"SELECT {unit} FROM inBattle WHERE id={self.nationID}",()).fetchone()[0]
+            # self.units[unit]["inBattle"] = db.execute(f"SELECT {unit} FROM inBattle WHERE id={self.nationID}",()).fetchone()[0]
             i += 1
 
 
@@ -67,13 +72,14 @@ class Economy:
 
     def get_economy(self):
         connection = sqlite3.connect(path)
-        db = connection.cursor() 
+        db = connection.cursor()
         resourceList = []
 
         i = 0
         for resou in self.resources:
             self.resources[resou] = \
-            db.execute(f"SELECT {self.resourcesNames[i]} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
+                db.execute(f"SELECT {self.resourcesNames[i]} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[
+                    0]
             resourceList.append(self.resources[resou])
             i += 1
 
@@ -96,7 +102,8 @@ class Economy:
             unitUpd = f"UPDATE {military.units[requested]['type']} SET {military.units[requested]}=(?) WHERE id=(?)"
             db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), military.nationID))
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)",
-                       ((int(gold) + int(wantedUnits) * int(military.units[requested]["cost"])), military.nationID,))  # clean
+                       ((int(gold) + int(wantedUnits) * int(military.units[requested]["cost"])),
+                        military.nationID,))  # clean
 
         elif way == "buy":
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold) - int(totalPrice), military.nationID,))
@@ -142,51 +149,130 @@ class Nation:
         # needs to be reworked soon
         self.provinceAmount = 12
         self.warList = []
+        self.inBattleUnits = []
+
         self.allies = []
 
-    # currently reworking this
-    def attack(self, category, unitType, unitAmount, enemyNation):
+    # increases morale but decreases attack power
+    def fortify(self, usedSupplies, unitType, unitAmount, enemyNation):
+        connection = sqlite3.connect(path)
+        cursor = connection.cursor()
+
+        currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}")
+        updatedMorale = currentMorale * 1.25
+        cursor.execute(f"UPDATE war SET morale={updatedMorale} WHERE id={self.id}")
+        # province id
+
+    # activates a turn for a war
+    def turn(self, unitType, usedSupplies, Type, attackedProvince, enemyNation):
+        connection = sqlite3.connect(path)
+        cursor = connection.cursor()
+
+        supplies = cursor.execute(f"SELECT supplies FROM war WHERE id={self.id}").fetchone()[0]
+
+        # if supplies is 200 or more then allow turn
+        if supplies >= 200:
+            if Type == "defend":
+                self.fortify(usedSupplies, unitType, unitAmount, enemyNation)
+
+            if Type == "attack":
+                # effectiveness multiplier < 100
+
+                self.inBattleUnits.append(unitType)
+
+                effectiveness = 0.09 * usedSupplies * unitType["damage"]
+                provincePopulation = \
+                    cursor.execute("SELECT population FROM provinces WHERE provinceId=?",
+                                   (attackedProvince)).fetchone()[0]
+                PopulationLoss = provincePopulation - effectiveness * 10
+
+                cursor.execute(f"UPDATE war SET population={PopulationLoss} WHERE provinceId={attackedProvince})")
+                connection.commit()
+
+                currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0]
+                updatedMorale = currentMorale - effectiveness
+
+                cursor.execute(f"INSERT INTO war (morale) VALUES ({updatedMorale})", ())
+                connection.commit()
+
+        # else return -1
+        else:
+            return -1
+
+    def calculateBattleAdvantage(self):
+        # now the variables are out of scope...
+        try:
+            attackPower = 0
+            for unit in self.inBattleUnits:
+
+                attackPower += unit["damage"]
+                battleAdvantage = random.random(-1,
+                                                1)  # add a very small amount of randomness to the battle, shouldn't cause any major game changing events
+
+                attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
+                defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[
+                    0]
+
+                techScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={self.foobar}", ()).fetchone()[0]
+                defenderTechScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={enemy.foobar}", ()).fetchone()[0]
+
+                if attackerMorale > defenderMorale:
+                    battleAdvantage += 1
+                else:
+                    battleAdvantage -= 1
+
+                if techScore > defenderTechScore:
+                    battleAdvantage += 1
+                else:
+                    battleAdvantage -= 1
+                # TODO: add more components that will efect the end battle advantage
+
+                return battleAdvantage
+
+
+
+        except Exception as e:
+            print("[WARNING] Unable to execute attack: {}".format(e))
+
+    # sets up a war
+    def attack(self, unitType, enemyNation):
         if enemyNation.province > self.provinceAmount:
             raise Exception("enemy province number cannot be higher than the attacker's province number!")
+        elif len(self.warList) >= 5:
+            raise Exception("user can only be in 5 wars at a time")
         else:
             self.warList.append(enemyNation)
+            self.inBattleUnits.append(unitType)
+
             connection = sqlite3.connect(path)
             cursor = connection.cursor()
+
+            # subtracts used units from the database and puts them in the inBattleUnits array
+            currentUnitCount = cursor.execute(f"SELECT {unitType['name']} FROM {unitType['type']} WHERE id={self.id}")
+            subtractedUnitCount = currentUnitCount - unitType["amount"]
+            cursor.execute(
+                f"UPDATE {unitType['type']} SET {unitType['name']} VALUES ({subtractedUnitCount}) WHERE id={self.id}")
+            connection.commit()
 
             currentUnits = cursor.execute(f"SELECT {unitType} FROM {unitType['type']} WHERE id={self.id}").fetchone()[0]
             duringAttack = currentUnits - unitAmount
 
             cursor.execute(f"UPDATE {unitType['type']} SET {unitType} = {duringAttack} WHERE id={self.id}", ())
-            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)", ())
+            cursor.execute(
+                f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)",
+                ())
 
+            totalBattlingUnits = 0
+            for unit in self.inBattleUnits:
+                totalBattlingUnits += unit["amount"]
 
-    # what does it do, is it just check war?
-    def compareStats (a, b):
-        if a > b:
-            return True
-        else:
-            return False
+            battleAdvantage = calculateBattleAdvantage()
 
     def checkWar(self, war):
         '''checks who is winning a war'''
+        # from the perspective of the attacker
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
-
-        attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
-        defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
-
-        # do we have a totalNumberofTroops in the DB?
-        # totalUnitsAvailable = all unit types amount combined
-        totalUnitsAvailable = 100
-        # if numberOfUnits <= totalUnitsAvailable: # undefined variable numberOfUnits (idk why)
-
-        """
-            total = 0
-            for troop in military.units:
-                total += military.units[troop]["cost"]
-            print(total)
-        """
-
 
         """
 
@@ -194,44 +280,13 @@ class Nation:
         - ongoing global wars in app.py
         - add current war (ie. in Nation.attack) to DB
         
-
-
-        psuedo code (using get(for db access))
-
-
-        def compareStats (a, b):
-            if 
-
         def attack (unitType, numberOfUnits, enemyNation):
             self.warlist.append(enemyNation.id)
 
             # it would have to be a dict and we would use JSON to store it to the db
 
-            battleAdvantage = 0
-
-            totalTroops = get(totalTroops) # total number of troops available
-            if numberOfUnits <= totalTroops:
-                attackerMorale = get(morale, self)
-                defenderMorale = get(morale, enemy)
-                if attackerMorale > defenderMorale:
-                    battleAdvantage ++
-                else:
-                    battleAdvantage --
-
-
-                nation stats
-                - morale
-                - economy
-                    - resources
-                    - value (inflation / deflation)
-                - military
-                    - units
-                    - tech
-                    - leadership 
-                        # (can be determined by how many previous wins/losses they have, the more wins, the better the leadership,  less = worse)
-                        # basically the win:loss ratio
         """
-        
+
         if attackerMorale == 0:
             return self
         elif attackerMorale > 0 and defenderMorale > 0:
@@ -243,7 +298,7 @@ class Nation:
             # the final object
             c = Nation(self.warList[war], b, a)
             return c
-            
+
     # this saves the nation obj to the database using pickle (in bytes) 
     def saveToDB(self):
         connection = sqlite3.connect(path)
