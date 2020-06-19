@@ -62,8 +62,9 @@ app.config["CELERY_RESULT_BACKEND"] = 'amqp://ano:ano@localhost:5672/ano'
 
 celery_beat_schedule = {
     "time_scheduler": {
-        "task": "app.populationGrowth", # here the task is populationGrowth
-        "schedule": 10.0, # it executes every 10 seconds
+        "task": "app.populationGrowth",
+        # Run every second
+        "schedule": 1.0,
     }
 }
 
@@ -78,6 +79,19 @@ celery.conf.update(
     result_serializer="json",
     beat_schedule=celery_beat_schedule,
 )
+
+@celery.task()
+def populationGrowth():
+    conn = sqlite3.connect('affo/aao.db') # connects to db
+    db = conn.cursor()
+    pop = db.execute("SELECT population, id FROM stats").fetchall() # selects id, population from the stats table and gets all the results for it
+
+    for row in pop: # iterates over every result in population
+        user_id = row[1] # sets the user_id variable to the "id" result from the query
+        curPop = row[0]  # sets the current population variable to the "population" result from the query
+        newPop = curPop + (int(curPop/10)) # gets the current population value and adds the same value / 10 to it
+        db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,)) # updates the db with the new value for population
+        conn.commit()
 
 @app.route("/", methods=["GET"])
 def index():
@@ -156,23 +170,6 @@ def signup():
                 return redirect("/")
     else:
         return render_template("signup.html")
-
-# @celery.task()
-# TODO: create a celery task so this task would do itself every midnight or so
-def populationGrowth():
-    conn = sqlite3.connect('affo/aao.db') # connects to db
-    db = conn.cursor()
-    pop = db.execute("SELECT population, id FROM stats").fetchall() # selects id, population from the stats table and gets all the results for it
-
-    for row in pop: # iterates over every result in population
-        user_id = row[1] # sets the user_id variable to the "id" result from the query
-        curPop = row[0]  # sets the current population variable to the "population" result from the query
-        newPop = curPop + (int(curPop/10)) # gets the current population value and adds the same value / 10 to it
-        db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,)) # updates the db with the new value for population
-        conn.commit()
-
-    pop = db.execute("SELECT population FROM stats").fetchall()[0] # selects the population
-    return pop # returns population TODO: change it so it wouldn't return population, just update the stats
 
 @login_required
 @app.route("/country/id=<cId>")
