@@ -10,6 +10,8 @@ import NationsScript as Game
 import datetime
 import _pickle as pickle
 import random
+from celery import Celery
+from celery.schedules import crontab
 
 Game.ping()
 
@@ -47,10 +49,6 @@ def eventCheck():
 # uncomment when war ping is finished
 # warChecker.add_job()
 
-
-# from celery import Celery
-# from celery.schedules import crontab
-
 app = Flask(__name__)
 
 #basic cache configuration
@@ -59,16 +57,27 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-# celery.conf.update(app.config)
+app.config["CELERY_BROKER_URL"] = 'amqp://ano:ano@localhost:5672/ano'
+app.config["CELERY_RESULT_BACKEND"] = 'amqp://ano:ano@localhost:5672/ano'
 
-"""@celery.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-    # Executes every minute
-    sender.add_periodic_task(
-        crontab(minute='*/1'),
-        populationGrowth.s(),
-    )"""
+celery_beat_schedule = {
+    "time_scheduler": {
+        "task": "app.populationGrowth", # here the task is populationGrowth
+        "schedule": 10.0, # it executes every 10 seconds
+    }
+}
+
+# Initialize Celery and update its config
+celery = Celery(app.name)
+celery.conf.update(
+    result_backend=app.config["CELERY_RESULT_BACKEND"],
+    broker_url=app.config["CELERY_BROKER_URL"],
+    timezone="UTC",
+    task_serializer="json",
+    accept_content=["json"],
+    result_serializer="json",
+    beat_schedule=celery_beat_schedule,
+)
 
 @app.route("/", methods=["GET"])
 def index():
