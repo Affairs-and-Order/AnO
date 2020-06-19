@@ -15,14 +15,23 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 3. Type `flask run` in this repo's folder on your own PC.
 4. Navigate to `http://127.0.0.1:5000/` or the url flask gave you in your browser. The website should run
 
+# RabbitMQ
+
+### Arch
+
+1. Install rabbitmq by typing `pacman -S rabbitmq`
+2. Follow this guide: https://docs.celeryproject.org/en/stable/getting-started/brokers/rabbitmq.html and name your username, password and vhost `ano`
+3. Run rabbitmq by typing: `sudo rabbitmq-server`
+
+### Debian
+
+1.
+2.
+3. TODO
+
 # Celery
 
-# we currently don't use celery so no need to install it
-
-1. Install redis from here https://github.com/microsoftarchive/redis
-2. Navigate to the installation path and run `redis-server`
-3. Run celery in another terminal window using `celery -A app.celery worker -l info -P gevent`
-4. Run Flask in yet another terminal window
-
-Does not work on `repl.it` use `CS50 IDE` or run it on your own machine.
-If you are using `CS50 IDE` use `flask run --host=0.0.0.0 --port=8080` instead of `flask run` and add `https://`  at the front and a `/` at the end of the link.
+1. Navigate into the `AnO` folder.
+2. Run `celery -A app.celery worker --loglevel=INFO --detach --pidfile=''` in a terminal window.
+3. Run `celery -A app.celery beat --loglevel=INFO --detach --pidfile=''` in yet another terminal window.
+4. For celery to work, you've gotta run Flask in yet another terminal window.

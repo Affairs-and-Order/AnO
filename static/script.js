@@ -57,6 +57,113 @@ function provinceland() {
     document.getElementById("provincecity").classList.remove("provincecityclick");
     document.getElementById("city").classList.remove("cityclick");
 }
+//CITY SLIDER
+$(document).ready(function() {
+
+    document.getElementById("cityelectricity").classList.add("cityelectricityclick");
+    document.getElementById("electricity").classList.add("electricityclick");
+
+});
+//
+function cityelectricity() {
+
+
+    document.getElementById("cityelectricity").classList.add("cityelectricityclick");
+    document.getElementById("electricity").classList.add("electricityclick");
+
+    //
+
+    document.getElementById("cityretail").classList.remove("cityretailclick");
+    document.getElementById("retail").classList.remove("retailclick");
+
+    document.getElementById("cityworks").classList.remove("cityworksclick");
+    document.getElementById("works").classList.remove("worksclick");
+
+}
+//
+function cityretail() {
+
+    document.getElementById("cityretail").classList.add("cityretailclick");
+    document.getElementById("retail").classList.add("retailclick");
+
+    //
+
+    document.getElementById("cityelectricity").classList.remove("cityelectricityclick");
+    document.getElementById("electricity").classList.remove("electricityclick");
+
+    document.getElementById("cityworks").classList.remove("cityworksclick");
+    document.getElementById("works").classList.remove("worksclick");
+
+}
+//
+function cityworks() {
+
+    document.getElementById("cityworks").classList.add("cityworksclick");
+    document.getElementById("works").classList.add("worksclick");
+
+    //
+
+    document.getElementById("cityelectricity").classList.remove("cityelectricityclick");
+    document.getElementById("electricity").classList.remove("electricityclick");
+
+    document.getElementById("cityretail").classList.remove("cityretailclick");
+    document.getElementById("retail").classList.remove("retailclick");
+
+}
+//
+//LAND SLIDER
+$(document).ready(function() {
+
+    document.getElementById("landmilitary").classList.add("landmilitaryclick");
+    document.getElementById("military").classList.add("militaryclick");
+
+});
+//
+function landmilitary() {
+
+
+    document.getElementById("landmilitary").classList.add("landmilitaryclick");
+    document.getElementById("military").classList.add("militaryclick");
+
+    //
+
+    document.getElementById("landindustry").classList.remove("landindustryclick");
+    document.getElementById("industry").classList.remove("industryclick");
+
+    document.getElementById("landprocessing").classList.remove("landprocessingclick");
+    document.getElementById("processing").classList.remove("processingclick");
+
+}
+//
+function landindustry() {
+
+    document.getElementById("landindustry").classList.add("landindustryclick");
+    document.getElementById("industry").classList.add("industryclick");
+
+    //
+
+    document.getElementById("landmilitary").classList.remove("landmilitaryclick");
+    document.getElementById("military").classList.remove("militaryclick");
+
+    document.getElementById("landprocessing").classList.remove("landprocessingclick");
+    document.getElementById("processing").classList.remove("processingclick");
+
+}
+//
+function landprocessing() {
+
+    document.getElementById("landprocessing").classList.add("landprocessingclick");
+    document.getElementById("processing").classList.add("processingclick");
+
+    //
+
+    document.getElementById("landmilitary").classList.remove("landmilitaryclick");
+    document.getElementById("military").classList.remove("militaryclick");
+
+    document.getElementById("landindustry").classList.remove("landindustryclick");
+    document.getElementById("industry").classList.remove("industryclick");
+
+}
 //MILITARY SLIDER
 $(document).ready(function() {
 
