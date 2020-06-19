@@ -27,7 +27,8 @@
                 <h3 class="smallheader">About</h3>
 
             </div>
-            {% if userInCol == True %} <!-- if user isnt in coalition, maybe this is wrong ?-->
+            {% if userInCol == True %}
+            <!-- if user isnt in coalition, maybe this is wrong ?-->
             <script>
                 $(document).ready(function() {
 
@@ -56,7 +57,8 @@
                 <!-- somewhy doesnt work, no idea why -->
             </div>
 
-            {% if userInCol == True %} <!--TODO: fix this lul-->
+            {% if userInCol == False %}
+            <!--TODO: fix this lul-->
             <script>
                 $(document).ready(function() {
 
@@ -396,24 +398,24 @@
                                 <tr>
                                     <td>
                                         <form method="POST">
-                                        <div class="templatedivflex2 menuflex">
-                                            <!-- plus sign-->
-                                            <div class="templatedivflex2left flexchildvanilla">
+                                            <div class="templatedivflex2 menuflex">
+                                                <!-- plus sign-->
+                                                <div class="templatedivflex2left flexchildvanilla">
 
-                                                <button formaction="/add/{{ id[0] }}"><span class="material-icons iconblue">
+                                                    <button formaction="/add/{{ id[0] }}"><span class="material-icons iconblue">
                                                     add_circle_outline
                                                     </span></button>
 
-                                            </div>
-                                            <!-- minus sign-->
-                                            <div class="templatedivflex2left flexchildvanilla">
+                                                </div>
+                                                <!-- minus sign-->
+                                                <div class="templatedivflex2left flexchildvanilla">
 
-                                                <span class="material-icons iconred">
+                                                    <span class="material-icons iconred">
                                                     highlight_off
                                                     </span>
 
+                                                </div>
                                             </div>
-                                        </div>
                                         </form>
                                     </td>
                                     <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>

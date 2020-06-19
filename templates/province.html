@@ -745,17 +745,17 @@
 
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Oil Plantations</h2>
+                    <h2 class="templatecontentheaderleft">Farm</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
+                            <h3 class="unitcount">You have {{ farm }} Farms</h3>
 
-                            <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                            <p class="templatecontentpleft">Farms</p>
 
-                            <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                            <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                            <ul>Farms cost [ farmCost ] Each</ul>
+                            <ul>Farms produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
                                 <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
@@ -772,7 +772,7 @@
 
                                     </div>
                                 </div>
-                                <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
                             </div>
 
                         </div>
@@ -781,7 +781,7 @@
 
 
 
-                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            <img class="unitimage" src="{{ url_for('static', filename='images/farm.jpg') }}" />
                         </div>
                     </div>
 
