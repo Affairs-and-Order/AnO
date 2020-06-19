@@ -8,8 +8,46 @@
     </div>
 
     <div class="templatedivcontent">
-        <h2 class="templatecontentheaderleft"></h2>
-        <p class="templatecontentpleft"></p>
+        <form action="/coalitions" method="POST">
+            <div class="templatedivflex2 divflex2full">
+
+                <div class="templatedivflex2left">
+
+                    <select class="templateselect">
+
+                        <option class="templateoption">Influence</option>
+                        <option class="templateoption">Military</option>
+                        <option class="templateoption">Population</option>
+                        <option class="templateoption">GDP</option>
+                        <option class="templateoption">GDP per capita</option>
+                        <option class="templateoption">Established</option>
+                    
+                    </select>
+
+                </div>
+                <div class="templatedivflex2right">
+
+                    <select class="templateselect">
+
+                        <option>Ascending</option>
+                        <option class="templateoption">Descending</option>
+                    
+                    </select>
+
+                </div>
+                <div class="templatedivflex2left">
+
+                    <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="Search" />
+
+                </div>
+                <div class="templatedivflex2right">
+
+                    <button class="templatedivbutton smallactionbutton" type="submit">Submit</button>
+
+                </div>
+
+            </div>
+        </form>
 
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
@@ -26,7 +64,9 @@
                     <td>Influence</td>
                     <td>{{ date }}</td>
                     {% if colName == "No Coalition" %}
-                    <td><p>No Coalition</p></td> {% endif %} {% if colName != "No Coalition" %}
+                    <td>
+                        <p>No Coalition</p>
+                    </td> {% endif %} {% if colName != "No Coalition" %}
                     <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                     {% endif %}
                 </tr>
