@@ -48,7 +48,6 @@ def eventCheck():
 # uncomment when war ping is finished
 # warChecker.add_job()
 
-
 app = Flask(__name__)
 
 #basic cache configuration

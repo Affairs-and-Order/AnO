@@ -13,7 +13,7 @@ import random
 from celery import Celery
 from celery.schedules import crontab
 
-Game.ping()
+# Game.ping() # temporarily removed this line because it might make celery not work
 
 # this is the war checker, it will update on going wars between nations
 # runs once a day
@@ -91,7 +91,7 @@ def populationGrowth():
         curPop = row[0]  # sets the current population variable to the "population" result from the query
         newPop = curPop + (int(curPop/10)) # gets the current population value and adds the same value / 10 to it
         db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,)) # updates the db with the new value for population
-        conn.commit()
+        conn.commit() # commits everything new
 
 @app.route("/", methods=["GET"])
 def index():
