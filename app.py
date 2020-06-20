@@ -196,19 +196,17 @@ def signup():
 def country(cId):
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
+
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
-    connection.commit()
 
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     provinces = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
-    connection.commit()
 
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    connection.commit()
 
-    if cId == session["user_id"]:
+    if str(cId) == str(session["user_id"]):
         status = True
     else:
         status = False
