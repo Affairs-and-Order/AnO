@@ -15,24 +15,25 @@
             </span>Create Province</a>
         <div class="templatedivflex2 templatesidemenuflexparent">
             <div class="stickyflexmenu">
-                {% for i, j, k, l in pAll %}
+                {% for cityCount, population, name, pId in pAll %}
                 <!--make an anchor for every province the player has-->
-                <a class="menubara" href="/province/{{ l[0] }}"><span class="material-icons-outlined">
+                <a class="menubara" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
                     account_balance
-                    </span>{{ k[0] }}</a> {% endfor %}
+                    </span>{{ name[0] }}</a> 
+                {% endfor %}
             </div>
 
-            <div class="templatefullwidthflexchild">
-                {% for i, j, k, l in pAll %}
+            <div class="templatefullwidthflexchild"> <!-- unsure whats wrong here, could you be more specific - t0dd -->
+                {% for cityCount, population, name, pId in pAll %}
                 <!--make a div for every province the player has-->
                 <div class="menudiv" id="{{ provinceName }}">
 
-                    <h2 class="templatecontentheaderleft">{{ k[0] }}</h2>
+                    <h2 class="templatecontentheaderleft">{{ name[0] }}</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <a class="forgotpasscode loginsignupforgot" href="/province/{{ l[0] }}"><span class="material-icons-outlined">
+                            <a class="forgotpasscode loginsignupforgot" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
                                 account_balance
                                 </span>Visit Province</a>
 
@@ -42,11 +43,11 @@
                                 </tr>
                                 <tr>
                                     <td>City Count:</td>
-                                    <td>{{ i[0] }}</td>
+                                    <td>{{ cityCount[0] }}</td>
                                 </tr>
                                 <tr>
                                     <td>Population:</td>
-                                    <td>{{ j[0] }}</td>
+                                    <td>{{ population[0] }}</td>
                                 </tr>
                                 <tr>
                                     <td>Infrastructure slots:</td>
