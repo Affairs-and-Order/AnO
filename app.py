@@ -389,10 +389,11 @@ def province(pId):
         name = db.execute("SELECT provinceName FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
         population = db.execute("SELECT population FROM provinces WHERE provinceId = (?)", (pId, )).fetchone()[0]
         cityCount = db.execute("SELECT cityCount FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
+        land = (db.execute("SELECT land FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0])
 
         connection.commit()
 
-        return render_template("province.html", pId=pId, population=population, name=name, cityCount=cityCount)
+        return render_template("province.html", pId=pId, population=population, name=name, cityCount=cityCount, land=land)
 
 # rawCol (for easy finding using CTRL + F)
 @login_required
