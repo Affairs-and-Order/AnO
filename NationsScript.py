@@ -182,8 +182,7 @@ class Nation:
 
                 effectiveness = 0.09 * usedSupplies * unitType["damage"]
                 provincePopulation = \
-                    cursor.execute("SELECT population FROM provinces WHERE provinceId=?",
-                                   (attackedProvince)).fetchone()[0]
+                cursor.execute("SELECT population FROM provinces WHERE provinceId=?"(attackedProvince)).fetchone()[0]
                 PopulationLoss = provincePopulation - effectiveness * 10
 
                 cursor.execute(f"UPDATE war SET population={PopulationLoss} WHERE provinceId={attackedProvince})")
@@ -192,7 +191,7 @@ class Nation:
                 currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0]
                 updatedMorale = currentMorale - effectiveness
 
-                cursor.execute(f"INSERT INTO war (morale) VALUES ({updatedMorale})", ())
+                cursor.execute(f"UPDATE war SET morale ({updatedMorale})", ())
                 connection.commit()
 
         # else return -1
@@ -258,9 +257,7 @@ class Nation:
             duringAttack = currentUnits - unitAmount
 
             cursor.execute(f"UPDATE {unitType['type']} SET {unitType} = {duringAttack} WHERE id={self.id}", ())
-            cursor.execute(
-                f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)",
-                ())
+            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)",())
 
             totalBattlingUnits = 0
             for unit in self.inBattleUnits:
