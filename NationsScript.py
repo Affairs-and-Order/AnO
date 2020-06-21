@@ -205,12 +205,10 @@ class Nation:
             for unit in self.inBattleUnits:
 
                 attackPower += unit["damage"]
-                battleAdvantage = random.random(-1,
-                                                1)  # add a very small amount of randomness to the battle, shouldn't cause any major game changing events
+                battleAdvantage = random.random(-1, 1)  # add a very small amount of randomness to the battle, shouldn't cause any major game changing events
 
                 attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
-                defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[
-                    0]
+                defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
 
                 techScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={self.foobar}", ()).fetchone()[0]
                 defenderTechScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={enemy.foobar}", ()).fetchone()[0]
@@ -263,7 +261,7 @@ class Nation:
             for unit in self.inBattleUnits:
                 totalBattlingUnits += unit["amount"]
 
-            battleAdvantage = calculateBattleAdvantage()
+            battleAdvantage = self.calculateBattleAdvantage()
 
     def checkWar(self, war):
         '''checks who is winning a war'''

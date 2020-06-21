@@ -15,43 +15,6 @@ from celery.schedules import crontab
 
 # Game.ping() # temporarily removed this line because it might make celery not work
 
-# this is the war checker, it will update on going wars between nations
-# runs once a day
-def warPing():
-    connection = sqlite3.connect("affo/aoo.db")
-    cursor = connection.cursor()
-    for user in cursor.execute(f"SELECT id FROM war", ()).fetchall():
-        # war has lasted more than 3 days, end the war
-        if cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] > 3:
-            nationObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={user}").fetchone()[0])
-            enemyID = cursor.execute(f"SELECT enemy FROM war WHERE id={user}").fetchone()[0]
-
-            enemyObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={enemyID}").fetchone()[0])
-
-        # otherwise, update the duration of the war
-        elif cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] < 3:
-            currentDuration = cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0]
-            cursor.execute(f"INSERT INTO war (duration)  VALUES ({currentDuration + 1},)", ())
-            connection.commit()
-
-# runs once every hour
-def increaseSupplies():
-    connection = sqlite3.connect("affo/aoo.db")
-    cursor = connection.cursor()
-    for user in cursor.execute(f"SELECT id FROM users").fetchall():
-        for supplies in cursor.execute(f"SELECT supplies FROM war WHERE id={user[0]}").fetchall():
-            increasedSupplies = supplies[0] + 100
-            cursor.execute(f"INSERT INTO war (supplies) VALUES ({increasedSupplies} WHERE id={user[0]})")
-            connection.commit()
-
-
-def eventCheck():
-    rng = random.randint(1, 100)
-    events = {
-    }
-    if rng == 50:
-        pass
-    # will decide if natural disasters occure
 
 
 # warChecker = BackgroundScheduler() # wont be using this <
@@ -75,6 +38,18 @@ celery_beat_schedule = {
         "task": "app.populationGrowth",
         # Run every second
         "schedule": 1.0,
+    },
+
+    "check_war": {
+        "task": "app.warPing",
+        # Run every day
+        "schedule": 86400.0,
+    },
+
+    "increase_supplies": {
+        "task": "app.increaseSupplies",
+        # Runs every hour
+        "schedule": 3600.0,
     }
 }
 
@@ -89,6 +64,46 @@ celery.conf.update(
     result_serializer="json",
     beat_schedule=celery_beat_schedule,
 )
+
+# runs once a day
+@celery.task()
+def warPing():
+    connection = sqlite3.connect("affo/aoo.db")
+    cursor = connection.cursor()
+    for user in cursor.execute(f"SELECT id FROM war", ()).fetchall():
+        # war has lasted more than 3 days, end the war
+        if cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] > 3:
+            nationObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={user}").fetchone()[0])
+            enemyID = cursor.execute(f"SELECT enemy FROM war WHERE id={user}").fetchone()[0]
+
+            enemyObject = pickle.load(cursor.execute(f"SELECT nation FROM users WHERE id={enemyID}").fetchone()[0])
+
+        # otherwise, update the duration of the war
+        elif cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] < 3:
+            currentDuration = cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0]
+            cursor.execute(f"INSERT INTO war (duration)  VALUES ({currentDuration + 1},)", ())
+            connection.commit()
+
+# runs once every hour
+@celery.task()
+def increaseSupplies():
+    connection = sqlite3.connect("affo/aoo.db")
+    cursor = connection.cursor()
+    for user in cursor.execute(f"SELECT id FROM users").fetchall():
+        for supplies in cursor.execute(f"SELECT supplies FROM war WHERE id={user[0]}").fetchall():
+            increasedSupplies = supplies[0] + 100
+            cursor.execute(f"INSERT INTO war (supplies) VALUES ({increasedSupplies} WHERE id={user[0]})")
+            connection.commit()
+
+# runs once a day
+@celery.task()
+def eventCheck():
+    rng = random.randint(1, 100)
+    events = {
+    }
+    if rng == 50:
+        pass
+    # will decide if natural disasters occure
 
 @celery.task()
 def populationGrowth():
