@@ -15,8 +15,6 @@ from celery.schedules import crontab
 
 # Game.ping() # temporarily removed this line because it might make celery not work
 
-
-
 # warChecker = BackgroundScheduler() # wont be using this <
 # eventChecker = BackgroundScheduler()
 # uncomment when war ping is finished
@@ -38,8 +36,10 @@ celery_beat_schedule = {
         "task": "app.populationGrowth",
         # Run every second
         "schedule": 1.0,
-    },
+    }
+}
 
+"""
     "check_war": {
         "task": "app.warPing",
         # Run every day
@@ -51,7 +51,8 @@ celery_beat_schedule = {
         # Runs every hour
         "schedule": 3600.0,
     }
-}
+"""
+
 
 # Initialize Celery and update its config
 celery = Celery(app.name)
@@ -65,6 +66,20 @@ celery.conf.update(
     beat_schedule=celery_beat_schedule,
 )
 
+@celery.task()
+def populationGrowth():
+    conn = sqlite3.connect('affo/aao.db') # connects to db
+    db = conn.cursor()
+    pop = db.execute("SELECT population, id FROM stats").fetchall() # selects id, population from the stats table and gets all the results for it
+
+    for row in pop: # iterates over every result in population
+        user_id = row[1] # sets the user_id variable to the "id" result from the query
+        curPop = row[0]  # sets the current population variable to the "population" result from the query
+        newPop = curPop + (int(curPop/10)) # gets the current population value and adds the same value / 10 to it
+        db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,)) # updates the db with the new value for population
+        conn.commit() # commits everything new
+
+"""
 # runs once a day
 @celery.task()
 def warPing():
@@ -104,19 +119,7 @@ def eventCheck():
     if rng == 50:
         pass
     # will decide if natural disasters occure
-
-@celery.task()
-def populationGrowth():
-    conn = sqlite3.connect('affo/aao.db') # connects to db
-    db = conn.cursor()
-    pop = db.execute("SELECT population, id FROM stats").fetchall() # selects id, population from the stats table and gets all the results for it
-
-    for row in pop: # iterates over every result in population
-        user_id = row[1] # sets the user_id variable to the "id" result from the query
-        curPop = row[0]  # sets the current population variable to the "population" result from the query
-        newPop = curPop + (int(curPop/10)) # gets the current population value and adds the same value / 10 to it
-        db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,)) # updates the db with the new value for population
-        conn.commit() # commits everything new
+"""
 
 @app.route("/", methods=["GET"])
 def index():
