@@ -526,8 +526,8 @@ def get_status(unit, table, userId):
         db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table"""
 
 @login_required
-@app.route("/<way>/<units>", methods=["POST"])
-def sell_buy(way, units):
+@app.route("/<way>/<typee>/<units>", methods=["POST"])
+def sell_buy(way, typee, units):
 
     if request.method == "POST":
     
@@ -539,7 +539,7 @@ def sell_buy(way, units):
         allUnits = ["soldiers", "tanks", "artillery",
         "flying_fortresses", "fighter_jets", "apaches"
         "destroyers", "cruisers", "submarines",
-        "spies", "icbms", "nukes"] # all allowed units
+        "spies", "icbms", "nukes", "cityCount", "land"] # all allowed units
 
         if units not in allUnits:
             return redirect("/no_such_unit")
@@ -584,38 +584,66 @@ def sell_buy(way, units):
             table = "special"
             price = 1000
 
+        elif units == "cityCount":
+            table = "provinces"
+            price = 500
+        elif units == "land":
+            table = "provinces"
+            price = 250
 
-        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-        wantedUnits = request.form.get(units)
-        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
-        totalPrice = int(wantedUnits) * price
-        currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
+        if typee == "normal": # if buying or selling from military
 
-        if way == "sell":
+            gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+            wantedUnits = request.form.get(units)
+            print("UUUUUUUUUUUUUUUU" + units)
+            curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
+            print("PPPPPPPPPPPPPPPP" + price)
+            totalPrice = int(wantedUnits) * price
+            currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
 
-            if int(wantedUnits) > int(currentUnits): # checks if unit is legits
-                return redirect("/too_much_to_sell") # seems to work
+            if way == "sell":
 
-            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
+                if int(wantedUnits) > int(currentUnits): # checks if unit is legits
+                    return redirect("/too_much_to_sell") # seems to work
 
-        elif way == "buy":
+                unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+                db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
+                db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
+
+            elif way == "buy":
+
+                if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
+                    return redirect("/too_many_units")
+
+                db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
+
+                updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+                db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
+
+            else: 
+                error(404, "Page not found")
+
+            connection.commit()
+
+        elif typee == "province": # if buying from province
+
+            gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+            wantedUnits = request.form.get(units)
+            curUnStat = f'SELECT {units} FROM {table} WHERE userId=?'
+            totalPrice = int(wantedUnits) * price
+            currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
 
             if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
                 return redirect("/too_many_units")
 
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            updStat = f"UPDATE {table} SET {units}=(?) WHERE userId=(?)"
             db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
 
-        else: 
-            error(404, "Page not found")
+            connection.commit()
 
-        connection.commit()
-
-        return redirect("/military")
+        return redirect("/provinces")
 
 
 
