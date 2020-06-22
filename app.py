@@ -595,9 +595,7 @@ def sell_buy(way, typee, units):
 
             gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
             wantedUnits = request.form.get(units)
-            print("UUUUUUUUUUUUUUUU" + units)
             curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
-            print("PPPPPPPPPPPPPPPP" + price)
             totalPrice = int(wantedUnits) * price
             currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
 
@@ -624,6 +622,8 @@ def sell_buy(way, typee, units):
                 error(404, "Page not found")
 
             connection.commit()
+
+            return redirect("/military")
 
         elif typee == "province": # if buying from province
 
