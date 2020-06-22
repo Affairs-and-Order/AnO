@@ -25,9 +25,9 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 
 ### Debian
 
-1.
-2.
-3. TODO
+1. Follow this guide to install RabbitMQ: https://www.vultr.com/docs/how-to-install-rabbitmq-on-ubuntu-16-04-47 and name your username, password and vhost `ano`
+2. Stop the rabbitmqctl service for naming usernames, vhosts, etc by typing: `sudo rabbitmqctl stop`
+3. Run the RabbitMQ broker by typing: `sudo rabbitmq-server`
 
 # Celery
 
