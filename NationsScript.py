@@ -182,7 +182,7 @@ class Nation:
 
                 effectiveness = 0.09 * usedSupplies * unitType["damage"]
                 provincePopulation = \
-                cursor.execute("SELECT population FROM provinces WHERE provinceId=?"(attackedProvince)).fetchone()[0]
+                cursor.execute("SELECT population FROM provinces WHERE provinceId=?", (attackedProvince,)).fetchone()[0]
                 PopulationLoss = provincePopulation - effectiveness * 10
 
                 cursor.execute(f"UPDATE war SET population={PopulationLoss} WHERE provinceId={attackedProvince})")
