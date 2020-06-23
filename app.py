@@ -43,7 +43,7 @@ celery_beat_schedule = {
     "check_war": {
         "task": "app.warPing",
         # Run every day
-        "schedule": 86400.0,
+        "schedule": 8600.0,
     },
 
     "increase_supplies": {
@@ -853,8 +853,14 @@ def coalitions():
 
         resultName = db.execute("SELECT name FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
         resultId = db.execute("SELECT id FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
+        members = []
+        types = []
 
-        resultAll = zip(resultName, resultId)
+        for i in resultId:
+            members.append(db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (i[0],)).fetchone()[0])
+            types.append(db.execute("SELECT type FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
+
+        resultAll = zip(resultName, resultId, members, types)
         exRes = True
 
         return render_template("coalitions.html", resultAll=resultAll, exRes=exRes)
@@ -943,7 +949,32 @@ def adding(uId):
     db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
     connection.commit()
 
-    return redirect("/coalition/colId")
+    return redirect(f"/coalition/{ colId }")
+
+@login_required
+@app.route("/remove/<uId>", methods=["POST"])
+def removing(uId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    try:
+        colId = db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
+    except TypeError:
+        return error(400, "User hasn't posted a request to join this coalition.")
+
+    cId = session["user_id"]
+
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if leader != cId:
+
+        return error(400, "You are not the leader of the coalition")
+
+    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
+    connection.commit()
+
+    return redirect(f"/coalition/{ colId }")
 
 @app.route("/tutorial", methods=["GET"])
 def tutorial():

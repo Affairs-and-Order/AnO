@@ -73,12 +73,12 @@
                     <th>Type</th>
                 </tr>
                 {% if exRes == True%}
-                {% for name, id in resultAll %}
+                {% for name, id, member, type in resultAll %}
                 <tr>
                     <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
                     <td>Influence</td>
-                    <td>Members</td>
-                    <td>Type</td>
+                    <td>{{ member }}</td>
+                    <td>{{ type }}</td>
                 </tr>
                 {% endfor %}
                 {% endif %}
