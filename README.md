@@ -31,7 +31,8 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 
 # Celery
 
+#### IMPORTANT NOTE: open all your terminals using `sudo -i`, this will give root access to celery.
 1. Navigate into the `AnO` folder.
-2. Run `celery -A app.celery worker --loglevel=INFO --detach --pidfile=''` in a terminal window.
-3. Run `celery -A app.celery beat --loglevel=INFO --detach --pidfile=''` in yet another terminal window.
-4. For celery to work, you've gotta run Flask in yet another terminal window.
+2. Run `celery -A app.celery worker --loglevel=INFO --pidfile=''` in a terminal window.
+3. Run `celery -A app.celery beat --loglevel=INFO --pidfile=''` in yet another terminal window.
+4. For celery to work, you've gotta run Flask in yet another terminal window. You can do so by typing: `flask run` in a different terminal window.
