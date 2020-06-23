@@ -35,6 +35,7 @@
                     </select>
 
                 </div>
+                <form action="/coalitions" method="POST">
                 <div class="templatedivflex2left">
 
                     <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="Search" />
@@ -47,7 +48,7 @@
                 </div>
 
             </div>
-        </form>
+            </form>
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
 
@@ -71,6 +72,16 @@
                     <th>Members</th>
                     <th>Type</th>
                 </tr>
+                {% if exRes == True%}
+                {% for name, id in resultAll %}
+                <tr>
+                    <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
+                    <td>Influence</td>
+                    <td>Members</td>
+                    <td>Type</td>
+                </tr>
+                {% endfor %}
+                {% endif %}
                 {% for id, name, members, type in colStats %}
                 <tr>
                     <td><a href="/coalition/{{ id }}">{{ name }}</a> </td>

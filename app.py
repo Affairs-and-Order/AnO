@@ -814,6 +814,7 @@ def countries():
 @app.route("/coalitions", methods=["GET", "POST"])
 def coalitions():
     if request.method == "GET":
+        
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
