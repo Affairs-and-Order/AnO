@@ -976,6 +976,15 @@ def removing(uId):
 
     return redirect(f"/coalition/{ colId }")
 
+@app.route("/logout", methods=["GET"])
+def logout():
+    if request.method == "GET":
+        if 'user_id' in session:
+            session.pop('user_id', None)
+        else:
+            return error(400, "You are not logged in")
+        return redirect("/login")
+
 @app.route("/tutorial", methods=["GET"])
 def tutorial():
     return render_template("tutorial.html")
