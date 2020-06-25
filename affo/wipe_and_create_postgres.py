@@ -8,6 +8,7 @@ tables = ["air", "coalitions", "colNames", "ground", "provinces",
 
 for i in tables:
     with open(f"raw/{i}.txt") as file:
+        db.execute(f"DROP TABLE IF EXISTS {i}")
         db.execute(file.read())
         print(f"Recreated table {i}")
         conn.commit()
