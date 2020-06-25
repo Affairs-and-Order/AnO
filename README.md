@@ -36,3 +36,9 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 2. Run `celery -A app.celery worker --loglevel=INFO --pidfile=''` in a terminal window.
 3. Run `celery -A app.celery beat --loglevel=INFO --pidfile=''` in yet another terminal window.
 4. For celery to work, you've gotta run Flask in yet another terminal window. You can do so by typing: `flask run` in a different terminal window.
+
+# PostgresQL
+
+### Windows
+1. Get the `.exe` installer from here: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads. Download version 12.3
+2. Run the installer, leave the default port and other default settings, set your password as `ano`
