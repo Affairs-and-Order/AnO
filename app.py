@@ -547,6 +547,7 @@ def sell_buy(way, typee, units):
         if units not in allUnits:
             return redirect("/no_such_unit")
 
+        # update this so it works using the nations script
         if units == "soldiers": # maybe change this to a dictionary later on
             table = "ground"
             price = 50
