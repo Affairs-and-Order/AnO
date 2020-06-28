@@ -20,7 +20,7 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 ### Windows
 1. Get the `.exe` installer from here: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads. Download version 12.3
 2. Run the installer, leave the default port and other default settings, set your password as `ano`
-3. Run this command in the `psql` terminal: `\i C:\Users\user\Desktop\AnO\affo\dump.sql` replace the path with your path for `dump.sql`.
+3. Run the `postgres_setup.py` file in AnO/affo to create your database instance.
 
 # RabbitMQ
 
