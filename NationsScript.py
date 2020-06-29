@@ -153,6 +153,7 @@ class Nation:
 
         self.allies = []
 
+
     # increases morale but decreases attack power
     def fortify(self, usedSupplies, unitType, unitAmount, enemyNation):
         connection = sqlite3.connect(path)
@@ -189,7 +190,7 @@ class Nation:
                 cursor.execute(f"UPDATE war SET population={PopulationLoss} WHERE provinceId={attackedProvince})")
                 connection.commit()
 
-                currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0]
+                currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0])
                 updatedMorale = currentMorale - effectiveness
 
                 cursor.execute(f"INSERT INTO war (morale) VALUES ({updatedMorale})", ())
@@ -206,12 +207,10 @@ class Nation:
             for unit in self.inBattleUnits:
 
                 attackPower += unit["damage"]
-                battleAdvantage = random.random(-1,
-                                                1)  # add a very small amount of randomness to the battle, shouldn't cause any major game changing events
+                battleAdvantage = random.random(-1, 1)  # add a very small amount of randomness to the battle, shouldn't cause any major game changing events
 
                 attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
-                defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[
-                    0]
+                defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
 
                 techScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={self.foobar}", ()).fetchone()[0]
                 defenderTechScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={enemy.foobar}", ()).fetchone()[0]
@@ -240,6 +239,13 @@ class Nation:
             raise Exception("enemy province number cannot be higher than the attacker's province number!")
         elif len(self.warList) >= 5:
             raise Exception("user can only be in 5 wars at a time")
+
+
+    # currently reworking this
+    def attack(self, category, unitType, unitAmount, enemyNation):
+        if enemyNation.province > self.provinceAmount:
+            raise Exception("enemy province number cannot be higher than the attacker's province number!")
+
         else:
             self.warList.append(enemyNation)
             self.inBattleUnits.append(unitType)
@@ -258,9 +264,7 @@ class Nation:
             duringAttack = currentUnits - unitAmount
 
             cursor.execute(f"UPDATE {unitType['type']} SET {unitType} = {duringAttack} WHERE id={self.id}", ())
-            cursor.execute(
-                f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)",
-                ())
+            cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)",())
 
             totalBattlingUnits = 0
             for unit in self.inBattleUnits:
@@ -274,12 +278,26 @@ class Nation:
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
 
+        attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
+        defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
+
+        # do we have a totalNumberofTroops in the DB?
+        # totalUnitsAvailable = all unit types amount combined
+        totalUnitsAvailable = 100
+        # if numberOfUnits <= totalUnitsAvailable: # undefined variable numberOfUnits (idk why)
+
+        """
+            total = 0
+            for troop in military.units:
+                total += military.units[troop]["cost"]
+            print(total)
+        """
         """
 
         Things to add:
         - ongoing global wars in app.py
         - add current war (ie. in Nation.attack) to DB
-        
+
         def attack (unitType, numberOfUnits, enemyNation):
             self.warlist.append(enemyNation.id)
 
@@ -299,7 +317,7 @@ class Nation:
             c = Nation(self.warList[war], b, a)
             return c
 
-    # this saves the nation obj to the database using pickle (in bytes) 
+    # this saves the nation obj to the database using pickle (in bytes)
     def saveToDB(self):
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
