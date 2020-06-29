@@ -410,9 +410,9 @@
                                                 <!-- minus sign-->
                                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                                    <span class="material-icons iconred">
+                                                    <button formaction="/remove/{{ id[0] }}"><span class="material-icons iconred">
                                                     highlight_off
-                                                    </span>
+                                                    </span></button>
 
                                                 </div>
                                             </div>
@@ -481,7 +481,9 @@
 
                 </div>
             </div>
+            <form action="/leave/{{ colId }}" method="POST">
             <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
+        </form>
         </div>
 
         <!-- currently disabled this because of bug, moved it elsewhere-->

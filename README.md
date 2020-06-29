@@ -15,6 +15,13 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 3. Type `flask run` in this repo's folder on your own PC.
 4. Navigate to `http://127.0.0.1:5000/` or the url flask gave you in your browser. The website should run
 
+# PostgresQL
+
+### Windows
+1. Get the `.exe` installer from here: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads. Download version 12.3
+2. Run the installer, leave the default port and other default settings, set your password as `ano`
+3. Run the `postgres_setup.py` file in AnO/affo to create your database instance.
+
 # RabbitMQ
 
 ### Arch
@@ -25,13 +32,14 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 
 ### Debian
 
-1.
-2.
-3. TODO
+1. Follow this guide to install RabbitMQ: https://www.vultr.com/docs/how-to-install-rabbitmq-on-ubuntu-16-04-47 and name your username, password and vhost `ano`
+2. Stop the rabbitmqctl service for naming usernames, vhosts, etc by typing: `sudo rabbitmqctl stop`
+3. Run the RabbitMQ broker by typing: `sudo rabbitmq-server`
 
 # Celery
 
+#### IMPORTANT NOTE: open all your terminals using `sudo -i`, this will give root access to celery.
 1. Navigate into the `AnO` folder.
-2. Run `celery -A app.celery worker --loglevel=INFO --detach --pidfile=''` in a terminal window.
-3. Run `celery -A app.celery beat --loglevel=INFO --detach --pidfile=''` in yet another terminal window.
-4. For celery to work, you've gotta run Flask in yet another terminal window.
+2. Run `celery -A app.celery worker --loglevel=INFO --pidfile=''` in a terminal window.
+3. Run `celery -A app.celery beat --loglevel=INFO --pidfile=''` in yet another terminal window.
+4. For celery to work, you've gotta run Flask in yet another terminal window. You can do so by typing: `flask run` in a different terminal window.
