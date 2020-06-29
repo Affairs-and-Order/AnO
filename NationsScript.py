@@ -77,10 +77,8 @@ class Economy:
 
         i = 0
         for resou in self.resources:
-            self.resources[resou] = \
-                db.execute(f"SELECT {self.resourcesNames[i]} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[
-                    0]
-            resourceList.append(self.resources[resou])
+            self.resources[resou] = db.execute(f"SELECT {self.resourcesNames[i]} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
+            resourceList.append(self.resources[resou]) 
             i += 1
 
         return resourceList
@@ -90,7 +88,6 @@ class Economy:
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (military.nationID,)).fetchone()[0]
         wantedUnits = military.units[requested]
         curUnStat = f'SELECT {military.units[requested]} FROM {military.units[requested]["type"]} WHERE id=?'
@@ -98,12 +95,9 @@ class Economy:
         currentUnits = db.execute(curUnStat, (military.nationID,)).fetchone()[0]
 
         if way == "sell":
-
             unitUpd = f"UPDATE {military.units[requested]['type']} SET {military.units[requested]}=(?) WHERE id=(?)"
             db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), military.nationID))
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)",
-                       ((int(gold) + int(wantedUnits) * int(military.units[requested]["cost"])),
-                        military.nationID,))  # clean
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(military.units[requested]["cost"])), military.nationID,))
 
         elif way == "buy":
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold) - int(totalPrice), military.nationID,))
@@ -222,7 +216,31 @@ class Nation:
                     battleAdvantage += 1
                 else:
                     battleAdvantage -= 1
-                # TODO: add more components that will efect the end battle advantage
+
+
+                """
+                - let v = very slight random advantage/disadvantage (0.5/1.5)
+                - let m = morale between 1 - 100 (inclusive)
+                - let t = tech score
+                - let e = effectiveness # ref: line 177 
+                - let n = number of units / difference between unit counts
+                
+                now we make a formula to calculate the population loss, war casualties, and morale loss
+                
+                x = n((v + t) * m)
+                
+                ok now lets test it
+
+                group 1 = 475,000 = 50((-5 + 100) * 100)
+                group 2 = 420,000 = 40((5 + 100) * 100)
+
+                x = n * v(m + (t*e))
+                group 1 = 50 * 0.7(45 + (12))
+            
+                # how about morale divided by 1000 so it doesnt impact the battle much - maybe, but it should effect it a bit more than 100/1000 = 0.1 yeah its just a small boost since we are multiplying by it, it is x * 0.1, which is smaller than it was initially
+                """
+
+                # TODO: add more components that will effect the end battle advantage
 
                 return battleAdvantage
 
@@ -256,7 +274,6 @@ class Nation:
 
             cursor.execute(f"UPDATE {unitType['type']} SET {unitType} = {duringAttack} WHERE id={self.id}", ())
             cursor.execute(f"INSERT INTO war (id, morale, inBattle, enemy, duration) VALUES ({self.id}, 100, {unitAmount}, {enemyNation.id}, DEFAULT)",())
-
             totalBattlingUnits = 0
             for unit in self.inBattleUnits:
                 totalBattlingUnits += unit["amount"]
