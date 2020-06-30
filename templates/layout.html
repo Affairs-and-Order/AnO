@@ -75,9 +75,11 @@
             </span>War</a>
 
         <h3>Global Affairs</h3>
+        {% if inCol.startswith("/coalition/") %}
         <a class="menubara" href="{{ inCol }}"><span class="material-icons-outlined">
             group
             </span>My Coalition</a>
+        {% endif %}
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">
                 group_add
                 </span>Establish a Coalition</a>
