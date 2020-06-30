@@ -80,9 +80,12 @@
             group
             </span>My Coalition</a>
         {% endif %}
+
+        {% if not inCol.startswith("/coalition/") %}
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">
                 group_add
                 </span>Establish a Coalition</a>
+        {% endif %}
         <a class="menubara" href="/coalitions"><span class="material-icons-outlined">
             public
             </span>Coalitions</a>
