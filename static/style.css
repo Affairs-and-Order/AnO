@@ -693,6 +693,8 @@
                 transition: all 0.3s ease;
                 background-color: rgba(255, 255, 255, 0);
                 display: block;
+                height: min-content;
+                width: fit-content;
             }
             
             .templatedivbutton:hover {
@@ -711,7 +713,6 @@
             
             .templatecenteredbutton {
                 transition: all 0.2s;
-                display: block;
                 margin: auto;
             }
             
