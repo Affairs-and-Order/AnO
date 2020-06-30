@@ -467,6 +467,12 @@ def coalition(colId):
             userInCol = False
 
         try:
+            userInCurCol= db.execute("SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
+            userInCurCol = True
+        except:
+            userInCurCol = False
+
+        try:
             inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
             # TODO: fix this because this might causes errors when user is not in a coalition
             inCol = f"/coalition/{inColit}"
@@ -477,7 +483,7 @@ def coalition(colId):
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-        requests=requests)
+        requests=requests, userInCurCol=userInCurCol)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
