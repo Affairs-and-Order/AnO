@@ -183,7 +183,7 @@ class Nation:
                 cursor.execute(f"UPDATE war SET population={PopulationLoss} WHERE provinceId={attackedProvince})")
                 connection.commit()
 
-                currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0])
+                currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0]
                 updatedMorale = currentMorale - effectiveness
 
                 cursor.execute(f"UPDATE war SET morale ({updatedMorale})", ())
