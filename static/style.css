@@ -692,6 +692,7 @@
                 text-transform: uppercase;
                 transition: all 0.3s ease;
                 background-color: rgba(255, 255, 255, 0);
+                display: block;
             }
             
             .templatedivbutton:hover {
@@ -1675,7 +1676,7 @@
             .footer div a:hover {
                 color: rgb(88, 196, 231);
             }
-
+            
             .center {
                 margin: auto;
             }
