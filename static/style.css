@@ -1561,8 +1561,10 @@
             
             .unitimage {
                 width: 80%;
+                max-height: 425px;
                 box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.2);
                 user-select: none;
+                object-fit: cover;
             }
             
             .purchasemilitarydiv {
