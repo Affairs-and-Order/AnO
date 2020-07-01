@@ -548,7 +548,11 @@ def sell_buy(way, typee, units):
         allUnits = ["soldiers", "tanks", "artillery",
         "flying_fortresses", "fighter_jets", "apaches"
         "destroyers", "cruisers", "submarines",
-        "spies", "icbms", "nukes", "cityCount", "land"] # all allowed units
+        "spies", "icbms", "nukes",
+        
+        "cityCount", "land",
+        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
+        ""] # all allowed units
 
         if units not in allUnits:
             return redirect("/no_such_unit")
@@ -600,6 +604,19 @@ def sell_buy(way, typee, units):
         elif units == "land":
             table = "provinces"
             price = 250
+
+        elif units == "oil_burners":
+            table = "proInfra"
+            price = 500
+        elif units == "hydro_dams":
+            table = "proInfra"
+            price = 500
+        elif units == "nuclear_reactors":
+            table = "proInfra"
+            price = 500
+        elif units == "solar_fields":
+            table = "proInfra"
+            price = 500
 
         if typee == "normal": # if buying or selling from military
 
