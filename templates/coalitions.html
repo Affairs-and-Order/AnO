@@ -36,62 +36,59 @@
 
                 </div>
                 <form action="/coalitions" method="POST">
+                    <div class="templatedivflex2left">
+
+                        <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="Search" />
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <button class="templatedivbutton smallactionbutton" type="submit">Submit</button>
+
+                    </div>
+
+            </div>
+            </form>
+            <div class="templatedivflex2 divflex2center">
                 <div class="templatedivflex2left">
 
-                    <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="Search" />
+                    <ul>Looking for a coalition?</ul>
 
                 </div>
                 <div class="templatedivflex2right">
 
-                    <button class="templatedivbutton smallactionbutton" type="submit">Submit</button>
-
-                </div>
-
-            </div>
-            </form>
-        <div class="templatedivflex2 divflex2center">
-            <div class="templatedivflex2left">
-
-                <ul>Looking for a coalition?</ul>
-
-            </div>
-            <div class="templatedivflex2right">
-
-                <a href="/recruitments" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    <a href="/recruitments" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     group_add
                     </span>Recruitment list</a>
 
+                </div>
             </div>
-        </div>
 
-        <div class="templateoutertablediv">
-            <table class="templatetable templatetable2">
-                <tr>
-                    <th>Name</th>
-                    <th>Influence</th>
-                    <th>Members</th>
-                    <th>Type</th>
-                </tr>
-                {% if exRes == True%}
-                {% for name, id, member, type in resultAll %}
-                <tr>
-                    <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a> </td>
-                    <td>Influence</td>
-                    <td>{{ member }}</td>
-                    <td>{{ type }}</td>
-                </tr>
-                {% endfor %}
-                {% endif %}
-                {% for id, name, members, type in colStats %}
-                <tr>
-                    <td><a href="/coalition/{{ id }}">{{ name }}</a> </td>
-                    <td>Influence</td>
-                    <td>{{ members }}</td>
-                    <td>{{ type }}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+            <div class="templateoutertablediv">
+                <table class="templatetable templatetable2">
+                    <tr>
+                        <th>Name</th>
+                        <th>Influence</th>
+                        <th>Members</th>
+                        <th>Type</th>
+                    </tr>
+                    {% if exRes == True%} {% for name, id, member, type in resultAll %}
+                    <tr>
+                        <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a></td>
+                        <td>Influence</td>
+                        <td>{{ member }}</td>
+                        <td>{{ type }}</td>
+                    </tr>
+                    {% endfor %} {% endif %} {% for id, name, members, type in colStats %}
+                    <tr>
+                        <td><a href="/coalition/{{ id }}">{{ name }}</a> </td>
+                        <td>Influence</td>
+                        <td>{{ members }}</td>
+                        <td>{{ type }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
     </div>
 </div>
 
