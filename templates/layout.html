@@ -47,9 +47,6 @@
         <a class="loginsignup" href="/signup"><span class="material-icons-outlined">
             add_circle_outline
             </span>Signup</a> {% elif session.get("logged_in") == True %}
-        <span class="material-icons-outlined resourceicon">
-            monetization_on
-            </span>
         <a class="loginsignup" href="/country/id={{ session['user_id'] }}">
             <span class="material-icons-outlined">
                 outlined_flag
@@ -78,14 +75,10 @@
         {% if inCol.startswith("/coalition/") %}
         <a class="menubara" href="{{ inCol }}"><span class="material-icons-outlined">
             group
-            </span>My Coalition</a>
-        {% endif %}
-
-        {% if not inCol.startswith("/coalition/") %}
+            </span>My Coalition</a> {% endif %} {% if not inCol.startswith("/coalition/") %}
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">
                 group_add
-                </span>Establish a Coalition</a>
-        {% endif %}
+                </span>Establish a Coalition</a> {% endif %}
         <a class="menubara" href="/coalitions"><span class="material-icons-outlined">
             public
             </span>Coalitions</a>
@@ -108,7 +101,16 @@
                 insert_chart_outlined
                 </span>Statistics</a>
         </div>
+        <div class="resourcediv">
+            <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
+        monetization_on
+        </span>
+            <div class="resourcedivcontent" id="resourcedivcontent">
 
+                <p onmouseover="moneyon()" onmouseout="moneyoff()">[goldAmount]</p>
+
+            </div>
+        </div>
     </div>
     {% endif %}
     <!-- <div class="menubardiv" id="menubardiv">

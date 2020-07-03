@@ -24,7 +24,12 @@ function menubardrop() {
 
     document.body.classList.toggle("body");
 }
+//
+function resourcedivcontentshow() {
 
+    document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
+
+}
 //PROVINCE SLIDER
 $(document).ready(function() {
 

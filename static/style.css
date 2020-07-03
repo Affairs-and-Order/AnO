@@ -378,9 +378,17 @@
                 color: rgba(255, 255, 255, 0.5);
             }
             
+            .resourcediv {
+                top: 60px;
+                right: 0px;
+                position: fixed;
+                background-color: #363945;
+                padding-left: 10px;
+                padding-bottom: 5px;
+                box-shadow: rgba(58, 59, 69, 0.8) 0px 0px 8px 0px;
+            }
+            
             .resourceicon {
-                float: right;
-                margin-top: 5px;
                 font-size: 40px !important;
                 cursor: pointer;
                 transition: all 0.2s;
@@ -391,6 +399,26 @@
                 color: rgba(255, 255, 255, 0.5);
             }
             
+            .resourcedivcontent {
+                position: fixed;
+                top: 60px;
+                right: 0px;
+                bottom: 5px;
+                box-shadow: rgba(58, 59, 69, 0.8) 0px 0px 8px 0px;
+                background-color: #363945;
+                width: 200px;
+                margin-right: -200px;
+                transition: all 0.4s ease;
+            }
+            .resourcedivcontentshow {
+                margin: 0;
+            }
+
+            .resourcedivcontent p {
+                float: right;
+                text-align: center;
+            }
+
             .purchasediv {
                 position: fixed;
                 right: 26px;
@@ -400,7 +428,7 @@
                 margin: auto 0;
                 margin-bottom: 40px;
             }
-            
+
             .purchasediv div {
                 width: 100%;
                 background: #363945;
