@@ -101,15 +101,18 @@
                 insert_chart_outlined
                 </span>Statistics</a>
         </div>
-        <div class="resourcediv">
+        <div class="resourcediv" id="resourcediv">
             <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
         monetization_on
         </span>
-            <div class="resourcedivcontent" id="resourcedivcontent">
+        </div>
+        <div class="resourcedivcontent" id="resourcedivcontent">
 
-                <p onmouseover="moneyon()" onmouseout="moneyoff()">[goldAmount]</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="money">[moneyAmount]</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="rations">[rationsAmount]</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="oil">[oilAmount]</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[coalAmount]</p>
 
-            </div>
         </div>
     </div>
     {% endif %}

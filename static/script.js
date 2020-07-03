@@ -27,6 +27,7 @@ function menubardrop() {
 //
 function resourcedivcontentshow() {
 
+    document.getElementById("resourcediv").classList.toggle("resourcedivshow");
     document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
 
 }
