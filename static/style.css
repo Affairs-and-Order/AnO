@@ -416,6 +416,16 @@ label {
     color: rgba(255, 255, 255, 0.5);
 }
 
+.resourcedivcontent::-webkit-scrollbar {
+    width: 10px;
+    background: #e3e9f0;
+}
+
+.resourcedivcontent::-webkit-scrollbar-thumb {
+    background: #36394550;
+    width: 100%;
+}
+
 .resourcedivcontent {
     position: fixed;
     top: 65px;
@@ -425,7 +435,9 @@ label {
     width: 200px;
     margin-right: -200px;
     transition: all 0.4s ease;
-    padding-top: 50px
+    padding-top: 50px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .resourcedivcontentshow {
@@ -434,8 +446,8 @@ label {
 }
 
 .resourcedivcontent p {
-    text-align: center;
-    padding: 2px 5px;
+    text-align: left;
+    padding: 2px 30px;
     margin: 0px 0px;
     font-size: 16px;
     cursor: pointer;
@@ -443,7 +455,7 @@ label {
 }
 
 .resourcedivcontent p:hover {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.65);
 }
 
 .purchasediv {
