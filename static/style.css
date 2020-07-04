@@ -166,6 +166,16 @@
     }
 }
 
+body::-webkit-scrollbar {
+    width: 14px;
+    background: #e3e9f0;
+}
+
+body::-webkit-scrollbar-thumb {
+    background: #36394550;
+    width: 100%;
+}
+
 body {
     background: #f7f9fd;
     padding: 0;
@@ -1785,8 +1795,4 @@ button {
 
 .center {
     margin: auto;
-}
-
-margin: auto;
-
 }
