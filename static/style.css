@@ -394,7 +394,7 @@ label {
 
 .resourcediv {
     top: 65px;
-    right: 0px;
+    right: 10px;
     position: fixed;
     background-color: #363945;
     padding-left: 10px;
@@ -402,16 +402,21 @@ label {
     box-shadow: rgba(58, 59, 69, 0.8) 0px 0px 8px 0px;
     z-index: 1000;
     height: 40px;
-    transition: all 0.4s ease;
+    transition: all 0s ease;
     transition-delay: 0s;
+    border-radius: 100%;
 }
 
 .resourcedivshow {
     box-shadow: rgba(58, 59, 69, 0) 0px 0px 0px 0px;
     background-color: #515463;
     text-align: right;
-    padding-left: 160px;
+    padding-left: 150px;
+    right: 0;
+    padding-right: 10px;
     transition-delay: 0.3s;
+    border-radius: 0;
+    transition: all 0.4s ease;
 }
 
 .resourceicon {
