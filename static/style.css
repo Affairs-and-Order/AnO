@@ -833,9 +833,6 @@ label {
     text-align: center;
 }
 
-
-/* Customize the label (the container) */
-
 .templatecheckmarklabel {
     display: block;
     position: relative;
@@ -848,9 +845,6 @@ label {
     user-select: none;
 }
 
-
-/* Hide the browser's default checkbox */
-
 .templatecheckmarklabel input {
     position: absolute;
     opacity: 0;
@@ -858,9 +852,6 @@ label {
     height: 0;
     width: 0;
 }
-
-
-/* Create a custom checkbox */
 
 .templatecheckmark {
     position: absolute;
@@ -876,18 +867,9 @@ label {
     transition: all 0.3s ease;
 }
 
-
-/* On mouse-over, add a grey background color */
-
-
-/* When the checkbox is checked, add a blue background */
-
 .templatecheckmarklabel input:checked~.templatecheckmark {
     background-position: 0% 100%;
 }
-
-
-/* Create the checkmark/indicator (hidden when not checked) */
 
 .templatecheckmarklabel:after {
     content: "";
@@ -895,15 +877,9 @@ label {
     display: none;
 }
 
-
-/* Show the checkmark when checked */
-
 .templatecheckmarklabel input:checked~.templatecheckmark:after {
     display: block;
 }
-
-
-/* Style the checkmark/indicator */
 
 .templatecheckmarklabel .templatecheckmark:after {
     left: 9px;
@@ -931,6 +907,39 @@ label {
 }
 
 .templateselect:focus {
+    background-position: -100% 0%;
+}
+
+.imageinput {
+    display: block;
+    padding-left: 25px;
+    margin: 12px;
+    cursor: pointer;
+    user-select: none;
+    border: 1.5px solid #e3e9f0;
+    padding: 8px;
+    padding-top: 5px;
+    outline: none;
+    font-size: 16px;
+    transition: all 0.2s;
+    display: block;
+    margin: 12px auto;
+    transition: all 0.3s;
+    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
+    background-size: 200% 200%;
+    background-position: 0% 0%;
+    float: none;
+}
+
+.imageinput input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.imageinput:focus {
     background-position: -100% 0%;
 }
 

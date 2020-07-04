@@ -11,6 +11,10 @@
 
             <h2 class="templatecontentheaderleft">Background Color</h2>
 
+            <div class="coalitionimagepreview">
+                <img id="imageBackground" />
+            </div>
+
             <div class="templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
 
@@ -30,13 +34,13 @@
 
                 </div>
                 <div class="templatedivflex2left">
-
-                    <div class="coalitionimagepreview">
-                        <img id="imageBackground" />
-                    </div>
-
                     <label for="bgimage">Or a custom image</label>
-                    <input class="loginsignupinput" type="file" name="bgimage" accept="image/*" onchange="imageBackground(event)" required/>
+
+                    <label class="imageinput fit center"><span class="material-icons-outlined">
+                            vertical_align_bottom
+                            </span>Choose Image
+                            <input type="file" name="bgimage" id="imageinput" accept="image/*" onchange="imageBackground(event)">
+                          </label>
 
                 </div>
             </div>
