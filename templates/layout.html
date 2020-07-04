@@ -102,9 +102,9 @@
                 </span>Statistics</a>
         </div>
         <div class="resourcediv" id="resourcediv">
-            <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
+            <a> <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
         monetization_on
-        </span>
+        </span></a>
         </div>
         <div class="resourcedivcontent" id="resourcedivcontent">
 
@@ -136,16 +136,16 @@
 
         <a class="menubara" href="/country/id={{ session['user_id'] }}">Country</a>
 
-        <a class="menubara" href="market.html">Market</a>
+            <a class="menubara" href="market.html">Market</a>
 
-        <a class="menubara" href="military.html">Military</a>
+            <a class="menubara" href="military.html">Military</a>
 
-        <a class="menubara" href="index.html">Coalition</a>
+            <a class="menubara" href="index.html">Coalition</a>
 
-        <a class="menubara" href="index.html">World</a>
+            <a class="menubara" href="index.html">World</a>
 
-    </div>
-    -->{% block body %} {% endblock %}
+        </div>
+        -->{% block body %} {% endblock %}
 </body>
 
 </html>
