@@ -1582,6 +1582,7 @@ button {
     object-fit: cover;
     background-position-y: 50%;
     box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.3);
+    user-select: none;
 }
 
 .countryimage {
@@ -1595,6 +1596,7 @@ button {
     background-size: cover;
     object-fit: cover;
     background-position-y: 50%;
+    border: 6px solid #36394590;
 }
 
 .countrycoalitionimage {
@@ -1608,6 +1610,7 @@ button {
     background-size: cover;
     object-fit: cover;
     background-position-y: 50%;
+    border: 6px solid #36394590;
 }
 
 .countryanthem {
