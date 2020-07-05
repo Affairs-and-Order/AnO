@@ -2,7 +2,8 @@
 
 <div class="templatediv">
 
-    <div class="templatedivtopper">
+    <div class="templatedivtopper provincetopper">
+        <img src="{{ url_for('static', filename='images/country.jpg') }}" />
         <h1 class="templatedivtitle">{{ username }}</h1>
         <div class="templatedivad"></div>
     </div>
@@ -29,18 +30,14 @@
                 <!--Hide when vising other nations-->
 
             </div>
-            {% endif %}
-            
-            {% if status == False %}
+            {% endif %} {% if status == False %}
             <div class="templatedivflex2left" id="countryactions" onclick="countryactions()">
 
                 <h3 class="smallheader">Actions</h3>
                 <!--show ONLY when vising other nations-->
 
             </div>
-            {% endif %}
-            
-            {% if status %}
+            {% endif %} {% if status %}
             <div class="templatedivflex2left" id="countryedit" onclick="countryedit()">
 
                 <h3 class="smallheader">Edit</h3>
@@ -52,9 +49,9 @@
 
         <div class="countryimagediv">
             <!--country flag-->
-            <img class="countryimage" src="static/images/testflag.png" />
+            <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" />
             <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
-            <img class="countrycoalitionimage" src="static/images/testflag.png" />
+            <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
         </div>
 
         <h2 class="templatecontentheaderleft">Country info</h2>

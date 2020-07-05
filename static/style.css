@@ -569,6 +569,19 @@ label {
     background-size: 400% 400%;
     box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.15);
     margin-bottom: 10px;
+    position: relative;
+}
+
+.templatedivtopper img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    object-fit: cover;
 }
 
 .noboxshadowtopper h1 {
@@ -581,16 +594,6 @@ label {
     overflow: hidden;
     text-align: center;
     background-image: url("images/provinces.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    object-fit: cover;
-    background-position-y: 50%;
-}
-
-.provincetopper {
-    overflow: hidden;
-    text-align: center;
-    background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
@@ -697,6 +700,7 @@ label {
     height: 20vh;
     margin: 20px auto;
     background: black;
+    position: relative;
 }
 
 .templatedivcontent {
