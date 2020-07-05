@@ -785,6 +785,7 @@ label {
     color: white;
     border-bottom: 2px solid #00a7e1;
     text-shadow: 0px 1px 2px #084955;
+    box-shadow: rgba(39, 41, 59, 0.15) 0px 4px 6px 0px;
 }
 
 .templatedivbutton:focus {
@@ -792,6 +793,7 @@ label {
     color: white;
     border-bottom: 2px solid #00a7e1;
     text-shadow: 0px 1px 2px #084955;
+    box-shadow: rgba(39, 41, 59, 0.15) 0px 4px 6px 0px;
 }
 
 .templatecenteredbutton {
