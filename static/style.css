@@ -1581,7 +1581,7 @@ button {
     background-size: cover;
     object-fit: cover;
     background-position-y: 50%;
-    box-shadow: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.3);
+    box-shadow: 0 0.2rem 1rem 0.2rem rgba(58, 59, 69, 0.3);
     user-select: none;
 }
 
@@ -1589,7 +1589,7 @@ button {
     width: 40vw;
     height: 22.5vw;
     float: left;
-    box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, 0.3);
+    box-shadow: 0 0.5rem 2rem 0.2rem rgba(58, 59, 69, 0.3);
     text-align: center;
     background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
     background-repeat: no-repeat;
@@ -1601,7 +1601,7 @@ button {
 
 .countrycoalitionimage {
     float: right;
-    box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, 0.3);
+    box-shadow: 0 0.5rem 2rem 0.2rem rgba(58, 59, 69, 0.3);
     width: 20vw;
     height: 11.25vw;
     text-align: center;
