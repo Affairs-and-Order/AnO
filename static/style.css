@@ -567,7 +567,7 @@ label {
     transition: all 0.2s;
     background: linear-gradient(145deg, #00a7e1 30%, #149dc7 70%);
     background-size: 400% 400%;
-    box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.10);
     margin-bottom: 10px;
     position: relative;
 }
@@ -688,7 +688,7 @@ label {
     margin: 0;
     padding: 0px;
     position: relative;
-    box-shadow: inset 0px 0px 100vw 0 #00000050;
+    box-shadow: inset 0px 0px 100vw 0 #00000075;
     width: fit-content;
     margin: auto;
     padding: 10px 20px;

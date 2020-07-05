@@ -54,6 +54,10 @@
             <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
         </div>
 
+        <h2 class="templatecontentheaderleft">About</h2>
+
+        <ul>Player Generated Information About The Country</ul>
+
         <h2 class="templatecontentheaderleft">Country info</h2>
 
         <div class="templatedivflex2">
@@ -74,6 +78,12 @@
                     </tr>
                     <tr>
                         <td><span class="material-icons-outlined">
+                            notes
+                            </span>Date created:</td>
+                        <td>{{ dateCreated}}</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
                             account_balance
                             </span>Provinces:</td>
                         <td>{{ provinces }}</td>
@@ -83,18 +93,6 @@
                             people_alt
                             </span>Population:</td>
                         <td>{{ population }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            sentiment_satisfied
-                            </span>Average Happiness:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            arrow_circle_up
-                            </span>Average Productivity:</td>
-                        <td>{{ happiness }}%</td>
                     </tr>
                     <tr>
                         <td><span class="material-icons-outlined">
@@ -113,19 +111,27 @@
                             </span>Military</th>
                     </tr>
                     <tr>
-                        <td>Military power:</td>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Military power:</td>
                         <td>power#</td>
                     </tr>
                     <tr>
-                        <td>Land Military:</td>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Land Military:</td>
                         <td>30%</td>
                     </tr>
                     <tr>
-                        <td>Air Military:</td>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Air Military:</td>
                         <td>60%</td>
                     </tr>
                     <tr>
-                        <td>Water Military:</td>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Water Military:</td>
                         <td>10%</td>
                     </tr>
                     <tr>
@@ -171,16 +177,34 @@
                             </span>Other</th>
                     </tr>
                     <tr>
-                        <td>Available Resources:</td>
+                        <td><span class="material-icons-outlined">
+                            sentiment_satisfied
+                            </span>Average Happiness:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            arrow_circle_up
+                            </span>Average Productivity:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>GDP:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>GDP Per Capita:</td>
+                        <td>{{ happiness }}%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            notes
+                            </span>Available Resources:</td>
                         <td>{{ countryResources }}</td>
-                    </tr>
-                    <tr>
-                        <td>Total GDP:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td>GDP Per Capita:</td>
-                        <td>{{ happiness }}%</td>
                     </tr>
                 </table>
 
