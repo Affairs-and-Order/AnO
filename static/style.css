@@ -57,6 +57,10 @@
     opacity: 0.6;
 }
 
+.iconbig {
+    font-size: 60px !important;
+}
+
 
 /*KEYFRAMES*/
 
@@ -1486,9 +1490,9 @@ button {
     width: 90%;
     height: 50vh;
     border: 2px solid #e3e9f0;
-    margin-top: 0px;
-    margin: 10px auto;
+    margin: 0px auto;
     box-shadow: rgba(39, 41, 59, 0.2) 0px 20px 50px 10px;
+    position: relative;
 }
 
 .loginsignupinput {
