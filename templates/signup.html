@@ -35,6 +35,8 @@
 
                 <style>
                     .slider-ctr:after {
+                        width: 100%;
+                        height: 100%;
                         content: "";
                         top: 0;
                         right: 0;
@@ -76,8 +78,16 @@
                         left: 10px;
                     }
                     
+                    .controlleft:hover {
+                        left: 5px;
+                    }
+                    
                     .controlright {
                         right: 10px;
+                    }
+                    
+                    .controlright:hover {
+                        right: 5px;
                     }
                     
                     .slider-control .control .icon {
@@ -103,16 +113,7 @@
                         transition: 0.45s all cubic-bezier(0.65, 0.05, 0.36, 1);
                         -webkit-clip-path: inset(0 0 0 0);
                         clip-path: inset(0 0 0 0);
-                    }
-                    
-                    .slide:before {
-                        content: "";
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        bottom: 0;
-                        left: 0;
-                        background: rgba(0, 0, 0, 0.125);
+                        margin: 0;
                     }
                     
                     .slide.slide-on {
@@ -133,8 +134,8 @@
                     }
                     
                     .slide img {
-                        display: block;
-                        box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.2);
+                        width: 100%;
+                        height: 100%;
                         user-select: none;
                         object-fit: cover;
                     }
@@ -145,7 +146,7 @@
                         left: 30px;
                     }
                     
-                    .slide .title {
+                    .title {
                         font-size: 50px;
                         margin-bottom: 2px;
                         color: white;
@@ -158,7 +159,7 @@
                         position: relative;
                     }
                     
-                    .slide .author {
+                    .author {
                         font-size: 16px;
                         color: white;
                         opacity: .8;
