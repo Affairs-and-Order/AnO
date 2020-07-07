@@ -467,6 +467,12 @@ def coalition(colId):
             userInCol = False
 
         try:
+            userInCurCol= db.execute("SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
+            userInCurCol = True
+        except:
+            userInCurCol = False
+
+        try:
             inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
             # TODO: fix this because this might causes errors when user is not in a coalition
             inCol = f"/coalition/{inColit}"
@@ -477,7 +483,7 @@ def coalition(colId):
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-        requests=requests)
+        requests=requests, userInCurCol=userInCurCol)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
@@ -542,7 +548,11 @@ def sell_buy(way, typee, units):
         allUnits = ["soldiers", "tanks", "artillery",
         "flying_fortresses", "fighter_jets", "apaches"
         "destroyers", "cruisers", "submarines",
-        "spies", "icbms", "nukes", "cityCount", "land"] # all allowed units
+        "spies", "icbms", "nukes",
+        
+        "cityCount", "land",
+        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
+        ""] # all allowed units
 
         if units not in allUnits:
             return redirect("/no_such_unit")
@@ -594,6 +604,19 @@ def sell_buy(way, typee, units):
         elif units == "land":
             table = "provinces"
             price = 250
+
+        elif units == "oil_burners":
+            table = "proInfra"
+            price = 500
+        elif units == "hydro_dams":
+            table = "proInfra"
+            price = 500
+        elif units == "nuclear_reactors":
+            table = "proInfra"
+            price = 500
+        elif units == "solar_fields":
+            table = "proInfra"
+            price = 500
 
         if typee == "normal": # if buying or selling from military
 
@@ -697,7 +720,7 @@ def marketoffer():
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
-        db.execute("INSERT INTO offers (user_id, resource, amount, price, total_Price) VALUES (?, ?, ?, ?, ?)", (cId, resource, int(amount), int(price), int(total_Price)))
+        db.execute("INSERT INTO offers (user_id, resource, amount, price, total_Price) VALUES (?, ?, ?, ?, ?)", (cId, resource, int(amount), int(price), """int(total_Price)"""))
 
         connection.commit()
         return redirect("/market")

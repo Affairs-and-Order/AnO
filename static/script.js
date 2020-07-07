@@ -6,7 +6,29 @@ window.onload = function background() {
 
 
 
+
+
     }
+    /*
+ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
+
+    $(document).ready(function() {
+        $(".resourcediv").click(function() {
+            var id = $(this).attr("id");
+
+            $('#' + id).find(".resourcedivcontentshow").removeClass("resourcedivcontentshow");
+            $('#' + id).addClass("resourcedivcontentshow");
+            localStorage.setItem("selectedolditem", id);
+        });
+
+        var selectedolditem = localStorage.getItem('selectedolditem');
+
+        if (selectedolditem != null) {
+            $('#' + id).find(".resourcedivcontentshow").removeClass("resourcedivcontentshow");
+            $('#' + id).addClass("resourcedivcontentshow");
+        }
+    });
+    */
     //navbar events
 function menubardrop() {
 
@@ -24,7 +46,13 @@ function menubardrop() {
 
     document.body.classList.toggle("body");
 }
+//
+function resourcedivcontentshow() {
 
+    document.getElementById("resourcediv").classList.toggle("resourcedivshow");
+    document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
+
+}
 //PROVINCE SLIDER
 $(document).ready(function() {
 

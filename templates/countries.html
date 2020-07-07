@@ -42,7 +42,7 @@
                 </div>
                 <div class="templatedivflex2right">
 
-                    <button class="templatedivbutton smallactionbutton" type="submit">Submit</button>
+                    <button class="center templatedivbutton smallactionbutton" type="submit">Submit</button>
 
                 </div>
 
@@ -64,9 +64,7 @@
                     <td>Influence</td>
                     <td>{{ date }}</td>
                     {% if colName == "No Coalition" %}
-                    <td>
-                        <p>No Coalition</p>
-                    </td> {% endif %} {% if colName != "No Coalition" %}
+                    <td>No coalition</td> {% endif %} {% if colName != "No Coalition" %}
                     <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                     {% endif %}
                 </tr>

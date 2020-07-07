@@ -66,11 +66,11 @@
 
                 });
             </script>
-            {% endif %}
-
+            {% endif %} {% if userInCurCol == True %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
+            {% endif %}
 
         </div>
         <!--GENERAL-->
@@ -458,7 +458,12 @@
                         </div>
 
                         <label for="bgimage">Or a custom image</label>
-                        <input class="loginsignupinput" type="file" name="bgimage" accept="image/*" onchange="imageBackground(event)" required/>
+
+                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            wallpaper
+                                </span>Choose Image
+                                <input type="file" name="bgimage" id="imageinput" accept="image/*" onchange="imageBackground(event)">
+                              </label>
 
                     </div>
                 </div>
@@ -482,8 +487,8 @@
                 </div>
             </div>
             <form action="/leave/{{ colId }}" method="POST">
-            <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
-        </form>
+                <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
+            </form>
         </div>
 
         <!-- currently disabled this because of bug, moved it elsewhere-->

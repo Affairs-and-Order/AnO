@@ -2,6 +2,7 @@
 <div class="templatediv">
 
     <div class="templatedivtopper provincetopper">
+        <img src="{{ url_for('static', filename='images/province.jpg') }}" />
         <h1 class="templatedivtitle">{{ name }}</h1>
         <div class="templatedivad"></div>
     </div>
@@ -50,45 +51,43 @@
                 </table>
 
             </div>
-            <form method="POST">
             <div class="templatedivflex2left">
+                <form method="POST">
+                    <div class="templatedivflex2 divflex2center">
+                        <div class="templatedivflex2left">
 
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left">
+                            <input class="loginsignupinput" autocomplete="off" name="cityCount" placeholder="City Amount" />
 
-                        <input class="loginsignupinput" autocomplete="off" name="cityCount" placeholder="City Amount"/>
+                        </div>
+                        <div class="templatedivflex2right">
 
-                    </div>
-                    <div class="templatedivflex2right">
-
-                        <button formaction="/buy/province/cityCount" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            <button formaction="/buy/province/cityCount" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             business
                             </span>Purchase Cities</button>
 
+                        </div>
                     </div>
-                </div>
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left">
+                    <div class="templatedivflex2 divflex2center">
+                        <div class="templatedivflex2left">
 
-                        <input class="loginsignupinput" autocomplete="off" name="land" placeholder="Land Amount"/>
+                            <input class="loginsignupinput" autocomplete="off" name="land" placeholder="Land Amount" />
 
-                    </div>
-                    <div class="templatedivflex2right">
+                        </div>
+                        <div class="templatedivflex2right">
 
-                        <button formaction="/buy/province/land" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            <button formaction="/buy/province/land" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             landscape
                             </span>Purchase Land</button>
 
-                    </div>
-                </div>
+                        </div>
                 </form>
+                </div>
 
                 <div class="templateinfodiv">
                     <ul class="right vanilla">Your province is powered</ul>
                     <ul class="right vanilla">Your citizens are nourished</ul>
                     <ul class="right vanilla">Your cizitens have consumer goods</ul>
                 </div>
-
             </div>
         </div>
         <div class="templatedivflex2 menuflex2">
@@ -202,7 +201,7 @@
 
 
 
-                            <img class="unitimage" src="{{ url_for('static', filename='images/tutorial.jpg') }}" />
+                            <img class="unitimage" src="{{ url_for('static', filename='images/oilburner.jpg') }}" />
                         </div>
                     </div>
 
@@ -245,7 +244,7 @@
 
 
 
-                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            <img class="unitimage" src="{{ url_for('static', filename='images/hydrodam.jpg') }}" />
                         </div>
                     </div>
 
@@ -288,7 +287,49 @@
 
 
 
-                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            <img class="unitimage" src="{{ url_for('static', filename='images/nuclearreactor.jpg') }}" />
+                        </div>
+                    </div>
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Solar Fields</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ solar_field }} Solar Fields</h3>
+
+                            <p class="templatecontentpleft"></p>
+
+                            <ul>Solar fields cost [ solarfieldcost ] Each</ul>
+                            <ul>Solar fields produce 30(electricity icon)/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buySolarField ] solar fields will cost you $[ buySolarFieldPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
                         </div>
                     </div>
                 </div>
@@ -757,7 +798,7 @@
                             <p class="templatecontentpleft">Farms</p>
 
                             <ul>Farms cost [ farmCost ] Each</ul>
-                            <ul>Farms produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                            <ul>Farms produce 8 rations/day for every 250K of land</ul>
 
                             <div class="purchasemilitarydiv">
                                 <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
@@ -790,17 +831,17 @@
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Hydroelectric Dam</h2>
+                    <h2 class="templatecontentheaderleft">Bauxite Mine</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dam</h3>
+                            <h3 class="unitcount">You have {{ farmAmount }} Bauxite Mines</h3>
 
-                            <p class="templatecontentpleft"></p>
+                            <p class="templatecontentpleft">Farms</p>
 
-                            <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                            <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                            <ul>Bauxite mines [ farmCost ] Each</ul>
+                            <ul>Bauxite mines produce 6 bauxite /day</ul>
 
                             <div class="purchasemilitarydiv">
                                 <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
@@ -817,7 +858,7 @@
 
                                     </div>
                                 </div>
-                                <ul>[ buyHydroDam ] hydro dams will cost you $[ buyHydroDamPrice ]</ul>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
                             </div>
 
                         </div>
@@ -826,24 +867,24 @@
 
 
 
-                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            <img class="unitimage" src="{{ url_for('static', filename='images/bauxitemine.jpg') }}" />
                         </div>
                     </div>
 
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
+                    <h2 class="templatecontentheaderleft">Uranium Mines</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                            <h3 class="unitcount">You have {{ farmAmount }} Uranium Mines</h3>
 
-                            <p class="templatecontentpleft"></p>
+                            <p class="templatecontentpleft">Farms</p>
 
-                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                            <ul>Uranium mines [ farmCost ] Each</ul>
+                            <ul>Uranium mines 4 uranium/day</ul>
 
                             <div class="purchasemilitarydiv">
                                 <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
@@ -860,7 +901,7 @@
 
                                     </div>
                                 </div>
-                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
                             </div>
 
                         </div>
@@ -869,9 +910,225 @@
 
 
 
-                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                            <img class="unitimage" src="{{ url_for('static', filename='images/uraniummine.jpg') }}" />
                         </div>
                     </div>
+
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Iron Mines</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ farmAmount }} Iron Mines</h3>
+
+                            <p class="templatecontentpleft">Farms</p>
+
+                            <ul>Iron mines [ farmCost ] Each</ul>
+                            <ul>Iron mines 4 uranium/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="{{ url_for('static', filename='images/ironmine.jpg') }}" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Coal Mines</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ farmAmount }} Coal Mines</h3>
+
+                            <p class="templatecontentpleft">Farms</p>
+
+                            <ul>Coal mines [ farmCost ] Each</ul>
+                            <ul>Coal mines 4 uranium/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Pumpjacks</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ farmAmount }} Pumpjacks</h3>
+
+                            <p class="templatecontentpleft">Farms</p>
+
+                            <ul>Pumpjacks [ farmCost ] Each</ul>
+                            <ul>Pumpjacks 4 uranium/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="{{ url_for('static', filename='images/pumpjack.jpg') }}" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Lead Mines</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ farmAmount }} Lead Mines</h3>
+
+                            <p class="templatecontentpleft">Farms</p>
+
+                            <ul>Lead mines [ farmCost ] Each</ul>
+                            <ul>Lead mines 4 uranium/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="{{ url_for('static', filename='images/leadmine.jpg') }}" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Copper Mines</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ farmAmount }} Copper Mines</h3>
+
+                            <p class="templatecontentpleft">Farms</p>
+
+                            <ul>Copper mines [ farmCost ] Each</ul>
+                            <ul>Copper mines 4 uranium/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <!--Processing-->
