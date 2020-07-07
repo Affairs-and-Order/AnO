@@ -147,7 +147,6 @@ class Nation:
 
         self.allies = []
 
-
     # increases morale but decreases attack power
     def fortify(self, usedSupplies, unitType, unitAmount, enemyNation):
         connection = sqlite3.connect(path)
@@ -183,7 +182,7 @@ class Nation:
                 cursor.execute(f"UPDATE war SET population={PopulationLoss} WHERE provinceId={attackedProvince})")
                 connection.commit()
 
-                currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0])
+                currentMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone[0]
                 updatedMorale = currentMorale - effectiveness
 
                 cursor.execute(f"UPDATE war SET morale ({updatedMorale})", ())
@@ -192,6 +191,8 @@ class Nation:
         # else return -1
         else:
             return -1
+    
+    calculateAdvantage = lambda n, m, v, t, e : (n+v) * ((t*e)/10 + m)
 
     def calculateBattleAdvantage(self):
         # now the variables are out of scope...
@@ -216,31 +217,11 @@ class Nation:
                 if techScore > defenderTechScore:
                     battleAdvantage += 1
                 else:
-                    battleAdvantage -= 1
+                    battleAdvantage -= 1                
 
 
-                """
-                - let v = very slight random advantage/disadvantage (0.5/1.5)
-                - let m = morale between 1 - 100 (inclusive)
-                - let t = tech score
-                - let e = effectiveness # ref: line 177 
-                - let n = number of units / difference between unit counts
+
                 
-                now we make a formula to calculate the population loss, war casualties, and morale loss
-                
-                x = n((v + t) * m)
-                
-                ok now lets test it
-
-                group 1 = 475,000 = 50((-5 + 100) * 100)
-                group 2 = 420,000 = 40((5 + 100) * 100)
-
-                x = n * v(m + (t*e))
-                group 1 = 50 * 0.7(45 + (12))
-            
-                # how about morale divided by 1000 so it doesnt impact the battle much - maybe, but it should effect it a bit more than 100/1000 = 0.1 yeah its just a small boost since we are multiplying by it, it is x * 0.1, which is smaller than it was initially
-                """
-
                 # TODO: add more components that will effect the end battle advantage
 
                 return battleAdvantage
@@ -256,13 +237,6 @@ class Nation:
             raise Exception("enemy province number cannot be higher than the attacker's province number!")
         elif len(self.warList) >= 5:
             raise Exception("user can only be in 5 wars at a time")
-
-
-    # currently reworking this
-    def attack(self, category, unitType, unitAmount, enemyNation):
-        if enemyNation.province > self.provinceAmount:
-            raise Exception("enemy province number cannot be higher than the attacker's province number!")
-
         else:
             self.warList.append(enemyNation)
             self.inBattleUnits.append(unitType)
@@ -294,26 +268,12 @@ class Nation:
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
 
-        attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
-        defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
-
-        # do we have a totalNumberofTroops in the DB?
-        # totalUnitsAvailable = all unit types amount combined
-        totalUnitsAvailable = 100
-        # if numberOfUnits <= totalUnitsAvailable: # undefined variable numberOfUnits (idk why)
-
-        """
-            total = 0
-            for troop in military.units:
-                total += military.units[troop]["cost"]
-            print(total)
-        """
         """
 
         Things to add:
         - ongoing global wars in app.py
         - add current war (ie. in Nation.attack) to DB
-
+        
         def attack (unitType, numberOfUnits, enemyNation):
             self.warlist.append(enemyNation.id)
 
@@ -333,7 +293,7 @@ class Nation:
             c = Nation(self.warList[war], b, a)
             return c
 
-    # this saves the nation obj to the database using pickle (in bytes)
+    # this saves the nation obj to the database using pickle (in bytes) 
     def saveToDB(self):
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
