@@ -17,7 +17,28 @@
 
             </div>
 
-            {% if status %}
+            {% if status == True %}
+            <script>
+                $(document).ready(function() {
+
+                    revenuehide();
+
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+
+                    newshide();
+
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+
+                    edithide();
+
+                });
+            </script>{% endif %}
             <div class="templatedivflex2left" id="countryrevenue" onclick="countryrevenue()">
 
                 <h3 class="smallheader">Revenue</h3>
@@ -30,188 +51,222 @@
                 <!--Hide when vising other nations-->
 
             </div>
-            {% endif %} {% if status == False %}
-            <div class="templatedivflex2left" id="countryactions" onclick="countryactions()">
-
-                <h3 class="smallheader">Actions</h3>
-                <!--show ONLY when vising other nations-->
-
-            </div>
-            {% endif %} {% if status %}
             <div class="templatedivflex2left" id="countryedit" onclick="countryedit()">
 
                 <h3 class="smallheader">Edit</h3>
                 <!--Hide when vising other nations-->
 
             </div>
+            {% if status == False %}
+            <script>
+                $(document).ready(function() {
+
+                    actionshide();
+
+                });
+            </script>
             {% endif %}
-        </div>
+            <div class="templatedivflex2left" id="countryactions" onclick="countryactions()">
 
-        <div class="countryimagediv">
-            <!--country flag-->
-            <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" />
-            <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
-            <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
-        </div>
-
-        <h2 class="templatecontentheaderleft">About</h2>
-
-        <ul>Player Generated Information About The Country</ul>
-
-        <h2 class="templatecontentheaderleft">Country info</h2>
-
-        <div class="templatedivflex2">
-            <div class="templatedivflex2left">
-
-
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            info
-                            </span>General</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            room
-                            </span>Country location:</td>
-                        <td>{{ location }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Date created:</td>
-                        <td>{{ dateCreated}}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            account_balance
-                            </span>Provinces:</td>
-                        <td>{{ provinces }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            people_alt
-                            </span>Population:</td>
-                        <td>{{ population }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            library_music
-                            </span>Anthem:</td>
-                        <td>
-                            <img src="{{ countryAnthem }}" class="countryanthem" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            military_tech
-                            </span>Military</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Military power:</td>
-                        <td>power#</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Land Military:</td>
-                        <td>30%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Air Military:</td>
-                        <td>60%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Water Military:</td>
-                        <td>10%</td>
-                    </tr>
-                    <tr>
-                        <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">View Stats</a></td>
-                    </tr>
-
-                </table>
+                <h3 class="smallheader">Actions</h3>
+                <!--show ONLY when vising other nations-->
 
             </div>
-            <div class="templatedivflex2right">
 
-                {% if colName !="" %}
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            public
-                            </span>Affairs</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Coalition name:</td>
-                        <td>{{ colName }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Coalition role:</td>
-                        <td>role</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Allied:</td>
-                        <td>Yes/No</td>
-                    </tr>
-                </table>
-                {% endif %}
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            article
-                            </span>Other</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            sentiment_satisfied
-                            </span>Average Happiness:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            arrow_circle_up
-                            </span>Average Productivity:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>GDP:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>GDP Per Capita:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Available Resources:</td>
-                        <td>{{ countryResources }}</td>
-                    </tr>
-                </table>
-
-            </div>
         </div>
 
+        <!--View-->
+        <div class="view" id="view">
 
+            <div class="countryimagediv">
+                <!--country flag-->
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" />
+                <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
+                <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
+            </div>
+
+            <h2 class="templatecontentheaderleft">About</h2>
+
+            <ul>Player Generated Information About The Country</ul>
+
+            <h2 class="templatecontentheaderleft">Country info</h2>
+
+            <div class="templatedivflex2">
+                <div class="templatedivflex2left">
+
+
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                info
+                                </span>General</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                room
+                                </span>Country location:</td>
+                            <td>{{ location }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Date created:</td>
+                            <td>{{ dateCreated}}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                account_balance
+                                </span>Provinces:</td>
+                            <td>{{ provinces }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                people_alt
+                                </span>Population:</td>
+                            <td>{{ population }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                library_music
+                                </span>Anthem:</td>
+                            <td>
+                                <img src="{{ countryAnthem }}" class="countryanthem" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                military_tech
+                                </span>Military</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Military power:</td>
+                            <td>power#</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Land Military:</td>
+                            <td>30%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Air Military:</td>
+                            <td>60%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Water Military:</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                            <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">View Stats</a></td>
+                        </tr>
+
+                    </table>
+
+                </div>
+                <div class="templatedivflex2right">
+
+                    {% if colName !="" %}
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                public
+                                </span>Affairs</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Coalition name:</td>
+                            <td>{{ colName }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Coalition role:</td>
+                            <td>role</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Allied:</td>
+                            <td>Yes/No</td>
+                        </tr>
+                    </table>
+                    {% endif %}
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                article
+                                </span>Other</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                sentiment_satisfied
+                                </span>Average Happiness:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                arrow_circle_up
+                                </span>Average Productivity:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>GDP:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>GDP Per Capita:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Available Resources:</td>
+                            <td>{{ countryResources }}</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+        </div>
+        <!--Revenue-->
+        <div class="revenue" id="revenue">
+
+            revenue
+
+        </div>
+        <!--News-->
+        <div class="news" id="news">
+
+            news
+
+        </div>
+        <!--Actions-->
+        <div class="actions" id="actions">
+
+            actions
+
+        </div>
+        <!--Edit-->
+        <div class="edit" id="edit">
+
+            edit
+
+        </div>
     </div>
 </div>
 {% endblock %}

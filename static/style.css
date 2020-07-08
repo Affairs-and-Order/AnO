@@ -1622,6 +1622,31 @@ button {
     height: 9vw;
 }
 
+.view,
+.revenue,
+.news,
+.actions,
+.edit {
+    display: none;
+}
+
+.viewclick,
+.revenueclick,
+.newsclick,
+.actionsclick,
+.editclick {
+    display: initial;
+}
+
+.countryviewclick,
+.countryrevenueclick,
+.countrynewsclick,
+.countryactionsclick,
+.countryeditclick {
+    background: #178db8 !important;
+    color: white !important;
+}
+
 
 /*PROVINCE*/
 
