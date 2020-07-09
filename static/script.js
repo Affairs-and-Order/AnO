@@ -557,8 +557,8 @@ var loadFile = function(event) {
 var imageBackground = function(event) {
     var output = document.getElementById('imageBackground');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "30vw";
-    output.style.height = "30vh";
+    output.style.width = "40vw";
+    output.style.height = "22.5vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }
@@ -567,8 +567,8 @@ var imageBackground = function(event) {
 var imageBackground2 = function(event) {
     var output = document.getElementById('imageBackground2');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "30vw";
-    output.style.height = "30vh";
+    output.style.width = "40vw";
+    output.style.height = "22.5vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }
