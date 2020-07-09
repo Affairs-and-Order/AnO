@@ -247,7 +247,21 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
 
                 </div>
             </div>
+            <table class="templatetable">
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        account_balance
+                        </span>Provinces</th>
+                </tr>
+                <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
+                <tr>
+                    <td><span class="material-icons-outlined">
+                        notes
+                        </span>{{ provinceName }}:</td>
+                    <td></td>
+                </tr>
 
+            </table>
         </div>
         <!--Revenue-->
         <div class="revenue" id="revenue">
@@ -696,21 +710,58 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
 
                 <h2 class="templatecontentheaderleft">Trade</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left flexchildvanilla">
 
+                        <select name="resource" class="templateselect">
+        
+                            <option disabled="true" selected="selected">Choose one</option>
+                            <option value="gold" class="templateoption">Gold</option>
+                            <option value="bauxite" class="templateoption">Bauxite</option>
+                            <option value="plutonium" class="templateoption">Plutionium</option>
+                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+                            <option value="uranium" class="templateoption">Uranium</option>
+                            <option value="thorium" class="templateoption">Thorium</option>
+                            <option value="iron" class="templateoption">Iron</option>
+                            <option value="coal"class="templateoption">Coal</option>
+                            <option value="oil" class="templateoption">Oil</option>
+                            <option value="lead" class="templateoption">Lead</option>
+                            <option value="silicon" class="templateoption">Silicon</option>
+                            <option value="copper" class="templateoption">Copper</option>
+                        </select>
 
 
                     </div>
                     <div class="templatedivflex2left">
 
+                        <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
 
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
 
                     </div>
                 </div>
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                    check
-                    </span>Update</button>
+
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            payments
+                            </span>Buy offer</button>
+
+                    </div>
+
+                    <div class="templatedivflex2left">
+
+                        <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            payments
+                            </span>Sell Offer</button>
+
+                    </div>
+
+                </div>
             </div>
 
         </div>
