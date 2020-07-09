@@ -257,7 +257,7 @@
                                 </span>Gross Raw</th>
                         </tr>
                         <tr>
-                            <td>Total gross:</td>
+                            <td>Gross:</td>
                             <td>{{ gross }}%</td>
                         </tr>
                         <tr>
@@ -341,7 +341,7 @@
                                 </span>Net Raw</th>
                         </tr>
                         <tr>
-                            <td>Total net:</td>
+                            <td>Net:</td>
                             <td>{{ gross }}%</td>
                         </tr>
                         <tr>
@@ -418,6 +418,8 @@
                 </div>
             </div>
 
+            <h2 class="templatecontentheaderleft">More Information</h2>
+
             <table class="templatetable">
                 <tr>
                     <th><span class="material-icons-outlined">
@@ -427,6 +429,87 @@
                 <tr>
                     <td>stuff:</td>
                     <td>{{ gross }}%</td>
+                </tr>
+            </table>
+            <!--show this if user is in a coalition-->
+            <table class="templatetable">
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>Before Tax Raw</th>
+                </tr>
+                <tr>
+                    <td>Before tax:</td>
+                    <td>{{ gross }}%</td>
+                </tr>
+                <tr>
+                    <td>Monetary before tax:</td>
+                    <td>{{ monetaryGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Rations:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Oil:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Coal:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Uranium:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Iron:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Lead:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Bauxite:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Copper:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>Before Tax Processed</th>
+                </tr>
+                <tr>
+                    <td>Components:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Steel:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Consumer goods:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Copper plates:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Aluminum:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Gasoline:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Ammunition:</td>
+                    <td>{{ rationsGross }}%</td>
                 </tr>
             </table>
 
@@ -445,8 +528,103 @@
         </div>
         <!--Edit-->
         <div class="edit" id="edit">
+            <div class="menudiv">
 
-            edit
+                <h2 class="templatecontentheaderleft">Country Information</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <div class="coalitionimagepreview">
+                            <img id="imageBackground" />
+                        </div>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <div class="coalitionimagepreview">
+                            <img id="imageBackground2" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="bgimage">Choose country flag</label>
+
+                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            wallpaper
+                                </span>Choose Image
+                                <input type="file" name="bgimage" id="imageinput" accept="image/*" onchange="imageBackground(event)">
+                              </label>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <label for="bgimage2">Choose background image</label>
+
+                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            wallpaper
+                                </span>Choose Image
+                                <input type="file" name="bgimage2" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
+                              </label>
+
+                    </div>
+                </div>
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="countryName">Change country name</label>
+                        <input class="loginsignupinput" name="countryName" placeholder="Country Name" />
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
+                        <select class="templateselect" name="countryLocation">
+            
+                                    <option class="templateoption">Antarctica</option>
+                                    <option class="templateoption">Australia</option>
+                                    <option class="templateoption">Africa</option>
+                                    <option class="templateoption">Asia</option>
+                                    <option class="templateoption">Europe</option>
+                                    <option class="templateoption">South America</option>
+                                    <option class="templateoption">North America</option>
+                                
+                                </select>
+
+                    </div>
+                </div>
+                <label for="description">Describe your country</label>
+                <div class="center">
+                    <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                </div>
+
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Policies</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+
+
+                    </div>
+                </div>
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
+            </div>
 
         </div>
     </div>
