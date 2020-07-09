@@ -223,6 +223,7 @@ def country(cId):
 
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
     if str(cId) == str(session["user_id"]):
         status = True
@@ -235,7 +236,7 @@ def country(cId):
         colName = ""
 
     return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-    location=location, gold=gold, status=status, provinces=provinces, colName=colName)
+    location=location, gold=gold, status=status, provinces=provinces, colName=colName, dateCreated=dateCreated)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
