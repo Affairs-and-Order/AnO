@@ -1291,7 +1291,7 @@ button {
     text-align: center;
     width: 85%;
     margin: 10px auto;
-    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.05) 0px 0px 6px 0px;
+    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.10) 0px 2px 8px 0px;
     padding: 0;
     overflow: hidden;
 }
@@ -1749,6 +1749,14 @@ button {
     box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.2);
     user-select: none;
     object-fit: cover;
+    position: relative;
+    top: 0;
+    transition: all 0.4s ease-in-out;
+}
+
+.unitimage:hover {
+    box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.3);
+    transform: scale(1.025);
 }
 
 .purchasemilitarydiv {
