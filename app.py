@@ -435,6 +435,8 @@ def coalition(colId):
 
         leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
+        treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
+
         if leader == cId:
             userLeader = True
         else:
@@ -487,7 +489,7 @@ def coalition(colId):
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-        requests=requests, userInCurCol=userInCurCol)
+        requests=requests, userInCurCol=userInCurCol, treaties=treaties)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
