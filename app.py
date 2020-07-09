@@ -12,6 +12,7 @@ import _pickle as pickle
 import random
 from celery import Celery
 from celery.schedules import crontab
+from helpers import get_influence
 
 # Game.ping() # temporarily removed this line because it might make celery not work
 
@@ -216,6 +217,7 @@ def country(cId):
     db = connection.cursor()
 
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
+    influence = get_influence(cId)
 
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -236,7 +238,8 @@ def country(cId):
         colName = ""
 
     return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-    location=location, gold=gold, status=status, provinces=provinces, colName=colName, dateCreated=dateCreated)
+    location=location, gold=gold, status=status, provinces=provinces, colName=colName, dateCreated=dateCreated,
+    influence=influence)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
