@@ -640,6 +640,7 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                         <select class="templateselect" name="warType">
             
                                     <option class="templateoption">Raid</option>
+                                    <option class="templateoption">Annihilation</option>
                                     <option class="templateoption">Attrition</option>
                                 
                                 </select>
@@ -647,17 +648,16 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                     </div>
                     <div class="templatedivflex2left">
 
-
+                        <label for="description">War message</label>
+                        <div class="center">
+                            <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                        </div>
 
                     </div>
                 </div>
-                <label for="description">War message</label>
-                <div class="center">
-                    <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
-                </div>
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                <a class="templatedivbutton templatecenteredbutton" href="/declare_war"><span class="material-icons-outlined">
                     check
-                    </span>Update</button>
+                    </span>Declare</a>
             </div>
             <div class="menudiv">
 
@@ -666,18 +666,31 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-
+                        <label for="warType">Choose opperation</label>
+                        <select class="templateselect" name="warType">
+            
+                                    <option class="templateoption">Assasinate spies</option>
+                                    <option class="templateoption">Spy on ground troops</option>
+                                    <option class="templateoption">Spy on air forces</option>
+                                    <option class="templateoption">Spy on water forces</option>
+                                    <option class="templateoption">Spy on special units</option>
+                                
+                                </select>
 
                     </div>
                     <div class="templatedivflex2left">
 
-
+                        <label for="countryName">Number of spies</label>
+                        <input class="loginsignupinput" name="countryName" placeholder="[[ spyCount ]]" />
 
                     </div>
                 </div>
+
+                <label for="warType">[[ successChance ]]</label>
+
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
-                    </span>Update</button>
+                    </span>Perform</button>
             </div>
             <div class="menudiv">
 
