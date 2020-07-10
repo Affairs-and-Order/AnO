@@ -586,6 +586,7 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
 
                     </div>
                 </div>
+                <form method="POST">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
@@ -615,10 +616,13 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                     <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
                 </div>
 
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                
+                <button class="templatedivbutton templatecenteredbutton" formaction="/change_country_name" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
+                
             </div>
+            </form>
             <div class="menudiv">
 
                 <h2 class="templatecontentheaderleft">Policies</h2>

@@ -1023,6 +1023,28 @@ def tutorial():
 def statistics():
     return render_template("statistics.html")
 
+@login_required
+@app.route("/change_country_name", methods=["POST"])
+def change_name():
+
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    name = request.form.get("countryName")
+
+    try:
+        duplicate = db.execute("SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
+        duplicate = True
+    except TypeError:
+        duplicate = False
+
+    if duplicate == False:
+        db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
+    connection.commit()
+    return redirect(f"/country/id={cId}")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
