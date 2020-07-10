@@ -795,7 +795,7 @@ def war():
         )
 
 @login_required
-@app.route("/countries")
+@app.route("/countries", methods=["GET", "POST"])
 def countries():
     if request.method == "GET":
 
@@ -839,6 +839,50 @@ def countries():
         new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates)
 
         return render_template("countries.html", new_zipped=new_zipped)
+
+    else: 
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        
+        search = request.form.get("search")
+
+        users = db.execute("SELECT id FROM users WHERE username LIKE ? ORDER BY id", ('%'+search+'%',)).fetchall()
+
+        population = []
+        ids = []
+        names = []
+        coalition_ids = []
+        coalition_names = []
+        dates = []
+
+        for i in users:
+
+            ids.append(i[0])
+
+            indPop = db.execute("SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            population.append(indPop)
+
+            name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            names.append(name)
+
+            date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            dates.append(date)
+
+            try:
+                coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
+                coalition_ids.append(coalition_id)
+
+                coalition_name = db.execute("SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
+                coalition_names.append(coalition_name)
+            except:
+                coalition_ids.append("No Coalition")
+                coalition_names.append("No Coalition")
+
+        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates)
+        exRes = True
+
+        return render_template("countries.html", resultAll=resultAll, exRes=exRes)
 
 @login_required
 @app.route("/coalitions", methods=["GET", "POST"])
