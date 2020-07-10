@@ -180,6 +180,10 @@ body::-webkit-scrollbar-thumb {
     width: 100%;
 }
 
+body::-webkit-scrollbar-thumb:hover {
+    background: #36394580;
+}
+
 body {
     background: #f7f9fd;
     padding: 0;
@@ -335,6 +339,10 @@ label {
 .menubardiv::-webkit-scrollbar-thumb {
     background: #36394550;
     width: 100%;
+}
+
+.menubardiv::-webkit-scrollbar-thumb:hover {
+    background: #36394580;
 }
 
 .menubardiv h3 {
@@ -906,6 +914,7 @@ label {
 .templateselect {
     border: 1.5px solid #e3e9f0;
     padding: 10px;
+    margin: 8px;
     outline: none;
     font-size: 16px;
     transition: all 0.2s;
@@ -916,14 +925,19 @@ label {
     background-position: 0% 0%;
 }
 
+.templateselect:hover {
+    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
+}
+
 .templateselect:focus {
     background-position: -100% 0%;
+    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
 }
 
 .imageinput {
     display: block;
     padding-left: 25px;
-    margin: 12px;
+    margin: 8px;
     cursor: pointer;
     user-select: none;
     border: 1.5px solid #e3e9f0;
@@ -941,6 +955,15 @@ label {
     float: none;
 }
 
+.imageinput:hover {
+    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
+}
+
+.imageinput:focus {
+    background-position: -100% 0%;
+    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
+}
+
 .imageinput input {
     position: absolute;
     opacity: 0;
@@ -949,14 +972,11 @@ label {
     width: 0;
 }
 
-.imageinput:focus {
-    background-position: -100% 0%;
-}
-
 .templatetextarea {
     border: 1.5px solid #e3e9f0;
     border-radius: 0px;
     padding: 10px;
+    margin: 8px;
     outline: none;
     font-size: 16px;
     transition: all 0.2s;
@@ -968,7 +988,7 @@ label {
     min-height: 40vh;
     max-width: 40vw;
     max-height: 40vh;
-    font-family: "Ubuntu";
+    font-family: "Ubuntu", sans-serif;
     box-shadow: rgba(58, 59, 69, 0.10) 0px 3px 4px 0px;
 }
 
@@ -1279,7 +1299,7 @@ button {
     text-align: center;
     width: 85%;
     margin: 10px auto;
-    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.05) 0px 0px 6px 0px;
+    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.10) 0px 2px 8px 0px;
     padding: 0;
     overflow: hidden;
 }
@@ -1502,7 +1522,7 @@ button {
     font-size: 16px;
     transition: all 0.2s;
     display: block;
-    margin: 12px auto;
+    margin: 8px auto;
     transition: all 0.3s;
     background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
     background-size: 200% 200%;
@@ -1510,13 +1530,17 @@ button {
     float: none;
 }
 
+.loginsignupinput:hover {
+    box-shadow: rgba(39, 40, 58, 0.05) 0px 1px 6px 0px;
+}
+
 .loginsignupinput:focus {
     background-position: -100% 0%;
+    box-shadow: rgba(39, 40, 58, 0.05) 0px 1px 6px 0px;
 }
 
 .loginsignupbutton {
     float: right;
-    width: fit-content;
     margin: 10px;
     margin-bottom: -15px;
     transition: all 0.2s;
@@ -1622,6 +1646,31 @@ button {
     height: 9vw;
 }
 
+.view,
+.revenue,
+.news,
+.actions,
+.edit {
+    display: none;
+}
+
+.viewclick,
+.revenueclick,
+.newsclick,
+.actionsclick,
+.editclick {
+    display: initial;
+}
+
+.countryviewclick,
+.countryrevenueclick,
+.countrynewsclick,
+.countryactionsclick,
+.countryeditclick {
+    background: #178db8 !important;
+    color: white !important;
+}
+
 
 /*PROVINCE*/
 
@@ -1708,6 +1757,14 @@ button {
     box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.2);
     user-select: none;
     object-fit: cover;
+    position: relative;
+    top: 0;
+    transition: all 0.4s ease-in-out;
+}
+
+.unitimage:hover {
+    box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.3);
+    transform: scale(1.025);
 }
 
 .purchasemilitarydiv {
@@ -1827,8 +1884,4 @@ button {
 
 .footer div a:hover {
     color: rgb(88, 196, 231);
-}
-
-.center {
-    margin: auto;
 }

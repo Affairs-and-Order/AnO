@@ -268,15 +268,11 @@
                     <div class="templatedivflex2left">
 
                         <select class="templateselect" name="diplomacy">
-    <!--hovering over the options tags will tell the users what they do-->
                             <option class="templateoption" selected disabled>Choose Treaty</option>
-                            <option class="templateoption">Protecterate</option>
-                            <option class="templateoption">MDP</option>
-                            <option class="templateoption">MDOAP</option>
-                            <option class="templateoption">ODP</option>
-                            <option class="templateoption">ODOAP</option>
-                            <option class="templateoption">NAP</option>
-                            <option class="templateoption">Open Markets</option>
+                            {% for i in treaties%}
+    <!--hovering over the options tags will tell the users what they do-->
+                            <option class="templateoption">{{ i[0] }}</option>
+                            {% endfor %}
                         
                         </select>
 

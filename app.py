@@ -12,6 +12,7 @@ import _pickle as pickle
 import random
 from celery import Celery
 from celery.schedules import crontab
+from helpers import get_influence
 
 # Game.ping() # temporarily removed this line because it might make celery not work
 
@@ -216,6 +217,7 @@ def country(cId):
     db = connection.cursor()
 
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
+    influence = get_influence(cId)
 
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -223,6 +225,7 @@ def country(cId):
 
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
     if str(cId) == str(session["user_id"]):
         status = True
@@ -235,7 +238,8 @@ def country(cId):
         colName = ""
 
     return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-    location=location, gold=gold, status=status, provinces=provinces, colName=colName)
+    location=location, gold=gold, status=status, provinces=provinces, colName=colName, dateCreated=dateCreated,
+    influence=influence)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
@@ -431,6 +435,8 @@ def coalition(colId):
 
         leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
+        treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
+
         if leader == cId:
             userLeader = True
         else:
@@ -483,7 +489,7 @@ def coalition(colId):
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-        requests=requests, userInCurCol=userInCurCol)
+        requests=requests, userInCurCol=userInCurCol, treaties=treaties)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
@@ -789,7 +795,7 @@ def war():
         )
 
 @login_required
-@app.route("/countries")
+@app.route("/countries", methods=["GET", "POST"])
 def countries():
     if request.method == "GET":
 
@@ -833,6 +839,50 @@ def countries():
         new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates)
 
         return render_template("countries.html", new_zipped=new_zipped)
+
+    else: 
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        
+        search = request.form.get("search")
+
+        users = db.execute("SELECT id FROM users WHERE username LIKE ? ORDER BY id", ('%'+search+'%',)).fetchall()
+
+        population = []
+        ids = []
+        names = []
+        coalition_ids = []
+        coalition_names = []
+        dates = []
+
+        for i in users:
+
+            ids.append(i[0])
+
+            indPop = db.execute("SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            population.append(indPop)
+
+            name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            names.append(name)
+
+            date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+            dates.append(date)
+
+            try:
+                coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
+                coalition_ids.append(coalition_id)
+
+                coalition_name = db.execute("SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
+                coalition_names.append(coalition_name)
+            except:
+                coalition_ids.append("No Coalition")
+                coalition_names.append("No Coalition")
+
+        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates)
+        exRes = True
+
+        return render_template("countries.html", resultAll=resultAll, exRes=exRes)
 
 @login_required
 @app.route("/coalitions", methods=["GET", "POST"])
@@ -1016,6 +1066,28 @@ def tutorial():
 @app.route("/statistics", methods=["GET"])
 def statistics():
     return render_template("statistics.html")
+
+@login_required
+@app.route("/change_country_name", methods=["POST"])
+def change_name():
+
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    name = request.form.get("countryName")
+
+    try:
+        duplicate = db.execute("SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
+        duplicate = True
+    except TypeError:
+        duplicate = False
+
+    if duplicate == False:
+        db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
+    connection.commit()
+    return redirect(f"/country/id={cId}")
 
 # available to run if double click the file
 if __name__ == "__main__":

@@ -53,6 +53,146 @@ function resourcedivcontentshow() {
     document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
 
 }
+//COUNTRY SLIDER
+$(document).ready(function() {
+
+    document.getElementById("countryview").classList.add("countryviewclick");
+    document.getElementById("view").classList.add("viewclick");
+
+});
+//
+function revenuehide() {
+
+    document.getElementById("countryrevenue").classList.add("hidden");
+
+}
+//
+function newshide() {
+
+    document.getElementById("countrynews").classList.add("hidden");
+
+}
+//
+function edithide() {
+
+    document.getElementById("countryedit").classList.add("hidden");
+
+}
+//
+function actionshide() {
+
+    document.getElementById("countryactions").classList.add("hidden");
+
+}
+//
+function countryview() {
+
+
+    document.getElementById("countryview").classList.add("countryviewclick");
+    document.getElementById("view").classList.add("viewclick");
+
+    //
+
+    document.getElementById("countryrevenue").classList.remove("countryrevenueclick");
+    document.getElementById("revenue").classList.remove("revenueclick");
+
+    document.getElementById("countrynews").classList.remove("countrynewsclick");
+    document.getElementById("news").classList.remove("newsclick");
+
+    document.getElementById("countryactions").classList.remove("countryactionsclick");
+    document.getElementById("actions").classList.remove("actionsclick");
+
+    document.getElementById("countryedit").classList.remove("countryeditclick");
+    document.getElementById("edit").classList.remove("editclick");
+
+}
+//
+function countryrevenue() {
+
+    document.getElementById("countryrevenue").classList.add("countryrevenueclick");
+    document.getElementById("revenue").classList.add("revenueclick");
+
+
+    //
+
+    document.getElementById("countryview").classList.remove("countryviewclick");
+    document.getElementById("view").classList.remove("viewclick");
+
+    document.getElementById("countrynews").classList.remove("countrynewsclick");
+    document.getElementById("news").classList.remove("newsclick");
+
+    document.getElementById("countryactions").classList.remove("countryactionsclick");
+    document.getElementById("actions").classList.remove("actionsclick");
+
+    document.getElementById("countryedit").classList.remove("countryeditclick");
+    document.getElementById("edit").classList.remove("editclick");
+
+}
+//
+function countrynews() {
+
+    document.getElementById("countrynews").classList.add("countrynewsclick");
+    document.getElementById("news").classList.add("newsclick");
+
+    //
+
+    document.getElementById("countryview").classList.remove("countryviewclick");
+    document.getElementById("view").classList.remove("viewclick");
+
+    document.getElementById("countryrevenue").classList.remove("countryrevenueclick");
+    document.getElementById("revenue").classList.remove("revenueclick");
+
+
+
+    document.getElementById("countryactions").classList.remove("countryactionsclick");
+    document.getElementById("actions").classList.remove("actionsclick");
+
+    document.getElementById("countryedit").classList.remove("countryeditclick");
+    document.getElementById("edit").classList.remove("editclick");
+
+}
+//
+function countryactions() {
+
+    document.getElementById("countryactions").classList.add("countryactionsclick");
+    document.getElementById("actions").classList.add("actionsclick");
+
+    //
+
+    document.getElementById("countryview").classList.remove("countryviewclick");
+    document.getElementById("view").classList.remove("viewclick");
+
+    document.getElementById("countryrevenue").classList.remove("countryrevenueclick");
+    document.getElementById("revenue").classList.remove("revenueclick");
+
+    document.getElementById("countrynews").classList.remove("countrynewsclick");
+    document.getElementById("news").classList.remove("newsclick");
+
+    document.getElementById("countryedit").classList.remove("countryeditclick");
+    document.getElementById("edit").classList.remove("editclick");
+
+}
+//
+function countryedit() {
+
+    document.getElementById("countryedit").classList.add("countryeditclick");
+    document.getElementById("edit").classList.add("editclick");
+
+    //
+
+    document.getElementById("countryview").classList.remove("countryviewclick");
+    document.getElementById("view").classList.remove("viewclick");
+
+    document.getElementById("countryrevenue").classList.remove("countryrevenueclick");
+    document.getElementById("revenue").classList.remove("revenueclick");
+
+    document.getElementById("countrynews").classList.remove("countrynewsclick");
+    document.getElementById("news").classList.remove("newsclick");
+
+    document.getElementById("countryactions").classList.remove("countryactionsclick");
+    document.getElementById("actions").classList.remove("actionsclick");
+
+}
 //PROVINCE SLIDER
 $(document).ready(function() {
 
@@ -417,8 +557,18 @@ var loadFile = function(event) {
 var imageBackground = function(event) {
     var output = document.getElementById('imageBackground');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "30vw";
-    output.style.height = "30vh";
+    output.style.width = "40vw";
+    output.style.height = "22.5vw";
+    output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+    }
+};
+
+var imageBackground2 = function(event) {
+    var output = document.getElementById('imageBackground2');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.style.width = "40vw";
+    output.style.height = "22.5vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }

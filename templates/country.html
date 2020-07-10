@@ -1,4 +1,4 @@
-{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block body %}
+z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -17,7 +17,28 @@
 
             </div>
 
-            {% if status %}
+            {% if status == False %}
+            <script>
+                $(document).ready(function() {
+
+                    revenuehide();
+
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+
+                    newshide();
+
+                });
+            </script>
+            <script>
+                $(document).ready(function() {
+
+                    edithide();
+
+                });
+            </script>{% endif %}
             <div class="templatedivflex2left" id="countryrevenue" onclick="countryrevenue()">
 
                 <h3 class="smallheader">Revenue</h3>
@@ -30,188 +51,724 @@
                 <!--Hide when vising other nations-->
 
             </div>
-            {% endif %} {% if status == False %}
-            <div class="templatedivflex2left" id="countryactions" onclick="countryactions()">
-
-                <h3 class="smallheader">Actions</h3>
-                <!--show ONLY when vising other nations-->
-
-            </div>
-            {% endif %} {% if status %}
             <div class="templatedivflex2left" id="countryedit" onclick="countryedit()">
 
                 <h3 class="smallheader">Edit</h3>
                 <!--Hide when vising other nations-->
 
             </div>
+            {% if status == True %}
+            <script>
+                $(document).ready(function() {
+
+                    actionshide();
+
+                });
+            </script>
             {% endif %}
-        </div>
+            <div class="templatedivflex2left" id="countryactions" onclick="countryactions()">
 
-        <div class="countryimagediv">
-            <!--country flag-->
-            <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" />
-            <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
-            <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
-        </div>
-
-        <h2 class="templatecontentheaderleft">About</h2>
-
-        <ul>Player Generated Information About The Country</ul>
-
-        <h2 class="templatecontentheaderleft">Country info</h2>
-
-        <div class="templatedivflex2">
-            <div class="templatedivflex2left">
-
-
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            info
-                            </span>General</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            room
-                            </span>Country location:</td>
-                        <td>{{ location }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Date created:</td>
-                        <td>{{ dateCreated}}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            account_balance
-                            </span>Provinces:</td>
-                        <td>{{ provinces }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            people_alt
-                            </span>Population:</td>
-                        <td>{{ population }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            library_music
-                            </span>Anthem:</td>
-                        <td>
-                            <img src="{{ countryAnthem }}" class="countryanthem" />
-                        </td>
-                    </tr>
-                </table>
-
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            military_tech
-                            </span>Military</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Military power:</td>
-                        <td>power#</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Land Military:</td>
-                        <td>30%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Air Military:</td>
-                        <td>60%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Water Military:</td>
-                        <td>10%</td>
-                    </tr>
-                    <tr>
-                        <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">View Stats</a></td>
-                    </tr>
-
-                </table>
+                <h3 class="smallheader">Actions</h3>
+                <!--show ONLY when vising other nations-->
 
             </div>
-            <div class="templatedivflex2right">
 
-                {% if colName !="" %}
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            public
-                            </span>Affairs</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Coalition name:</td>
-                        <td>{{ colName }}</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Coalition role:</td>
-                        <td>role</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Allied:</td>
-                        <td>Yes/No</td>
-                    </tr>
-                </table>
-                {% endif %}
-                <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            article
-                            </span>Other</th>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            sentiment_satisfied
-                            </span>Average Happiness:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            arrow_circle_up
-                            </span>Average Productivity:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>GDP:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>GDP Per Capita:</td>
-                        <td>{{ happiness }}%</td>
-                    </tr>
-                    <tr>
-                        <td><span class="material-icons-outlined">
-                            notes
-                            </span>Available Resources:</td>
-                        <td>{{ countryResources }}</td>
-                    </tr>
-                </table>
-
-            </div>
         </div>
 
+        <!--View-->
+        <div class="view" id="view">
 
+            <div class="countryimagediv">
+                <!--country flag-->
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" />
+                <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
+                <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
+            </div>
+
+            <h2 class="templatecontentheaderleft">About</h2>
+
+            <ul>Player Generated Information About The Country</ul>
+
+            <h2 class="templatecontentheaderleft">Country info</h2>
+
+            <div class="templatedivflex2">
+                <div class="templatedivflex2left">
+
+
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                info
+                                </span>General</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                room
+                                </span>Country location:</td>
+                            <td>{{ location }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Date created:</td>
+                            <td>{{ dateCreated}}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                account_balance
+                                </span>Provinces:</td>
+                            <td>{{ provinces }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                people_alt
+                                </span>Population:</td>
+                            <td>{{ population }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                people_alt
+                                </span>Influence:</td>
+                            <td>{{ influence }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                library_music
+                                </span>Anthem:</td>
+                            <td>
+                                <img src="{{ countryAnthem }}" class="countryanthem" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                military_tech
+                                </span>Military</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Military power:</td>
+                            <td>power#</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Land Military:</td>
+                            <td>30%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Air Military:</td>
+                            <td>60%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Water Military:</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                            <td class="anchor"><a class="forgotpasscode loginsignupforgot" href="forgotpasscode.html">View Stats</a></td>
+                        </tr>
+
+                    </table>
+
+                </div>
+                <div class="templatedivflex2right">
+
+                    {% if colName !="" %}
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                public
+                                </span>Affairs</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Coalition name:</td>
+                            <td>{{ colName }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Coalition role:</td>
+                            <td>role</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Allied:</td>
+                            <td>Yes/No</td>
+                        </tr>
+                    </table>
+                    {% endif %}
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                article
+                                </span>Other</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                sentiment_satisfied
+                                </span>Average Happiness:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                arrow_circle_up
+                                </span>Average Productivity:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>GDP:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>GDP Per Capita:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                notes
+                                </span>Available Resources:</td>
+                            <td>{{ countryResources }}</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+            <table class="templatetable">
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        account_balance
+                        </span>Provinces</th>
+                </tr>
+                <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
+                <tr>
+                    <td><span class="material-icons-outlined">
+                        notes
+                        </span>{{ provinceName }}:</td>
+                    <td></td>
+                </tr>
+
+            </table>
+        </div>
+        <!--Revenue-->
+        <div class="revenue" id="revenue">
+
+
+            <div class="templatedivflex2">
+                <div class="templatedivflex2left">
+
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                article
+                                </span>Gross Raw</th>
+                        </tr>
+                        <tr>
+                            <td>Gross:</td>
+                            <td>{{ gross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Monetary gross:</td>
+                            <td>{{ monetaryGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Rations:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Oil:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Coal:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Uranium:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Iron:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Lead:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Bauxite:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Copper:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                article
+                                </span>Gross Processed</th>
+                        </tr>
+                        <tr>
+                            <td>Components:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Steel:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Consumer goods:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Copper plates:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Aluminum:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Gasoline:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Ammunition:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                    </table>
+
+                </div>
+                <div class="templatedivflex2right">
+
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                article
+                                </span>Net Raw</th>
+                        </tr>
+                        <tr>
+                            <td>Net:</td>
+                            <td>{{ gross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Monetary net:</td>
+                            <td>{{ monetaryGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Rations:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Oil:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Coal:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Uranium:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Iron:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Lead:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Bauxite:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Copper:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                article
+                                </span>Net Processed</th>
+                        </tr>
+                        <tr>
+                            <td>Components:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Steel:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Consumer goods:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Copper plates:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Aluminum:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Gasoline:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Ammunition:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+
+            <h2 class="templatecontentheaderleft">More Information</h2>
+
+            <table class="templatetable">
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>Expenses</th>
+                </tr>
+                <tr>
+                    <td>stuff:</td>
+                    <td>{{ gross }}%</td>
+                </tr>
+            </table>
+            <!--show this if user is in a coalition-->
+            <table class="templatetable">
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>Before Tax Raw</th>
+                </tr>
+                <tr>
+                    <td>Before tax:</td>
+                    <td>{{ gross }}%</td>
+                </tr>
+                <tr>
+                    <td>Monetary before tax:</td>
+                    <td>{{ monetaryGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Rations:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Oil:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Coal:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Uranium:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Iron:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Lead:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Bauxite:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Copper:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>Before Tax Processed</th>
+                </tr>
+                <tr>
+                    <td>Components:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Steel:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Consumer goods:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Copper plates:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Aluminum:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Gasoline:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Ammunition:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+            </table>
+
+        </div>
+        <!--News-->
+        <div class="news" id="news">
+
+            news
+
+        </div>
+        <!--Edit-->
+        <div class="edit" id="edit">
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Country Information</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <div class="coalitionimagepreview">
+                            <img id="imageBackground" />
+                        </div>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <div class="coalitionimagepreview">
+                            <img id="imageBackground2" />
+                        </div>
+
+                    </div>
+                </div>
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="bgimage">Choose country flag</label>
+
+                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            wallpaper
+                                </span>Choose Image
+                                <input type="file" name="bgimage" id="imageinput" accept="image/*" onchange="imageBackground(event)">
+                              </label>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <label for="bgimage2">Choose background image</label>
+
+                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            wallpaper
+                                </span>Choose Image
+                                <input type="file" name="bgimage2" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
+                              </label>
+
+                    </div>
+                </div>
+                <form method="POST">
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="countryName">Change country name</label>
+                        <input class="loginsignupinput" name="countryName" placeholder="Country Name" />
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
+                        <select class="templateselect" name="countryLocation">
+            
+                                    <option class="templateoption">Antarctica</option>
+                                    <option class="templateoption">Australia</option>
+                                    <option class="templateoption">Africa</option>
+                                    <option class="templateoption">Asia</option>
+                                    <option class="templateoption">Europe</option>
+                                    <option class="templateoption">South America</option>
+                                    <option class="templateoption">North America</option>
+                                
+                                </select>
+
+                    </div>
+                </div>
+                <label for="description">Describe your country</label>
+                <div class="center">
+                    <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                </div>
+
+                
+                <button class="templatedivbutton templatecenteredbutton" formaction="/change_country_name" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
+                
+            </div>
+            </form>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Policies</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+
+
+                    </div>
+                </div>
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
+            </div>
+
+        </div>
+        <!--Actions-->
+        <div class="actions" id="actions">
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">War</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="warType">Pick war type</label>
+                        <select class="templateselect" name="warType">
+            
+                                    <option class="templateoption">Raid</option>
+                                    <option class="templateoption">Annihilation</option>
+                                    <option class="templateoption">Attrition</option>
+                                
+                                </select>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <label for="description">War message</label>
+                        <div class="center">
+                            <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <a class="templatedivbutton templatecenteredbutton" href="/declare_war"><span class="material-icons-outlined">
+                    check
+                    </span>Declare</a>
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Reconnaissance</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="warType">Choose opperation</label>
+                        <select class="templateselect" name="warType">
+            
+                                    <option class="templateoption">Assasinate spies</option>
+                                    <option class="templateoption">Spy on ground troops</option>
+                                    <option class="templateoption">Spy on air forces</option>
+                                    <option class="templateoption">Spy on water forces</option>
+                                    <option class="templateoption">Spy on special units</option>
+                                
+                                </select>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <label for="countryName">Number of spies</label>
+                        <input class="loginsignupinput" name="countryName" placeholder="[[ spyCount ]]" />
+
+                    </div>
+                </div>
+
+                <label for="warType">[[ successChance ]]</label>
+
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Perform</button>
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Trade</h2>
+
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left flexchildvanilla">
+
+                        <select name="resource" class="templateselect">
+        
+                            <option disabled="true" selected="selected">Choose one</option>
+                            <option value="gold" class="templateoption">Gold</option>
+                            <option value="bauxite" class="templateoption">Bauxite</option>
+                            <option value="plutonium" class="templateoption">Plutionium</option>
+                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+                            <option value="uranium" class="templateoption">Uranium</option>
+                            <option value="thorium" class="templateoption">Thorium</option>
+                            <option value="iron" class="templateoption">Iron</option>
+                            <option value="coal"class="templateoption">Coal</option>
+                            <option value="oil" class="templateoption">Oil</option>
+                            <option value="lead" class="templateoption">Lead</option>
+                            <option value="silicon" class="templateoption">Silicon</option>
+                            <option value="copper" class="templateoption">Copper</option>
+                        </select>
+
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
+
+                    </div>
+                </div>
+
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            payments
+                            </span>Buy offer</button>
+
+                    </div>
+
+                    <div class="templatedivflex2left">
+
+                        <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            payments
+                            </span>Sell Offer</button>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
 {% endblock %}
