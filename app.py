@@ -1072,40 +1072,32 @@ def statistics():
     return render_template("statistics.html")
 
 @login_required
-@app.route("/change_country_name", methods=["POST"])
-def change_name():
-
-    cId = session["user_id"]
+@app.route("/update_country_info", methods=["POST"])
+def update_info():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-
-    name = request.form.get("countryName")
-
-    try:
-        duplicate = db.execute("SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
-        duplicate = True
-    except TypeError:
-        duplicate = False
-
-    if duplicate == False:
-        db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
-    connection.commit()
-    return redirect(f"/country/id={cId}")
-
-@login_required
-@app.route("/change_description", methods=["POST"])
-def change_description():
-
     cId = session["user_id"]
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
 
     description = request.form.get("description")
-     
-    db.execute("UPDATE users SET description=(?) WHERE id=(?)", (description, cId))
-    connection.commit()
+    name = request.form.get("countryName")
+
+    if len(description) > 1: # currently checks if the description is more than 1 letter cuz i was too lazy to figure out the input, bad practice but it works for now
+        db.execute("UPDATE users SET description=(?) WHERE id=(?)", (description, cId))
+        connection.commit()
+
+    if len(name) > 1: # bad practice, but works for now, for more details check comment above
+
+        try:
+            duplicate = db.execute("SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
+            duplicate = True
+        except TypeError:
+            duplicate = False
+
+        if duplicate == False:
+            db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
+        connection.commit()
+
     return redirect(f"/country/id={cId}")
 
 # available to run if double click the file
