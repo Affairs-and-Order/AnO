@@ -254,12 +254,14 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                         </span>Provinces</th>
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
+                {% for provinceName in provinceNames %}
                 <tr>
                     <td><span class="material-icons-outlined">
                         notes
-                        </span>{{ provinceName }}:</td>
+                        </span>{{ provinceName[0] }}</td>
                     <td></td>
                 </tr>
+                {% endfor %}
 
             </table>
         </div>
