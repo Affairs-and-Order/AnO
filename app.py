@@ -1089,6 +1089,21 @@ def change_name():
     connection.commit()
     return redirect(f"/country/id={cId}")
 
+@login_required
+@app.route("/change_description", methods=["POST"])
+def change_description():
+
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    description = request.form.get("description")
+     
+    db.execute("UPDATE users SET description=(?) WHERE id=(?)", (description, cId))
+    connection.commit()
+    return redirect(f"/country/id={cId}")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True)
