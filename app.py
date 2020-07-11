@@ -203,7 +203,7 @@ def signup():
                 db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO resources (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-                db.execute("DELETE FROM keys WHERE key=(?)", (key,))
+                db.execute("DELETE FROM keys WHERE key=(?)", (key,)) # deletes the used key
                 connection.commit()
                 connection.close()
                 return redirect("/")
@@ -217,7 +217,8 @@ def country(cId):
     db = connection.cursor()
 
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
-    influence = get_influence(cId)
+    influence = get_influence(cId) # runs the get_influence function of the player's id, which calculates his influence score
+    description = db.execute("SELECT description FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -237,9 +238,9 @@ def country(cId):
     except:
         colName = ""
 
-    return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-    location=location, gold=gold, status=status, provinces=provinces, colName=colName, dateCreated=dateCreated,
-    influence=influence)
+    return render_template("country.html", username=username, cId=cId, description=description,
+    happiness=happiness, population=population, location=location, gold=gold, status=status,
+    provinces=provinces, colName=colName, dateCreated=dateCreated, influence=influence)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
