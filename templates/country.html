@@ -85,9 +85,13 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                 <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
 
+
+            {% if description != None %}
             <h2 class="templatecontentheaderleft">About</h2>
 
             <ul>{{ description }}</ul>
+
+            {% endif %}
 
             <h2 class="templatecontentheaderleft">Country info</h2>
 
