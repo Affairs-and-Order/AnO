@@ -184,13 +184,17 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                 </div>
                 <div class="templatedivflex2right">
 
-                    {% if colName !="" %}
+
                     <table class="templatetable">
                         <tr>
                             <th><span class="material-icons-outlined">
                                 public
                                 </span>Affairs</th>
                         </tr>
+                        {% if not inCol.startswith("/coalition/") %}
+                        <tr>
+                            <td class="center">Not in a coalition</td>
+                        </tr> {% endif %} {% if colName !="" %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
@@ -593,17 +597,17 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                     </div>
                 </div>
                 <form method="POST">
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
 
-                        <label for="countryName">Change country name</label>
-                        <input class="loginsignupinput" name="countryName" placeholder="Country Name" />
+                            <label for="countryName">Change country name</label>
+                            <input class="loginsignupinput" name="countryName" placeholder="Country Name" />
 
-                    </div>
-                    <div class="templatedivflex2left">
+                        </div>
+                        <div class="templatedivflex2left">
 
-                        <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
-                        <select class="templateselect" name="countryLocation">
+                            <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
+                            <select class="templateselect" name="countryLocation">
             
                                     <option class="templateoption">Antarctica</option>
                                     <option class="templateoption">Australia</option>
@@ -615,18 +619,18 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                                 
                                 </select>
 
+                        </div>
                     </div>
-                </div>
-                <label for="description">Describe your country</label>
-                <div class="center">
-                    <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
-                </div>
+                    <label for="description">Describe your country</label>
+                    <div class="center">
+                        <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                    </div>
 
-                
-                <button class="templatedivbutton templatecenteredbutton" formaction="/update_country_info" type="submit"><span class="material-icons-outlined">
+
+                    <button class="templatedivbutton templatecenteredbutton" formaction="/update_country_info" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
-                
+
             </div>
             </form>
             <div class="menudiv">
