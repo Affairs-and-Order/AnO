@@ -62,7 +62,7 @@
                 {% if exRes == True %}
                     {% for pop, id, name, colId, colName, date in resultAll %}
                     <td><a href="/country/id={{ id }}">{{ name }}</a></td>
-                    <td>Influence</td>
+                    <td>{{ influence }}</td>
                     <td>{{ date }}</td>
                         {% if colName == "No Coalition" %}
                         <td>No coalition</td> {% endif %} {% if colName != "No Coalition" %}
@@ -72,11 +72,11 @@
 
                 {% endif %}
 
-                {% for pop, id, name, colId, colName, date in new_zipped%}
+                {% for pop, id, name, colId, colName, date, influence in new_zipped%}
                 <tr>
 
                     <td><a href="/country/id={{ id }}">{{ name }}</a></td>
-                    <td>Influence</td>
+                    <td>{{ influence }}</td>
                     <td>{{ date }}</td>
                     {% if colName == "No Coalition" %}
                     <td>No coalition</td> {% endif %} {% if colName != "No Coalition" %}

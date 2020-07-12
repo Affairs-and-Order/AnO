@@ -800,7 +800,7 @@ def war():
 
 @login_required
 @app.route("/countries", methods=["GET", "POST"])
-def countries():
+def countries(): # TODO: fix shit ton of repeated code in function
     if request.method == "GET":
 
         connection = sqlite3.connect('affo/aao.db')
@@ -814,6 +814,7 @@ def countries():
         coalition_ids = []
         coalition_names = []
         dates = []
+        influences = []
 
         for i in users:
 
@@ -828,6 +829,9 @@ def countries():
             date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             dates.append(date)
 
+            influence = get_influence(str(i[0]))
+            influences.append(influence)
+
             try:
                 coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
                 coalition_ids.append(coalition_id)
@@ -840,7 +844,7 @@ def countries():
 
         connection.commit()
 
-        new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates)
+        new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
 
         return render_template("countries.html", new_zipped=new_zipped)
 
@@ -859,6 +863,7 @@ def countries():
         coalition_ids = []
         coalition_names = []
         dates = []
+        influences = []
 
         for i in users:
 
@@ -872,6 +877,9 @@ def countries():
 
             date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             dates.append(date)
+                        
+            influence = get_influence(str(i[0]))
+            influences.append(influence)
 
             try:
                 coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
