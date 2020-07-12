@@ -844,9 +844,9 @@ def countries(): # TODO: fix shit ton of repeated code in function
 
         connection.commit()
 
-        new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
+        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
 
-        return render_template("countries.html", new_zipped=new_zipped)
+        return render_template("countries.html", resultAll=resultAll)
 
     else: 
 
@@ -891,10 +891,9 @@ def countries(): # TODO: fix shit ton of repeated code in function
                 coalition_ids.append("No Coalition")
                 coalition_names.append("No Coalition")
 
-        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates)
-        exRes = True
+        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
 
-        return render_template("countries.html", resultAll=resultAll, exRes=exRes)
+        return render_template("countries.html", resultAll=resultAll)
 
 @login_required
 @app.route("/coalitions", methods=["GET", "POST"])
