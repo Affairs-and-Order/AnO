@@ -54,3 +54,17 @@ def get_influence(country_id):
     influence = military + gold
 
     return influence
+
+def get_coalition_influence(coalition_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    total_influence = 0
+
+    members = db.execute("SELECT userId FROM coalitions WHERE colId=(?)", (coalition_id,)).fetchall()
+    for i in members:
+        member_influence = get_influence(i[0])
+        total_influence += member_influence
+
+    return total_influence
