@@ -197,6 +197,10 @@ body {
     color: white;
 }
 
+p {
+    line-height: 30px;
+}
+
 label {
     text-align: center;
     display: block;
