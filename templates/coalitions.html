@@ -72,10 +72,10 @@
                         <th>Members</th>
                         <th>Type</th>
                     </tr>
-                    {% for name, id, members, type in resultAll %}
+                    {% for name, id, members, type, influence in resultAll %}
                     <tr>
                         <td><a href="/coalition/{{ id }}">{{ name }}</a> </td>
-                        <td>Influence</td>
+                        <td>{{ influence }}</td>
                         <td>{{ members }}</td>
                         <td>{{ type }}</td>
                     </tr>

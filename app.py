@@ -906,6 +906,7 @@ def coalitions():
         ids = []
         members = []
         types = []
+        influences = []
 
         for i in coalitions:
 
@@ -922,7 +923,10 @@ def coalitions():
             colMembers = db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
             members.append(colMembers)
 
-        resultAll = zip(names, ids, members, types)
+            influence = get_coalition_influence(idd)
+            influences.append(influence)
+
+        resultAll = zip(names, ids, members, types, influences)
 
         return render_template("coalitions.html", resultAll=resultAll)
     
@@ -941,8 +945,9 @@ def coalitions():
         for i in resultId:
             members.append(db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (i[0],)).fetchone()[0])
             types.append(db.execute("SELECT type FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
+            influence.append(get_coalition_influence(i[0]))
 
-        resultAll = zip(resultName, resultId, members, types)
+        resultAll = zip(resultName, resultId, members, types, influences)
 
         return render_template("coalitions.html", resultAll=resultAll)
 
