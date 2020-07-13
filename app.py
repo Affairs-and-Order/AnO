@@ -6,20 +6,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
 import NationsScript as Game
-# from apscheduler.schedulers.background import BackgroundScheduler
 import datetime
 import _pickle as pickle
 import random
 from celery import Celery
-from celery.schedules import crontab
-from helpers import get_influence
+# from celery.schedules import crontab # arent currently using but will be later on
+from helpers import get_influence, get_coalition_influence
 
 # Game.ping() # temporarily removed this line because it might make celery not work
-
-# warChecker = BackgroundScheduler() # wont be using this <
-# eventChecker = BackgroundScheduler()
-# uncomment when war ping is finished
-# warChecker.add_job()
 
 app = Flask(__name__)
 
@@ -434,6 +428,9 @@ def coalition(colId):
 
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
         colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
+        total_influence = get_coalition_influence(colId)
+        average_influence = total_influence / members
 
         # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
 
@@ -441,12 +438,11 @@ def coalition(colId):
 
         treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
 
+
         if leader == cId:
             userLeader = True
         else:
             userLeader = False
-
-        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
 
         requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
         requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
@@ -493,7 +489,8 @@ def coalition(colId):
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-        requests=requests, userInCurCol=userInCurCol, treaties=treaties)
+        requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
+        average_influence=average_influence)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
