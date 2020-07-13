@@ -937,17 +937,21 @@ def coalitions():
         
         search = request.form.get("search")
 
-        resultName = db.execute("SELECT name FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
         resultId = db.execute("SELECT id FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
+        ids = []
+        names = []
         members = []
         types = []
+        influences = []
 
         for i in resultId:
+            names.append(db.execute("SELECT name FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
+            ids.append(db.execute("SELECT id FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
             members.append(db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (i[0],)).fetchone()[0])
             types.append(db.execute("SELECT type FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
-            influence.append(get_coalition_influence(i[0]))
+            influences.append(get_coalition_influence(i[0]))
 
-        resultAll = zip(resultName, resultId, members, types, influences)
+        resultAll = zip(names, ids, members, types, influences)
 
         return render_template("coalitions.html", resultAll=resultAll)
 
