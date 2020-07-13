@@ -925,9 +925,9 @@ def coalitions():
             colMembers = db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
             members.append(colMembers)
 
-        colStats = zip(ids, names, members, types)
+        resultAll = zip(names, ids, members, types)
 
-        return render_template("coalitions.html", colStats=colStats)
+        return render_template("coalitions.html", resultAll=resultAll)
     
     else:
 
@@ -946,9 +946,8 @@ def coalitions():
             types.append(db.execute("SELECT type FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
 
         resultAll = zip(resultName, resultId, members, types)
-        exRes = True
 
-        return render_template("coalitions.html", resultAll=resultAll, exRes=exRes)
+        return render_template("coalitions.html", resultAll=resultAll)
 
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
