@@ -546,7 +546,7 @@ label {
 }
 
 .min {
-    width: min-content;
+    width: min-content !important;
 }
 
 .center {
@@ -1810,6 +1810,30 @@ button {
 
 .coalitionimagepreview image {
     margin: auto;
+}
+
+
+/*WAR*/
+
+.warflexparent {
+    background: #f7f9fd;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    width: 95%;
+    margin: 12px auto;
+}
+
+.warflexparent:hover {
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 15px 1px inset;
+}
+
+.warflexparent image:hover {
+    transform: scale(1);
+}
+
+.borderbottom div {
+    border-bottom: #00a7e1 3px solid;
+    border-radius: 0px;
 }
 
 
