@@ -763,6 +763,7 @@ def businesses():
 @login_required
 @app.route("/war", methods=["GET", "POST"])
 def war():
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
@@ -772,27 +773,25 @@ def war():
         tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
         # air
         flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
         # water
         destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
         cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
         submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
         # special
         spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
+
+        yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
         return render_template("war.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
         flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-        spies=spies, icbms=icbms, nukes=nukes
+        spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry
         )
 
 @login_required

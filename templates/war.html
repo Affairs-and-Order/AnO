@@ -79,7 +79,7 @@
         <div class="warflexparent templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter">[[ yourCountry ]]</h2>
+                <h2 class="templatecontentheadercenter"><a href="/country/id={{ cId }}">{{ yourCountry }}</a></h2> <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
                 <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
