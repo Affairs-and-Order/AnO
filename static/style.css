@@ -318,7 +318,7 @@ label {
     bottom: 0;
     margin-left: -250px;
     z-index: 1;
-    transition: all 0.4s ease;
+    transition: margin 0.4s ease;
     overflow: hidden;
 }
 
