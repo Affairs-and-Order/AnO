@@ -794,6 +794,7 @@ label {
     display: block;
     height: min-content;
     width: fit-content;
+    letter-spacing: 1px;
 }
 
 .templatedivbutton:hover {
@@ -1193,6 +1194,7 @@ button {
     color: white;
     font-size: 20px;
     column-span: 1;
+    letter-spacing: 0.5px;
 }
 
 .templatetable tr:nth-child(odd) {
@@ -1330,6 +1332,7 @@ button {
     margin: 0;
     font-size: 19px;
     font-weight: normal;
+    letter-spacing: 0.5px;
 }
 
 .menuflex2 div:hover {
