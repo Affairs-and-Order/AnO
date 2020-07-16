@@ -1105,13 +1105,26 @@ def update_info():
         except TypeError:
             duplicate = False
 
-        if duplicate == False:
+        if duplicate == False: # Checks if username isn't a duplicate
             db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
-        connection.commit()
+        connection.commit() # Commits the data
 
-    return redirect(f"/country/id={cId}")
+    return redirect(f"/country/id={cId}") # Redirects the user to his country
 
+@login_required
+@app.route("/update_discord", methods=["POST"])
+def update_discord():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    discord_username = request.form.get("discordUsername")
+    db.execute("UPDATE users SET discord=(?) WHERE id=(?)", (discord_username, cId))
+    connection.commit()
+    return redirect(f"/country/id={cId}") # Redirects the user to his country
+    
 # available to run if double click the file
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) # Runs the app with debug mode on
 
