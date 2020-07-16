@@ -2,7 +2,9 @@
 <div class="templatediv">
 
     <div class="templatedivtopper provincestopper">
-        <h1 class="templatedivtitle">Provinces</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            account_balance
+            </span>Provinces</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -19,11 +21,11 @@
                 <!--make an anchor for every province the player has-->
                 <a class="menubara" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
                     account_balance
-                    </span>{{ name[0] }}</a> 
-                {% endfor %}
+                    </span>{{ name[0] }}</a> {% endfor %}
             </div>
 
-            <div class="templatefullwidthflexchild"> <!-- unsure whats wrong here, could you be more specific - t0dd -->
+            <div class="templatefullwidthflexchild">
+                <!-- unsure whats wrong here, could you be more specific - t0dd -->
                 {% for cityCount, population, name, pId in pAll %}
                 <!--make a div for every province the player has-->
                 <div class="menudiv" id="{{ provinceName }}">

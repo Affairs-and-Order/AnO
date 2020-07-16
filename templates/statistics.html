@@ -1,15 +1,61 @@
-{% extends "layout.html" %} {% block title %} Template {% endblock %} {% block body %}
+{% extends "layout.html" %} {% block title %} Statistics {% endblock %} {% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper">
-        <h1 class="templatedivtitle"></h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            insert_chart_outlined
+            </span>Statistics</h1>
         <div class="templatedivad"></div>
     </div>
 
     <div class="templatedivcontent">
-        <h2 class="templatecontentheaderleft"></h2>
-        <p class="templatecontentpleft"></p>
 
+        <div class="templatedivflex2 templatesidemenuflexparent">
+            <div class="stickyflexmenu">
+                <a class="menubara" href=""><span class="material-icons-outlined">
+                    local_grocery_store
+                    </span>Market Prices</a>
+            </div>
+
+            <div class="templatefullwidthflexchild">
+                <div class="menudiv" id="">
+
+                    <h2 class="templatecontentheaderleft"><span class="material-icons-outlined">
+                        local_grocery_store
+                        </span>Market Prices</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <table class="templatetable">
+                                <tr>
+                                    <th><span class="material-icons-outlined">
+                                        insert_chart_outlined
+                                        </span>Average Price</th>
+                                </tr>
+                                <tr>
+                                    <td>Money:</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Rations:</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Oil:</td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="templatedivflex2left">
+
+                            <img class="unitimage" src="static/images/province.jpg" />
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

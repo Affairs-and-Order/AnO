@@ -4,7 +4,9 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
 
     <div class="templatedivtopper provincetopper">
         <img src="{{ url_for('static', filename='images/country.jpg') }}" />
-        <h1 class="templatedivtitle">{{ username }}</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            outlined_flag
+            </span>{{ username }}</h1>
         <div class="templatedivad"></div>
     </div>
 

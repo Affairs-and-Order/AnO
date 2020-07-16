@@ -57,6 +57,10 @@
     opacity: 0.6;
 }
 
+.iconlarge {
+    font-size: 40px !important;
+}
+
 .iconbig {
     font-size: 60px !important;
 }
@@ -195,6 +199,7 @@ body {
     font-family: "Ubuntu", sans-serif;
     animation: textload 0.5s;
     color: white;
+    transition: all 0.3s ease;
 }
 
 p {
@@ -210,6 +215,8 @@ label {
 .body {
     overflow: hidden;
 }
+
+.body .templatediv {}
 
 .background {
     position: fixed;

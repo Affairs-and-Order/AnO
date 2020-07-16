@@ -3,7 +3,9 @@
 <div class="templatediv">
 
     <div class="templatedivtopper businessestopper">
-        <h1 class="templatedivtitle">Businesses</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            business
+            </span>Businesses</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -14,21 +16,11 @@
                 <tr>
                     <th>Name</th>
                     <th>Type</th>
-                    <th>Age</th>
-                    <th>Coalition</th>
                 </tr>
-                {% for pop, id, name, colId, colName in new_zipped%}
                 <tr>
-
                     <td><a href="/country/id={{ id }}">{{ name }}</a></td>
                     <td>Name</td>
-                    <td>{{ age }}</td>
-                    {% if colName == "No Coalition" %}
-                    <td><a>No Coalition</a></td> {% endif %} {% if colName != "No Coalition" %}
-                    <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
-                    {% endif %}
                 </tr>
-                {% endfor %}
             </table>
         </div>
     </div>
