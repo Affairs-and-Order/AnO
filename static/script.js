@@ -47,6 +47,10 @@ function menubardrop() {
     document.body.classList.toggle("body");
 }
 //
+
+
+
+//
 function resourcedivcontentshow() {
 
     document.getElementById("resourcediv").classList.toggle("resourcedivshow");

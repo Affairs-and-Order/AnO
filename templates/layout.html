@@ -37,21 +37,73 @@
         {% endif %}
 
         <img src="{{ url_for('static', filename='images/titleimage.png') }}" class="navbartitleimage" />
-        <a class="navbartitle" href="/">Affairs and Order</a> {% if session.get("logged_in") != True %}
+        <a class="navbartitle" href="/">Affairs and Order</a>
 
+        <!---->
 
-
-        <a class="loginsignup" href="/login"><span class="material-icons-outlined">
+        <div class="navbarloginsignupdiv">
+            {% if session.get("logged_in") != True %}
+            <a class="loginsignup" href="/login"><span class="material-icons-outlined">
             login
             </span>Login</a>
-        <a class="loginsignup" href="/signup"><span class="material-icons-outlined">
+            <a class="loginsignup" href="/signup"><span class="material-icons-outlined">
             add_circle_outline
             </span>Signup</a> {% elif session.get("logged_in") == True %}
-        <a class="loginsignup" href="/country/id={{ session['user_id'] }}">
-            <span class="material-icons-outlined">
-                outlined_flag
-                </span>Country</a> {% endif %}
+            <div class="dropdown">
+                <button class="dropbtn">Other</button>
+                <div class="dropdown-content">
+                    <a class="" href="/account"><span class="material-icons-outlined">
+                    perm_identity
+                    </span>Account</a>
+                    <a class="" href="/tutorial"><span class="material-icons-outlined">
+                    school
+                    </span>Tutorial</a>
+                    <a class="" href="/statistics"><span class="material-icons-outlined">
+                    insert_chart_outlined
+                    </span>Statistics</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Global Affairs</button>
+                <div class="dropdown-content">
+                    {% if inCol.startswith("/coalition/") %}
+                    <a class="" href="{{ inCol }}"><span class="material-icons-outlined">
+                    group
+                    </span>My Coalition</a> {% endif %} {% if not inCol.startswith("/coalition/") %}
+                    <a class="" href="/establish_coalition"><span class="material-icons-outlined">
+                        group_add
+                        </span>Establish a Coalition</a> {% endif %}
+                    <a class="" href="/coalitions"><span class="material-icons-outlined">
+                    public
+                    </span>Coalitions</a>
+                    <a class="" href="/countries"><span class="material-icons-outlined">
+                    person_search
+                    </span>Countries</a>
+                    <a class="" href="/businesses"><span class="material-icons-outlined">
+                        business
+                        </span>Businesses</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="dropbtn">Internal Affairs</button>
+                <div class="dropdown-content">
+                    <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
+                        outlined_flag
+                        </span>Country</a>
+                    <a class="" href="/provinces"><span class="material-icons-outlined">
+                        account_balance
+                        </span>Provinces</a>
+                    <a class="" href="/market"><span class="material-icons-outlined">
+                        local_grocery_store
+                        </span>Market</a>
+                    <a class="" href="/war"><span class="material-icons-outlined">
+                        military_tech
+                        </span>War</a>
+                </div>
+            </div>
+            {% endif %}
 
+        </div>
     </div>
 
     {% if session.get("logged_in") == True%}
@@ -90,17 +142,16 @@
                 </span>Businesses</a>
 
         <h3>Other</h3>
-        <div class="menubarotherdiv">
-            <a class="menubara" href="/account"><span class="material-icons-outlined">
+        <a class="menubara" href="/account"><span class="material-icons-outlined">
                 perm_identity
                 </span>Account</a>
-            <a class="menubara" href="/tutorial"><span class="material-icons-outlined">
+        <a class="menubara" href="/tutorial"><span class="material-icons-outlined">
                 school
                 </span>Tutorial</a>
-            <a class="menubara" href="/statistics"><span class="material-icons-outlined">
+        <a class="menubara" href="/statistics"><span class="material-icons-outlined">
                 insert_chart_outlined
                 </span>Statistics</a>
-        </div>
+
         <div class="resourcediv" id="resourcediv">
             <a> <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
         monetization_on

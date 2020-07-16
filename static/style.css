@@ -216,8 +216,6 @@ label {
     overflow: hidden;
 }
 
-.body .templatediv {}
-
 .background {
     position: fixed;
     top: 0;
@@ -233,12 +231,11 @@ label {
 .navbar {
     background: #363945;
     position: fixed;
-    width: 100%;
+    width: calc(100%);
     height: 55px;
     box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8);
     z-index: 1000;
     top: 0;
-    overflow: hidden;
 }
 
 .navbartitle {
@@ -413,6 +410,92 @@ label {
 
 .loginsignup:hover {
     color: rgba(255, 255, 255, 0.5);
+}
+
+
+/* Style The Dropdown Button */
+
+.dropbtn {
+    color: white;
+    padding: 8px 12px;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: none;
+    border-bottom: 2px solid #00a7e1;
+    width: max-content;
+}
+
+.dropbtn:hover {
+    opacity: 0.5;
+}
+
+
+/* The container <div> - needed to position the dropdown content */
+
+.dropdown {
+    position: relative;
+    float: right;
+    width: fit-content;
+    margin-top: 10px;
+    margin-right: 10px;
+    transition: all 0.2s;
+    text-decoration: none;
+    font-size: 16px;
+    color: white;
+    user-select: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+/* Dropdown Content (Hidden by Default) */
+
+.dropdown-content {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    background-color: #363945;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    right: -3px;
+    top: 55px;
+    transition: all 0.3s;
+}
+
+
+/* Links inside the dropdown */
+
+.dropdown-content a {
+    color: white;
+    padding: 10px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+
+/* Change color of dropdown links on hover */
+
+.dropdown-content a:hover {
+    background-color: #515463;
+}
+
+
+/* Show the dropdown menu on hover */
+
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    pointer-events: all;
+    top: 41px;
+}
+
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+
+.dropdown:hover .dropbtn {
+    opacity: 0.5;
 }
 
 .resourcediv {
