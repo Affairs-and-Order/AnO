@@ -19,9 +19,7 @@
             <div class="stickyflexmenu">
                 {% for cityCount, population, name, pId in pAll %}
                 <!--make an anchor for every province the player has-->
-                <a class="menubara" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
-                    account_balance
-                    </span>{{ name[0] }}</a> {% endfor %}
+                <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a> {% endfor %}
             </div>
 
             <div class="templatefullwidthflexchild">
