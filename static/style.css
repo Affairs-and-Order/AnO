@@ -923,6 +923,7 @@ label {
     text-transform: capitalize;
     margin: 0px auto;
     float: none;
+    letter-spacing: 0;
 }
 
 .templateclosedbutton:disabled {
