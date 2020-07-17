@@ -12,9 +12,24 @@
 
     <div class="templatedivcontent">
 
-        <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-            add_circle_outline
-            </span>Create Province</a> {% for cityCount, population, name, pId in pAll %}
+        <div class="templatedivflex2 divflex2center">
+            <div class="templatedivflex2left">
+
+                <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    add_circle_outline
+                    </span>Create Province</a>
+
+            </div>
+            <div class="templatedivflex2right">
+
+                <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    payments
+                    </span>Mass Purchase</a>
+
+            </div>
+        </div>
+
+        {% for cityCount, population, name, pId in pAll %}
         <div class="templatedivflex2 templatesidemenuflexparent">
             <div class="stickyflexmenu">
                 <!--make an anchor for every province the player has-->
@@ -26,7 +41,7 @@
                 <!--make a div for every province the player has-->
                 <div class="menudiv" id="{{ provinceName }}">
 
-                    <h2 class="templatecontentheaderleft">{{ name[0] }}</h2>
+                    <h2 class="vanilla templatecontentheaderleft">{{ name[0] }}</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">

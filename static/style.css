@@ -902,6 +902,7 @@ label {
     height: min-content;
     width: fit-content;
     letter-spacing: 1px;
+    box-shadow: inset rgba(0, 0, 0, 0.05) 0 0 0px 0.1px;
 }
 
 .templatedivbutton:hover {
@@ -1120,6 +1121,21 @@ label {
     box-shadow: rgba(58, 59, 69, 0.10) 0px 12px 18px 0px;
 }
 
+.infodiv {
+    background: #ffffff;
+    box-shadow: rgba(58, 59, 69, 0.15) 0px 16px 48px 0px;
+    padding: 8px;
+    width: fit-content;
+    margin: auto;
+    border-bottom: 2px solid #00a7e1;
+    animation: borderpulse 6s infinite;
+}
+
+.infodiv div div {
+    padding: 12px 40px;
+    margin: auto;
+}
+
 .templatedivflex2 {
     display: flex;
     justify-content: center;
@@ -1166,8 +1182,8 @@ label {
 }
 
 .divflex2center div {
-    width: fit-content;
     height: min-content;
+    width: max-content;
     justify-items: center;
     justify-self: center;
     padding: 6px;
@@ -1243,19 +1259,16 @@ button {
     background: #f7f7f7;
     border-radius: 0px;
     overflow: hidden;
-    position: sticky;
 }
 
 .stickyflexmenu {
-    margin: 0;
+    margin-top: 20px;
     padding: 0;
     min-width: 10% !important;
     height: 100%;
     background: #f7f7f7;
     border-radius: 0px;
     overflow: hidden;
-    position: sticky;
-    top: 70px;
     height: max-content;
     font-size: 14px;
 }
@@ -1913,10 +1926,10 @@ button {
 
 .coalitionimagepreview {
     margin: auto;
-    height: auto;
     text-align: center;
     justify-content: center;
     text-align: center;
+    padding: 0 !important;
 }
 
 .coalitionimagepreview image {
