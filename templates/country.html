@@ -1,4 +1,4 @@
-z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block body %}
+{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -193,10 +193,12 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                                 public
                                 </span>Affairs</th>
                         </tr>
-                        {% if not inCol.startswith("/coalition/") %}
+                        {% if colName == "" %}
                         <tr>
                             <td class="center">Not in a coalition</td>
-                        </tr> {% endif %} {% if colName !="" %}
+                        </tr> 
+                        {% endif %} 
+                        {% if colName !="" %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes

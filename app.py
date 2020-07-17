@@ -127,6 +127,8 @@ def inject_user():
         except:
             inCol = error(404, "Page Not Found")
             return inCol
+
+            
     return dict(get_col_name=get_col_name)
 
 
