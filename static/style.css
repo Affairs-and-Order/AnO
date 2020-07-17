@@ -20,14 +20,13 @@
     font-family: 'Material Icons';
     position: relative;
     top: 5px;
-    right: 5px;
+    right: 2px;
     font-size: inherit;
     /* Preferred icon size */
     text-transform: none;
     letter-spacing: normal;
     word-wrap: normal;
     white-space: nowrap;
-    line-height: normal;
     /* Support for all WebKit browsers. */
     -webkit-font-smoothing: antialiased;
     /* Support for Safari and Chrome. */
@@ -880,43 +879,38 @@ label {
 .templatedivbutton {
     width: fit-content;
     margin: 5px;
-    background-image: linear-gradient(180deg, #77ddff15 50%, #00a7e1 50%);
     background-size: 200% 200%;
     background-position: 0% 0%;
-    padding: 10px 20px;
+    padding: 5px 40px;
+    padding-bottom: 10px;
     text-decoration: none;
-    font-size: 14px;
-    color: #363945;
+    color: white;
     border: none;
-    border-bottom: 2px solid #e3e9f0;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     user-select: none;
     outline: none;
-    font-weight: bold;
     text-align: center;
     text-transform: uppercase;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0);
+    background-color: #00a7e1;
     display: block;
-    height: min-content;
     width: fit-content;
     letter-spacing: 1px;
-    box-shadow: inset rgba(0, 0, 0, 0.05) 0 0 0px 0.1px;
+    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    border-radius: 100px;
 }
 
 .templatedivbutton:hover {
-    background-position: 0% 100%;
-    color: white;
-    border-bottom: 2px solid #00a7e1;
-    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 150px 2px, rgba(39, 41, 59, 0.15) 0px 4px 6px 0px;
 }
 
 .templatedivbutton:focus {
-    background-position: 0% 100%;
-    color: white;
-    border-bottom: 2px solid #00a7e1;
-    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.45) 0px 0px 150px 2px, rgba(39, 41, 59, 0.15) 0px 4px 6px 0px;
+}
+
+.templatedivbutton span {
+    font-size: 1.4rem;
 }
 
 .templatecenteredbutton {

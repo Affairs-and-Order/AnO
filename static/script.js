@@ -1,15 +1,12 @@
 window.onload = function background() {
 
-        var randomPicture = "static/images/" + [Math.floor(Math.random() * 4) + 1 + '.jpg'];
+    var randomPicture = "static/images/" + [Math.floor(Math.random() * 4) + 1 + '.jpg'];
 
-        document.getElementById("background").src = randomPicture;
-
-
-
+    document.getElementById("background").src = randomPicture;
+}
 
 
-    }
-    /*
+/*
 ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
 
     $(document).ready(function() {
@@ -29,7 +26,7 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
         }
     });
     */
-    //navbar events
+//navbar events
 function menubardrop() {
 
     document.getElementById("menubar").classList.toggle("menubarclick");
