@@ -273,6 +273,12 @@ label {
     float: left;
 }
 
+@media all and (min-width: 755px) {
+    .menubar {
+        display: none;
+    }
+}
+
 .menubar:hover {
     opacity: 0.5;
 }
@@ -389,6 +395,12 @@ label {
 @media all and (max-width: 600px) {
     .menubara {
         margin: 8px 0px;
+    }
+}
+
+@media all and (max-width: 755px) {
+    .navbarloginsignupdiv {
+        display: none;
     }
 }
 
@@ -1109,7 +1121,7 @@ label {
     justify-content: center;
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 1055px) {
     .templatedivflex2 {
         display: block;
     }
@@ -1134,7 +1146,7 @@ label {
     margin: 10px auto;
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 1055px) {
     .divflex2full div {
         width: 46%;
     }
@@ -1159,7 +1171,7 @@ label {
     float: none;
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 1055px) {
     .divflex2center {
         width: 100%;
     }
@@ -1191,7 +1203,7 @@ button {
     text-align: right;
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 1055px) {
     .templatedivflex2left,
     .templatedivflex2right {
         width: 90%;
