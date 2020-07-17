@@ -15,16 +15,15 @@
         <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
             add_circle_outline
             </span>Create Province</a>
+        {% for cityCount, population, name, pId in pAll %}
         <div class="templatedivflex2 templatesidemenuflexparent">
             <div class="stickyflexmenu">
-                {% for cityCount, population, name, pId in pAll %}
                 <!--make an anchor for every province the player has-->
-                <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a> {% endfor %}
+                <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a>
             </div>
 
             <div class="templatefullwidthflexchild">
                 <!-- unsure whats wrong here, could you be more specific - t0dd -->
-                {% for cityCount, population, name, pId in pAll %}
                 <!--make a div for every province the player has-->
                 <div class="menudiv" id="{{ provinceName }}">
 
@@ -62,9 +61,10 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
