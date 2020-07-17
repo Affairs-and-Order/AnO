@@ -20,7 +20,7 @@
     font-family: 'Material Icons';
     position: relative;
     top: 5px;
-    right: 2px;
+    right: 3px;
     font-size: inherit;
     /* Preferred icon size */
     text-transform: none;
@@ -910,7 +910,7 @@ label {
 }
 
 .templatedivbutton span {
-    font-size: 1.4rem;
+    font-size: 1.35rem;
 }
 
 .templatecenteredbutton {
