@@ -115,19 +115,23 @@ def eventCheck():
         pass
     # will decide if natural disasters occure
 """
+@app.context_processor
+def inject_user():
+    def get_col_name():
+        conn = sqlite3.connect('affo/aao.db') # connects to db
+        db = conn.cursor()
+        try:
+            inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+            inCol = f"/coalition/{inColit}"
+            return inCol
+        except:
+            inCol = error(404, "Page Not Found")
+            return inCol
+    return dict(get_col_name=get_col_name)
+
 
 @app.route("/", methods=["GET"])
 def index():
-    conn = sqlite3.connect('affo/aao.db') # connects to db
-    db = conn.cursor()
-    try:
-        inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-        # TODO: fix this because this might causes errors when user is not in a coalition
-        inCol = f"/coalition/{inColit}"
-        app.add_template_global(inCol, name='inCol')
-    except:
-        inCol = error(404, "Page Not Found")
-        app.add_template_global(inCol, name='inCol') # fixes the bug of another page being on my_coalition instead of the actual coalition
     return render_template("index.html") # renders index.html when "/" is accesed
 
 @app.route("/error", methods=["GET"])

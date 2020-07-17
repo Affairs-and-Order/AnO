@@ -66,13 +66,14 @@
             <div class="dropdown">
                 <button class="dropbtn">Global Affairs</button>
                 <div class="dropdown-content">
-                    {% if inCol.startswith("/coalition/") %}
-                    <a class="" href="{{ inCol }}"><span class="material-icons-outlined">
+                    {% if session.get('user_id') %}
+                    <a class="" href="{{ get_col_name() }}"><span class="material-icons-outlined">
                     group
-                    </span>My Coalition</a> {% endif %} {% if not inCol.startswith("/coalition/") %}
+                    </span>My Coalition</a>
+                    {% endif %}
                     <a class="" href="/establish_coalition"><span class="material-icons-outlined">
                         group_add
-                        </span>Establish a Coalition</a> {% endif %}
+                        </span>Establish a Coalition</a>
                     <a class="" href="/coalitions"><span class="material-icons-outlined">
                     public
                     </span>Coalitions</a>
@@ -124,13 +125,12 @@
             </span>War</a>
 
         <h3>Global Affairs</h3>
-        {% if inCol.startswith("/coalition/") %}
         <a class="menubara" href="{{ inCol }}"><span class="material-icons-outlined">
             group
-            </span>My Coalition</a> {% endif %} {% if not inCol.startswith("/coalition/") %}
+            </span>My Coalition</a>
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">
                 group_add
-                </span>Establish a Coalition</a> {% endif %}
+                </span>Establish a Coalition</a>
         <a class="menubara" href="/coalitions"><span class="material-icons-outlined">
             public
             </span>Coalitions</a>
