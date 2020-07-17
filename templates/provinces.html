@@ -14,8 +14,7 @@
 
         <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
             add_circle_outline
-            </span>Create Province</a>
-        {% for cityCount, population, name, pId in pAll %}
+            </span>Create Province</a> {% for cityCount, population, name, pId in pAll %}
         <div class="templatedivflex2 templatesidemenuflexparent">
             <div class="stickyflexmenu">
                 <!--make an anchor for every province the player has-->
@@ -49,7 +48,11 @@
                                     <td>{{ population[0] }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Infrastructure slots:</td>
+                                    <td>City slots:</td>
+                                    <td>To be added</td>
+                                </tr>
+                                <tr>
+                                    <td>Land slots:</td>
                                     <td>To be added</td>
                                 </tr>
                             </table>
@@ -61,7 +64,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         {% endfor %}
