@@ -152,7 +152,8 @@ def inject_user():
         gasoline = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         ammunition = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         
-        return money
+        lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, copper_plates, aluminum, gasoline, ammunition]
+        return lst
     return dict(get_col_name=get_col_name, get_resource_amount=get_resource_amount)
 
 
