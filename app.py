@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 #basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
@@ -127,9 +127,33 @@ def inject_user():
         except:
             inCol = error(404, "Page Not Found")
             return inCol
+    def get_resource_amount():
+        conn = sqlite3.connect('affo/aao.db') # connects to db
+        db = conn.cursor()
+        session_id = session["user_id"]
 
-            
-    return dict(get_col_name=get_col_name)
+        money = db.execute("SELECT gold FROM stats WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+
+        rations = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        oil = db.execute("SELECT oil FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        coal = db.execute("SELECT coal FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        uranium = db.execute("SELECT uranium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        bauxite = db.execute("SELECT bauxite FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        iron = db.execute("SELECT iron FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        lead = db.execute("SELECT lead FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        copper = db.execute("SELECT copper FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+
+        components = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        steel = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        consumer_goods = db.execute("SELECT consumer_goods FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+
+        copper_plates = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        aluminum = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        gasoline = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        ammunition = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        
+        return money
+    return dict(get_col_name=get_col_name, get_resource_amount=get_resource_amount)
 
 
 @app.route("/", methods=["GET"])

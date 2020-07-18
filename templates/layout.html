@@ -159,16 +159,17 @@
         </div>
         <div class="resourcedivcontent" id="resourcedivcontent">
 
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="money">Money: </p>
+            {% set resource_list = get_resource_amount() %}
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="money">Money: {{ resource_list }}</p>
             <br />
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="rations">Rations: </p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="oil">Oil: </p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Coal: </p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Uranium: </p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Bauxite: </p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Iron: </p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Lead: </p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Copper</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="rations">Rations: {{ rations }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="oil">Oil: {{ oil }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Coal: {{ coal }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Uranium: {{ uranium }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Bauxite: {{ bauxite }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Iron: {{ iron }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Lead: {{ lead }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Copper {{ copper }}</p>
             <br />
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Components: </p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Steel: </p>
@@ -178,7 +179,6 @@
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Aluminum: </p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Gasoline: </p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Ammunition: </p>
-
         </div>
     </div>
     {% endif %}
