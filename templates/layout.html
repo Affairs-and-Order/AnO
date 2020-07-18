@@ -69,8 +69,7 @@
                     {% if session.get('user_id') %}
                     <a class="" href="{{ get_col_name() }}"><span class="material-icons-outlined">
                     group
-                    </span>My Coalition</a>
-                    {% endif %}
+                    </span>My Coalition</a> {% endif %}
                     <a class="" href="/establish_coalition"><span class="material-icons-outlined">
                         group_add
                         </span>Establish a Coalition</a>
@@ -179,6 +178,10 @@
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Aluminum: </p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Gasoline: </p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Ammunition: </p>
+            <br />
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Components: </p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Steel: </p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Consumer Goods: </p>
         </div>
     </div>
     {% endif %}
