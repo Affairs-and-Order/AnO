@@ -1119,7 +1119,7 @@ label {
     background: #ffffff;
     box-shadow: rgba(58, 59, 69, 0.15) 0px 16px 48px 0px;
     padding: 8px;
-    width: fit-content;
+    width: max-content;
     margin: auto;
     border-bottom: 2px solid #00a7e1;
     animation: borderpulse 6s infinite;
@@ -1459,15 +1459,7 @@ button {
 }
 
 .redactionbutton {
-    background-image: linear-gradient(180deg, rgba(255, 0, 0, 0.1) 50%, red 50%);
-}
-
-.redactionbutton:hover {
-    border-bottom: 2px solid red;
-}
-
-.redactionbutton:focus {
-    border-bottom: 2px solid red;
+    background: red;
 }
 
 
@@ -1590,7 +1582,6 @@ button {
     box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3), 0px 6px 8px 2px #00a7e110;
     border: none;
     top: 0;
-    text-shadow: 0px 1px 4px #084955;
 }
 
 .landingpagebutton:focus {
@@ -1599,7 +1590,10 @@ button {
     box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3);
     border: none;
     top: 0;
-    text-shadow: 0px 1px 4px #084955;
+}
+
+.landingpagebutton span {
+    font-size: 1.7rem;
 }
 
 .discordlink {
@@ -1666,7 +1660,6 @@ button {
     margin: 10px;
     margin-bottom: -15px;
     transition: all 0.2s;
-    padding: 10px 20px;
     text-decoration: none;
     font-size: 14px;
     font-size: 18px;

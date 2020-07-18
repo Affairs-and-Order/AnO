@@ -196,9 +196,8 @@
                         {% if colName == "" %}
                         <tr>
                             <td class="center">Not in a coalition</td>
-                        </tr> 
-                        {% endif %} 
-                        {% if colName !="" %}
+                        </tr>
+                        {% endif %} {% if colName !="" %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
@@ -556,10 +555,10 @@
         </div>
         <!--Edit-->
         <div class="edit" id="edit">
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Country Information</h2>
+            <h2 class="templatecontentheaderleft">Country Information</h2>
 
+            <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
@@ -635,21 +634,26 @@
                     check
                     </span>Update</button>
 
+                </form>
             </div>
-            </form>
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Policies</h2>
+            <h2 class="templatecontentheaderleft">Policies</h2>
 
-                <div class="templatedivflex2 menuflex">
+            <div class="infodiv">
+                <div class="borderbottom templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-
+                        <h2 class="templatecontentheadercenter">Defender</h2>
 
                     </div>
                     <div class="templatedivflex2left">
 
+                        <h2 class="templatecontentheadercenter">Defender</h2>
 
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <h2 class="templatecontentheadercenter">Defender</h2>
 
                     </div>
                 </div>
@@ -657,11 +661,8 @@
                     check
                     </span>Update</button>
             </div>
-
-        </div>
-        <!--Actions-->
-        <div class="actions" id="actions">
-            <div class="menudiv">
+            <!--Actions-->
+            <div class="actions" id="actions">
 
                 <h2 class="templatecontentheaderleft">War</h2>
 
@@ -690,8 +691,6 @@
                 <a class="templatedivbutton templatecenteredbutton" href="/declare_war"><span class="material-icons-outlined">
                     check
                     </span>Declare</a>
-            </div>
-            <div class="menudiv">
 
                 <h2 class="templatecontentheaderleft">Reconnaissance</h2>
 
@@ -723,8 +722,6 @@
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Perform</button>
-            </div>
-            <div class="menudiv">
 
                 <h2 class="templatecontentheaderleft">Trade</h2>
 
@@ -780,9 +777,8 @@
                     </div>
 
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
