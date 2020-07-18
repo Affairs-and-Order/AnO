@@ -515,20 +515,20 @@ label {
     right: 0px;
     position: fixed;
     background-color: #363945;
-    padding-left: 10px;
+    width: 55px;
     padding-bottom: 10px;
     z-index: 1000;
     height: 40px;
     transition: all 0.4s ease;
     transition-delay: 0s;
     box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
+    text-align: right;
 }
 
 .resourcedivshow {
-    box-shadow: rgba(58, 59, 69, 0.4) 0px 6px 8px 0px;
+    box-shadow: rgba(58, 59, 69, 0.4) 0px 6px -6px 0px;
     background-color: #515463;
-    text-align: right;
-    padding-left: 160px;
+    padding-left: 145px;
     transition-delay: 0.3s;
 }
 
@@ -537,7 +537,6 @@ label {
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
-    margin: 0px;
 }
 
 .resourceicon:hover {

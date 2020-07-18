@@ -69,8 +69,7 @@
                     {% if session.get('user_id') %}
                     <a class="" href="{{ get_col_name() }}"><span class="material-icons-outlined">
                     group
-                    </span>My Coalition</a>
-                    {% endif %}
+                    </span>My Coalition</a> {% endif %}
                     <a class="" href="/establish_coalition"><span class="material-icons-outlined">
                         group_add
                         </span>Establish a Coalition</a>
@@ -153,7 +152,7 @@
                 </span>Statistics</a>
 
         <div class="resourcediv" id="resourcediv">
-            <a> <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
+            <a class="resourceicona"><span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
         monetization_on
         </span></a>
         </div>
@@ -170,14 +169,14 @@
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[leadAmount]</p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[copperAmount]</p>
             <br />
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[componentsAmount]</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[steelAmount]</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[consumerGoodsAmount]</p>
-            <br />
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[copperPlatesAmount]</p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[aluminumAmount]</p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[gasolineAmount]</p>
             <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[ammunitionAmount]</p>
+            <br />
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[componentsAmount]</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[steelAmount]</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">[consumerGoodsAmount]</p>
 
         </div>
     </div>
