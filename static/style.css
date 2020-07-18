@@ -20,7 +20,7 @@
     font-family: 'Material Icons';
     position: relative;
     top: 5px;
-    right: 3px;
+    right: 8px;
     font-size: inherit;
     /* Preferred icon size */
     text-transform: none;
@@ -449,7 +449,7 @@ label {
     position: relative;
     float: right;
     width: fit-content;
-    margin-top: 10px;
+    margin-top: 8px;
     margin-right: 10px;
     transition: all 0.2s;
     text-decoration: none;
@@ -892,7 +892,7 @@ label {
     outline: none;
     text-align: center;
     text-transform: uppercase;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease-in-out;
     background-color: #00a7e1;
     display: block;
     width: fit-content;
@@ -910,7 +910,7 @@ label {
 }
 
 .templatedivbutton span {
-    font-size: 1.35rem;
+    font-size: 1.3rem;
 }
 
 .templatecenteredbutton {
