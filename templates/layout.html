@@ -156,28 +156,29 @@
         monetization_on
         </span></a>
         </div>
-        <div class="resourcedivcontent" id="resourcedivcontent">
 
+        <div class="resourcedivcontent" id="resourcedivcontent">
+            <!--I WILL REPLACE THE TEXT WITH RESOURCE ICONS SOON - CARSON-->
             {% set resource_list = get_resource_amount() %}
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="money">Money: {{ resource_list[0] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Money: {{ resource_list[0] }}</p>
             <br />
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="rations">Rations: {{ resource_list[1] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="oil">Oil: {{ resource_list[2] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Coal: {{ resource_list[3] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Uranium: {{ resource_list[4] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Bauxite: {{ resource_list[5] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Iron: {{ resource_list[6] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Lead: {{ resource_list[7]}}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Copper {{ resource_list[8] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Rations: {{ resource_list[1] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Oil: {{ resource_list[2] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Coal: {{ resource_list[3] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Uranium: {{ resource_list[4] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Bauxite: {{ resource_list[5] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Iron: {{ resource_list[6] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Lead: {{ resource_list[7]}}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Copper {{ resource_list[8] }}</p>
             <br />
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Components: {{ resource_list[9] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Steel: {{ resource_list[10] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Consumer Goods: {{ resource_list[11] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Components: {{ resource_list[9] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Steel: {{ resource_list[10] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Consumer Goods: {{ resource_list[11] }}</p>
             <br />
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Copper Plates: {{ resource_list[12] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Aluminum: {{ resource_list[13] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Gasoline: {{ resource_list[14] }}</p>
-            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="coal">Ammunition: {{ resource_list[15] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Copper Plates: {{ resource_list[12] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Aluminum: {{ resource_list[13] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Gasoline: {{ resource_list[14] }}</p>
+            <p onmouseover="moneyon()" onmouseout="moneyoff()" class="resourcetag">Ammunition: {{ resource_list[15] }}</p>
         </div>
     </div>
     {% endif %}

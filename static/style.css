@@ -20,7 +20,7 @@
     font-family: 'Material Icons';
     position: relative;
     top: 5px;
-    right: 8px;
+    right: 5px;
     font-size: inherit;
     /* Preferred icon size */
     text-transform: none;
@@ -208,7 +208,8 @@ p {
 label {
     text-align: center;
     display: block;
-    opacity: 0.9;
+    opacity: 0.7;
+    font-size: 14px;
 }
 
 .body {
@@ -583,6 +584,7 @@ label {
     font-size: 11pt;
     cursor: pointer;
     transition: all 0.2s;
+    max-width: 100px;
 }
 
 .resourcedivcontent p:hover {
@@ -849,8 +851,8 @@ label {
 .templatecontentpleft {
     text-indent: 25px;
     padding: 8px;
-    font-size: 17px;
-    color: rgb(0, 0, 0, 0.7);
+    font-size: 16px;
+    color: rgb(0, 0, 0, 0.75);
     font-family: 'Ubuntu', sans-serif;
     font-weight: normal;
 }
@@ -910,6 +912,7 @@ label {
 
 .templatedivbutton span {
     font-size: 1.3rem;
+    right: 8px;
 }
 
 .templatecenteredbutton {
@@ -1115,8 +1118,8 @@ label {
 }
 
 .infodiv {
-    background: #ffffff;
-    box-shadow: rgba(58, 59, 69, 0.15) 0px 16px 48px 0px;
+    background: rgb(252.5, 252.5, 252.5);
+    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     padding: 8px;
     width: max-content;
     margin: auto;
@@ -1304,7 +1307,7 @@ button {
 
 .templatetable th {
     height: 40px;
-    background-color: #178db8;
+    background-color: #00a7e1;
     color: white;
     font-size: 20px;
     column-span: 1;
@@ -1419,7 +1422,7 @@ button {
     text-align: center;
     width: 85%;
     margin: 10px auto;
-    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(58, 59, 69, 0.10) 0px 2px 8px 0px;
+    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(39, 41, 59, 0.15) 0px 0px 0px 0px inset, rgba(39, 41, 59, 0.10) 0px 4px 8px 0px;
     padding: 0;
     overflow: hidden;
 }
@@ -1578,17 +1581,17 @@ button {
 .landingpagebutton:hover {
     background: #00a7e1;
     background-position: 0;
-    box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3), 0px 6px 8px 2px #00a7e110;
     border: none;
     top: 0;
+    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110;
 }
 
 .landingpagebutton:focus {
     background: #00a7e1;
     background-position: 0;
-    box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.3);
     border: none;
     top: 0;
+    box-shadow: inset rgba(39, 41, 59, 0.45) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110;
 }
 
 .landingpagebutton span {
@@ -1781,7 +1784,7 @@ button {
 .countrynewsclick,
 .countryactionsclick,
 .countryeditclick {
-    background: #178db8 !important;
+    background: #00a7e1 !important;
     color: white !important;
 }
 
@@ -1807,7 +1810,7 @@ button {
 
 .provincecityclick,
 .provincelandclick {
-    background: #178db8 !important;
+    background: #00a7e1 !important;
     color: white !important;
 }
 
@@ -1826,7 +1829,7 @@ button {
 .cityelectricityclick,
 .cityretailclick,
 .cityworksclick {
-    background: #178db8 !important;
+    background: #00a7e1 !important;
     color: white !important;
 }
 
@@ -1845,7 +1848,7 @@ button {
 .landmilitaryclick,
 .landindustryclick,
 .landprocessingclick {
-    background: #178db8 !important;
+    background: #00a7e1 !important;
     color: white !important;
 }
 
@@ -1903,7 +1906,7 @@ button {
 .militaryairclick,
 .militarywaterclick,
 .militaryspecialclick {
-    background: #178db8 !important;
+    background: #00a7e1 !important;
     color: white !important;
 }
 
@@ -1971,7 +1974,7 @@ button {
 .coalitionjoinclick,
 .coalitionleaderclick,
 .coalitionmemberclick {
-    background: #178db8 !important;
+    background: #00a7e1 !important;
     color: white !important;
 }
 
