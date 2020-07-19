@@ -29,16 +29,18 @@
             </div>
         </div>
 
-        {% for cityCount, population, name, pId in pAll %}
         <div class="templatedivflex2 templatesidemenuflexparent">
+            {% for cityCount, population, name, pId in pAll %}
             <div class="stickyflexmenu">
                 <!--make an anchor for every province the player has-->
                 <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a>
             </div>
+            {% endfor %}
 
             <div class="templatefullwidthflexchild">
                 <!-- unsure whats wrong here, could you be more specific - t0dd -->
                 <!--make a div for every province the player has-->
+                {% for cityCount, population, name, pId in pAll %}
                 <div class="menudiv" id="{{ provinceName }}">
 
                     <h2 class="vanilla templatecontentheaderleft">{{ name[0] }}</h2>
@@ -79,10 +81,9 @@
                         </div>
                     </div>
                 </div>
-
+                {% endfor %}
             </div>
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}
