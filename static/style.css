@@ -473,7 +473,7 @@ label {
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     right: -3px;
-    top: 70px;
+    top: 60px;
     transition: all 0.3s;
 }
 
@@ -564,6 +564,7 @@ label {
     margin-right: -200px;
     transition: all 0.4s ease;
     padding-top: 60px;
+    padding-bottom: 20px;
     overflow-y: hidden;
     overflow-x: hidden;
 }
@@ -1035,12 +1036,12 @@ label {
 }
 
 .templateselect:hover {
-    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
+    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
 .templateselect:focus {
     background-position: -100% 0%;
-    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
+    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
 .imageinput {
@@ -1065,12 +1066,12 @@ label {
 }
 
 .imageinput:hover {
-    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
+    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
 .imageinput:focus {
     background-position: -100% 0%;
-    box-shadow: rgba(39, 40, 58, 0.10) 0px 1px 6px 0px;
+    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
 .imageinput input {
@@ -1098,7 +1099,7 @@ label {
     max-width: 40vw;
     max-height: 40vh;
     font-family: "Ubuntu", sans-serif;
-    box-shadow: rgba(58, 59, 69, 0.10) 0px 3px 4px 0px;
+    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
 }
 
 @media all and (max-width: 600px) {
@@ -1109,12 +1110,12 @@ label {
 }
 
 .templatetextarea:hover {
-    box-shadow: rgba(58, 59, 69, 0.10) 0px 12px 18px 0px;
+    box-shadow: rgba(39, 41, 59, 0.15) 0px 6px 10px 0px;
 }
 
 .templatetextarea:focus {
     background-position: -100% 0%;
-    box-shadow: rgba(58, 59, 69, 0.10) 0px 12px 18px 0px;
+    box-shadow: rgba(39, 41, 59, 0.15) 0px 6px 10px 0px;
 }
 
 .infodiv {
@@ -1652,12 +1653,12 @@ button {
 }
 
 .loginsignupinput:hover {
-    box-shadow: rgba(39, 40, 58, 0.05) 0px 1px 6px 0px;
+    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
 .loginsignupinput:focus {
     background-position: -100% 0%;
-    box-shadow: rgba(39, 40, 58, 0.05) 0px 1px 6px 0px;
+    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
 .loginsignupbutton {
