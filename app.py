@@ -509,15 +509,6 @@ def coalition(colId):
         except:
             userInCurCol = False
 
-        try:
-            inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-            # TODO: fix this because this might causes errors when user is not in a coalition
-            inCol = f"/coalition/{inColit}"
-            app.add_template_global(inCol, name='inCol')
-        except:
-            inCol = error(404, "Page Not Found")
-            app.add_template_global(inCol, name='inCol')
-
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
         requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
