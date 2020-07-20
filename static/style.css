@@ -1032,8 +1032,7 @@ hr {
     list-style: none;
     margin: 0;
     padding: 0;
-    overflow: auto;
-    margin: 40px !important;
+    margin: 10px !important;
 }
 
 .radiodiv li {
@@ -1051,8 +1050,8 @@ hr {
 .radiodiv li label {
     display: block;
     position: relative;
-    font-size: 1.1rem;
-    padding: 15px 15px 15px 40px;
+    font-size: 0.9rem;
+    padding: 10px 20px 10px 20px;
     margin: 10px auto;
     height: 30px;
     z-index: 9;
@@ -1070,9 +1069,9 @@ hr {
     border-radius: 100%;
     height: 15px;
     width: 15px;
-    top: 22.5px;
+    top: 15px;
     bottom: 0;
-    left: 10px;
+    left: -10px;
     z-index: 5;
     transition: all .25s;
     margin: auto;
@@ -1086,13 +1085,15 @@ hr {
     position: absolute;
     content: '';
     border-radius: 100%;
-    height: 10px;
-    width: 10px;
     top: 0;
     bottom: 0;
-    left: 2.5px;
     margin: auto;
+    height: 5px;
+    width: 5px;
+    left: 0px;
+    right: 0;
     transition: all 0.25s;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 input[type=radio]:checked~.check {
@@ -1101,6 +1102,8 @@ input[type=radio]:checked~.check {
 
 input[type=radio]:checked~.check::before {
     background: #00a7e1;
+    height: 10px;
+    width: 10px;
 }
 
 input[type=radio]:checked~label {
@@ -1256,12 +1259,7 @@ input[type=radio]:checked~label {
 }
 
 .divflex2center {
-    justify-content: center;
-    justify-items: center;
-    width: fit-content;
-    text-align: center;
-    height: min-content;
-    margin: auto;
+    justify-content: space-around;
 }
 
 .divflex2center div {
