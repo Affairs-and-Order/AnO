@@ -477,6 +477,7 @@ hr {
     position: absolute;
     background-color: #363945;
     min-width: 160px;
+    width: max-content;
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     right: -3px;
@@ -1462,12 +1463,6 @@ button {
     padding: 12px 15%;
 }
 
-.templatetable .anchor a:hover,
-.templatetable2 .anchor a:hover {
-    background: #f7f7f7;
-    box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
-}
-
 
 /*table2*/
 
@@ -1487,6 +1482,7 @@ button {
 
 .templatetable2 th {
     column-span: all;
+    box-shadow: rgba(0, 0, 0, 0) 0px 3.5px 8.5px -4px;
 }
 
 .templatetable2 td {
