@@ -2,15 +2,26 @@
 <div class="templatediv">
 
     <div class="templatedivtopper">
-        <h1 class="templatedivtitle"></h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            school
+            </span>Tutorial</h1>
         <div class="templatedivad"></div>
     </div>
 
     <div class="templatedivcontent">
-        <h2 class="templatecontentheaderleft"></h2>
-        <p class="templatecontentpleft"></p>
 
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
 
+                tutorial
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <img class="unitimage" src="{{ url_for('static', filename='images/oilburner.jpg') }}" />
+
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

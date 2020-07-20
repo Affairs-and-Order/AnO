@@ -3,7 +3,9 @@
 <div class="templatediv">
 
     <div class="templatedivtopper countriestopper">
-        <h1 class="templatedivtitle">Countries</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            person_search
+            </span>Countries</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -43,7 +45,9 @@
                 </div>
                 <div class="templatedivflex2right">
 
-                    <button class="center templatedivbutton smallactionbutton" type="submit">Submit</button>
+                    <button class="center templatedivbutton smallactionbutton" type="submit"><span class="material-icons-outlined">
+                        arrow_forward
+                        </span>Submit</button>
 
                 </div>
 
@@ -57,34 +61,20 @@
                     <th>Influence</th>
                     <th>Country created</th>
                     <th>Coalition</th>
-                </tr>
 
-                {% if exRes == True %}
-                    {% for pop, id, name, colId, colName, date in resultAll %}
-                    <td><a href="/country/id={{ id }}">{{ name }}</a></td>
-                    <td>Influence</td>
-                    <td>{{ date }}</td>
+                    {% for pop, id, name, colId, colName, date, influence in resultAll %}
+                    <tr>
+                        <td><a href="/country/id={{ id }}">{{ name }}</a></td>
+                        <td>{{ influence }}</td>
+                        <td>{{ date }}</td>
                         {% if colName == "No Coalition" %}
-                        <td>No coalition</td> {% endif %} {% if colName != "No Coalition" %}
+                        <td>No coalition</td>
+                        {% endif %} {% if colName != "No Coalition" %}
                         <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                         {% endif %}
+                    </tr>
                     {% endfor %}
 
-                {% endif %}
-
-                {% for pop, id, name, colId, colName, date in new_zipped%}
-                <tr>
-
-                    <td><a href="/country/id={{ id }}">{{ name }}</a></td>
-                    <td>Influence</td>
-                    <td>{{ date }}</td>
-                    {% if colName == "No Coalition" %}
-                    <td>No coalition</td> {% endif %} {% if colName != "No Coalition" %}
-                    <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
-                    {% endif %}
-                </tr>
-                {% endfor %}
-                
             </table>
         </div>
     </div>

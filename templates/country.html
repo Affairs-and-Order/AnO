@@ -1,10 +1,12 @@
-z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block body %}
+{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block body %}
 
 <div class="templatediv">
 
     <div class="templatedivtopper provincetopper">
         <img src="{{ url_for('static', filename='images/country.jpg') }}" />
-        <h1 class="templatedivtitle">{{ username }}</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            outlined_flag
+            </span>{{ username }}</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -85,9 +87,13 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                 <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
 
+
+            {% if description != None %}
             <h2 class="templatecontentheaderleft">About</h2>
 
-            <ul>Player Generated Information About The Country</ul>
+            <ul>{{ description }}</ul>
+
+            {% endif %}
 
             <h2 class="templatecontentheaderleft">Country info</h2>
 
@@ -117,7 +123,7 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                             <td><span class="material-icons-outlined">
                                 account_balance
                                 </span>Provinces:</td>
-                            <td>{{ provinces }}</td>
+                            <td>{{ provinceCount }}</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
@@ -180,13 +186,18 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                 </div>
                 <div class="templatedivflex2right">
 
-                    {% if colName !="" %}
+
                     <table class="templatetable">
                         <tr>
                             <th><span class="material-icons-outlined">
                                 public
                                 </span>Affairs</th>
                         </tr>
+                        {% if colName =="" %}
+                        <tr>
+                            <td class="center">Not in a coalition</td>
+                        </tr>
+                        {% endif %} {% if colName !="" %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
@@ -254,12 +265,16 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                         </span>Provinces</th>
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
+                {% for provinceName, provinceId in provinces %}
                 <tr>
                     <td><span class="material-icons-outlined">
                         notes
-                        </span>{{ provinceName }}:</td>
-                    <td></td>
+                        </span><a class="forgotpasscode loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
+                            account_balance
+                            </span>{{ provinceName[0] }}</a></td>
+                    <td><img class="unitimage" src="static/images/province.jpg" /></td>
                 </tr>
+                {% endfor %}
 
             </table>
         </div>
@@ -542,10 +557,10 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
         </div>
         <!--Edit-->
         <div class="edit" id="edit">
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Country Information</h2>
+            <h2 class="templatecontentheaderleft">Country Information</h2>
 
+            <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
@@ -587,17 +602,17 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                     </div>
                 </div>
                 <form method="POST">
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
 
-                        <label for="countryName">Change country name</label>
-                        <input class="loginsignupinput" name="countryName" placeholder="Country Name" />
+                            <label for="countryName">Change country name</label>
+                            <input class="loginsignupinput" name="countryName" placeholder="Country Name" />
 
-                    </div>
-                    <div class="templatedivflex2left">
+                        </div>
+                        <div class="templatedivflex2left">
 
-                        <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
-                        <select class="templateselect" name="countryLocation">
+                            <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
+                            <select class="templateselect" name="countryLocation">
             
                                     <option class="templateoption">Antarctica</option>
                                     <option class="templateoption">Australia</option>
@@ -609,45 +624,626 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                                 
                                 </select>
 
+                        </div>
                     </div>
-                </div>
-                <label for="description">Describe your country</label>
-                <div class="center">
-                    <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
-                </div>
+                    <label for="description">Describe your country</label>
+                    <div class="center">
+                        <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240">{{ description }}</textarea>
+                    </div>
 
-                
-                <button class="templatedivbutton templatecenteredbutton" formaction="/change_country_name" type="submit"><span class="material-icons-outlined">
+
+                    <button class="templatedivbutton templatecenteredbutton" formaction="/update_country_info" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
-                
+
+                </form>
             </div>
-            </form>
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Policies</h2>
+            <h2 class="templatecontentheaderleft">Policies</h2>
 
-                <div class="templatedivflex2 menuflex">
+            <div class="infodiv">
+
+                <div class="borderbottom templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-
+                        <h2 class="templatecontentheadercenter">Economic</h2>
 
                     </div>
                     <div class="templatedivflex2left">
 
+                        <h2 class="templatecontentheadercenter">Social</h2>
 
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <h2 class="templatecontentheadercenter">Military</h2>
 
                     </div>
                 </div>
+
+                <ul>What should you do with people who break the law?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a1" name="group1">
+                            <label for="a1">Force them to work in labor camps</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b1" name="group1">
+                            <label for="b1">Put them through a rehabilitation process</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c1" name="group1">
+                            <label for="c1">Put them in prison</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+
+                <ul>What should you do with people who are unemployed?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a2" name="group2">
+                            <label for="a2">Provide no security</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b2" name="group2">
+                            <label for="b2">Give them enough money to live off of</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c2" name="group2">
+                            <label for="c2">Put them in the military</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>How should you react to drug use?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a3" name="group3">
+                            <label for="a3">Make all drugs legal with little restriction</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b3" name="group3">
+                            <label for="b3">Provide rehabilitation for addicts</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c3" name="group3">
+                            <label for="c3">Force them to wait out a sentence in prison</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What should be the minimum time served in the military?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a4" name="group4">
+                            <label for="a4">Citizens will be forced to defend</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b4" name="group4">
+                            <label for="b4">None, service should be optional</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c4" name="group4">
+                            <label for="c4">10 years, and stay in reserve</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>How should the country deal with immigration?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a5" name="group5">
+                            <label for="a5">Only wealthy immigrants are allowed</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b5" name="group5">
+                            <label for="b5">All immigrants are allowed</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c5" name="group5">
+                            <label for="c5">Walls will block all immigration</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What should the country do about guns?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a6" name="group6">
+                            <label for="a6">Gun sale is restricted</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b6" name="group6">
+                            <label for="b6">Guns are not allowed</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c6" name="group6">
+                            <label for="c6">Every citizen must own a gun</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What shall your tax policy be?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a7" name="group7">
+                            <label for="a7">Taxes only on the rich</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b7" name="group7">
+                            <label for="b7">High taxes on every citizen</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c7" name="group7">
+                            <label for="c7">No taxes</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What is your climate change policy?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a8" name="group8">
+                            <label for="a8">Climate change does not exist</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b8" name="group8">
+                            <label for="b8">The country will work to stop climate change immediately</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c8" name="group8">
+                            <label for="c8">The government will provide subsidies</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>How should you handle healthcare?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a9" name="group9">
+                            <label for="a9">Emergency healthcare will be funded</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b9" name="group9">
+                            <label for="b9">All healthcare will be publicly funded</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c9" name="group9">
+                            <label for="c9">The healthcare sector will private</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What will your police be like?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a10" name="group10">
+                            <label for="a10">Policy 1</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b10" name="group10">
+                            <label for="b10">Policy 2</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c10" name="group10">
+                            <label for="c10">Policy 3</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What will education look like?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a11" name="group11">
+                            <label for="a11">Must pay for secondary education</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b11" name="group11">
+                            <label for="b11">Free education on every level</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c11" name="group11">
+                            <label for="c11">All education costs money</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>How will elections be handled?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a12" name="group12">
+                            <label for="a12">Only people above an IQ level can vote</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b12" name="group12">
+                            <label for="b12">All people can vote</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c12" name="group12">
+                            <label for="c12">No elections will be held</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What political system best describes your nation?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a13" name="group13">
+                            <label for="a13">Dictatorship</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b13" name="group13">
+                            <label for="b13">Democracy</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c13" name="group13">
+                            <label for="c13">Theocracy</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What economic system best describes your nation?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a14" name="group14">
+                            <label for="a14">Capitalism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b14" name="group14">
+                            <label for="b14">Socialism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c14" name="group14">
+                            <label for="c14">Fascism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What is your foreign policy?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a15" name="group15">
+                            <label for="a15">Interventionism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b15" name="group15">
+                            <label for="b15">Isolationism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c15" name="group15">
+                            <label for="c15">Imperialism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>How should you handle debt?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a16" name="group16">
+                            <label for="a16">Try to balance the budget</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b16" name="group16">
+                            <label for="b16">Engage in no debt spending</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c16" name="group16">
+                            <label for="c16">Spend as much as required</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>What should your social system look like?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a17" name="group17">
+                            <label for="a17">Confederalism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b17" name="group17">
+                            <label for="b17">Federalism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c17" name="group17">
+                            <label for="c17">Anarchism</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+                <hr />
+                <ul>How should the government handle religion?</ul>
+
+                <div class="vanilla templatedivflex2 space">
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="a18" name="group18">
+                            <label for="a18">Freedom of religion</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="b18" name="group18">
+                            <label for="b18">Enpashis on one religion</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+
+                    <div class="vanilla radiodiv">
+                        <li>
+                            <input type="radio" id="c18" name="group18">
+                            <label for="c18">Government mandated religion</label>
+
+                            <div class="vanilla check"></div>
+                        </li>
+                    </div>
+                </div>
+
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
             </div>
-
-        </div>
-        <!--Actions-->
-        <div class="actions" id="actions">
-            <div class="menudiv">
+            <!--Actions-->
+            <div class="actions" id="actions">
 
                 <h2 class="templatecontentheaderleft">War</h2>
 
@@ -676,8 +1272,6 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                 <a class="templatedivbutton templatecenteredbutton" href="/declare_war"><span class="material-icons-outlined">
                     check
                     </span>Declare</a>
-            </div>
-            <div class="menudiv">
 
                 <h2 class="templatecontentheaderleft">Reconnaissance</h2>
 
@@ -709,8 +1303,6 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Perform</button>
-            </div>
-            <div class="menudiv">
 
                 <h2 class="templatecontentheaderleft">Trade</h2>
 
@@ -766,9 +1358,8 @@ z{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block bod
                     </div>
 
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+    {% endblock %}

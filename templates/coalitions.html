@@ -3,7 +3,9 @@
 <div class="templatediv">
 
     <div class="templatedivtopper coalitionstopper">
-        <h1 class="templatedivtitle">Coalitions</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            public
+            </span>Coalitions</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -43,7 +45,9 @@
                     </div>
                     <div class="templatedivflex2right">
 
-                        <button class="center templatedivbutton smallactionbutton" type="submit">Submit</button>
+                        <button class="center templatedivbutton smallactionbutton" type="submit"><span class="material-icons-outlined">
+                            arrow_forward
+                            </span>Submit</button>
 
                     </div>
 
@@ -72,17 +76,10 @@
                         <th>Members</th>
                         <th>Type</th>
                     </tr>
-                    {% if exRes == True%} {% for name, id, member, type in resultAll %}
-                    <tr>
-                        <td><a href="/coalition/{{ id[0] }}">{{ name[0] }}</a></td>
-                        <td>Influence</td>
-                        <td>{{ member }}</td>
-                        <td>{{ type }}</td>
-                    </tr>
-                    {% endfor %} {% endif %} {% for id, name, members, type in colStats %}
+                    {% for name, id, members, type, influence in resultAll %}
                     <tr>
                         <td><a href="/coalition/{{ id }}">{{ name }}</a> </td>
-                        <td>Influence</td>
+                        <td>{{ influence }}</td>
                         <td>{{ members }}</td>
                         <td>{{ type }}</td>
                     </tr>

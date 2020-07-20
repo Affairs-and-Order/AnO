@@ -6,26 +6,20 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
 import NationsScript as Game
-# from apscheduler.schedulers.background import BackgroundScheduler
 import datetime
 import _pickle as pickle
 import random
 from celery import Celery
-from celery.schedules import crontab
-from helpers import get_influence
+# from celery.schedules import crontab # arent currently using but will be later on
+from helpers import get_influence, get_coalition_influence
 
 # Game.ping() # temporarily removed this line because it might make celery not work
-
-# warChecker = BackgroundScheduler() # wont be using this <
-# eventChecker = BackgroundScheduler()
-# uncomment when war ping is finished
-# warChecker.add_job()
 
 app = Flask(__name__)
 
 #basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_PERMANENT"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
@@ -121,19 +115,50 @@ def eventCheck():
         pass
     # will decide if natural disasters occure
 """
+@app.context_processor
+def inject_user():
+    def get_col_name():
+        conn = sqlite3.connect('affo/aao.db') # connects to db
+        db = conn.cursor()
+        try:
+            inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+            inCol = f"/coalition/{inColit}"
+            return inCol
+        except:
+            inCol = error(404, "Page Not Found")
+            return inCol
+    def get_resource_amount():
+        conn = sqlite3.connect('affo/aao.db') # connects to db
+        db = conn.cursor()
+        session_id = session["user_id"]
+
+        money = db.execute("SELECT gold FROM stats WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+
+        rations = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        oil = db.execute("SELECT oil FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        coal = db.execute("SELECT coal FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        uranium = db.execute("SELECT uranium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        bauxite = db.execute("SELECT bauxite FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        iron = db.execute("SELECT iron FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        lead = db.execute("SELECT lead FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+        copper = db.execute("SELECT copper FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+
+        components = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        steel = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        consumer_goods = db.execute("SELECT consumer_goods FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
+
+        copper_plates = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        aluminum = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        gasoline = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        ammunition = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        
+        lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, copper_plates, aluminum, gasoline, ammunition]
+        return lst
+    return dict(get_col_name=get_col_name, get_resource_amount=get_resource_amount)
+
 
 @app.route("/", methods=["GET"])
 def index():
-    conn = sqlite3.connect('affo/aao.db') # connects to db
-    db = conn.cursor()
-    try:
-        inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-        # TODO: fix this because this might causes errors when user is not in a coalition
-        inCol = f"/coalition/{inColit}"
-        app.add_template_global(inCol, name='inCol')
-    except:
-        inCol = error(404, "Page Not Found")
-        app.add_template_global(inCol, name='inCol') # fixes the bug of another page being on my_coalition instead of the actual coalition
     return render_template("index.html") # renders index.html when "/" is accesed
 
 @app.route("/error", methods=["GET"])
@@ -203,7 +228,7 @@ def signup():
                 db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO resources (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-                db.execute("DELETE FROM keys WHERE key=(?)", (key,))
+                db.execute("DELETE FROM keys WHERE key=(?)", (key,)) # deletes the used key
                 connection.commit()
                 connection.close()
                 return redirect("/")
@@ -217,15 +242,21 @@ def country(cId):
     db = connection.cursor()
 
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
-    influence = get_influence(cId)
+    influence = get_influence(cId) # runs the get_influence function of the player's id, which calculates his influence score
+    description = db.execute("SELECT description FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    provinces = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
+    provinceCount = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
 
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provinceIds = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+
+    provinces = zip(provinceNames, provinceIds)
 
     if str(cId) == str(session["user_id"]):
         status = True
@@ -237,9 +268,11 @@ def country(cId):
     except:
         colName = ""
 
-    return render_template("country.html", username=username, cId=cId, happiness=happiness, population=population,
-    location=location, gold=gold, status=status, provinces=provinces, colName=colName, dateCreated=dateCreated,
-    influence=influence)
+
+    return render_template("country.html", username=username, cId=cId, description=description,
+    happiness=happiness, population=population, location=location, gold=gold, status=status,
+    provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
+    provinces=provinces)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
@@ -399,7 +432,9 @@ def provinces():
 
         pAll = zip(cityCount, population, name, pId)
 
-        return render_template("provinces.html", pAll=pAll)
+        bAll = zip(cityCount, population, name, pId)
+
+        return render_template("provinces.html", pAll=pAll, bAll=bAll)
 
 @login_required
 @app.route("/province/<pId>", methods=["GET", "POST"])
@@ -430,6 +465,9 @@ def coalition(colId):
 
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
         colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
+        total_influence = get_coalition_influence(colId)
+        average_influence = total_influence / members
 
         # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
 
@@ -437,12 +475,11 @@ def coalition(colId):
 
         treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
 
+
         if leader == cId:
             userLeader = True
         else:
             userLeader = False
-
-        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
 
         requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
         requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
@@ -478,18 +515,10 @@ def coalition(colId):
         except:
             userInCurCol = False
 
-        try:
-            inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-            # TODO: fix this because this might causes errors when user is not in a coalition
-            inCol = f"/coalition/{inColit}"
-            app.add_template_global(inCol, name='inCol')
-        except:
-            inCol = error(404, "Page Not Found")
-            app.add_template_global(inCol, name='inCol')
-
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-        requests=requests, userInCurCol=userInCurCol, treaties=treaties)
+        requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
+        average_influence=average_influence)
 
 @login_required
 # estCol (this is so the function would be easier to find in code)
@@ -762,6 +791,7 @@ def businesses():
 @login_required
 @app.route("/war", methods=["GET", "POST"])
 def war():
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
@@ -771,32 +801,30 @@ def war():
         tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
         artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
         # air
         flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
         # water
         destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
         cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
         submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
         # special
         spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
         nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
+
+        yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
         return render_template("war.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
         flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-        spies=spies, icbms=icbms, nukes=nukes
+        spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry
         )
 
 @login_required
 @app.route("/countries", methods=["GET", "POST"])
-def countries():
+def countries(): # TODO: fix shit ton of repeated code in function
     if request.method == "GET":
 
         connection = sqlite3.connect('affo/aao.db')
@@ -810,6 +838,7 @@ def countries():
         coalition_ids = []
         coalition_names = []
         dates = []
+        influences = []
 
         for i in users:
 
@@ -824,6 +853,9 @@ def countries():
             date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             dates.append(date)
 
+            influence = get_influence(str(i[0]))
+            influences.append(influence)
+
             try:
                 coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
                 coalition_ids.append(coalition_id)
@@ -836,9 +868,9 @@ def countries():
 
         connection.commit()
 
-        new_zipped = zip(population, ids, names, coalition_ids, coalition_names, dates)
+        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
 
-        return render_template("countries.html", new_zipped=new_zipped)
+        return render_template("countries.html", resultAll=resultAll)
 
     else: 
 
@@ -855,6 +887,7 @@ def countries():
         coalition_ids = []
         coalition_names = []
         dates = []
+        influences = []
 
         for i in users:
 
@@ -868,6 +901,9 @@ def countries():
 
             date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             dates.append(date)
+                        
+            influence = get_influence(str(i[0]))
+            influences.append(influence)
 
             try:
                 coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
@@ -879,10 +915,9 @@ def countries():
                 coalition_ids.append("No Coalition")
                 coalition_names.append("No Coalition")
 
-        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates)
-        exRes = True
+        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
 
-        return render_template("countries.html", resultAll=resultAll, exRes=exRes)
+        return render_template("countries.html", resultAll=resultAll)
 
 @login_required
 @app.route("/coalitions", methods=["GET", "POST"])
@@ -898,6 +933,7 @@ def coalitions():
         ids = []
         members = []
         types = []
+        influences = []
 
         for i in coalitions:
 
@@ -914,9 +950,12 @@ def coalitions():
             colMembers = db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
             members.append(colMembers)
 
-        colStats = zip(ids, names, members, types)
+            influence = get_coalition_influence(idd)
+            influences.append(influence)
 
-        return render_template("coalitions.html", colStats=colStats)
+        resultAll = zip(names, ids, members, types, influences)
+
+        return render_template("coalitions.html", resultAll=resultAll)
     
     else:
 
@@ -925,19 +964,23 @@ def coalitions():
         
         search = request.form.get("search")
 
-        resultName = db.execute("SELECT name FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
         resultId = db.execute("SELECT id FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
+        ids = []
+        names = []
         members = []
         types = []
+        influences = []
 
         for i in resultId:
+            names.append(db.execute("SELECT name FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
+            ids.append(db.execute("SELECT id FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
             members.append(db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (i[0],)).fetchone()[0])
             types.append(db.execute("SELECT type FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
+            influences.append(get_coalition_influence(i[0]))
 
-        resultAll = zip(resultName, resultId, members, types)
-        exRes = True
+        resultAll = zip(names, ids, members, types, influences)
 
-        return render_template("coalitions.html", resultAll=resultAll, exRes=exRes)
+        return render_template("coalitions.html", resultAll=resultAll)
 
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
@@ -1068,28 +1111,48 @@ def statistics():
     return render_template("statistics.html")
 
 @login_required
-@app.route("/change_country_name", methods=["POST"])
-def change_name():
-
-    cId = session["user_id"]
+@app.route("/update_country_info", methods=["POST"])
+def update_info():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
+    cId = session["user_id"]
 
+    description = request.form.get("description")
     name = request.form.get("countryName")
 
-    try:
-        duplicate = db.execute("SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
-        duplicate = True
-    except TypeError:
-        duplicate = False
+    if len(description) > 1: # currently checks if the description is more than 1 letter cuz i was too lazy to figure out the input, bad practice but it works for now
+        db.execute("UPDATE users SET description=(?) WHERE id=(?)", (description, cId))
+        connection.commit()
 
-    if duplicate == False:
-        db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
+    if len(name) > 1: # bad practice, but works for now, for more details check comment above
+
+        try:
+            duplicate = db.execute("SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
+            duplicate = True
+        except TypeError:
+            duplicate = False
+
+        if duplicate == False: # Checks if username isn't a duplicate
+            db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
+        connection.commit() # Commits the data
+
+    return redirect(f"/country/id={cId}") # Redirects the user to his country
+
+@login_required
+@app.route("/update_discord", methods=["POST"])
+def update_discord():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    discord_username = request.form.get("discordUsername")
+    db.execute("UPDATE users SET discord=(?) WHERE id=(?)", (discord_username, cId))
     connection.commit()
-    return redirect(f"/country/id={cId}")
-
+    return redirect(f"/country/id={cId}") # Redirects the user to his country
+    
 # available to run if double click the file
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) # Runs the app with debug mode on
 

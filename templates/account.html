@@ -2,14 +2,19 @@
 <div class="templatediv">
 
     <div class="templatedivtopper">
-        <h1 class="templatedivtitle">{{ name }}'s Account</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            perm_identity
+            </span>{{ name }}'s Account</h1>
         <div class="templatedivad"></div>
     </div>
 
     <div class="templatedivcontent">
-        <div class="menudiv">
 
-            <h2 class="templatecontentheaderleft">Background Color</h2>
+        <h2 class="templatecontentheaderleft">Background Color</h2>
+
+
+
+        <div class="infodiv">
 
             <div class="coalitionimagepreview">
                 <img id="imageBackground" />
@@ -49,31 +54,35 @@
                 check
                 </span>Update</button>
         </div>
-        <div class="menudiv">
 
-            <h2 class="templatecontentheaderleft">Account information</h2>
+        <h2 class="templatecontentheaderleft">Account information</h2>
 
+        <div class="infodiv">
             <div class="templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
 
-
+                    <input class="loginsignupinput" name="discordUsername" placeholder="Discord Username" />
 
                 </div>
                 <div class="templatedivflex2left">
 
-
+                    test
 
                 </div>
             </div>
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
 
-            <input class="loginsignupinput" name="discordUsername" placeholder="Discord Username" />
+                    <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete account</button>
 
-            <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete account</button>
+                </div>
+                <div class="templatedivflex2left">
 
-
-            <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                check
-                </span>Update</button>
+                    <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                                check
+                            </span>Update</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -3,7 +3,9 @@
 <div class="templatediv">
 
     <div class="templatedivtopper coalitiontopper">
-        <h1 class="templatedivtitle">{{ name }}</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            public
+            </span>{{ name }}</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -82,7 +84,9 @@
 
                     <table class="templatetable">
                         <tr>
-                            <th>General</th>
+                            <th><span class="material-icons-outlined">
+                                info
+                                </span>General</th>
                         </tr>
                         <tr>
                             <td>Members:</td>
@@ -94,11 +98,11 @@
                         </tr>
                         <tr>
                             <td>Influence:</td>
-                            <td>{{ coalitioninfluence }}</td>
+                            <td>{{ total_influence }}</td>
                         </tr>
                         <tr>
                             <td>Average Influence:</td>
-                            <td>{{ coalitionAverageInfluence }}</td>
+                            <td>{{ average_influence }}</td>
                         </tr>
                         <tr>
                             <td>Coalition type:</td>
@@ -106,37 +110,11 @@
                         </tr>
 
                     </table>
-
-                    <table class="templatetable">
-                        <th>Affairs</th>
-                        </tr>
-                        <tr>
-                            <td>Allied:</td>
-                            <td>Y / N</td>
-                        </tr>
-                        <!--ONLY display ally TYPE (below) if nation IS in an ALLIED coalition-->
-                        <tr>
-                            <td>Ally Type:</td>
-                            <td>{{ treatyType }}</td>
-                        </tr>
-                        <tr>
-                            <td>Allies:</td>
-                            <td>View allies</td>
-                        </tr>
-                        <tr>
-                            <td>Water Military:</td>
-                            <td>10%</td>
-                        </tr>
-                        <tr>
-                    </table>
-
-
-                </div>
-                <div class="templatedivflex2left">
-
                     <table class="templatetable">
                         <tr>
-                            <th>Military</th>
+                            <th><span class="material-icons-outlined">
+                                military_tech
+                                </span>Military</th>
                         </tr>
                         <tr>
                             <td>Military power:</td>
@@ -159,8 +137,38 @@
                         </tr>
                         <tr>
                     </table>
+
+                </div>
+                <div class="templatedivflex2left">
+
                     <table class="templatetable">
-                        <th>More Info</th>
+                        <th><span class="material-icons-outlined">
+                            public
+                            </span>Affairs</th>
+                        </tr>
+                        <tr>
+                            <td>Allied:</td>
+                            <td>Y / N</td>
+                        </tr>
+                        <!--ONLY display ally TYPE (below) if nation IS in an ALLIED coalition-->
+                        <tr>
+                            <td>Ally Type:</td>
+                            <td>{{ treatyType }}</td>
+                        </tr>
+                        <tr>
+                            <td>Allies:</td>
+                            <td>View allies</td>
+                        </tr>
+                        <tr>
+                            <td>Water Military:</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                    </table>
+                    <table class="templatetable">
+                        <th><span class="material-icons-outlined">
+                            article
+                            </span>More Info</th>
                         </tr>
                         <tr>
                             <td>Provinces:</td>

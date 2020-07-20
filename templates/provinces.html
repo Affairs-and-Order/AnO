@@ -1,8 +1,16 @@
-{% extends "layout.html" %} {% block title %} Provinces {% endblock %} {% block body %}
+{% extends "layout.html" %} 
+
+{% block title %}
+    Provinces
+{% endblock %}
+
+{% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper provincestopper">
-        <h1 class="templatedivtitle">Provinces</h1>
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            account_balance
+            </span>Provinces</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -10,32 +18,46 @@
 
     <div class="templatedivcontent">
 
-        <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-            add_circle_outline
-            </span>Create Province</a>
-        <div class="templatedivflex2 templatesidemenuflexparent">
-            <div class="stickyflexmenu">
-                {% for cityCount, population, name, pId in pAll %}
-                <!--make an anchor for every province the player has-->
-                <a class="menubara" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
-                    account_balance
-                    </span>{{ name[0] }}</a> 
-                {% endfor %}
+        <div class="templatedivflex2 divflex2center">
+            <div class="templatedivflex2left">
+
+                <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    add_circle_outline
+                    </span>Create Province</a>
+
             </div>
+            <div class="templatedivflex2right">
 
-            <div class="templatefullwidthflexchild"> <!-- unsure whats wrong here, could you be more specific - t0dd -->
-                {% for cityCount, population, name, pId in pAll %}
+                <a href="/mass_purchase" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    payments
+                    </span>Mass Purchase</a>
+
+            </div>
+        </div>
+
+        <div class="templatedivflex2 templatesidemenuflexparent">
+
+            {% for cityCount, population, name, pId in pAll %}
+            <div class="stickyflexmenu">
+                <!--make an anchor for every province the player has-->
+                <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a>
+            </div>
+            {% endfor %}
+
+            <div class="templatefullwidthflexchild">
+                <!-- unsure whats wrong here, could you be more specific - t0dd -->
                 <!--make a div for every province the player has-->
-                <div class="menudiv" id="{{ provinceName }}">
+                {% for cityCount, population, name, pId in bAll %}
+                <div class="menudiv" id="{{ name[0] }}">
 
-                    <h2 class="templatecontentheaderleft">{{ name[0] }}</h2>
+                    <h2 class="vanilla templatecontentheaderleft">{{ name[0] }}</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
                             <a class="forgotpasscode loginsignupforgot" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
                                 account_balance
-                                </span>Visit Province</a>
+                                </span>Visit {{ name[0] }}</a>
 
                             <table class="templatetable">
                                 <tr>
@@ -50,7 +72,11 @@
                                     <td>{{ population[0] }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Infrastructure slots:</td>
+                                    <td>City slots:</td>
+                                    <td>To be added</td>
+                                </tr>
+                                <tr>
+                                    <td>Land slots:</td>
                                     <td>To be added</td>
                                 </tr>
                             </table>
