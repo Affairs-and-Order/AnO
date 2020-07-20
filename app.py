@@ -428,7 +428,9 @@ def provinces():
 
         pAll = zip(cityCount, population, name, pId)
 
-        return render_template("provinces.html", pAll=pAll)
+        bAll = zip(cityCount, population, name, pId)
+
+        return render_template("provinces.html", pAll=pAll, bAll=bAll)
 
 @login_required
 @app.route("/province/<pId>", methods=["GET", "POST"])

@@ -1,4 +1,10 @@
-{% extends "layout.html" %} {% block title %} Provinces {% endblock %} {% block body %}
+{% extends "layout.html" %} 
+
+{% block title %}
+    Provinces
+{% endblock %}
+
+{% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper provincestopper">
@@ -30,6 +36,7 @@
         </div>
 
         <div class="templatedivflex2 templatesidemenuflexparent">
+
             {% for cityCount, population, name, pId in pAll %}
             <div class="stickyflexmenu">
                 <!--make an anchor for every province the player has-->
@@ -40,7 +47,7 @@
             <div class="templatefullwidthflexchild">
                 <!-- unsure whats wrong here, could you be more specific - t0dd -->
                 <!--make a div for every province the player has-->
-                {% for cityCount, population, name, pId in pAll %}
+                {% for cityCount, population, name, pId in bAll %}
                 <div class="menudiv" id="{{ name[0] }}">
 
                     <h2 class="vanilla templatecontentheaderleft">{{ name[0] }}</h2>
