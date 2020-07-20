@@ -674,6 +674,10 @@ hr {
     display: none;
 }
 
+.space {
+    justify-content: space-around;
+}
+
 .templatediv {
     background: #ffffff;
     width: 90%;
@@ -1259,7 +1263,13 @@ input[type=radio]:checked~label {
 }
 
 .divflex2center {
-    justify-content: space-around;
+    height: min-content;
+    width: fit-content;
+    justify-items: center;
+    justify-self: center;
+    margin: auto;
+    float: none;
+    text-align: center;
 }
 
 .divflex2center div {
