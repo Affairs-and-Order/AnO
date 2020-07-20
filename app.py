@@ -247,13 +247,16 @@ def country(cId):
 
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    provinces = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
+    provinceCount = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
 
     location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provinceIds = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+
+    provinces = zip(provinceNames, provinceIds)
 
     if str(cId) == str(session["user_id"]):
         status = True
@@ -265,10 +268,11 @@ def country(cId):
     except:
         colName = ""
 
+
     return render_template("country.html", username=username, cId=cId, description=description,
     happiness=happiness, population=population, location=location, gold=gold, status=status,
-    provinces=provinces, colName=colName, dateCreated=dateCreated, influence=influence,
-    provinceNames=provinceNames)
+    provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
+    provinces=provinces)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
