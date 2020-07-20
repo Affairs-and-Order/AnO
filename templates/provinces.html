@@ -41,7 +41,7 @@
                 <!-- unsure whats wrong here, could you be more specific - t0dd -->
                 <!--make a div for every province the player has-->
                 {% for cityCount, population, name, pId in pAll %}
-                <div class="menudiv" id="{{ provinceName }}">
+                <div class="menudiv" id="{{ name[0] }}">
 
                     <h2 class="vanilla templatecontentheaderleft">{{ name[0] }}</h2>
 
@@ -50,7 +50,7 @@
 
                             <a class="forgotpasscode loginsignupforgot" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
                                 account_balance
-                                </span>Visit Province</a>
+                                </span>Visit {{ name[0] }}</a>
 
                             <table class="templatetable">
                                 <tr>
