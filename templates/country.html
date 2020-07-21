@@ -270,11 +270,22 @@
                     <td><a class="loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
                             account_balance
                             </span>{{ provinceName[0] }}</a>
-                        <p class="templatecontentpleft">Population</p>
-                        <p class="templatecontentpleft">Cities</p>
-                        <p class="templatecontentpleft">Land</p>
+                        <table class="templatetable3">
+                            <tr>
+                                <td>Population:</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Cities:</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Land:</td>
+                                <td>X</td>
+                            </tr>
+                        </table>
                     </td>
-                    <td><img class="smallimage unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                    <td class="smallimage"><img class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
                 </tr>
                 {% endfor %}
 
