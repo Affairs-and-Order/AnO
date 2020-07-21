@@ -1565,7 +1565,7 @@ button {
     text-align: center;
     width: 85%;
     margin: 10px auto;
-    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(39, 41, 59, 0.15) 0px 0px 0px 0px inset, rgba(39, 41, 59, 0.10) 0px 4px 8px 0px;
+    box-shadow: inset 0px 0px 0px 1.5px rgb(246.5, 246.5, 246.5), rgba(39, 41, 59, 0.15) 0px 0px 0px 0px inset, rgba(0, 0, 0, 0.1) 0px 2px 3px 0px, rgba(39, 41, 59, 0.1) 0px 2px 5px 0px;
     padding: 0;
     overflow: hidden;
 }
@@ -1801,13 +1801,10 @@ button {
     float: none;
 }
 
-.loginsignupinput:hover {
-    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
-}
+.loginsignupinput:hover {}
 
 .loginsignupinput:focus {
     background-position: -100% 0%;
-    box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
 .loginsignupbutton {
