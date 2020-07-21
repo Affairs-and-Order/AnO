@@ -143,16 +143,16 @@ def inject_user():
         lead = db.execute("SELECT lead FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
         copper = db.execute("SELECT copper FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
 
-        components = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
-        steel = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        components = db.execute("SELECT components FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        steel = db.execute("SELECT steel FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         consumer_goods = db.execute("SELECT consumer_goods FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
 
-        copper_plates = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        aluminum = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        gasoline = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        ammunition = 0 # db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        copper_plates = db.execute("SELECT copper_plates FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        aluminium = db.execute("SELECT aluminium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        gasoline = db.execute("SELECT gasoline FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        ammunition = db.execute("SELECT ammunition FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         
-        lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, copper_plates, aluminum, gasoline, ammunition]
+        lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, copper_plates, aluminium, gasoline, ammunition]
         return lst
     return dict(get_col_name=get_col_name, get_resource_amount=get_resource_amount)
 
