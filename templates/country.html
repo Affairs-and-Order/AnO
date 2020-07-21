@@ -269,7 +269,11 @@
                 <tr>
                     <td><a class="loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
                             account_balance
-                            </span>{{ provinceName[0] }}</a></td>
+                            </span>{{ provinceName[0] }}</a>
+                        <p class="templatecontentpleft">Population</p>
+                        <p class="templatecontentpleft">Cities</p>
+                        <p class="templatecontentpleft">Land</p>
+                    </td>
                     <td><img class="smallimage unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
                 </tr>
                 {% endfor %}
@@ -1211,7 +1215,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="a18" name="group18">
-                            <label for="a18">Freedom of religion</label>
+                            <label for="a18">Enpashis on one religion</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1220,7 +1224,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="b18" name="group18">
-                            <label for="b18">Enpashis on one religion</label>
+                            <label for="b18">Freedom of religion</label>
 
                             <div class="vanilla check"></div>
                         </li>

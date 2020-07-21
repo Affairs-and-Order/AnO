@@ -676,7 +676,7 @@ hr {
 }
 
 .space {
-    justify-content: space-around;
+    justify-content: space-around !important;
 }
 
 .templatediv {
@@ -699,13 +699,12 @@ hr {
 .templatedivtopper {
     padding: 0.75vh;
     padding-top: 2.5vh;
-    animation: toppergradient 5s ease infinite;
     transition: all 0.2s;
-    background: linear-gradient(145deg, #00a7e1 30%, #149dc7 70%);
     background-size: 400% 400%;
     box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.10);
     margin-bottom: 10px;
     position: relative;
+    background: #00a7e1;
 }
 
 .templatedivtopper img {
