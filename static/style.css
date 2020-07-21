@@ -1801,8 +1801,6 @@ button {
     float: none;
 }
 
-.loginsignupinput:hover {}
-
 .loginsignupinput:focus {
     background-position: -100% 0%;
 }
