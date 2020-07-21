@@ -1729,7 +1729,7 @@ button {
     position: relative;
     top: -5px;
     transition: all 0.3s;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 18px 5px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 32px 2px;
 }
 
 .discordlink:hover {
