@@ -1,10 +1,4 @@
-{% extends "layout.html" %} 
-
-{% block title %}
-    Provinces
-{% endblock %}
-
-{% block body %}
+{% extends "layout.html" %} {% block title %} Provinces {% endblock %} {% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper provincestopper">
@@ -37,12 +31,11 @@
 
         <div class="templatedivflex2 templatesidemenuflexparent">
 
-            {% for cityCount, population, name, pId in pAll %}
             <div class="stickyflexmenu">
+                {% for cityCount, population, name, pId in pAll %}
                 <!--make an anchor for every province the player has-->
-                <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a>
+                <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a> {% endfor %}
             </div>
-            {% endfor %}
 
             <div class="templatefullwidthflexchild">
                 <!-- unsure whats wrong here, could you be more specific - t0dd -->
@@ -50,7 +43,7 @@
                 {% for cityCount, population, name, pId in bAll %}
                 <div class="menudiv" id="{{ name[0] }}">
 
-                    <h2 class="vanilla templatecontentheaderleft">{{ name[0] }}</h2>
+                    <h2 class="templatecontentheaderleft">{{ name[0] }}</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">

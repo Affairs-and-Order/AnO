@@ -267,12 +267,10 @@
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
                 {% for provinceName, provinceId in provinces %}
                 <tr>
-                    <td><span class="material-icons-outlined">
-                        notes
-                        </span><a class="forgotpasscode loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
+                    <td><a class="loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
                             account_balance
                             </span>{{ provinceName[0] }}</a></td>
-                    <td><img class="unitimage" src="static/images/province.jpg" /></td>
+                    <td><img class="smallimage unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
                 </tr>
                 {% endfor %}
 

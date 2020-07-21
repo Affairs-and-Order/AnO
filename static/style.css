@@ -1961,6 +1961,10 @@ button {
     text-align: center;
 }
 
+.smallimage {
+    max-height: 150px !important;
+}
+
 .unitimage {
     width: 80%;
     max-height: 425px;
