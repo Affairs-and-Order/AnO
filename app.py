@@ -789,8 +789,8 @@ def businesses():
         return render_template("businesses.html")
 
 @login_required
-@app.route("/war", methods=["GET", "POST"])
-def war():
+@app.route("/wars", methods=["GET", "POST"])
+def wars():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
@@ -816,7 +816,7 @@ def war():
 
         yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-        return render_template("war.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
+        return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
         flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
         spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry
