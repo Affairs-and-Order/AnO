@@ -23,12 +23,12 @@
 
                     <div class="landingpageinforight">
 
-                        <h2 class="templatecontentheadercenter">Go to your country</h2>
+                        <ul class="bold medium">Go to your country</ul>
                         {% if session.get("logged_in") != True %}
                         <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login"><span class="material-icons-outlined">
                             login
                             </span>LOGIN</a>
-                        <h2 class="templatecontentheadercenter">Or create one!</h2>
+                        <ul class="bold medium">Or create one!</ul>
                         <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup"><span class="material-icons-outlined">
                             add_circle_outline
                             </span>SIGNUP</a> {% elif session.get("logged_in") == True %}
@@ -63,12 +63,11 @@
             </div>
         </div>
 
-        <h2 class="templatecontentheaderleft">Join our Community</h2>
-        <div class="templatedivflex2 menuflex">
+        <div class="templatedivflex2 menuflex whiteblue">
             <div class="templatedivflex2left">
 
-                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well!
-                    <br /><br /> You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
+                <h2 class="templatecontentheadercenter">Join our Community</h2>
+                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
                 </p>
 
                 <div class="templatedivflex2 divflex2center">
