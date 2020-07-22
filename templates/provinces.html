@@ -54,23 +54,39 @@
 
                             <table class="templatetable">
                                 <tr>
-                                    <th>General</th>
+                                    <th><span class="material-icons-outlined">
+                                        info
+                                        </span>{{ name[0] }}</th>
                                 </tr>
                                 <tr>
-                                    <td>City Count:</td>
-                                    <td>{{ cityCount[0] }}</td>
+                                    <td><span class="material-icons-outlined">
+                                        people_alt
+                                        </span>Population:</td>
+                                    <td>{{ population }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Population:</td>
-                                    <td>{{ population[0] }}</td>
+                                    <td><span class="material-icons-outlined">
+                                        sentiment_satisfied
+                                        </span>Happiness:</td>
+                                    <td>{{ happiness }}%</td>
                                 </tr>
                                 <tr>
-                                    <td>City slots:</td>
-                                    <td>To be added</td>
+                                    <td><span class="material-icons-outlined">
+                                        arrow_circle_up
+                                        </span>Productivity:</td>
+                                    <td>{{ happiness }}%</td>
                                 </tr>
                                 <tr>
-                                    <td>Land slots:</td>
-                                    <td>To be added</td>
+                                    <td><span class="material-icons-outlined">
+                                        business
+                                        </span>Cities:</td>
+                                    <td>{{ cityCount }}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="material-icons-outlined">
+                                        landscape
+                                        </span>land:</td>
+                                    <td>{{ land }}km</td>
                                 </tr>
                             </table>
                         </div>
