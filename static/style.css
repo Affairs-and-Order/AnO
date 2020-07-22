@@ -657,6 +657,10 @@ hr {
     padding: 0px !important;
 }
 
+.strongpadding {
+    padding: 40px;
+}
+
 .fit {
     width: fit-content;
 }
@@ -1355,22 +1359,13 @@ button {
     padding: 0;
     margin: 0;
     justify-content: stretch;
+    align-items: stretch;
 }
 
 .templatefullwidthflexchild {
     width: 90%;
     margin: 0;
     padding: 0;
-}
-
-.stickyflexmenudiv {
-    margin: 0;
-    padding: 0;
-    min-width: 10% !important;
-    height: 100%;
-    background: #f7f7f7;
-    border-radius: 0px;
-    overflow: hidden;
 }
 
 .stickyflexmenu {
@@ -1381,7 +1376,6 @@ button {
     background: #f7f7f7;
     border-radius: 0px;
     overflow: hidden;
-    height: max-content;
     font-size: 14px;
 }
 
