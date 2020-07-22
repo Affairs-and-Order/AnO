@@ -62,7 +62,7 @@
 
                     {% for pop, id, name, colId, colName, date, influence in resultAll %}
                     <tr>
-                        <td><a href="/country/id={{ id }}">{{ name }}</a></td>
+                        <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
                         <td>{{ influence }}</td>
                         <td>{{ date }}</td>
                         {% if colName == "No Coalition" %}

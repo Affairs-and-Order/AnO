@@ -15,7 +15,7 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
-
+    
 def error(code, message):
     return render_template("error.html", code=code, message=message)
 
@@ -48,7 +48,7 @@ def get_influence(country_id):
     flying_fortresses + fighter_jets + apaches +\
     destroyers + cruisers + submarines + \
     spies + icbms + nukes
-
+    
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
     influence = military + gold

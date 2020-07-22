@@ -834,24 +834,15 @@ def countries(): # TODO: fix shit ton of repeated code in function
         db = connection.cursor()
 
         users = db.execute("SELECT id FROM users ORDER BY id").fetchall()
+        population = db.execute("SELECT population FROM stats ORDER BY id").fetchall()
+        names = db.execute("SELECT username FROM users ORDER BY id").fetchall()
 
-        population = []
-        ids = []
-        names = []
         coalition_ids = []
         coalition_names = []
         dates = []
         influences = []
 
         for i in users:
-
-            ids.append(i[0])
-
-            indPop = db.execute("SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            population.append(indPop)
-
-            name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            names.append(name)
 
             date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             dates.append(date)
@@ -870,8 +861,9 @@ def countries(): # TODO: fix shit ton of repeated code in function
                 coalition_names.append("No Coalition")
 
         connection.commit()
+        
 
-        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
+        resultAll = zip(population, users, names, coalition_ids, coalition_names, dates, influences)
 
         return render_template("countries.html", resultAll=resultAll)
 
