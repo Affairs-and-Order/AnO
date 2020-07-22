@@ -222,12 +222,14 @@ def signup():
                 connection.commit()
                 session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
                 session["logged_in"] = True
+
                 db.execute("INSERT INTO stats (id, location) VALUES (SELECT id FROM users WHERE id = (?)), (?)", (session["user_id"], "Bosfront")) # change the default location                                                                          # "Bosfront" to something else
                 db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
                 db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
                 db.execute("INSERT INTO resources (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+
                 db.execute("DELETE FROM keys WHERE key=(?)", (key,)) # deletes the used key
                 connection.commit()
                 connection.close()
