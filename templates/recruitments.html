@@ -10,20 +10,43 @@
 
     <div class="templatedivcontent">
 
-        <div class="templatedivflex2 menuflex">
+        <div class="templatedivflex2 divflex2full">
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter">[[ coalitionName ]]</h2>
+                <select class="templateselect">
 
-                <p class="templatecontentpleft">[[ recruitmentMessage ]]</p>
+    <option selected="selected" class="templateoption">Influence</option>
+    <option class="templateoption">Members</option>
+    <option class="templateoption">Military</option>
+    <option class="templateoption">Age</option>
+
+                </select>
+
+            </div>
+            <div class="templatedivflex2right">
+
+                <select class="templateselect">
+
+    <option selected="selected" class="templateoption">Ascending</option>
+    <option class="templateoption">Descending</option>
+
+                </select>
 
             </div>
             <div class="templatedivflex2left">
 
-                <img class="unitimage" src="{{ url_for('static', filename='images/bauxitemine.jpg') }}" />
+                <button class="templatedivbutton smallactionbutton"><span class="material-icons-outlined">
+                    arrow_forward
+                    </span>Submit</button>
 
             </div>
         </div>
+
+        <h2 class="templatecontentheadercenter">[[ coalitionName ]]</h2>
+        <div class="advert">
+            <a href="[[ coalitionLink ]]"><img class="advertimage" src="{{ url_for('static', filename='images/bauxitemine.jpg') }}" /></a>
+        </div>
+
 
     </div>
 </div>

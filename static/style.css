@@ -854,12 +854,31 @@ hr {
     text-shadow: 0px 1px 4px #084955;
 }
 
+.advert {
+    text-align: center;
+}
+
+.advertimage {
+    width: 80%;
+    height: 20vh;
+    padding: 8px;
+    margin: 25px auto;
+    margin-top: 0px;
+    box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
+    object-fit: cover;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.advertimage:hover {
+    transform: scale(0.985);
+}
+
 .templatedivad {
     width: 80%;
     height: 20vh;
     margin: 20px auto;
     background: black;
-    position: relative;
 }
 
 .templatedivcontent {
@@ -2178,4 +2197,10 @@ button {
 
 .footer div a:hover {
     color: rgb(88, 196, 231);
+}
+
+color: rgb(88,
+196,
+231);
+
 }
