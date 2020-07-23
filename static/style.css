@@ -532,7 +532,7 @@ hr {
     padding-bottom: 10px;
     z-index: 1000;
     height: 40px;
-    transition: all 0.4s ease;
+    transition: all 0.4s ease-in-out;
     transition-delay: 0s;
     box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
     text-align: right;
