@@ -1,5 +1,11 @@
 {% extends "layout.html" %} {% block title %} Login {% endblock %} {% block body %}
 <!-- START------------------------------------------------------------------------->
+<script>
+    window.onload = function background() {
+        var randomPicture = "static/images/" + [Math.floor(Math.random() * 4) + 1 + '.jpg'];
+        document.getElementById("background").src = randomPicture;
+    }
+</script>
 <img class="background" id="background" />
 
 <div class="templatediv loginsignupdiv noboxshadowtopper">

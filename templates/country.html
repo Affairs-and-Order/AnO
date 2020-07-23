@@ -1255,16 +1255,17 @@
                     check
                     </span>Update</button>
             </div>
-            <!--Actions-->
-            <div class="actions" id="actions">
+        </div>
+        <!--Actions-->
+        <div class="actions" id="actions">
 
-                <h2 class="templatecontentheaderleft">War</h2>
+            <h2 class="templatecontentheaderleft">War</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
 
-                        <label for="warType">Pick war type</label>
-                        <select class="templateselect" name="warType">
+                    <label for="warType">Pick war type</label>
+                    <select class="templateselect" name="warType">
             
                                     <option class="templateoption">Raid</option>
                                     <option class="templateoption">Annihilation</option>
@@ -1272,27 +1273,27 @@
                                 
                                 </select>
 
-                    </div>
-                    <div class="templatedivflex2left">
-
-                        <label for="description">War message</label>
-                        <div class="center">
-                            <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
-                        </div>
-
-                    </div>
                 </div>
-                <a class="templatedivbutton templatecenteredbutton" href="/declare_war"><span class="material-icons-outlined">
+                <div class="templatedivflex2left">
+
+                    <label for="description">War message</label>
+                    <div class="center">
+                        <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <a class="templatedivbutton templatecenteredbutton" href="/declare_war"><span class="material-icons-outlined">
                     check
                     </span>Declare</a>
 
-                <h2 class="templatecontentheaderleft">Reconnaissance</h2>
+            <h2 class="templatecontentheaderleft">Reconnaissance</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
 
-                        <label for="warType">Choose opperation</label>
-                        <select class="templateselect" name="warType">
+                    <label for="warType">Choose opperation</label>
+                    <select class="templateselect" name="warType">
             
                                     <option class="templateoption">Assasinate spies</option>
                                     <option class="templateoption">Spy on ground troops</option>
@@ -1302,27 +1303,27 @@
                                 
                                 </select>
 
-                    </div>
-                    <div class="templatedivflex2left">
-
-                        <label for="countryName">Number of spies</label>
-                        <input class="loginsignupinput" name="countryName" placeholder="[[ spyCount ]]" />
-
-                    </div>
                 </div>
+                <div class="templatedivflex2left">
 
-                <label for="warType">[[ successChance ]]</label>
+                    <label for="countryName">Number of spies</label>
+                    <input class="loginsignupinput" name="countryName" placeholder="[[ spyCount ]]" />
 
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                </div>
+            </div>
+
+            <label for="warType">[[ successChance ]]</label>
+
+            <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Perform</button>
 
-                <h2 class="templatecontentheaderleft">Trade</h2>
+            <h2 class="templatecontentheaderleft">Trade</h2>
 
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left flexchildvanilla">
+            <div class="templatedivflex2 divflex2center">
+                <div class="templatedivflex2left flexchildvanilla">
 
-                        <select name="resource" class="templateselect">
+                    <select name="resource" class="templateselect">
         
                             <option disabled="true" selected="selected">Choose one</option>
                             <option value="gold" class="templateoption">Gold</option>
@@ -1340,39 +1341,39 @@
                         </select>
 
 
-                    </div>
-                    <div class="templatedivflex2left">
-
-                        <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
-
-                    </div>
-                    <div class="templatedivflex2left">
-
-                        <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
-
-                    </div>
                 </div>
+                <div class="templatedivflex2left">
 
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left">
+                    <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
 
-                        <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                </div>
+                <div class="templatedivflex2left">
+
+                    <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
+
+                </div>
+            </div>
+
+            <div class="templatedivflex2 divflex2center">
+                <div class="templatedivflex2left">
+
+                    <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             payments
                             </span>Buy offer</button>
 
-                    </div>
+                </div>
 
-                    <div class="templatedivflex2left">
+                <div class="templatedivflex2left">
 
-                        <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             payments
                             </span>Sell Offer</button>
-
-                    </div>
 
                 </div>
 
             </div>
+
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}
