@@ -2105,7 +2105,7 @@ button {
 /*WAR*/
 
 .warflexparent {
-    background: #f7f9fd;
+    background: #f7f7f7;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     width: 95%;
