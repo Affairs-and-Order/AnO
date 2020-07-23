@@ -1776,7 +1776,7 @@ button {
     top: -5px;
     transition: all 0.3s;
     border-radius: 8px;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 32px 2px, #36394560 0px 8px 0px 0px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 32px 2px, #e3e9f0 0px 8px 0px 0px;
 }
 
 .discordlink:hover {
