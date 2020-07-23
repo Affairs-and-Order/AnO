@@ -661,6 +661,14 @@ hr {
     padding: 0px !important;
 }
 
+.nopad {
+    padding: 0 !important;
+}
+
+.nomarg {
+    margin: 0 !important;
+}
+
 .strongpadding {
     padding: 40px;
 }
