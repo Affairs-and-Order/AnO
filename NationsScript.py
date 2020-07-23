@@ -78,7 +78,7 @@ class Economy:
         i = 0
         for resou in self.resources:
             self.resources[resou] = db.execute(f"SELECT {self.resourcesNames[i]} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
-            resourceList.append(self.resources[resou]) 
+            resourceList.append(self.resources[resou])
             i += 1
 
         return resourceList
@@ -146,6 +146,7 @@ class Nation:
         self.inBattleUnits = []
 
         self.allies = []
+        self.advantageFormula = lambda n, m, v, t, e : (n+v) * ((t*e)/10 + m)
 
     # increases morale but decreases attack power
     def fortify(self, usedSupplies, unitType, unitAmount, enemyNation):
@@ -191,9 +192,14 @@ class Nation:
         # else return -1
         else:
             return -1
-    
-    calculateAdvantage = lambda n, m, v, t, e : (n+v) * ((t*e)/10 + m)
 
+    """
+    - let n = number of units
+    - let v = very slight random advantage/disadvantage (0.5/1.5)
+    - let m = morale between 1 - 100 (inclusive)
+    - let t = tech score - between 1 - 30
+    - let e = effectiveness - between 0-2
+    """
     def calculateBattleAdvantage(self):
         # now the variables are out of scope...
         try:
@@ -201,33 +207,22 @@ class Nation:
             for unit in self.inBattleUnits:
 
                 attackPower += unit["damage"]
-                battleAdvantage = random.random(-1, 1)  # add a very small amount of randomness to the battle, shouldn't cause any major game changing events
+                self.battleAdvantage = random.random(0.5, 1.5)  # add a very small amount of randomness to the battle, shouldn't cause any major game changing events
 
-                attackerMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
-                defenderMorale = cursor.execute(f"SELECT morale FROM war WHERE id={self.warList[war]}", ()).fetchone()[0]
+                self.morale = cursor.execute(f"SELECT morale FROM war WHERE id={self.id}", ()).fetchone()[0]
 
-                techScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={self.foobar}", ()).fetchone()[0]
-                defenderTechScore = 100  # cursor.execute(f"SELECT techScore FROM war WHERE id={enemy.foobar}", ()).fetchone()[0]
+                self.techScore = 20 # between 0-30 # cursor.execute(f"SELECT techScore FROM war WHERE id={self.foobar}", ()).fetchone()[0]
 
-                if attackerMorale > defenderMorale:
-                    battleAdvantage += 1
-                else:
-                    battleAdvantage -= 1
-
-                if techScore > defenderTechScore:
-                    battleAdvantage += 1
-                else:
-                    battleAdvantage -= 1                
-
-
-
-                
                 # TODO: add more components that will effect the end battle advantage
+                # So, we need all the components listed on lines 195-200 in this function
 
-                return battleAdvantage
-
-
-
+                # how to go to definition in atom - idk, sorry
+                # this is why i prefer pycharm
+                return self.advantageFormula(self.inBattleUnits, self.battleAdvantage, self.techScore, )
+                    # right click -> press go do declaration
+                    # ah thanks - not working for me, weird
+                    # me neither... odd
+                    # not a feature I use I usually just for ctrl + f
         except Exception as e:
             print("[WARNING] Unable to execute attack: {}".format(e))
 
@@ -273,7 +268,7 @@ class Nation:
         Things to add:
         - ongoing global wars in app.py
         - add current war (ie. in Nation.attack) to DB
-        
+
         def attack (unitType, numberOfUnits, enemyNation):
             self.warlist.append(enemyNation.id)
 
@@ -293,7 +288,7 @@ class Nation:
             c = Nation(self.warList[war], b, a)
             return c
 
-    # this saves the nation obj to the database using pickle (in bytes) 
+    # this saves the nation obj to the database using pickle (in bytes)
     def saveToDB(self):
         connection = sqlite3.connect(path)
         cursor = connection.cursor()
