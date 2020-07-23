@@ -1269,12 +1269,11 @@ input[type=radio]:checked~label {
 
 .infodiv {
     background: rgb(252.5, 252.5, 252.5);
-    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    border: 2px solid #e3e9f0;
     padding: 8px;
     width: max-content;
     margin: auto;
-    border-bottom: 2px solid #00a7e1;
-    animation: borderpulse 6s infinite;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 0 26px 0;
 }
 
 .infodiv div div {
