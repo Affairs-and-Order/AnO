@@ -11,11 +11,12 @@
     <div class="templatedivcontent">
         <p class="templatecontentpleft">This is what trading is all about.</p>
 
-        <div class="templatedivflex2 divflex2center">
-            <div class="templatedivflex2left flexchildvanilla">
+        <div class="infodiv">
+            <div class="templatedivflex2 divflex2center">
+                <div class="templatedivflex2left flexchildvanilla">
 
-                <form action="/marketoffer" method="POST">
-                    <select name="resource" class="templateselect">
+                    <form action="/marketoffer" method="POST">
+                        <select name="resource" class="templateselect">
 
                     <option disabled="true" selected="selected">Choose one</option>
                     <option value="gold" class="templateoption">Money</option>
@@ -33,38 +34,39 @@
                 </select>
 
 
+                </div>
+                <div class="templatedivflex2left">
+
+                    <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
+
+                </div>
+                <div class="templatedivflex2left">
+
+                    <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
+
+                </div>
             </div>
-            <div class="templatedivflex2left">
 
-                <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
+            <div class="templatedivflex2 divflex2center">
+                <div class="templatedivflex2left">
 
-            </div>
-            <div class="templatedivflex2left">
-
-                <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
-
-            </div>
-        </div>
-
-        <div class="templatedivflex2 divflex2center">
-            <div class="templatedivflex2left">
-
-                <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     payments
                     </span>Buy offer</button>
 
-            </div>
+                </div>
 
-            <div class="templatedivflex2left">
+                <div class="templatedivflex2left">
 
-                <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                    <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     payments
                     </span>Sell Offer</button>
 
-            </div>
+                </div>
 
+            </div>
+            </form>
         </div>
-        </form>
     </div>
 
 </div>

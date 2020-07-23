@@ -1273,7 +1273,7 @@ input[type=radio]:checked~label {
     padding: 8px;
     width: max-content;
     margin: auto;
-    box-shadow: rgba(0, 0, 0, 0.05) 0 0 26px 0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 16px 26px 0;
 }
 
 .infodiv div div {
