@@ -23,12 +23,12 @@
 
                     <div class="landingpageinforight">
 
-                        <h2 class="templatecontentheadercenter">Go to your country</h2>
+                        <ul class="bold medium">Go to your country</ul>
                         {% if session.get("logged_in") != True %}
                         <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login"><span class="material-icons-outlined">
                             login
                             </span>LOGIN</a>
-                        <h2 class="templatecontentheadercenter">Or create one!</h2>
+                        <ul class="bold medium">Or create one!</ul>
                         <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup"><span class="material-icons-outlined">
                             add_circle_outline
                             </span>SIGNUP</a> {% elif session.get("logged_in") == True %}
@@ -46,23 +46,87 @@
 
     <div class="templatedivcontent">
 
-        <h2 class="templatecontentheaderleft">Welcome!</h2>
-        <p class="templatecontentpleft">Affairs & Order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war!
-            <a class="templatelink">Learn More</a>
-        </p>
-
-        <div class="templatedivflex2">
+        <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
-                <div>
-
-                    graph of global population / happiness / GDP / Distribution of wealth / other</div>
+                <!--image of user in /countries declare war-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/indexcountries.png') }}" />
 
             </div>
-            <div class="templatedivflex2right">
-                <h2 class="templatecontentheaderleft">126,564 Active players!</h2>
-                <h2 class="templatecontentheadercenter">Join our discord</h2>
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">Play With Real Players</h2>
+                <p class="templatecontentpleft">Raid other players for profit, and defend your country in brutal warfare. Create the strongest army and work with your friends to become the strongest coalition
+                    <br /><br />
+                </p>
+
+            </div>
+        </div>
+
+        <div class="templatedivflex2 menuflex whiteblue">
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">Join a Colaition</h2>
+                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
+                </p>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <!---->
+                <img class="unitimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+
+            </div>
+        </div>
+
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
+
+                <!--image of user clicking declare war-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/indexwar.png') }}" />
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">Fight in Global Wars</h2>
+                <p class="templatecontentpleft">Raid other players for profit, and defend your country in brutal warfare. Create the strongest army and work with your friends to become the strongest coalition
+                    <br /><br />
+                </p>
+
+            </div>
+        </div>
+
+        <div class="templatedivflex2 menuflex whiteblue">
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">Join our Community</h2>
+                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
+                </p>
+
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
+
+                        <a href="https://www.reddit.com/r/AffairsAndOrder/" target="blank" class="center redactionbutton templatedivbutton"><span class="material-icons-outlined">
+                            north_east
+                            </span>Reddit</a>
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <a href="https://twitter.com/AffairsOrder" target="blank" class="center templatedivbutton"><span class="material-icons-outlined">
+                            north_east
+                            </span>Twitter</a>
+
+                    </div>
+
+                    </form>
+                </div>
+
+            </div>
+            <div class="templatedivflex2left">
+
                 <iframe src="https://discordapp.com/widget?id=708006319658893385&theme=dark" class="discordlink"></iframe>
+
             </div>
         </div>
     </div>

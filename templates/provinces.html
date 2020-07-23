@@ -1,10 +1,4 @@
-{% extends "layout.html" %} 
-
-{% block title %}
-    Provinces
-{% endblock %}
-
-{% block body %}
+{% extends "layout.html" %} {% block title %} Provinces {% endblock %} {% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper provincestopper">
@@ -18,79 +12,71 @@
 
     <div class="templatedivcontent">
 
-        <div class="templatedivflex2 divflex2center">
+        <div class="templatedivflex2 divflex2full">
             <div class="templatedivflex2left">
 
                 <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     add_circle_outline
                     </span>Create Province</a>
-
             </div>
             <div class="templatedivflex2right">
 
                 <a href="/mass_purchase" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     payments
                     </span>Mass Purchase</a>
-
             </div>
         </div>
 
-        <div class="templatedivflex2 templatesidemenuflexparent">
+        {% for cityCount, population, name, pId in bAll %}
+        <a href="/province/{{ pId[0] }}">
+            <div class="warflexparent templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
 
-            {% for cityCount, population, name, pId in pAll %}
-            <div class="stickyflexmenu">
-                <!--make an anchor for every province the player has-->
-                <a class="menubara" href="/province/{{ pId[0] }}">{{ name[0] }}</a>
-            </div>
-            {% endfor %}
-
-            <div class="templatefullwidthflexchild">
-                <!-- unsure whats wrong here, could you be more specific - t0dd -->
-                <!--make a div for every province the player has-->
-                {% for cityCount, population, name, pId in bAll %}
-                <div class="menudiv" id="{{ name[0] }}">
-
-                    <h2 class="vanilla templatecontentheaderleft">{{ name[0] }}</h2>
-
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <a class="forgotpasscode loginsignupforgot" href="/province/{{ pId[0] }}"><span class="material-icons-outlined">
-                                account_balance
-                                </span>Visit {{ name[0] }}</a>
-
-                            <table class="templatetable">
-                                <tr>
-                                    <th>General</th>
-                                </tr>
-                                <tr>
-                                    <td>City Count:</td>
-                                    <td>{{ cityCount[0] }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Population:</td>
-                                    <td>{{ population[0] }}</td>
-                                </tr>
-                                <tr>
-                                    <td>City slots:</td>
-                                    <td>To be added</td>
-                                </tr>
-                                <tr>
-                                    <td>Land slots:</td>
-                                    <td>To be added</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="templatedivflex2left">
-
-                            <img class="unitimage" src="static/images/province.jpg" />
-
-                        </div>
-                    </div>
+                    <table class="templatetable">
+                        <tr>
+                            <th><span class="material-icons-outlined">
+                                        info
+                                        </span>{{ name[0] }}</th>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                        people_alt
+                                        </span>Population:</td>
+                            <td>{{ population }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                        sentiment_satisfied
+                                        </span>Happiness:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                        arrow_circle_up
+                                        </span>Productivity:</td>
+                            <td>{{ happiness }}%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                        business
+                                        </span>Cities:</td>
+                            <td>{{ cityCount }}</td>
+                        </tr>
+                        <tr>
+                            <td><span class="material-icons-outlined">
+                                        landscape
+                                        </span>land:</td>
+                            <td>{{ land }}km</td>
+                        </tr>
+                    </table>
                 </div>
-                {% endfor %}
+                <div class="templatedivflex2left">
+
+                    <img class="unitimage" src="static/images/province.jpg" />
+
+                </div>
             </div>
-        </div>
+        </a> {% endfor %}
     </div>
 </div>
 {% endblock %}

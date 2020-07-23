@@ -91,7 +91,7 @@
             {% if description != None %}
             <h2 class="templatecontentheaderleft">About</h2>
 
-            <ul>{{ description }}</ul>
+            <div class="strongpadding">{{ description }}</div>
 
             {% endif %}
 
@@ -262,17 +262,30 @@
                 <tr>
                     <th><span class="material-icons-outlined">
                         account_balance
-                        </span>Provinces</th>
+                        </span>Provinces ({{ provinceCount }}) </th>
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
                 {% for provinceName, provinceId in provinces %}
                 <tr>
-                    <td><span class="material-icons-outlined">
-                        notes
-                        </span><a class="forgotpasscode loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
+                    <td><a class="loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
                             account_balance
-                            </span>{{ provinceName[0] }}</a></td>
-                    <td><img class="unitimage" src="static/images/province.jpg" /></td>
+                            </span>{{ provinceName[0] }}</a>
+                        <table class="templatetable3">
+                            <tr>
+                                <td>Population:</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Cities:</td>
+                                <td>X</td>
+                            </tr>
+                            <tr>
+                                <td>Land:</td>
+                                <td>X</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td class="smallimage"><img class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
                 </tr>
                 {% endfor %}
 
@@ -1213,7 +1226,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="a18" name="group18">
-                            <label for="a18">Freedom of religion</label>
+                            <label for="a18">Enpashis on one religion</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1222,7 +1235,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="b18" name="group18">
-                            <label for="b18">Enpashis on one religion</label>
+                            <label for="b18">Freedom of religion</label>
 
                             <div class="vanilla check"></div>
                         </li>

@@ -20,9 +20,7 @@
                         <option class="templateoption">Influence</option>
                         <option class="templateoption">Military</option>
                         <option class="templateoption">Population</option>
-                        <option class="templateoption">GDP</option>
-                        <option class="templateoption">GDP per capita</option>
-                        <option class="templateoption">Established</option>
+                        <option class="templateoption">Age</option>
                     
                     </select>
 
@@ -31,7 +29,7 @@
 
                     <select class="templateselect">
 
-                        <option>Ascending</option>
+                        <option class="templateoption">Ascending</option>
                         <option class="templateoption">Descending</option>
                     
                     </select>
@@ -59,12 +57,12 @@
                 <tr>
                     <th>Name</th>
                     <th>Influence</th>
-                    <th>Country created</th>
+                    <th>Date Created</th>
                     <th>Coalition</th>
 
                     {% for pop, id, name, colId, colName, date, influence in resultAll %}
                     <tr>
-                        <td><a href="/country/id={{ id }}">{{ name }}</a></td>
+                        <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
                         <td>{{ influence }}</td>
                         <td>{{ date }}</td>
                         {% if colName == "No Coalition" %}
