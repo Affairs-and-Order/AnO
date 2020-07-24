@@ -23,27 +23,28 @@
 
         <form action="/establish_coalition" method="POST">
 
-            <div class="templatedivflex2 divflex2center">
-                <div class="templatedivflex2left">
+            <div class="infodiv">
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
 
-                    <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Coalition Name" required/>
+                        <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Coalition Name" required/>
 
-                </div>
-                <!-- <div class="templatedivflex2right">
+                    </div>
+                    <!-- <div class="templatedivflex2right">
 
                     <label for="coalitionflag">Coalition Flag</label>
                     <input class="loginsignupinput" type="file" name="coalitionflag" accept="image/*" onchange="loadFile(event)" required/>
 
                 </div> temporarily disabled flags because its a lot of work to add them-->
-            </div>
-            <!-- <p class="templatecontentpcenter">Flags should be in a 16:9 format.</p>-->
-            <div class="templatedivflex2 menuflex">
-                <div class="templatedivflex2left">
+                </div>
+                <!-- <p class="templatecontentpcenter">Flags should be in a 16:9 format.</p>-->
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
 
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
+                        <div class="templatedivflex2 menuflex">
+                            <div class="templatedivflex2left">
 
-                            <!-- <select name="type" class="templateselect">
+                                <!-- <select name="type" class="templateselect">
         
                                 <option disabled="true" selected="selected">Coalition Type</option>
                                 <option class="templateoption">Economic</option>
@@ -52,14 +53,14 @@
                             
                             </select>  will implement this later for now we'll have invite only/closed -->
 
-                            <select name="type" class="templateselect">
+                                <select name="type" class="templateselect">
                             <option disabled="true" selected="selected">Application Type</option>
                             <option class="templateoption">Open</option>
                             <option class="templateoption">Invite Only</option>
                             </select>
 
-                        </div>
-                        <!-- <div class="templatedivflex2left">
+                            </div>
+                            <!-- <div class="templatedivflex2left">
 
                             <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Leader Title" required/>
                             <input class="loginsignupinput" autocomplete="off" name="name" placeholder="2nd in Command Title" required/>
@@ -67,24 +68,26 @@
                             <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Member Title" required/>
 
                         </div> temporarily disabled leader types, will add later-->
+                        </div>
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        //
+
+
                     </div>
                 </div>
-                <div class="templatedivflex2left">
 
-                    <textarea class="templatetextarea" name="description" placeholder="Description" maxlength="240"></textarea>
-                    <!-- CURRENT CHAR LIMIT: 240 - ADDED HTML FOR IT-->
+                <textarea class="templatetextarea" name="description" placeholder="Description" maxlength="240"></textarea>
+                <!-- CURRENT CHAR LIMIT: 240 - ADDED HTML FOR IT-->
 
-                </div>
-            </div>
-
-            <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                 group_add
                 </span>Establish</button>
-            <!--users can only create a coalition every 30 days-->
-            <p class="templatecontentpcenter">You can't establish a coalition for another [[countdown]]</p>
+                <!--users can only create a coalition every 30 days-->
+                <p class="templatecontentpcenter">You can't establish a coalition for another [[countdown]]</p>
         </form>
-
-
+        </div>
     </div>
 </div>
 {% endblock %}
