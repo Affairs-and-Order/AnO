@@ -716,6 +716,11 @@ hr {
     background: #f7f9fd;
 }
 
+.imageborder {
+    background: white;
+    padding: 8px;
+}
+
 .templatediv {
     background: #ffffff;
     width: 90%;
