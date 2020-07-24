@@ -266,12 +266,13 @@ hr {
 }
 
 .navbartitleimage {
-    height: 50px;
-    width: 50px;
-    margin: 2.5px;
+    height: 45px;
+    width: 45px;
+    margin: 5px;
     float: left;
     margin-left: 15px;
     user-select: none;
+    border-radius: 30px;
 }
 
 .menubar {
