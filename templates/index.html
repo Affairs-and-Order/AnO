@@ -43,7 +43,7 @@
             </div>
         </div>
     </div>
-
+    {% if session.get("logged_in") != True %}
     <div class="templatedivcontent">
 
         <div class="templatedivflex2 menuflex">
@@ -130,5 +130,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
