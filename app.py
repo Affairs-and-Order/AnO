@@ -819,11 +819,27 @@ def wars():
 
         yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
+        try:
+            attackingWars = db.execute("SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
+            attackingNames = db.execute("SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
+            attacking = zip (attackingWars, attackingNames)
+        except TypeError:
+            attacking = 0
+
+        try:
+            defendingWars = db.execute("SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender", (cId,)).fetchall()
+            defendingNames = db.execute("SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
+            defending = zip(defendingWars, defendingNames)
+        except TypeError:
+            defending = 0
+
+        warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
+
         return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
         flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-        spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry
-        )
+        spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
+        warsCount=warsCount, defending=defending, attacking=attacking)
 
 @login_required
 @app.route("/countries", methods=["GET", "POST"])
@@ -1095,6 +1111,7 @@ def logout():
             session.pop('user_id', None)
         else:
             return error(400, "You are not logged in")
+
         return redirect("/login")
 
 @app.route("/tutorial", methods=["GET"])
@@ -1146,6 +1163,28 @@ def update_discord():
     db.execute("UPDATE users SET discord=(?) WHERE id=(?)", (discord_username, cId))
     connection.commit()
     return redirect(f"/country/id={cId}") # Redirects the user to his country
+
+@login_required
+@app.route("/find_targets", methods=["GET", "POST"])
+def find_targets():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    if request.method == "GET":
+        return render_template("find_targets.html")
+    else:
+        defender = request.form.get("defender") # Selects the country that the user is attacking
+
+        try:
+            defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]  
+        except TypeError:
+            return error(400, "No such country") # Redirects the user to an error page
+
+        db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+        connection.commit()
+        return redirect("/wars")
     
 # available to run if double click the file
 if __name__ == "__main__":

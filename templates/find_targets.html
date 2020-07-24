@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}
+    Find Targets
+{% endblock %}
+
+{% block body %}
+<div class="templatediv">
+
+    <div class="templatedivtopper">
+        <h1 class="templatedivtitle">Find Targets</h1>
+        <div class="templatedivad"></div>
+    </div>
+
+    <div class="templatedivcontent">
+        <h2 class="templatecontentheaderleft"></h2>
+        <p class="templatecontentpleft"></p>
+        <form action="/find_targets" method="POST">
+            <input type="text" name="defender"><br>
+            <input type="submit" value="Submit">
+          </form> 
+    </div>
+</div>
+{% endblock %}

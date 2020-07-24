@@ -1,0 +1,3 @@
+CREATE TABLE 'wars'
+('attacker' INTEGER NOT NULL,
+'defender' INTEGER NOT NULL);
