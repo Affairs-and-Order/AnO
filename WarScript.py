@@ -6,21 +6,22 @@ import random
 
 path = "affo/aao.db"
 
+
+
 # every 2 hours (12pm, 2pm, 4pm, etc), run WarScriptAttackButton. check if any countries at war have not fought in 2 hours.
 # if they have not fought in 2 hours, update the time they last fought
 # run warScriptAttackButton
 # else:
-# 
-function every2hours():
+
+# might need flask to call this, not sure?
+def every2hours():
     warsHappenNow()
 
-
-PSEUDOCODE:
-
-function WarsHappenNow():
+# might need flask to call this, not sure?
+def WarsHappenNow():
     # each table entry was put there either immediately because of a click, or because 
     # Find all entries where the ACTIVE value is TRUE, meaning currently at war.
-    db.execute("SELECT FROM WARTABLE ACTIVE==TRUE")
+    warring_nations = db.execute("SELECT * FROM wartable WHERE ACTIVE=TRUE")
     provinces1 = read from database(countryIDattacker): provinces
     provinces2 = read from database(countryIDattacker): provinces
     # if they have the same number of provinces

@@ -5,7 +5,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
-import NationsScript as Game
+# import WarScript # renamed from nationscript because it determines how war functions
 import datetime
 import _pickle as pickle
 import random

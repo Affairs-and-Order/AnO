@@ -4,3 +4,4 @@ Werkzeug==0.16.0
 requests==2.23.0
 coverage==5.1
 apscheduler==3.6.3
+celery==4.4.6
