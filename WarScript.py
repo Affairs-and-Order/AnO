@@ -15,17 +15,17 @@ def WarsHappenNow():
 
     # Find all entries where the ACTIVE value is TRUE, meaning current wars.
     # all the entries where ACTIVE is False are just for history.
-    allLatestWarEntries = db.execute("SELECT * FROM wartable WHERE ACTIVE=TRUE")
+    allLatestWarEntries = db.execute("SELECT * FROM wartable WHERE ACTIVE=TRUE").fetchall()
     
     # go through one war at a time.
     for warEntry in allLatestWarEntries:
         # find if the number of provinces for each country is the same in that war, IF it is the first war they've had (i'm assuming wars can continue even if the number of provinces change).
-        attackerProvinces = db.execute("SELECT provinces FROM war WHERE ")
+        attackerProvinces = db.execute("SELECT provinces FROM war WHERE ").fetchall()
         # defendingProvinces = read from database(countryIDattacker): provinces
         # if they have the same number of provinces then allow the war to happen
         if attackerProvinces == defendingProvinces:
             print('you are already fighting this country!')
-            read from database(countryIDattacker): units, morale, tech_score, effectiveness.
+            read from database(countryIDattacker): units, morale, tech_score, effectiveness
             x = lambda n, m, v, t, e : (n+v) * ((t*e)/10 + m)
             country1result = x(units, morale, tech_score, effectiveness, Math.random(1))
 
@@ -43,6 +43,9 @@ function WarScriptAttackButtonPressed(attackerID, defenderID):
 
 
 @HELPALLY
+function HELPALLY(helperID, attackerID, troops):
+    db.execute("MODIFY TABLE WAR (troops) WHERE id=attackerID")
+    db.execute("MODIFY TABLE WAR (troops) WHERE id=helperID")
 
 
 nation1score = multiplies all these inputs together. 
