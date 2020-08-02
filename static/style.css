@@ -861,6 +861,16 @@ hr {
     background-position-y: 50%;
 }
 
+.assemblytopper {
+    overflow: hidden;
+    text-align: center;
+    background-image: url("images/assembly.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    background-position-y: 50%;
+}
+
 .templatedivtitle {
     text-align: center;
     color: rgb(255, 255, 255);
