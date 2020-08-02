@@ -121,7 +121,7 @@
             <div class="templateoutertablediv">
                 <table class="templatetable templatetable2 smalltable">
                     <tr>
-                        <div class="templatedivflex2 menuflex2">
+                        <div class="templatedivflex2 menuflex2 width100">
                             <div class="templatedivflex2left" id="cityelectricity" onclick="cityelectricity()">
 
                                 <h3 class="smallheader">Electricity</h3>
@@ -611,7 +611,7 @@
             <div class="templateoutertablediv">
                 <table class="templatetable templatetable2 smalltable">
                     <tr>
-                        <div class="templatedivflex2 menuflex2">
+                        <div class="templatedivflex2 menuflex2 width100">
                             <div class="templatedivflex2left" id="landmilitary" onclick="landmilitary()">
 
                                 <h3 class="smallheader">Military</h3>
@@ -629,30 +629,31 @@
                             </div>
                         </div>
                     </tr>
+                    <!--FOR CARSON - make these tds links in the future (using IDs)-->
                     <tr>
-                        <td>1 Coal Burners</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Army Bases</td>
+                        <td>1 Farms</td>
+                        <td>1 Component Factories</td>
                     </tr>
                     <tr>
-                        <td>1 Oil Burners</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Aerodomes</td>
+                        <td>1 [[ raw #1]]</td>
+                        <td>1 Steel Mills</td>
                     </tr>
                     <tr>
-                        <td>1 Solar Fields</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Harbours</td>
+                        <td>1 [[ raw #2]]</td>
+                        <td>1 Copper Smelteries</td>
                     </tr>
                     <tr>
-                        <td>1 Hydro Dams</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Administrative Buildings</td>
+                        <td>1 [[ raw #3]]</td>
+                        <td>1 Aluminum Refineries</td>
                     </tr>
                     <tr>
-                        <td>1 Nuclear Reactors</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Silos</td>
+                        <td>1 [[ raw #4]]</td>
+                        <td>1 Oil Processors</td>
                     </tr>
                 </table>
             </div>
@@ -1267,6 +1268,49 @@
                     </div>
 
                 </div>
+                <div id="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Steel Mill</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
+
+                            <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+
+                            <ul>Oil plants cost [ oilPlantCost ] Each</ul>
+                            <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                        </div>
+                    </div>
+
+                </div>
                 <div class="menudiv">
 
                     <h2 class="templatecontentheaderleft">Copper Smelteries</h2>
@@ -1355,48 +1399,6 @@
                 <div class="menudiv">
 
                     <h2 class="templatecontentheaderleft">Oil Processors</h2>
-
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
-
-                            <p class="templatecontentpleft"></p>
-
-                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                    </div>
-                                </div>
-                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
-                            </div>
-
-                        </div>
-                        </form>
-                        <div class="templatedivflex2left">
-
-
-
-                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
-                        </div>
-                    </div>
-                </div>
-                <div class="menudiv">
-
-                    <h2 class="templatecontentheaderleft">Ammunition Factories</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">

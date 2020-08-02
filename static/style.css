@@ -721,6 +721,10 @@ hr {
     padding: 8px;
 }
 
+.width100 {
+    width: 100% !important;
+}
+
 .templatediv {
     background: #ffffff;
     width: 90%;
