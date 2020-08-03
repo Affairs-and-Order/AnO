@@ -721,6 +721,10 @@ hr {
     padding: 8px;
 }
 
+.width100 {
+    width: 100% !important;
+}
+
 .templatediv {
     background: #ffffff;
     width: 90%;
@@ -857,6 +861,16 @@ hr {
     background-position-y: 50%;
 }
 
+.assemblytopper {
+    overflow: hidden;
+    text-align: center;
+    background-image: url("images/assembly.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    background-position-y: 50%;
+}
+
 .templatedivtitle {
     text-align: center;
     color: rgb(255, 255, 255);
@@ -946,9 +960,20 @@ hr {
 }
 
 .templateinfodiv {
-    padding: 4px 0px;
-    background: #e3e9f0;
-    color: rgba(0, 0, 0, 0.7);
+    background: #00a7e170;
+    width: 95%;
+    margin: auto;
+    border-radius: 4px;
+    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    overflow: hidden;
+}
+
+.templateinfodiv ul {
+    color: rgba(0, 0, 0, 0.8) !important;
+    padding: 6px 16px!important;
+    transition: all 0.3s;
+    cursor: pointer;
+    margin: 0px !important;
 }
 
 .templatedivbutton {

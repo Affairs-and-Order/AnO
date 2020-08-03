@@ -792,6 +792,12 @@ def businesses():
         return render_template("businesses.html")
 
 @login_required
+@app.route("/assembly", methods=["GET", "POST"])
+def assembly():
+    if request.method == "GET":
+        return render_template("assembly.html")
+
+@login_required
 @app.route("/wars", methods=["GET", "POST"])
 def wars():
 
