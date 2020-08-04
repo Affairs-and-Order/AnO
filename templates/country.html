@@ -265,7 +265,7 @@
                         </span>Provinces ({{ provinceCount }}) </th>
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
-                {% for provinceName, provinceId in provinces %}
+                {% for provinceName, provinceId, population, cities, land in provinces %}
                 <tr>
                     <td><a class="loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
                             account_balance
@@ -273,15 +273,15 @@
                         <table class="templatetable3">
                             <tr>
                                 <td>Population:</td>
-                                <td>X</td>
+                                <td>{{ population[0] }}</td>
                             </tr>
                             <tr>
                                 <td>Cities:</td>
-                                <td>X</td>
+                                <td>{{ cities[0] }}</td>
                             </tr>
                             <tr>
                                 <td>Land:</td>
-                                <td>X</td>
+                                <td>{{ land[0] }}</td>
                             </tr>
                         </table>
                     </td>

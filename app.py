@@ -257,8 +257,11 @@ def country(cId):
 
     provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
     provinceIds = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
 
-    provinces = zip(provinceNames, provinceIds)
+    provinces = zip(provinceNames, provinceIds, provincePops, provinceCities, provinceLand)
 
     if str(cId) == str(session["user_id"]):
         status = True
@@ -269,7 +272,6 @@ def country(cId):
         colName = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (cId,)).fetchone()[0]
     except:
         colName = ""
-
 
     return render_template("country.html", username=username, cId=cId, description=description,
     happiness=happiness, population=population, location=location, gold=gold, status=status,
