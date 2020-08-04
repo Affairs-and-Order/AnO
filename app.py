@@ -12,6 +12,7 @@ import random
 from celery import Celery
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
+from helpers import try_col
 
 # Game.ping() # temporarily removed this line because it might make celery not work
 
@@ -118,15 +119,8 @@ def eventCheck():
 @app.context_processor
 def inject_user():
     def get_col_name():
-        conn = sqlite3.connect('affo/aao.db') # connects to db
-        db = conn.cursor()
-        try:
-            inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-            inCol = f"/coalition/{inColit}"
-            return inCol
-        except TypeError:
-            inCol = error(404, "Page Not Found")
-            return inCol
+        return try_col()
+
     def get_resource_amount():
         conn = sqlite3.connect('affo/aao.db') # connects to db
         db = conn.cursor()
