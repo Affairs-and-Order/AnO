@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        {% for cityCount, population, name, pId in bAll %}
+        {% for cityCount, population, name, pId, land in pAll %}
         <a href="/province/{{ pId[0] }}">
             <div class="warflexparent templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
@@ -66,7 +66,7 @@
                             <td><span class="material-icons-outlined">
                                         landscape
                                         </span>land:</td>
-                            <td>{{ land }}km</td>
+                            <td>{{ land[0] }}km</td>
                         </tr>
                     </table>
                 </div>

@@ -429,16 +429,15 @@ def provinces():
 
         cId = session["user_id"]
 
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?)", (cId,)).fetchall()
-        population = db.execute("SELECT population FROM provinces WHERE userId=(?)", (cId,)).fetchall()
-        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?)", (cId,)).fetchall()
-        pId = db.execute("SELECT provinceId FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
+        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
+        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
+        pId = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
+        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
 
-        pAll = zip(cityCount, population, name, pId)
+        pAll = zip(cityCount, population, name, pId, land) # zips the above SELECT statements into one list.
 
-        bAll = zip(cityCount, population, name, pId)
-
-        return render_template("provinces.html", pAll=pAll, bAll=bAll)
+        return render_template("provinces.html", pAll=pAll)
 
 @login_required
 @app.route("/province/<pId>", methods=["GET", "POST"])
