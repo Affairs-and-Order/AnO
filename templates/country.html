@@ -614,6 +614,19 @@
 
                     </div>
                 </div>
+                <div class="templatedivflex2left">
+                    <div class="coalitionimagepreview">
+                        <img id="imageBackground3" />
+                    </div>
+                </div>
+
+                <label for="countryName">Choose Anthem</label>
+                <label class="imageinput fit center"><span class="material-icons-outlined">
+                        wallpaper
+                            </span>Choose Image
+                            <input type="file" name="bgimage3" id="imageinput" accept="image/*" onchange="imageBackground3(event)">
+                          </label>
+
                 <form method="POST">
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -626,19 +639,20 @@
 
                             <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
                             <select class="templateselect" name="countryLocation">
-            
-                                    <option class="templateoption">Antarctica</option>
-                                    <option class="templateoption">Australia</option>
-                                    <option class="templateoption">Africa</option>
-                                    <option class="templateoption">Asia</option>
-                                    <option class="templateoption">Europe</option>
-                                    <option class="templateoption">South America</option>
-                                    <option class="templateoption">North America</option>
-                                
-                                </select>
+                    
+                                            <option class="templateoption">Antarctica</option>
+                                            <option class="templateoption">Australia</option>
+                                            <option class="templateoption">Africa</option>
+                                            <option class="templateoption">Asia</option>
+                                            <option class="templateoption">Europe</option>
+                                            <option class="templateoption">South America</option>
+                                            <option class="templateoption">North America</option>
+                                        
+                                        </select>
 
                         </div>
                     </div>
+
                     <label for="description">Describe your country</label>
                     <div class="center">
                         <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240">{{ description }}</textarea>
