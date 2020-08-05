@@ -118,9 +118,6 @@ def eventCheck():
 """
 @app.context_processor
 def inject_user():
-    def get_col_name():
-        return try_col()
-
     def get_resource_amount():
         conn = sqlite3.connect('affo/aao.db') # connects to db
         db = conn.cursor()
@@ -148,16 +145,12 @@ def inject_user():
         
         lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, copper_plates, aluminium, gasoline, ammunition]
         return lst
-    return dict(get_col_name=get_col_name, get_resource_amount=get_resource_amount)
+    return dict(get_resource_amount=get_resource_amount)
 
 
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html") # renders index.html when "/" is accesed
-
-@app.route("/error", methods=["GET"])
-def errorito(): # fancy view for error, because error function is used
-    error(400, "Unknown Error")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -179,6 +172,11 @@ def login():
         if user is not None and check_password_hash(user[4], password): # checks if user exists and if the password is correct
             session["user_id"] = user[0] # sets session's user_id to current user's id
             session["logged_in"] = True
+            try:
+                coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+            except TypeError:
+                coalition = error(404, "Page Not Found")
+            session["coalition"] = coalition
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
