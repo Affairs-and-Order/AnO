@@ -12,7 +12,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <link rel="icon" href="{{ url_for('static', filename='images/titleimage.png') }}" type="image/png">
-    <title>Affairs & Order | {% block title %}{% endblock %}</title>
+    <title>{% block title %}{% endblock %} | A&O</title>
 </head>
 
 <body>
@@ -67,7 +67,7 @@
                 <button class="dropbtn">Global Affairs</button>
                 <div class="dropdown-content">
                     {% if session.get('user_id') != None %}
-                    <a class="" href="/coalition/{{ session.get('coalition') }}"><span class="material-icons-outlined">
+                    <a class="" href="/my_coalition"><span class="material-icons-outlined">
                     group
                     </span>My Coalition</a> 
                     {% endif %}
@@ -129,7 +129,7 @@
             </span>Wars</a>
 
         <h3>Global Affairs</h3>
-        <a class="menubara" href="/coalition/{{ session['coalition'] }}"><span class="material-icons-outlined">
+        <a class="menubara" href="my_coalition"><span class="material-icons-outlined">
             group
             </span>My Coalition</a>
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">
