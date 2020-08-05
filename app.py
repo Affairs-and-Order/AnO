@@ -217,12 +217,17 @@ def signup():
                 session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
                 session["logged_in"] = True
 
-                db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", ((session["user_id"]), ("Bosfront"))) # change the default location                                                                          # "Bosfront" to something else
+                db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", ((session["user_id"]), ("Bosfront"))) #TODO  change the default location 
+                
+                db.execute("INSERT INTO military (id) VALUES (?)", (session["user_id"],))
+                db.execute("INSERT INTO resources (id) VALUES (?)", (session["user_id"],))
+
+                """
                 db.execute("INSERT INTO ground (id) VALUES (?)", (session["user_id"],)) 
                 db.execute("INSERT INTO air (id) VALUES (?)", (session["user_id"],))
                 db.execute("INSERT INTO water (id) VALUES (?)", (session["user_id"],))
                 db.execute("INSERT INTO special (id) VALUES (?)", (session["user_id"],))
-                db.execute("INSERT INTO resources (id) VALUES (?)", (session["user_id"],))
+                """
 
                 db.execute("DELETE FROM keys WHERE key=(?)", (key,)) # deletes the used key
                 connection.commit()
@@ -279,25 +284,25 @@ def military():
     db = connection.cursor()
     cId = session["user_id"]
     if request.method == "GET": # maybe optimise this later with css anchors
-        # ground
-        tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        # g round
+        tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
-        # air
-        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        # a ir
+        flying_fortresses = db.execute("SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
-        # water
-        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        # w ater
+        destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
-        # special
-        spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        # s pecial
+        spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
 
         return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
@@ -594,43 +599,43 @@ def sell_buy(way, typee, units):
 
         # update this so it works using the nations script
         if units == "soldiers": # maybe change this to a dictionary later on
-            table = "ground"
+            table = "military"
             price = 50
         elif units == "tanks":
-            table = "ground"
+            table = "military"
             price = 150
         elif units == "artillery":
-            table = "ground"
+            table = "military"
             price = 300
 
         elif units == "flying_fortresses":
-            table = "air"
+            table = "military"
             price = 500
         elif units == "fighter_jets":
-            table = "air"
+            table = "military"
             price = 450
         elif units == "apaches":
-            table = "air"
+            table = "military"
             price = 350
 
         elif units == "destroyers":
-            table = "water"
+            table = "military"
             price = 500
         elif units == "cruisers":
-            table = "water"
+            table = "military"
             price = 650
         elif units == "submarines":
-            table = "water"
+            table = "military"
             price = 450
             
         elif units == "spies":
-            table = "special"
+            table = "military"
             price = 500
         elif units == "icbms":
-            table = "special"
+            table = "military"
             price = 750
         elif units == "nukes":
-            table = "special"
+            table = "military"
             price = 1000
 
         elif units == "cityCount":
@@ -804,21 +809,21 @@ def wars():
 
     if request.method == "GET": # maybe optimise this later with css anchors
         # ground
-        tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        # air
-        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        # water
-        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        # special
-        spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # a ir
+        flying_fortresses = db.execute("SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # w ater
+        destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # s pecial
+        spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
         yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
