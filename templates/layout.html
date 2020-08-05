@@ -66,9 +66,10 @@
                 <button class="dropbtn">Global Affairs</button>
                 <div class="dropdown-content">
                     {% if session.get('user_id') %}
-                    <a class="" href="{{ inCol }}"><span class="material-icons-outlined">
+                    <a class="" href="/coalition/{{ session.get('coalition') }}"><span class="material-icons-outlined">
                     group
-                    </span>My Coalition</a> {% endif %}
+                    </span>My Coalition</a> 
+                    {% endif %}
                     <a class="" href="/establish_coalition"><span class="material-icons-outlined">
                         group_add
                         </span>Establish a Coalition</a>
@@ -109,7 +110,7 @@
     </div>
     </div>
 
-    {% if session.get("logged_in") == True%}
+    {% if session.get("logged_in") %}
     <div class="menubardiv" id="menubardiv">
 
         <h3>Internal Affairs</h3>
@@ -127,7 +128,7 @@
             </span>Wars</a>
 
         <h3>Global Affairs</h3>
-        <a class="menubara" href="{{ inCol }}"><span class="material-icons-outlined">
+        <a class="menubara" href="/coalition/{{ session['user_id'] }}"><span class="material-icons-outlined">
             group
             </span>My Coalition</a>
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">

@@ -176,6 +176,9 @@ def login():
                 coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
             except TypeError:
                 coalition = error(404, "Page Not Found")
+
+            # print(f"coalition = {coalition}")
+            
             session["coalition"] = coalition
             print('User has succesfully logged in.')
             connection.commit()
@@ -541,6 +544,8 @@ def establish_coalition():
                 colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
                 db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
+                session['coalition'] = colId
+
                 connection.commit()
                 return redirect(f"/coalition/{colId}")
     else:
@@ -858,8 +863,6 @@ def countries(): # TODO: fix shit ton of repeated code in function
 
         for i in users:
 
-            print(f"IIIIIIIIII: {i[0]}")
-
             date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             dates.append(date)
 
@@ -1008,6 +1011,8 @@ def join_col(colId):
 
         db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
 
+        session['coalition'] = colId
+
         connection.commit()
 
     else:
@@ -1035,6 +1040,8 @@ def leave_col(colId):
         return error(400, "Can't leave coalition, you're the leader")
 
     db.execute("DELETE FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId))
+
+    session['coalition'] == error(400, "No Password or Username")
 
     connection.commit()
 
