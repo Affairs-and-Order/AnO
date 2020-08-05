@@ -171,7 +171,6 @@ def login():
 
         if user is not None and check_password_hash(user[4], password): # checks if user exists and if the password is correct
             session["user_id"] = user[0] # sets session's user_id to current user's id
-            session["logged_in"] = True
             try:
                 coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
             except TypeError:
