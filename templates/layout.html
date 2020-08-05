@@ -27,7 +27,7 @@
     {% endif %}
     <div class="navbar">
 
-        {% if session.get('user_id') !=  None %}
+        {% if session.get('user_id') != None %}
         <div class="menubar" onclick="menubardrop()" id="menubar">
             <div class="bar1" id="bar1"></div>
             <div class="bar2" id="bar2"></div>
@@ -47,8 +47,7 @@
             </span>Login</a>
             <a class="loginsignup" href="/signup"><span class="material-icons-outlined">
             add_circle_outline
-            </span>Signup</a>
-            {% elif session.get('user_id') != None %}
+            </span>Signup</a> {% elif session.get('user_id') != None %}
             <div class="dropdown">
                 <button class="dropbtn">Other</button>
                 <div class="dropdown-content">
@@ -69,8 +68,7 @@
                     {% if session.get('user_id') != None %}
                     <a class="" href="/my_coalition"><span class="material-icons-outlined">
                     group
-                    </span>My Coalition</a> 
-                    {% endif %}
+                    </span>My Coalition</a> {% endif %}
                     <a class="" href="/establish_coalition"><span class="material-icons-outlined">
                         group_add
                         </span>Establish a Coalition</a>
@@ -88,30 +86,28 @@
                             </span>Assembly</a>
                 </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Internal Affairs</button>
-            <div class="dropdown-content">
-                <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
+            <div class="dropdown">
+                <button class="dropbtn">Internal Affairs</button>
+                <div class="dropdown-content">
+                    <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                         outlined_flag
                         </span>Country</a>
-                <a class="" href="/provinces"><span class="material-icons-outlined">
+                    <a class="" href="/provinces"><span class="material-icons-outlined">
                         account_balance
                         </span>Provinces</a>
-                <a class="" href="/market"><span class="material-icons-outlined">
+                    <a class="" href="/market"><span class="material-icons-outlined">
                         local_grocery_store
                         </span>Market</a>
-                <a class="" href="/wars"><span class="material-icons-outlined">
+                    <a class="" href="/wars"><span class="material-icons-outlined">
                         military_tech
                         </span>Wars</a>
+                </div>
             </div>
         </div>
         {% endif %}
 
     </div>
-    </div>
-
-    {% if session.get('user_id') != None %}
+    </div> {% if session.get('user_id') != None %}
     <div class="menubardiv" id="menubardiv">
 
         <h3>Internal Affairs</h3>
