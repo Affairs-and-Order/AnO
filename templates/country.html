@@ -1,4 +1,4 @@
-{% extends"layout.html"%} {% block title %} Country {% endblock %} {% block body %}
+{% extends"layout.html"%} {% block title %} Country: {{ username }} {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -193,16 +193,16 @@
                                 public
                                 </span>Affairs</th>
                         </tr>
-                        {% if colName =="" %}
+                        {% if colName == "" %}
                         <tr>
                             <td class="center">Not in a coalition</td>
                         </tr>
-                        {% endif %} {% if colName !="" %}
+                        {% endif %} {% if colName != "" %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
-                                </span>Coalition name:</td>
-                            <td>{{ colName }}</td>
+                                </span>Coalition:</td>
+                            <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">

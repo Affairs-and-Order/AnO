@@ -267,14 +267,16 @@ def country(cId):
         status = False
 
     try:
-        colName = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (cId,)).fetchone()[0]
+        colId = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+        colName = db.execute("SELECT name FROM colNames WHERE id =?", (colId,)).fetchone()[0]
     except:
+        colId = ""
         colName = ""
 
     return render_template("country.html", username=username, cId=cId, description=description,
     happiness=happiness, population=population, location=location, gold=gold, status=status,
     provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
-    provinces=provinces)
+    provinces=provinces, colId=colId)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
