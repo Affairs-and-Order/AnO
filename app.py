@@ -550,8 +550,6 @@ def establish_coalition():
                 colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
                 db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
-                session['coalition'] = colId
-
                 connection.commit()
                 return redirect(f"/coalition/{colId}")
     else:
@@ -1017,8 +1015,6 @@ def join_col(colId):
 
         db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
 
-        session['coalition'] = colId
-
         connection.commit()
 
     else:
@@ -1046,8 +1042,6 @@ def leave_col(colId):
         return error(400, "Can't leave coalition, you're the leader")
 
     db.execute("DELETE FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId))
-
-    session['coalition'] == error(400, "No Password or Username")
 
     connection.commit()
 
