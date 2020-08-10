@@ -446,14 +446,23 @@ def province(pId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?) ORDER BY id ASC", (pId,)).fetchone()[0]
-        population = db.execute("SELECT population FROM provinces WHERE id=(?) ORDER BY id ASC", (pId, )).fetchone()[0]
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?) ORDER BY id ASC", (pId,)).fetchone()[0]
-        land = (db.execute("SELECT land FROM provinces WHERE id=(?) ORDER BY id ASC", (pId,)).fetchone()[0])
+        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId, )).fetchone()[0]
+
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        
+        oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        
 
         connection.commit()
 
-        return render_template("province.html", pId=pId, population=population, name=name, cityCount=cityCount, land=land)
+        return render_template("province.html", pId=pId, population=population, name=name,
+        cityCount=cityCount, land=land,
+        oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields)
 
 # rawCol (for easy finding using CTRL + F)
 @login_required
