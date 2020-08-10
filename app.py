@@ -125,7 +125,7 @@ def inject_user():
 
         money = db.execute("SELECT gold FROM stats WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
 
-        rations = db.execute("SELECT rations FROM resources WHERE idf=(?)", (session_id,)).fetchone()[0]
+        rations = db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         oil = db.execute("SELECT oil FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
         coal = db.execute("SELECT coal FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
         uranium = db.execute("SELECT uranium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
