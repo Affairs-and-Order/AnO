@@ -323,21 +323,21 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         
-        offer_ids = db.execute("SELECT offer_id FROM offers").fetchall()
+        offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY offer_id ASC").fetchall()
         
         ids = []
         names = []
         resources = []
         amounts = []
         prices = []
-        total_Prices = []
-        offer_ids_list = []
+        total_prices = []
+        offer_ids = []
 
         print(offer_ids)
 
-        for i in offer_ids:
+        for i in offer_ids_list:
 
-            offer_ids_list.append(i[0])
+            offer_ids.append(i[0])
             
             user_id = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             ids.append(user_id)
@@ -354,11 +354,11 @@ def market():
             price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
-            total_Price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
-            total_Prices.append(total_Price)
+            total_price = price * amount
+            total_prices.append(total_price)
 
 
-        offers = zip(ids, names, resources, amounts, prices, total_Prices, offer_ids_list)
+        offers = zip(ids, names, resources, amounts, prices, offer_ids, total_prices)
 
         return render_template("market.html", offers=offers)
 
@@ -746,20 +746,21 @@ def marketoffer():
         resource = request.form.get("resource")
         amount = request.form.get("amount")
         price = request.form.get("price")
-        price = request.form.get("total_Price")
 
+        """
         if amount.isnumeric() is False or price.isnumeric() is False:
             return error(400, "You can only type numeric values into /marketoffer ")
+        """
 
         if int(amount) < 1:
             return error(400, "Amount must be greater than 0")
 
-        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into thi
-        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]  #TODO: fix this not working
+        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into this
+        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
-        db.execute("INSERT INTO offers (user_id, resource, amount, price, total_Price) VALUES (?, ?, ?, ?, ?)", (cId, resource, int(amount), int(price), """int(total_Price)"""))
+        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price), ))
 
         connection.commit()
         return redirect("/market")
