@@ -446,10 +446,10 @@ def province(pId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId, )).fetchone()[0]
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        land = (db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0])
+        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?) ORDER BY id ASC", (pId,)).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE id=(?) ORDER BY id ASC", (pId, )).fetchone()[0]
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?) ORDER BY id ASC", (pId,)).fetchone()[0]
+        land = (db.execute("SELECT land FROM provinces WHERE id=(?) ORDER BY id ASC", (pId,)).fetchone()[0])
 
         connection.commit()
 
@@ -677,14 +677,68 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        allUnits = ["land", "cityCount"] # list of allowed units
+        allUnits = [
+        "land", "cityCount",
+        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields"
+        ]
 
         if units not in allUnits:
             return error("No such unit exists.", 400)
 
+        if units == "land":
+            price = 10
+            table = "provinces"
+        elif units == "cityCount":
+            price = 500
+            table = "provinces"
 
+        elif units == "oil_burners":
+            price = 350
+            table = "proInfra"
+        elif units == "hydro_dams":
+            price = 450
+            table = "proInfra"
+        elif units == "nuclear_reactors":
+            price = 700
+            table = "proInfra"
+        elif units == "solar_fields":
+            price = 550
+            table = "proInfra"
 
+        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedUnits = request.form.get(units)
 
+        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
+        totalPrice = int(wantedUnits) * price
+        currentUnits = db.execute(curUnStat,(province_id,)).fetchone()[0]
+
+        ## OK UNTIL
+
+        if way == "sell":
+
+            if int(wantedUnits) > int(currentUnits): # checks if unit is legits
+                return error("You don't have enough units", 400) # seems to work
+
+            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), province_id))
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
+
+        elif way == "buy":
+
+            if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
+                return error("You don't have enough gold", 400)
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
+
+            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(updStat,((int(currentUnits) + int(wantedUnits)), province_id)) # fix weird table
+
+        else: 
+            error(404, "Page not found")
+
+        connection.commit()
+
+        return redirect(f"/province/{province_id}")
 
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])

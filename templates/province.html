@@ -71,7 +71,7 @@
                             </div>
                             <div class="templatedivflex2right">
 
-                                <button formaction="/buy/province/cityCount" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                <button formaction="/buy/cityCount/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             business
                             </span>Purchase Cities</button>
 
@@ -86,7 +86,7 @@
                             </div>
                             <div class="templatedivflex2right">
 
-                                <button formaction="/buy/province/land" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                <button formaction="/buy/land/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             landscape
                             </span>Purchase Land</button>
 
@@ -190,12 +190,12 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/normal/oil_burners">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/oil_burners/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/normal/oil_burners">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/oil_burners/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
@@ -228,17 +228,17 @@
                             <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
+                                <input class="loginsignupinput" autocomplete="off" name="hydro_dams" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/hydro_dams/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/hydro_dams/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
@@ -271,17 +271,17 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
+                                <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/nuclear_reactors/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/nuclear_reactors/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
@@ -313,17 +313,17 @@
                             <ul>Solar fields produce 30(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
+                                <input class="loginsignupinput" autocomplete="off" name="solar_fields" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
