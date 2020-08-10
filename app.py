@@ -253,11 +253,11 @@ def country(cId):
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provinceIds = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceIds = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
 
     provinces = zip(provinceNames, provinceIds, provincePops, provinceCities, provinceLand)
 
@@ -429,11 +429,11 @@ def provinces():
 
         cId = session["user_id"]
 
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        pId = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        pId = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
 
         pAll = zip(cityCount, population, name, pId, land) # zips the above SELECT statements into one list.
 
@@ -446,10 +446,10 @@ def province(pId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = db.execute("SELECT provinceName FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
-        population = db.execute("SELECT population FROM provinces WHERE provinceId = (?)", (pId, )).fetchone()[0]
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
-        land = (db.execute("SELECT land FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0])
+        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId, )).fetchone()[0]
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        land = (db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0])
 
         connection.commit()
 
@@ -590,7 +590,7 @@ def military_sell_buy(way, units): # WARNING: function used only for military
         "spies", "icbms", "nukes"] # list of allowed units
 
         if units not in allUnits:
-            return redirect("/no_such_unit")
+            return error("No such unit exists.")
 
         # update this so it works using the nations script
         if units == "soldiers": # maybe change this to a dictionary later on
@@ -666,6 +666,25 @@ def military_sell_buy(way, units): # WARNING: function used only for military
         return redirect("/military")
 
 
+@login_required
+@app.route("/<way>/<units>/<province_id>", methods=["POST"])
+def province_sell_buy(way, units, province_id): # WARNING: function used only for military
+
+    if request.method == "POST":
+    
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        allUnits = ["land", "cityCount"] # list of allowed units
+
+        if units not in allUnits:
+            return error("No such unit exists.", 400)
+
+
+
+
 
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
@@ -680,6 +699,8 @@ def createprovince():
         pName = request.form.get("name")
 
         db.execute("INSERT INTO provinces (userId, provinceName) VALUES (?, ?)", (cId, pName))
+        province_id = db.execute("SELECT id FROM provinces WHERE userId=(?) AND provinceName=(?)", (cId, pName)).fetchone()[0]
+        db.execute("INSERT INTO proInfra (id) VALUES (?)", (province_id,))
 
         connection.commit()
 
