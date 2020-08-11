@@ -12,8 +12,6 @@ import random
 from celery import Celery
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
-from helpers import try_col
-
 # Game.ping() # temporarily removed this line because it might make celery not work
 
 app = Flask(__name__)
@@ -125,7 +123,7 @@ def inject_user():
 
         money = db.execute("SELECT gold FROM stats WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
 
-        rations = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        rations = db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         oil = db.execute("SELECT oil FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
         coal = db.execute("SELECT coal FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
         uranium = db.execute("SELECT uranium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
@@ -253,11 +251,11 @@ def country(cId):
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provinceIds = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceIds = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
 
     provinces = zip(provinceNames, provinceIds, provincePops, provinceCities, provinceLand)
 
@@ -323,21 +321,21 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         
-        offer_ids = db.execute("SELECT offer_id FROM offers").fetchall()
+        offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY offer_id ASC").fetchall()
         
         ids = []
         names = []
         resources = []
         amounts = []
         prices = []
-        total_Prices = []
-        offer_ids_list = []
+        total_prices = []
+        offer_ids = []
 
         print(offer_ids)
 
-        for i in offer_ids:
+        for i in offer_ids_list:
 
-            offer_ids_list.append(i[0])
+            offer_ids.append(i[0])
             
             user_id = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             ids.append(user_id)
@@ -354,11 +352,11 @@ def market():
             price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
-            total_Price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
-            total_Prices.append(total_Price)
+            total_price = price * amount
+            total_prices.append(total_price)
 
 
-        offers = zip(ids, names, resources, amounts, prices, total_Prices, offer_ids_list)
+        offers = zip(ids, names, resources, amounts, prices, offer_ids, total_prices)
 
         return render_template("market.html", offers=offers)
 
@@ -376,7 +374,7 @@ def buy_market_offer(offer_id):
     if offer_id.isnumeric() is False or amount_wanted.isnumeric() is False:
         return error(400, "Values must be numeric")
 
-    offer = db.execute("SELECT resource, amount, price, total_Price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+    offer = db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
     seller_id = int(offer[3])
 
@@ -429,11 +427,11 @@ def provinces():
 
         cId = session["user_id"]
 
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        pId = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
-        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY provinceId ASC", (cId,)).fetchall()
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        pId = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
 
         pAll = zip(cityCount, population, name, pId, land) # zips the above SELECT statements into one list.
 
@@ -446,14 +444,23 @@ def province(pId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = db.execute("SELECT provinceName FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
-        population = db.execute("SELECT population FROM provinces WHERE provinceId = (?)", (pId, )).fetchone()[0]
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
-        land = (db.execute("SELECT land FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0])
+        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId, )).fetchone()[0]
+
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        
+        oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        
 
         connection.commit()
 
-        return render_template("province.html", pId=pId, population=population, name=name, cityCount=cityCount, land=land)
+        return render_template("province.html", pId=pId, population=population, name=name,
+        cityCount=cityCount, land=land,
+        oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields)
 
 # rawCol (for easy finding using CTRL + F)
 @login_required
@@ -574,8 +581,8 @@ def get_status(unit, table, userId):
         db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table"""
 
 @login_required
-@app.route("/<way>/<typee>/<units>", methods=["POST"])
-def sell_buy(way, typee, units):
+@app.route("/<way>/<units>", methods=["POST"])
+def military_sell_buy(way, units): # WARNING: function used only for military
 
     if request.method == "POST":
     
@@ -587,14 +594,10 @@ def sell_buy(way, typee, units):
         allUnits = ["soldiers", "tanks", "artillery",
         "flying_fortresses", "fighter_jets", "apaches"
         "destroyers", "cruisers", "submarines",
-        "spies", "icbms", "nukes",
-        
-        "cityCount", "land",
-        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
-        ""] # all allowed units
+        "spies", "icbms", "nukes"] # list of allowed units
 
         if units not in allUnits:
-            return redirect("/no_such_unit")
+            return error("No such unit exists.")
 
         # update this so it works using the nations script
         if units == "soldiers": # maybe change this to a dictionary later on
@@ -637,81 +640,112 @@ def sell_buy(way, typee, units):
             table = "military"
             price = 1000
 
-        elif units == "cityCount":
-            table = "provinces"
-            price = 500
-        elif units == "land":
-            table = "provinces"
-            price = 250
+        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedUnits = request.form.get(units)
+        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
+        totalPrice = int(wantedUnits) * price
+        currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
 
-        elif units == "oil_burners":
-            table = "proInfra"
-            price = 500
-        elif units == "hydro_dams":
-            table = "proInfra"
-            price = 500
-        elif units == "nuclear_reactors":
-            table = "proInfra"
-            price = 500
-        elif units == "solar_fields":
-            table = "proInfra"
-            price = 500
+        if way == "sell":
 
-        if typee == "normal": # if buying or selling from military
+            if int(wantedUnits) > int(currentUnits): # checks if unit is legits
+                return redirect("/too_much_to_sell") # seems to work
 
-            gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-            wantedUnits = request.form.get(units)
-            curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
-            totalPrice = int(wantedUnits) * price
-            currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
+            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
 
-            if way == "sell":
-
-                if int(wantedUnits) > int(currentUnits): # checks if unit is legits
-                    return redirect("/too_much_to_sell") # seems to work
-
-                unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-                db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
-                db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
-
-            elif way == "buy":
-
-                if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
-                    return redirect("/too_many_units")
-
-                db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
-
-                updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-                db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
-
-            else: 
-                error(404, "Page not found")
-
-            connection.commit()
-
-            return redirect("/military")
-
-        elif typee == "province": # if buying from province
-
-            gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-            wantedUnits = request.form.get(units)
-            curUnStat = f'SELECT {units} FROM {table} WHERE userId=?'
-            totalPrice = int(wantedUnits) * price
-            currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
+        elif way == "buy":
 
             if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
                 return redirect("/too_many_units")
 
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE {table} SET {units}=(?) WHERE userId=(?)"
+            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
             db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
 
-            connection.commit()
+        else: 
+            error(404, "Page not found")
 
-        return redirect("/provinces")
+        connection.commit()
+
+        return redirect("/military")
 
 
+@login_required
+@app.route("/<way>/<units>/<province_id>", methods=["POST"])
+def province_sell_buy(way, units, province_id): # WARNING: function used only for military
+
+    if request.method == "POST":
+    
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        allUnits = [
+        "land", "cityCount",
+        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields"
+        ]
+
+        if units not in allUnits:
+            return error("No such unit exists.", 400)
+
+        if units == "land":
+            price = 10
+            table = "provinces"
+        elif units == "cityCount":
+            price = 500
+            table = "provinces"
+
+        elif units == "oil_burners":
+            price = 350
+            table = "proInfra"
+        elif units == "hydro_dams":
+            price = 450
+            table = "proInfra"
+        elif units == "nuclear_reactors":
+            price = 700
+            table = "proInfra"
+        elif units == "solar_fields":
+            price = 550
+            table = "proInfra"
+
+        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedUnits = request.form.get(units)
+
+        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
+        totalPrice = int(wantedUnits) * price
+        currentUnits = db.execute(curUnStat,(province_id,)).fetchone()[0]
+
+        ## OK UNTIL
+
+        if way == "sell":
+
+            if int(wantedUnits) > int(currentUnits): # checks if unit is legits
+                return error("You don't have enough units", 400) # seems to work
+
+            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), province_id))
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
+
+        elif way == "buy":
+
+            if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
+                return error("You don't have enough gold", 400)
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
+
+            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(updStat,((int(currentUnits) + int(wantedUnits)), province_id)) # fix weird table
+
+        else: 
+            error(404, "Page not found")
+
+        connection.commit()
+
+        return redirect(f"/province/{province_id}")
 
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
@@ -726,6 +760,8 @@ def createprovince():
         pName = request.form.get("name")
 
         db.execute("INSERT INTO provinces (userId, provinceName) VALUES (?, ?)", (cId, pName))
+        province_id = db.execute("SELECT id FROM provinces WHERE userId=(?) AND provinceName=(?)", (cId, pName)).fetchone()[0]
+        db.execute("INSERT INTO proInfra (id) VALUES (?)", (province_id,))
 
         connection.commit()
 
@@ -746,20 +782,21 @@ def marketoffer():
         resource = request.form.get("resource")
         amount = request.form.get("amount")
         price = request.form.get("price")
-        price = request.form.get("total_Price")
 
+        """
         if amount.isnumeric() is False or price.isnumeric() is False:
             return error(400, "You can only type numeric values into /marketoffer ")
+        """
 
         if int(amount) < 1:
             return error(400, "Amount must be greater than 0")
 
-        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into thi
-        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]  #TODO: fix this not working
+        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into this
+        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
-        db.execute("INSERT INTO offers (user_id, resource, amount, price, total_Price) VALUES (?, ?, ?, ?, ?)", (cId, resource, int(amount), int(price), """int(total_Price)"""))
+        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price), ))
 
         connection.commit()
         return redirect("/market")

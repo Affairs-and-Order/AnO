@@ -73,7 +73,7 @@
                             </div>
                             <div class="templatedivflex2right">
 
-                                <button formaction="/buy/province/cityCount" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                <button formaction="/buy/cityCount/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             business
                             </span>Purchase Cities</button>
 
@@ -88,7 +88,7 @@
                             </div>
                             <div class="templatedivflex2right">
 
-                                <button formaction="/buy/province/land" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                <button formaction="/buy/land/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             landscape
                             </span>Purchase Land</button>
 
@@ -117,6 +117,7 @@
             </div>
         </div>
         <!--Cities-->
+        <form method="POST">
         <div class="city" id="city">
 
 
@@ -182,21 +183,21 @@
 
                             <p class="templatecontentpleft">Oil burners convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
 
-                            <ul>Oil burners cost [ oilBurnerCost ] Each</ul>
+                            <ul>Oil burners cost <b>350</b> Each</ul>
                             <ul>Oil burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="oil_burners" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/oil_burners/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/oil_burners/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
@@ -221,25 +222,25 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dams</h3>
+                            <h3 class="unitcount">You have {{ hydro_dams }} Hydro Dams</h3>
 
                             <p class="templatecontentpleft"></p>
 
-                            <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
+                            <ul>Hydro dams cost <b>450</b> Each</ul>
                             <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="hydro_dams" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/hydro_dams/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/hydro_dams/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
@@ -264,25 +265,25 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                            <h3 class="unitcount">You have {{ nuclear_reactors }} Nuclear Reactors</h3>
 
                             <p class="templatecontentpleft"></p>
 
-                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                            <ul>Nuclear reactors cost <b>700</b>Each</ul>
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/nuclear_reactors/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/nuclear_reactors/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
@@ -306,25 +307,25 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ solar_field }} Solar Fields</h3>
+                            <h3 class="unitcount">You have {{ solar_fields }} Solar Fields</h3>
 
                             <p class="templatecontentpleft"></p>
 
-                            <ul>Solar fields cost [ solarfieldcost ] Each</ul>
+                            <ul>Solar fields cost <b>550</b> Each</ul>
                             <ul>Solar fields produce 30(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="solar_fields" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}">Sell</button>
 
                                     </div>
                                 </div>
@@ -334,8 +335,6 @@
                         </div>
                         </form>
                         <div class="templatedivflex2left">
-
-
 
                             <img class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
                         </div>
@@ -360,7 +359,7 @@
                             <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -395,7 +394,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dam</h3>
+                            <h3 class="unitcount">You have {{ hydro_dams }} Hydro Dam</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -403,7 +402,7 @@
                             <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -530,7 +529,7 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -576,7 +575,7 @@
                             <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -619,7 +618,7 @@
                             <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -746,7 +745,7 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -846,7 +845,7 @@
                             <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -889,7 +888,7 @@
                             <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -932,7 +931,7 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -974,7 +973,7 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1016,7 +1015,7 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1062,7 +1061,7 @@
                             <ul>Farms produce 8 rations/day for every 250K of land</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1105,7 +1104,7 @@
                             <ul>Bauxite mines produce 6 bauxite /day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1148,7 +1147,7 @@
                             <ul>Uranium mines 4 uranium/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1191,7 +1190,7 @@
                             <ul>Iron mines 4 uranium/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1234,7 +1233,7 @@
                             <ul>Coal mines 4 uranium/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1277,7 +1276,7 @@
                             <ul>Pumpjacks 4 uranium/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1320,7 +1319,7 @@
                             <ul>Lead mines 4 uranium/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1363,7 +1362,7 @@
                             <ul>Copper mines 4 uranium/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1410,7 +1409,7 @@
                             <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1453,7 +1452,7 @@
                             <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1496,7 +1495,7 @@
                             <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1539,7 +1538,7 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1581,7 +1580,7 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount"/>
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
@@ -1609,6 +1608,7 @@
                     </div>
                 </div>
             </div>
+        </form>
 
         </div>
     </div>
