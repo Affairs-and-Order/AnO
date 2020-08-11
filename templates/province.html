@@ -47,14 +47,16 @@
                     <tr>
                         <td><span class="material-icons-outlined">
                             business
-                            </span>Cities:</td>
-                        <td>{{ cityCount }}</td>
+                            </span>City slots:</td>
+                        <td>{{ citySlots }}{{ cityCount }}</td>
+                        <!-- X/X -->
                     </tr>
                     <tr>
                         <td><span class="material-icons-outlined">
                             landscape
-                            </span>land:</td>
-                        <td>{{ land }}km</td>
+                            </span>Land slots:</td>
+                        <td>{{ landSlots }}{{ land }}</td>
+                        <!-- X/X -->
                     </tr>
                 </table>
 
@@ -101,7 +103,7 @@
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
                     business
-                    </span>City - {{ citySlots }} Slots
+                    </span>City
                 </h3>
 
             </div>
@@ -109,7 +111,7 @@
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
                     landscape
-                    </span>Land - {{ landSlots }} Slots
+                    </span>Land
                 </h3>
 
             </div>
@@ -141,28 +143,28 @@
                     </tr>
                     <tr>
                         <td>1 Coal Burners</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Gas Stations</td>
+                        <td>1 City Park</td>
                     </tr>
                     <tr>
                         <td>1 Oil Burners</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 General Stores</td>
+                        <td>1 Hospitals</td>
                     </tr>
                     <tr>
                         <td>1 Solar Fields</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Farmers Markets</td>
+                        <td>1 Libraries</td>
                     </tr>
                     <tr>
                         <td>1 Hydro Dams</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Malls</td>
+                        <td>1 Universities</td>
                     </tr>
                     <tr>
                         <td>1 Nuclear Reactors</td>
-                        <td></td>
-                        <td></td>
+                        <td>1 Banks</td>
+                        <td>1 Skytrains</td>
                     </tr>
                 </table>
             </div>
@@ -345,7 +347,7 @@
 
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Oil Plantations</h2>
+                    <h2 class="templatecontentheaderleft">Gas Stations</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -388,7 +390,7 @@
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Hydroelectric Dam</h2>
+                    <h2 class="templatecontentheaderleft">General Stores</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -431,7 +433,91 @@
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
+                    <h2 class="templatecontentheaderleft">Farmers Markets</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+
+                            <p class="templatecontentpleft"></p>
+
+                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Malls</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+
+                            <p class="templatecontentpleft"></p>
+
+                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Banks</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -477,7 +563,7 @@
 
                 <div id="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Oil Plantations</h2>
+                    <h2 class="templatecontentheaderleft">City Parks</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -520,7 +606,7 @@
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Hydroelectric Dam</h2>
+                    <h2 class="templatecontentheaderleft">Hospitals</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -563,7 +649,91 @@
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
+                    <h2 class="templatecontentheaderleft">Libraries</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+
+                            <p class="templatecontentpleft"></p>
+
+                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Universities</h2>
+
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+
+                            <p class="templatecontentpleft"></p>
+
+                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+
+                            <div class="purchasemilitarydiv">
+                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" required/>
+
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                    </div>
+                                </div>
+                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                            </div>
+
+                        </div>
+                        </form>
+                        <div class="templatedivflex2left">
+
+
+
+                            <img class="unitimage" src="https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="menudiv">
+
+                    <h2 class="templatecontentheaderleft">Skytrains</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -643,7 +813,7 @@
                     <tr>
                         <td>1 Harbours</td>
                         <td>1 [[ raw #2]]</td>
-                        <td>1 Copper Smelteries</td>
+                        <td>1 Ammunition Factories</td>
                     </tr>
                     <tr>
                         <td>1 Administrative Buildings</td>
@@ -1313,7 +1483,7 @@
                 </div>
                 <div class="menudiv">
 
-                    <h2 class="templatecontentheaderleft">Copper Smelteries</h2>
+                    <h2 class="templatecontentheaderleft">Ammunition Factories</h2>
 
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
