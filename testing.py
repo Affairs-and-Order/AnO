@@ -1,6 +1,8 @@
 import sqlite3
 
-infra = {
+def generate_revenue():
+
+    infra = {
     'oil_burners_plus': {'uranium': 12},
     'oil_burners_minus': {'oil': 4},
 
@@ -12,9 +14,7 @@ infra = {
 
     'solar_fields_plus': {'iron': 4},
     'solar_fields_minus': {'oil': 0}
-}
-
-def generate_revenue():
+    }
 
     conn = sqlite3.connect('affo/aao.db') # connects to db
     db = conn.cursor()
