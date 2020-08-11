@@ -52,18 +52,18 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
-                    <th>Offering Party</th>
+                    <th>Name</th>
                     <th>Resource</th>
                     <th>Price</th>
                     <th>Amount</th>
                     <th>Purchase</th>
                 </tr>
 
-                {% for id, name, resource, amount, price, offer_id in offers %}
+                {% for id, name, resource, amount, price, offer_id, total_price in offers %}
                 <tr>
                     <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
                     <td>{{ resource }}</td>
-                    <td>{{ price }} Each<br />{{ total_Price }} Total</td>
+                    <td>{{ price }} Each<br />{{ total_price }} Total</td>
                     <td>{{ amount }}</td>
                     <td>
                         <form method="POST">

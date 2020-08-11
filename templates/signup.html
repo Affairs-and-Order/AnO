@@ -18,7 +18,7 @@
 
     <div class="templatedivcontent">
 
-        <form class="loginsignupform" action="/signup" method="POST">
+        <form id="signup-form" class="loginsignupform" action="/signup" method="POST">
             <div class="templatedivflex2 divflex2center signupdiv">
                 <div class="templatedivflex2left">
                     <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
@@ -312,9 +312,22 @@
 
             </div>
 
-            <button class="templatedivbutton loginsignupbutton" type="submit"><span class="material-icons-outlined">
+            <script>
+                function onSubmit(token) {
+                    document.getElementById("signup-form").submit();
+                }
+            </script>
+
+            <button 
+            class="g-recaptcha templatedivbutton loginsignupbutton"
+            type="submit"
+            data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" 
+            data-callback='onSubmit' 
+            data-action='submit'>
+            <span class="material-icons-outlined">
                 add_circle_outline
                 </span>Signup</button>
+
         </form>
     </div>
 

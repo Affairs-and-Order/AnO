@@ -566,3 +566,13 @@ var imageBackground2 = function(event) {
         URL.revokeObjectURL(output.src) // free memory
     }
 };
+
+var imageBackground3 = function(event) {
+    var output = document.getElementById('imageBackground3');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.style.width = "40vw";
+    output.style.height = "22.5vw";
+    output.onload = function() {
+        URL.revokeObjectURL(output.src) // free memory
+    }
+};

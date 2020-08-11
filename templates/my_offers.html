@@ -9,8 +9,40 @@
     </div>
 
     <div class="templatedivcontent">
-        <h2 class="templatecontentheaderleft"></h2>
-        <p class="templatecontentpleft"></p>
+
+        <h2 class="templatecontentheaderleft">Direct Offers</h2>
+
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Name</th>
+                    <th>Resource</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Purchase</th>
+                </tr>
+                <tr>
+                    <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
+                    <td>{{ resource }}</td>
+                    <td>{{ price }}</td>
+                    <td>{{ amount }}</td>
+                    <td>
+                        <form method="POST">
+                            <div class="templatedivflex2 divflex2center signupdiv">
+                                <div class="templatedivflex2left">
+                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="Purchase Amount" required/>
+                                </div>
+                                <div class="templatedivflex2left">
+                                    <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton">Confirm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
 
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">

@@ -12,6 +12,7 @@ import random
 from celery import Celery
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
+from helpers import try_col
 
 # Game.ping() # temporarily removed this line because it might make celery not work
 
@@ -117,16 +118,6 @@ def eventCheck():
 """
 @app.context_processor
 def inject_user():
-    def get_col_name():
-        conn = sqlite3.connect('affo/aao.db') # connects to db
-        db = conn.cursor()
-        try:
-            inColit = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-            inCol = f"/coalition/{inColit}"
-            return inCol
-        except:
-            inCol = error(404, "Page Not Found")
-            return inCol
     def get_resource_amount():
         conn = sqlite3.connect('affo/aao.db') # connects to db
         db = conn.cursor()
@@ -134,7 +125,7 @@ def inject_user():
 
         money = db.execute("SELECT gold FROM stats WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
 
-        rations = 0 # db.execute("SELECT rations FROM resources WHERE userId=(?)", (session_id,)).fetchone()[0]
+        rations = db.execute("SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         oil = db.execute("SELECT oil FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
         coal = db.execute("SELECT coal FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
         uranium = db.execute("SELECT uranium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0] # DONE
@@ -154,16 +145,12 @@ def inject_user():
         
         lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, copper_plates, aluminium, gasoline, ammunition]
         return lst
-    return dict(get_col_name=get_col_name, get_resource_amount=get_resource_amount)
+    return dict(get_resource_amount=get_resource_amount)
 
 
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html") # renders index.html when "/" is accesed
-
-@app.route("/error", methods=["GET"])
-def errorito(): # fancy view for error, because error function is used
-    error(400, "Unknown Error")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -184,7 +171,14 @@ def login():
 
         if user is not None and check_password_hash(user[4], password): # checks if user exists and if the password is correct
             session["user_id"] = user[0] # sets session's user_id to current user's id
-            session["logged_in"] = True
+            try:
+                coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+            except TypeError:
+                coalition = error(404, "Page Not Found")
+
+            # print(f"coalition = {coalition}")
+            
+            session["coalition"] = coalition
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
@@ -214,21 +208,25 @@ def signup():
         
         if password != confirmation: # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
-        for keys in allKeys: # lmao shitty way to do idk why i did this
-            if key == keys[0]:
+        for keys in allKeys: # lmao shitty way to do it idk why i did this im the epitomy of stupid
+            if key == keys[0]: # i should've just used a fucking select statement
                 hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
                 db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(datetime.date.today()))) # creates a new user || added account creation date
                 user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
-                connection.commit()
                 session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
                 session["logged_in"] = True
 
-                db.execute("INSERT INTO stats (id, location) VALUES (SELECT id FROM users WHERE id = (?)), (?)", (session["user_id"], "Bosfront")) # change the default location                                                                          # "Bosfront" to something else
-                db.execute("INSERT INTO ground (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],)) 
-                db.execute("INSERT INTO air (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-                db.execute("INSERT INTO water (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-                db.execute("INSERT INTO special (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
-                db.execute("INSERT INTO resources (id) SELECT id FROM users WHERE id = (?)", (session["user_id"],))
+                db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", ((session["user_id"]), ("Bosfront"))) #TODO  change the default location 
+                
+                db.execute("INSERT INTO military (id) VALUES (?)", (session["user_id"],))
+                db.execute("INSERT INTO resources (id) VALUES (?)", (session["user_id"],))
+
+                """
+                db.execute("INSERT INTO ground (id) VALUES (?)", (session["user_id"],)) 
+                db.execute("INSERT INTO air (id) VALUES (?)", (session["user_id"],))
+                db.execute("INSERT INTO water (id) VALUES (?)", (session["user_id"],))
+                db.execute("INSERT INTO special (id) VALUES (?)", (session["user_id"],))
+                """
 
                 db.execute("DELETE FROM keys WHERE key=(?)", (key,)) # deletes the used key
                 connection.commit()
@@ -255,10 +253,13 @@ def country(cId):
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
-    provinceIds = db.execute("SELECT provinceId FROM provinces WHERE userId=(?) ORDER BY provinceId DESC", (cId,)).fetchall()
+    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceIds = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
 
-    provinces = zip(provinceNames, provinceIds)
+    provinces = zip(provinceNames, provinceIds, provincePops, provinceCities, provinceLand)
 
     if str(cId) == str(session["user_id"]):
         status = True
@@ -266,15 +267,16 @@ def country(cId):
         status = False
 
     try:
-        colName = db.execute("SELECT name FROM colNames WHERE id = (SELECT colId FROM coalitions WHERE userId=(?))", (cId,)).fetchone()[0]
+        colId = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+        colName = db.execute("SELECT name FROM colNames WHERE id =?", (colId,)).fetchone()[0]
     except:
+        colId = ""
         colName = ""
-
 
     return render_template("country.html", username=username, cId=cId, description=description,
     happiness=happiness, population=population, location=location, gold=gold, status=status,
     provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
-    provinces=provinces)
+    provinces=provinces, colId=colId)
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
@@ -283,25 +285,25 @@ def military():
     db = connection.cursor()
     cId = session["user_id"]
     if request.method == "GET": # maybe optimise this later with css anchors
-        # ground
-        tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
+        # g round
+        tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
-        # air
-        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+        # a ir
+        flying_fortresses = db.execute("SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
-        # water
-        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
+        # w ater
+        destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
-        # special
-        spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        # s pecial
+        spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.commit()
 
         return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
@@ -321,21 +323,21 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         
-        offer_ids = db.execute("SELECT offer_id FROM offers").fetchall()
+        offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY offer_id ASC").fetchall()
         
         ids = []
         names = []
         resources = []
         amounts = []
         prices = []
-        total_Prices = []
-        offer_ids_list = []
+        total_prices = []
+        offer_ids = []
 
         print(offer_ids)
 
-        for i in offer_ids:
+        for i in offer_ids_list:
 
-            offer_ids_list.append(i[0])
+            offer_ids.append(i[0])
             
             user_id = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             ids.append(user_id)
@@ -352,11 +354,11 @@ def market():
             price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
-            total_Price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
-            total_Prices.append(total_Price)
+            total_price = price * amount
+            total_prices.append(total_price)
 
 
-        offers = zip(ids, names, resources, amounts, prices, total_Prices, offer_ids_list)
+        offers = zip(ids, names, resources, amounts, prices, offer_ids, total_prices)
 
         return render_template("market.html", offers=offers)
 
@@ -374,7 +376,7 @@ def buy_market_offer(offer_id):
     if offer_id.isnumeric() is False or amount_wanted.isnumeric() is False:
         return error(400, "Values must be numeric")
 
-    offer = db.execute("SELECT resource, amount, price, total_Price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+    offer = db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
     seller_id = int(offer[3])
 
@@ -427,16 +429,15 @@ def provinces():
 
         cId = session["user_id"]
 
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?)", (cId,)).fetchall()
-        population = db.execute("SELECT population FROM provinces WHERE userId=(?)", (cId,)).fetchall()
-        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?)", (cId,)).fetchall()
-        pId = db.execute("SELECT provinceId FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        pId = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
 
-        pAll = zip(cityCount, population, name, pId)
+        pAll = zip(cityCount, population, name, pId, land) # zips the above SELECT statements into one list.
 
-        bAll = zip(cityCount, population, name, pId)
-
-        return render_template("provinces.html", pAll=pAll, bAll=bAll)
+        return render_template("provinces.html", pAll=pAll)
 
 @login_required
 @app.route("/province/<pId>", methods=["GET", "POST"])
@@ -445,14 +446,23 @@ def province(pId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = db.execute("SELECT provinceName FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
-        population = db.execute("SELECT population FROM provinces WHERE provinceId = (?)", (pId, )).fetchone()[0]
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0]
-        land = (db.execute("SELECT land FROM provinces WHERE provinceId=(?)", (pId,)).fetchone()[0])
+        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId, )).fetchone()[0]
+
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        
+        oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        
 
         connection.commit()
 
-        return render_template("province.html", pId=pId, population=population, name=name, cityCount=cityCount, land=land)
+        return render_template("province.html", pId=pId, population=population, name=name,
+        cityCount=cityCount, land=land,
+        oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields)
 
 # rawCol (for easy finding using CTRL + F)
 @login_required
@@ -573,8 +583,8 @@ def get_status(unit, table, userId):
         db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table"""
 
 @login_required
-@app.route("/<way>/<typee>/<units>", methods=["POST"])
-def sell_buy(way, typee, units):
+@app.route("/<way>/<units>", methods=["POST"])
+def military_sell_buy(way, units): # WARNING: function used only for military
 
     if request.method == "POST":
     
@@ -586,131 +596,158 @@ def sell_buy(way, typee, units):
         allUnits = ["soldiers", "tanks", "artillery",
         "flying_fortresses", "fighter_jets", "apaches"
         "destroyers", "cruisers", "submarines",
-        "spies", "icbms", "nukes",
-        
-        "cityCount", "land",
-        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
-        ""] # all allowed units
+        "spies", "icbms", "nukes"] # list of allowed units
 
         if units not in allUnits:
-            return redirect("/no_such_unit")
+            return error("No such unit exists.")
 
         # update this so it works using the nations script
         if units == "soldiers": # maybe change this to a dictionary later on
-            table = "ground"
+            table = "military"
             price = 50
         elif units == "tanks":
-            table = "ground"
+            table = "military"
             price = 150
         elif units == "artillery":
-            table = "ground"
+            table = "military"
             price = 300
 
         elif units == "flying_fortresses":
-            table = "air"
+            table = "military"
             price = 500
         elif units == "fighter_jets":
-            table = "air"
+            table = "military"
             price = 450
         elif units == "apaches":
-            table = "air"
+            table = "military"
             price = 350
 
         elif units == "destroyers":
-            table = "water"
+            table = "military"
             price = 500
         elif units == "cruisers":
-            table = "water"
+            table = "military"
             price = 650
         elif units == "submarines":
-            table = "water"
+            table = "military"
             price = 450
             
         elif units == "spies":
-            table = "special"
+            table = "military"
             price = 500
         elif units == "icbms":
-            table = "special"
+            table = "military"
             price = 750
         elif units == "nukes":
-            table = "special"
+            table = "military"
             price = 1000
 
-        elif units == "cityCount":
-            table = "provinces"
-            price = 500
-        elif units == "land":
-            table = "provinces"
-            price = 250
+        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedUnits = request.form.get(units)
+        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
+        totalPrice = int(wantedUnits) * price
+        currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
 
-        elif units == "oil_burners":
-            table = "proInfra"
-            price = 500
-        elif units == "hydro_dams":
-            table = "proInfra"
-            price = 500
-        elif units == "nuclear_reactors":
-            table = "proInfra"
-            price = 500
-        elif units == "solar_fields":
-            table = "proInfra"
-            price = 500
+        if way == "sell":
 
-        if typee == "normal": # if buying or selling from military
+            if int(wantedUnits) > int(currentUnits): # checks if unit is legits
+                return redirect("/too_much_to_sell") # seems to work
 
-            gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-            wantedUnits = request.form.get(units)
-            curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
-            totalPrice = int(wantedUnits) * price
-            currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
+            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
 
-            if way == "sell":
-
-                if int(wantedUnits) > int(currentUnits): # checks if unit is legits
-                    return redirect("/too_much_to_sell") # seems to work
-
-                unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-                db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
-                db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
-
-            elif way == "buy":
-
-                if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
-                    return redirect("/too_many_units")
-
-                db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
-
-                updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-                db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
-
-            else: 
-                error(404, "Page not found")
-
-            connection.commit()
-
-            return redirect("/military")
-
-        elif typee == "province": # if buying from province
-
-            gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-            wantedUnits = request.form.get(units)
-            curUnStat = f'SELECT {units} FROM {table} WHERE userId=?'
-            totalPrice = int(wantedUnits) * price
-            currentUnits = db.execute(curUnStat,(cId,)).fetchone()[0]
+        elif way == "buy":
 
             if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
                 return redirect("/too_many_units")
 
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE {table} SET {units}=(?) WHERE userId=(?)"
+            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
             db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
 
-            connection.commit()
+        else: 
+            error(404, "Page not found")
 
-        return redirect("/provinces")
+        connection.commit()
+
+        return redirect("/military")
 
 
+@login_required
+@app.route("/<way>/<units>/<province_id>", methods=["POST"])
+def province_sell_buy(way, units, province_id): # WARNING: function used only for military
+
+    if request.method == "POST":
+    
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        allUnits = [
+        "land", "cityCount",
+        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields"
+        ]
+
+        if units not in allUnits:
+            return error("No such unit exists.", 400)
+
+        if units == "land":
+            price = 10
+            table = "provinces"
+        elif units == "cityCount":
+            price = 500
+            table = "provinces"
+
+        elif units == "oil_burners":
+            price = 350
+            table = "proInfra"
+        elif units == "hydro_dams":
+            price = 450
+            table = "proInfra"
+        elif units == "nuclear_reactors":
+            price = 700
+            table = "proInfra"
+        elif units == "solar_fields":
+            price = 550
+            table = "proInfra"
+
+        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        wantedUnits = request.form.get(units)
+
+        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
+        totalPrice = int(wantedUnits) * price
+        currentUnits = db.execute(curUnStat,(province_id,)).fetchone()[0]
+
+        ## OK UNTIL
+
+        if way == "sell":
+
+            if int(wantedUnits) > int(currentUnits): # checks if unit is legits
+                return error("You don't have enough units", 400) # seems to work
+
+            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), province_id))
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
+
+        elif way == "buy":
+
+            if int(totalPrice) > int(gold): # checks if user wants to buy more units than he has gold
+                return error("You don't have enough gold", 400)
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (int(gold)-int(totalPrice), cId,))
+
+            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            db.execute(updStat,((int(currentUnits) + int(wantedUnits)), province_id)) # fix weird table
+
+        else: 
+            error(404, "Page not found")
+
+        connection.commit()
+
+        return redirect(f"/province/{province_id}")
 
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
@@ -725,6 +762,8 @@ def createprovince():
         pName = request.form.get("name")
 
         db.execute("INSERT INTO provinces (userId, provinceName) VALUES (?, ?)", (cId, pName))
+        province_id = db.execute("SELECT id FROM provinces WHERE userId=(?) AND provinceName=(?)", (cId, pName)).fetchone()[0]
+        db.execute("INSERT INTO proInfra (id) VALUES (?)", (province_id,))
 
         connection.commit()
 
@@ -745,20 +784,21 @@ def marketoffer():
         resource = request.form.get("resource")
         amount = request.form.get("amount")
         price = request.form.get("price")
-        price = request.form.get("total_Price")
 
+        """
         if amount.isnumeric() is False or price.isnumeric() is False:
             return error(400, "You can only type numeric values into /marketoffer ")
+        """
 
         if int(amount) < 1:
             return error(400, "Amount must be greater than 0")
 
-        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into thi
-        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]  #TODO: fix this not working
+        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into this
+        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]
         if int(amount) > int(realAmount):
             return error("400", "Selling amount is higher than actual amount You have.")
 
-        db.execute("INSERT INTO offers (user_id, resource, amount, price, total_Price) VALUES (?, ?, ?, ?, ?)", (cId, resource, int(amount), int(price), """int(total_Price)"""))
+        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price), ))
 
         connection.commit()
         return redirect("/market")
@@ -807,21 +847,21 @@ def wars():
 
     if request.method == "GET": # maybe optimise this later with css anchors
         # ground
-        tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-        # air
-        flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-        # water
-        destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-        # special
-        spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+        tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # a ir
+        flying_fortresses = db.execute("SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute("SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # w ater
+        destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # s pecial
+        spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
         yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -1110,15 +1150,10 @@ def removing(uId):
 
     return redirect(f"/coalition/{ colId }")
 
-@app.route("/logout", methods=["GET"])
+"""@app.route("/logout", methods=["GET"])
 def logout():
-    if request.method == "GET":
-        if 'user_id' in session:
-            session.pop('user_id', None)
-        else:
-            return error(400, "You are not logged in")
-
-        return redirect("/login")
+    session.pop('user_id', None)
+    return redirect("/login")"""
 
 @app.route("/tutorial", methods=["GET"])
 def tutorial():
@@ -1192,6 +1227,24 @@ def find_targets():
         connection.commit()
         return redirect("/wars")
     
+@login_required
+@app.route("/my_coalition", methods=["GET"])
+def my_coalition():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    try:
+        coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+    except TypeError:
+        coalition = ""
+    
+    if len(str(coalition)) == 0:
+        return redirect("/") # Redirects to home page instead of an error
+    else:
+        return redirect(f"/coalition/{coalition}")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
