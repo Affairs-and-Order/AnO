@@ -25,9 +25,9 @@ def WarsHappenNow():
         # if they have the same number of provinces then allow the war to happen
         if attackerProvinces == defendingProvinces:
             print('you are already fighting this country!')
-            read from database(countryIDattacker): units, morale, tech_score, effectiveness
-            x = lambda n, m, v, t, e : (n+v) * ((t*e)/10 + m)
-            country1result = x(units, morale, tech_score, effectiveness, Math.random(1))
+            db.execute("read from database(countryIDattacker): units, morale, tech_score, effectiveness").fetchall()
+            # x = lambda n, m, v, t, e : (n+v) * ((t*e)/10 + m)
+            country1result = units*morale*tech_score*effectiveness*Math.random(1)
 
             sql.execute(new_units, new_morale, new_techscore, new_effectiveness)
 
@@ -48,7 +48,7 @@ function HELPALLY(helperID, attackerID, troops):
     db.execute("MODIFY TABLE WAR (troops) WHERE id=helperID")
 
 
-nation1score = multiplies all these inputs together. 
-nation2score = multiplies all the 2nd inputs together.
+# nation1score = multiplies all these inputs together. 
+# nation2score = multiplies all the 2nd inputs together.
 if nation1score > nation2score:
     
