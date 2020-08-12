@@ -11,25 +11,25 @@ path = "affo/aao.db"
 @celery.task()
 def WarsHappenNow():
     # each table entry was put there either immediately because of a click, or because of a 2 hour later war result update
-    # I expect each entry in the WarTable to have: attackingCountry, defendingCountry, 
+    # I expect each entry in the WarTable to have: attackingCountry, defendingCountry,
 
     # Find all entries where the ACTIVE value is TRUE, meaning current wars.
     # all the entries where ACTIVE is False are just for history.
-    allLatestWarEntries = db.execute("SELECT * FROM wartable WHERE ACTIVE=TRUE").fetchall()
-    
+    allLatestWarEntries = db.execute(
+        "SELECT * FROM wartable WHERE ACTIVE=TRUE").fetchall()
+
     # go through one war at a time.
     for warEntry in allLatestWarEntries:
-        # find if the number of provinces for each country is the same in that war, IF it is the first war they've had (i'm assuming wars can continue even if the number of provinces change).
-        attackerProvinces = db.execute("SELECT provinces FROM war WHERE ").fetchall()
-        # defendingProvinces = read from database(countryIDattacker): provinces
-        # if they have the same number of provinces then allow the war to happen
-        if attackerProvinces == defendingProvinces:
+
             print('you are already fighting this country!')
             db.execute("read from database(countryIDattacker): units, morale, tech_score, effectiveness").fetchall()
             # x = lambda n, m, v, t, e : (n+v) * ((t*e)/10 + m)
-            country1result = units*morale*tech_score*effectiveness*Math.random(1)
+            # use the multiplication for now, later the different unit weights can be factored in. etc: fight ground vs ground, sea vs sea, air vs air, giving bonuses if a certain fight was completely dominated.
+            country1result = units*morale * \
+                tech_score*effectiveness*Math.random(1)
 
-            sql.execute(new_units, new_morale, new_techscore, new_effectiveness)
+            sql.execute(new_units, new_morale,
+                        new_techscore, new_effectiveness)
 
         else:
             print('this country does not have the same number of provinces as you!')
@@ -40,6 +40,11 @@ def WarsHappenNow():
 @WarScriptAttackButtonPressed
 function WarScriptAttackButtonPressed(attackerID, defenderID):
         db.execute("NEW ENTRY TO WARTABLE ")
+        # find if the number of provinces for each country is the same in that war, IF it is the first war they've had (i'm assuming wars can continue even if the number of provinces change).
+        attackerProvinces = db.execute("SELECT provinces FROM war WHERE ").fetchall()
+        defendingProvinces = read from database(countryIDattacker): provinces
+        # if they have the same number of provinces then allow the war to happen
+        if attackerProvinces == defendingProvinces:
 
 
 @HELPALLY
