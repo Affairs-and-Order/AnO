@@ -64,6 +64,11 @@
     font-size: 60px !important;
 }
 
+.iconright {
+    right: 0px;
+    left: 5px;
+}
+
 
 /*KEYFRAMES*/
 
@@ -441,6 +446,7 @@ hr {
 .dropbtn {
     color: white;
     padding: 8px 12px;
+    padding-top: 3px;
     font-size: 20px;
     border: none;
     cursor: pointer;
@@ -453,6 +459,14 @@ hr {
 
 .dropbtn:hover {
     opacity: 0.5;
+}
+
+.dropbtn span {
+    transition: 0.4s;
+}
+
+.dropbtn:hover span {
+    transform: rotate(180deg);
 }
 
 

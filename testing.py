@@ -1,18 +1,18 @@
 import sqlite3
 
-def generate_revenue():
+def generate_province_revenue():
 
     infra = {
-    'oil_burners_plus': {'uranium': 12},
+    'oil_burners_plus': {'energy': 3},
     'oil_burners_minus': {'oil': 4},
 
-    'hydro_dams_plus': {'uranium': 8},
+    'hydro_dams_plus': {'energy': 6},
     'hydro_dams_minus': {'oil': 2},
 
-    'nuclear_reactors_plus': {'uranium': 24},
+    'nuclear_reactors_plus': {'energy': 12},
     'nuclear_reactors_minus': {'iron': 8},
 
-    'solar_fields_plus': {'iron': 4},
+    'solar_fields_plus': {'energy': 3},
     'solar_fields_minus': {'oil': 0}
     }
 
@@ -56,11 +56,11 @@ def generate_revenue():
                 db.execute(f"UPDATE resources SET {minus_resource}=(?) WHERE id=(?)", (new_minus_resource_amount, user_id))
 
                 ### ADDING
-                current_plus_resource = db.execute(f"SELECT {plus_resource} FROM resources WHERE id=(?)", (user_id,)).fetchone()[0]
+                current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
                 new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
-                db.execute(f"UPDATE resources SET {plus_resource}=(?) WHERE id=(?)", (new_resource_number, user_id))
+                db.execute(f"UPDATE provinces SET {plus_resource}=(?) WHERE id=(?)", (new_resource_number, user_id))
 
     conn.commit()
     conn.close()
 
-generate_revenue()
+generate_province_revenue()
