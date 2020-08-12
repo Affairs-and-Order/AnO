@@ -40,6 +40,11 @@ def generate_province_revenue(): # Runs each turn
         minus_amount = minus_data[1]
 
         operating_costs = int(infra[f'{unit}_money'])
+
+        try:
+            pollution_amount = int(infra[f'{unit}_pollution'])
+        except KeyError:
+            pollution_amount = None
         
         """
         print(f"Unit: {unit}")
@@ -75,6 +80,10 @@ def generate_province_revenue(): # Runs each turn
                 else:
                     new_money = current_money - operating_costs
                     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, user_id))
+                    if pollution_amount != None:
+                        current_pollution = db.execute("SELECT pollution FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
+                        new_pollution = current_pollution + pollution_amount
+                        db.execute("UPDATE provinces SET pollution=(?) WHERE id=(?)", (new_pollution, province_id))
 
         conn.commit()
 
