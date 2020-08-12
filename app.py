@@ -5,7 +5,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
-# import WarScript # renamed from nationscript because it determines how war functions
+import WarScript
 import datetime
 import _pickle as pickle
 import random
@@ -13,6 +13,7 @@ from celery import Celery
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
+
 
 app = Flask(__name__)
 
