@@ -101,6 +101,7 @@ def generate_province_revenue(): # Runs each turn
     infra_ids = db.execute("SELECT id FROM proInfra").fetchall()
 
     for unit in columns:
+        
         plus_data = next(iter(infra[f'{unit}_plus'].items()))
 
         plus_resource = plus_data[0]
@@ -112,6 +113,11 @@ def generate_province_revenue(): # Runs each turn
         minus_amount = minus_data[1]
 
         operating_costs = int(infra[f'{unit}_money'])
+
+        try:
+            pollution_amount = int(infra[f'{unit}_pollution'])
+        except KeyError:
+            pollution_amount = None
         
         """
         print(f"Unit: {unit}")
@@ -128,25 +134,41 @@ def generate_province_revenue(): # Runs each turn
 
             user_id = db.execute("SELECT userId FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
 
-            ### REMOVING RESOURCE
-            current_minus_resource = db.execute(f"SELECT {minus_resource} FROM resources WHERE id=(?)", (user_id,)).fetchone()[0]
-            if current_minus_resource < minus_amount:
+            unit_amount = db.execute(f"SELECT {unit} FROM proInfra WHERE id=(?)", (province_id,)).fetchone()[0]
+
+            if unit_amount == 0:
                 continue
             else:
-                new_minus_resource_amount = current_minus_resource - minus_amount
-                db.execute(f"UPDATE resources SET {minus_resource}=(?) WHERE id=(?)", (new_minus_resource_amount, user_id))
+                ### REMOVING RESOURCE
 
-                ### ADDING RESOURCES / ENERGY
-                current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
-                new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
-                db.execute(f"UPDATE provinces SET {plus_resource}=(?) WHERE id=(?)", (new_resource_number, user_id))
-                ### REMOVING MONEY
-                current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (user_id,)).fetchone()[0])
-                if current_money < operating_costs:
+                plus_amount *= unit_amount
+                minus_amount *= unit_amount
+                operating_costs *= unit_amount
+                if pollution_amount != None:
+                    pollution_amount *= unit_amount
+                    
+                current_minus_resource = db.execute(f"SELECT {minus_resource} FROM resources WHERE id=(?)", (user_id,)).fetchone()[0]
+                if current_minus_resource < minus_amount :
                     continue
                 else:
-                    new_money = current_money - operating_costs
-                    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, user_id))
+                    new_minus_resource_amount = current_minus_resource - minus_amount
+                    db.execute(f"UPDATE resources SET {minus_resource}=(?) WHERE id=(?)", (new_minus_resource_amount, user_id))
+
+                    ### ADDING RESOURCES / ENERGY
+                    current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
+                    new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+                    db.execute(f"UPDATE provinces SET {plus_resource}=(?) WHERE id=(?)", (new_resource_number, user_id))
+                    ### REMOVING MONEY
+                    current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (user_id,)).fetchone()[0])
+                    if current_money < operating_costs:
+                        continue
+                    else:
+                        new_money = current_money - operating_costs
+                        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, user_id))
+                        if pollution_amount != None:
+                            current_pollution = db.execute("SELECT pollution FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
+                            new_pollution = current_pollution + pollution_amount
+                            db.execute("UPDATE provinces SET pollution=(?) WHERE id=(?)", (new_pollution, province_id))
 
         conn.commit()
 
