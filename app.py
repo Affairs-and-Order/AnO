@@ -73,6 +73,7 @@ def populationGrowth():
         newPop = curPop + (int(curPop/10)) # gets the current population value and adds the same value / 10 to it
         db.execute("UPDATE stats SET population=(?) WHERE id=(?)", (newPop, user_id,)) # updates the db with the new value for population
         conn.commit() # commits everything new
+    conn.close()
 
 """
 # runs once a day
@@ -271,6 +272,8 @@ def country(cId):
     except:
         colId = ""
         colName = ""
+    
+    connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
     happiness=happiness, population=population, location=location, gold=gold, status=status,
@@ -284,26 +287,22 @@ def military():
     db = connection.cursor()
     cId = session["user_id"]
     if request.method == "GET": # maybe optimise this later with css anchors
-        # g round
+        # ground
         tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
-        # a ir
+        # air
         flying_fortresses = db.execute("SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         fighter_jets = db.execute("SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
-        # w ater
+        # water
         destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
-        # s pecial
+        # special
         spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        connection.commit()
 
         return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
         flying_fortresses=flying_fortresses, apaches=apaches, fighter_jets=fighter_jets,
@@ -356,6 +355,7 @@ def market():
             total_price = price * amount
             total_prices.append(total_price)
 
+        connection.close()
 
         offers = zip(ids, names, resources, amounts, prices, offer_ids, total_prices)
 
@@ -413,6 +413,7 @@ def buy_market_offer(offer_id):
     db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", ((int(offer[1]) - int(amount_wanted)), offer_id))
 
     connection.commit() # commits the connection
+    connection.close() # closes the connection
 
     # lol this whole function is a fucking shitstorm ill comment it later hopefully
 
@@ -433,6 +434,8 @@ def provinces():
         name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
         pId = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
         land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+
+        connection.close()
 
         pAll = zip(cityCount, population, name, pId, land) # zips the above SELECT statements into one list.
 
@@ -455,9 +458,8 @@ def province(pId):
         hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
         nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
         solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        
 
-        connection.commit()
+        connection.close()
 
         return render_template("province.html", pId=pId, population=population, name=name,
         cityCount=cityCount, land=land,
@@ -527,13 +529,14 @@ def coalition(colId):
         except:
             userInCurCol = False
 
+        connection.close()
+
         return render_template("coalition.html", name=name, colId=colId, members=members,
         description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
         requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
         average_influence=average_influence, leaderName=leaderName, leader=leader)
 
 @login_required
-# estCol (this is so the function would be easier to find in code)
 @app.route("/establish_coalition", methods=["GET", "POST"])
 def establish_coalition():
     if request.method == "POST":
@@ -559,27 +562,10 @@ def establish_coalition():
                 db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
 
                 connection.commit()
+                connection.close()
                 return redirect(f"/coalition/{colId}")
     else:
         return render_template("establish_coalition.html")
-
-"""@app.context_processor
-def get_status(unit, table, userId):
-
-    cId = session["user_id"]
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-
-    try:
-        statStat = f"SELECT {unit} FROM {table} WHERE {userId} = (?)"
-        db.execute(statStat, (cId,))
-        return True
-    except:
-        return False
-
-    updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-        db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table"""
 
 @login_required
 @app.route("/<way>/<units>", methods=["POST"])
@@ -667,9 +653,10 @@ def military_sell_buy(way, units): # WARNING: function used only for military
             db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
 
         else: 
-            error(404, "Page not found")
+            return error(404, "Page not found")
 
         connection.commit()
+        connection.close()
 
         return redirect("/military")
 
@@ -720,8 +707,6 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
         totalPrice = int(wantedUnits) * price
         currentUnits = db.execute(curUnStat,(province_id,)).fetchone()[0]
 
-        ## OK UNTIL
-
         if way == "sell":
 
             if int(wantedUnits) > int(currentUnits): # checks if unit is legits
@@ -745,6 +730,7 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
             error(404, "Page not found")
 
         connection.commit()
+        connection.close()
 
         return redirect(f"/province/{province_id}")
 
@@ -765,6 +751,7 @@ def createprovince():
         db.execute("INSERT INTO proInfra (id) VALUES (?)", (province_id,))
 
         connection.commit()
+        connection.close()
 
         return redirect("/provinces")
     else:
@@ -800,6 +787,7 @@ def marketoffer():
         db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price), ))
 
         connection.commit()
+        connection.close()
         return redirect("/market")
     else:
         return render_template("marketoffer.html")
@@ -815,6 +803,8 @@ def account():
         db = connection.cursor()
 
         name = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+        
+        connection.close()
 
         return render_template("account.html", name=name)
 
@@ -880,6 +870,8 @@ def wars():
 
         warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
+        connection.close()
+
         return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
         flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
         destroyers=destroyers, cruisers=cruisers, submarines=submarines,
@@ -922,7 +914,7 @@ def countries(): # TODO: fix shit ton of repeated code in function
                 coalition_names.append("No Coalition")
 
         connection.commit()
-        
+        connection.close()
 
         resultAll = zip(population, users, names, coalition_ids, coalition_names, dates, influences)
 
@@ -971,6 +963,8 @@ def countries(): # TODO: fix shit ton of repeated code in function
                 coalition_ids.append("No Coalition")
                 coalition_names.append("No Coalition")
 
+        connection.close()
+
         resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
 
         return render_template("countries.html", resultAll=resultAll)
@@ -1009,6 +1003,8 @@ def coalitions():
             influence = get_coalition_influence(idd)
             influences.append(influence)
 
+        connection.close()
+
         resultAll = zip(names, ids, members, types, influences)
 
         return render_template("coalitions.html", resultAll=resultAll)
@@ -1033,6 +1029,8 @@ def coalitions():
             members.append(db.execute("SELECT count(userId) FROM coalitions WHERE colId=(?)", (i[0],)).fetchone()[0])
             types.append(db.execute("SELECT type FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
             influences.append(get_coalition_influence(i[0]))
+
+        connection.close()
 
         resultAll = zip(names, ids, members, types, influences)
 
@@ -1063,6 +1061,8 @@ def join_col(colId):
 
         connection.commit()
 
+    connection.close()
+
     return redirect(f"/coalition/{colId}")
 
 @login_required
@@ -1082,6 +1082,7 @@ def leave_col(colId):
     db.execute("DELETE FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId))
 
     connection.commit()
+    connection.close()
 
     return redirect("/coalitions")
 
@@ -1095,6 +1096,8 @@ def my_offers():
     cId = session["user_id"]
 
     offers = db.execute("SELECT resource, price, amount FROM offers WHERE user_id=(?)", (cId,)).fetchall()
+
+    connection.close()
 
     return render_template("my_offers.html", offers=offers)
 
@@ -1120,13 +1123,15 @@ def adding(uId):
 
     db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
     db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
+
     connection.commit()
+    connection.close()
 
     return redirect(f"/coalition/{ colId }")
 
 @login_required
-@app.route("/remove/<uId>", methods=["POST"])
-def removing(uId):
+@app.route("/remove/<uId>", methods=["POST"]) # removes a request for coalition joining
+def removing_requests(uId):
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
@@ -1186,8 +1191,9 @@ def update_info():
             duplicate = False
 
         if duplicate == False: # Checks if username isn't a duplicate
-            db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
+            db.execute("UPDATE users SET username=? WHERE id=?", (name, cId)) # Updates the username to the new one
         connection.commit() # Commits the data
+        connection.close() # Closes the connection
 
     return redirect(f"/country/id={cId}") # Redirects the user to his country
 
@@ -1201,7 +1207,10 @@ def update_discord():
 
     discord_username = request.form.get("discordUsername")
     db.execute("UPDATE users SET discord=(?) WHERE id=(?)", (discord_username, cId))
+
     connection.commit()
+    connection.close()
+
     return redirect(f"/country/id={cId}") # Redirects the user to his country
 
 @login_required
@@ -1224,6 +1233,7 @@ def find_targets():
 
         db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.commit()
+        connection.close()
         return redirect("/wars")
     
 @login_required
@@ -1238,6 +1248,8 @@ def my_coalition():
         coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
     except TypeError:
         coalition = ""
+
+    connection.close()
     
     if len(str(coalition)) == 0:
         return redirect("/") # Redirects to home page instead of an error
