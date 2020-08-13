@@ -407,10 +407,10 @@ def wars():
     db = connection.cursor()
     cId = session["user_id"]
 
-    if request.method == "GET":  # maybe optimise this later with css anchors
-        # if the method is get THE USER IS PROBABLY HACKING
+    if request.method == "GET":
+        # if the method is get THE USER IS PROBABLY HACKING (or at least they typed in the URL directly which should never happen, maybe by a bookmark)
         return render_template("badresult.html")
-    if request.method == "POST"
+    if request.method == "POST": 
         # returns ALL the VALUES to warResult.html
         return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
                                flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
