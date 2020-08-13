@@ -279,9 +279,6 @@ def country(cId):
 
 
 
-#########################################################################
-
-
 @login_required
 @app.route("/military", methods=["GET", "POST"])
 def military():
@@ -320,6 +317,9 @@ person = {"name": "galaxy"}
 person["message"] = "Thanks guys :D, you are all so amazing." # easter egg probably or it has something to do with mail xD || aw thats nice
 
 
+#########################################################################
+
+
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
 def wars():
@@ -329,28 +329,28 @@ def wars():
     cId = session["user_id"]
 
     if request.method == "GET":  # maybe optimise this later with css anchors
-        # ground
+        # obtain all ground unit numbers from sql table
         tanks = db.execute(
             "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         soldiers = db.execute(
             "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         artillery = db.execute(
             "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # air
+        # obtain all air unit numbers from sql table
         flying_fortresses = db.execute(
             "SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         fighter_jets = db.execute(
             "SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute(
             "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # water
+        # obtain all navy unit numbers from sql table
         destroyers = db.execute(
             "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         cruisers = db.execute(
             "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         submarines = db.execute(
             "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # special
+        # obtain all special unit numbers from sql table
         spies = db.execute(
             "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         icbms = db.execute(
@@ -358,9 +358,11 @@ def wars():
         nukes = db.execute(
             "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
+        # obtain the user's country from sql table
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
+        # this does what again?
         try:
             attackingWars = db.execute(
                 "SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
