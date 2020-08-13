@@ -5,7 +5,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
-import WarScript
+# import WarScript
 import datetime
 import _pickle as pickle
 import random
@@ -277,6 +277,11 @@ def country(cId):
     provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
     provinces=provinces, colId=colId)
 
+
+
+#########################################################################
+
+
 @login_required
 @app.route("/military", methods=["GET", "POST"])
 def military():
@@ -313,6 +318,80 @@ def military():
 
 person = {"name": "galaxy"}
 person["message"] = "Thanks guys :D, you are all so amazing." # easter egg probably or it has something to do with mail xD || aw thats nice
+
+
+@login_required
+@app.route("/wars", methods=["GET", "POST"])
+def wars():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    if request.method == "GET":  # maybe optimise this later with css anchors
+        # ground
+        tanks = db.execute(
+            "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute(
+            "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute(
+            "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # air
+        flying_fortresses = db.execute(
+            "SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute(
+            "SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute(
+            "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # water
+        destroyers = db.execute(
+            "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute(
+            "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute(
+            "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # special
+        spies = db.execute(
+            "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute(
+            "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute(
+            "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
+        yourCountry = db.execute(
+            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+        try:
+            attackingWars = db.execute(
+                "SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
+            attackingNames = db.execute(
+                "SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
+            attacking = zip(attackingWars, attackingNames)
+        except TypeError:
+            attacking = 0
+
+        try:
+            defendingWars = db.execute(
+                "SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender", (cId,)).fetchall()
+            defendingNames = db.execute(
+                "SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
+            defending = zip(defendingWars, defendingNames)
+        except TypeError:
+            defending = 0
+
+        warsCount = db.execute(
+            "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
+
+        return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
+                               flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
+                               destroyers=destroyers, cruisers=cruisers, submarines=submarines,
+                               spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
+                               warsCount=warsCount, defending=defending, attacking=attacking)
+
+
+############################################################################
+############################################################################
+
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
@@ -835,56 +914,6 @@ def businesses():
 def assembly():
     if request.method == "GET":
         return render_template("assembly.html")
-
-@login_required
-@app.route("/wars", methods=["GET", "POST"])
-def wars():
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-    cId = session["user_id"]
-
-    if request.method == "GET": # maybe optimise this later with css anchors
-        # ground
-        tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # a ir
-        flying_fortresses = db.execute("SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute("SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # w ater
-        destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # s pecial
-        spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-
-        yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
-
-        try:
-            attackingWars = db.execute("SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
-            attackingNames = db.execute("SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
-            attacking = zip (attackingWars, attackingNames)
-        except TypeError:
-            attacking = 0
-
-        try:
-            defendingWars = db.execute("SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender", (cId,)).fetchall()
-            defendingNames = db.execute("SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
-            defending = zip(defendingWars, defendingNames)
-        except TypeError:
-            defending = 0
-
-        warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
-
-        return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-        flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
-        destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-        spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
-        warsCount=warsCount, defending=defending, attacking=attacking)
 
 @login_required
 @app.route("/countries", methods=["GET", "POST"])

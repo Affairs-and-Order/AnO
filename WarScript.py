@@ -39,18 +39,16 @@ def WarsHappenNow():
         #db.execute upload TABLE: WAR_TABLE
 
 def declareWarButtonPressed(attackerID, defenderID):
-        db.execute("NEW ENTRY TO WARTABLE ")
-        # find if the number of provinces for each country is the same in that war, IF it is the first war they've had (i'm assuming wars can continue even if the number of provinces change).
         attackerProvinces = db.execute("SELECT provinces FROM war WHERE ").fetchall()
         defendingProvinces = db.execute("SELECT provinces FROM war WHERE ").fetchall() #read from database(countryIDattacker): provinces
         # if they have the same number of provinces then allow the war to happen
         if attackerProvinces == defendingProvinces:
-            # war continues
+            # war starts
             print('war allowed put war entry in war table.')
+            db.execute("NEW ENTRY TO WARTABLE ")
+        # find if the number of provinces for each country is the same in that war
         else:
             print('this country does not have the same number of provinces as you!')
-
-
 
 def helpAlly(helperID, attackerID, troops):
     db.execute("MODIFY TABLE WAR (troops) WHERE id=attackerID")
