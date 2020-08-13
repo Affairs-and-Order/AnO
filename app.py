@@ -373,7 +373,8 @@ def wars():
             attacking = zip(attackingWars, attackingNames)
         except TypeError:
             attacking = 0
-
+        
+        # gets a defending tuple
         try:
             defendingWars = db.execute(
                 "SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender", (cId,)).fetchall()
@@ -383,9 +384,11 @@ def wars():
         except TypeError:
             defending = 0
 
+        # gets a warsCount value
         warsCount = db.execute(
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
+        # returns ALL the VALUES to wars.html
         return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
                                flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
                                destroyers=destroyers, cruisers=cruisers, submarines=submarines,
