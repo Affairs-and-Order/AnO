@@ -1390,227 +1390,268 @@
                     </div>
 
                 </div>
+                <h2 class="templatecontentheaderleft">Lumber Mills</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ farmAmount }} Farms</h3>
+
+                        <p class="templatecontentpleft">Farms</p>
+
+                        <ul>Farms cost [ farmCost ] Each</ul>
+                        <ul>Farms produce 8 rations/day for every 250K of land</ul>
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                </div>
+                            </div>
+                            <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="{{ url_for('static', filename='images/lumbermill.jpg') }}" />
+                    </div>
+                </div>
+
             </div>
-            <!--Processing-->
-            <div id="processing" class="processing">
-
-                <div id="menudiv">
-
-                    <h2 class="templatecontentheaderleft">Component Factories</h2>
-
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
-
-                            <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
-
-                            <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                            <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
-
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                    </div>
-                                </div>
-                                <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
-                            </div>
-
-                        </div>
-                        </form>
-                        <div class="templatedivflex2left">
-
-
-
-                            <img class="unitimage" src="{{ url_for('static', filename='images/componentfactory.jpg') }}" />
-                        </div>
-                    </div>
-
-                </div>
-                <div id="menudiv">
-
-                    <h2 class="templatecontentheaderleft">Steel Mills</h2>
-
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
-
-                            <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
-
-                            <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                            <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
-
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                    </div>
-                                </div>
-                                <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
-                            </div>
-
-                        </div>
-                        </form>
-                        <div class="templatedivflex2left">
-
-
-
-                            <img class="unitimage" src="{{ url_for('static', filename='images/steelmill.jpg') }}" />
-                        </div>
-                    </div>
-
-                </div>
-                <div class="menudiv">
-
-                    <h2 class="templatecontentheaderleft">Ammunition Factories</h2>
-
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dam</h3>
-
-                            <p class="templatecontentpleft"></p>
-
-                            <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                            <ul>Hydro dams produce 12(electricity icon)/day</ul>
-
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                    </div>
-                                </div>
-                                <ul>[ buyHydroDam ] hydro dams will cost you $[ buyHydroDamPrice ]</ul>
-                            </div>
-
-                        </div>
-                        </form>
-                        <div class="templatedivflex2left">
-
-
-
-                            <img class="unitimage" src="{{ url_for('static', filename='images/ammunitionfactory.jpg') }}" />
-                        </div>
-                    </div>
-
-                </div>
-                <div class="menudiv">
-
-                    <h2 class="templatecontentheaderleft">Aluminum Refineries</h2>
-
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
-
-                            <p class="templatecontentpleft"></p>
-
-                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                    </div>
-                                </div>
-                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
-                            </div>
-
-                        </div>
-                        </form>
-                        <div class="templatedivflex2left">
-
-
-
-                            <img class="unitimage" src="{{ url_for('static', filename='images/aluminiumrefinery.jpg') }}" />
-                        </div>
-                    </div>
-                </div>
-                <div class="menudiv">
-
-                    <h2 class="templatecontentheaderleft">Oil Refinery</h2>
-
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
-
-                            <p class="templatecontentpleft"></p>
-
-                            <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                            <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
-
-                                    </div>
-                                </div>
-                                <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
-                            </div>
-
-                        </div>
-                        </form>
-                        <div class="templatedivflex2left">
-
-
-
-                            <img class="unitimage" src="{{ url_for('static', filename='images/oilrefinery.jpg') }}" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </form>
-
         </div>
+        <!--Processing-->
+        <div id="processing" class="processing">
+
+            <div id="menudiv">
+
+                <h2 class="templatecontentheaderleft">Component Factories</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
+
+                        <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+
+                        <ul>Oil plants cost [ oilPlantCost ] Each</ul>
+                        <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                </div>
+                            </div>
+                            <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="{{ url_for('static', filename='images/componentfactory.jpg') }}" />
+                    </div>
+                </div>
+
+            </div>
+            <div id="menudiv">
+
+                <h2 class="templatecontentheaderleft">Steel Mills</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ oil_plant }} Oil Plants</h3>
+
+                        <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+
+                        <ul>Oil plants cost [ oilPlantCost ] Each</ul>
+                        <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                </div>
+                            </div>
+                            <ul>[ buyOilPlant ] Oil plants will cost you $[ buyOilPlantPrice ]</ul>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="{{ url_for('static', filename='images/steelmill.jpg') }}" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Ammunition Factories</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ hydro_dam }} Hydro Dam</h3>
+
+                        <p class="templatecontentpleft"></p>
+
+                        <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
+                        <ul>Hydro dams produce 12(electricity icon)/day</ul>
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                </div>
+                            </div>
+                            <ul>[ buyHydroDam ] hydro dams will cost you $[ buyHydroDamPrice ]</ul>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="{{ url_for('static', filename='images/ammunitionfactory.jpg') }}" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Aluminum Refineries</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+
+                        <p class="templatecontentpleft"></p>
+
+                        <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                        <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                </div>
+                            </div>
+                            <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="{{ url_for('static', filename='images/aluminiumrefinery.jpg') }}" />
+                    </div>
+                </div>
+            </div>
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Oil Refinery</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <h3 class="unitcount">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+
+                        <p class="templatecontentpleft"></p>
+
+                        <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
+                        <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+
+                        <div class="purchasemilitarydiv">
+                            <input class="loginsignupinput" autocomplete="off" name="flying_fortresses" type="number" placeholder="Amount" />
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+
+                                </div>
+                            </div>
+                            <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img class="unitimage" src="{{ url_for('static', filename='images/oilrefinery.jpg') }}" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+
     </div>
+</div>
 </div>
 {% endblock %}
