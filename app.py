@@ -395,6 +395,13 @@ def wars():
                                spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                warsCount=warsCount, defending=defending, attacking=attacking)
 
+# the flask route that activates when you click attack on a nation in your wars page.
+# check if you have enough supplies.
+
+
+
+# if everything went through, remove the cost of supplies from the amount of supplies the country has.
+
 
 ############################################################################
 ############################################################################
