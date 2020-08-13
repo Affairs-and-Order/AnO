@@ -361,12 +361,15 @@ def wars():
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-        # this does what again?
+        # this creates an array called attacking which stores tuples in the format [(defendingCountryName1, defendingCountryUsername1), (defendingCountryName2, defendingCountryUsername2), ...].
         try:
+            # selecting all current defenders of cId
             attackingWars = db.execute(
                 "SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
+            # selecting all usernames of current defenders of cId
             attackingNames = db.execute(
                 "SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
+            # generates list of tuples. The first element of each tuple is the country being attacked, the second element is the username of the countries being attacked.
             attacking = zip(attackingWars, attackingNames)
         except TypeError:
             attacking = 0
