@@ -401,7 +401,7 @@ def wars():
 
 @login_required
 @app.route("/wars/<attackingNation>/defendingNation", methods=["GET", "POST"])
-def wars():
+def wars_route(attackingNation, defendingNation):
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
@@ -412,11 +412,12 @@ def wars():
         return render_template("badresult.html")
     if request.method == "POST": 
         # returns ALL the VALUES to warResult.html
-        return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-                               flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
-                               destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-                               spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
-                               warsCount=warsCount, defending=defending, attacking=attacking)
+        return render_template("wars.html") 
+        """tanks=tanks, soldiers=soldiers, artillery=artillery,
+                                flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
+                                destroyers=destroyers, cruisers=cruisers, submarines=submarines,
+                                spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
+                                warsCount=warsCount, defending=defending, attacking=attacking"""
 
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
 
