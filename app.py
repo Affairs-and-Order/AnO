@@ -5,7 +5,7 @@ import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
-# import WarScript
+# import WarScript # entirely useless file ignore this for now
 import datetime
 import _pickle as pickle
 import random

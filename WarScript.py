@@ -1,3 +1,6 @@
+# every single line in this file here is useless for now
+
+
 import random
 import sqlite3
 import _pickle as pickle
