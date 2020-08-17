@@ -42,7 +42,19 @@
                         <td><span class="material-icons-outlined">
                             arrow_circle_up
                             </span>Productivity:</td>
-                        <td>{{ happiness }}%</td>
+                        <td>{{ productivity }}%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            attach_money
+                            </span>Consumer Spending:</td>
+                        <td>{{ consumerSpending }}%</td>
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            emoji_transportation
+                            </span>Pollution:</td>
+                        <td>{{ provincePollution }}</td>
                     </tr>
                     <tr>
                         <td><span class="material-icons-outlined">
@@ -64,7 +76,7 @@
             <div class="templatedivflex2left">
                 <div class="infodiv">
                     <form method="POST">
-                        <label class="vanilla">You receive 2 city slots for every city</label>
+                        <label class="vanilla">Purchase Cities</label>
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
 
@@ -75,11 +87,11 @@
 
                                 <button formaction="/buy/cityCount/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             business
-                            </span>Purchase Cities</button>
+                            </span>Purchase</button>
 
                             </div>
                         </div>
-                        <label class="vanilla">You receive 1 land slot for every 250km</label>
+                        <label class="vanilla">Purchase Land</label>
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
 
@@ -90,7 +102,7 @@
 
                                 <button formaction="/buy/land/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             landscape
-                            </span>Purchase Land</button>
+                            </span>Purchase</button>
 
                             </div>
                     </form>
@@ -192,12 +204,16 @@
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/oil_burners/{{ pId }}">Buy</button>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/oil_burners/{{ pId }}"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/oil_burners/{{ pId }}">Sell</button>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/oil_burners/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -235,12 +251,16 @@
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left flexchildvanilla">
 
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/hydro_dams/{{ pId }}">Buy</button>
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/hydro_dams/{{ pId }}"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                             </div>
                             <div class="templatedivflex2left flexchildvanilla">
 
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/hydro_dams/{{ pId }}">Sell</button>
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/hydro_dams/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                             </div>
                         </div>
@@ -278,12 +298,16 @@
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left flexchildvanilla">
 
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/nuclear_reactors/{{ pId }}">Buy</button>
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                             </div>
                             <div class="templatedivflex2left flexchildvanilla">
 
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/nuclear_reactors/{{ pId }}">Sell</button>
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                             </div>
                         </div>
@@ -320,12 +344,16 @@
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left flexchildvanilla">
 
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}">Buy</button>
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                             </div>
                             <div class="templatedivflex2left flexchildvanilla">
 
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}">Sell</button>
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                             </div>
                         </div>
@@ -364,12 +392,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -407,12 +439,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -450,12 +486,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -492,12 +532,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -534,12 +578,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -580,12 +628,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -623,12 +675,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -666,12 +722,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -708,12 +768,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -750,12 +814,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -850,12 +918,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -893,12 +965,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -936,12 +1012,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -978,12 +1058,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1020,12 +1104,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1066,12 +1154,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1109,12 +1201,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1152,12 +1248,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1195,12 +1295,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1238,12 +1342,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1281,12 +1389,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1324,12 +1436,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1367,12 +1483,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1408,12 +1528,16 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                 </div>
                             </div>
@@ -1454,12 +1578,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1497,12 +1625,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1540,12 +1672,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1583,12 +1719,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
@@ -1625,12 +1765,16 @@
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/flying_fortresses"><span class="material-icons-outlined">
+                                                add_circle_outline
+                                                </span>Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/flying_fortresses"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                                </span>Sell</button>
 
                                     </div>
                                 </div>
