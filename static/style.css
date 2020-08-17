@@ -465,7 +465,7 @@ hr {
     transition: 0.4s;
 }
 
-.dropbtn:hover span {
+.dropdown:hover button span {
     transform: rotate(180deg);
 }
 
