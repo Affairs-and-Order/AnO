@@ -926,7 +926,7 @@ def marketoffer():
         db = connection.cursor()
 
         resource = request.form.get("resource")
-        amount = request.form.get("amount")
+        amount = int(request.form.get("amount"))
         price = request.form.get("price")
 
         """
@@ -934,18 +934,35 @@ def marketoffer():
             return error(400, "You can only type numeric values into /marketoffer ")
         """
 
-        if int(amount) < 1:
+        # List of all the resources in the game
+        resources = [
+            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+            "lumber", "components", "steel", "consumer_goods", "aluminium",
+            "gasoline", "ammunition"
+        ]
+
+        if resource not in resources: # Checks if the resource the user selected actually exists
+            return error(400, "No such resource")
+
+        if amount < 1: # Checks if the amount is negative
             return error(400, "Amount must be greater than 0")
 
         rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into this
-        realAmount = db.execute(rStatement, (cId,)).fetchone()[0]
-        if int(amount) > int(realAmount):
+        realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
+        if amount > realAmount: # Checks if user wants to sell more than he has
             return error("400", "Selling amount is higher than actual amount You have.")
 
+        # Calculates the resource amount the seller should have
+        newResourceAmount = realAmount - amount 
+
+        upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(upStatement, (newResourceAmount, cId))
+
+        # Creates a new offer
         db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price), ))
 
-        connection.commit()
-        connection.close()
+        connection.commit() # Commits the data to the database
+        connection.close() # Closes the connection
         return redirect("/market")
     else:
         return render_template("marketoffer.html")
