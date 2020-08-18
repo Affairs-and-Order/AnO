@@ -607,16 +607,18 @@ hr {
 
 .resourcedivcontent p {
     text-align: left;
-    padding: 2px 30px;
-    margin: 0px 0px;
+    padding: 0px 10px;
+    margin: 8px 6px;
     font-size: 11pt;
     cursor: pointer;
     transition: all 0.2s;
-    max-width: 100px;
+    width: calc(100% -8px);
+    background: #42444e;
+    box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
 }
 
 .resourcedivcontent p:hover {
-    color: rgba(255, 255, 255, 0.65);
+    background: #515463;
 }
 
 .purchasediv {
@@ -652,6 +654,14 @@ hr {
 
 
 /*CONTENT*/
+
+.resource {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    top: 5px;
+    padding: 0 5px;
+}
 
 .floatleft {
     float: left;

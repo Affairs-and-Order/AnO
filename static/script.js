@@ -576,3 +576,14 @@ var imageBackground3 = function(event) {
         URL.revokeObjectURL(output.src) // free memory
     }
 };
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+$(document).ready(function() {
+    var val = parseInt($('#resourcetag').html());
+    //Use the code in the answer above to replace the commas.
+    val = numberWithCommas(val);
+    $('#resourcetag').text(val);
+});
