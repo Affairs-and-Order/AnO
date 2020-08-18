@@ -570,11 +570,26 @@ def province(pId):
         nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
         solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
 
+        gas_stations = db.execute("SELECT gas_stations FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        general_stores = db.execute("SELECT general_stores FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        farmers_markets = db.execute("SELECT farmers_markets FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        malls = db.execute("SELECT malls FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        banks = db.execute("SELECT banks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+
+        city_parks = db.execute("SELECT city_parks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        hospitals = db.execute("SELECT hospitals FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        libraries = db.execute("SELECT libraries FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        universities = db.execute("SELECT universities FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        monorails = db.execute("SELECT monorails FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+
         connection.close()
 
         return render_template("province.html", pId=pId, population=population, name=name,
         cityCount=cityCount, land=land,
-        oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields)
+        oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
+        gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
+        banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
+        monorails=monorails)
 
 # rawCol (for easy finding using CTRL + F)
 @login_required
@@ -785,7 +800,8 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
 
         allUnits = [
         "land", "cityCount",
-        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields"
+        "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
+
         ]
 
         if units not in allUnits:
