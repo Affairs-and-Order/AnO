@@ -560,7 +560,8 @@ def province(pId):
         db = connection.cursor()
 
         name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId, )).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        pollution = db.execute("SELECT pollution FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
 
         cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
@@ -585,7 +586,7 @@ def province(pId):
         connection.close()
 
         return render_template("province.html", pId=pId, population=population, name=name,
-        cityCount=cityCount, land=land,
+        cityCount=cityCount, land=land, pollution=pollution,
         oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
         gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
         banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
@@ -801,31 +802,52 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
         allUnits = [
         "land", "cityCount",
         "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
-
+        "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
+        "city_parks", "hospitals", "libraries", "universities", "monorails"
         ]
 
         if units not in allUnits:
             return error("No such unit exists.", 400)
 
         if units == "land":
-            price = 10
+            price = 100
             table = "provinces"
         elif units == "cityCount":
             price = 500
             table = "provinces"
-
-        elif units == "oil_burners":
-            price = 350
+        else: 
             table = "proInfra"
+
+        if units == "oil_burners":
+            price = 350
         elif units == "hydro_dams":
             price = 450
-            table = "proInfra"
         elif units == "nuclear_reactors":
             price = 700
-            table = "proInfra"
         elif units == "solar_fields":
             price = 550
-            table = "proInfra"
+
+        elif units == "gas_stations":
+            price = 500
+        elif units == "general_stores":
+            price = 500
+        elif units == "farmers_markets":
+            price = 500
+        elif units == "malls":
+            price = 500
+        elif units == "banks":
+            price = 500
+
+        elif units == "city_parks":
+            price = 500
+        elif units == "hospitals":
+            price = 500
+        elif units == "libraries":
+            price = 500
+        elif units == "universities":
+            price = 500
+        elif units == "monorails":
+            price = 500
 
         gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
