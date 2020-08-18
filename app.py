@@ -799,6 +799,15 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
+        try:
+            ownProvince = db.execute("SELECT id FROM provinces WHERE id=(?) AND userId=(?)", (province_id, cId,)).fetchone()[0]
+            ownProvince = True
+        except TypeError:
+            ownProvince = False
+
+        if ownProvince == False:
+            return error(400, "You don't own this province")
+
         allUnits = [
         "land", "cityCount",
         "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
