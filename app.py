@@ -505,13 +505,8 @@ def buy_market_offer(offer_id):
 
     sellResStat = f"SELECT {resource} FROM resources WHERE id=(?)"
     sellTotRes = db.execute(sellResStat, (seller_id,)).fetchone()[0]
-
-    newSellerresource = (int(sellTotRes) - int(amount_wanted))
     
-    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId)) 
-
-    resRemStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)" # statement for resource removal for seller
-    db.execute(resRemStat, (newSellerresource, seller_id)) # removes the resources the seller sold
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
 
     currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)" # statement for getting the current resource from the buyer
     buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0] # executes the statement
@@ -521,7 +516,14 @@ def buy_market_offer(offer_id):
     buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)" # statement for giving the user the resource bought
     db.execute(buyUpdStat, (newBuyerResource, cId)) # executes the statement
 
-    db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", ((int(offer[1]) - int(amount_wanted)), offer_id))
+    new_offer_amount = (int(offer[1]) - int(amount_wanted))
+
+    if new_offer_amount == 0:
+        db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id,))
+    else:
+        db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", (new_offer_amount, offer_id))
+        
+    # updates the offer with the new amount
 
     connection.commit() # commits the connection
     connection.close() # closes the connection
@@ -711,7 +713,7 @@ def military_sell_buy(way, units): # WARNING: function used only for military
         "spies", "icbms", "nukes"] # list of allowed units
 
         if units not in allUnits:
-            return error("No such unit exists.")
+            return error("No such unit exists.", 400)
 
         # update this so it works using the nations script
         if units == "soldiers": # maybe change this to a dictionary later on
