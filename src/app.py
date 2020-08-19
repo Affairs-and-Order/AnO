@@ -1,10 +1,9 @@
-from flask import Flask, request, render_template, session, redirect
-from flask_session import Session
-from tempfile import mkdtemp
+from flask import request, render_template, session, redirect
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from helpers import login_required, error
+
 # import WarScript # entirely useless file ignore this for now
 import datetime
 import _pickle as pickle
@@ -13,18 +12,6 @@ from celery import Celery
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
-
-
-app = Flask(__name__)
-
-#basic cache configuration
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = True
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
-
-app.config["CELERY_BROKER_URL"] = 'amqp://ano:ano@localhost:5672/ano'
-app.config["CELERY_RESULT_BACKEND"] = 'amqp://ano:ano@localhost:5672/ano'
 
 celery_beat_schedule = {
     "time_scheduler": {
@@ -116,6 +103,8 @@ def eventCheck():
         pass
     # will decide if natural disasters occure
 """
+
+
 @app.context_processor
 def inject_user():
     def get_resource_amount():
@@ -142,7 +131,7 @@ def inject_user():
         aluminium = db.execute("SELECT aluminium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         gasoline = db.execute("SELECT gasoline FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         ammunition = db.execute("SELECT ammunition FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        
+
         lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, lumber, aluminium, gasoline, ammunition]
         return lst
     return dict(get_resource_amount=get_resource_amount)
@@ -151,89 +140,6 @@ def inject_user():
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html") # renders index.html when "/" is accesed
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-
-    if request.method == "POST":
-
-        connection = sqlite3.connect('affo/aao.db') # connects to db
-        db = connection.cursor() # creates the cursor for db connection
-
-        password = request.form.get("password") # gets the password input from the form
-        username = request.form.get("username") # gets the username input from the forms
-
-        if not username or not password: # checks if inputs are blank
-            return error(400, "No Password or Username")
-
-        user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone() # selects data about user, from users
-        connection.commit()
-
-        if user is not None and check_password_hash(user[4], password): # checks if user exists and if the password is correct
-            session["user_id"] = user[0] # sets session's user_id to current user's id
-            try:
-                coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
-            except TypeError:
-                coalition = error(404, "Page Not Found")
-
-            # print(f"coalition = {coalition}")
-            
-            session["coalition"] = coalition
-            print('User has succesfully logged in.')
-            connection.commit()
-            connection.close()
-            return redirect("/") # redirects user to homepage
-
-        return error(403, "Wrong password")
-
-    else:
-        return render_template("login.html") # renders login.html when "/login" is acessed via get
-
-@app.route("/signup", methods=["GET", "POST"])
-def signup():
-    if request.method == "POST":
-        
-        # connects the db to the signup function
-        connection = sqlite3.connect('affo/aao.db') # connects to db
-        db = connection.cursor()
-
-        username = request.form.get("username") # gets corresponding form inputs
-        email = request.form.get("email")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
-
-        key = request.form.get("key")
-
-        allKeys = db.execute("SELECT key FROM keys").fetchall()
-        
-        if password != confirmation: # checks if password is = to confirmation password
-            return error(400, "Passwords must match.")
-        for keys in allKeys: # lmao shitty way to do it idk why i did this im the epitomy of stupid
-            if key == keys[0]: # i should've just used a fucking select statement
-                hashed = generate_password_hash(password, method='pbkdf2:sha256', salt_length=32) # hashes the inputted password
-                db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(datetime.date.today()))) # creates a new user || added account creation date
-                user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
-                session["user_id"] = user[0] # set's the user's "id" column to the sessions variable "user_id"
-                session["logged_in"] = True
-
-                db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", ((session["user_id"]), ("Bosfront"))) #TODO  change the default location 
-                
-                db.execute("INSERT INTO military (id) VALUES (?)", (session["user_id"],))
-                db.execute("INSERT INTO resources (id) VALUES (?)", (session["user_id"],))
-
-                """
-                db.execute("INSERT INTO ground (id) VALUES (?)", (session["user_id"],)) 
-                db.execute("INSERT INTO air (id) VALUES (?)", (session["user_id"],))
-                db.execute("INSERT INTO water (id) VALUES (?)", (session["user_id"],))
-                db.execute("INSERT INTO special (id) VALUES (?)", (session["user_id"],))
-                """
-
-                db.execute("DELETE FROM keys WHERE key=(?)", (key,)) # deletes the used key
-                connection.commit()
-                connection.close()
-                return redirect("/")
-    else:
-        return render_template("signup.html")
 
 @login_required
 @app.route("/country/id=<cId>")
@@ -272,7 +178,7 @@ def country(cId):
     except:
         colId = ""
         colName = ""
-    
+
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
@@ -373,7 +279,7 @@ def wars():
             attacking = zip(attackingWars, attackingNames)
         except TypeError:
             attacking = 0
-        
+
         # gets a defending tuple
         try:
             defendingWars = db.execute(
@@ -410,9 +316,9 @@ def wars_route(attackingNation, defendingNation):
     if request.method == "GET":
         # if the method is get THE USER IS PROBABLY HACKING (or at least they typed in the URL directly which should never happen, maybe by a bookmark)
         return render_template("badresult.html")
-    if request.method == "POST": 
+    if request.method == "POST":
         # returns ALL the VALUES to warResult.html
-        return render_template("wars.html") 
+        return render_template("wars.html")
         """tanks=tanks, soldiers=soldiers, artillery=artillery,
                                 flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
                                 destroyers=destroyers, cruisers=cruisers, submarines=submarines,
@@ -433,9 +339,9 @@ def market():
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        
+
         offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY offer_id ASC").fetchall()
-        
+
         ids = []
         names = []
         resources = []
@@ -447,7 +353,7 @@ def market():
         for i in offer_ids_list:
 
             offer_ids.append(i[0])
-            
+
             user_id = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             ids.append(user_id)
 
@@ -478,7 +384,7 @@ def buy_market_offer(offer_id):
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    
+
     cId = session["user_id"]
 
     amount_wanted = request.form.get(f"amount_{offer_id}")
@@ -497,7 +403,7 @@ def buy_market_offer(offer_id):
 
     user_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
-    if int(amount_wanted) * int(offer[2]) > int(user_gold): # checks if buyer doesnt have enough gold for buyin 
+    if int(amount_wanted) * int(offer[2]) > int(user_gold): # checks if buyer doesnt have enough gold for buyin
 
         return error(400, "You don't have enough gold") # returns error if buyer doesnt have enough gold for buying
 
@@ -505,7 +411,7 @@ def buy_market_offer(offer_id):
 
     sellResStat = f"SELECT {resource} FROM resources WHERE id=(?)"
     sellTotRes = db.execute(sellResStat, (seller_id,)).fetchone()[0]
-    
+
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
 
     currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)" # statement for getting the current resource from the buyer
@@ -522,7 +428,7 @@ def buy_market_offer(offer_id):
         db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id,))
     else:
         db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", (new_offer_amount, offer_id))
-        
+
     # updates the offer with the new amount
 
     connection.commit() # commits the connection
@@ -567,7 +473,7 @@ def province(pId):
 
         cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        
+
         oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
         hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
         nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
@@ -602,7 +508,7 @@ def coalition(colId):
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        
+
         cId = session["user_id"]
 
         name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
@@ -672,7 +578,7 @@ def establish_coalition():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        try: 
+        try:
             db.execute("SELECT userId FROM coalitions WHERE userId=(?)", (session["user_id"],)).fetchone()[0]
             return error(403, "You are already in a coalition")
         except:
@@ -701,7 +607,7 @@ def establish_coalition():
 def military_sell_buy(way, units): # WARNING: function used only for military
 
     if request.method == "POST":
-    
+
         cId = session["user_id"]
 
         connection = sqlite3.connect('affo/aao.db')
@@ -745,7 +651,7 @@ def military_sell_buy(way, units): # WARNING: function used only for military
         elif units == "submarines":
             table = "military"
             price = 450
-            
+
         elif units == "spies":
             table = "military"
             price = 500
@@ -781,7 +687,7 @@ def military_sell_buy(way, units): # WARNING: function used only for military
             updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
             db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
 
-        else: 
+        else:
             return error(404, "Page not found")
 
         connection.commit()
@@ -795,7 +701,7 @@ def military_sell_buy(way, units): # WARNING: function used only for military
 def province_sell_buy(way, units, province_id): # WARNING: function used only for military
 
     if request.method == "POST":
-    
+
         cId = session["user_id"]
 
         connection = sqlite3.connect('affo/aao.db')
@@ -826,7 +732,7 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
         elif units == "cityCount":
             price = 500
             table = "provinces"
-        else: 
+        else:
             table = "proInfra"
 
         if units == "oil_burners":
@@ -886,7 +792,7 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
             updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
             db.execute(updStat,((int(currentUnits) + int(wantedUnits)), province_id)) # fix weird table
 
-        else: 
+        else:
             error(404, "Page not found")
 
         connection.commit()
@@ -898,7 +804,7 @@ def province_sell_buy(way, units, province_id): # WARNING: function used only fo
 @app.route("/createprovince", methods=["GET", "POST"])
 def createprovince():
     if request.method == "POST":
-        
+
         cId = session["user_id"]
 
         connection = sqlite3.connect('affo/aao.db')
@@ -955,7 +861,7 @@ def marketoffer():
             return error("400", "Selling amount is higher than actual amount You have.")
 
         # Calculates the resource amount the seller should have
-        newResourceAmount = realAmount - amount 
+        newResourceAmount = realAmount - amount
 
         upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
         db.execute(upStatement, (newResourceAmount, cId))
@@ -973,14 +879,14 @@ def marketoffer():
 @app.route("/account", methods=["GET", "POST"])
 def account():
     if request.method == "GET":
-        
+
         cId = session["user_id"]
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
         name = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
-        
+
         connection.close()
 
         return render_template("account.html", name=name)
@@ -1045,11 +951,11 @@ def countries(): # TODO: fix shit ton of repeated code in function
 
         return render_template("countries.html", resultAll=resultAll)
 
-    else: 
+    else:
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        
+
         search = request.form.get("search")
 
         users = db.execute("SELECT id FROM users WHERE username LIKE ? ORDER BY id", ('%'+search+'%',)).fetchall()
@@ -1074,7 +980,7 @@ def countries(): # TODO: fix shit ton of repeated code in function
 
             date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
             dates.append(date)
-                        
+
             influence = get_influence(str(i[0]))
             influences.append(influence)
 
@@ -1098,7 +1004,7 @@ def countries(): # TODO: fix shit ton of repeated code in function
 @app.route("/coalitions", methods=["GET", "POST"])
 def coalitions():
     if request.method == "GET":
-        
+
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
@@ -1133,12 +1039,12 @@ def coalitions():
         resultAll = zip(names, ids, members, types, influences)
 
         return render_template("coalitions.html", resultAll=resultAll)
-    
+
     else:
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        
+
         search = request.form.get("search")
 
         resultId = db.execute("SELECT id FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
@@ -1164,7 +1070,7 @@ def coalitions():
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
 def join_col(colId):
-    
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
@@ -1193,7 +1099,7 @@ def join_col(colId):
 @login_required
 @app.route("/leave/<colId>", methods=["POST"])
 def leave_col(colId):
-    
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
@@ -1352,7 +1258,7 @@ def find_targets():
         defender = request.form.get("defender") # Selects the country that the user is attacking
 
         try:
-            defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]  
+            defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
         except TypeError:
             return error(400, "No such country") # Redirects the user to an error page
 
@@ -1360,7 +1266,7 @@ def find_targets():
         connection.commit()
         connection.close()
         return redirect("/wars")
-    
+
 @login_required
 @app.route("/my_coalition", methods=["GET"])
 def my_coalition():
@@ -1375,7 +1281,7 @@ def my_coalition():
         coalition = ""
 
     connection.close()
-    
+
     if len(str(coalition)) == 0:
         return redirect("/") # Redirects to home page instead of an error
     else:
@@ -1384,4 +1290,3 @@ def my_coalition():
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
-
