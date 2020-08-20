@@ -214,7 +214,13 @@ def tutorial():
 def statistics():
     return render_template("statistics.html")
 
+@app.route("/my_offers", methods=["GET"])
+def myoffers():
+    return render_template("my_offers.html")
 
+@app.route("/defense", methods=["GET"])
+def defense():
+    return render_template("defense.html")
 
 # available to run if double click the file
 if __name__ == "__main__":

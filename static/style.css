@@ -703,6 +703,10 @@ hr {
     padding: 40px;
 }
 
+.strongmargin {
+    margin: 40px;
+}
+
 .fit {
     width: fit-content;
 }
@@ -2227,6 +2231,11 @@ button {
     max-height: 20vh;
     overflow: hidden;
 }
+
+
+/*DEFENSE*/
+
+.unitcard {}
 
 
 /*FOOTER*/
