@@ -45,9 +45,9 @@ def wars():
             "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         # obtain all air unit numbers from sql table
         bombers = db.execute(
-            "SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute(
-            "SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighters = db.execute(
+            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute(
             "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         # obtain all navy unit numbers from sql table
@@ -98,7 +98,7 @@ def wars():
 
         # returns ALL the VALUES to wars.html
         return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-                               bombers=bombers, fighter_jets=fighter_jets, apaches=apaches,
+                               bombers=bombers, fighters=fighters, apaches=apaches,
                                destroyers=destroyers, cruisers=cruisers, submarines=submarines,
                                spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                warsCount=warsCount, defending=defending, attacking=attacking)
@@ -116,13 +116,13 @@ def wars_route(attackingNation, defendingNation):
     cId = session["user_id"]
 
     if request.method == "GET":
-        # if the method is get THE USER IS PROBABLY HACKING (or at least they typed in the URL directly which should never happen, maybe by a bookmark)
+        # if the method is get THE USER IS PROBABLY HACKING (or at least they typed in the URL directly which should never happen, maybe by a bookmark), btw I've abused some bugs with this in PnW
         return render_template("badresult.html")
     if request.method == "POST":
         # returns ALL the VALUES to warResult.html
         return render_template("wars.html")
         """tanks=tanks, soldiers=soldiers, artillery=artillery,
-                                flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
+                                bombers=bombers, fighters=fighters, apaches=apaches,
                                 destroyers=destroyers, cruisers=cruisers, submarines=submarines,
                                 spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                 warsCount=warsCount, defending=defending, attacking=attacking"""
