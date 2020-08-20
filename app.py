@@ -27,6 +27,7 @@ from coalitions import leave_col, join_col, coalitions, coalition, establish_coa
 from military import province_sell_buy, military, military_sell_buy
 from province import createprovince, province, provinces
 from market import market, buy_market_offer, marketoffer, my_offers
+from discord import update_discord
 
 #basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -214,22 +215,6 @@ def statistics():
     return render_template("statistics.html")
 
 
-
-@login_required
-@app.route("/update_discord", methods=["POST"])
-def update_discord():
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-    cId = session["user_id"]
-
-    discord_username = request.form.get("discordUsername")
-    db.execute("UPDATE users SET discord=(?) WHERE id=(?)", (discord_username, cId))
-
-    connection.commit()
-    connection.close()
-
-    return redirect(f"/country/id={cId}") # Redirects the user to his country
 
 # available to run if double click the file
 if __name__ == "__main__":
