@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect
+from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
 import sqlite3
@@ -793,6 +793,7 @@ def military_sell_buy(way, units): # WARNING: function used only for military
             unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
             db.execute(unitUpd,(int(currentUnits) - int(wantedUnits), cId))
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((int(gold) + int(wantedUnits) * int(price)), cId,)) # clean
+            flash(f"You sold {wantedUnits} {units}")
 
         elif way == "buy":
 
@@ -803,6 +804,7 @@ def military_sell_buy(way, units): # WARNING: function used only for military
 
             updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
             db.execute(updStat,((int(currentUnits) + int(wantedUnits)), cId)) # fix weird table
+            flash(f"You bought {wantedUnits} {units}")
 
         else: 
             return error(404, "Page not found")
