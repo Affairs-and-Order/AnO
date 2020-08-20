@@ -202,59 +202,6 @@ def my_offers():
 
     return render_template("my_offers.html", offers=offers)
 
-@login_required
-@app.route("/add/<uId>", methods=["POST"])
-def adding(uId):
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-
-    try:
-        colId = db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
-    except TypeError:
-        return error(400, "User hasn't posted a request to join")
-
-    cId = session["user_id"]
-
-    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-
-    if leader != cId:
-
-        return error(400, "You are not the leader of the coalition")
-
-    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
-    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
-
-    connection.commit()
-    connection.close()
-
-    return redirect(f"/coalition/{ colId }")
-
-@login_required
-@app.route("/remove/<uId>", methods=["POST"]) # removes a request for coalition joining
-def removing_requests(uId):
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-
-    try:
-        colId = db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
-    except TypeError:
-        return error(400, "User hasn't posted a request to join this coalition.")
-
-    cId = session["user_id"]
-
-    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-
-    if leader != cId:
-
-        return error(400, "You are not the leader of the coalition")
-
-    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
-    connection.commit()
-
-    return redirect(f"/coalition/{ colId }")
-
 """@app.route("/logout", methods=["GET"])
 def logout():
     session.pop('user_id', None)
@@ -294,7 +241,7 @@ from market import market, buy_market_offer
 from login import login
 from signup import signup
 from countries import country, countries, update_info
-from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition
+from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
 from military import province_sell_buy, military, military_sell_buy
 from province import createprovince, province, provinces
 from market import marketoffer

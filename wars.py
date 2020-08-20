@@ -133,3 +133,6 @@ def find_targets():
         connection.close()
         return redirect("/wars")
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
+
+
+

@@ -287,3 +287,64 @@ def my_coalition():
         return redirect("/")  # Redirects to home page instead of an error
     else:
         return redirect(f"/coalition/{coalition}")
+
+
+@login_required
+@app.route("/add/<uId>", methods=["POST"])
+def adding(uId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    try:
+        colId = db.execute(
+            "SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
+    except TypeError:
+        return error(400, "User hasn't posted a request to join")
+
+    cId = session["user_id"]
+
+    leader = db.execute(
+        "SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if leader != cId:
+
+        return error(400, "You are not the leader of the coalition")
+
+    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
+    db.execute(
+        "INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
+
+    connection.commit()
+    connection.close()
+
+    return redirect(f"/coalition/{ colId }")
+
+
+@login_required
+# removes a request for coalition joining
+@app.route("/remove/<uId>", methods=["POST"])
+def removing_requests(uId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    try:
+        colId = db.execute(
+            "SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
+    except TypeError:
+        return error(400, "User hasn't posted a request to join this coalition.")
+
+    cId = session["user_id"]
+
+    leader = db.execute(
+        "SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if leader != cId:
+
+        return error(400, "You are not the leader of the coalition")
+
+    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
+    connection.commit()
+
+    return redirect(f"/coalition/{ colId }")
