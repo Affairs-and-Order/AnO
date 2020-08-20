@@ -859,35 +859,7 @@ def tutorial():
 def statistics():
     return render_template("statistics.html")
 
-@login_required
-@app.route("/update_country_info", methods=["POST"])
-def update_info():
 
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-    cId = session["user_id"]
-
-    description = request.form.get("description")
-    name = request.form.get("countryName")
-
-    if len(description) > 1: # currently checks if the description is more than 1 letter cuz i was too lazy to figure out the input, bad practice but it works for now
-        db.execute("UPDATE users SET description=(?) WHERE id=(?)", (description, cId))
-        connection.commit()
-
-    if len(name) > 1: # bad practice, but works for now, for more details check comment above
-
-        try:
-            duplicate = db.execute("SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
-            duplicate = True
-        except TypeError:
-            duplicate = False
-
-        if duplicate == False: # Checks if username isn't a duplicate
-            db.execute("UPDATE users SET username=? WHERE id=?", (name, cId)) # Updates the username to the new one
-        connection.commit() # Commits the data
-        connection.close() # Closes the connection
-
-    return redirect(f"/country/id={cId}") # Redirects the user to his country
 
 @login_required
 @app.route("/update_discord", methods=["POST"])
@@ -954,8 +926,7 @@ from WarScript import wars, wars_route
 from market import market, buy_market_offer
 from login import login
 from signup import signup
-from country import country
-from countries import countries
+from countries import country, countries, update_info
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on

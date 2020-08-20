@@ -16,6 +16,69 @@ from app import app
 
 
 @login_required
+@app.route("/country/id=<cId>")
+def country(cId):
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[
+        0]  # gets country's name from db
+    # runs the get_influence function of the player's id, which calculates his influence score
+    influence = get_influence(cId)
+    description = db.execute(
+        "SELECT description FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+    population = db.execute(
+        "SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    happiness = db.execute(
+        "SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    provinceCount = db.execute(
+        "SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    location = db.execute(
+        "SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    gold = db.execute("SELECT gold FROM stats WHERE id=(?)",
+                      (cId,)).fetchone()[0]
+    dateCreated = db.execute(
+        "SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+    provinceNames = db.execute(
+        "SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceIds = db.execute(
+        "SELECT id FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provincePops = db.execute(
+        "SELECT population FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceCities = db.execute(
+        "SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceLand = db.execute(
+        "SELECT land FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+
+    provinces = zip(provinceNames, provinceIds, provincePops,
+                    provinceCities, provinceLand)
+
+    if str(cId) == str(session["user_id"]):
+        status = True
+    else:
+        status = False
+
+    try:
+        colId = db.execute(
+            "SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+        colName = db.execute(
+            "SELECT name FROM colNames WHERE id =?", (colId,)).fetchone()[0]
+    except:
+        colId = ""
+        colName = ""
+
+    connection.close()
+
+    return render_template("country.html", username=username, cId=cId, description=description,
+                           happiness=happiness, population=population, location=location, gold=gold, status=status,
+                           provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
+                           provinces=provinces, colId=colId)
+
+
+@login_required
 @app.route("/countries", methods=["GET", "POST"])
 def countries():  # TODO: fix shit ton of repeated code in function
     if request.method == "GET":
@@ -117,3 +180,37 @@ def countries():  # TODO: fix shit ton of repeated code in function
                         coalition_names, dates, influences)
 
         return render_template("countries.html", resultAll=resultAll)
+
+
+@login_required
+@app.route("/update_country_info", methods=["POST"])
+def update_info():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    description = request.form.get("description")
+    name = request.form.get("countryName")
+
+    if len(description) > 1:  # currently checks if the description is more than 1 letter cuz i was too lazy to figure out the input, bad practice but it works for now
+        db.execute("UPDATE users SET description=(?) WHERE id=(?)",
+                   (description, cId))
+        connection.commit()
+
+    if len(name) > 1:  # bad practice, but works for now, for more details check comment above
+
+        try:
+            duplicate = db.execute(
+                "SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
+            duplicate = True
+        except TypeError:
+            duplicate = False
+
+        if duplicate == False:  # Checks if username isn't a duplicate
+            # Updates the username to the new one
+            db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
+        connection.commit()  # Commits the data
+        connection.close()  # Closes the connection
+
+    return redirect(f"/country/id={cId}")  # Redirects the user to his country
