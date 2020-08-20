@@ -14,11 +14,24 @@
         <div class="templatedivflex2 divflex2full">
             <div class="templatedivflex2left">
 
-                <select class="templateselect">
+                <select name="filtered_resource" class="templateselect">
 
     <option disabled="true" selected="selected">Filter</option>
-    <option class="templateoption">Gold</option>
-    <option class="templateoption">Food</option>
+    <option value="rations" class="templateoption">Rations</option>
+    <option value="oil" class="templateoption">Oil</option>
+    <option value="coal" class="templateoption">Coal</option>
+    <option value="uranium" class="templateoption">Uranium</option>
+    <option value="bauxite" class="templateoption">Bauxite</option>
+    <option value="iron" class="templateoption">Iron</option>
+    <option value="lead" class="templateoption">Lead</option>
+    <option value="copper" class="templateoption">Copper</option>
+    <option value="lumber" class="templateoption">Lumber</option>
+    <option value="components" class="templateoption">Components</option>
+    <option value="steel" class="templateoption">Steel</option>
+    <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+    <option value="aluminium" class="templateoption">Aluminium</option>
+    <option value="gasoline" class="templateoption">Gasoline</option>
+    <option value="ammunition" class="templateoption">Ammunition</option>
 
                 </select>
 
@@ -78,6 +91,7 @@
                     {% elif resource == "bauxite" %}
                     <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" />
                     {% endif %}
+
                     {{ resource }}
                     {{ amount }}</td>
                     <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />{{ price }} Each<br />{{ total_price }} Total</td>
@@ -97,6 +111,7 @@
                     </td>
                     <!-- add button here -->
                 </tr>
+                {% endif %}
                 {% endfor %}
             </table>
         </div>

@@ -434,7 +434,9 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         
-        offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY offer_id ASC").fetchall()
+        offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
+
+        filter_resource = request.form.get("filtered_resource")
         
         ids = []
         names = []
@@ -470,7 +472,7 @@ def market():
 
         offers = zip(ids, names, resources, amounts, prices, offer_ids, total_prices)
 
-        return render_template("market.html", offers=offers)
+        return render_template("market.html", offers=offer, filter_resource=filter_resource)
 
 @login_required
 @app.route("/buy_offer/<offer_id>", methods=["POST"])
