@@ -12,7 +12,7 @@ import sqlite3
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
-
+from app import app
 
 @login_required
 @app.route("/country/id=<cId>")
