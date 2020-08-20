@@ -436,7 +436,20 @@ def market():
         
         offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
 
-        filter_resource = request.form.get("filtered_resource")
+        try:
+            filter_resource = request.values.get("filtered_resource")
+        except TypeError:
+            filter_resource = None
+
+        if filter_resource != None:
+
+            resources = [
+            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+            "lumber", "components", "steel", "consumer_goods", "aluminium",
+            "gasoline", "ammunition"]
+
+            if filter_resource not in resources: # Checks if the resource the user selected actually exists
+                return error(400, "No such resource")
         
         ids = []
         names = []
@@ -447,6 +460,14 @@ def market():
         offer_ids = []
 
         for i in offer_ids_list:
+
+            resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+
+            if filter_resource != None:
+                if filter_resource == resource:
+                    pass
+                else:
+                    continue
 
             offer_ids.append(i[0])
             
@@ -472,7 +493,7 @@ def market():
 
         offers = zip(ids, names, resources, amounts, prices, offer_ids, total_prices)
 
-        return render_template("market.html", offers=offer, filter_resource=filter_resource)
+        return render_template("market.html", offers=offers)
 
 @login_required
 @app.route("/buy_offer/<offer_id>", methods=["POST"])

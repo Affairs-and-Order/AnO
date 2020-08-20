@@ -14,6 +14,7 @@
         <div class="templatedivflex2 divflex2full">
             <div class="templatedivflex2left">
 
+                <form action="/market" method="GET">
                 <select name="filtered_resource" class="templateselect">
 
     <option disabled="true" selected="selected">Filter</option>
@@ -38,12 +39,13 @@
             </div>
             <div class="templatedivflex2right flex2rightfloatright">
 
-                <button class="templatedivbutton smallactionbutton"><span class="material-icons-outlined">
+                <button type="submit" class="templatedivbutton smallactionbutton"><span class="material-icons-outlined">
                     arrow_forward
                     </span>Submit</button>
 
             </div>
         </div>
+        </form>
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
@@ -111,7 +113,6 @@
                     </td>
                     <!-- add button here -->
                 </tr>
-                {% endif %}
                 {% endfor %}
             </table>
         </div>
