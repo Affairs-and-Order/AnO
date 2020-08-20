@@ -5,6 +5,28 @@ import sqlite3
 from helpers import login_required, error
 
 
+'''
+Page 1:
+Goes to a page where each 3 units choose what type of unit to attack with (12 options, 9 war and 3 special). There's up to 8 of these boxes available, since you can attack 5 nations at once or defend from 3 nations at once (make this flexible tho).
+War
+9 check boxes
+
+Special operations
+3 check boxes 
+
+Continue button
+
+Page 2:
+Goes to a page where you choose how many to send of each of your 3 units, or 1 special
+
+Page 3:
+Goes to a page where you target what all your units attack (13 options: 9 war units, 3 specials, 1 morale) (targeting 3)
+
+Page 4:
+Whoever lost fewer value in units is the winner. Based on the degree, morale changes. Based on degree on winning, sets a tax on the losing nation.
+'''
+
+# so this is page 1
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
 def wars():
