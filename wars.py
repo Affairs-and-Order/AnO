@@ -28,14 +28,14 @@ Whoever lost fewer value in units is the winner. Based on the degree, morale cha
 
 # so this is page 1 where you can select what units to attack with
 @login_required
-@app.route("/wars", methods=["GET", "POST"])
+@app.route("/wars", methods=["GET"])
 def wars():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
 
-    if request.method == "GET":  # maybe optimise this later with css anchors
+    if request.method == "GET":
         # obtain all ground unit numbers from sql table
         tanks = db.execute(
             "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
@@ -44,7 +44,7 @@ def wars():
         artillery = db.execute(
             "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         # obtain all air unit numbers from sql table
-        flying_fortresses = db.execute(
+        bombers = db.execute(
             "SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         fighter_jets = db.execute(
             "SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
@@ -92,13 +92,13 @@ def wars():
         except TypeError:
             defending = 0
 
-        # gets a warsCount value
+        # WHAT DOES THIS DO??? -- Steven 
         warsCount = db.execute(
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
         # returns ALL the VALUES to wars.html
         return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-                               flying_fortresses=flying_fortresses, fighter_jets=fighter_jets, apaches=apaches,
+                               bombers=bombers, fighter_jets=fighter_jets, apaches=apaches,
                                destroyers=destroyers, cruisers=cruisers, submarines=submarines,
                                spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                warsCount=warsCount, defending=defending, attacking=attacking)
