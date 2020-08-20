@@ -105,4 +105,31 @@ def wars_route(attackingNation, defendingNation):
                                 spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                 warsCount=warsCount, defending=defending, attacking=attacking"""
 
+
+@login_required
+@app.route("/find_targets", methods=["GET", "POST"])
+def find_targets():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    if request.method == "GET":
+        return render_template("find_targets.html")
+    else:
+        # Selects the country that the user is attacking
+        defender = request.form.get("defender")
+
+        try:
+            defender_id = db.execute(
+                "SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
+        except TypeError:
+            # Redirects the user to an error page
+            return error(400, "No such country")
+
+        db.execute(
+            "INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+        connection.commit()
+        connection.close()
+        return redirect("/wars")
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.

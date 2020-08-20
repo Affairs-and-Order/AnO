@@ -286,32 +286,10 @@ def update_discord():
 
     return redirect(f"/country/id={cId}") # Redirects the user to his country
 
-@login_required
-@app.route("/find_targets", methods=["GET", "POST"])
-def find_targets():
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-    cId = session["user_id"]
-
-    if request.method == "GET":
-        return render_template("find_targets.html")
-    else:
-        defender = request.form.get("defender") # Selects the country that the user is attacking
-
-        try:
-            defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]  
-        except TypeError:
-            return error(400, "No such country") # Redirects the user to an error page
-
-        db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
-        connection.commit()
-        connection.close()
-        return redirect("/wars")
 
 # import declared routes
 from testroutes import testfunc
-from WarScript import wars, wars_route
+from WarScript import wars, wars_route, find_targets
 from market import market, buy_market_offer
 from login import login
 from signup import signup
