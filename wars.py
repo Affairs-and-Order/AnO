@@ -26,7 +26,7 @@ Page 4:
 Whoever lost fewer value in units is the winner. Based on the degree, morale changes. Based on degree on winning, sets a tax on the losing nation.
 '''
 
-# so this is page 1
+# so this is page 1 where you can select what units to attack with
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
 def wars():
@@ -106,7 +106,7 @@ def wars():
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
 
-
+#page 2 choose how many of each of your units to send
 @login_required
 @app.route("/wars/<attackingNation>/defendingNation", methods=["GET", "POST"])
 def wars_route(attackingNation, defendingNation):
@@ -126,6 +126,12 @@ def wars_route(attackingNation, defendingNation):
                                 destroyers=destroyers, cruisers=cruisers, submarines=submarines,
                                 spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                 warsCount=warsCount, defending=defending, attacking=attacking"""
+
+# page 3 where you choose what 3 units to attack
+
+
+
+# page 4 results and tax set if a morale reaches 0
 
 
 @login_required
