@@ -165,7 +165,7 @@
             <!--I WILL REPLACE THE TEXT WITH RESOURCE ICONS SOON - CARSON-->
             {% set resource_list = get_resource_amount() %}
             <p onmouseover="moneyon()" onmouseout="moneyoff()">
-                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
+                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" /> $
                 <span id="resourcetag" class="resourcetag">{{ resource_list[0] }}</span>
             </p>
             <br />
@@ -205,22 +205,20 @@
         
         -->{% block body %} {% endblock %}
 
-        <!-- Code for message flashes (You bought x soldiers, etc)-->
-        <!-- Please fix the html (not jinja templating) so it would show up somewhere, I recommend the bottom right corner of the screen.-->
-        <!-- t0dd -->
-        {% with messages = get_flashed_messages() %}
-            {% if messages %}
-                <ul class=flashes>
-                    {% for message in messages %}
-                    <div class="purchasediv">
-                    <div class="purchasenotif">
-                    <h3>{{ message }}</h3>
-                    </div>
-                    </div>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        {% endwith %}
+    <!-- Code for message flashes (You bought x soldiers, etc)-->
+    <!-- Please fix the html (not jinja templating) so it would show up somewhere, I recommend the bottom right corner of the screen.-->
+    <!-- t0dd -->
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+        <div class="purchasediv">
+            <div class="purchasenotif">
+                <h3>{{ message }}</h3>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
 </body>
 
 </html>

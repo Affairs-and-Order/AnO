@@ -106,14 +106,14 @@
                         <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" /> {% elif resource == "coal" %}
                         <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
                         <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
-                        <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span> {{ amount }}</td>
+                        <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span>{{ amount }}</td>
 
-                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />{{ price }} Each<br />{{ total_price }} Total</td>
+                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br />${{ total_price }} Total</td>
                     <td>
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center signupdiv">
                                 <div class="templatedivflex2left">
-                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="Purchase Amount" required/>
+                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="{{ amount }}" required/>
                                 </div>
                                 <div class="templatedivflex2left">
                                     <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
