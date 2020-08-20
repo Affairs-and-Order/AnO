@@ -662,97 +662,6 @@ def assembly():
         return render_template("assembly.html")
 
 @login_required
-@app.route("/countries", methods=["GET", "POST"])
-def countries(): # TODO: fix shit ton of repeated code in function
-    if request.method == "GET":
-
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-
-        users = db.execute("SELECT id FROM users ORDER BY id").fetchall()
-        population = db.execute("SELECT population FROM stats ORDER BY id").fetchall()
-        names = db.execute("SELECT username FROM users ORDER BY id").fetchall()
-
-        coalition_ids = []
-        coalition_names = []
-        dates = []
-        influences = []
-
-        for i in users:
-
-            date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            dates.append(date)
-
-            influence = get_influence(str(i[0]))
-            influences.append(influence)
-
-            try:
-                coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
-                coalition_ids.append(coalition_id)
-
-                coalition_name = db.execute("SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
-                coalition_names.append(coalition_name)
-            except:
-                coalition_ids.append("No Coalition")
-                coalition_names.append("No Coalition")
-
-        connection.commit()
-        connection.close()
-
-        resultAll = zip(population, users, names, coalition_ids, coalition_names, dates, influences)
-
-        return render_template("countries.html", resultAll=resultAll)
-
-    else: 
-
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-        
-        search = request.form.get("search")
-
-        users = db.execute("SELECT id FROM users WHERE username LIKE ? ORDER BY id", ('%'+search+'%',)).fetchall()
-
-        population = []
-        ids = []
-        names = []
-        coalition_ids = []
-        coalition_names = []
-        dates = []
-        influences = []
-
-        for i in users:
-
-            ids.append(i[0])
-
-            indPop = db.execute("SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            population.append(indPop)
-
-            name = db.execute("SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            names.append(name)
-
-            date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            dates.append(date)
-                        
-            influence = get_influence(str(i[0]))
-            influences.append(influence)
-
-            try:
-                coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
-                coalition_ids.append(coalition_id)
-
-                coalition_name = db.execute("SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
-                coalition_names.append(coalition_name)
-            except:
-                coalition_ids.append("No Coalition")
-                coalition_names.append("No Coalition")
-
-        connection.close()
-
-        resultAll = zip(population, ids, names, coalition_ids, coalition_names, dates, influences)
-
-        return render_template("countries.html", resultAll=resultAll)
-
-@login_required
 @app.route("/coalitions", methods=["GET", "POST"])
 def coalitions():
     if request.method == "GET":
@@ -1046,6 +955,7 @@ from market import market, buy_market_offer
 from login import login
 from signup import signup
 from country import country
+from countries import countries
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
