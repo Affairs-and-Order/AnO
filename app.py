@@ -151,51 +151,6 @@ def inject_user():
 def index():
     return render_template("index.html") # renders index.html when "/" is accesed
 
-@login_required
-@app.route("/country/id=<cId>")
-def country(cId):
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-
-    username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0] # gets country's name from db
-    influence = get_influence(cId) # runs the get_influence function of the player's id, which calculates his influence score
-    description = db.execute("SELECT description FROM users WHERE id=(?)", (cId,)).fetchone()[0]
-
-    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    provinceCount = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
-
-    location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
-
-    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provinceIds = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-
-    provinces = zip(provinceNames, provinceIds, provincePops, provinceCities, provinceLand)
-
-    if str(cId) == str(session["user_id"]):
-        status = True
-    else:
-        status = False
-
-    try:
-        colId = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
-        colName = db.execute("SELECT name FROM colNames WHERE id =?", (colId,)).fetchone()[0]
-    except:
-        colId = ""
-        colName = ""
-    
-    connection.close()
-
-    return render_template("country.html", username=username, cId=cId, description=description,
-    happiness=happiness, population=population, location=location, gold=gold, status=status,
-    provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
-    provinces=provinces, colId=colId)
-
 
 
 @login_required
@@ -1090,6 +1045,7 @@ from WarScript import wars, wars_route
 from market import market, buy_market_offer
 from login import login
 from signup import signup
+from country import country
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
