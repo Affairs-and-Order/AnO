@@ -14,6 +14,7 @@ db = conn.cursor() # syntax sqlite3 to convert to usable python interface
 
 # runs every 2 hours  (12pm, 2pm, 4pm, etc) check if any countries at war have not fought in 2 hours. if they have not fought in 2 hours, update the time they last fought and fight. Else just nothing happens... till the next 2 hours anyway. The user interface must also not allow clicking "attack" on the same country if they are already at war.
 # THIS METHOD IS OBSOLETE USE SUPPLIES INSTEAD OF AUTO ATTACK EVERY 2 HOURS
+
 def WarsHappenNow():
     # each table entry was put there either immediately because of a click, or because of a 2 hour later war result update
     # I expect each entry in the WarTable to have: attackingCountry, defendingCountry,
