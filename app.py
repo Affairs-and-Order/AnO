@@ -153,58 +153,6 @@ def index():
 
 
 @login_required
-@app.route("/marketoffer", methods=["GET", "POST"])
-def marketoffer():
-    if request.method == "POST":
-
-        cId = session["user_id"]
-
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-
-        resource = request.form.get("resource")
-        amount = int(request.form.get("amount"))
-        price = request.form.get("price")
-
-        """
-        if amount.isnumeric() is False or price.isnumeric() is False:
-            return error(400, "You can only type numeric values into /marketoffer ")
-        """
-
-        # List of all the resources in the game
-        resources = [
-            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
-            "lumber", "components", "steel", "consumer_goods", "aluminium",
-            "gasoline", "ammunition"
-        ]
-
-        if resource not in resources: # Checks if the resource the user selected actually exists
-            return error(400, "No such resource")
-
-        if amount < 1: # Checks if the amount is negative
-            return error(400, "Amount must be greater than 0")
-
-        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)" # possible sql injection posibility TODO: look into this
-        realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
-        if amount > realAmount: # Checks if user wants to sell more than he has
-            return error("400", "Selling amount is higher than actual amount You have.")
-
-        # Calculates the resource amount the seller should have
-        newResourceAmount = realAmount - amount 
-
-        upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
-        db.execute(upStatement, (newResourceAmount, cId))
-
-        # Creates a new offer
-        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)", (cId, resource, int(amount), int(price), ))
-
-        connection.commit() # Commits the data to the database
-        connection.close() # Closes the connection
-        return redirect("/market")
-    else:
-        return render_template("marketoffer.html")
-
-@login_required
 @app.route("/account", methods=["GET", "POST"])
 def account():
     if request.method == "GET":
@@ -371,6 +319,7 @@ from countries import country, countries, update_info
 from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition
 from military import province_sell_buy, military, military_sell_buy
 from province import createprovince, province, provinces
+from market import marketoffer
 
 # available to run if double click the file
 if __name__ == "__main__":
