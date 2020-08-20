@@ -360,26 +360,6 @@ def find_targets():
         connection.commit()
         connection.close()
         return redirect("/wars")
-    
-@login_required
-@app.route("/my_coalition", methods=["GET"])
-def my_coalition():
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-    cId = session["user_id"]
-
-    try:
-        coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
-    except TypeError:
-        coalition = ""
-
-    connection.close()
-    
-    if len(str(coalition)) == 0:
-        return redirect("/") # Redirects to home page instead of an error
-    else:
-        return redirect(f"/coalition/{coalition}")
 
 # import declared routes
 from testroutes import testfunc
@@ -388,7 +368,7 @@ from market import market, buy_market_offer
 from login import login
 from signup import signup
 from countries import country, countries, update_info
-from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition
+from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition
 from military import province_sell_buy, military, military_sell_buy
 from province import createprovince, province, provinces
 

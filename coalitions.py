@@ -265,3 +265,25 @@ def leave_col(colId):
     connection.close()
 
     return redirect("/coalitions")
+
+
+@login_required
+@app.route("/my_coalition", methods=["GET"])
+def my_coalition():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    try:
+        coalition = db.execute(
+            "SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+    except TypeError:
+        coalition = ""
+
+    connection.close()
+
+    if len(str(coalition)) == 0:
+        return redirect("/")  # Redirects to home page instead of an error
+    else:
+        return redirect(f"/coalition/{coalition}")
