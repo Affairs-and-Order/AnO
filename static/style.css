@@ -663,6 +663,11 @@ hr {
     padding: 0 5px;
 }
 
+.resourcesmall {
+    width: 25px !important;
+    height: 25px !important;
+}
+
 .floatleft {
     float: left;
 }

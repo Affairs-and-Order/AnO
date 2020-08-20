@@ -15,7 +15,7 @@
             <div class="templatedivflex2left">
 
                 <form action="/market" method="GET">
-                <select name="filtered_resource" class="templateselect">
+                    <select name="filtered_resource" class="templateselect">
 
     <option disabled="true" selected="selected">Filter</option>
     <option value="rations" class="templateoption">Rations</option>
@@ -34,6 +34,26 @@
     <option value="gasoline" class="templateoption">Gasoline</option>
     <option value="ammunition" class="templateoption">Ammunition</option>
 
+                </select>
+
+            </div>
+            <div class="templatedivflex2right">
+
+                <select class="templateselect">
+
+                    <option class="templateoption">BUY</option>
+                    <option class="templateoption" selected>SELL</option>
+                
+                </select>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <select class="templateselect">
+
+                    <option class="templateoption">Ascending</option>
+                    <option class="templateoption">Descending</option>
+                
                 </select>
 
             </div>
@@ -80,23 +100,15 @@
                     <!--BUY or SELL-->
                     <td><a href="/country/id={{ id[0] }}">{{ type }}</a></td>
                     <td>
-                    {% if resource == "rations" %}
-                    <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" />
-                    {% elif resource == "uranium" %}
-                    <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" />
-                    {% elif resource == "oil" %}
-                    <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource" />
-                    {% elif resource == "coal" %}
-                    <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" />
-                    {% elif resource == "lead" %}
-                    <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" />
-                    {% elif resource == "bauxite" %}
-                    <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" />
-                    {% endif %}
+                        {% if resource == "rations" %}
+                        <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" /> {% elif resource == "uranium" %}
+                        <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" /> {% elif resource == "oil" %}
+                        <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" /> {% elif resource == "coal" %}
+                        <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
+                        <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
+                        <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span> {{ amount }}</td>
 
-                    {{ resource }}
-                    {{ amount }}</td>
-                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />{{ price }} Each<br />{{ total_price }} Total</td>
+                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />{{ price }} Each<br />{{ total_price }} Total</td>
                     <td>
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center signupdiv">
