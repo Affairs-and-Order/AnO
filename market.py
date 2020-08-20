@@ -205,3 +205,20 @@ def marketoffer():
         return redirect("/market")
     else:
         return render_template("marketoffer.html")
+
+
+@login_required
+@app.route("/my_offers", methods=["GET"])
+def my_offers():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    offers = db.execute(
+        "SELECT resource, price, amount FROM offers WHERE user_id=(?)", (cId,)).fetchall()
+
+    connection.close()
+
+    return render_template("my_offers.html", offers=offers)

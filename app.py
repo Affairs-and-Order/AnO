@@ -187,20 +187,6 @@ def assembly():
         return render_template("assembly.html")
 
 
-@login_required
-@app.route("/my_offers", methods=["GET"])
-def my_offers():
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-
-    cId = session["user_id"]
-
-    offers = db.execute("SELECT resource, price, amount FROM offers WHERE user_id=(?)", (cId,)).fetchall()
-
-    connection.close()
-
-    return render_template("my_offers.html", offers=offers)
 
 """@app.route("/logout", methods=["GET"])
 def logout():
@@ -236,15 +222,14 @@ def update_discord():
 
 # import declared routes
 from testroutes import testfunc
-from WarScript import wars, wars_route, find_targets
-from market import market, buy_market_offer
+from wars import wars, wars_route, find_targets
 from login import login
 from signup import signup
 from countries import country, countries, update_info
 from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
 from military import province_sell_buy, military, military_sell_buy
 from province import createprovince, province, provinces
-from market import marketoffer
+from market import market, buy_market_offer, marketoffer, my_offers
 
 # available to run if double click the file
 if __name__ == "__main__":
