@@ -16,6 +16,18 @@ from helpers import get_influence, get_coalition_influence
 
 app = Flask(__name__)
 
+
+# import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
+from testroutes import testfunc
+from wars import wars, wars_route, find_targets
+from login import login
+from signup import signup
+from countries import country, countries, update_info
+from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
+from military import province_sell_buy, military, military_sell_buy
+from province import createprovince, province, provinces
+from market import market, buy_market_offer, marketoffer, my_offers
+
 #basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
 app.config["SESSION_PERMANENT"] = True
@@ -218,18 +230,6 @@ def update_discord():
     connection.close()
 
     return redirect(f"/country/id={cId}") # Redirects the user to his country
-
-
-# import declared routes
-from testroutes import testfunc
-from wars import wars, wars_route, find_targets
-from login import login
-from signup import signup
-from countries import country, countries, update_info
-from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
-from military import province_sell_buy, military, military_sell_buy
-from province import createprovince, province, provinces
-from market import market, buy_market_offer, marketoffer, my_offers
 
 # available to run if double click the file
 if __name__ == "__main__":
