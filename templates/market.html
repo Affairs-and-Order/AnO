@@ -53,18 +53,19 @@
             <table class="templatetable templatetable2">
                 <tr>
                     <th>Name</th>
+                    <th>Type</th>
                     <th>Resource</th>
                     <th>Price</th>
-                    <th>Amount</th>
                     <th>Purchase</th>
                 </tr>
 
                 {% for id, name, resource, amount, price, offer_id, total_price in offers %}
                 <tr>
                     <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
-                    <td>{{ resource }}</td>
-                    <td>{{ price }} Each<br />{{ total_price }} Total</td>
-                    <td>{{ amount }}</td>
+                    <!--BUY or SELL-->
+                    <td><a href="/country/id={{ id[0] }}">{{ type }}</a></td>
+                    <td><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" />{{ resource }}{{ amount }}</td>
+                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />{{ price }} Each<br />{{ total_price }} Total</td>
                     <td>
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center signupdiv">
@@ -72,7 +73,9 @@
                                     <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="Purchase Amount" required/>
                                 </div>
                                 <div class="templatedivflex2left">
-                                    <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton">Confirm</button>
+                                    <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                        check
+                                        </span>Confirm</button>
                                 </div>
                             </div>
                         </form>
