@@ -1299,7 +1299,7 @@ def my_coalition():
 
 # import declared routes
 from testroutes import testfunc
-from WarScript import testfunc2
+from WarScript import wars, wars_route
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
