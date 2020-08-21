@@ -1275,7 +1275,7 @@
 
             <h2 class="templatecontentheaderleft">War</h2>
 
-            <div class="infodiv">
+            <form  action="/declare_war" method="post" class="infodiv">
 
                 <div class="nomarg nopad center">
                     <label for="warType">Pick war type</label>
@@ -1291,18 +1291,17 @@
                 <label for="description">War message</label>
                 <div class="center">
                     <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
-
                 </div>
+                
                 <!-- <a class="templatedivbutton templatecenteredbutton" href="/declare_war">
                   <span class="material-icons-outlined">
                     check
                   </span>Declare
                 </a> -->
-                <form  action="/declare_war" method="post">
-                  <input type="hidden" name="defender" value="{{ username }}">
-                  <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
-                </form>
-            </div>
+
+                <input type="hidden" name="defender" value="{{ username }}">
+                <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
+          </form>
 
             <h2 class="templatecontentheaderleft">Reconnaissance</h2>
 

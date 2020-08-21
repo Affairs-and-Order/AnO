@@ -143,6 +143,8 @@ def declare_war():
 
     # Selects the country that the user is attacking
     defender = request.form.get("defender")
+    war_message = request.form.get("description")
+    war_type = request.form.get("warType")
 
     try:
         defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
