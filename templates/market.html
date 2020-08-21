@@ -15,7 +15,7 @@
             <div class="templatedivflex2left">
 
                 <form action="/market" method="GET">
-                <select name="filtered_resource" class="templateselect">
+                    <select name="filtered_resource" class="templateselect">
 
     <option disabled="true" selected="selected">Filter</option>
     <option value="rations" class="templateoption">Rations</option>
@@ -34,6 +34,37 @@
     <option value="gasoline" class="templateoption">Gasoline</option>
     <option value="ammunition" class="templateoption">Ammunition</option>
 
+                </select>
+
+            </div>
+            <div class="templatedivflex2right">
+
+                <select class="templateselect">
+
+                    <option class="templateoption" selected="selected">Selling</option>
+                    <option class="templateoption" disabled="true">Buying</option>
+                
+                </select>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <select name="price_type" class="templateselect">
+
+
+                    {% if price_type != None %}
+                        {% if price_type == "DESC" %}
+                            <option value="DESC" class="templateoption" selected="selected">Descending</option>
+                            <option value="ASC" class="templateoption">Ascending</option>
+                        {% else %}
+                            <option value="ASC" class="templateoption" selected="selected">Ascending</option>
+                            <option value="DESC" class="templateoption">Descending</option>
+                        {% endif %}
+                    {% else %}
+                        <option value="ASC" class="templateoption" selected="selected">Ascending</option>
+                        <option value="DESC" class="templateoption">Descending</option>
+                    {% endif %}
+                
                 </select>
 
             </div>
@@ -77,31 +108,24 @@
                 {% for id, name, resource, amount, price, offer_id, total_price in offers %}
                 <tr>
                     <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
-                    <!--BUY or SELL-->
-                    <td><a href="/country/id={{ id[0] }}">{{ type }}</a></td>
+                    <!--Buying or Selling-->
+                    <td>Selling</a></td>
                     <td>
-                    {% if resource == "rations" %}
-                    <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" />
-                    {% elif resource == "uranium" %}
-                    <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" />
-                    {% elif resource == "oil" %}
-                    <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource" />
-                    {% elif resource == "coal" %}
-                    <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" />
-                    {% elif resource == "lead" %}
-                    <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" />
-                    {% elif resource == "bauxite" %}
-                    <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" />
-                    {% endif %}
+                        {% if resource == "rations" %}
+                        <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" /> {% elif resource == "uranium" %}
+                        <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" /> {% elif resource == "oil" %}
+                        <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" /> {% elif resource == "coal" %}
+                        <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
+                        <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
+                        <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span>{{ amount }}</td>
 
-                    {{ resource }}
-                    {{ amount }}</td>
-                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />{{ price }} Each<br />{{ total_price }} Total</td>
+                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{
+                        total_price }} Total</td>
                     <td>
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center signupdiv">
                                 <div class="templatedivflex2left">
-                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="Purchase Amount" required/>
+                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="{{ amount }}" required/>
                                 </div>
                                 <div class="templatedivflex2left">
                                     <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">

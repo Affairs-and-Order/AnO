@@ -663,6 +663,11 @@ hr {
     padding: 0 5px;
 }
 
+.resourcesmall {
+    width: 25px !important;
+    height: 25px !important;
+}
+
 .floatleft {
     float: left;
 }
@@ -696,6 +701,10 @@ hr {
 
 .strongpadding {
     padding: 40px;
+}
+
+.strongmargin {
+    margin: 40px;
 }
 
 .fit {
@@ -2222,6 +2231,11 @@ button {
     max-height: 20vh;
     overflow: hidden;
 }
+
+
+/*DEFENSE*/
+
+.unitcard {}
 
 
 /*FOOTER*/

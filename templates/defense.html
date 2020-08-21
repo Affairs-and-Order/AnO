@@ -1,0 +1,39 @@
+{% extends "layout.html"%} {% block title %} Defense {% endblock %} {% block body %}
+
+<div class="templatediv">
+
+    <div class="templatedivtopper wartopper">
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            tune
+            </span>Defense</h1>
+        <div class="templatedivad"></div>
+    </div>
+
+    <div class="templatedivcontent">
+
+
+        <div class="templatedivflex2 divflex2full">
+            <div class="templatedivflex2left warflexparent">
+
+                <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
+
+            </div>
+            <div class="templatedivflex2left warflexparent">
+
+                <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
+
+            </div>
+            <div class="templatedivflex2left warflexparent">
+
+                <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
+
+            </div>
+        </div>
+
+        <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                check
+            </span>Update</button>
+
+    </div>
+</div>
+{% endblock %}
