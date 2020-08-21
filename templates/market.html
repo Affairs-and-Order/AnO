@@ -41,8 +41,8 @@
 
                 <select class="templateselect">
 
-                    <option class="templateoption">BUY</option>
-                    <option class="templateoption" selected>SELL</option>
+                    <option class="templateoption" selected="selected">Selling</option>
+                    <option class="templateoption" disabled="true">Buying</option>
                 
                 </select>
 
@@ -51,7 +51,7 @@
 
                 <select class="templateselect">
 
-                    <option class="templateoption">Ascending</option>
+                    <option class="templateoption" selected="selected" >Ascending</option>
                     <option class="templateoption">Descending</option>
                 
                 </select>
@@ -97,8 +97,8 @@
                 {% for id, name, resource, amount, price, offer_id, total_price in offers %}
                 <tr>
                     <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
-                    <!--BUY or SELL-->
-                    <td><a href="/country/id={{ id[0] }}">{{ type }}</a></td>
+                    <!--Buying or Selling-->
+                    <td>Selling</a></td>
                     <td>
                         {% if resource == "rations" %}
                         <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" /> {% elif resource == "uranium" %}
