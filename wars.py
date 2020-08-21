@@ -133,40 +133,54 @@ def wars_route(attackingNation, defendingNation):
 
 # page 4 results and tax set if a morale reaches 0
 
-
+# Endpoint for war declaration
 @login_required
-@app.route("/find_targets", methods=["GET", "POST"])
-def find_targets():
+@app.route('/declare_war', methods=["POST"])
+def declare_war():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
 
+    # Selects the country that the user is attacking
+    defender = request.form.get("defender")
+
+    try:
+        defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
+
+        if defender_id == cId:
+            return "Can't declare war on yourself"
+
+        already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (cId, cId,)).fetchall()
+        if (cId, defender_id,) in already_war_with or (defender_id, cId) in already_war_with:
+            return "You already fight against..."
+
+    except TypeError:
+        # Redirects the user to an error page
+        return error(400, "No such country")
+
+    db.execute(
+        "INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+    connection.commit()
+    connection.close()
+
+    return redirect("/wars")
+
+@login_required
+@app.route("/find_targets", methods=["GET", "POST"])
+def find_targets():
+
     if request.method == "GET":
         return render_template("find_targets.html")
     else:
-        # Selects the country that the user is attacking
+        #TODO: maybe delete the sql fetch and create a centralized way to fetch it
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
         defender = request.form.get("defender")
+        defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
 
-        try:
-            defender_id = db.execute(
-                "SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
+        return redirect("/country/id={}".format(defender_id))
 
-            if defender_id == cId:
-                return "Can't declare war on yourself"
-
-            already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (cId, cId,)).fetchall()
-            if (cId, defender_id,) in already_war_with or (defender_id, cId) in already_war_with:
-                return "You already fight against..."
-
-        except TypeError:
-            # Redirects the user to an error page
-            return error(400, "No such country")
-
-        db.execute(
-            "INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
-        connection.commit()
-        connection.close()
-        return redirect("/wars")
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
 
 
