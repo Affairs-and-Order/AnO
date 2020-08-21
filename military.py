@@ -59,7 +59,7 @@ def military():
 
 
 person = {"name": "galaxy"}
-# easter egg probably or it has something to do with mail xD || aw thats nice
+# easter egg probably or it has something to do with mail xD || aw thats nice test
 person["message"] = "Thanks guys :D, you are all so amazing."
 
 
