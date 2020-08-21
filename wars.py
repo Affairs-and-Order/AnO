@@ -12,7 +12,7 @@ War
 9 check boxes
 
 Special operations
-3 check boxes 
+3 check boxes
 
 Continue button
 
@@ -150,6 +150,14 @@ def find_targets():
         try:
             defender_id = db.execute(
                 "SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
+
+            if defender_id == cId:
+                return "Can't declare war on yourself"
+
+            already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (cId, cId,)).fetchall()
+            if (cId, defender_id,) in already_war_with or (defender_id, cId) in already_war_with:
+                return "You already fight against..."
+
         except TypeError:
             # Redirects the user to an error page
             return error(400, "No such country")
