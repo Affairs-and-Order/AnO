@@ -113,27 +113,23 @@ def buy_market_offer(offer_id):
     offer = db.execute(
         "SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
-    resource = offer[0]
+    resource = offer[0] # What resource will be bought
 
     total_amount = int(offer[1]) # Of resources
 
-    price_for_one = int(offer[2])
+    price_for_one = int(offer[2]) # Price for one resource
 
-    seller_id = int(offer[3])
+    seller_id = int(offer[3]) # The user id of the seller
 
-    if int(amount_wanted) > int(offer[1]):
+    if amount_wanted > total_amount:
         return error(400, "Amount wanted cant be higher than total amount")
 
-    user_gold = db.execute(
-        "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    buyers_gold = int(db.execute(
+        "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
 
-    # checks if buyer doesnt have enough gold for buyin
-    if int(amount_wanted) * int(offer[2]) > int(user_gold):
-
-        # returns error if buyer doesnt have enough gold for buying
-        return error(400, "You don't have enough gold")
-
-    gold_sold = user_gold - (int(amount_wanted) * int(offer[2]))
+    if (amount_wanted * price_for_one) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
+        return error(400, "You don't have enough gold") # Returns error if true
+    gold_sold = buyers_gold - (amount_wanted * price_for_one)
 
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
 
@@ -153,7 +149,7 @@ def buy_market_offer(offer_id):
     new_sellers_money = sellers_money + (amount_wanted * price_for_one)
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id))
 
-    new_offer_amount = (int(offer[1]) - int(amount_wanted))
+    new_offer_amount = (total_amount - amount_wanted)
 
     if new_offer_amount == 0:
         db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id,))
@@ -163,10 +159,8 @@ def buy_market_offer(offer_id):
 
     # updates the offer with the new amount
 
-    connection.commit()  # commits the connection
-    connection.close()  # closes the connection
-
-    # lol this whole function is a fucking shitstorm ill comment it later hopefully
+    connection.commit() # Commits the connection
+    connection.close() # Closes the connection
 
     return redirect("/market")
 
@@ -231,7 +225,14 @@ def sell_market_offer(offer_id):
 
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id,))
 
-    db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id))
+    # Generates the new amount, after the buyer has got his resources from the seller
+
+    new_offer_amount = (total_amount - amount_wanted)
+
+    if new_offer_amount == 0: # Checks if the new offer amount is equal to 0
+        db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id)) # If yes, it deletes the offer
+    else:
+        db.execute("UPDATE offers SET amount=(?) WHERE id=(?)", (new_offer_amount, offer_id)) # Updates the database with the new amount
 
     connection.commit()
     connection.close()
