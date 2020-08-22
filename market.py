@@ -43,6 +43,7 @@ def market():
                 return error(400, "No such resource")
 
         ids = []
+        types = []
         names = []
         resources = []
         amounts = []
@@ -67,6 +68,10 @@ def market():
                 "SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             ids.append(user_id)
 
+            offer_type = db.execute(
+                "SELECT type FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            types.append(offer_type)
+
             name = db.execute(
                 "SELECT username FROM users WHERE id=(?)", (user_id,)).fetchone()[0]
             names.append(name)
@@ -88,7 +93,7 @@ def market():
 
         connection.close()
 
-        offers = zip(ids, names, resources, amounts,
+        offers = zip(ids, types, names, resources, amounts,
                      prices, offer_ids, total_prices)
 
         return render_template("market.html", offers=offers, price_type=price_type)
@@ -165,8 +170,14 @@ def buy_market_offer(offer_id):
 
 
 @login_required
-@app.route("/marketoffer", methods=["GET", "POST"])
+@app.route("/marketoffer/", methods=["GET"])
 def marketoffer():
+    return render_template("marketoffer.html")
+
+@login_required
+@app.route("/post_offer/<offer_type>", methods=["POST"])
+def post_offer(offer_type):
+
     if request.method == "POST":
 
         cId = session["user_id"]
@@ -196,27 +207,35 @@ def marketoffer():
         if amount < 1:  # Checks if the amount is negative
             return error(400, "Amount must be greater than 0")
 
-        # possible sql injection posibility TODO: look into this
-        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)"
-        realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
-        if amount > realAmount:  # Checks if user wants to sell more than he has
-            return error("400", "Selling amount is higher than actual amount You have.")
+        if offer_type == "sell":
 
-        # Calculates the resource amount the seller should have
-        newResourceAmount = realAmount - amount
+            # possible sql injection posibility TODO: look into this
+            rStatement = f"SELECT {resource} FROM resources WHERE id=(?)"
+            realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
+            if amount > realAmount:  # Checks if user wants to sell more than he has
+                return error("400", "Selling amount is higher than actual amount You have.")
 
-        upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
-        db.execute(upStatement, (newResourceAmount, cId))
+            # Calculates the resource amount the seller should have
+            newResourceAmount = realAmount - amount
 
-        # Creates a new offer
-        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)",
-                   (cId, resource, int(amount), int(price), ))
+            upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+            db.execute(upStatement, (newResourceAmount, cId))
 
-        connection.commit()  # Commits the data to the database
+            # Creates a new offer
+            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)",
+                    (cId, offer_type, resource, int(amount), int(price), ))
+
+            connection.commit()  # Commits the data to the database
+
+        elif offer_type == "buy":
+
+            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)",
+            (cId, offer_type, resource, int(amount), int(price), ))
+
+            connection.commit()
+    
         connection.close()  # Closes the connection
         return redirect("/market")
-    else:
-        return render_template("marketoffer.html")
 
 
 @login_required
