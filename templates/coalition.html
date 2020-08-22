@@ -68,7 +68,8 @@
 
                 });
             </script>
-            {% endif %} {% if userInCurCol == True %}
+            {% endif %}
+            {% if userInCurCol == True and userLeader == False %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
@@ -94,6 +95,10 @@
                         </tr>
                         <tr>
                             <td>High Government:</td>
+                            <td>[[high gov]]</td>
+                        </tr>
+                        <tr>
+                            <td>Low Government:</td>
                             <td>[[high gov]]</td>
                         </tr>
                         <tr>
@@ -280,87 +285,64 @@
 
         <div class="leader" id="leader">
             <!-- fix not being able to go here from /coalition even if user is leader-->
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Diplomacy</h2>
+            <h2 class="templatecontentheaderleft">Government</h2>
+
+            <div class="infodiv">
 
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
                         <select class="templateselect" name="diplomacy">
-                            <option class="templateoption" selected disabled>Choose Treaty</option>
-                            {% for i in treaties%}
-    <!--hovering over the options tags will tell the users what they do-->
-                            <option class="templateoption">{{ i[0] }}</option>
-                            {% endfor %}
-                        
-                        </select>
+                                <option class="templateoption" selected disabled>Choose Position</option>
+        <!--hovering over the options tags will tell the users what they do-->
+                                <option class="templateoption">Leader</option>
+                                <option class="templateoption">High Government</option>
+                                <option class="templateoption">Low Government</option>
+                            
+                            </select>
 
-                        <div class="templatedivflex2 divflex2center">
-                            <div class="templatedivflex2left flexchildvanilla">
-
-                                <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Filter Coalitions" />
-
-                            </div>
-                            <div class="templatedivflex2left flexchildvanilla">
-
-                                <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
-                                    check
-                                    </span>Go</button>
-
-                            </div>
-                        </div>
+                        <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Enter Username" />
 
                     </div>
                     <div class="templatedivflex2left">
+                        <!--max lenth of 10-->
+                        <table class="templatetable">
+                            <tr>
+                                <th>[[ coalitionName ]]</th>
+                            </tr>
+                            <tr>
+                                <td>Leaders:</td>
+                                <td>[[ leaders ]]</td>
+                            </tr>
+                            <tr>
+                                <td>High Government:</td>
+                                <td>[[ leaders ]]</td>
+                            </tr>
+                            <tr>
+                                <td>Low Government:</td>
+                                <td>[[ leaders ]]</td>
+                            </tr>
+                            <tr>
+                                <td>Members:</td>
+                                <td>[[ members ]]</td>
+                            </tr>
+                        </table>
 
-                        <div class="templateoutertablediv">
-                            <table class="templatetable templatetable2 applicanttable">
-                                <tr>
-                                    <th>Action</th>
-                                    <th>Name</th>
-                                </tr>
-                                <!--for every coalition make a row with 10 max-->
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                                <tr>
-                                    <td>add icon</td>
-                                    <td>Coalition Name</td>
-                                </tr>
-                            </table>
-                        </div>
                     </div>
                 </div>
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
+            </div>
+
+            <h2 class="templatecontentheaderleft">Diplomacy</h2>
+
+            <div class="infodiv">
 
                 <h2 class="templatecontentheadercenter">Current Allies</h2>
                 <div class="templateoutertablediv">
-                    <table class="templatetable templatetable2 applicanttable">
+                    <table class="templatetable templatetable2">
                         <tr>
                             <th>Action</th>
                             <th>Time Remaining</th>
@@ -376,12 +358,52 @@
                         </tr>
                     </table>
                 </div>
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <select class="templateselect" name="diplomacy">
+                            <option class="templateoption" selected disabled>Choose Treaty</option>
+                            {% for i in treaties%}
+    <!--hovering over the options tags will tell the users what they do-->
+                            <option class="templateoption">{{ i[0] }}</option>
+                            {% endfor %}
+                        
+                        </select>
+
+                        <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Filter Coalitions" />
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <div class="templateoutertablediv">
+                            <table class="templatetable templatetable2">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                                <!--for every coalition make a row with 10 max-->
+                                <tr>
+                                    <td>Coalition Name</td>
+                                    <td><span class="material-icons iconblue">
+                                        add_circle_outline
+                                        </span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
+
+
             <!--HIDE if alliance type is "open"-->
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Applicants</h2>
+            <h2 class="templatecontentheaderleft">Applicants</h2>
 
+            <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
                         <div class="templatedivflex2 divflex2center">
@@ -443,12 +465,14 @@
                         </div>
                     </div>
                 </div>
-                <input class="templatedivbutton templatecenteredbutton" value="Update" type="submit" />
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
             </div>
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Coalition Background</h2>
+            <h2 class="templatecontentheaderleft">Coalition Background</h2>
 
+            <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
@@ -485,8 +509,27 @@
                 </div>
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
-                    </span>Change</button>
+                    </span>Update</button>
             </div>
+
+            <h2 class="templatecontentheaderleft"></h2>
+
+            <form method="POST">
+            <div class="infodiv">
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <button type="submit" formaction="/delete_coalition/{{ colId }}"class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete Coalition</button>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Leave Coalition</button>
+
+                    </div>
+                </div>
+            </div>
+            </form>
 
         </div>
         <!--MEMBER-->
@@ -500,10 +543,14 @@
                 </div>
                 <div class="templatedivflex2right">
 
+
+
                 </div>
             </div>
             <form action="/leave/{{ colId }}" method="POST">
-                <button type="submit" class="templatedivbutton loginsignupbutton redactionbutton" value="submit">Leave Coalition</button>
+
+                <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Leave Coalition</button>
+
             </form>
         </div>
 

@@ -9,9 +9,11 @@ from flask import Flask, request, render_template, session, redirect, flash
 def market():
     if request.method == "GET":
 
+        # Connection
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
+        # GET Query Parameters
         try:
             filter_resource = request.values.get("filtered_resource")
         except TypeError:
@@ -22,20 +24,34 @@ def market():
         except TypeError:
             price_type = None
 
+        try:
+            offer_type = request.values.get("offer_type")
+        except TypeError:
+            offer_type = None
+
+        # Processing of query parameters into database statements
 
         if price_type != None:
-            if price_type == "DESC":
-                offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price DESC").fetchall()
-            else:
-                offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
-        else:
-            offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
+            list_of_price_types = ["ASC", "DESC"]
 
+            if price_type not in list_of_price_types:
+                return error(400, "No such price type")
+        
+        if offer_type != None and price_type == None:  
+            offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type=(?)", (offer_type,)).fetchall()
+        elif offer_type == None and price_type != None:
+            offer_ids_statement = f"SELECT offer_id FROM offers ORDER BY price {price_type}"
+            offer_ids_list = db.execute(offer_ids_statement).fetchall()
+        elif offer_type != None and price_type != None:
+            offer_ids_statement = f"SELECT offer_id FROM offers WHERE type=(?) ORDER by price {price_type}"
+            offer_ids_list = db.execute(offer_ids_statement, (offer_type,))
+        elif offer_type == None and price_type == None:
+            offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price ASC").fetchall()
 
         if filter_resource != None:
 
             resources = [
-                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
                 "lumber", "components", "steel", "consumer_goods", "aluminium",
                 "gasoline", "ammunition"]
 
@@ -43,6 +59,7 @@ def market():
                 return error(400, "No such resource")
 
         ids = []
+        types = []
         names = []
         resources = []
         amounts = []
@@ -67,6 +84,10 @@ def market():
                 "SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             ids.append(user_id)
 
+            offer_type = db.execute(
+                "SELECT type FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            types.append(offer_type)
+
             name = db.execute(
                 "SELECT username FROM users WHERE id=(?)", (user_id,)).fetchone()[0]
             names.append(name)
@@ -86,10 +107,10 @@ def market():
             total_price = price * amount
             total_prices.append(total_price)
 
-        connection.close()
+        connection.close() # Closes the connection
 
-        offers = zip(ids, names, resources, amounts,
-                     prices, offer_ids, total_prices)
+        offers = zip(ids, types, names, resources, amounts, prices, offer_ids, total_prices)
+        # Zips everything into 1 list
 
         return render_template("market.html", offers=offers, price_type=price_type)
 
@@ -103,50 +124,48 @@ def buy_market_offer(offer_id):
 
     cId = session["user_id"]
 
-    amount_wanted = request.form.get(f"amount_{offer_id}")
-
-    if offer_id.isnumeric() is False or amount_wanted.isnumeric() is False:
-        return error(400, "Values must be numeric")
+    amount_wanted = int(request.form.get(f"amount_{offer_id}"))
 
     offer = db.execute(
         "SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
-    seller_id = int(offer[3])
+    resource = offer[0] # What resource will be bought
 
-    resource = offer[0]
+    total_amount = int(offer[1]) # Of resources
 
-    if int(amount_wanted) > int(offer[1]):
+    price_for_one = int(offer[2]) # Price for one resource
+
+    seller_id = int(offer[3]) # The user id of the seller
+
+    if amount_wanted > total_amount:
         return error(400, "Amount wanted cant be higher than total amount")
 
-    user_gold = db.execute(
-        "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    buyers_gold = int(db.execute(
+        "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
 
-    # checks if buyer doesnt have enough gold for buyin
-    if int(amount_wanted) * int(offer[2]) > int(user_gold):
-
-        # returns error if buyer doesnt have enough gold for buying
-        return error(400, "You don't have enough gold")
-
-    gold_sold = user_gold - (int(amount_wanted) * int(offer[2]))
-
-    sellResStat = f"SELECT {resource} FROM resources WHERE id=(?)"
-    sellTotRes = db.execute(sellResStat, (seller_id,)).fetchone()[0]
+    if (amount_wanted * price_for_one) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
+        return error(400, "You don't have enough gold") # Returns error if true
+    gold_sold = buyers_gold - (amount_wanted * price_for_one)
 
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
 
-    # statement for getting the current resource from the buyer
+    # Gets current amount of resource for the buyer
     currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)"
-    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[
-        0]  # executes the statement
+    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0]  # executes the statement
 
-    # generates the number of the resource the buyer should have
+    # Generates the number of the resource the buyer should have
     newBuyerResource = int(buyerResource) + int(amount_wanted)
 
-    # statement for giving the user the resource bought
+    # Gives the buyer the amount of resource he bought
     buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
     db.execute(buyUpdStat, (newBuyerResource, cId))  # executes the statement
 
-    new_offer_amount = (int(offer[1]) - int(amount_wanted))
+    # Gives money to the seller
+    sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
+    new_sellers_money = sellers_money + (amount_wanted * price_for_one)
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id))
+
+    new_offer_amount = (total_amount - amount_wanted)
 
     if new_offer_amount == 0:
         db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id,))
@@ -156,17 +175,96 @@ def buy_market_offer(offer_id):
 
     # updates the offer with the new amount
 
-    connection.commit()  # commits the connection
-    connection.close()  # closes the connection
+    connection.commit() # Commits the connection
+    connection.close() # Closes the connection
 
-    # lol this whole function is a fucking shitstorm ill comment it later hopefully
+    return redirect("/market")
+
+@login_required
+@app.route("/sell_offer/<offer_id>", methods=["POST"])
+def sell_market_offer(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    seller_id = session["user_id"]
+
+    amount_wanted = int(request.form.get(f"amount_{offer_id}"))
+
+    if offer_id.isnumeric() == False:
+        return error(400, "Values must be numeric")
+
+    offer = db.execute(
+        "SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+
+    resource = offer[0] # What resource it is
+
+    total_amount = int(offer[1]) # Of resources
+
+    price_for_one = int(offer[2]) # Price for one resource (in money)
+
+    buyer_id = int(offer[3]) # The buyer's id
+
+    # Sees how much of the resource the seller has
+    resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+    sellers_resource = db.execute(resource_statement, (seller_id,)).fetchone()[0]
+
+    if amount_wanted > total_amount:
+        return error(400, "The amount of resources you're selling is higher than what the buyer wants")
+
+    # Checks if it's more than what the seller wants to sell
+    if sellers_resource < amount_wanted:
+        return error(400, "You don't have enough of that resource")
+
+    # Removes the resource from the seller
+    new_sellers_resource = sellers_resource - amount_wanted
+    res_upd_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+    db.execute(res_upd_statement, (new_sellers_resource, seller_id))
+
+    # Gives the resource to the buyer
+    buyers_resource = db.execute(resource_statement, (buyer_id,)).fetchone()[0] # Selects how many resources of wanted resource the buyer has
+    new_buyers_resource = buyers_resource + amount_wanted # Generates the new amount by adding current amount + bought amount
+
+    db.execute(res_upd_statement, (new_buyers_resource, buyer_id))
+
+    # Takes away the money used for buying from the buyer
+
+    current_buyers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (buyer_id,)).fetchone()[0]
+    new_buyers_money = current_buyers_money - (price_for_one * amount_wanted)
+
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_buyers_money, buyer_id,))
+
+    # Gives the money to the seller
+
+    current_sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
+    new_sellers_money = current_sellers_money + (price_for_one * amount_wanted)
+
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id,))
+
+    # Generates the new amount, after the buyer has got his resources from the seller
+
+    new_offer_amount = (total_amount - amount_wanted)
+
+    if new_offer_amount == 0: # Checks if the new offer amount is equal to 0
+        db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id)) # If yes, it deletes the offer
+    else:
+        db.execute("UPDATE offers SET amount=(?) WHERE id=(?)", (new_offer_amount, offer_id)) # Updates the database with the new amount
+
+    connection.commit()
+    connection.close()
 
     return redirect("/market")
 
 
 @login_required
-@app.route("/marketoffer", methods=["GET", "POST"])
+@app.route("/marketoffer/", methods=["GET"])
 def marketoffer():
+    return render_template("marketoffer.html")
+
+@login_required
+@app.route("/post_offer/<offer_type>", methods=["POST"])
+def post_offer(offer_type):
+
     if request.method == "POST":
 
         cId = session["user_id"]
@@ -196,27 +294,44 @@ def marketoffer():
         if amount < 1:  # Checks if the amount is negative
             return error(400, "Amount must be greater than 0")
 
-        # possible sql injection posibility TODO: look into this
-        rStatement = f"SELECT {resource} FROM resources WHERE id=(?)"
-        realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
-        if amount > realAmount:  # Checks if user wants to sell more than he has
-            return error("400", "Selling amount is higher than actual amount You have.")
+        if offer_type == "sell":
 
-        # Calculates the resource amount the seller should have
-        newResourceAmount = realAmount - amount
+            # possible sql injection posibility TODO: look into this
+            rStatement = f"SELECT {resource} FROM resources WHERE id=(?)"
+            realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
+            if amount > realAmount:  # Checks if user wants to sell more than he has
+                return error("400", "Selling amount is higher than actual amount You have.")
 
-        upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
-        db.execute(upStatement, (newResourceAmount, cId))
+            # Calculates the resource amount the seller should have
+            newResourceAmount = realAmount - amount
 
-        # Creates a new offer
-        db.execute("INSERT INTO offers (user_id, resource, amount, price) VALUES (?, ?, ?, ?)",
-                   (cId, resource, int(amount), int(price), ))
+            upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+            db.execute(upStatement, (newResourceAmount, cId))
 
-        connection.commit()  # Commits the data to the database
+            # Creates a new offer
+            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)",
+                    (cId, offer_type, resource, int(amount), int(price), ))
+
+            connection.commit()  # Commits the data to the database
+
+        elif offer_type == "buy":
+
+            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)",
+            (cId, offer_type, resource, int(amount), int(price), ))
+
+            money_to_take_away = int(amount) * int(price)
+            current_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+            if current_money < money_to_take_away:
+                return error(400, "You don't have enough money")
+            new_money = current_money - money_to_take_away
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+            flash("You just posted a market offer")
+
+            connection.commit()
+    
         connection.close()  # Closes the connection
         return redirect("/market")
-    else:
-        return render_template("marketoffer.html")
 
 
 @login_required
