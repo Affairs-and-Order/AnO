@@ -51,7 +51,7 @@ def market():
         if filter_resource != None:
 
             resources = [
-                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
                 "lumber", "components", "steel", "consumer_goods", "aluminium",
                 "gasoline", "ammunition"]
 
