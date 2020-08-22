@@ -25,11 +25,11 @@ def market():
 
         if price_type != None:
             if price_type == "DESC":
-                offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price DESC").fetchall()
+                offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price DESC").fetchall()
             else:
-                offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
+                offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price ASC").fetchall()
         else:
-            offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
+            offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price ASC").fetchall()
 
 
         if filter_resource != None:
@@ -229,7 +229,7 @@ def sell_market_offer(offer_id):
 
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id,))
 
-    db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id)),
+    db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id))
 
     connection.commit()
     connection.close()
