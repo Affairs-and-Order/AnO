@@ -108,17 +108,18 @@ def buy_market_offer(offer_id):
 
     cId = session["user_id"]
 
-    amount_wanted = request.form.get(f"amount_{offer_id}")
-
-    if offer_id.isnumeric() == False or amount_wanted.isnumeric() is False:
-        return error(400, "Values must be numeric")
+    amount_wanted = int(request.form.get(f"amount_{offer_id}"))
 
     offer = db.execute(
         "SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
-    seller_id = int(offer[3])
-
     resource = offer[0]
+
+    total_amount = int(offer[1]) # Of resources
+
+    price_for_one = int(offer[2])
+
+    seller_id = int(offer[3])
 
     if int(amount_wanted) > int(offer[1]):
         return error(400, "Amount wanted cant be higher than total amount")
@@ -134,22 +135,23 @@ def buy_market_offer(offer_id):
 
     gold_sold = user_gold - (int(amount_wanted) * int(offer[2]))
 
-    sellResStat = f"SELECT {resource} FROM resources WHERE id=(?)"
-    sellTotRes = db.execute(sellResStat, (seller_id,)).fetchone()[0]
-
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
 
-    # statement for getting the current resource from the buyer
+    # Gets current amount of resource for the buyer
     currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)"
-    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[
-        0]  # executes the statement
+    buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0]  # executes the statement
 
-    # generates the number of the resource the buyer should have
+    # Generates the number of the resource the buyer should have
     newBuyerResource = int(buyerResource) + int(amount_wanted)
 
-    # statement for giving the user the resource bought
+    # Gives the buyer the amount of resource he bought
     buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
     db.execute(buyUpdStat, (newBuyerResource, cId))  # executes the statement
+
+    # Gives money to the seller
+    sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
+    new_sellers_money = sellers_money + (amount_wanted * price_for_one)
+    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id))
 
     new_offer_amount = (int(offer[1]) - int(amount_wanted))
 
