@@ -59,7 +59,7 @@ def military():
 
 
 person = {"name": "galaxy"}
-# easter egg probably or it has something to do with mail xD || aw thats nice
+# easter egg probably or it has something to do with mail xD || aw thats nice test
 person["message"] = "Thanks guys :D, you are all so amazing."
 
 
@@ -82,51 +82,68 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         if units not in allUnits:
             return error("No such unit exists.", 400)
 
-        # update this so it works using the nations script
-        if units == "soldiers":  # maybe change this to a dictionary later on
-            table = "military"
-            price = 50
-        elif units == "tanks":
-            table = "military"
-            price = 150
-        elif units == "artillery":
-            table = "military"
-            price = 300
+        mil_dict = {
 
-        elif units == "flying_fortresses":
-            table = "military"
-            price = 500
-        elif units == "fighter_jets":
-            table = "military"
-            price = 450
-        elif units == "apaches":
-            table = "military"
-            price = 350
+            ## LAND
 
-        elif units == "destroyers":
-            table = "military"
-            price = 500
-        elif units == "cruisers":
-            table = "military"
-            price = 650
-        elif units == "submarines":
-            table = "military"
-            price = 450
+            "soldiers_price": 200, # Cost 200
+            "soldiers_resource": {"rations": 2},
 
-        elif units == "spies":
-            table = "military"
-            price = 500
-        elif units == "icbms":
-            table = "military"
-            price = 750
-        elif units == "nukes":
-            table = "military"
-            price = 1000
+            "tanks_price": 8000, # Cost 8k 
+            "tanks_resource": {"steel": 5},
 
+            "artillery_price": 16000, # Cost 16k 
+            "artillery_resource": {"steel": 12},
+
+            ## AIR
+
+            "bombers_price": 25000, # Cost 25k 
+            "bombers_resource": {"aluminium": 20},
+            "bombers_resource2": {"steel": 5},
+            "bombers_resource3": {"components": 6},
+
+            "fighter_jets_price": 35000, # Cost 35k 
+            "fighter_jets_resource": {"aluminium": 12},
+            "fighter_jets_resource2": {"components": 3},
+
+            "apaches_price": 32000, # Cost 32k
+            "apaches_resource": {"aluminium": 8},
+            "apaches_resource2": {"steel": 2},
+            "apaches_resource3": {"components": 4},
+
+            ## WATER
+
+            "destroyers_price": 30000, # Cost 30k
+            "destroyers_resource": {"steel": 30},
+            "destroyers_resource2": {"components": 7},
+
+            "cruisers_price": 55000, # Cost 55k
+            "cruisers_resource": {"steel": 25},
+            "cruisers_resource2": {"components": 4},
+
+            "submarines_price": 45000, # Cost 45k
+            "submarines_resource": {"steel": 20},
+            "submarines_resource2": {"components": 8},
+
+            ## SPECIAL
+
+            "spies_price": 25000, # Cost 25k
+            "spies_resource": {"rations": 50}, # Costs 50 rations
+
+            "ICBMs_price": 4000000, # Cost 4 million
+            "ICMBs_resource": {"steel": 350}, # Costs 350 steel
+
+            "nukes_price": 12000000, # Cost 12 million
+            "nukes_resource": {"uranium": 800}, # Costs 800 uranium
+            "nukes_resource2": {"steel": 600} # Costs 600 steel
+
+        }
+
+        price = 500 # rn price is 500 everywhere lol
         gold = db.execute(
             "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
-        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
+        curUnStat = f'SELECT {units} FROM military WHERE id=?'
         totalPrice = int(wantedUnits) * price
         currentUnits = db.execute(curUnStat, (cId,)).fetchone()[0]
 
@@ -135,7 +152,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             if int(wantedUnits) > int(currentUnits):  # checks if unit is legits
                 return redirect("/too_much_to_sell")  # seems to work
 
-            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            unitUpd = f"UPDATE military SET {units}=(?) WHERE id=(?)"
             db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), cId))
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((
                 int(gold) + int(wantedUnits) * int(price)), cId,))  # clean
@@ -149,7 +166,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)",
                        (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            updStat = f"UPDATE military SET {units}=(?) WHERE id=(?)"
             # fix weird table
             db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))
             flash(f"You bought {wantedUnits} {units}")

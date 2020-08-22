@@ -12,13 +12,25 @@ def market():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        offer_ids_list = db.execute(
-            "SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
-
         try:
             filter_resource = request.values.get("filtered_resource")
         except TypeError:
             filter_resource = None
+
+        try:
+            price_type = request.values.get("price_type")
+        except TypeError:
+            price_type = None
+
+
+        if price_type != None:
+            if price_type == "DESC":
+                offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price DESC").fetchall()
+            else:
+                offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
+        else:
+            offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
+
 
         if filter_resource != None:
 
@@ -79,7 +91,7 @@ def market():
         offers = zip(ids, names, resources, amounts,
                      prices, offer_ids, total_prices)
 
-        return render_template("market.html", offers=offers)
+        return render_template("market.html", offers=offers, price_type=price_type)
 
 
 @login_required

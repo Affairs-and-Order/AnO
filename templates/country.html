@@ -639,7 +639,7 @@
 
                             <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
                             <select class="templateselect" name="countryLocation">
-                    
+
                                             <option class="templateoption">Antarctica</option>
                                             <option class="templateoption">Australia</option>
                                             <option class="templateoption">Africa</option>
@@ -647,7 +647,7 @@
                                             <option class="templateoption">Europe</option>
                                             <option class="templateoption">South America</option>
                                             <option class="templateoption">North America</option>
-                                        
+
                                         </select>
 
                         </div>
@@ -1275,28 +1275,33 @@
 
             <h2 class="templatecontentheaderleft">War</h2>
 
-            <div class="infodiv">
+            <form  action="/declare_war" method="post" class="infodiv">
 
                 <div class="nomarg nopad center">
                     <label for="warType">Pick war type</label>
                     <select class="templateselect" name="warType">
-            
+
                                     <option class="templateoption">Raid</option>
                                     <option class="templateoption">Annihilation</option>
                                     <option class="templateoption">Attrition</option>
-                                
+
                                 </select>
                 </div>
 
                 <label for="description">War message</label>
                 <div class="center">
                     <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
-
                 </div>
-                <a class="templatedivbutton templatecenteredbutton" href="/declare_war"><span class="material-icons-outlined">
+                
+                <!-- <a class="templatedivbutton templatecenteredbutton" href="/declare_war">
+                  <span class="material-icons-outlined">
                     check
-                    </span>Declare</a>
-            </div>
+                  </span>Declare
+                </a> -->
+
+                <input type="hidden" name="defender" value="{{ username }}">
+                <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
+          </form>
 
             <h2 class="templatecontentheaderleft">Reconnaissance</h2>
 
@@ -1306,13 +1311,13 @@
 
                         <label for="warType">Choose opperation</label>
                         <select class="templateselect" name="warType">
-            
+
                                     <option class="templateoption">Assasinate spies</option>
                                     <option class="templateoption">Spy on ground troops</option>
                                     <option class="templateoption">Spy on air forces</option>
                                     <option class="templateoption">Spy on water forces</option>
                                     <option class="templateoption">Spy on special units</option>
-                                
+
                                 </select>
 
                     </div>
@@ -1336,7 +1341,7 @@
                     <div class="templatedivflex2left flexchildvanilla">
 
                         <select name="resource" class="templateselect">
-        
+
                             <option disabled="true" selected="selected">Choose one</option>
                             <option value="gold" class="templateoption">Gold</option>
                             <option value="bauxite" class="templateoption">Bauxite</option>
@@ -1392,7 +1397,7 @@
                     <div class="templatedivflex2left flexchildvanilla">
 
                         <select name="resource" class="templateselect">
-        
+
                             <option disabled="true" selected="selected">Choose one</option>
                             <option value="gold" class="templateoption">Gold</option>
                             <option value="bauxite" class="templateoption">Bauxite</option>
