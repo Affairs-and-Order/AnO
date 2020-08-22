@@ -348,3 +348,29 @@ def removing_requests(uId):
     connection.commit()
 
     return redirect(f"/coalition/{ colId }")
+
+@login_required
+@app.route("/delete_coalition/<colId>", methods=["POST"])
+def delete_coalition(colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if leader != cId:
+        return error(400, "You aren't the leader of this coalition")
+
+    coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    db.execute("DELETE FROM colNames WHERE id=(?)", (colId,))
+
+    db.execute("DELETE FROM coalitions WHERE colId=(?)", (colId,))
+    
+    connection.commit()
+
+    flash(f"{coalition_name} coalition was deleted.")
+
+    return redirect("/")

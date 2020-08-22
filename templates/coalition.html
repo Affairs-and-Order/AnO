@@ -514,11 +514,12 @@
 
             <h2 class="templatecontentheaderleft"></h2>
 
+            <form method="POST">
             <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete Coalition</button>
+                        <button type="submit" formaction="/delete_coalition/{{ colId }}"class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete Coalition</button>
 
                     </div>
                     <div class="templatedivflex2left">
@@ -528,6 +529,7 @@
                     </div>
                 </div>
             </div>
+            </form>
 
         </div>
         <!--MEMBER-->
