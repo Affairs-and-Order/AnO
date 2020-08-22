@@ -110,7 +110,7 @@ def buy_market_offer(offer_id):
 
     amount_wanted = request.form.get(f"amount_{offer_id}")
 
-    if offer_id.isnumeric() is False or amount_wanted.isnumeric() is False:
+    if offer_id.isnumeric() == False or amount_wanted.isnumeric() is False:
         return error(400, "Values must be numeric")
 
     offer = db.execute(
@@ -167,6 +167,32 @@ def buy_market_offer(offer_id):
     # lol this whole function is a fucking shitstorm ill comment it later hopefully
 
     return redirect("/market")
+
+@login_required
+@app.route("/sell_offer/<offer_id>", methods=["POST"])
+def sell_market_offer(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    seller_id = session["user_id"]
+
+    amount_wanted = request.form.get(f"amount_{offer_id}")
+
+    if offer_id.isnumeric() == False or amount_wanted.isnumeric() is False:
+        return error(400, "Values must be numeric")
+
+    offer = db.execute(
+        "SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+
+    resource = offer[0]
+
+    total_amount = int(offer[1])
+
+    price_for_one = int(offer[2])
+
+    buyer_id = int(offer[3])
+
 
 
 @login_required
@@ -231,6 +257,15 @@ def post_offer(offer_type):
 
             db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)",
             (cId, offer_type, resource, int(amount), int(price), ))
+
+            money_to_take_away = int(amount) * int(price)
+            current_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+            if current_money < money_to_take_away:
+                return error(400, "You don't have enough money")
+            new_money = current_money - money_to_take_away
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+            flash("You just posted a market offer")
 
             connection.commit()
     

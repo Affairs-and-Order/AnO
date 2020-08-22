@@ -132,9 +132,15 @@
                                     <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="{{ amount }}" required/>
                                 </div>
                                 <div class="templatedivflex2left">
+                                    {% if type == "sell" %}
                                     <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                                         check
-                                        </span>Confirm</button>
+                                        </span>Buy</button>
+                                    {% elif type == "buy" %}
+                                    <button formaction="/sell_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                        check
+                                        </span>Sell</button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </form>
