@@ -9,9 +9,11 @@ from flask import Flask, request, render_template, session, redirect, flash
 def market():
     if request.method == "GET":
 
+        # Connection
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
+        # GET Query Parameters
         try:
             filter_resource = request.values.get("filtered_resource")
         except TypeError:
@@ -22,15 +24,29 @@ def market():
         except TypeError:
             price_type = None
 
+        try:
+            offer_type = request.values.get("offer_type")
+        except TypeError:
+            offer_type = None
+
+        # Processing of query parameters into database statements
 
         if price_type != None:
-            if price_type == "DESC":
-                offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price DESC").fetchall()
-            else:
-                offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price ASC").fetchall()
-        else:
-            offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price ASC").fetchall()
+            list_of_price_types = ["ASC", "DESC"]
 
+            if price_type not in list_of_price_types:
+                return error(400, "No such price type")
+        
+        if offer_type != None and price_type == None:  
+            offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type=(?)", (offer_type,)).fetchall()
+        elif offer_type == None and price_type != None:
+            offer_ids_statement = f"SELECT offer_id FROM offers ORDER BY price {price_type}"
+            offer_ids_list = db.execute(offer_ids_statement).fetchall()
+        elif offer_type != None and price_type != None:
+            offer_ids_statement = f"SELECT offer_id FROM offers WHERE type=(?) ORDER by price {price_type}"
+            offer_ids_list = db.execute(offer_ids_statement, (offer_type,))
+        elif offer_type == None and price_type == None:
+            offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price ASC").fetchall()
 
         if filter_resource != None:
 
@@ -91,10 +107,10 @@ def market():
             total_price = price * amount
             total_prices.append(total_price)
 
-        connection.close()
+        connection.close() # Closes the connection
 
-        offers = zip(ids, types, names, resources, amounts,
-                     prices, offer_ids, total_prices)
+        offers = zip(ids, types, names, resources, amounts, prices, offer_ids, total_prices)
+        # Zips everything into 1 list
 
         return render_template("market.html", offers=offers, price_type=price_type)
 

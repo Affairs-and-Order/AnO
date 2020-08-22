@@ -17,7 +17,7 @@
                 <form action="/market" method="GET">
                     <select name="filtered_resource" class="templateselect">
 
-    <option disabled="true" selected="selected">Filter</option>
+    <option disabled="true" selected="selected">Resource</option>
     <option value="rations" class="templateoption">Rations</option>
     <option value="oil" class="templateoption">Oil</option>
     <option value="coal" class="templateoption">Coal</option>
@@ -39,10 +39,11 @@
             </div>
             <div class="templatedivflex2right">
 
-                <select class="templateselect">
+                <select name="offer_type" class="templateselect">
 
-                    <option class="templateoption" selected="selected">Selling</option>
-                    <option class="templateoption" disabled="true">Buying</option>
+                    <option disabled="true" selected="selected">Type</option>
+                    <option value="sell" class="templateoption">Selling</option>
+                    <option value="buy" class="templateoption">Buying</option>
                 
                 </select>
 
@@ -51,19 +52,9 @@
 
                 <select name="price_type" class="templateselect">
 
-
-                    {% if price_type != None %}
-                        {% if price_type == "DESC" %}
-                            <option value="DESC" class="templateoption" selected="selected">Descending</option>
-                            <option value="ASC" class="templateoption">Ascending</option>
-                        {% else %}
-                            <option value="ASC" class="templateoption" selected="selected">Ascending</option>
-                            <option value="DESC" class="templateoption">Descending</option>
-                        {% endif %}
-                    {% else %}
-                        <option value="ASC" class="templateoption" selected="selected">Ascending</option>
-                        <option value="DESC" class="templateoption">Descending</option>
-                    {% endif %}
+                    <option disabled="true" selected="selected">Sort</option>
+                    <option value="ASC" class="templateoption">Ascending</option>
+                    <option value="DESC" class="templateoption">Descending</option>
                 
                 </select>
 
