@@ -11,24 +11,80 @@
 
     <div class="templatedivcontent">
 
+        <h2 class="templatecontentheadercenter">Choose 3 Units</h2>
+        <p class="templatecontentpleft">Here you can decide what units you want to defend for you in war.</p>
 
-        <div class="templatedivflex2 divflex2full">
-            <div class="templatedivflex2left warflexparent">
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left unitcard">
 
+                <ul class="bold medium">Soldiers</ul>
+                <ul>[[ amount ]]</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
 
             </div>
-            <div class="templatedivflex2left warflexparent">
+            <div class="templatedivflex2left unitcard">
 
-                <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
+                <ul class="bold medium">Tanks</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
 
             </div>
-            <div class="templatedivflex2left warflexparent">
+            <div class="templatedivflex2left unitcard">
 
-                <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
+                <ul class="bold medium">Artillery</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
 
             </div>
         </div>
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Fighter Jets</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
+
+            </div>
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Bombers</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/flyingfortress.jpg') }}" />
+
+            </div>
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Apaches</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
+
+            </div>
+        </div>
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Submarines</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
+
+            </div>
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Cruisers</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
+
+            </div>
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Destroyers</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
+
+            </div>
+        </div>
+
+        <h2 class="templatecontentheadercenter">[[ choosenAmount ]] / 3</h2>
 
         <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                 check

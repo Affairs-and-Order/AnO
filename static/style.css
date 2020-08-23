@@ -2235,7 +2235,32 @@ button {
 
 /*DEFENSE*/
 
-.unitcard {}
+.unitcard {
+    margin: 10px;
+    border-radius: 8px;
+    align-self: stretch;
+    top: -5px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 16px 1px, #e3e9f0 0px 8px 0px 0px;
+    transition: all 0.3s;
+    background: rgb(252.5, 252.5, 252.5);
+    border: 1.5px solid #e3e9f0;
+    cursor: pointer;
+}
+
+.unitcard img {
+    pointer-events: none;
+}
+
+.unitcard:hover {
+    top: 0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+}
+
+.unitcard:focus {
+    top: 0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+}
 
 
 /*FOOTER*/
