@@ -154,7 +154,7 @@ def inject_user():
         aluminium = db.execute("SELECT aluminium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         gasoline = db.execute("SELECT gasoline FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
         ammunition = db.execute("SELECT ammunition FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        
+
         lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper, components, steel, consumer_goods, lumber, aluminium, gasoline, ammunition]
         return lst
     return dict(get_resource_amount=get_resource_amount)
@@ -169,14 +169,14 @@ def index():
 @app.route("/account", methods=["GET", "POST"])
 def account():
     if request.method == "GET":
-        
+
         cId = session["user_id"]
 
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
         name = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
-        
+
         connection.close()
 
         return render_template("account.html", name=name)
@@ -218,10 +218,6 @@ def statistics():
 def myoffers():
     return render_template("my_offers.html")
 
-@app.route("/defense", methods=["GET"])
-def defense():
-    return render_template("defense.html")
-
 @app.route("/war", methods=["GET"])
 def war():
     return render_template("war.html")
@@ -229,4 +225,3 @@ def war():
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
-

@@ -187,11 +187,11 @@ def find_targets():
 
 
 @login_required
-@app.route("/setdefaultdefense", methods=["GET", "POST"])
-def setdefaultdefense():
+@app.route("/defense", methods=["GET", "POST"])
+def defense():
     if request.method == "GET":
         # i think this is all that needs to be done for the GET request
-        return render_template("setdefaultdefense.html")
+        return render_template("defense.html")
     elif request.method == "POST":  # if the user selected 3 units for defense and submitted, it goes here
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
@@ -201,6 +201,4 @@ def setdefaultdefense():
         #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.commit()
         connection.close()
-        return render_template("setdefaultdefense.html")
-    else:
-        return "REPORT DIRECTLY TO ADMIN WHAT JUST HAPPENED"
+        return render_template("defense.html")
