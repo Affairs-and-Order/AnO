@@ -46,7 +46,7 @@ def market():
             offer_ids_statement = f"SELECT offer_id FROM offers WHERE type=(?) ORDER by price {price_type}"
             offer_ids_list = db.execute(offer_ids_statement, (offer_type,))
         elif offer_type == None and price_type == None:
-            offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE type='sell' ORDER BY price ASC").fetchall()
+            offer_ids_list = db.execute("SELECT offer_id FROM offers ORDER BY price ASC").fetchall()
 
         if filter_resource != None:
 
