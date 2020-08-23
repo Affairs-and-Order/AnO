@@ -2241,10 +2241,9 @@ button {
     align-self: stretch;
     top: -5px;
     position: relative;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 16px 1px, #e3e9f0 0px 8px 0px 0px;
-    transition: all 0.3s;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 10px 16px 1px, #00a9e140 0px 8px 0px 0px;
+    transition: all 0.3s ease-in-out;
     background: rgb(252.5, 252.5, 252.5);
-    border: 1.5px solid #e3e9f0;
     cursor: pointer;
 }
 
