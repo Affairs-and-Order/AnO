@@ -30,10 +30,10 @@ def military():
         artillery = db.execute(
             "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         # air
-        flying_fortresses = db.execute(
-            "SELECT flying_fortresses FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute(
-            "SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        bombers = db.execute(
+            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighters = db.execute(
+            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute(
             "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         # water
@@ -52,7 +52,7 @@ def military():
             "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
         return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-                               flying_fortresses=flying_fortresses, apaches=apaches, fighter_jets=fighter_jets,
+                               bombers=bombers, apaches=apaches, fighters=fighters,
                                destroyers=destroyers, cruisers=cruisers, submarines=submarines,
                                spies=spies, icbms=icbms, nukes=nukes
                                )
@@ -75,7 +75,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         db = connection.cursor()
 
         allUnits = ["soldiers", "tanks", "artillery",
-                    "flying_fortresses", "fighter_jets", "apaches"
+                    "bombers", "fighter_jets", "apaches"
                     "destroyers", "cruisers", "submarines",
                     "spies", "icbms", "nukes"]  # list of allowed units
 
@@ -139,7 +139,8 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         }
 
-        price = 500 # rn price is 500 everywhere lol
+        price = mil_dict[f"{units}_price"]
+        
         gold = db.execute(
             "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
