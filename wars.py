@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, session, redirect, abort
 from flask_session import Session
 import sqlite3
 from helpers import login_required, error
-
+from attack_scripts import Nation
 
 '''
 Page 1:
@@ -139,7 +139,6 @@ def wars_route(attackingNation, defendingNation):
 def declare_war():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    cId = session["user_id"]
 
     # Selects the country that the user is attacking
     defender = request.form.get("defender")
@@ -149,19 +148,31 @@ def declare_war():
     try:
         defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
 
-        if defender_id == cId:
+        attacker = Nation(session["user_id"], None, None)
+        defender = Nation(defender_id, None, None)
+
+        if attacker.id == defender.id:
             return "Can't declare war on yourself"
 
-        already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (cId, cId,)).fetchall()
-        if (cId, defender_id,) in already_war_with or (defender_id, cId) in already_war_with:
+        already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (attacker.id, attacker.id,)).fetchall()
+
+        if (attacker.id, defender_id,) in already_war_with or (defender_id, attacker.id) in already_war_with:
             return "You already fight against..."
+
+        attacker_provinces = attacker.get_provinces()["provinces_number"]
+        defender_provinces = defender.get_provinces()["provinces_number"]
+
+        if (attacker_provinces-1 == defender_provinces) or (attacker_provinces+1 == defender_provinces) or (attacker_provinces == defender_provinces):
+            pass
+        else:
+            return "Can't declare war because the province difference is too big"
+
 
     except TypeError:
         # Redirects the user to an error page
         return error(400, "No such country")
 
-    db.execute(
-        "INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+    db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (attacker.id, defender_id))
     connection.commit()
     connection.close()
 
