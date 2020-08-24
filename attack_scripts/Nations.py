@@ -16,7 +16,7 @@ class Military:
         self.cruisers = cruisers
         self.submarines = submarines
         self.ICMBs = ICBMs
-        self.nukes = nukes        
+        self.nukes = nukes
 
 class Economy:
     # TODO: expand this to cover all resources
@@ -60,16 +60,33 @@ class Economy:
         connection.commit()
 
 class Nation:
-    def __init__(self, nationID, military, economy):
+
+    # TODO: someone should update this docs -- marter
+    """
+    Description of properties:
+        - nationID: represents the nation identifier, type: integer
+        - military: represents the ...., type: unknown
+        - economy: re...., type:
+        - provinces: represents the provinces that belongs to the nation, type: dictionary
+          -- structure: provinces_number -> if None then the provinces weren't fetched from the db or provided by the route, type: integer
+                        provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
+    """
+
+    def __init__(self, nationID, military, economy, provinces={"provinces_number": None, "province_stats": {}}):
         # self = self
         self.id = nationID # integer ID
-        
+
         self.military = military
         self.economy = economy
+        self.provinces = provinces
 
         self.wins = 0
         self.losses = 0
 
+        # Database management
+        # TODO: find a more effective way to handle database stuff
+        self.connection = sqlite3.connect('../affo/aao.db')
+        self.db = self.connection.cursor()
 
     def fight(self, enemyNation, attackTypes):
         #attackTypes is a tuple
@@ -99,25 +116,55 @@ class Nation:
             enemyNation.losses += 1
             self.wins += 1
 
+    def get_provinces(self):
+
+        # If provinces data not fetched from the database
+        if self.provinces["provinces_number"] == None:
+            provinces_number = self.db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
+            self.provinces["provinces_number"] = provinces_number
+
+            provinces = self.db.execute("SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
+            for province in provinces:
+                self.provinces["province_stats"][province[1]] = {
+                    "userId": province[0],
+                    "provinceName": province[2],
+                    "cityCount": province[3],
+                    "land": province[4],
+                    "population": province[5],
+                    "energy": province[6],
+                    "pollution": province[7]
+                }
+
+        return self.provinces
+
     def printStatistics (self):
         print("Nation {}:\nWins {}\nLosses: {}".format(self.id, self.wins, self.losses))
 
-# temporary definitions for nations economy and military
-nat1M = Military(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-nat1E = Economy(2).get_economy()
-# create nation1
-nation1 = Nation(1, nat1M, nat1E)
+    def __del__(self):
+        self.connection.close()
 
-
-# temporary definitions for nations economy and military
-nat2M = Military(0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-nat2E = Economy(0)
-# create nation1
-nation2 = Nation(2, nat2M, nat2E)
-
+# DEBUGGING:
 if __name__ == "__main__":
-    for i in range(0, 3):
-        nation1.fight(nation2, ("water", "air"))
+    n = Nation(1, None, None)
+    n.get_provinces()
+    print(n.provinces)
 
-    nation1.printStatistics()
-    nation2.printStatistics()
+    del n
+
+    # # temporary definitions for nations economy and military
+    # nat1M = Military(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    # nat1E = Economy(2).get_economy()
+    # # create nation1
+    # nation1 = Nation(1, nat1M, nat1E)
+    #
+    # # temporary definitions for nations economy and military
+    # nat2M = Military(0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    # nat2E = Economy(0)
+    # # create nation1
+    # nation2 = Nation(2, nat2M, nat2E)
+    #
+    # for i in range(0, 3):
+    #     nation1.fight(nation2, ("water", "air"))
+    #
+    # nation1.printStatistics()
+    # nation2.printStatistics()
