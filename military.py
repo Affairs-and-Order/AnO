@@ -140,7 +140,12 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         }
 
         price = mil_dict[f"{units}_price"]
-        
+
+        resource1_data = next(iter(mil_dict[f'{units}_resource'].items()))
+
+        resource1 = resource1_data[0]
+        resource1_amount = resource1_data[1]
+
         gold = db.execute(
             "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
@@ -171,6 +176,19 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             # fix weird table
             db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))
             flash(f"You bought {wantedUnits} {units}")
+
+            # Updating the first resoure
+            current_resource1_statement = f"SELECT {resource1} FROM resources WHERE id=(?)"
+            current_resource1 = db.execute(current_resource1_statement, (cId,)).fetchone()[0]
+
+            if current_resource1 < resource1_amount:
+                return error(400, "You don't have enough resources")
+
+            new_resource1 = current_resource1 - resource1_amount
+            
+            resource1_update_statement = f"UPDATE resources SET {resource1}=(?) WHERE id=(?)"
+            db.execute(resource1_update_statement, (new_resource1, cId,))
+            # End of updating the first resource
 
         else:
             return error(404, "Page not found")
