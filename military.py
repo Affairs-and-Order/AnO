@@ -156,6 +156,16 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         except KeyError:
             second_resource = False
 
+        try:
+            resource3_data = next(iter(mil_dict[f'{units}_resource3'].items()))
+            
+            resource3 = resource3_data[0]
+            resource3_amount = resource3_data[1]
+
+            third_resource = True
+        except KeyError:
+            third_resource = False
+
 
         gold = db.execute(
             "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -188,6 +198,8 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))
             flash(f"You bought {wantedUnits} {units}")
 
+
+            ### TODO: optimize this code by turning this into a function
             # Updating the first resoure
             current_resource1_statement = f"SELECT {resource1} FROM resources WHERE id=(?)"
             current_resource1 = db.execute(current_resource1_statement, (cId,)).fetchone()[0]
@@ -214,6 +226,18 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 resource2_update_statement = f"UPDATE resources SET {resource2}=(?) WHERE id=(?)"
                 db.execute(resource2_update_statement, (new_resource2, cId,))
 
+            if third_resource == True:
+
+                current_resource3_statement = f"SELECT {resource3} FROM resources WHERE id=(?)"
+                current_resource3 = db.execute(current_resource3_statement, (cId,)).fetchone()[0]
+
+                if current_resource3 < resource3_amount:
+                    return error(400, "You don't have enough resources")
+
+                new_resource3 = current_resource3 - resource3_amount
+                
+                resource3_update_statement = f"UPDATE resources SET {resource3}=(?) WHERE id=(?)"
+                db.execute(resource3_update_statement, (new_resource3, cId,))
 
         else:
             return error(404, "Page not found")
