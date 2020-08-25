@@ -758,6 +758,10 @@ hr {
     width: 100% !important;
 }
 
+.nopointer {
+    cursor: default !important;
+}
+
 .templatediv {
     background: #ffffff;
     width: 90%;
