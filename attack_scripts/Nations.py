@@ -16,7 +16,7 @@ class Military:
         self.cruisers = cruisers
         self.submarines = submarines
         self.ICMBs = ICBMs
-        self.nukes = nukes        
+        self.nukes = nukes
 
 class Economy:
     # TODO: expand this to cover all resources
@@ -60,16 +60,36 @@ class Economy:
         connection.commit()
 
 class Nation:
-    def __init__(self, nationID, military, economy):
-        # self = self
+
+    # TODO: someone should update this docs -- marter
+    """
+    Description of properties:
+
+        If values aren't passed to the parameters then should fetch from the database
+
+        - nationID: represents the nation identifier, type: integer
+        - military: represents the ...., type: unknown
+        - economy: re...., type:
+        - provinces: represents the provinces that belongs to the nation, type: dictionary
+          -- structure: provinces_number -> number of provinces, type: integer
+                        provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
+    """
+
+    # def __init__(self, nationID, military, economy, provinces={"provinces_number": None, "province_stats": {}}, current_wars=None):
+    def __init__(self, nationID, military, economy, provinces=None, current_wars=None):
         self.id = nationID # integer ID
-        
+
         self.military = military
         self.economy = economy
+        self.provinces = provinces
 
+        self.current_wars = current_wars
         self.wins = 0
         self.losses = 0
 
+        # Database management
+        # TODO: find a more effective way to handle database stuff
+        self.path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
 
     def fight(self, enemyNation, attackTypes):
         #attackTypes is a tuple
@@ -99,25 +119,64 @@ class Nation:
             enemyNation.losses += 1
             self.wins += 1
 
+    def get_provinces(self):
+
+        connection = sqlite3.connect(self.path)
+        db = connection.cursor()
+
+        if self.provinces == None:
+            self.provinces = {"provinces_number": 0, "province_stats": {}}
+            provinces_number = db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
+            self.provinces["provinces_number"] = provinces_number
+
+            if provinces_number > 0:
+                provinces = db.execute("SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
+                for province in provinces:
+                    self.provinces["province_stats"][province[1]] = {
+                    "userId": province[0],
+                    "provinceName": province[2],
+                    "cityCount": province[3],
+                    "land": province[4],
+                    "population": province[5],
+                    "energy": province[6],
+                    "pollution": province[7]
+                    }
+
+        connection.close()
+        return self.provinces
+
+    def get_current_wars(self):
+        connection = sqlite3.connect(self.path)
+        db = connection.cursor()
+        id_list = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
+        print(id_list)
+        connection.close()
+
     def printStatistics (self):
         print("Nation {}:\nWins {}\nLosses: {}".format(self.id, self.wins, self.losses))
 
-# temporary definitions for nations economy and military
-nat1M = Military(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-nat1E = Economy(2).get_economy()
-# create nation1
-nation1 = Nation(1, nat1M, nat1E)
-
-
-# temporary definitions for nations economy and military
-nat2M = Military(0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-nat2E = Economy(0)
-# create nation1
-nation2 = Nation(2, nat2M, nat2E)
-
+# DEBUGGING:
 if __name__ == "__main__":
-    for i in range(0, 3):
-        nation1.fight(nation2, ("water", "air"))
+    n = Nation(3, None, None)
+    n.get_provinces()
+    print(n.provinces)
 
-    nation1.printStatistics()
-    nation2.printStatistics()
+    n.get_current_wars()
+
+    # # temporary definitions for nations economy and military
+    # nat1M = Military(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    # nat1E = Economy(2).get_economy()
+    # # create nation1
+    # nation1 = Nation(1, nat1M, nat1E)
+    #
+    # # temporary definitions for nations economy and military
+    # nat2M = Military(0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+    # nat2E = Economy(0)
+    # # create nation1
+    # nation2 = Nation(2, nat2M, nat2E)
+    #
+    # for i in range(0, 3):
+    #     nation1.fight(nation2, ("water", "air"))
+    #
+    # nation1.printStatistics()
+    # nation2.printStatistics()

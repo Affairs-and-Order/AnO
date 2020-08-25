@@ -75,7 +75,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         db = connection.cursor()
 
         allUnits = ["soldiers", "tanks", "artillery",
-                    "bombers", "fighter_jets", "apaches"
+                    "bombers", "fighters", "apaches"
                     "destroyers", "cruisers", "submarines",
                     "spies", "icbms", "nukes"]  # list of allowed units
 
@@ -102,9 +102,9 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "bombers_resource2": {"steel": 5},
             "bombers_resource3": {"components": 6},
 
-            "fighter_jets_price": 35000, # Cost 35k 
-            "fighter_jets_resource": {"aluminium": 12},
-            "fighter_jets_resource2": {"components": 3},
+            "fighters_price": 35000, # Cost 35k 
+            "fighters_resource": {"aluminium": 12},
+            "fighters_resource2": {"components": 3},
 
             "apaches_price": 32000, # Cost 32k
             "apaches_resource": {"aluminium": 8},
@@ -140,7 +140,33 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         }
 
         price = mil_dict[f"{units}_price"]
-        
+
+        resource1_data = next(iter(mil_dict[f'{units}_resource'].items()))
+
+        resource1 = resource1_data[0]
+        resource1_amount = resource1_data[1]
+
+        try:
+            resource2_data = next(iter(mil_dict[f'{units}_resource2'].items()))
+            
+            resource2 = resource2_data[0]
+            resource2_amount = resource2_data[1]
+
+            second_resource = True
+        except KeyError:
+            second_resource = False
+
+        try:
+            resource3_data = next(iter(mil_dict[f'{units}_resource3'].items()))
+            
+            resource3 = resource3_data[0]
+            resource3_amount = resource3_data[1]
+
+            third_resource = True
+        except KeyError:
+            third_resource = False
+
+
         gold = db.execute(
             "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
         wantedUnits = request.form.get(units)
@@ -171,6 +197,47 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             # fix weird table
             db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))
             flash(f"You bought {wantedUnits} {units}")
+
+
+            ### TODO: optimize this code by turning this into a function
+            # Updating the first resoure
+            current_resource1_statement = f"SELECT {resource1} FROM resources WHERE id=(?)"
+            current_resource1 = db.execute(current_resource1_statement, (cId,)).fetchone()[0]
+
+            if current_resource1 < resource1_amount:
+                return error(400, "You don't have enough resources")
+
+            new_resource1 = current_resource1 - resource1_amount
+            
+            resource1_update_statement = f"UPDATE resources SET {resource1}=(?) WHERE id=(?)"
+            db.execute(resource1_update_statement, (new_resource1, cId,))
+
+            # Updating the second resource (if exists)
+            if second_resource == True:
+
+                current_resource2_statement = f"SELECT {resource2} FROM resources WHERE id=(?)"
+                current_resource2 = db.execute(current_resource2_statement, (cId,)).fetchone()[0]
+
+                if current_resource2 < resource2_amount:
+                    return error(400, "You don't have enough resources")
+
+                new_resource2 = current_resource2 - resource2_amount
+                
+                resource2_update_statement = f"UPDATE resources SET {resource2}=(?) WHERE id=(?)"
+                db.execute(resource2_update_statement, (new_resource2, cId,))
+
+            if third_resource == True:
+
+                current_resource3_statement = f"SELECT {resource3} FROM resources WHERE id=(?)"
+                current_resource3 = db.execute(current_resource3_statement, (cId,)).fetchone()[0]
+
+                if current_resource3 < resource3_amount:
+                    return error(400, "You don't have enough resources")
+
+                new_resource3 = current_resource3 - resource3_amount
+                
+                resource3_update_statement = f"UPDATE resources SET {resource3}=(?) WHERE id=(?)"
+                db.execute(resource3_update_statement, (new_resource3, cId,))
 
         else:
             return error(404, "Page not found")
