@@ -230,6 +230,14 @@ def warchoose():
 def waramount():
     return render_template("waramount.html")
 
+@app.route("/wartarget", methods=["GET"])
+def wartarget():
+    return render_template("wartarget.html")
+
+@app.route("/warresult", methods=["GET"])
+def warresult():
+    return render_template("warresult.html")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
