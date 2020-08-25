@@ -24,8 +24,8 @@ from login import login
 from signup import signup
 from countries import country, countries, update_info
 from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
-from military import province_sell_buy, military, military_sell_buy
-from province import createprovince, province, provinces
+from military import military, military_sell_buy
+from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
 from discord import update_discord
 
