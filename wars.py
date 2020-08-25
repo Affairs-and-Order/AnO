@@ -172,7 +172,8 @@ def declare_war():
         # Redirects the user to an error page
         return error(400, "No such country")
 
-    db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (attacker.id, defender_id))
+    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message) VALUES (?, ?, ?, ?)",
+    (attacker.id, defender_id, war_type, war_message))
     connection.commit()
     connection.close()
 

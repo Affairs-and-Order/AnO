@@ -1,3 +1,6 @@
 CREATE TABLE 'wars'
-('attacker' INTEGER NOT NULL,
-'defender' INTEGER NOT NULL);
+('id' INTEGER PRIMARY KEY NOT NULL,
+'attacker' INTEGER NOT NULL,
+'defender' INTEGER NOT NULL,
+'war_type' INTEGER NOT NULL,
+'agressor_message' VARCHAR(240) NOT NULL);
