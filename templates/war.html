@@ -11,7 +11,71 @@
 
     <div class="templatedivcontent">
 
+        <div class="borderbottom templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
 
+                <h2 class="templatecontentheadercenter">Defender</h2>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">Aggressor</h2>
+
+            </div>
+        </div>
+
+        <!--AGGRESSOR-->
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="">[[ yourCountry ]]</a></h2>
+
+                <!-- cId is the Flask value for your country's Id-->
+                <!--defender nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+
+            </div>
+            <div class="min templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">VS</h2>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="">[[ attackerName ]]</a></h2>
+                <!--aggressor nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+
+            </div>
+        </div>
+        <!--CODE IT TO CHOOSE ON OR THE OTHER DEPENDING ON IF YOU ATTACKED, OR GOT ATTACKED-->
+        <!--DEFENDER-->
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="">[[ defenderName ]]</a></h2>
+                <!--aggressor nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+
+            </div>
+            <div class="min templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">VS</h2>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter"><a class="templatelink" href="">[[ yourCountry ]]</a></h2>
+                <!-- cId is the Flask value for your country's Id-->
+                <!--defender nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+
+            </div>
+        </div>
+
+        <a class="templatedivbutton templatecenteredbutton" href="/warchoose"><span class="material-icons-outlined">
+            arrow_forward
+            </span>Attack</a>
 
     </div>
 </div>

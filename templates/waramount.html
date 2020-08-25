@@ -1,0 +1,68 @@
+{% extends "layout.html"%} {% block title %} Defense {% endblock %} {% block body %}
+
+<div class="templatediv">
+
+    <div class="templatedivtopper wartopper">
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            tune
+            </span>Attack</h1>
+        <div class="templatedivad"></div>
+    </div>
+
+    <div class="templatedivcontent">
+
+        <h2 class="templatecontentheaderleft">Choose Amount</h2>
+        <p class="templatecontentpleft">Select how many of each unit you want to attack with.</p>
+
+        <div class="templatedivflex2 menuflex">
+            <!--FIRST UNIT-->
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">[[ firstUnit ]]</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
+
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
+            </div>
+            <!--SECOND UNIT-->
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">[[ secondUnit ]]</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
+
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
+            </div>
+            <!--THIRD UNIT-->
+            <div class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">[[ thirdUnit ]]</ul>
+                <ul>[[ amount ]]</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
+
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
+            </div>
+        </div>
+
+        <h2 class="templatecontentheadercenter">[[ choosenAmount ]] / 3</h2>
+
+        <div class="templatedivflex2 divflex2center signupdiv">
+            <div class="templatedivflex2left">
+
+                <a class="templatedivbutton templatecenteredbutton" href="/wars"><span class="material-icons-outlined">
+                    arrow_back
+                    </span>Back</a>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <!--SEND USER TO NEXT PAGE AS WELL-->
+                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    arrow_forward
+                    </span>Next</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

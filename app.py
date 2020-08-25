@@ -222,6 +222,14 @@ def myoffers():
 def war():
     return render_template("war.html")
 
+@app.route("/warchoose", methods=["GET"])
+def warchoose():
+    return render_template("warchoose.html")
+
+@app.route("/waramount", methods=["GET"])
+def waramount():
+    return render_template("waramount.html")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on

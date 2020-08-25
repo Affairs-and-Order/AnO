@@ -5,14 +5,14 @@
     <div class="templatedivtopper wartopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
             tune
-            </span>Defense</h1>
+            </span>Attack</h1>
         <div class="templatedivad"></div>
     </div>
 
     <div class="templatedivcontent">
 
         <h2 class="templatecontentheaderleft">Choose 3 Units</h2>
-        <p class="templatecontentpleft">Here you can decide what units you want to defend for you in war.</p>
+        <p class="templatecontentpleft">Choose what units to take into war with you!</p>
 
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left unitcard">
@@ -86,10 +86,23 @@
 
         <h2 class="templatecontentheadercenter">[[ choosenAmount ]] / 3</h2>
 
-        <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                check
-            </span>Update</button>
+        <div class="templatedivflex2 divflex2center signupdiv">
+            <div class="templatedivflex2left">
 
+                <a class="templatedivbutton templatecenteredbutton" href="/warchoose"><span class="material-icons-outlined">
+                    arrow_back
+                    </span>Back</a>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <!--SEND USER TO NEXT PAGE AS WELL-->
+                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    arrow_forward
+                    </span>Next</button>
+
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
