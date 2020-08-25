@@ -158,6 +158,11 @@ def province_sell_buy(way, units, province_id):
             "city_parks", "hospitals", "libraries", "universities", "monorails"
         ]
 
+        max_4 = [
+            "gas_stations", "general_stores", "farmers_markets", "malls",
+            "banks", "city_parks", "hospitals"
+        ]
+
         if units not in allUnits:
             return error("No such unit exists.", 400)
 
@@ -201,13 +206,12 @@ def province_sell_buy(way, units, province_id):
         elif units == "monorails":
             price = 500
 
-        gold = db.execute(
-            "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-        wantedUnits = request.form.get(units)
+        gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+        wantedUnits = int(request.form.get(units))
 
         curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
-        totalPrice = int(wantedUnits) * price
-        currentUnits = db.execute(curUnStat, (province_id,)).fetchone()[0]
+        totalPrice = int(wantedUnits * price)
+        currentUnits = int(db.execute(curUnStat, (province_id,)).fetchone()[0])
 
         if way == "sell":
 
@@ -216,23 +220,22 @@ def province_sell_buy(way, units, province_id):
                 return error("You don't have enough units", 400)
 
             unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-            db.execute(unitUpd, (int(currentUnits) -
-                                 int(wantedUnits), province_id))
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((
-                int(gold) + int(wantedUnits) * int(price)), cId,))  # clean
+            db.execute(unitUpd, ((currentUnits - wantedUnits), province_id))
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((gold + wantedUnits * price), cId))
 
         elif way == "buy":
 
             if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
                 return error("You don't have enough gold", 400)
 
+            if units in max_4 and currentUnits + wantedUnits >= 4:
+                return error(400, "You can't have more than 4 of this unit")
+
             db.execute("UPDATE stats SET gold=(?) WHERE id=(?)",
                        (int(gold)-int(totalPrice), cId,))
 
             updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
-            # fix weird table
-            db.execute(
-                updStat, ((int(currentUnits) + int(wantedUnits)), province_id))
+            db.execute(updStat, ((currentUnits + wantedUnits), province_id))
 
         else:
             error(404, "Page not found")
