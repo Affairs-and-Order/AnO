@@ -214,3 +214,36 @@ def defense():
         connection.commit()
         connection.close()
         return render_template("defense.html")
+
+
+@login_required
+@app.route("/war/<war_id>", methods=["GET"])
+def war_with_id(war_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    if war_id.isdigit == False:
+        return error(400, "War id must be an integer")
+    
+    defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
+
+    attacker = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    attacker_name = db.execute("SELECT username FROM users WHERE id=(?)", (attacker,)).fetchone()[0]
+
+    war_type = db.execute("SELECT war_type FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    agressor_message = db.execute("SELECT agressor_message FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    
+    if cId == defender:
+        cId_type = "defender"
+    elif cId == attacker:
+        cId_type = "attacker"
+    else: 
+        cId_type = "spectator"
+
+    return render_template('war.html', defender=defender, attacker=attacker,
+    attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
+    agressor_message=agressor_message, cId_type=cId_type)
