@@ -89,8 +89,8 @@
         </div>
 
         <!--FOR EVERY DEFENSIVE WAR MAKE A NEW DIV-->
-        {% for attackerId, attackerName in defending %}
-        <a href="/war">
+        {% for attackerId, attackerName, warId in defending %}
+        <a href="/war/{{ warId[0] }}">
             <!--LINK TO THE WAR-->
             <div class="warflexparent templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
@@ -116,9 +116,10 @@
                 </div>
             </div>
         </a>
-        {% endfor %} {% for defenderId, defenderName in attacking %}
+        {% endfor %}
+        {% for defenderId, defenderName, warId in attacking %}
         <!--FOR EVERY AGGRESSOR WAR MAKE A NEW DIV-->
-        <a href="/war">
+        <a href="/war/{{ warId[0] }}">
             <!--LINK TO THE WAR-->
             <div class="warflexparent templatedivflex2 menuflex">
                 <div class="templatedivflex2left">

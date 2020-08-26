@@ -75,10 +75,10 @@ def wars():
             attackingWars = db.execute(
                 "SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
             # selecting all usernames of current defenders of cId
-            attackingNames = db.execute(
-                "SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
+            attackingNames = db.execute("SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
             # generates list of tuples. The first element of each tuple is the country being attacked, the second element is the username of the countries being attacked.
-            attacking = zip(attackingWars, attackingNames)
+            attackingIds = db.execute("SELECT id FROM wars WHERE attacker=(?)", (cId,)).fetchall()
+            attacking = zip(attackingWars, attackingNames, attackingIds)
         except TypeError:
             attacking = 0
 
@@ -88,11 +88,13 @@ def wars():
                 "SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender", (cId,)).fetchall()
             defendingNames = db.execute(
                 "SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
-            defending = zip(defendingWars, defendingNames)
+            defendingIds = db.execute("SELECT id FROM wars WHERE defender=(?)", (cId,)).fetchall()
+            defending = zip(defendingWars, defendingNames, defendingIds)
         except TypeError:
             defending = 0
 
         # WHAT DOES THIS DO??? -- Steven
+        # Selects how many users the user is in -- t0dd
         warsCount = db.execute(
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
