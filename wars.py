@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, session, redirect, abort
 from flask_session import Session
 import sqlite3
 from helpers import login_required, error
-from attack_scripts import Nation
+from attack_scripts import Nation,Military
 
 '''
 Page 1:
@@ -203,19 +203,28 @@ def find_targets():
 @login_required
 @app.route("/defense", methods=["GET", "POST"])
 def defense():
+    cId = session["user_id"]
+    units = Military.get_military(cId)
+
     if request.method == "GET":
-        # i think this is all that needs to be done for the GET request
-        return render_template("defense.html")
-    elif request.method == "POST":  # if the user selected 3 units for defense and submitted, it goes here
+        return render_template("defense.html", units=units)
+
+    elif request.method == "POST":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        cId = session["user_id"]
+
+
+        # Default defense
+
+
+
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
         #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.commit()
         connection.close()
-        return render_template("defense.html")
+
+        return render_template("defense.html", units=units)
 
 
 @login_required

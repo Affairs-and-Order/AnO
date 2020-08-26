@@ -18,6 +18,58 @@ class Military:
         self.ICMBs = ICBMs
         self.nukes = nukes
 
+    @staticmethod
+    def get_military(cId):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        tanks = db.execute(
+            "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute(
+            "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute(
+            "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        bombers = db.execute(
+            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighters = db.execute(
+            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute(
+            "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        destroyers = db.execute(
+            "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute(
+            "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute(
+            "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
+        connection.close()
+
+        return {
+            "tanks": tanks,
+            "soldiers": soldiers,
+            "artillery": artillery,
+            "bombers": bombers,
+            "fighters": fighters,
+            "apaches": apaches,
+            "destroyers": destroyers,
+            "cruisers": cruisers,
+            "submarines": submarines
+        }
+
+    @staticmethod
+    def get_special(cId):
+        spies = db.execute(
+            "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute(
+            "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute(
+            "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
+        return {
+            "spies": spies,
+            "icbms": icbms,
+            "nukes": nukes
+        }
+
 class Economy:
     # TODO: expand this to cover all resources
     def __init__(self, nationID):
