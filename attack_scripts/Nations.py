@@ -75,8 +75,7 @@ class Nation:
                         provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
     """
 
-    # def __init__(self, nationID, military, economy, provinces={"provinces_number": None, "province_stats": {}}, current_wars=None):
-    def __init__(self, nationID, military, economy, provinces=None, current_wars=None):
+    def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
         self.id = nationID # integer ID
 
         self.military = military
@@ -89,7 +88,12 @@ class Nation:
 
         # Database management
         # TODO: find a more effective way to handle database stuff
-        self.path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+        path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+        self.connection = sqlite3.connect(path)
+        self.db = self.connection.cursor()
+
+    def declare_war(self, target_nation):
+        pass
 
     def fight(self, enemyNation, attackTypes):
         #attackTypes is a tuple
@@ -121,12 +125,9 @@ class Nation:
 
     def get_provinces(self):
 
-        connection = sqlite3.connect(self.path)
-        db = connection.cursor()
-
         if self.provinces == None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
-            provinces_number = db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
+            provinces_number = self.db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
             self.provinces["provinces_number"] = provinces_number
 
             if provinces_number > 0:
@@ -142,15 +143,11 @@ class Nation:
                     "pollution": province[7]
                     }
 
-        connection.close()
         return self.provinces
 
     def get_current_wars(self):
-        connection = sqlite3.connect(self.path)
-        db = connection.cursor()
-        id_list = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
+        id_list = self.db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
         print(id_list)
-        connection.close()
 
     def printStatistics (self):
         print("Nation {}:\nWins {}\nLosses: {}".format(self.id, self.wins, self.losses))

@@ -148,8 +148,8 @@ def declare_war():
     try:
         defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
 
-        attacker = Nation(session["user_id"], None, None)
-        defender = Nation(defender_id, None, None)
+        attacker = Nation(session["user_id"])
+        defender = Nation(defender_id)
 
         if attacker.id == defender.id:
             return "Can't declare war on yourself"
@@ -227,7 +227,7 @@ def war_with_id(war_id):
 
     if war_id.isdigit == False:
         return error(400, "War id must be an integer")
-    
+
     defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
 
@@ -236,12 +236,12 @@ def war_with_id(war_id):
 
     war_type = db.execute("SELECT war_type FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     agressor_message = db.execute("SELECT agressor_message FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-    
+
     if cId == defender:
         cId_type = "defender"
     elif cId == attacker:
         cId_type = "attacker"
-    else: 
+    else:
         cId_type = "spectator"
 
     return render_template('war.html', defender=defender, attacker=attacker,
