@@ -122,6 +122,24 @@
     0% {
         opacity: 0;
         pointer-events: none;
+        top: -15px;
+    }
+    50% {
+        opacity: 0;
+        pointer-events: none;
+        top: -15px;
+    }
+    100% {
+        opacity: 1;
+        pointer-events: all;
+        top: 0px;
+    }
+}
+
+@keyframes templatedivcontentload {
+    0% {
+        opacity: 0;
+        pointer-events: none;
         top: 15px;
     }
     50% {
@@ -136,7 +154,7 @@
     }
 }
 
-@keyframes templatedivcontentload {
+@keyframes templatebuttonload {
     0% {
         opacity: 0;
         pointer-events: none;
@@ -916,7 +934,7 @@ hr {
     text-align: center;
     color: rgb(255, 255, 255);
     font-size: 40px;
-    animation: templatedivtitleload 0.25s;
+    animation: templatedivtitleload 1.5s;
     margin: 0;
     padding: 0px;
     position: relative;
@@ -956,7 +974,7 @@ hr {
 
 .templatedivcontent {
     color: black;
-    animation: templatedivcontentload 0.65s;
+    animation: templatedivcontentload 0.85s;
     position: relative;
 }
 
@@ -1040,6 +1058,8 @@ hr {
     letter-spacing: 1px;
     box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     border-radius: 100px;
+    animation: templatedivcontentload 1.25s;
+    position: relative;
 }
 
 .templatedivbutton:hover {

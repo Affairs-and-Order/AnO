@@ -101,9 +101,11 @@
                     <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
                     <!--Buying or Selling-->
                     {% if type == "buy" %}
-                    <td>Buying</a></td>
+                    <td>Buying</a>
+                    </td>
                     {% elif type == "sell" %}
-                    <td>Selling</a></td>
+                    <td>Selling</a>
+                    </td>
                     {% endif %}
                     <td>
                         {% if resource == "rations" %}
@@ -114,8 +116,12 @@
                         <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
                         <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span>{{ amount }}</td>
 
-                    <td><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{
-                        total_price }} Total</td>
+                    <td>
+                        <div class="center fit">
+                            <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
+                                />${{ total_price }} Total</div>
+                        </div>
+                    </td>
                     <td>
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center signupdiv">
@@ -126,12 +132,10 @@
                                     {% if type == "sell" %}
                                     <button formaction="/buy_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                                         check
-                                        </span>Buy</button>
-                                    {% elif type == "buy" %}
+                                        </span>Buy</button> {% elif type == "buy" %}
                                     <button formaction="/sell_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                                         check
-                                        </span>Sell</button>
-                                    {% endif %}
+                                        </span>Sell</button> {% endif %}
                                 </div>
                             </div>
                         </form>
