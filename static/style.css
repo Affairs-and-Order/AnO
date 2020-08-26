@@ -1724,14 +1724,12 @@ button {
     background: linear-gradient(145deg, #00a7e1 10%, #178db8 40%, #178db8 60%, #00a7e1 90%);
     background-size: 200% 200%;
     box-shadow: 0px 6px 8px 2px #178db830;
-    padding-bottom: 20px !important;
 }
 
 @media all and (max-width: 600px) {
     .landingpagetopper {
         height: fit-content;
-        padding-bottom: 80px;
-        margin-top: -75px;
+        padding-bottom: 35px;
     }
 }
 
@@ -1746,7 +1744,7 @@ button {
 
 @media all and (max-width: 600px) {
     .landingpagetopper h1 {
-        display: none;
+        text-align: center;
     }
 }
 
@@ -1755,11 +1753,16 @@ button {
     width: 100%;
     top: 0;
     bottom: 0;
-    margin-top: 130px;
+    padding-top: 250px;
+}
+
+@media all and (max-width: 600px) {
+    .landingpagetopper div {
+        padding-top: 25px;
+    }
 }
 
 .landingpagetopper div div {
-    position: relative;
     width: 90%;
     padding: 0;
     margin: auto !important;
@@ -1789,7 +1792,7 @@ button {
 
 .landingpageinfoleft p {
     color: rgb(240, 240, 240) !important;
-    font-size: 24px;
+    font-size: 21px;
     font-weight: 550;
     text-indent: 0;
     animation: templatedivtitleload 0.8s;
