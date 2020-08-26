@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, session, redirect, abort
 from flask_session import Session
 import sqlite3
 from helpers import login_required, error
-from attack_scripts import Nation
+from attack_scripts import Nation,Military
 
 '''
 Page 1:
@@ -75,10 +75,10 @@ def wars():
             attackingWars = db.execute(
                 "SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
             # selecting all usernames of current defenders of cId
-            attackingNames = db.execute(
-                "SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
+            attackingNames = db.execute("SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
             # generates list of tuples. The first element of each tuple is the country being attacked, the second element is the username of the countries being attacked.
-            attacking = zip(attackingWars, attackingNames)
+            attackingIds = db.execute("SELECT id FROM wars WHERE attacker=(?)", (cId,)).fetchall()
+            attacking = zip(attackingWars, attackingNames, attackingIds)
         except TypeError:
             attacking = 0
 
@@ -88,11 +88,13 @@ def wars():
                 "SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender", (cId,)).fetchall()
             defendingNames = db.execute(
                 "SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
-            defending = zip(defendingWars, defendingNames)
+            defendingIds = db.execute("SELECT id FROM wars WHERE defender=(?)", (cId,)).fetchall()
+            defending = zip(defendingWars, defendingNames, defendingIds)
         except TypeError:
             defending = 0
 
         # WHAT DOES THIS DO??? -- Steven
+        # Selects how many users the user is in -- t0dd
         warsCount = db.execute(
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
@@ -148,8 +150,8 @@ def declare_war():
     try:
         defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
 
-        attacker = Nation(session["user_id"], None, None)
-        defender = Nation(defender_id, None, None)
+        attacker = Nation(session["user_id"])
+        defender = Nation(defender_id)
 
         if attacker.id == defender.id:
             return "Can't declare war on yourself"
@@ -201,19 +203,28 @@ def find_targets():
 @login_required
 @app.route("/defense", methods=["GET", "POST"])
 def defense():
+    cId = session["user_id"]
+    units = Military.get_military(cId)
+
     if request.method == "GET":
-        # i think this is all that needs to be done for the GET request
-        return render_template("defense.html")
-    elif request.method == "POST":  # if the user selected 3 units for defense and submitted, it goes here
+        return render_template("defense.html", units=units)
+
+    elif request.method == "POST":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        cId = session["user_id"]
+
+
+        # Default defense
+
+
+
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
         #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.commit()
         connection.close()
-        return render_template("defense.html")
+
+        return render_template("defense.html", units=units)
 
 
 @login_required
@@ -227,7 +238,7 @@ def war_with_id(war_id):
 
     if war_id.isdigit == False:
         return error(400, "War id must be an integer")
-    
+
     defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
 
@@ -236,12 +247,12 @@ def war_with_id(war_id):
 
     war_type = db.execute("SELECT war_type FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     agressor_message = db.execute("SELECT agressor_message FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-    
+
     if cId == defender:
         cId_type = "defender"
     elif cId == attacker:
         cId_type = "attacker"
-    else: 
+    else:
         cId_type = "spectator"
 
     return render_template('war.html', defender=defender, attacker=attacker,
