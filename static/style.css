@@ -158,12 +158,12 @@
     0% {
         opacity: 0;
         pointer-events: none;
-        top: 15px;
+        top: 8px;
     }
     50% {
         opacity: 0;
         pointer-events: none;
-        top: 15px;
+        top: 8px;
     }
     100% {
         opacity: 1;
@@ -1058,7 +1058,7 @@ hr {
     letter-spacing: 1px;
     box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     border-radius: 100px;
-    animation: templatecontentload 1.25s;
+    animation: templatedivcontentload 1.25s;
     position: relative;
 }
 
