@@ -768,8 +768,8 @@ hr {
 }
 
 .imageborder {
-    background: white;
-    padding: 8px;
+    background: #e3e9f0;
+    padding: 1.5px;
 }
 
 .width100 {
@@ -1796,11 +1796,17 @@ button {
 }
 
 .landingpageinfoleft {
-    width: 90% !important;
     color: white;
-    padding-left: 10% !important;
     text-shadow: 0px 1px 4px #084955;
     animation: templatedivtitleload 0.4s;
+    justify-content: center !important;
+    padding-left: 15% !important;
+}
+
+@media all and (max-width: 1055px) {
+    .landingpageinfoleft {
+        padding-left: initial !important;
+    }
 }
 
 .landingpageinfoleft h1 {
@@ -1818,6 +1824,12 @@ button {
     text-indent: 0;
     animation: templatedivtitleload 0.8s;
     position: relative;
+}
+
+@media all and (max-width: 1055px) {
+    .landingpageinfoleft p {
+        text-align: center !important;
+    }
 }
 
 .landingpageinforight {
