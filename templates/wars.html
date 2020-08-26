@@ -90,59 +90,58 @@
 
         <!--FOR EVERY DEFENSIVE WAR MAKE A NEW DIV-->
         {% for attackerId, attackerName, warId in defending %}
-        <a href="/war/{{ warId[0] }}" class="block">
-            <!--LINK TO THE WAR-->
-            <div class="warflexparent templatedivflex2 menuflex">
-                <div class="templatedivflex2left">
+        <!--LINK TO THE WAR-->
+        <div class="warflexparent templatedivflex2 menuflex">
+            <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
+            <div class="templatedivflex2left">
 
-                    <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
 
-                    <!-- cId is the Flask value for your country's Id-->
-                    <!--defender nation flag-->
-                    <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <!-- cId is the Flask value for your country's Id-->
+                <!--defender nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
-                </div>
-                <div class="min templatedivflex2left">
-
-                    <h2 class="templatecontentheadercenter">VS</h2>
-
-                </div>
-                <div class="templatedivflex2left">
-
-                    <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
-                    <!--aggressor nation flag-->
-                    <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
-
-                </div>
             </div>
-        </a>
+            <div class="min templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">VS</h2>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
+                <!--aggressor nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+
+            </div>
+        </div>
         {% endfor %} {% for defenderId, defenderName, warId in attacking %}
         <!--FOR EVERY AGGRESSOR WAR MAKE A NEW DIV-->
-        <a href="/war/{{ warId[0] }}" class="block">
-            <!--LINK TO THE WAR-->
-            <div class="warflexparent templatedivflex2 menuflex">
-                <div class="templatedivflex2left">
 
-                    <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
-                    <!--aggressor nation flag-->
-                    <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+        <!--LINK TO THE WAR-->
+        <div class="warflexparent templatedivflex2 menuflex">
+            <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
+            <div class="templatedivflex2left">
 
-                </div>
-                <div class="min templatedivflex2left">
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
+                <!--aggressor nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
-                    <h2 class="templatecontentheadercenter">VS</h2>
-
-                </div>
-                <div class="templatedivflex2left">
-
-                    <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
-                    <!-- cId is the Flask value for your country's Id-->
-                    <!--defender nation flag-->
-                    <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
-
-                </div>
             </div>
-        </a>
+            <div class="min templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">VS</h2>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
+                <!-- cId is the Flask value for your country's Id-->
+                <!--defender nation flag-->
+                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+
+            </div>
+        </div>
         {% endfor %}
 
     </div>

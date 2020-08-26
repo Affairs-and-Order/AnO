@@ -2176,7 +2176,7 @@ button {
 }
 
 
-/*WAR*/
+/*WARS*/
 
 .warflexparent {
     background: #f7f7f7;
@@ -2184,6 +2184,7 @@ button {
     cursor: pointer;
     width: 95%;
     margin: 12px auto;
+    position: relative !important;
 }
 
 .warflexparent:hover {
@@ -2192,6 +2193,16 @@ button {
 
 .warflexparent image:hover {
     transform: scale(1);
+}
+
+.warflexlink {
+    position: absolute;
+    display: block;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .borderbottom div {
