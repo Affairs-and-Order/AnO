@@ -762,6 +762,10 @@ hr {
     cursor: default !important;
 }
 
+.block {
+    display: block;
+}
+
 .templatediv {
     background: #ffffff;
     width: 90%;
@@ -1426,7 +1430,7 @@ button {
 .templatedivflex2left,
 .templatedivflex2right {
     width: 50%;
-    margin: 20px;
+    margin: 20px auto;
     padding: 8px;
     flex-direction: column;
     flex-wrap: wrap;
@@ -2193,10 +2197,18 @@ button {
 .borderbottom div {
     border-radius: 0px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
-    margin: 8px !important;
     background: #00a7e1;
     color: rgb(255, 255, 255);
     transition: all 0.3s;
+    transform: scale(0.995);
+    margin: 8px;
+}
+
+@media all and (max-width: 1055px) {
+    .borderbottom div {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 .borderbottom div:hover {
