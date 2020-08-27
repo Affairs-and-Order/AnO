@@ -1730,6 +1730,27 @@ button {
     background: red;
 }
 
+.progressbarlabel {
+    background: black;
+    z-index: 1000;
+}
+
+.progressbarparent {
+    margin: 12px;
+    border-radius: 0px;
+    width: 90%;
+    box-shadow: inset rgba(0, 0, 0, 0.05) 0 0 4px 0px;
+    background: #e3e9f0;
+}
+
+.progressbarchild {
+    background: #00a7e1;
+    padding: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 
 /*LANDING PAGE*/
 
