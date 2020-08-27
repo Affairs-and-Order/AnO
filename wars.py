@@ -255,6 +255,9 @@ def war_with_id(war_id):
     else:
         cId_type = "spectator"
 
+    if cId_type == "spectator":
+        return error(400, "You can't view this war")
+
     return render_template('war.html', defender=defender, attacker=attacker,
     attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
     agressor_message=agressor_message, cId_type=cId_type)
