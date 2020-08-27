@@ -18,7 +18,7 @@
 
     <div class="templatedivcontent">
 
-        <form class="loginsignupform" action="/login" method="POST">
+        <form id="login-form" class="loginsignupform" action="/login" method="POST">
 
             <input class="loginsignupinput" name="username" placeholder="Country Name" type="text" required/>
             <!-- maybe accept emails later on -->
@@ -41,7 +41,19 @@
                 </div>
             </div>
 
-            <button class="templatedivbutton loginsignupbutton" type="submit"><span class="material-icons-outlined">
+            <script>
+                function onSubmit(token) {
+                    document.getElementById("login-form").submit();
+                }
+            </script>
+
+            <button 
+            class="g-recaptcha templatedivbutton loginsignupbutton"
+            type="submit"
+            data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" 
+            data-callback='onSubmit' 
+            data-action='submit'>
+            <span class="material-icons-outlined">
                 login
                 </span>Login</button>
         </form>
