@@ -75,11 +75,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         db = connection.cursor()
 
         allUnits = ["soldiers", "tanks", "artillery",
-                    "bombers", "fighters", "apaches"
+                    "bombers", "fighters", "apaches",
                     "destroyers", "cruisers", "submarines",
                     "spies", "icbms", "nukes"]  # list of allowed units
 
-        if units not in allUnits:
+        if units not in allUnits and units != "apaches":
             return error("No such unit exists.", 400)
 
         mil_dict = {
