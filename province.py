@@ -163,49 +163,37 @@ def province_sell_buy(way, units, province_id):
             "banks", "city_parks", "hospitals"
         ]
 
+        unit_prices = {
+            "land": 100,
+            "cityCount": 500,
+
+            "oil_burners": 350,
+            "hydro_dams": 450,
+            "nuclear_reactors": 700,
+            "solar_fields": 550,
+
+            "gas_stations": 500,
+            "general_stores": 500,
+            "farmers_markets": 500,
+            "malls": 500,
+            "banks": 500,
+
+            "city_parks": 500,
+            "hospitals": 500,
+            "libraries": 500,
+            "universities": 500,
+            "monorails": 500
+        }
+
         if units not in allUnits:
             return error("No such unit exists.", 400)
 
-        if units == "land":
-            price = 100
-            table = "provinces"
-        elif units == "cityCount":
-            price = 500
+        if units == "land" or units == "cityCount":
             table = "provinces"
         else:
             table = "proInfra"
 
-        if units == "oil_burners":
-            price = 350
-        elif units == "hydro_dams":
-            price = 450
-        elif units == "nuclear_reactors":
-            price = 700
-        elif units == "solar_fields":
-            price = 550
-
-        elif units == "gas_stations":
-            price = 500
-        elif units == "general_stores":
-            price = 500
-        elif units == "farmers_markets":
-            price = 500
-        elif units == "malls":
-            price = 500
-        elif units == "banks":
-            price = 500
-
-        elif units == "city_parks":
-            price = 500
-        elif units == "hospitals":
-            price = 500
-        elif units == "libraries":
-            price = 500
-        elif units == "universities":
-            price = 500
-        elif units == "monorails":
-            price = 500
-
+        price = unit_prices[f"{units}"]
         gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
         wantedUnits = int(request.form.get(units))
 
