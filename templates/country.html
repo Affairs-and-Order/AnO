@@ -82,7 +82,11 @@
 
             <div class="countryimagediv">
                 <!--country flag-->
+                {% if flag != None %}
+                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">/> <!-- hmm not using url_for, but somewhy it render-->
+                {% else %}                                                                   <!-- tried first with url_for, but it didn't work -- t0dd -->
                 <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" />
+                {% endif %}
                 <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
                 <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>

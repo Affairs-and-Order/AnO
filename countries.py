@@ -69,16 +69,21 @@ def country(cId):
             "SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
         colName = db.execute(
             "SELECT name FROM colNames WHERE id =?", (colId,)).fetchone()[0]
-    except:
+    except TypeError:
         colId = ""
         colName = ""
+
+    try:
+        flag = db.execute("SELECT flag FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+    except TypeError:
+        flag = None
 
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
                            happiness=happiness, population=population, location=location, gold=gold, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
-                           provinces=provinces, colId=colId)
+                           provinces=provinces, colId=colId, flag=flag)
 
 
 @login_required
@@ -219,6 +224,7 @@ def update_info():
             # Updates the username to the new one
             db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
 
+    #TODO: add some checking for malicious extensions n shit
     file = request.files["flag_input"]
     current_filename = file.filename
     extension = current_filename.rsplit('.', 1)[1].lower()
