@@ -192,8 +192,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_required
 @app.route("/update_country_info", methods=["POST"])
@@ -226,12 +225,13 @@ def update_info():
 
     #TODO: add some checking for malicious extensions n shit
     file = request.files["flag_input"]
-    current_filename = file.filename
-    extension = current_filename.rsplit('.', 1)[1].lower()
-    filename = f"flag_{cId}" + '.' + extension
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
-    
+    if file and allowed_file(file.filename):
+        current_filename = file.filename
+        extension = current_filename.rsplit('.', 1)[1].lower()
+        filename = f"flag_{cId}" + '.' + extension
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
+        
     connection.commit()  # Commits the data
     connection.close()  # Closes the connection
 
