@@ -226,6 +226,16 @@ def update_info():
     #TODO: add some checking for malicious extensions n shit
     file = request.files["flag_input"]
     if file and allowed_file(file.filename):
+
+        # Check if the user already has a flag
+        try:
+            current_flag = db.execute("SELECT flag FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
+        except TypeError:
+            pass
+
+        # Save the file & shit
         current_filename = file.filename
         extension = current_filename.rsplit('.', 1)[1].lower()
         filename = f"flag_{cId}" + '.' + extension
