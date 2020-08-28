@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, session, redirect, abort
 from flask_session import Session
 import sqlite3
 from helpers import login_required, error
-from attack_scripts import Nation,Military
+from attack_scripts import Nation, Military
 
 '''
 Page 1:
@@ -199,7 +199,6 @@ def find_targets():
 
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
 
-
 @login_required
 @app.route("/defense", methods=["GET", "POST"])
 def defense():
@@ -212,20 +211,33 @@ def defense():
     elif request.method == "POST":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
+        nation = db.execute("SELECT * FROM nation WHERE nation_id=(?)", (cId,)).fetchone()
 
+        # Defense units came from POST request (TODO: attach it to the frontend)
+        defense_units = ["soldier", "tank", "apache"]
 
         # Default defense
+        # nation_id = nation[1]
+        # default_defense = nation[2]
 
-
+        # TODO: check is selected unit names are valid
+        if nation:
+            if len(defense_units) == 3:
+                # default_defense is stored in the db: 'unit1,unit2,unit3'
+                defense_units = ",".join(defense_units)
+                db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
+                connection.commit()
+            else:
+                return "Invalid number of units selected!"
+        else:
+            return "Nation is not created!"
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
         #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
-        connection.commit()
         connection.close()
 
         return render_template("defense.html", units=units)
-
 
 @login_required
 @app.route("/war/<war_id>", methods=["GET"])
