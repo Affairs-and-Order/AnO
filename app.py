@@ -234,6 +234,7 @@ def eventCheck():
         pass
     # will decide if natural disasters occure
 """
+
 @app.context_processor
 def inject_user():
     def get_resource_amount():

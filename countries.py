@@ -13,7 +13,11 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
+import os
+from werkzeug.utils import secure_filename
 
+UPLOAD_FOLDER = 'static/flags'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @login_required
 @app.route("/country/id=<cId>")
@@ -21,8 +25,7 @@ def country(cId):
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
-    username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[
-        0]  # gets country's name from db
+    username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]  # gets country's name from db
     # runs the get_influence function of the player's id, which calculates his influence score
     influence = get_influence(cId)
     description = db.execute(
@@ -181,6 +184,11 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
         return render_template("countries.html", resultAll=resultAll)
 
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_required
 @app.route("/update_country_info", methods=["POST"])
@@ -210,7 +218,15 @@ def update_info():
         if duplicate == False:  # Checks if username isn't a duplicate
             # Updates the username to the new one
             db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
-        connection.commit()  # Commits the data
-        connection.close()  # Closes the connection
+
+    file = request.files["flag_input"]
+    current_filename = file.filename
+    extension = current_filename.rsplit('.', 1)[1].lower()
+    filename = f"flag_{cId}" + '.' + extension
+    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
+    
+    connection.commit()  # Commits the data
+    connection.close()  # Closes the connection
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country
