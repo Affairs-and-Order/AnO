@@ -1553,6 +1553,7 @@ button {
     font-weight: 450px;
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    text-transform: capitalize;
 }
 
 .templatetable tr:nth-child(odd) {
@@ -2261,7 +2262,8 @@ button {
 /*WARS*/
 
 .warflexparent {
-    background: #f7f7f7;
+    background: rgb(252.5, 252.5, 252.5);
+    border: 1.5px solid #e3e9f0;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     width: 95%;
