@@ -13,6 +13,7 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
+from attack_scripts import Military
 
 
 @login_required
@@ -21,47 +22,14 @@ def military():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
+
     if request.method == "GET":  # maybe optimise this later with css anchors
-        # ground
-        tanks = db.execute(
-            "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute(
-            "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute(
-            "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # air
-        bombers = db.execute(
-            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighters = db.execute(
-            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute(
-            "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # water
-        destroyers = db.execute(
-            "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute(
-            "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute(
-            "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # special
-        spies = db.execute(
-            "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute(
-            "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute(
-            "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        simple_units = Military.get_military(cId)
+        special_units = Military.get_special(cId)
+        units = simple_units.copy()
+        units.update(special_units)
 
-        return render_template("military.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-                               bombers=bombers, apaches=apaches, fighters=fighters,
-                               destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-                               spies=spies, icbms=icbms, nukes=nukes
-                               )
-
-
-person = {"name": "galaxy"}
-# easter egg probably or it has something to do with mail xD || aw thats nice test
-person["message"] = "Thanks guys :D, you are all so amazing."
-
+        return render_template("military.html", units=units)
 
 @login_required
 @app.route("/<way>/<units>", methods=["POST"])
@@ -89,20 +57,20 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "soldiers_price": 200, # Cost 200
             "soldiers_resource": {"rations": 2},
 
-            "tanks_price": 8000, # Cost 8k 
+            "tanks_price": 8000, # Cost 8k
             "tanks_resource": {"steel": 5},
 
-            "artillery_price": 16000, # Cost 16k 
+            "artillery_price": 16000, # Cost 16k
             "artillery_resource": {"steel": 12},
 
             ## AIR
 
-            "bombers_price": 25000, # Cost 25k 
+            "bombers_price": 25000, # Cost 25k
             "bombers_resource": {"aluminium": 20},
             "bombers_resource2": {"steel": 5},
             "bombers_resource3": {"components": 6},
 
-            "fighters_price": 35000, # Cost 35k 
+            "fighters_price": 35000, # Cost 35k
             "fighters_resource": {"aluminium": 12},
             "fighters_resource2": {"components": 3},
 
@@ -148,7 +116,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         try:
             resource2_data = next(iter(mil_dict[f'{units}_resource2'].items()))
-            
+
             resource2 = resource2_data[0]
             resource2_amount = resource2_data[1]
 
@@ -158,7 +126,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         try:
             resource3_data = next(iter(mil_dict[f'{units}_resource3'].items()))
-            
+
             resource3 = resource3_data[0]
             resource3_amount = resource3_data[1]
 
@@ -208,7 +176,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 return error(400, "You don't have enough resources")
 
             new_resource1 = current_resource1 - resource1_amount
-            
+
             resource1_update_statement = f"UPDATE resources SET {resource1}=(?) WHERE id=(?)"
             db.execute(resource1_update_statement, (new_resource1, cId,))
 
@@ -222,7 +190,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                     return error(400, "You don't have enough resources")
 
                 new_resource2 = current_resource2 - resource2_amount
-                
+
                 resource2_update_statement = f"UPDATE resources SET {resource2}=(?) WHERE id=(?)"
                 db.execute(resource2_update_statement, (new_resource2, cId,))
 
@@ -235,7 +203,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                     return error(400, "You don't have enough resources")
 
                 new_resource3 = current_resource3 - resource3_amount
-                
+
                 resource3_update_statement = f"UPDATE resources SET {resource3}=(?) WHERE id=(?)"
                 db.execute(resource3_update_statement, (new_resource3, cId,))
 

@@ -57,12 +57,15 @@ class Military:
 
     @staticmethod
     def get_special(cId):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
         spies = db.execute(
             "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         icbms = db.execute(
             "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         nukes = db.execute(
             "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        connection.close()
 
         return {
             "spies": spies,
