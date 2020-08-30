@@ -2371,22 +2371,25 @@ button {
 }
 
 .unitcardcheck {
-    width: 80%;
+    width: 0%;
     background: #00a9e1;
     color: white;
-    padding: 6px 0;
+    padding: 6px 50%;
     margin: auto;
     position: static;
     box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
     opacity: 0;
-    transition: all 0.3s;
     margin-left: -15px;
     user-select: none;
+    transition: width 0.3s, opacity 0s, padding 0s;
 }
 
 .unitcard input[type=checkbox]:checked~.unitcardcheck {
     opacity: 1;
     margin-left: 0;
+    width: 80%;
+    padding: 6px 0;
+    transition: opacity 0.3s, width 0.3s, padding 0.15s;
 }
 
 
