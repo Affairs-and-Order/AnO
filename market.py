@@ -343,9 +343,33 @@ def my_offers():
 
     cId = session["user_id"]
 
-    offers = db.execute(
-        "SELECT resource, price, amount FROM offers WHERE user_id=(?)", (cId,)).fetchall()
+    offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE user_id=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    offer_ids = []
+    total_prices = []
+    prices = []
+    resources = []
+    amounts = []
+    offer_types = []
+
+    for offer_idd in offer_ids_list:
+
+        offer_id = offer_idd[0]
+        price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        offer_type = db.execute("SELECT type FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        total_price = int(price * amount)
+
+        prices.append(price)
+        resources.append(resource)
+        amounts.append(amount)
+        offer_types.append(offer_type)
+        total_prices.append(total_price)
+        offer_ids.append(offer_id)
 
     connection.close()
 
-    return render_template("my_offers.html", offers=offers)
+    offers = zip(offer_ids, prices, resources, amounts, offer_types, total_prices)
+
+    return render_template("my_offers.html", cId=cId, offers=offers)
