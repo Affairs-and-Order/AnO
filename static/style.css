@@ -984,13 +984,12 @@ hr {
 }
 
 .templatecontentheaderleft {
-    background: #f7f7f7;
+    background: #F3F3F3;
     font-size: 23px;
     margin: 20px 4px;
     padding: 8px 12px;
     color: rgba(0, 0, 0, 0.8);
     border-radius: 4px;
-    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .templatecontentheadercenter {
@@ -2368,6 +2367,24 @@ button {
 .unitcard:focus {
     top: 0;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+}
+
+.unitcard:hover .unitcardcheck {
+    opacity: 1;
+    margin-left: 0;
+}
+
+.unitcardcheck {
+    width: 80%;
+    background: #00a9e1;
+    color: white;
+    padding: 6px 0;
+    margin: auto;
+    position: static;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
+    opacity: 0;
+    transition: all 0.3s;
+    margin-left: -15px;
 }
 
 
