@@ -1252,17 +1252,17 @@ hr {
     background-color: rgba(0, 0, 0, 0);
 }
 
-input[type=radio]:checked~.check {
+.radiodiv li input[type=radio]:checked~.check {
     border: 3px solid #00a7e1;
 }
 
-input[type=radio]:checked~.check::before {
+.radiodiv li input[type=radio]:checked~.check::before {
     background: #00a7e1;
     height: 10px;
     width: 10px;
 }
 
-input[type=radio]:checked~label {
+.radiodiv li input[type=radio]:checked~label {
     color: #00a7e1;
 }
 
@@ -2353,6 +2353,7 @@ button {
     transition: all 0.3s ease-in-out;
     background: rgb(252.5, 252.5, 252.5);
     cursor: pointer;
+    opacity: 1;
 }
 
 .unitcard img {
@@ -2369,11 +2370,6 @@ button {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
 }
 
-.unitcard:hover .unitcardcheck {
-    opacity: 1;
-    margin-left: 0;
-}
-
 .unitcardcheck {
     width: 80%;
     background: #00a9e1;
@@ -2385,6 +2381,12 @@ button {
     opacity: 0;
     transition: all 0.3s;
     margin-left: -15px;
+    user-select: none;
+}
+
+.unitcard input[type=checkbox]:checked~.unitcardcheck {
+    opacity: 1;
+    margin-left: 0;
 }
 
 

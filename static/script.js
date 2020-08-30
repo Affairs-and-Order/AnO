@@ -587,3 +587,12 @@ $(document).ready(function() {
     val = numberWithCommas(val);
     $('#resourcetag').text(val);
 });
+
+$(document).ready(function() {
+    var limit = 3;
+    $('input.warcheckbox').on('change', function(evt) {
+        if ($(this).siblings(':checked').length >= limit) {
+            this.checked = false;
+        }
+    });
+});
