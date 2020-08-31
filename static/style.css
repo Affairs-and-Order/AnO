@@ -1331,6 +1331,7 @@ hr {
     max-width: 40vw;
     max-height: 40vh;
     box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    font-family: sans-serif;
 }
 
 @media all and (max-width: 600px) {
