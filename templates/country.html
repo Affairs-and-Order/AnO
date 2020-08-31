@@ -1340,25 +1340,28 @@
 
             <h2 class="templatecontentheaderleft">Trade</h2>
 
+            <form method="POST">
             <div class="infodiv">
                 <div class="templatedivflex2 divflex2center">
                     <div class="templatedivflex2left flexchildvanilla">
 
                         <select name="resource" class="templateselect">
-
                             <option disabled="true" selected="selected">Choose one</option>
-                            <option value="gold" class="templateoption">Gold</option>
-                            <option value="bauxite" class="templateoption">Bauxite</option>
-                            <option value="plutonium" class="templateoption">Plutionium</option>
-                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
-                            <option value="uranium" class="templateoption">Uranium</option>
-                            <option value="thorium" class="templateoption">Thorium</option>
-                            <option value="iron" class="templateoption">Iron</option>
-                            <option value="coal"class="templateoption">Coal</option>
+                            <option value="rations" class="templateoption">Rations</option>
                             <option value="oil" class="templateoption">Oil</option>
+                            <option value="coal" class="templateoption">Coal</option>
+                            <option value="uranium" class="templateoption">Uranium</option>
+                            <option value="bauxite" class="templateoption">Bauxite</option>
+                            <option value="iron" class="templateoption">Iron</option>
                             <option value="lead" class="templateoption">Lead</option>
-                            <option value="silicon" class="templateoption">Silicon</option>
-                            <option value="copper" class="templateoption">Copper</option>
+                            <option value="copper"class="templateoption">Copper</option>
+                            <option value="components" class="templateoption">Components</option>
+                            <option value="steel" class="templateoption">Steel</option>
+                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+                            <option value="copper_plates" class="templateoption">Copper Plates</option>
+                            <option value="aluminium" class="templateoption">Aluminium</option>
+                            <option value="gasoline" class="templateoption">Gasoline</option>
+                            <option value="ammunition" class="templateoption">Ammunition</option>
                         </select>
 
 
@@ -1378,7 +1381,7 @@
                 <div class="templatedivflex2 divflex2center">
                     <div class="templatedivflex2left">
 
-                        <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                        <button formaction="/post_trade_offer/buy/{{ cId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             payments
                             </span>Buy offer</button>
 
@@ -1386,11 +1389,12 @@
 
                     <div class="templatedivflex2left">
 
-                        <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                        <button formaction="/post_trade_offer/sell/{{ cId }}" type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             payments
                             </span>Sell Offer</button>
 
                     </div>
+                    </form>
 
                 </div>
             </div>

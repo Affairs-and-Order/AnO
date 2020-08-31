@@ -21,7 +21,7 @@
                     <th>Action</th>
                 </tr>
 
-                {% for offer_id, price, resource, amount, type, total_price in offers %}
+                {% for offer_id, price, resource, amount, type, total_price in my_offers %}
                 <tr>
                     <!-- Type -->
                     {% if type == "buy" %}
@@ -69,15 +69,17 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
+                    <th>User</th>
                     <th>Type</th>
                     <th>Resource</th>
                     <th>Price</th>
                     <th>Action</th>
                 </tr>
 
-                {% for offer_id, price, resource, amount, type, total_price in offers %}
+                {% for offer_id, price, resource, amount, type, total_price, offerer_id, offerer_name in trades %}
                 <tr>
                     <!-- Type -->
+                    <td><a href="/country/id={{ offerer_id }}">{{ offerer_name }}</a></td>
                     {% if type == "buy" %}
                     <td>Buying</a>
                     </td>
