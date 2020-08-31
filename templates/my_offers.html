@@ -8,6 +8,8 @@
         <div class="templatedivad"></div>
     </div>
 
+    <div class="templatedivcontent">
+
         <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
 
         <div class="templateoutertablediv">
@@ -27,37 +29,94 @@
                     </td>
                     {% elif type == "sell" %}
                     <td>Selling</a>
-                    {% endif %}
+                        {% endif %}
 
-                    <!-- Resource -->
-                    <td>
-                        {% if resource == "rations" %}
-                        <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" /> {% elif resource == "uranium" %}
-                        <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" /> {% elif resource == "oil" %}
-                        <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" /> {% elif resource == "coal" %}
-                        <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
-                        <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
-                        <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span>{{ amount }}
-                    </td>
+                        <!-- Resource -->
+                        <td>
+                            {% if resource == "rations" %}
+                            <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" /> {% elif resource == "uranium" %}
+                            <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" /> {% elif resource == "oil" %}
+                            <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" /> {% elif resource == "coal" %}
+                            <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
+                            <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
+                            <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span>{{ amount }}
+                        </td>
 
-                    <!-- Price -->
-                    <td>
-                        <div class="center fit">
-                            <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
-                                />${{ total_price }} Total</div>
-                        </div>
-                    </td>
-                    <!-- Delete button -->
-                    <td>
-                    <form method="POST">
-                        <div class="templatedivflex2 divflex2center">
-                            <div class="templatedivflex2left">
-                                <button formaction="/delete/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-                                    check
-                                    </span>Delete Offer</button>
-                        </div>
+                        <!-- Price -->
+                        <td>
+                            <div class="center fit">
+                                <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
+                                    />${{ total_price }} Total</div>
                             </div>
+                        </td>
+                        <!-- Delete button -->
+                        <td>
+                            <form method="POST">
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left">
+                                        <button formaction="/delete/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                    remove_circle_outline
+                                    </span>Delete Offer</button>
+                                    </div>
+                                </div>
+                        </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <h2 class="templatecontentheaderleft">Incomimg Offers</h2>
+
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Type</th>
+                    <th>Resource</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+
+                {% for offer_id, price, resource, amount, type, total_price in offers %}
+                <tr>
+                    <!-- Type -->
+                    {% if type == "buy" %}
+                    <td>Buying</a>
                     </td>
+                    {% elif type == "sell" %}
+                    <td>Selling</a>
+                        {% endif %}
+
+                        <!-- Resource -->
+                        <td>
+                            {% if resource == "rations" %}
+                            <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" /> {% elif resource == "uranium" %}
+                            <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" /> {% elif resource == "oil" %}
+                            <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" /> {% elif resource == "coal" %}
+                            <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
+                            <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
+                            <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% endif %} <span class="hidden">{{ resource }}</span>{{ amount }}
+                        </td>
+
+                        <!-- Price -->
+                        <td>
+                            <div class="center fit">
+                                <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
+                                    />${{ total_price }} Total</div>
+                            </div>
+                        </td>
+                        <!-- Delete button -->
+                        <td>
+                            <form method="POST">
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left">
+                                        <button formaction="/delete/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                    check
+                                    </span>Accept Offer</button>
+                                        <button formaction="/delete/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                        remove_circle_outline
+                                        </span>Decline Offer</button>
+                                    </div>
+                                </div>
+                        </td>
                 </tr>
                 {% endfor %}
             </table>
