@@ -373,3 +373,51 @@ def my_offers():
     offers = zip(offer_ids, prices, resources, amounts, offer_types, total_prices)
 
     return render_template("my_offers.html", cId=cId, offers=offers)
+
+@login_required
+@app.route("/delete_offer/<offer_id>", methods=["POST"])
+def delete_offer(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    offer_owner = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+    # Checks if user owns the offer
+    if cId != offer_owner:
+        return error(400, "You didn't post that offer")
+
+    offer_type = db.execute("SELECT type FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+    if offer_type == "buy":
+
+        amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+        # Gives back the user his money
+        current_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        new_money = current_money + (price * amount)
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+
+    elif offer_type == "sell":
+
+        amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+        current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        current_resource = db.execute(current_resource_statement, (cId,)).fetchone()[0]
+
+        new_resource = current_resource + (resource * amount)
+
+        update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(update_statement, (new_resource, cId))
+
+    db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id,)) # Deletes the offer
+    
+    connection.commit()
+    connection.close()
+    
+    return redirect("/my_offers")
