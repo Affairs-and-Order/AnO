@@ -1517,6 +1517,10 @@ button {
     padding: 0;
 }
 
+.talltabletd {
+    line-height: 60px;
+}
+
 .templatetable {
     padding: 8px;
     margin: 8px auto;
