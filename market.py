@@ -537,3 +537,26 @@ def trade_offer(offer_type, offeree_id):
         connection.close()  # Closes the connection
         return redirect("/market")
 
+
+@login_required
+@app.route("/decline_trade/<trade_id>", methods=["POST"])
+def decline_trade(trade_id):
+
+    if trade_id.isnumeric() == False:
+            return error(400, "Trade id must be numeric")
+
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    trade_offeree = db.execute("SELECT offeree FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    if cId != trade_offeree:
+        return error(400, "You haven't been sent that offer")
+
+    db.execute("DELETE FROM trades WHERE offer_id=(?)", (trade_id,))
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_offers")
