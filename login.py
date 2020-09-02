@@ -15,7 +15,6 @@ from helpers import get_influence, get_coalition_influence
 from app import app
 import bcrypt
 
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
