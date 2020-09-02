@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 import datetime
 import _pickle as pickle
