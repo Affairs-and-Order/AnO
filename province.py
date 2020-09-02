@@ -51,8 +51,7 @@ def province(pId):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        name = db.execute(
-            "SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         population = db.execute(
             "SELECT population FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         pollution = db.execute(

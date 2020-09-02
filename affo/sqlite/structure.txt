@@ -1,3 +1,0 @@
-users (info about users)
-ground (land soldiers)
-stats (stats for users like population, gold, etc)

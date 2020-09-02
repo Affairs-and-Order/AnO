@@ -32,7 +32,26 @@ def generate_province_revenue(): # Runs each turn
 
     'banks_plus': {'consumer_goods': 30},
     'banks_money': 800000, # Costs $800k
+
+    'city_parks': {'happiness': 3},
+    'city_parks_money': 20000, # Costs $20k
+
+    'hospitals': {'happiness': 8},
+    'hospitals_money': 60000,
+
+    'libraries': {'happiness': 5},
+    'libraries_money': 90000,
+    # Add productivity too
+
+    'universities': {'productivity': 12},
+    'universities_money': 150000,
+
+    'monorails': {'productivity': 15},
+    'monorails_money': 210000
+
     }
+
+
 
     conn = sqlite3.connect('affo/aao.db') # connects to db
     db = conn.cursor()
@@ -99,3 +118,6 @@ def generate_province_revenue(): # Runs each turn
         conn.commit()
 
     conn.close()
+
+generate_province_revenue()
+

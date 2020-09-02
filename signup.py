@@ -13,6 +13,7 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
+import bcrypt
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -26,8 +27,8 @@ def signup():
         # gets corresponding form inputs
         username = request.form.get("username")
         email = request.form.get("email")
-        password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
+        password = request.form.get("password").encode('utf-8')
+        confirmation = request.form.get("confirmation").encode('utf-8')
 
         key = request.form.get("key")
 
@@ -37,16 +38,16 @@ def signup():
             return error(400, "Passwords must match.")
         for keys in allKeys:  # lmao shitty way to do it idk why i did this im the epitomy of stupid
             if key == keys[0]:  # i should've just used a fucking select statement
-                # hashes the inputted password
-                hashed = generate_password_hash(
-                    password, method='pbkdf2:sha256', salt_length=32)
+                # Hashes the inputted password
+                hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
+
                 db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(
                     datetime.date.today())))  # creates a new user || added account creation date
-                user = db.execute(
-                    "SELECT id FROM users WHERE username = (?)", (username,)).fetchone()
+
+                user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()[0]
+
                 # set's the user's "id" column to the sessions variable "user_id"
-                session["user_id"] = user[0]
-                session["logged_in"] = True
+                session["user_id"] = user
 
                 db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", ((
                     session["user_id"]), ("Bosfront")))  # TODO  change the default location
@@ -55,13 +56,6 @@ def signup():
                            (session["user_id"],))
                 db.execute("INSERT INTO resources (id) VALUES (?)",
                            (session["user_id"],))
-
-                """
-                db.execute("INSERT INTO ground (id) VALUES (?)", (session["user_id"],)) 
-                db.execute("INSERT INTO air (id) VALUES (?)", (session["user_id"],))
-                db.execute("INSERT INTO water (id) VALUES (?)", (session["user_id"],))
-                db.execute("INSERT INTO special (id) VALUES (?)", (session["user_id"],))
-                """
 
                 db.execute("DELETE FROM keys WHERE key=(?)",
                            (key,))  # deletes the used key

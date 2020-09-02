@@ -223,6 +223,7 @@ def defense():
         # TODO: check is selected unit names are valid
         if nation:
             if len(defense_units) == 3:
+                
                 # default_defense is stored in the db: 'unit1,unit2,unit3'
                 defense_units = ",".join(defense_units)
                 db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))

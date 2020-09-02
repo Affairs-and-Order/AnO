@@ -1,3 +1,0 @@
-We are using SQLite3
-
-If you need help with SQL please contact t0dd#3074 on Discord.

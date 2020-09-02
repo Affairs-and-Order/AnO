@@ -1,12 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
-@font-face {
-    font-family: nexabold;
-    src: url("fonts/nexabold.otf") format('opentype');
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Ubuntu&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -214,11 +206,7 @@ body {
     background: #f7f9fd;
     padding: 0;
     margin: 0;
-    /*font-family: "nexabold";
-                            font-family: 'Baloo 2';
-                            background: #f7f9fd;
-                            */
-    font-family: "Ubuntu", sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     animation: textload 0.5s;
     color: white;
     transition: all 0.3s ease;
@@ -948,6 +936,7 @@ hr {
     padding: 10px 20px;
     text-shadow: 0px 1px 4px #084955;
     text-transform: capitalize;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .advert {
@@ -1003,7 +992,6 @@ hr {
     padding: 8px;
     font-size: 16px;
     color: rgb(0, 0, 0, 0.75);
-    font-family: 'Ubuntu', sans-serif;
     font-weight: normal;
     text-align: justify;
 }
@@ -1013,7 +1001,6 @@ hr {
     padding: 8px;
     font-size: 17px;
     color: rgb(0, 0, 0);
-    font-family: 'Ubuntu', sans-serif;
     font-weight: normal;
     text-align: center;
 }
@@ -1343,8 +1330,8 @@ hr {
     min-height: 40vh;
     max-width: 40vw;
     max-height: 40vh;
-    font-family: "Ubuntu", sans-serif;
     box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    font-family: sans-serif;
 }
 
 @media all and (max-width: 600px) {
@@ -1530,6 +1517,10 @@ button {
     padding: 0;
 }
 
+.talltabletd {
+    line-height: 60px;
+}
+
 .templatetable {
     padding: 8px;
     margin: 8px auto;
@@ -1572,7 +1563,6 @@ button {
     display: table;
     font-weight: 500;
     color: rgba(50, 50, 50, 0.9);
-    font-family: 'Ubuntu', sans-serif;
     font-size: 15px;
     position: relative;
 }
@@ -2371,22 +2361,25 @@ button {
 }
 
 .unitcardcheck {
-    width: 80%;
+    width: 0%;
     background: #00a9e1;
     color: white;
-    padding: 6px 0;
+    padding: 6px 50%;
     margin: auto;
     position: static;
     box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
     opacity: 0;
-    transition: all 0.3s;
     margin-left: -15px;
     user-select: none;
+    transition: width 0.3s, opacity 0s, padding 0s;
 }
 
 .unitcard input[type=checkbox]:checked~.unitcardcheck {
     opacity: 1;
     margin-left: 0;
+    width: 80%;
+    padding: 6px 0;
+    transition: opacity 0.3s, width 0.3s, padding 0.15s;
 }
 
 
