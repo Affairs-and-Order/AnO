@@ -21,18 +21,18 @@ class Military:
         pass
 
     # select only needed units instead of all
-    # TODO: it is not working
     @staticmethod
     def get_particular_unit(cId, particular_units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         units = {}
         for unit in particular_units:
-            # units[unit] = db.execute("SELECT (?) FROM military WHERE id=(?)", (unit, cId)).fetchall()
-            pass
 
-        # connection.close()
-        # print(units)
+            # IMPORTANT: This is SQL injectable change this when move to production
+            units[unit] = db.execute(f"SELECT {unit} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
+        connection.close()
+        return units
 
     @staticmethod
     def get_military(cId):
@@ -88,6 +88,13 @@ class Military:
             "icbms": icbms,
             "nukes": nukes
         }
+
+    # @staticmethod
+    # def get_default_defense(cId):
+    #     connection = sqlite3.connect('affo/aao.db')
+    #     db = connection.cursor()
+    #     default_defense = db.execute("SELECT default_defense FROM nation WHERE nation_id=(?)", (1,)).fetchall()
+    #     connection.close()
 
 class Economy:
     # TODO: expand this to cover all resources
