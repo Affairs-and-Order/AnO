@@ -6,9 +6,16 @@ class TankUnit:
 
     @staticmethod
     def attack(defending_units):
-        damage = 0 # in percentage
-        if 'soldiers' in defending_units:
+
+        # this values are in percentage
+        damage = 0
+        bonus = 0
+
+        if 'soldiers' == defending_units:
             damage += 2
+            bonus += 8
+
+        return (damage, bonus)
 
     def buy(): pass
 
@@ -84,16 +91,19 @@ class Units(Military):
         connection.close()
 
     # Attack with all units contained in selected_units
-    def attack(self):
+    def attack(self, attacker_unit):
         if self.selected_units:
-            unit_types = list(self.selected_units.keys())
 
             # Call interface to unit type
-            for unit_type in unit_types:
-                for interface in self.allUnitInterfaces:
-                    if interface.unit_type == unit_type:
-                        interface.attack(['x'])
-                        break
+            for interface in self.allUnitInterfaces:
+                if interface.unit_type == attacker_unit:
+                    attack_effects = interface.attack('soldiers')
+
+                    # TODO: calculate casulties somehow
+                    self.casualties(attacker_unit, 1)
+
+                    # return bonus chance
+                    return attack_effects[1]
         else:
             return "Units are not attached!"
 
@@ -109,21 +119,27 @@ class Units(Military):
 # DEBUGGING
 if __name__ == "__main__":
     import sqlite3
-    from random import randint
+    from random import uniform
 
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-    default_defense = db.execute("SELECT default_defense FROM nation WHERE nation_id=(?)", (1,)).fetchall()
-    connection.close()
+    defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
+    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
 
-    defender = Units(1, default_defense[0])
-    attacker = Units(2)
-    attacker.attach_units({"artillery": 0, "tanks": 0, "soldiers": 0})
+    # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
+    # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
 
-    for roll in range(3):
+    for i in range(3):
+        print("ROUND", i)
+        random_event = uniform(0, 5)
+        size_chance = attacker.selected_units["tanks"] * 30/1000
+        unit_type_bonuses = attacker.attack('tanks') # tank bonus against soldiers
+        nation1_chance = random_event+size_chance*unit_type_bonuses
 
+        random_event = uniform(0, 5)
+        size_chance = defender.selected_units["soldiers"] * 30/1000
+        unit_type_bonuses = 1
+        nation2_chance = random_event+size_chance*unit_type_bonuses
 
-    # attacker.attack()
-    # defender.save()
+        print(nation1_chance)
+        print(nation2_chance)
 
-    print("SELECTED UNITS", attacker.selected_units)
+    print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
