@@ -76,8 +76,14 @@ class Units(Military):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
+        # IMPORTANT: this is used during development because it is SQL injectable
+        # print("RUN")
+        # db.execute("UPDATE military SET {}=(?) WHERE id=(?)".format("soldiers=0, tanks=123 where id=1 --"), (66, self.user_id))
+
+        connection.commit()
         connection.close()
 
+    # Attack with all units contained in selected_units
     def attack(self):
         if self.selected_units:
             unit_types = list(self.selected_units.keys())
@@ -86,7 +92,7 @@ class Units(Military):
             for unit_type in unit_types:
                 for interface in self.allUnitInterfaces:
                     if interface.unit_type == unit_type:
-                        interface.attack(['x', 'y'])
+                        interface.attack(['x'])
                         break
         else:
             return "Units are not attached!"
@@ -103,6 +109,8 @@ class Units(Military):
 # DEBUGGING
 if __name__ == "__main__":
     import sqlite3
+    from random import randint
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     default_defense = db.execute("SELECT default_defense FROM nation WHERE nation_id=(?)", (1,)).fetchall()
@@ -110,8 +118,12 @@ if __name__ == "__main__":
 
     defender = Units(1, default_defense[0])
     attacker = Units(2)
-
     attacker.attach_units({"artillery": 0, "tanks": 0, "soldiers": 0})
-    attacker.attack()
 
-    print(attacker.selected_units)
+    for roll in range(3):
+
+
+    # attacker.attack()
+    # defender.save()
+
+    print("SELECTED UNITS", attacker.selected_units)
