@@ -13,6 +13,7 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 
+from attack_scripts import Military
 
 app = Flask(__name__)
 
@@ -135,7 +136,7 @@ def generate_province_revenue(): # Runs each turn
     infra_ids = db.execute("SELECT id FROM proInfra").fetchall()
 
     for unit in columns:
-        
+
         plus_data = next(iter(infra[f'{unit}_plus'].items()))
 
         plus_resource = plus_data[0]
@@ -147,14 +148,14 @@ def generate_province_revenue(): # Runs each turn
             pollution_amount = int(infra[f'{unit}_pollution'])
         except KeyError:
             pollution_amount = None
-        
+
         """
         print(f"Unit: {unit}")
         print(f"Add {plus_amount} to {plus_resource}")
         print(f"Remove ${operating_costs} as operating costs")
         print(f"\n")
         """
-        
+
         for province_id in infra_ids:
 
             province_id = province_id[0]
@@ -172,7 +173,7 @@ def generate_province_revenue(): # Runs each turn
                 operating_costs *= unit_amount
                 if pollution_amount != None:
                     pollution_amount *= unit_amount
-                    
+
                 ### ADDING ENERGY
                 current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
                 new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
@@ -329,9 +330,20 @@ def myoffers():
 def war():
     return render_template("war.html")
 
-@app.route("/warchoose", methods=["GET"])
+@app.route("/warchoose", methods=["GET", "POST"])
 def warchoose():
-    return render_template("warchoose.html")
+    cId = session["user_id"]
+
+    normal_units = Military.get_military(cId)
+    special_units = Military.get_special(cId)
+    units = normal_units.copy()
+    units.update(special_units)
+
+    if request.method == "GET":
+        return render_template("warchoose.html", units=units)
+
+    elif request.method == "POST":
+        return "redirect to next page"
 
 @app.route("/waramount", methods=["GET"])
 def waramount():
