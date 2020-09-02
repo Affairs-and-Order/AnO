@@ -1,6 +1,23 @@
 from attack_scripts import Military
+from abc import ABC, abstractmethod
 
-class TankUnit:
+# Blueprint for units
+class BlueprintUnit(ABC):
+
+    """
+    Neccessary variables:
+        - unit_type: used to identify interfaces (i.e. TankUnit, SoldierUnit) for particular units
+        - bonus: used to calculate the battle advantage
+        - damage: used to determine the casualties
+    """
+
+    @abstractmethod
+    def attack(defending_units): pass
+
+    @abstractmethod
+    def buy(amount): pass
+
+class TankUnit(BlueprintUnit):
 
     unit_type = "tanks"
 
@@ -17,11 +34,21 @@ class TankUnit:
 
         return (damage, bonus)
 
-    def buy(): pass
+    def buy(amount): pass
 
-class SoldierUnit:
+class SoldierUnit(BlueprintUnit):
 
     unit_type = "soldiers"
+
+    @staticmethod
+    def attack(defending_units):
+        pass
+
+    def buy(amount): pass
+
+class ArtilleryUnit(BlueprintUnit):
+
+    unit_type = "artillery"
 
     @staticmethod
     def attack(defending_units):
@@ -91,15 +118,17 @@ class Units(Military):
         connection.close()
 
     # Attack with all units contained in selected_units
-    def attack(self, attacker_unit):
+    def attack(self, attacker_unit, target, enemy_unit_object):
         if self.selected_units:
 
             # Call interface to unit type
             for interface in self.allUnitInterfaces:
                 if interface.unit_type == attacker_unit:
-                    attack_effects = interface.attack('soldiers')
+                    attack_effects = interface.attack(target)
 
                     # TODO: calculate casulties somehow
+                    # Maybe migrate the enemy_unit_object.casulties() outside
+                    enemy_unit_object.casualties(target, 1)
                     self.casualties(attacker_unit, 1)
 
                     # return bonus chance
@@ -131,7 +160,7 @@ if __name__ == "__main__":
         print("ROUND", i)
         random_event = uniform(0, 5)
         size_chance = attacker.selected_units["tanks"] * 30/1000
-        unit_type_bonuses = attacker.attack('tanks') # tank bonus against soldiers
+        unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender) # tank bonus against soldiers
         nation1_chance = random_event+size_chance*unit_type_bonuses
 
         random_event = uniform(0, 5)
