@@ -33,8 +33,7 @@ def wars():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    # cId = session["user_id"]
-    cId = 1
+    cId = session["user_id"]
 
     if request.method == "GET":
         normal_units = Military.get_military(cId)
