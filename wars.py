@@ -84,18 +84,18 @@ def wars():
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
 @login_required
-@app.route("/wars/<attackingNation>/defendingNation", methods=["GET", "POST"])
-def wars_route(attackingNation, defendingNation):
+@app.route("/warchoose", methods=["GET", "POST"])
+def warChoose():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
 
     if request.method == "GET":
-        # if the method is get THE USER IS PROBABLY HACKING (or at least they typed in the URL directly which should never happen, maybe by a bookmark), btw I've abused some bugs with this in PnW
+        # user shouldnt access page this way
         return render_template("wars.html")
     if request.method == "POST":
-        # returns ALL the VALUES to warResult.html
+        # returns ALL the VALUES to warchoose.html
         return render_template("wars.html")
         """tanks=tanks, soldiers=soldiers, artillery=artillery,
                                 bombers=bombers, fighters=fighters, apaches=apaches,
@@ -104,9 +104,16 @@ def wars_route(attackingNation, defendingNation):
                                 warsCount=warsCount, defending=defending, attacking=attacking"""
 
 # page 3 where you choose what 3 units to attack
-
+@login_required
+@app.route("/waramount", methods=["POST"])
+def warAmount():
+    return render_template("waramount.html")
 
 # page 4 results and tax set if a morale reaches 0
+@login_required
+@app.route("/warResult", methods=["POST"])
+def warResult():
+    return render_template("warResult.html")
 
 # Endpoint for war declaration
 @login_required
