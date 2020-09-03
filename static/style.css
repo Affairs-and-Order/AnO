@@ -188,6 +188,18 @@
     }
 }
 
+.theme-light {
+    --background: #f7f9fd;
+    --foreground: white;
+    --colorOne: rgb(0, 0, 0);
+}
+
+.theme-dark {
+    --background: #4a4c58;
+    --foreground: #42444e;
+    --colorOne: rgb(255, 255, 255);
+}
+
 body::-webkit-scrollbar {
     width: 14px;
     background: #e3e9f0;
@@ -208,7 +220,6 @@ body {
     margin: 0;
     font-family: 'Ubuntu', sans-serif;
     animation: textload 0.5s;
-    color: white;
     transition: all 0.3s ease;
 }
 
@@ -225,6 +236,7 @@ label {
     display: block;
     opacity: 0.7;
     font-size: 14px;
+    color: var(--colorOne);
 }
 
 hr {
@@ -571,6 +583,7 @@ hr {
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
+    color: white;
 }
 
 .resourceicon:hover {
@@ -600,6 +613,7 @@ hr {
     padding-bottom: 20px;
     overflow-y: hidden;
     overflow-x: hidden;
+    color: var(--colorOne);
 }
 
 .resourcedivcontent:hover {
@@ -735,6 +749,10 @@ hr {
     justify-content: space-around !important;
 }
 
+.full {
+    opacity: 1;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -756,7 +774,7 @@ hr {
 }
 
 .whiteblue {
-    background: #f7f9fd;
+    background: var(--background);
 }
 
 .imageborder {
@@ -973,11 +991,11 @@ hr {
 }
 
 .templatecontentheaderleft {
-    background: #F3F3F3;
+    background: var(--background);
     font-size: 23px;
     margin: 20px 4px;
     padding: 8px 12px;
-    color: rgba(0, 0, 0, 0.8);
+    color: var(--colorOne);
     border-radius: 4px;
 }
 
@@ -985,13 +1003,15 @@ hr {
     text-align: center;
     font-size: 25px;
     margin-top: 16px;
+    color: var(--colorOne);
 }
 
 .templatecontentpleft {
     text-indent: 25px;
     padding: 8px;
     font-size: 16px;
-    color: rgb(0, 0, 0, 0.75);
+    color: var(--colorOne);
+    opacity: 0.7;
     font-weight: normal;
     text-align: justify;
 }
@@ -1000,7 +1020,7 @@ hr {
     text-indent: 25px;
     padding: 8px;
     font-size: 17px;
-    color: rgb(0, 0, 0);
+    color: var(--colorOne);
     font-weight: normal;
     text-align: center;
 }
@@ -1525,7 +1545,7 @@ button {
     padding: 8px;
     margin: 8px auto;
     width: 90%;
-    background: white;
+    background: var(--background);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
@@ -1547,29 +1567,31 @@ button {
 }
 
 .templatetable tr:nth-child(odd) {
-    background: #f5f9fd;
+    background: var(--foreground);
 }
 
 .templatetable tr:nth-child(even) {
-    background: #ffffff;
+    background: var(--background);
 }
 
 .templatetable td {
-    padding: 8px;
     margin: 8px 1%;
     width: 48%;
-    float: left;
     text-align: left;
     display: table;
     font-weight: 500;
-    color: rgba(50, 50, 50, 0.9);
+    color: var(--colorOne);
+    opacity: 0.9;
     font-size: 15px;
     position: relative;
+    float: left;
+    min-height: 30px;
+    line-height: 20px;
 }
 
 .templatetable td:nth-child(even) {
-    float: right;
     text-align: right;
+    float: left;
 }
 
 .templatesmalltd {
@@ -1603,7 +1625,7 @@ button {
     padding: 8px;
     width: 90%;
     margin: 25px auto;
-    background: white;
+    background: var(--background);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
@@ -1848,6 +1870,7 @@ button {
     text-indent: 0;
     animation: templatedivtitleload 0.8s;
     position: relative;
+    opacity: 1;
 }
 
 @media all and (max-width: 1055px) {
@@ -1857,7 +1880,7 @@ button {
 }
 
 .landingpageinforight {
-    background: white;
+    background: var(--foreground);
     box-shadow: 0px 6px 20px 8px #178db860;
     color: black;
     padding: 10px !important;
