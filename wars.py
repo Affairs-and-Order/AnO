@@ -33,37 +33,14 @@ def wars():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    cId = session["user_id"]
+    # cId = session["user_id"]
+    cId = 1
 
     if request.method == "GET":
-        # obtain all ground unit numbers from sql table
-        tanks = db.execute(
-            "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute(
-            "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute(
-            "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # obtain all air unit numbers from sql table
-        bombers = db.execute(
-            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighters = db.execute(
-            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute(
-            "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # obtain all navy unit numbers from sql table
-        destroyers = db.execute(
-            "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute(
-            "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute(
-            "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # obtain all special unit numbers from sql table
-        spies = db.execute(
-            "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute(
-            "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute(
-            "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        normal_units = Military.get_military(cId)
+        special_units = Military.get_special(cId)
+        units = normal_units.copy()
+        units.update(special_units)
 
         # obtain the user's country from sql table
         yourCountry = db.execute(
@@ -99,10 +76,7 @@ def wars():
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
         # returns ALL the VALUES to wars.html
-        return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-                               bombers=bombers, fighters=fighters, apaches=apaches,
-                               destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-                               spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
+        return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry,
                                warsCount=warsCount, defending=defending, attacking=attacking)
 
 # the flask route that activates when you click attack on a nation in your wars page.
