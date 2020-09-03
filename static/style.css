@@ -203,7 +203,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 body {
-    background: #f7f9fd;
+    background: var(--background);
     padding: 0;
     margin: 0;
     font-family: 'Ubuntu', sans-serif;
@@ -777,7 +777,7 @@ hr {
 }
 
 .templatediv {
-    background: #ffffff;
+    background: var(--foreground);
     width: 90%;
     margin: 50px auto;
     margin-top: 90px;
