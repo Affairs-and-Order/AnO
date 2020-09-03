@@ -15,6 +15,7 @@ from helpers import get_influence, get_coalition_influence
 from app import app
 import bcrypt
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -32,9 +33,12 @@ def login():
             return error(400, "No Password or Username")
 
         # selects data about user, from users
-        user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone()
-
-        hashed_pw = user[4]
+        user = db.execute(
+            "SELECT * FROM users WHERE username = (?)", (username,)).fetchone()
+        try:
+            hashed_pw = user[4]
+        except:
+            return error(403, "Wrong password")
 
         # checks if user exists and if the password is correct
         if user is not None and bcrypt.checkpw(password, hashed_pw):
@@ -53,7 +57,6 @@ def login():
             connection.commit()
             connection.close()
             return redirect("/")  # redirects user to homepage
-
         return error(403, "Wrong password")
 
     else:
