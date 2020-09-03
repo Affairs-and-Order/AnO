@@ -1575,10 +1575,8 @@ button {
 }
 
 .templatetable td {
-    padding: 8px;
     margin: 8px 1%;
     width: 48%;
-    float: left;
     text-align: left;
     display: table;
     font-weight: 500;
@@ -1586,11 +1584,14 @@ button {
     opacity: 0.9;
     font-size: 15px;
     position: relative;
+    float: left;
+    min-height: 30px;
+    line-height: 20px;
 }
 
 .templatetable td:nth-child(even) {
-    float: right;
     text-align: right;
+    float: left;
 }
 
 .templatesmalltd {
