@@ -30,12 +30,12 @@ Whoever lost fewer value in units is the winner. Based on the degree, morale cha
 @login_required
 @app.route("/wars", methods=["GET"])
 def wars():
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
 
     if request.method == "GET":
-
         # obtain all ground unit numbers from sql table
         tanks = db.execute(
             "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
@@ -111,18 +111,18 @@ def wars():
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
 @login_required
-@app.route("/warchoose", methods=["GET", "POST"])
-def warChoose():
+@app.route("/wars/<attackingNation>/defendingNation", methods=["GET", "POST"])
+def wars_route(attackingNation, defendingNation):
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
 
     if request.method == "GET":
-        # user shouldnt access page this way
+        # if the method is get THE USER IS PROBABLY HACKING (or at least they typed in the URL directly which should never happen, maybe by a bookmark), btw I've abused some bugs with this in PnW
         return render_template("wars.html")
     if request.method == "POST":
-        # returns ALL the VALUES to warchoose.html
+        # returns ALL the VALUES to warResult.html
         return render_template("wars.html")
         """tanks=tanks, soldiers=soldiers, artillery=artillery,
                                 bombers=bombers, fighters=fighters, apaches=apaches,
@@ -130,22 +130,10 @@ def warChoose():
                                 spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                 warsCount=warsCount, defending=defending, attacking=attacking"""
 
-
 # page 3 where you choose what 3 units to attack
-@login_required
-@app.route("/waramount", methods=["POST"])
-def warAmount():
-    return render_template("waramount.html")
-
-
 
 
 # page 4 results and tax set if a morale reaches 0
-@login_required
-@app.route("/warResult", methods=["POST"])
-def warResult():
-    return render_template("warResult.html")
-
 
 # Endpoint for war declaration
 @login_required
@@ -181,7 +169,6 @@ def declare_war():
         else:
             return "Can't declare war because the province difference is too big"
 
-
     except TypeError:
         # Redirects the user to an error page
         return error(400, "No such country")
@@ -200,7 +187,7 @@ def find_targets():
     if request.method == "GET":
         return render_template("find_targets.html")
     else:
-        # TODO: maybe delete the sql fetch and create a centralized way to fetch it
+        #TODO: maybe delete the sql fetch and create a centralized way to fetch it
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
@@ -235,7 +222,6 @@ def defense():
         # TODO: check is selected unit names are valid
         if nation:
             if len(defense_units) == 3:
-                
                 # default_defense is stored in the db: 'unit1,unit2,unit3'
                 defense_units = ",".join(defense_units)
                 db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
@@ -247,7 +233,7 @@ def defense():
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
-        # db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+        #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.close()
 
         return render_template("defense.html", units=units)
