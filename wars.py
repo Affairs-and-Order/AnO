@@ -86,22 +86,19 @@ def wars():
 @login_required
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
-
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
     cId = session["user_id"]
 
+    normal_units = Military.get_military(cId)
+    special_units = Military.get_special(cId)
+    units = normal_units.copy()
+    units.update(special_units)
+
     if request.method == "GET":
-        # user shouldnt access page this way
-        return render_template("wars.html")
-    if request.method == "POST":
-        # returns ALL the VALUES to warchoose.html
-        return render_template("wars.html")
-        """tanks=tanks, soldiers=soldiers, artillery=artillery,
-                                bombers=bombers, fighters=fighters, apaches=apaches,
-                                destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-                                spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
-                                warsCount=warsCount, defending=defending, attacking=attacking"""
+        # return "shouldn't access it"
+        return render_template("warchoose.html", units=units)
+
+    elif request.method == "POST":
+        return render_template("warchoose.html", units=units)
 
 # page 3 where you choose what 3 units to attack
 @login_required

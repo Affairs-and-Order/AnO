@@ -330,21 +330,6 @@ def myoffers():
 def war():
     return render_template("war.html")
 
-@app.route("/warchoose", methods=["GET", "POST"])
-def warchoose():
-    cId = session["user_id"]
-
-    normal_units = Military.get_military(cId)
-    special_units = Military.get_special(cId)
-    units = normal_units.copy()
-    units.update(special_units)
-
-    if request.method == "GET":
-        return render_template("warchoose.html", units=units)
-
-    elif request.method == "POST":
-        return "redirect to next page"
-
 @app.route("/waramount", methods=["GET"])
 def waramount():
     return render_template("waramount.html")
