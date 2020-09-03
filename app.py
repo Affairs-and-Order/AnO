@@ -20,7 +20,7 @@ app = Flask(__name__)
 
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from testroutes import testfunc
-from wars import wars, wars_route, find_targets
+from wars import wars, find_targets
 from login import login
 from signup import signup
 from countries import country, countries, update_info
