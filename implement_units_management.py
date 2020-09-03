@@ -1,10 +1,12 @@
-from attack_scripts import Military
 from abc import ABC, abstractmethod
+from attack_scripts import Military
 
 # Blueprint for units
 class BlueprintUnit(ABC):
 
     """
+    Every Unit class should follow and inherit this Blueprint!
+
     Neccessary variables:
         - unit_type: used to identify interfaces (i.e. TankUnit, SoldierUnit) for particular units
         - bonus: used to calculate the battle advantage
@@ -62,7 +64,7 @@ class Units(Military):
                 "flying_fortresses", "fighter_jets", "apaches"
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
-    allUnitInterfaces = [SoldierUnit, TankUnit]
+    allUnitInterfaces = [SoldierUnit, TankUnit, ArtilleryUnit]
 
     """
     When you want the data to be validated call object.attach_units(selected_units)
@@ -77,6 +79,7 @@ class Units(Military):
         self.user_id = user_id
         self.selected_units = selected_units
         self.bonuses = bonuses
+        self.supply_costs = 0
 
     # Validate then attach units
     def attach_units(self, selected_units):
@@ -126,13 +129,10 @@ class Units(Military):
                 if interface.unit_type == attacker_unit:
                     attack_effects = interface.attack(target)
 
-                    # TODO: calculate casulties somehow
-                    # Maybe migrate the enemy_unit_object.casulties() outside
-                    enemy_unit_object.casualties(target, 1)
-                    self.casualties(attacker_unit, 1)
+                    # random cost, change it
+                    self.attack_cost(777)
 
-                    # return bonus chance
-                    return attack_effects[1]
+                    return attack_effects
         else:
             return "Units are not attached!"
 
@@ -143,7 +143,8 @@ class Units(Military):
 
         self.selected_units[unit_type] = new_unit_amount
 
-    def attack_cost(self, costs): pass
+    def attack_cost(self, costs):
+        self.supply_costs += costs
 
 # DEBUGGING
 if __name__ == "__main__":
@@ -156,11 +157,13 @@ if __name__ == "__main__":
     # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
     # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
 
+    print(defender.selected_units)
+
     for i in range(3):
         print("ROUND", i)
         random_event = uniform(0, 5)
         size_chance = attacker.selected_units["tanks"] * 30/1000
-        unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender) # tank bonus against soldiers
+        unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender)[1] # tank bonus against soldiers
         nation1_chance = random_event+size_chance*unit_type_bonuses
 
         random_event = uniform(0, 5)
@@ -171,4 +174,9 @@ if __name__ == "__main__":
         print(nation1_chance)
         print(nation2_chance)
 
-    print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
+        defender_loss = int(attacker.selected_units["tanks"]*0.12)
+        defender.casualties("soldiers", defender_loss)
+
+
+    # print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
+    print(defender.selected_units)

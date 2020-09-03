@@ -169,7 +169,6 @@ def declare_war():
         else:
             return "Can't declare war because the province difference is too big"
 
-
     except TypeError:
         # Redirects the user to an error page
         return error(400, "No such country")
