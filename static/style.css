@@ -193,6 +193,8 @@
     --foreground: white;
     --foregroundTwo: #fdfdfd;
     --foregroundThree: #f7f7f7;
+    --foregroundFour: rgb(246.5, 246.5, 246.5);
+    --foregroundFive: #fdfdfd;
     --border: #e3e9f0;
     --tableOne: #f7f9fd95;
     --tableTwo: white;
@@ -204,6 +206,8 @@
     --foreground: #42444e;
     --foregroundTwo: #4a4c58;
     --foregroundThree: #4a4c58;
+    --foregroundFour: #5d606b;
+    --foregroundFive: #525561;
     --border: #e3e9f000;
     --tableOne: #42444e;
     --tableTwo: #4a4c58;
@@ -1284,17 +1288,19 @@ hr {
 }
 
 .templateselect {
-    border: 1.5px solid #e3e9f0;
     padding: 10px;
     margin: 8px;
     outline: none;
     font-size: 16px;
     transition: all 0.2s;
     cursor: pointer;
-    background: white;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
+    float: none;
 }
 
 .templateselect:hover {
@@ -1304,6 +1310,10 @@ hr {
 .templateselect:focus {
     background-position: -100% 0%;
     box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
+}
+
+.templateselect option {
+    background: var(--background);
 }
 
 .imageinput {
@@ -1345,7 +1355,6 @@ hr {
 }
 
 .templatetextarea {
-    border: 1.5px solid #e3e9f0;
     border-radius: 0px;
     padding: 10px;
     margin: 8px;
@@ -1353,15 +1362,19 @@ hr {
     font-size: 16px;
     transition: all 0.2s;
     background: white;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
     min-width: 40vw;
     min-height: 40vh;
     max-width: 40vw;
     max-height: 40vh;
     box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     font-family: sans-serif;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
+    float: none;
 }
 
 @media all and (max-width: 600px) {
@@ -1712,7 +1725,7 @@ button {
     background: var(--tableTwo);
 }
 
-.templatetable tr:nth-child(even) {
+.inverttable tr:nth-child(even) {
     background: var(--tableOne);
 }
 
@@ -2002,22 +2015,27 @@ button {
 }
 
 .loginsignupinput {
-    border: 1.5px solid #e3e9f0;
-    padding: 13px;
+    padding: 10px;
     outline: none;
     font-size: 16px;
     transition: all 0.2s;
     display: block;
     margin: 14px auto;
-    transition: all 0.3s;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
     float: none;
 }
 
 .loginsignupinput:focus {
     background-position: -100% 0%;
+}
+
+.loginsignupinput::placeholder {
+    color: var(--colorOne);
 }
 
 .loginsignupbutton {
