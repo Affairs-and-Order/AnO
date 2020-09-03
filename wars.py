@@ -30,40 +30,16 @@ Whoever lost fewer value in units is the winner. Based on the degree, morale cha
 @login_required
 @app.route("/wars", methods=["GET"])
 def wars():
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
 
     if request.method == "GET":
-
-        # obtain all ground unit numbers from sql table
-        tanks = db.execute(
-            "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        soldiers = db.execute(
-            "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        artillery = db.execute(
-            "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # obtain all air unit numbers from sql table
-        bombers = db.execute(
-            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighters = db.execute(
-            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        apaches = db.execute(
-            "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # obtain all navy unit numbers from sql table
-        destroyers = db.execute(
-            "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        cruisers = db.execute(
-            "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        submarines = db.execute(
-            "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        # obtain all special unit numbers from sql table
-        spies = db.execute(
-            "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        icbms = db.execute(
-            "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        nukes = db.execute(
-            "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        normal_units = Military.get_military(cId)
+        special_units = Military.get_special(cId)
+        units = normal_units.copy()
+        units.update(special_units)
 
         # obtain the user's country from sql table
         yourCountry = db.execute(
@@ -99,10 +75,7 @@ def wars():
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
         # returns ALL the VALUES to wars.html
-        return render_template("wars.html", tanks=tanks, soldiers=soldiers, artillery=artillery,
-                               bombers=bombers, fighters=fighters, apaches=apaches,
-                               destroyers=destroyers, cruisers=cruisers, submarines=submarines,
-                               spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
+        return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry,
                                warsCount=warsCount, defending=defending, attacking=attacking)
 
 # the flask route that activates when you click attack on a nation in your wars page.
@@ -130,22 +103,17 @@ def warChoose():
                                 spies=spies, icbms=icbms, nukes=nukes, cId=cId, yourCountry=yourCountry,
                                 warsCount=warsCount, defending=defending, attacking=attacking"""
 
-
 # page 3 where you choose what 3 units to attack
 @login_required
 @app.route("/waramount", methods=["POST"])
 def warAmount():
     return render_template("waramount.html")
 
-
-
-
 # page 4 results and tax set if a morale reaches 0
 @login_required
 @app.route("/warResult", methods=["POST"])
 def warResult():
     return render_template("warResult.html")
-
 
 # Endpoint for war declaration
 @login_required
@@ -181,7 +149,6 @@ def declare_war():
         else:
             return "Can't declare war because the province difference is too big"
 
-
     except TypeError:
         # Redirects the user to an error page
         return error(400, "No such country")
@@ -200,7 +167,7 @@ def find_targets():
     if request.method == "GET":
         return render_template("find_targets.html")
     else:
-        # TODO: maybe delete the sql fetch and create a centralized way to fetch it
+        #TODO: maybe delete the sql fetch and create a centralized way to fetch it
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
@@ -235,7 +202,6 @@ def defense():
         # TODO: check is selected unit names are valid
         if nation:
             if len(defense_units) == 3:
-                
                 # default_defense is stored in the db: 'unit1,unit2,unit3'
                 defense_units = ",".join(defense_units)
                 db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
@@ -247,7 +213,7 @@ def defense():
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
-        # db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+        #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.close()
 
         return render_template("defense.html", units=units)

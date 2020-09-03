@@ -30,8 +30,8 @@ class Military:
             "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         bombers = db.execute(
             "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighters = db.execute(
-            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighter_jets = db.execute(
+            "SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute(
             "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         destroyers = db.execute(
@@ -48,7 +48,7 @@ class Military:
             "soldiers": soldiers,
             "artillery": artillery,
             "bombers": bombers,
-            "fighters": fighters,
+            "fighter_jets": fighter_jets,
             "apaches": apaches,
             "destroyers": destroyers,
             "cruisers": cruisers,
