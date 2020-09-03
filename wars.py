@@ -35,41 +35,39 @@ def wars():
     cId = session["user_id"]
 
     if request.method == "GET":
-        try:
-            # obtain all ground unit numbers from sql table
-            tanks = db.execute(
-                "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            soldiers = db.execute(
-                "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            artillery = db.execute(
-                "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            # obtain all air unit numbers from sql table
-            bombers = db.execute(
-                "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            fighters = db.execute(
-                "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            apaches = db.execute(
-                "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            # obtain all navy unit numbers from sql table
-            destroyers = db.execute(
-                "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            cruisers = db.execute(
-                "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            submarines = db.execute(
-                "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            # obtain all special unit numbers from sql table
-            spies = db.execute(
-                "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            icbms = db.execute(
-                "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-            nukes = db.execute(
-                "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
-            # obtain the user's country from sql table
-            yourCountry = db.execute(
-                "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
-        except:
-            return "something in the SQL table could not execute. contact admins."
+        # obtain all ground unit numbers from sql table
+        tanks = db.execute(
+            "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute(
+            "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute(
+            "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # obtain all air unit numbers from sql table
+        bombers = db.execute(
+            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighters = db.execute(
+            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute(
+            "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # obtain all navy unit numbers from sql table
+        destroyers = db.execute(
+            "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute(
+            "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute(
+            "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # obtain all special unit numbers from sql table
+        spies = db.execute(
+            "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute(
+            "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute(
+            "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
+        # obtain the user's country from sql table
+        yourCountry = db.execute(
+            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
         # this creates an array called attacking which stores tuples in the format [(defendingCountryName1, defendingCountryUsername1), (defendingCountryName2, defendingCountryUsername2), ...].
         try:
@@ -202,7 +200,7 @@ def find_targets():
     if request.method == "GET":
         return render_template("find_targets.html")
     else:
-        #TODO: maybe delete the sql fetch and create a centralized way to fetch it
+        # TODO: maybe delete the sql fetch and create a centralized way to fetch it
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
@@ -249,7 +247,7 @@ def defense():
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
-        #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+        # db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.close()
 
         return render_template("defense.html", units=units)

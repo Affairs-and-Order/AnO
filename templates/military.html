@@ -4,7 +4,7 @@
 
     <div class="templatedivtopper militarytopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
-            military_tech
+                military_tech
             </span>Military</h1>
         <div class="templatedivad"></div>
     </div>
@@ -45,26 +45,31 @@
 
                         <h3 class="unitcount">You have {{ units["soldiers"] }} Soldiers</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units</p>
 
                         <ul>Soldiers cost 50 gold to recruit
-                            <br/>
+                            <br />
                         </ul>
 
                         <form action="/soldiers" method="POST">
                             <div class="purchasemilitarydiv">
 
-                                <input class="loginsignupinput" autocomplete="off" name="soldiers" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="soldiers" type="number"
+                                    placeholder="Amount" required />
 
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/soldiers">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/soldiers">Buy</button>
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/soldiers">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/soldiers">Sell</button>
 
                                     </div>
                                 </div>
@@ -91,21 +96,26 @@
 
                         <h3 class="unitcount">You have {{ units["artillery"] }} Artillery</h3>
 
-                        <p class="templatecontentpleft">Artillery are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 artillery / 300 gold)</p>
+                        <p class="templatecontentpleft">Artillery are strong defensive units good at defending your
+                            land. They are completely ineffective against all air and water, but and very powerful
+                            against other land units (1 artillery / 300 gold)</p>
 
                         <form action="/artillery" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="artillery" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="artillery" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/artillery">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/artillery">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/artillery">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/artillery">Sell</button>
 
                                     </div>
                                 </div>
@@ -130,21 +140,26 @@
 
                         <h3 class="unitcount">You have {{ units["tanks"] }} Tanks</h3>
 
-                        <p class="templatecontentpleft">Tanks are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 tank / 150 gold)</p>
+                        <p class="templatecontentpleft">Tanks are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units (1 tank / 150 gold)</p>
 
                         <form action="/tanks" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="tanks" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="tanks" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/tanks">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/tanks">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/tanks">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/tanks">Sell</button>
 
                                     </div>
                                 </div>
@@ -175,22 +190,27 @@
 
                         <h3 class="unitcount">You have {{ units["fighters"] }} Fighter Jets</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 flying fortress / 500 gold)</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units (1 flying fortress / 500 gold)</p>
 
 
                         <form method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="fighters" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="fighters" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/fighters">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/fighters">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/fighters">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/fighters">Sell</button>
 
                                     </div>
                                 </div>
@@ -219,22 +239,27 @@
 
                         <h3 class="unitcount">You have {{ units["bombers"] }} Bombers</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 flying fortress / 500 gold)</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units (1 flying fortress / 500 gold)</p>
 
 
-                        <form action="/flying_fortresses" method="POST">
+                        <form action="/bombers" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/bombers">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/bombers">Sell</button>
 
                                     </div>
                                 </div>
@@ -263,22 +288,27 @@
 
                         <h3 class="unitcount">You have {{ units["apaches"] }} Apaches</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 flying fortress / 500 gold)</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units (1 flying fortress / 500 gold)</p>
 
 
                         <form action="/apaches" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="apaches" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="apaches" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/apaches">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/apaches">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/apaches">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/apaches">Sell</button>
 
                                     </div>
                                 </div>
@@ -311,21 +341,26 @@
 
                         <h3 class="unitcount">You have {{ units["submarines"] }} Submarines</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 destroyer / 500 gold)</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units (1 destroyer / 500 gold)</p>
 
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="submarines" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="submarines" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/submarines">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/submarines">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/submarines">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/submarines">Sell</button>
 
                                     </div>
                                 </div>
@@ -353,21 +388,26 @@
 
                         <h3 class="unitcount">You have {{ units["cruisers"] }} Cruisers</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 destroyer / 500 gold)</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units (1 destroyer / 500 gold)</p>
 
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="cruisers" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="cruisers" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/cruisers">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/cruisers">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/cruisers">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/cruisers">Sell</button>
 
                                     </div>
                                 </div>
@@ -395,21 +435,26 @@
 
                         <h3 class="unitcount">You have {{ units["destroyers"] }} Destroyers</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 destroyer / 500 gold)</p>
+                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land.
+                            They are completely ineffective against all air and water, but and very powerful against
+                            other land units (1 destroyer / 500 gold)</p>
 
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="destroyers" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="destroyers" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/destroyers">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/destroyers">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/destroyers">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/destroyers">Sell</button>
 
                                     </div>
                                 </div>
@@ -441,22 +486,26 @@
 
                         <h3 class="unitcount">You have {{ units["spies"] }} Spies</h3>
 
-                        <p class="templatecontentpleft">(ICBMs) Inter-Coninental Ballistic Missiles as very good at damaging city morale. (1 flying fortress / 500 gold)</p>
+                        <p class="templatecontentpleft">(ICBMs) Inter-Coninental Ballistic Missiles as very good at
+                            damaging city morale. (1 flying fortress / 500 gold)</p>
 
 
                         <form action="/icbm" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="spies" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="spies" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/spies">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/spies">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/spies">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/spies">Sell</button>
 
                                     </div>
                                 </div>
@@ -484,22 +533,26 @@
 
                         <h3 class="unitcount">You have {{ units["icbms"] }} ICBMs</h3>
 
-                        <p class="templatecontentpleft">(ICBMs) Inter-Coninental Ballistic Missiles as very good at damaging city morale. (1 flying fortress / 500 gold)</p>
+                        <p class="templatecontentpleft">(ICBMs) Inter-Coninental Ballistic Missiles as very good at
+                            damaging city morale. (1 flying fortress / 500 gold)</p>
 
 
                         <form action="/icbm" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="icbms" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="icbms" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/icbms">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/icbms">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/icbms">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/icbms">Sell</button>
 
                                     </div>
                                 </div>
@@ -527,22 +580,26 @@
 
                         <h3 class="unitcount">You have {{ units["nukes"] }} Nukes</h3>
 
-                        <p class="templatecontentpleft">(ICBMs) Inter-Coninental Ballistic Missiles as very good at damaging city morale. (1 flying fortress / 500 gold)</p>
+                        <p class="templatecontentpleft">(ICBMs) Inter-Coninental Ballistic Missiles as very good at
+                            damaging city morale. (1 flying fortress / 500 gold)</p>
 
 
                         <form action="/icbm" method="POST">
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="nukes" type="number" placeholder="Amount" required/>
+                                <input class="loginsignupinput" autocomplete="off" name="nukes" type="number"
+                                    placeholder="Amount" required />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/nukes">Buy</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/buy/nukes">Buy</button>
 
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/nukes">Sell</button>
+                                        <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/sell/nukes">Sell</button>
 
                                     </div>
                                 </div>
