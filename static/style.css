@@ -189,8 +189,8 @@
 }
 
 .theme-light {
-    --background: white;
-    --foreground: #f7f9fd;
+    --background: #f7f9fd;
+    --foreground: white;
     --colorOne: rgb(0, 0, 0);
 }
 
