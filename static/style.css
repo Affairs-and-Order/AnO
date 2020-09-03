@@ -1545,7 +1545,7 @@ button {
     padding: 8px;
     margin: 8px auto;
     width: 90%;
-    background: white;
+    background: var(--background);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
@@ -1567,11 +1567,11 @@ button {
 }
 
 .templatetable tr:nth-child(odd) {
-    background: #f5f9fd;
+    background: var(--foreground);
 }
 
 .templatetable tr:nth-child(even) {
-    background: #ffffff;
+    background: var(--background);
 }
 
 .templatetable td {
@@ -1582,7 +1582,8 @@ button {
     text-align: left;
     display: table;
     font-weight: 500;
-    color: rgba(50, 50, 50, 0.9);
+    color: var(--colorOne);
+    opacity: 0.9;
     font-size: 15px;
     position: relative;
 }
@@ -1623,7 +1624,7 @@ button {
     padding: 8px;
     width: 90%;
     margin: 25px auto;
-    background: white;
+    background: var(--background);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
