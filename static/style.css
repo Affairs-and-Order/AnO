@@ -191,12 +191,22 @@
 .theme-light {
     --background: #f7f9fd;
     --foreground: white;
+    --foregroundTwo: #fdfdfd;
+    --foregroundThree: #f7f7f7;
+    --border: #e3e9f0;
+    --tableOne: #f7f9fd95;
+    --tableTwo: white;
     --colorOne: rgb(0, 0, 0);
 }
 
 .theme-dark {
     --background: #4a4c58;
     --foreground: #42444e;
+    --foregroundTwo: #4a4c58;
+    --foregroundThree: #4a4c58;
+    --border: #e3e9f000;
+    --tableOne: #42444e;
+    --tableTwo: #4a4c58;
     --colorOne: rgb(255, 255, 255);
 }
 
@@ -991,7 +1001,7 @@ hr {
 }
 
 .templatecontentheaderleft {
-    background: var(--background);
+    background: var(--foregroundThree);
     font-size: 23px;
     margin: 20px 4px;
     padding: 8px 12px;
@@ -1371,8 +1381,8 @@ hr {
 }
 
 .infodiv {
-    background: rgb(252.5, 252.5, 252.5);
-    border: 1.5px solid #e3e9f0;
+    background: var(--foregroundTwo);
+    border: 1.5px solid var(--border);
     padding: 8px;
     width: max-content;
     margin: auto;
@@ -1545,7 +1555,7 @@ button {
     padding: 8px;
     margin: 8px auto;
     width: 90%;
-    background: var(--background);
+    background: var(--tableTwo);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
@@ -1567,15 +1577,15 @@ button {
 }
 
 .templatetable tr:nth-child(odd) {
-    background: var(--foreground);
+    background: var(--tableOne);
 }
 
 .templatetable tr:nth-child(even) {
-    background: var(--background);
+    background: var(--tableTwo);
 }
 
 .templatetable td {
-    margin: 8px 1%;
+    margin: 15px 1%;
     width: 48%;
     text-align: left;
     display: table;
@@ -1585,8 +1595,7 @@ button {
     font-size: 15px;
     position: relative;
     float: left;
-    min-height: 30px;
-    line-height: 20px;
+    height: 30px;
 }
 
 .templatetable td:nth-child(even) {
@@ -1625,7 +1634,7 @@ button {
     padding: 8px;
     width: 90%;
     margin: 25px auto;
-    background: var(--background);
+    background: var(--tableTwo);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
@@ -1690,6 +1699,21 @@ button {
 
 .templatetable3 td:nth-child(even) {
     padding-left: 5px;
+}
+
+
+/**/
+
+.inverttable {
+    background: var(--tableOne);
+}
+
+.inverttable tr:nth-child(odd) {
+    background: var(--tableTwo);
+}
+
+.templatetable tr:nth-child(even) {
+    background: var(--tableOne);
 }
 
 
@@ -2272,8 +2296,8 @@ button {
 /*WARS*/
 
 .warflexparent {
-    background: rgb(252.5, 252.5, 252.5);
-    border: 1.5px solid #e3e9f0;
+    background: var(--foregroundTwo);
+    border: 1.5px solid var(--border);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     width: 95%;
