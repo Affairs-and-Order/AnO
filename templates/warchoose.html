@@ -131,18 +131,15 @@
 
         <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3</h2>
         <script>
-    console.log('started loading')
     $(document).ready(function () {
         var limit = 3;
-        console.log('loaded');
         $('input.warcheckbox').on('change', function (evt) {
-            console.log('hiiiiiiii'); // this does work every a unit is chosen
+            console.log('hiiiiiiii'); // does show up
             let checkLength = $(this).siblings(':checked').length;
-            console.log(checkLength)
+            console.log(checkLength) // this is always 0 -- needs fixed
             if ($(this).siblings(':checked').length >= limit) {
                 console.log(checked)
                 this.checked = false;
-                console.log(checked)
             }
             let checkElement = document.getElementById("chosenAmountChecked");
             checkElement.innerHTML = $(this).siblings(':checked').length + " / 3";
