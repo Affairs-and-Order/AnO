@@ -101,6 +101,8 @@ def warChoose():
 
     elif request.method == "POST":
         # this post request happens when they click submit, upon which we would redirect to /waramount
+        # typical post redirect get pattern means we should do with the request.form.get values here (the 3 units)
+        # store the 3 values in session and retrieve it in waramount
         return redirect('waramount.html')
 
 # page 2 choose how many of each of your units to send
