@@ -4,6 +4,7 @@ from flask_session import Session
 import sqlite3
 from helpers import login_required, error
 from attack_scripts import Nation, Military
+import time
 
 '''
 Page 1:
@@ -80,9 +81,6 @@ def wars():
 
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
-
-# page 2 choose how many of each of your units to send
-# how to send only 3 three unit variables that were chosen in the last page??
 @login_required
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
@@ -100,11 +98,14 @@ def warChoose():
     elif request.method == "POST":
         return render_template("warchoose.html", units=units)
 
-# page 3 where you choose what 3 units to attack
+# page 2 choose how many of each of your units to send
+# how to send only 3 three unit variables that were chosen in the last page??
 @login_required
 @app.route("/waramount", methods=["POST"])
 def warAmount():
     return render_template("waramount.html")
+
+# page 3 where you choose what 3 units to attack
 
 # page 4 results and tax set if a morale reaches 0
 @login_required
@@ -150,8 +151,8 @@ def declare_war():
         # Redirects the user to an error page
         return error(400, "No such country")
 
-    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message) VALUES (?, ?, ?, ?)",
-    (attacker.id, defender_id, war_type, war_message))
+    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date) VALUES (?, ?, ?, ?, ?)",
+    (attacker.id, defender_id, war_type, war_message, time.time()))
     connection.commit()
     connection.close()
 
