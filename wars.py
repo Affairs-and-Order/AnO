@@ -70,7 +70,7 @@ def wars():
             defending = 0
 
         # WHAT DOES THIS DO??? -- Steven
-        # Selects how many users the user is in -- t0dd
+        # Selects how many wars the user is in -- t0dd
         warsCount = db.execute(
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
