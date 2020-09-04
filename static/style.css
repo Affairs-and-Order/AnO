@@ -29,6 +29,14 @@
     font-feature-settings: 'liga';
 }
 
+.red {
+    color: red !important;
+}
+
+.blue {
+    color: #00a7e1 !important;
+}
+
 .iconblue {
     color: #00a7e1 !important;
     font-size: 30px !important;
@@ -792,6 +800,12 @@ hr {
     background: var(--background);
 }
 
+@media all and (max-width: 1055px) {
+    .whiteblue {
+        flex-direction: column-reverse !important;
+    }
+}
+
 .imageborder {
     background: #e3e9f0;
     padding: 1.5px;
@@ -1042,23 +1056,6 @@ hr {
 
 .templatehr {
     border: 2px solid #e3e9f0;
-}
-
-.templateinfodiv {
-    background: #00a7e170;
-    width: 95%;
-    margin: auto;
-    border-radius: 4px;
-    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
-    overflow: hidden;
-}
-
-.templateinfodiv ul {
-    color: rgba(0, 0, 0, 0.8) !important;
-    padding: 6px 16px!important;
-    transition: all 0.3s;
-    cursor: pointer;
-    margin: 0px !important;
 }
 
 .templatedivbutton {
@@ -1412,6 +1409,31 @@ hr {
     margin: auto;
 }
 
+.notificationdiv {
+    margin: auto;
+    width: fit-content;
+}
+
+.notificationdiv div {
+    margin: 0 10px;
+    padding: 0;
+}
+
+.notificationdiv ul {
+    width: max-content;
+    background: #363945;
+    color: #ffffff;
+    box-shadow: 0 0 20px 0 rgba(58, 59, 69, .55);
+    padding: 10px !important;
+    margin: 6px 0 !important;
+    font-size-adjust: 16px;
+    justify-self: end;
+    height: min-content;
+    margin: auto;
+    margin-right: -50%;
+    border-left: 3px solid #00a7e1;
+}
+
 .templatedivflex2 {
     display: flex;
     justify-content: center;
@@ -1419,7 +1441,7 @@ hr {
 
 @media all and (max-width: 1055px) {
     .templatedivflex2 {
-        display: block;
+        flex-direction: column;
     }
 }
 
@@ -1747,6 +1769,7 @@ button {
     box-shadow: rgba(39, 41, 59, 0.1) 0px 2px 3px 1px;
     padding: 0;
     overflow: hidden;
+    display: flex !important;
 }
 
 .menuflex2 div {
@@ -1759,12 +1782,6 @@ button {
     user-select: none;
     border-collapse: collapse;
     background: var(--foregroundFive);
-}
-
-@media all and (max-width: 600px) {
-    .menuflex2 div {
-        width: 100%;
-    }
 }
 
 .menuflex2 div h3 {
@@ -1842,6 +1859,7 @@ button {
     .landingpagetopper {
         height: fit-content;
         padding-bottom: 35px;
+        min-height: auto;
     }
 }
 
@@ -1995,6 +2013,12 @@ button {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
 }
 
+@media all and (max-width: 600px) {
+    .discordlink {
+        width: 85%;
+    }
+}
+
 
 /*LOGINSIGNUP*/
 
@@ -2044,6 +2068,7 @@ button {
 
 .loginsignupinput::placeholder {
     color: var(--colorOne);
+    opacity: 0.8;
 }
 
 .loginsignupbutton {
@@ -2255,8 +2280,6 @@ button {
 .menuflex div {
     text-align: center;
 }
-
-.smallimage {}
 
 .smallimage img {
     height: 150px;
