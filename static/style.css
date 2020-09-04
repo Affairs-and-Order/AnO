@@ -1978,7 +1978,7 @@ button {
 }
 
 .discordlink {
-    width: 65%;
+    width: 80%;
     border: none;
     display: block;
     margin: 10px auto;
@@ -2044,6 +2044,7 @@ button {
 
 .loginsignupinput::placeholder {
     color: var(--colorOne);
+    opacity: 0.8;
 }
 
 .loginsignupbutton {
