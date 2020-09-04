@@ -2256,6 +2256,8 @@ button {
     text-align: center;
 }
 
+.smallimage {}
+
 .smallimage img {
     height: 150px;
 }

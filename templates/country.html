@@ -272,25 +272,36 @@
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
                 {% for provinceName, provinceId, population, cities, land in provinces %}
                 <tr>
-                    <td><a class="loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
-                            account_balance
-                            </span>{{ provinceName[0] }}</a>
-                        <table class="templatetable3">
-                            <tr>
-                                <td>Population:</td>
-                                <td>{{ population[0] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Cities:</td>
-                                <td>{{ cities[0] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Land:</td>
-                                <td>{{ land[0] }}</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td class="smallimage"><img class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <td>
+                                <table class="templatetable">
+                                    <tr>
+                                        <th class="anchor"><a class="forgotpasscode loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
+                                            account_balance
+                                            </span>{{ provinceName[0] }}</a></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Population:</td>
+                                        <td>{{ population[0] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cities:</td>
+                                        <td>{{ cities[0] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Land:</td>
+                                        <td>{{ land[0] }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </div>
+                        <div class="templatedivflex2left">
+                            <td class="smallimage"><img class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                        </div>
+                    </div>
                 </tr>
                 {% endfor %}
 
