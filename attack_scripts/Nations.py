@@ -6,13 +6,14 @@ path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
 
 class Military:
-    def __init__(self, spies, troops, tanks, artillery, bombers, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
+    # hey marter why do we need this initialize these values inside the class? Isn't those get_military and get_special commands enough? --steven
+    def __init__(self, spies, soldiers, tanks, artillery, bombers, fighters, destroyers, cruisers, submarines, ICBMs, nukes):
         self.spies = spies
-        self.troops = troops
+        self.soldiers = soldiers
         self.tanks = tanks
         self.artilley = artillery
         self.bombers = bombers
-        self.bomberJets = bomberJets # fighters?
+        self.fighters = fighters  # was bomberJets
         self.destroyers = destroyers
         self.cruisers = cruisers
         self.submarines = submarines
@@ -175,12 +176,12 @@ class Nation:
             if attackTypes[1] == attack:
                 currentAttacks[1] = attackTypesHash[attack]
 
-        # super simple fight between two nations troops
+        # super simple fight between two nations soldiers
         print(attackTypes[1])
-        enemyScore = enemyNation.military.troops + \
+        enemyScore = enemyNation.military.soldiers + \
             abs(random.randrange(-2 *
                                  currentAttacks[1], 2 * currentAttacks[1]))
-        homeScore = self.military.troops + \
+        homeScore = self.military.soldiers + \
             abs(random.randrange(-2 *
                                  currentAttacks[0], 2 * currentAttacks[0]))
 
