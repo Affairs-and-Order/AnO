@@ -91,16 +91,17 @@ def wars():
 def warChoose():
 
     if request.method == "GET":
-        # return "shouldn't access it"
-        return render_template("shouldnt access it")
-
-    elif request.method == "POST":
+        # this is upon first landing on this page after the user clicks attack in wars.html
         cId = session["user_id"]
         normal_units = Military.get_military(cId)
-        special_units = Military.get_special(cId)
+        # special_units = Military.get_special(cId)
         units = normal_units.copy()
         # units.update(special_units)
         return render_template("warchoose.html", units=units)
+
+    elif request.method == "POST":
+        # there is no way for the post method to be activated
+        return render_template("blah blah")
 
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
@@ -222,7 +223,7 @@ def defense():
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
-        #db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
+        # db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.close()
 
         return render_template("defense.html", units=units)
