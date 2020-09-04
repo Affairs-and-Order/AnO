@@ -1141,7 +1141,7 @@ hr {
 
 .templatediv ul {
     font-weight: 500;
-    color: black;
+    color: var(--colorOne);
     padding: 0;
     text-align: center;
 }
@@ -1556,7 +1556,8 @@ button {
 }
 
 .smalltable td {
-    height: 12px !important;
+    line-height: 40px !important;
+    height: 0px !important;
     margin: 0;
     padding: 0;
 }
@@ -1599,8 +1600,8 @@ button {
 }
 
 .templatetable td {
-    margin: 15px 1%;
-    width: 48%;
+    margin: 0px 2%;
+    width: 46%;
     text-align: left;
     display: table;
     font-weight: 500;
@@ -1609,7 +1610,8 @@ button {
     font-size: 15px;
     position: relative;
     float: left;
-    height: 30px;
+    line-height: 45px;
+    height: 0;
 }
 
 .templatetable td:nth-child(even) {
@@ -1752,7 +1754,7 @@ button {
     text-transform: uppercase;
     user-select: none;
     border-collapse: collapse;
-    box-shadow: inset 0px 0px 0px 0.75px rgb(246.5, 246.5, 246.5);
+    background: var(--foregroundFive);
 }
 
 @media all and (max-width: 600px) {
@@ -1766,10 +1768,11 @@ button {
     font-size: 19px;
     font-weight: normal;
     letter-spacing: 0.5px;
+    color: var(--colorOne);
 }
 
 .menuflex2 div:hover {
-    background: rgb(246.5, 246.5, 246.5);
+    background: var(--foregroundFour);
 }
 
 .warning {
