@@ -1325,18 +1325,18 @@ hr {
     margin: 8px;
     cursor: pointer;
     user-select: none;
-    border: 1.5px solid #e3e9f0;
     padding: 8px;
     padding-top: 5px;
     outline: none;
     font-size: 16px;
-    transition: all 0.2s;
     display: block;
     margin: 12px auto;
-    transition: all 0.3s;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
     float: none;
 }
 
@@ -1774,7 +1774,7 @@ button {
     box-shadow: rgba(39, 41, 59, 0.1) 0px 2px 3px 1px;
     padding: 0;
     overflow: hidden;
-    display: flex !important;
+    flex-direction: row;
 }
 
 .menuflex2 div {
@@ -2409,6 +2409,10 @@ button {
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+.borderbottom {
+    flex-direction: row;
 }
 
 .borderbottom div {
