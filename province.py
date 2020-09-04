@@ -129,9 +129,10 @@ def createprovince():
         return redirect("/provinces")
     else:
 
-        # current_province_amount = db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(?)", (cId)).fetchone()[0]
-        # multiplier = 
-        return render_template("createprovince.html")
+        current_province_amount = db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
+        multiplier = 1 + (0.25 * current_province_amount)
+        price = int(50000 * multiplier)
+        return render_template("createprovince.html", price=price)
 
 
 @login_required
