@@ -100,14 +100,15 @@ def warChoose():
         return render_template("warchoose.html", units=units)
 
     elif request.method == "POST":
-        # there is no way for the post method to be activated
-        return render_template("blah blah")
+        # this post request happens when they click submit, upon which we would redirect to /waramount
+        return redirect('/waramount')
 
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
 @login_required
 @app.route("/waramount", methods=["POST"])
 def warAmount():
+
     return render_template("waramount.html")
 
 # page 3 where you choose what 3 units to attack
