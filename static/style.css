@@ -1859,6 +1859,7 @@ button {
     .landingpagetopper {
         height: fit-content;
         padding-bottom: 35px;
+        min-height: auto;
     }
 }
 
