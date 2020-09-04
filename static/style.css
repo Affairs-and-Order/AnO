@@ -207,6 +207,7 @@
     --tableOne: #f7f9fd95;
     --tableTwo: white;
     --colorOne: rgb(0, 0, 0);
+    --colorTwo: rgb(255, 255, 255);
 }
 
 .theme-dark {
@@ -220,6 +221,7 @@
     --tableOne: #42444e;
     --tableTwo: #4a4c58;
     --colorOne: rgb(255, 255, 255);
+    --colorTwo: rgb(255, 255, 255);
 }
 
 body::-webkit-scrollbar {
@@ -636,7 +638,7 @@ hr {
     padding-bottom: 20px;
     overflow-y: hidden;
     overflow-x: hidden;
-    color: var(--colorOne);
+    color: white;
 }
 
 .resourcedivcontent:hover {
@@ -1233,7 +1235,7 @@ hr {
     cursor: pointer;
     transition: all 0.25s;
     color: var(--colorOne);
-    opacity: 1 !important;
+    opacity: 0.8 !important;
 }
 
 .radiodiv li:hover label {
@@ -1252,6 +1254,7 @@ hr {
     z-index: 5;
     transition: all .25s;
     margin: auto;
+    opacity: 0.8 !important;
 }
 
 .radiodiv li:hover .check {
@@ -2200,7 +2203,14 @@ button {
 .countryactionsclick,
 .countryeditclick {
     background: #00a7e1 !important;
-    color: white !important;
+}
+
+.countryviewclick h3,
+.countryrevenueclick h3,
+.countrynewsclick h3,
+.countryactionsclick h3,
+.countryeditclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 
@@ -2229,6 +2239,11 @@ button {
     color: white !important;
 }
 
+.provincecityclick h3,
+.provincelandclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 .electricity,
 .retail,
 .works {
@@ -2248,6 +2263,12 @@ button {
     color: white !important;
 }
 
+.cityelectricityclick h3,
+.cityretailclick h3,
+.cityworksclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 .military,
 .industry,
 .processing {
@@ -2265,6 +2286,12 @@ button {
 .landprocessingclick {
     background: #00a7e1 !important;
     color: white !important;
+}
+
+.landmilitaryclick h3,
+.landindustryclick h3,
+.landprocessingclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 
@@ -2331,6 +2358,13 @@ button {
     color: white !important;
 }
 
+.militarylandclick h3,
+.militaryairclick h3,
+.militarywaterclick h3,
+.militaryspecialclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 
 /*create_coalition*/
 
@@ -2381,7 +2415,6 @@ button {
     border-radius: 0px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     background: #00a7e1;
-    color: rgb(255, 255, 255);
     transition: all 0.3s;
     transform: scale(0.995);
     margin: 8px;
@@ -2396,6 +2429,10 @@ button {
 
 .borderbottom div:hover {
     transform: scale(0.985);
+}
+
+.borderbottom div h2 {
+    color: rgb(255, 255, 255) !important;
 }
 
 
@@ -2424,6 +2461,14 @@ button {
 .coalitionmemberclick {
     background: #00a7e1 !important;
     color: white !important;
+}
+
+.coalitiongeneralclick h3,
+.coalitionaboutclick h3,
+.coalitionjoinclick h3,
+.coalitionleaderclick h3,
+.coalitionmemberclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 .applicanttable {
