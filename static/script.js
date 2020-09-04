@@ -590,10 +590,13 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     var limit = 3;
-    $('input.warcheckbox').on('change', function(evt) {
+    $('input.warcheckbox').on('change', function (evt) {
+        let checked = $(this).siblings(':checked').length;
         if ($(this).siblings(':checked').length >= limit) {
             this.checked = false;
         }
+        let checkElement = document.getElementById("chosenAmountChecked");
+        checkElement.innerHTML = $(this).siblings(':checked').length + " / 3";
     });
 });
 
