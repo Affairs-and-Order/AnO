@@ -100,17 +100,53 @@ def warChoose():
         return render_template("warchoose.html", units=units)
 
     elif request.method == "POST":
-        # there is no way for the post method to be activated
-        return render_template("blah blah")
+        # this post request happens when they click submit, upon which we would redirect to /waramount
+        # typical post redirect get pattern means we should do with the request.form.get values here (the 3 units)
+        # store the 3 values in session and retrieve it in waramount later
+        session["attack_units"] = request.form.get("attack_units")
+        # could also just retrieve all 9 possibilities from warchoose and just remove the ones that are null if that's easier for you Carson -- Steven
+        '''
+        session["soldiers"] = request.form.get("attack_units")
+        session["tanks"] = request.form.get("attack_units")
+        session["artillery"] = request.form.get("attack_units")
+        ET CETERA
+        session["attack_units"] = request.form.get("attack_units")
+        session["attack_units"] = request.form.get("attack_units")
+        session["attack_units"] = request.form.get("attack_units")
+
+        session["attack_units"] = request.form.get("attack_units")
+        session["attack_units"] = request.form.get("attack_units")
+        session["attack_units"] = request.form.get("attack_units")
+
+        '''
+
+        return redirect('waramount.html')
+        # return redirect(url_for('warAmount'))
 
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
 @login_required
-@app.route("/waramount", methods=["POST"])
+@app.route("/waramount", methods=["GET, POST"])
 def warAmount():
-    return render_template("waramount.html")
+    if request.method == "GET":
+
+        attack_units = session["attack_units"]
+
+        return render_template("waramount.html")
+    else:
+        return redirect('warTarget')
 
 # page 3 where you choose what 3 units to attack
+@login_required
+@app.route("/wartarget", methods=["GET, POST"])
+def warTarget():
+    if request.method == "GET":
+
+        attack_units = session["attack_units"]
+
+        return render_template("wartarget.html")
+    else:
+        return redirect('warResult')
 
 # page 4 results and tax set if a morale reaches 0
 @login_required

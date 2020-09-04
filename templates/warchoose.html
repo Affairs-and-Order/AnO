@@ -129,7 +129,24 @@
             </label>
         </div>
 
-        <h2 class="templatecontentheadercenter">[[ chosenAmount ]] / 3</h2>
+        <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3</h2>
+        <script>
+    $(document).ready(function () {
+        var limit = 3;
+        $('input.warcheckbox').on('change', function (evt) {
+            console.log('hiiiiiiii'); // does show up
+            let checkLength = $(this).siblings(':checked').length;
+            console.log(checkLength) // this is always 0 -- needs fixed
+            if ($(this).siblings(':checked').length >= limit) {
+                console.log(checked)
+                this.checked = false;
+            }
+            let checkElement = document.getElementById("chosenAmountChecked");
+            checkElement.innerHTML = $(this).siblings(':checked').length + " / 3";
+            console.log('does it get to this point')
+        });
+    });
+            </script>
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
