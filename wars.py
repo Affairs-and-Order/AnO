@@ -93,11 +93,10 @@ def warChoose():
 
     if request.method == "GET":
         # return "shouldn't access it"
-        return render_template("warchoose.html", units=units)
+        return render_template("shouldnt access it")
 
     elif request.method == "POST":
         cId = session["user_id"]
-
         normal_units = Military.get_military(cId)
         special_units = Military.get_special(cId)
         units = normal_units.copy()
