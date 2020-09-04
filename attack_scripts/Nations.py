@@ -4,14 +4,15 @@ import os
 
 path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
+
 class Military:
-    def __init__(self, spies, troops, tanks, artillery, flyingForts, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
+    def __init__(self, spies, troops, tanks, artillery, bombers, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
         self.spies = spies
         self.troops = troops
         self.tanks = tanks
         self.artilley = artillery
-        self.flyingForts = flyingForts
-        self.bomberJets = bomberJets
+        self.bombers = bombers
+        self.bomberJets = bomberJets # fighters?
         self.destroyers = destroyers
         self.cruisers = cruisers
         self.submarines = submarines
@@ -30,8 +31,8 @@ class Military:
             "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         bombers = db.execute(
             "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        fighter_jets = db.execute(
-            "SELECT fighter_jets FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighters = db.execute(
+            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         apaches = db.execute(
             "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         destroyers = db.execute(
@@ -48,7 +49,7 @@ class Military:
             "soldiers": soldiers,
             "artillery": artillery,
             "bombers": bombers,
-            "fighter_jets": fighter_jets,
+            "fighters": fighters,
             "apaches": apaches,
             "destroyers": destroyers,
             "cruisers": cruisers,
@@ -73,6 +74,7 @@ class Military:
             "nukes": nukes
         }
 
+
 class Economy:
     # TODO: expand this to cover all resources
     def __init__(self, nationID):
@@ -87,32 +89,41 @@ class Economy:
         db = connection.cursor()
 
         # TODO fix this when the databases changes and update to include all resources
-        self.gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
+        self.gold = db.execute(
+            "SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
 
     def grant_resources(self, resource, amount):
-        connection = sqlite3.connect(path)  # TODO find a way to get the database to work on relative directories
+        # TODO find a way to get the database to work on relative directories
+        connection = sqlite3.connect(path)
         db = connection.cursor()
-        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)", (resource, amount, self.nationID))
+        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
+                   (resource, amount, self.nationID))
 
         connection.commit()
 
     def transfer_resources(self, resource, amount, destinationID):
-        connection = sqlite3.connect(path) #TODO find a way to get the database to work on relative directories
+        # TODO find a way to get the database to work on relative directories
+        connection = sqlite3.connect(path)
         db = connection.cursor()
 
         # get amount of resource
-        originalUser = db.execute("SELECT (?) FROM stats WHERE id=(?)", (resource, self.nationID)).fetchone()[0]
-        destinationUser = db.execute("SELECT (?) FROM stats WHERE id=(?)", (resource, destinationID)).fetchone()[0]
+        originalUser = db.execute(
+            "SELECT (?) FROM stats WHERE id=(?)", (resource, self.nationID)).fetchone()[0]
+        destinationUser = db.execute(
+            "SELECT (?) FROM stats WHERE id=(?)", (resource, destinationID)).fetchone()[0]
 
         # subtracts the resource from one nation to another
         originalUser -= amount
         destinationUser += amount
 
         # writes changes in db
-        db.execute("UPDATE stats SET (?) = (?) WHERE id=(?)", (resource, originalUser, self.nationID))
-        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)", (resource, destinationUser, destinationID))
+        db.execute("UPDATE stats SET (?) = (?) WHERE id=(?)",
+                   (resource, originalUser, self.nationID))
+        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
+                   (resource, destinationUser, destinationID))
 
         connection.commit()
+
 
 class Nation:
 
@@ -131,7 +142,7 @@ class Nation:
     """
 
     def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
-        self.id = nationID # integer ID
+        self.id = nationID  # integer ID
 
         self.military = military
         self.economy = economy
@@ -143,7 +154,8 @@ class Nation:
 
         # Database management
         # TODO: find a more effective way to handle database stuff
-        path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+        path = ''.join(
+            [os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
         self.connection = sqlite3.connect(path)
         self.db = self.connection.cursor()
 
@@ -151,9 +163,9 @@ class Nation:
         pass
 
     def fight(self, enemyNation, attackTypes):
-        #attackTypes is a tuple
+        # attackTypes is a tuple
         attackList = ["water", "ground", "air"]
-        attackTypesHash = {"water": 1 ,"ground": 2 ,"air": 3}
+        attackTypesHash = {"water": 1, "ground": 2, "air": 3}
 
         currentAttacks = list(attackTypes)
 
@@ -163,11 +175,14 @@ class Nation:
             if attackTypes[1] == attack:
                 currentAttacks[1] = attackTypesHash[attack]
 
-
         # super simple fight between two nations troops
         print(attackTypes[1])
-        enemyScore = enemyNation.military.troops + abs(random.randrange(-2 * currentAttacks[1], 2 * currentAttacks[1]))
-        homeScore = self.military.troops + abs(random.randrange(-2 * currentAttacks[0], 2 * currentAttacks[0]))
+        enemyScore = enemyNation.military.troops + \
+            abs(random.randrange(-2 *
+                                 currentAttacks[1], 2 * currentAttacks[1]))
+        homeScore = self.military.troops + \
+            abs(random.randrange(-2 *
+                                 currentAttacks[0], 2 * currentAttacks[0]))
 
         if enemyScore > homeScore:
             print("Enemy Win | ID " + str(enemyNation.id))
@@ -182,30 +197,35 @@ class Nation:
 
         if self.provinces == None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
-            provinces_number = self.db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
+            provinces_number = self.db.execute(
+                "SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
             self.provinces["provinces_number"] = provinces_number
 
             if provinces_number > 0:
-                provinces = db.execute("SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
+                provinces = db.execute(
+                    "SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
                 for province in provinces:
                     self.provinces["province_stats"][province[1]] = {
-                    "userId": province[0],
-                    "provinceName": province[2],
-                    "cityCount": province[3],
-                    "land": province[4],
-                    "population": province[5],
-                    "energy": province[6],
-                    "pollution": province[7]
+                        "userId": province[0],
+                        "provinceName": province[2],
+                        "cityCount": province[3],
+                        "land": province[4],
+                        "population": province[5],
+                        "energy": province[6],
+                        "pollution": province[7]
                     }
 
         return self.provinces
 
     def get_current_wars(self):
-        id_list = self.db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
+        id_list = self.db.execute(
+            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
         print(id_list)
 
-    def printStatistics (self):
-        print("Nation {}:\nWins {}\nLosses: {}".format(self.id, self.wins, self.losses))
+    def printStatistics(self):
+        print("Nation {}:\nWins {}\nLosses: {}".format(
+            self.id, self.wins, self.losses))
+
 
 # DEBUGGING:
 if __name__ == "__main__":
