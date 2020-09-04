@@ -102,7 +102,7 @@ def warChoose():
     elif request.method == "POST":
         # this post request happens when they click submit, upon which we would redirect to /waramount
         # typical post redirect get pattern means we should do with the request.form.get values here (the 3 units)
-        # store the 3 values in session and retrieve it in waramount
+        # store the 3 values in session and retrieve it in waramount later
         session["attack_units"] = request.form.get("attack_units")
         return redirect('waramount.html')
         # return redirect(url_for('warAmount'))
