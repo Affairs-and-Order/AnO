@@ -203,7 +203,7 @@ class Nation:
             self.provinces["provinces_number"] = provinces_number
 
             if provinces_number > 0:
-                provinces = db.execute(
+                provinces = self.db.execute(
                     "SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
                 for province in provinces:
                     self.provinces["province_stats"][province[1]] = {
