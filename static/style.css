@@ -1978,7 +1978,7 @@ button {
 }
 
 .discordlink {
-    width: 80%;
+    width: 65%;
     border: none;
     display: block;
     margin: 10px auto;
@@ -1993,6 +1993,12 @@ button {
 .discordlink:hover {
     top: 0;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+}
+
+@media all and (max-width: 600px) {
+    .discordlink {
+        width: 85%;
+    }
 }
 
 
