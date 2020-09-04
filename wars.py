@@ -101,7 +101,7 @@ def warChoose():
 
     elif request.method == "POST":
         # this post request happens when they click submit, upon which we would redirect to /waramount
-        return redirect('/waramount')
+        return redirect('waramount.html')
 
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
