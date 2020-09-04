@@ -35,7 +35,7 @@ def get_influence(country_id):
     connection.commit()
     # air
     bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-    fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+    fighters = db.execute("SELECT fighters FROM air WHERE id=(?)", (cId,)).fetchone()[0]
     apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
     # water
@@ -49,7 +49,7 @@ def get_influence(country_id):
     nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
 
     military = tanks + soldiers + artillery + \
-    bombers + fighter_jets + apaches +\
+    bombers + fighters + apaches +\
     destroyers + cruisers + submarines + \
     spies + icbms + nukes"""
 
