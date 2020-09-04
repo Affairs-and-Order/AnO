@@ -105,6 +105,7 @@ def warChoose():
         # store the 3 values in session and retrieve it in waramount
         session["attack_units"] = request.form.get("attack_units")
         return redirect('waramount.html')
+        # return redirect(url_for('warAmount'))
 
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
