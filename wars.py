@@ -81,8 +81,7 @@ def wars():
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
 
         # returns ALL the VALUES to wars.html
-        return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry,
-                               warsCount=warsCount, defending=defending, attacking=attacking)
+        return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
 
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
@@ -100,7 +99,7 @@ def warChoose():
         normal_units = Military.get_military(cId)
         special_units = Military.get_special(cId)
         units = normal_units.copy()
-        units.update(special_units)
+        # units.update(special_units)
         return render_template("warchoose.html", units=units)
 
 # page 2 choose how many of each of your units to send
