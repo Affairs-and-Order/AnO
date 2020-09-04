@@ -800,6 +800,12 @@ hr {
     background: var(--background);
 }
 
+@media all and (max-width: 1055px) {
+    .whiteblue {
+        flex-direction: column-reverse !important;
+    }
+}
+
 .imageborder {
     background: #e3e9f0;
     padding: 1.5px;
@@ -1435,7 +1441,7 @@ hr {
 
 @media all and (max-width: 1055px) {
     .templatedivflex2 {
-        display: block;
+        flex-direction: column;
     }
 }
 
