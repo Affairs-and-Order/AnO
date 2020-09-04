@@ -29,6 +29,14 @@
     font-feature-settings: 'liga';
 }
 
+.red {
+    color: red !important;
+}
+
+.blue {
+    color: #00a7e1 !important;
+}
+
 .iconblue {
     color: #00a7e1 !important;
     font-size: 30px !important;
