@@ -106,26 +106,31 @@ def province(pId):
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
 def createprovince():
+
+    cId = session["user_id"]
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
     if request.method == "POST":
-
-        cId = session["user_id"]
-
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
 
         pName = request.form.get("name")
 
-        db.execute(
-            "INSERT INTO provinces (userId, provinceName) VALUES (?, ?)", (cId, pName))
-        province_id = db.execute(
-            "SELECT id FROM provinces WHERE userId=(?) AND provinceName=(?)", (cId, pName)).fetchone()[0]
+        db.execute("INSERT INTO provinces (userId, provinceName) VALUES (?, ?)", (cId, pName))
+        province_id = db.execute("SELECT id FROM provinces WHERE userId=(?) AND provinceName=(?)", (cId, pName)).fetchone()[0]
         db.execute("INSERT INTO proInfra (id) VALUES (?)", (province_id,))
+        current_user_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        province_price = 50000 # Provinces cost 50k
+        new_user_gold = current_user_gold - province_price
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_user_gold, cId))
 
         connection.commit()
         connection.close()
 
         return redirect("/provinces")
     else:
+
+        # current_province_amount = db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(?)", (cId)).fetchone()[0]
+        # multiplier = 
         return render_template("createprovince.html")
 
 
