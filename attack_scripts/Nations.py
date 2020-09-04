@@ -6,6 +6,7 @@ path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
 
 class Military:
+    # hey marter why do we need this initialize these values inside the class? Isn't those get_military and get_special commands enough? --steven
     def __init__(self, spies, troops, tanks, artillery, bombers, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
         self.spies = spies
         self.troops = troops
