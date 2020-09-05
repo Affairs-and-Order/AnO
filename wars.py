@@ -104,7 +104,18 @@ def warChoose():
         # this post request happens when they click submit, upon which we would redirect to /waramount
         # typical post redirect get pattern means we should do with the request.form.get values here (the 3 units)
         # store the 3 values in session and retrieve it in waramount later
-        session["attack_units"] = request.form.get("attack_units")
+
+        unit_list = []
+        unit_list.append(request.form.get("u1"))
+        unit_list.append(request.form.get("u2"))
+        unit_list.append(request.form.get("u3"))
+
+        # TODO: add aditional checks for unit_list
+        if len(unit_list) != 3:
+            return "the 3 unit selection is not correct"
+
+        # session["attack_units"] = request.form.get("attack_units")
+
         # could also just retrieve all 9 possibilities from warchoose and just remove the ones that are null if that's easier for you Carson -- Steven
         '''
         session["soldiers"] = request.form.get("attack_units")
@@ -122,7 +133,6 @@ def warChoose():
         '''
 
         return redirect('waramount.html')
-        # return redirect(url_for('warAmount'))
 
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
@@ -173,7 +183,7 @@ def warTarget():
 @login_required
 @app.route("/warResult", methods=["POST"])
 def warResult():
-    
+
     return render_template("warResult.html")
 
 # Endpoint for war declaration

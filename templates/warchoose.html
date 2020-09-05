@@ -21,7 +21,7 @@
                 <ul>{{ units["soldiers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
 
-                <input type="checkbox" id="1" class="warcheckbox hidden">
+                <input type="checkbox" id="1" class="warcheckbox hidden" value="soldiers">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -33,7 +33,7 @@
                 <ul>{{ units["tanks"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
 
-                <input type="checkbox" id="2" class="warcheckbox hidden">
+                <input type="checkbox" id="2" class="warcheckbox hidden" value="tanks">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -45,7 +45,7 @@
                 <ul>{{ units["artillery"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
 
-                <input type="checkbox" id="3" class="warcheckbox hidden">
+                <input type="checkbox" id="3" class="warcheckbox hidden" value="artilley">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -59,7 +59,7 @@
                 <ul>{{ units["fighters"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
 
-                <input type="checkbox" id="4" class="warcheckbox hidden">
+                <input type="checkbox" id="4" class="warcheckbox hidden" value="fighters">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -71,7 +71,7 @@
                 <ul>{{ units["bombers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/bomber.jpg') }}" />
 
-                <input type="checkbox" id="5" class="warcheckbox hidden">
+                <input type="checkbox" id="5" class="warcheckbox hidden" value="bombers">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -83,7 +83,7 @@
                 <ul>{{ units["apaches"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
 
-                <input type="checkbox" id="6" class="warcheckbox hidden">
+                <input type="checkbox" id="6" class="warcheckbox hidden" value="apaches">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -97,7 +97,7 @@
                 <ul>{{ units["submarines"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
 
-                <input type="checkbox" id="7" class="warcheckbox hidden">
+                <input type="checkbox" id="7" class="warcheckbox hidden" value="submarines">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -109,7 +109,7 @@
                 <ul>{{ units["cruisers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
-                <input type="checkbox" id="8" class="warcheckbox hidden">
+                <input type="checkbox" id="8" class="warcheckbox hidden" value="cruisers">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -121,7 +121,7 @@
                 <ul>{{ units["destroyers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
-                <input type="checkbox" id="9" class="warcheckbox hidden">
+                <input type="checkbox" id="9" class="warcheckbox hidden" value="destroyers">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -130,6 +130,7 @@
         </div>
 
         <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3</h2>
+
         <script>
             $(document).ready(function () {
                 $('input.warcheckbox').on('change', function (e) {
@@ -154,13 +155,57 @@
 
             </div>
             <div class="templatedivflex2left">
+              <form id="next_button" class="templatedivbutton" action="/warchoose" method="post">
                 <!-- TODO: disable next button if checkNum < 3 -->
-                <a class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
-                        arrow_forward
-                    </span>Next</a>
 
+                <!-- This is the original code -->
+                <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
+                  arrow_forward
+                </span>Next</a> -->
+
+                <!-- This is the POST submission part -->
+                <input type="hidden" name="u1">
+                <input type="hidden" name="u2">
+                <input type="hidden" name="u3">
+
+                <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
+                <p class="templatecenteredbutton" onclick="submit_next(event)">
+                  <span class="material-icons-outlined">arrow_forward</span>Next
+                </p>
+
+              </form>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+
+      // Filter checked inputs and make ready to send by POST request
+      function assign_parameters() {
+        const all_inputs = document.querySelectorAll("input[type=checkbox]");
+        const hidden_inputs = document.getElementById("next_button").querySelectorAll("input[type=hidden]");
+        let next_hidden = 0;
+        let elements = all_inputs.length;
+
+        for(let i=0; i<elements; i++) {
+          if(all_inputs[i].checked) {
+            hidden_inputs[next_hidden].value = all_inputs[i].value;
+            next_hidden++;
+
+            if(next_hidden == 3) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      }
+
+      function submit_next(e) {
+        if(assign_parameters()) {
+          e.target.parentElement.submit();
+        }
+      }
+    </script>
 </div>
 {% endblock %}
