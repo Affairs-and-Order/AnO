@@ -78,8 +78,10 @@ def wars():
         # WHAT DOES THIS DO??? -- Steven
         # Selects how many wars the user is in -- t0dd
         # got it :D
-        warsCount = db.execute(
-            "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
+        warsCount = len(attackingWars) + len(defendingWars)
+        # if a userid is deleted from the game, the war entries with that id should disappear, this should be done upon deletion?
+        # if we check here it would be something like this
+        
 
         # returns ALL the VALUES to wars.html
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
