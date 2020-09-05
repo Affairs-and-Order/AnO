@@ -206,8 +206,22 @@ def delete_own_account():
     db = connection.cursor()
     cId = session["user_id"]
 
+    # Deletes all the info from database created upon signup
     db.execute("DELETE FROM users WHERE id=(?)", (cId,))
+    db.execute("DELETE FROM stats WHERE id=(?)", (cId,))
+    db.execute("DELETE FROM military WHERE id=(?)", (cId,))
+    db.execute("DELETE FROM resources WHERE id=(?)", (cId,))
 
+    # Deletes all the users provinces and their infrastructure
+    try:
+        province_ids = db.execute("SELECT id FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+        for i in province_ids:
+            db.execute("DELETE FROM provinces WHERE id=(?)", (i[0],))
+            db.execute("DELETE FROM proInfra WHERE id=(?)", (i[0],))
+    except:
+        pass
+
+    
     connection.commit()
     connection.close()
     
