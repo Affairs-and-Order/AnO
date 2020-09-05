@@ -143,7 +143,7 @@ def warAmount():
         db.close()
         connection.close()
 
-        unitsamounts = zip(unitamount1, unitamount2, unitamount3)
+        unitamounts = zip(unitamount1, unitamount2, unitamount3)
         return render_template("waramount.html", attack_units=attack_units, unitamounts=unitamounts)
 
 
