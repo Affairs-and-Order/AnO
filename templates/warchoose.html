@@ -148,9 +148,10 @@
                     let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({ checked }) => checked).length;
                     if (checkNum > 3) {
                         this.checked = false;
+                        checkNum -= 1
                     }
                     let checkElement = document.querySelector('#chosenAmountChecked');
-                    checkElement.innerHTML = checkNum;
+                    checkElement.innerHTML = `${checkNum} / 3 wars`;
                     console.log('this is showingasdf')
                 })
             });
