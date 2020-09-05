@@ -1024,7 +1024,7 @@ hr {
 .templatecontentheaderleft {
     background: var(--foregroundThree);
     font-size: 23px;
-    margin: 20px 4px;
+    margin: 20px 6px;
     padding: 8px 12px;
     color: var(--colorOne);
     border-radius: 4px;

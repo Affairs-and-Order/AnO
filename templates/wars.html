@@ -73,7 +73,7 @@
 
 
         <!--if wars == False-->
-        <h2 class="templatecontentheadercenter">You have {{ warsCount }} wars</h2>
+        <h2 class="templatecontentheadercenter">You have {{ warsCount }} ongoing wars</h2>
         <!--if wars == True-->
 
         <h2 class="templatecontentheaderleft">Ongoing Wars</h2>
@@ -98,8 +98,7 @@
             <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink"
-                        href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
 
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
@@ -125,8 +124,7 @@
             </div>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink"
-                        href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
                 <!--aggressor nation flag-->
                 <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
@@ -152,8 +150,7 @@
             <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink"
-                        href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
                 <!--aggressor nation flag-->
                 <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
@@ -177,8 +174,7 @@
             </div>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter"><a class="templatelink"
-                        href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
+                <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
                 <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
