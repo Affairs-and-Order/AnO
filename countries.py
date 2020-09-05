@@ -211,3 +211,4 @@ def delete_own_account():
     connection.commit()
     connection.close()
     
+    return redirect("/")
