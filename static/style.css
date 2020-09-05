@@ -1322,14 +1322,12 @@ hr {
 .imageinput {
     display: block;
     padding-left: 25px;
-    margin: 8px;
     cursor: pointer;
     user-select: none;
     padding: 8px;
     padding-top: 5px;
     outline: none;
     font-size: 16px;
-    display: block;
     margin: 12px auto;
     transition: all 0.3s ease-in-out;
     background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
@@ -1338,6 +1336,7 @@ hr {
     background-size: 400% 400%;
     background-position: -50% 0%;
     float: none;
+    opacity: 1;
 }
 
 .imageinput:hover {
@@ -1837,6 +1836,11 @@ button {
     margin: auto;
     width: fit-content;
     font-weight: bold;
+}
+
+.video {
+    height: 0;
+    width: 0;
 }
 
 
