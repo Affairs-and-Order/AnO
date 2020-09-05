@@ -207,6 +207,7 @@
     --tableOne: #f7f9fd95;
     --tableTwo: white;
     --colorOne: rgb(0, 0, 0);
+    --colorTwo: rgb(255, 255, 255);
 }
 
 .theme-dark {
@@ -220,6 +221,7 @@
     --tableOne: #42444e;
     --tableTwo: #4a4c58;
     --colorOne: rgb(255, 255, 255);
+    --colorTwo: rgb(255, 255, 255);
 }
 
 body::-webkit-scrollbar {
@@ -636,7 +638,7 @@ hr {
     padding-bottom: 20px;
     overflow-y: hidden;
     overflow-x: hidden;
-    color: var(--colorOne);
+    color: white;
 }
 
 .resourcedivcontent:hover {
@@ -1232,15 +1234,17 @@ hr {
     z-index: 9;
     cursor: pointer;
     transition: all 0.25s;
+    color: var(--colorOne);
+    opacity: 0.8 !important;
 }
 
 .radiodiv li:hover label {
-    color: rgba(2, 2, 2, 0.5);
+    opacity: 0.6 !important;
 }
 
 .radiodiv li .check {
     position: absolute;
-    border: 3px solid #00000050;
+    border: 3px solid var(--colorOne);
     border-radius: 100%;
     height: 15px;
     width: 15px;
@@ -1250,10 +1254,11 @@ hr {
     z-index: 5;
     transition: all .25s;
     margin: auto;
+    opacity: 0.8 !important;
 }
 
 .radiodiv li:hover .check {
-    border-color: rgba(2, 2, 2, 0.2);
+    opacity: 0.6;
 }
 
 .radiodiv li .check::before {
@@ -1320,18 +1325,18 @@ hr {
     margin: 8px;
     cursor: pointer;
     user-select: none;
-    border: 1.5px solid #e3e9f0;
     padding: 8px;
     padding-top: 5px;
     outline: none;
     font-size: 16px;
-    transition: all 0.2s;
     display: block;
     margin: 12px auto;
-    transition: all 0.3s;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
     float: none;
 }
 
@@ -1769,7 +1774,7 @@ button {
     box-shadow: rgba(39, 41, 59, 0.1) 0px 2px 3px 1px;
     padding: 0;
     overflow: hidden;
-    display: flex !important;
+    flex-direction: row;
 }
 
 .menuflex2 div {
@@ -2198,7 +2203,14 @@ button {
 .countryactionsclick,
 .countryeditclick {
     background: #00a7e1 !important;
-    color: white !important;
+}
+
+.countryviewclick h3,
+.countryrevenueclick h3,
+.countrynewsclick h3,
+.countryactionsclick h3,
+.countryeditclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 
@@ -2227,6 +2239,11 @@ button {
     color: white !important;
 }
 
+.provincecityclick h3,
+.provincelandclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 .electricity,
 .retail,
 .works {
@@ -2246,6 +2263,12 @@ button {
     color: white !important;
 }
 
+.cityelectricityclick h3,
+.cityretailclick h3,
+.cityworksclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 .military,
 .industry,
 .processing {
@@ -2263,6 +2286,12 @@ button {
 .landprocessingclick {
     background: #00a7e1 !important;
     color: white !important;
+}
+
+.landmilitaryclick h3,
+.landindustryclick h3,
+.landprocessingclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 
@@ -2329,6 +2358,13 @@ button {
     color: white !important;
 }
 
+.militarylandclick h3,
+.militaryairclick h3,
+.militarywaterclick h3,
+.militaryspecialclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 
 /*create_coalition*/
 
@@ -2375,11 +2411,14 @@ button {
     right: 0;
 }
 
+.borderbottom {
+    flex-direction: row;
+}
+
 .borderbottom div {
     border-radius: 0px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     background: #00a7e1;
-    color: rgb(255, 255, 255);
     transition: all 0.3s;
     transform: scale(0.995);
     margin: 8px;
@@ -2394,6 +2433,10 @@ button {
 
 .borderbottom div:hover {
     transform: scale(0.985);
+}
+
+.borderbottom div h2 {
+    color: rgb(255, 255, 255) !important;
 }
 
 
@@ -2422,6 +2465,14 @@ button {
 .coalitionmemberclick {
     background: #00a7e1 !important;
     color: white !important;
+}
+
+.coalitiongeneralclick h3,
+.coalitionaboutclick h3,
+.coalitionjoinclick h3,
+.coalitionleaderclick h3,
+.coalitionmemberclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 .applicanttable {

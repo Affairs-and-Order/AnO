@@ -18,7 +18,7 @@
             <label for="1" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Soldiers</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["soldiers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
 
                 <input type="checkbox" id="1" class="warcheckbox hidden">
@@ -30,7 +30,7 @@
             <label for="2" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Tanks</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["tanks"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
 
                 <input type="checkbox" id="2" class="warcheckbox hidden">
@@ -42,7 +42,7 @@
             <label for="3" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Artillery</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["artillery"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
 
                 <input type="checkbox" id="3" class="warcheckbox hidden">
@@ -56,7 +56,7 @@
             <label for="4" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Fighter Jets</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["fighters"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
 
                 <input type="checkbox" id="4" class="warcheckbox hidden">
@@ -68,7 +68,7 @@
             <label for="5" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Bombers</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["bombers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/bomber.jpg') }}" />
 
                 <input type="checkbox" id="5" class="warcheckbox hidden">
@@ -80,7 +80,7 @@
             <label for="6" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Apaches</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["apaches"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
 
                 <input type="checkbox" id="6" class="warcheckbox hidden">
@@ -94,7 +94,7 @@
             <label for="7" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Submarines</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["submarines"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
 
                 <input type="checkbox" id="7" class="warcheckbox hidden">
@@ -106,7 +106,7 @@
             <label for="8" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Cruisers</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["cruisers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
                 <input type="checkbox" id="8" class="warcheckbox hidden">
@@ -118,7 +118,7 @@
             <label for="9" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Destroyers</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["destroyers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
                 <input type="checkbox" id="9" class="warcheckbox hidden">
@@ -129,7 +129,21 @@
             </label>
         </div>
 
-        <h2 class="templatecontentheadercenter">[[ chosenAmount ]] / 3</h2>
+        <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3</h2>
+        <script>
+            $(document).ready(function () {
+                $('input.warcheckbox').on('change', function (e) {
+                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({ checked }) => checked).length;
+                    if (checkNum > 3) {
+                        this.checked = false;
+                        checkNum -= 1
+                    }
+                    let checkElement = document.querySelector('#chosenAmountChecked');
+                    checkElement.innerHTML = `${checkNum} / 3 wars`;
+                })
+            });
+
+        </script>
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
@@ -140,12 +154,10 @@
 
             </div>
             <div class="templatedivflex2left">
-
-                <!--SEND USER TO NEXT PAGE AS WELL-->
-                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span
-                        class="material-icons-outlined">
+                <!-- TODO: disable next button if checkNum < 3 -->
+                <a class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
                         arrow_forward
-                    </span>Next</button>
+                    </span>Next</a>
 
             </div>
         </div>
