@@ -95,6 +95,7 @@ def warChoose():
     cId=2
 
     if request.method == "GET":
+
         # this is upon first landing on this page after the user clicks attack in wars.html
         normal_units = Military.get_military(cId)
         # special_units = Military.get_special(cId)
@@ -143,19 +144,21 @@ def warChoose():
 @login_required
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
+    # cId = session["user_id"]
+    cId=2
 
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        # cId = session["user_id"]
-        cId=2
+        # cId=2
 
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
         selected_units = list(attack_units.selected_units.keys())
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-        unitamount1 = db.execute(f"SELECT {selected_units[0]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]  # this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
+        # IMPORTANT: this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
+        unitamount1 = db.execute(f"SELECT {selected_units[0]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         unitamount2 = db.execute(f"SELECT {selected_units[1]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         unitamount3 = db.execute(f"SELECT {selected_units[2]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -166,16 +169,13 @@ def warAmount():
         # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
         # attack_units = session['attack_units']
 
-        unitamounts = zip(unitamount1, unitamount2, unitamount3)
-
-        print(selected_units)
+        unitamounts = [unitamount1, unitamount2, unitamount3]
         return render_template("waramount.html", attack_units=selected_units, unitamounts=unitamounts)
-        # return render_template("waramount.html", alma={"a": 55})
 
     elif request.method == "POST":
         session["unit_amounts"] = request.form.get("attack_units")
         # same note as before as to how to use this request.form.get to get the unit amounts.
-        return redirect('warTarget')
+        return redirect('/wartarget')
     else:
         return "what shenaniganry just happened here?! REPORT TO THE ADMINS!!"
 

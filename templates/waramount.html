@@ -9,7 +9,7 @@
         <div class="templatedivad"></div>
     </div>
 
-    <div class="templatedivcontent">
+    <form class="templatedivcontent" action="/waramount" method="post">
 
         <h2 class="templatecontentheaderleft">Choose Amount</h2>
         <p class="templatecontentpleft">Select how many of each unit you want to attack with.</p>
@@ -22,7 +22,7 @@
                 <ul>{{ unitamounts[0] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
 
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u1_amount" placeholder="[[ amount ]]" />
             </div>
             <!--SECOND UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
@@ -31,7 +31,7 @@
                 <ul>{{ unitamounts[1] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u2_amount" placeholder="[[ amount ]]" />
             </div>
             <!--THIRD UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
@@ -40,7 +40,7 @@
                 <ul>{{ unitamounts[2] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u3_amount" placeholder="[[ amount ]]" />
             </div>
         </div>
 
@@ -61,12 +61,10 @@
             <div class="templatedivflex2left">
 
                 <!--SEND USER TO NEXT PAGE AS WELL-->
-                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                    arrow_forward
-                    </span>Next</button>
-
+                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit">
+                  <span class="material-icons-outlined">arrow_forward</span>Next</button>
             </div>
         </div>
-    </div>
+    </form>
 </div>
 {% endblock %}
