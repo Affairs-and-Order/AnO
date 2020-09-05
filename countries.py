@@ -221,8 +221,23 @@ def delete_own_account():
     except:
         pass
 
-    
     connection.commit()
     connection.close()
     
     return redirect("/")
+
+@app.route("/username_available/<username>", methods=["GET"])
+def username_avalaible(username):
+    conn = sqlite3.connect('affo/aao.db') # connects to db
+    db = conn.cursor()
+
+    try:
+        username_exists = db.execute("SELECT username FROM users WHERE username=(?)", (username,)).fetchone()[0]
+        username_exists = True
+    except TypeError:
+        username_exists = False
+
+    if username_exists == True:
+        return "No"
+    else:
+        return "Yes"
