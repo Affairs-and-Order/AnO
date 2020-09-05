@@ -5,20 +5,18 @@ import os
 path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
 class Military:
-    # def __init__(self, spies, troops, tanks, artillery, flyingForts, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
-    #     self.spies = spies
-    #     self.troops = troops
-    #     self.tanks = tanks
-    #     self.artilley = artillery
-    #     self.flyingForts = flyingForts
-    #     self.bomberJets = bomberJets
-    #     self.destroyers = destroyers
-    #     self.cruisers = cruisers
-    #     self.submarines = submarines
-    #     self.ICMBs = ICBMs
-    #     self.nukes = nukes
-    def __init__(self):
-        pass
+    def __init__(self, spies, troops, tanks, artillery, flyingForts, bomberJets, destroyers, cruisers, submarines, ICBMs, nukes):
+        self.spies = spies
+        self.troops = troops
+        self.tanks = tanks
+        self.artilley = artillery
+        self.flyingForts = flyingForts
+        self.bomberJets = bomberJets
+        self.destroyers = destroyers
+        self.cruisers = cruisers
+        self.submarines = submarines
+        self.ICMBs = ICBMs
+        self.nukes = nukes
 
     # select only needed units instead of all
     @staticmethod
