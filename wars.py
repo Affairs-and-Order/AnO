@@ -163,17 +163,17 @@ def warAmount():
 @app.route("/wartarget", methods=["GET, POST"])
 def warTarget():
     if request.method == "GET":
-
-        attack_units = session["attack_units"]
-
+        # all war targets never change regardless of type of war, no variables to send here!
         return render_template("wartarget.html")
     else:
+        session['targeted_units'] = request.form.get('targeted_units')
         return redirect('warResult')
 
 # page 4 results and tax set if a morale reaches 0
 @login_required
 @app.route("/warResult", methods=["POST"])
 def warResult():
+    
     return render_template("warResult.html")
 
 # Endpoint for war declaration
