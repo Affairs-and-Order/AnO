@@ -101,7 +101,8 @@ class Units(Military):
                     return "Invalid amount selected!"
 
                 units_count -= 1
-        except:
+        except Exception as e:
+            print(e)
             return "Not enoutgh unit type selected"
 
         # If the validation is ended successfully

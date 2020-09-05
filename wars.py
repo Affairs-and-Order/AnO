@@ -91,8 +91,7 @@ def wars():
 @login_required
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
-    # cId = session["user_id"]
-    cId=2
+    cId = session["user_id"]
 
     if request.method == "GET":
 
@@ -144,8 +143,7 @@ def warChoose():
 @login_required
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
-    # cId = session["user_id"]
-    cId=2
+    cId = session["user_id"]
 
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
@@ -173,7 +171,25 @@ def warAmount():
         return render_template("waramount.html", attack_units=selected_units, unitamounts=unitamounts)
 
     elif request.method == "POST":
-        session["unit_amounts"] = request.form.get("attack_units")
+        # session["unit_amounts"] = request.form.get("attack_units")
+
+        # Separate object's units list from now units list
+        selected_units = session["attack_units"].selected_units.copy()
+
+        units_name = list(selected_units.keys())
+
+        for number in range(1, 4):
+            unit_amount = request.form.get(f"u{number}_amount", None)
+            if not unit_amount:
+                return "Invalid name argument coming in"
+
+            selected_units[units_name[number-1]] = int(unit_amount)
+
+        # Check every time when user input comes in lest user bypass input validation
+        # Error code if any
+        error = session["attack_units"].attach_units(selected_units)
+        print(error)
+
         # same note as before as to how to use this request.form.get to get the unit amounts.
         return redirect('/wartarget')
     else:
