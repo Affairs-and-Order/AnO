@@ -134,14 +134,13 @@
     $(document).ready(function () {
         var limit = 3;
         $('input.warcheckbox').on('change', function (evt) {
-            let checkLength = $(this).siblings(':checked').length;
-            console.log(checkLength) // this is always 0 -- needs fixed
+            let checkLength = $(this).siblings(':checked').length; // this is always 0 -- needs fixed
+            console.log(checkLength) 
             if ($(this).siblings(':checked').length >= limit) {
                 this.checked = false;
             }
             let checkElement = document.getElementById("chosenAmountChecked");
             checkElement.innerHTML = $(this).siblings(':checked').length + " / 3";
-            console.log('does it get to this point')
         });
     });
             </script>
