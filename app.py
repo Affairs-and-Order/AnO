@@ -330,10 +330,6 @@ def myoffers():
 def war():
     return render_template("war.html")
 
-@app.route("/waramount", methods=["GET"])
-def waramount():
-    return render_template("waramount.html")
-
 @app.route("/wartarget", methods=["GET"])
 def wartarget():
     return render_template("wartarget.html")

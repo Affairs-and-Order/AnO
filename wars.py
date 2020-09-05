@@ -141,7 +141,7 @@ def warChoose():
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
 @login_required
-@app.route("/waramount", methods=["GET, POST"])
+@app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
 
     if request.method == "GET":
