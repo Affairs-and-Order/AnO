@@ -129,21 +129,22 @@
             </label>
         </div>
 
-        <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3</h2>
+        <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3 Units</h2>
 
         <script>
-            $(document).ready(function () {
-                $('input.warcheckbox').on('change', function (e) {
-                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({ checked }) => checked).length;
+            $(document).ready(function() {
+                $('input.warcheckbox').on('change', function(e) {
+                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
+                        checked
+                    }) => checked).length;
                     if (checkNum > 3) {
                         this.checked = false;
                         checkNum -= 1
                     }
                     let checkElement = document.querySelector('#chosenAmountChecked');
-                    checkElement.innerHTML = `${checkNum} / 3 wars`;
+                    checkElement.innerHTML = `${checkNum} / 3 Units`;
                 })
             });
-
         </script>
 
         <div class="templatedivflex2 divflex2center">
@@ -155,57 +156,27 @@
 
             </div>
             <div class="templatedivflex2left">
-              <form id="next_button" class="templatedivbutton" action="/warchoose" method="post">
-                <!-- TODO: disable next button if checkNum < 3 -->
+                <form id="next_button" action="/warchoose" method="post">
+                    <!-- TODO: disable next button if checkNum < 3 -->
 
-                <!-- This is the original code -->
-                <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
+                    <!-- This is the original code -->
+                    <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
                   arrow_forward
                 </span>Next</a> -->
 
-                <!-- This is the POST submission part -->
-                <input type="hidden" name="u1">
-                <input type="hidden" name="u2">
-                <input type="hidden" name="u3">
+                    <!-- This is the POST submission part -->
+                    <input type="hidden" name="u1">
+                    <input type="hidden" name="u2">
+                    <input type="hidden" name="u3">
 
-                <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
-                <p class="templatecenteredbutton" onclick="submit_next(event)">
-                  <span class="material-icons-outlined">arrow_forward</span>Next
-                </p>
+                    <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
+                    <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
+                        <span class="material-icons-outlined">arrow_forward</span>Next
+                    </button>
 
-              </form>
+                </form>
             </div>
         </div>
     </div>
-
-    <script type="text/javascript">
-
-      // Filter checked inputs and make ready to send by POST request
-      function assign_parameters() {
-        const all_inputs = document.querySelectorAll("input[type=checkbox]");
-        const hidden_inputs = document.getElementById("next_button").querySelectorAll("input[type=hidden]");
-        let next_hidden = 0;
-        let elements = all_inputs.length;
-
-        for(let i=0; i<elements; i++) {
-          if(all_inputs[i].checked) {
-            hidden_inputs[next_hidden].value = all_inputs[i].value;
-            next_hidden++;
-
-            if(next_hidden == 3) {
-              return true;
-            }
-          }
-        }
-
-        return false;
-      }
-
-      function submit_next(e) {
-        if(assign_parameters()) {
-          e.target.parentElement.submit();
-        }
-      }
-    </script>
 </div>
 {% endblock %}

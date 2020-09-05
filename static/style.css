@@ -2498,6 +2498,7 @@ button {
     background: var(--tableTwo);
     cursor: pointer;
     opacity: 1;
+    user-select: none;
 }
 
 .unitcard img {

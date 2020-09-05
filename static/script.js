@@ -617,3 +617,34 @@ function toggleTheme() {
         document.getElementById('slider').checked = true;
     }
 })();
+
+/*Warchoose stuff*/
+
+
+
+// Filter checked inputs and make ready to send by POST request
+function assign_parameters() {
+    const all_inputs = document.querySelectorAll("input[type=checkbox]");
+    const hidden_inputs = document.getElementById("next_button").querySelectorAll("input[type=hidden]");
+    let next_hidden = 0;
+    let elements = all_inputs.length;
+
+    for (let i = 0; i < elements; i++) {
+        if (all_inputs[i].checked) {
+            hidden_inputs[next_hidden].value = all_inputs[i].value;
+            next_hidden++;
+
+            if (next_hidden == 3) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
+function submit_next(e) {
+    if (assign_parameters()) {
+        e.target.parentElement.submit();
+    }
+}
