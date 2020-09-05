@@ -142,7 +142,8 @@ def warAmount():
         connection.commit()
         db.close()
         connection.close()
-
+        # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
+        attack_units = session['attack_units']
         unitamounts = zip(unitamount1, unitamount2, unitamount3)
         return render_template("waramount.html", attack_units=attack_units, unitamounts=unitamounts)
 
