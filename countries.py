@@ -197,3 +197,17 @@ def update_info():
     connection.close()  # Closes the connection
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country
+
+@login_required
+@app.route("/delete_own_account", methods=["POST"])
+def delete_own_account():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    db.execute("DELETE FROM users WHERE id=(?)", (cId,))
+
+    connection.commit()
+    connection.close()
+    

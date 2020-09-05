@@ -29,6 +29,8 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password").encode('utf-8')
         confirmation = request.form.get("confirmation").encode('utf-8')
+        loc = request.form.get("location_name")
+        print(loc)
 
         key = request.form.get("key")
 
