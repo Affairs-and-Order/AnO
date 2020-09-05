@@ -10,14 +10,14 @@ connection = sqlite3.connect('aao.db')  # connects to db
 db = connection.cursor()  # creates the cursor for db connection
 print("Connection Successful!")
 
-tables = ["air", "coalitions", "colNames", "ground", "provinces",
-"requests", "special", "stats", "users", "water", "offers", "resources"]
+tables = ["air", "coalitions", "colNames", "ground", "keys", "military", 
+"nation", "offers", "proInfra", "provinces", "requests", "resources", "special",
+"stats"]
 
 for i in tables:
     with open(f"sqlite/schemas/all/{i}.txt") as file:
         db.execute(f"DROP TABLE IF EXISTS {i}")
         db.execute(file.read())
-        print(file.read())
         print(f"Recreated table {i}")
     connection.commit()
 

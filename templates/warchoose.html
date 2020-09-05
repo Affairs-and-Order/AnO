@@ -4,7 +4,7 @@
 
     <div class="templatedivtopper wartopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
-            
+
             </span>Attack</h1>
         <div class="templatedivad"></div>
     </div>
@@ -15,94 +15,197 @@
         <p class="templatecontentpleft">Choose what units to take into war with you!</p>
 
         <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left unitcard">
+            <label for="1" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Soldiers</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["soldiers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
 
-            </div>
-            <div class="templatedivflex2left unitcard">
+                <input type="checkbox" id="1" class="warcheckbox hidden" value="soldiers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="2" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Tanks</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["tanks"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
 
-            </div>
-            <div class="templatedivflex2left unitcard">
+                <input type="checkbox" id="2" class="warcheckbox hidden" value="tanks">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="3" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Artillery</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["artillery"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
 
-            </div>
+                <input type="checkbox" id="3" class="warcheckbox hidden" value="artilley">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
         </div>
         <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left unitcard">
+            <label for="4" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Fighter Jets</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["fighters"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
 
-            </div>
-            <div class="templatedivflex2left unitcard">
+                <input type="checkbox" id="4" class="warcheckbox hidden" value="fighters">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="5" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Bombers</ul>
-                <ul>[[ amount ]]</ul>
-                <img class="unitimage" src="{{ url_for('static', filename='images/flyingfortress.jpg') }}" />
+                <ul>{{ units["bombers"] }}</ul>
+                <img class="unitimage" src="{{ url_for('static', filename='images/bomber.jpg') }}" />
 
-            </div>
-            <div class="templatedivflex2left unitcard">
+                <input type="checkbox" id="5" class="warcheckbox hidden" value="bombers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="6" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Apaches</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["apaches"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
 
-            </div>
+                <input type="checkbox" id="6" class="warcheckbox hidden" value="apaches">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
         </div>
         <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left unitcard">
+            <label for="7" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Submarines</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["submarines"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
 
-            </div>
-            <div class="templatedivflex2left unitcard">
+                <input type="checkbox" id="7" class="warcheckbox hidden" value="submarines">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="8" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Cruisers</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["cruisers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
-            </div>
-            <div class="templatedivflex2left unitcard">
+                <input type="checkbox" id="8" class="warcheckbox hidden" value="cruisers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="9" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Destroyers</ul>
-                <ul>[[ amount ]]</ul>
+                <ul>{{ units["destroyers"] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
-            </div>
+                <input type="checkbox" id="9" class="warcheckbox hidden" value="destroyers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
         </div>
 
-        <h2 class="templatecontentheadercenter">[[ chosenAmount ]] / 3</h2>
+        <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3</h2>
+
+        <script>
+            $(document).ready(function () {
+                $('input.warcheckbox').on('change', function (e) {
+                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({ checked }) => checked).length;
+                    if (checkNum > 3) {
+                        this.checked = false;
+                        checkNum -= 1
+                    }
+                    let checkElement = document.querySelector('#chosenAmountChecked');
+                    checkElement.innerHTML = `${checkNum} / 3 wars`;
+                })
+            });
+
+        </script>
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
 
                 <a class="templatedivbutton templatecenteredbutton" href="/wars"><span class="material-icons-outlined">
-                    arrow_back
+                        arrow_back
                     </span>Back</a>
 
             </div>
             <div class="templatedivflex2left">
+              <form id="next_button" class="templatedivbutton" action="/warchoose" method="post">
+                <!-- TODO: disable next button if checkNum < 3 -->
 
-                <!--SEND USER TO NEXT PAGE AS WELL-->
-                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                    arrow_forward
-                    </span>Next</button>
+                <!-- This is the original code -->
+                <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
+                  arrow_forward
+                </span>Next</a> -->
 
+                <!-- This is the POST submission part -->
+                <input type="hidden" name="u1">
+                <input type="hidden" name="u2">
+                <input type="hidden" name="u3">
+
+                <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
+                <p class="templatecenteredbutton" onclick="submit_next(event)">
+                  <span class="material-icons-outlined">arrow_forward</span>Next
+                </p>
+
+              </form>
             </div>
         </div>
     </div>
+
+    <script type="text/javascript">
+
+      // Filter checked inputs and make ready to send by POST request
+      function assign_parameters() {
+        const all_inputs = document.querySelectorAll("input[type=checkbox]");
+        const hidden_inputs = document.getElementById("next_button").querySelectorAll("input[type=hidden]");
+        let next_hidden = 0;
+        let elements = all_inputs.length;
+
+        for(let i=0; i<elements; i++) {
+          if(all_inputs[i].checked) {
+            hidden_inputs[next_hidden].value = all_inputs[i].value;
+            next_hidden++;
+
+            if(next_hidden == 3) {
+              return true;
+            }
+          }
+        }
+
+        return false;
+      }
+
+      function submit_next(e) {
+        if(assign_parameters()) {
+          e.target.parentElement.submit();
+        }
+      }
+    </script>
 </div>
 {% endblock %}

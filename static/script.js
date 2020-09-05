@@ -540,8 +540,8 @@ function coalitionmember() {
 var loadFile = function(event) {
     var output = document.getElementById('output');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "40vw";
-    output.style.height = "22.5vw";
+    output.style.width = "20vw";
+    output.style.height = "11.25vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }
@@ -550,8 +550,8 @@ var loadFile = function(event) {
 var imageBackground = function(event) {
     var output = document.getElementById('imageBackground');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "40vw";
-    output.style.height = "22.5vw";
+    output.style.width = "20vw";
+    output.style.height = "11.25vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }
@@ -560,8 +560,8 @@ var imageBackground = function(event) {
 var imageBackground2 = function(event) {
     var output = document.getElementById('imageBackground2');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "40vw";
-    output.style.height = "22.5vw";
+    output.style.width = "20vw";
+    output.style.height = "11.25vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }
@@ -570,8 +570,8 @@ var imageBackground2 = function(event) {
 var imageBackground3 = function(event) {
     var output = document.getElementById('imageBackground3');
     output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "40vw";
-    output.style.height = "22.5vw";
+    output.style.width = "20vw";
+    output.style.height = "11.25vw";
     output.onload = function() {
         URL.revokeObjectURL(output.src) // free memory
     }
@@ -587,3 +587,33 @@ $(document).ready(function() {
     val = numberWithCommas(val);
     $('#resourcetag').text(val);
 });
+
+
+
+/**/
+
+// function to set a given theme/color-scheme
+function setTheme(themeName) {
+    localStorage.setItem('theme', themeName);
+    document.documentElement.className = themeName;
+}
+
+// function to toggle between light and dark theme
+function toggleTheme() {
+    if (localStorage.getItem('theme') === 'theme-dark') {
+        setTheme('theme-light');
+    } else {
+        setTheme('theme-dark');
+    }
+}
+
+// Immediately invoked function to set the theme on initial load
+(function() {
+    if (localStorage.getItem('theme') === 'theme-dark') {
+        setTheme('theme-dark');
+        document.getElementById('slider').checked = false;
+    } else {
+        setTheme('theme-light');
+        document.getElementById('slider').checked = true;
+    }
+})();

@@ -3,6 +3,4 @@ CREATE TABLE 'wars'
 'attacker' INTEGER NOT NULL,
 'defender' INTEGER NOT NULL,
 'war_type' INTEGER NOT NULL,
-'agressor_message' VARCHAR(240) NOT NULL,
--- start_date is a float in seconds
-'start_date' REAL NOT NULL);
+'agressor_message' VARCHAR(240) NOT NULL);

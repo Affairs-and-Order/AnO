@@ -3,6 +3,7 @@ import sqlite3
 from flask import redirect, render_template, request, session
 from functools import wraps
 
+
 def login_required(f):
     """
     Decorate routes to require login.
@@ -15,9 +16,11 @@ def login_required(f):
             return redirect("/login")
         return f(*args, **kwargs)
     return decorated_function
-    
+
+
 def error(code, message):
     return render_template("error.html", code=code, message=message)
+
 
 def get_influence(country_id):
     connection = sqlite3.connect('affo/aao.db')
@@ -31,8 +34,8 @@ def get_influence(country_id):
     artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
     # air
-    flying_fortresses = db.execute("SELECT flying_fortresses FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-    fighter_jets = db.execute("SELECT fighter_jets FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+    bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
+    fighters = db.execute("SELECT fighters FROM air WHERE id=(?)", (cId,)).fetchone()[0]
     apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
     connection.commit()
     # water
@@ -46,15 +49,16 @@ def get_influence(country_id):
     nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
 
     military = tanks + soldiers + artillery + \
-    flying_fortresses + fighter_jets + apaches +\
+    bombers + fighters + apaches +\
     destroyers + cruisers + submarines + \
     spies + icbms + nukes"""
-    
+
     # gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
-    influence = 1000 # gold
+    influence = 1000  # gold
 
     return influence
+
 
 def get_coalition_influence(coalition_id):
 
@@ -63,14 +67,14 @@ def get_coalition_influence(coalition_id):
 
     total_influence = 0
 
-    members = db.execute("SELECT userId FROM coalitions WHERE colId=(?)", (coalition_id,)).fetchall()
+    members = db.execute(
+        "SELECT userId FROM coalitions WHERE colId=(?)", (coalition_id,)).fetchall()
     for i in members:
         member_influence = get_influence(i[0])
         total_influence += member_influence
 
     return total_influence
 
-import sqlite3
 
 def generate_province_revenue(): # Runs each turn
 
@@ -104,6 +108,23 @@ def generate_province_revenue(): # Runs each turn
 
     'banks_plus': {'consumer_goods': 30},
     'banks_money': 800000, # Costs $800k
+
+    'city_parks': {'happiness': 3},
+    'city_parks_money': 20000, # Costs $20k
+
+    'hospitals': {'happiness': 8},
+    'hospitals_money': 60000,
+
+    'libraries': {'happiness': 5},
+    'libraries_money': 90000,
+    # Add productivity too
+
+    'universities': {'productivity': 12},
+    'universities_money': 150000,
+
+    'monorails': {'productivity': 15},
+    'monorails_money': 210000
+
     }
 
     conn = sqlite3.connect('affo/aao.db') # connects to db

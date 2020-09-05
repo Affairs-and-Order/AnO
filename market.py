@@ -288,6 +288,10 @@ def post_offer(offer_type):
             "gasoline", "ammunition"
         ]
 
+        offer_types = ["buy", "sell"]
+        if offer_type not in offer_types:
+            return error(400, "Offer type must be 'buy' or 'sell'")
+
         if resource not in resources:  # Checks if the resource the user selected actually exists
             return error(400, "No such resource")
 
@@ -343,9 +347,216 @@ def my_offers():
 
     cId = session["user_id"]
 
-    offers = db.execute(
-        "SELECT resource, price, amount FROM offers WHERE user_id=(?)", (cId,)).fetchall()
+    ## USER'S OWN OFFERS
+    offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE user_id=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    offer_ids = []
+    total_prices = []
+    prices = []
+    resources = []
+    amounts = []
+    offer_types = []
+
+    for offer_idd in offer_ids_list:
+
+        offer_id = offer_idd[0]
+        price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        offer_type = db.execute("SELECT type FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        total_price = int(price * amount)
+
+        prices.append(price)
+        resources.append(resource)
+        amounts.append(amount)
+        offer_types.append(offer_type)
+        total_prices.append(total_price)
+        offer_ids.append(offer_id)
+
+    my_offers = zip(offer_ids, prices, resources, amounts, offer_types, total_prices)
+
+    ## USER'S TRADES
+
+    trade_ids_list = db.execute("SELECT offer_id FROM trades WHERE offeree=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    trade_ids = []
+    total_pricess = []
+    pricess = []
+    resourcess = []
+    amountss = []
+    offer_typess = []
+    offerer_ids = []
+    offerer_names = []
+
+    for offer_idd in trade_ids_list:
+
+        offer_id = offer_idd[0]
+
+        price = db.execute("SELECT price FROM trades WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        resource = db.execute("SELECT resource FROM trades WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        amount = db.execute("SELECT amount FROM trades WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        offer_type = db.execute("SELECT type FROM trades WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        total_price = int(price * amount)
+        offerer = db.execute("SELECT offerer FROM trades WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        offerer_name = db.execute("SELECT username FROM users WHERE id=(?)", (offerer,)).fetchone()[0]
+
+        pricess.append(price)
+        resourcess.append(resource)
+        amountss.append(amount)
+        offer_typess.append(offer_type)
+        total_pricess.append(total_price)
+        trade_ids.append(offer_id)
+        offerer_ids.append(offerer)
+        offerer_names.append(offerer_name)
+
+    trades = zip(trade_ids, pricess, resourcess, amountss, offer_typess, total_pricess, offerer_ids, offerer_names)
 
     connection.close()
 
-    return render_template("my_offers.html", offers=offers)
+    return render_template("my_offers.html", cId=cId, my_offers=my_offers, trades=trades)
+
+@login_required
+@app.route("/delete_offer/<offer_id>", methods=["POST"])
+def delete_offer(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    offer_owner = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+    # Checks if user owns the offer
+    if cId != offer_owner:
+        return error(400, "You didn't post that offer")
+
+    offer_type = db.execute("SELECT type FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+    if offer_type == "buy":
+
+        amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+        # Gives back the user his money
+        current_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        new_money = current_money + (price * amount)
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+
+    elif offer_type == "sell":
+
+        amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+        resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()[0]
+
+        current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        current_resource = db.execute(current_resource_statement, (cId,)).fetchone()[0]
+
+        new_resource = current_resource + (resource * amount)
+
+        update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(update_statement, (new_resource, cId))
+
+    db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id,)) # Deletes the offer
+    
+    connection.commit()
+    connection.close()
+    
+    return redirect("/my_offers")
+
+@login_required
+@app.route("/post_trade_offer/<offer_type>/<offeree_id>", methods=["POST"])
+def trade_offer(offer_type, offeree_id):
+
+    if request.method == "POST":
+
+        cId = session["user_id"]
+
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        resource = request.form.get("resource")
+        amount = int(request.form.get("amount"))
+        price = int(request.form.get("price"))
+
+        if offeree_id.isnumeric() == False:
+            return error(400, "Offeree id must be numeric")
+
+        offer_types = ["buy", "sell"]
+        if offer_type not in offer_types:
+            return error(400, "Offer type must be 'buy' or 'sell'")
+
+        # List of all the resources in the game
+        resources = [
+            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+            "lumber", "components", "steel", "consumer_goods", "aluminium",
+            "gasoline", "ammunition"
+        ]
+
+        if resource not in resources:  # Checks if the resource the user selected actually exists
+            return error(400, "No such resource")
+
+        if amount < 1:  # Checks if the amount is negative
+            return error(400, "Amount must be greater than 0")
+
+        if offer_type == "sell":
+
+            # possible sql injection posibility TODO: look into this
+            rStatement = f"SELECT {resource} FROM resources WHERE id=(?)"
+            realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
+            if amount > realAmount:  # Checks if user wants to sell more than he has
+                return error("400", "Selling amount is higher than actual amount You have.")
+
+            # Calculates the resource amount the seller should have
+            newResourceAmount = realAmount - amount
+
+            upStatement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+            db.execute(upStatement, (newResourceAmount, cId))
+
+            # Creates a new offer
+            db.execute("INSERT INTO trades (offerer, type, resource, amount, price, offeree) VALUES (?, ?, ?, ?, ?, ?)",
+                    (cId, offer_type, resource, amount, price, offeree_id))
+
+            connection.commit()  # Commits the data to the database
+
+        elif offer_type == "buy":
+
+            db.execute("INSERT INTO trades (offerer, type, resource, amount, price, offeree) VALUES (?, ?, ?, ?, ?, ?)",
+            (cId, offer_type, resource, amount, price, offeree_id))
+
+            money_to_take_away = amount * price
+            current_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+            if current_money < money_to_take_away:
+                return error(400, "You don't have enough money")
+            new_money = current_money - money_to_take_away
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+            flash("You just posted a market offer")
+
+            connection.commit()
+    
+        connection.close()  # Closes the connection
+        return redirect("/market")
+
+
+@login_required
+@app.route("/decline_trade/<trade_id>", methods=["POST"])
+def decline_trade(trade_id):
+
+    if trade_id.isnumeric() == False:
+            return error(400, "Trade id must be numeric")
+
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    trade_offeree = db.execute("SELECT offeree FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    if cId != trade_offeree:
+        return error(400, "You haven't been sent that offer")
+
+    db.execute("DELETE FROM trades WHERE offer_id=(?)", (trade_id,))
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_offers")

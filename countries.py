@@ -87,113 +87,63 @@ def country(cId):
 
 
 @login_required
-@app.route("/countries", methods=["GET", "POST"])
+@app.route("/countries", methods=["GET"])
 def countries():  # TODO: fix shit ton of repeated code in function
-    if request.method == "GET":
 
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
 
+    try:
+        search = request.values.get("search")
+    except TypeError:
+        search = None
+
+    if search == None or search == "":
         users = db.execute("SELECT id FROM users ORDER BY id").fetchall()
-        population = db.execute(
-            "SELECT population FROM stats ORDER BY id").fetchall()
-        names = db.execute("SELECT username FROM users ORDER BY id").fetchall()
-
-        coalition_ids = []
-        coalition_names = []
-        dates = []
-        influences = []
-
-        for i in users:
-
-            date = db.execute(
-                "SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            dates.append(date)
-
-            influence = get_influence(str(i[0]))
-            influences.append(influence)
-
-            try:
-                coalition_id = db.execute(
-                    "SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
-                coalition_ids.append(coalition_id)
-
-                coalition_name = db.execute(
-                    "SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
-                coalition_names.append(coalition_name)
-            except:
-                coalition_ids.append("No Coalition")
-                coalition_names.append("No Coalition")
-
-        connection.commit()
-        connection.close()
-
-        resultAll = zip(population, users, names, coalition_ids,
-                        coalition_names, dates, influences)
-
-        return render_template("countries.html", resultAll=resultAll)
-
     else:
+        users = db.execute("SELECT id FROM users WHERE username=(?) ORDER BY id", (search,)).fetchall()
 
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
+    population = db.execute("SELECT population FROM stats ORDER BY id").fetchall()
+    names = db.execute("SELECT username FROM users ORDER BY id").fetchall()
 
-        search = request.form.get("search")
+    coalition_ids = []
+    coalition_names = []
+    dates = []
+    influences = []
 
-        users = db.execute(
-            "SELECT id FROM users WHERE username LIKE ? ORDER BY id", ('%'+search+'%',)).fetchall()
+    for i in users:
 
-        population = []
-        ids = []
-        names = []
-        coalition_ids = []
-        coalition_names = []
-        dates = []
-        influences = []
+        date = db.execute(
+            "SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+        dates.append(date)
 
-        for i in users:
+        influence = get_influence(str(i[0]))
+        influences.append(influence)
 
-            ids.append(i[0])
+        try:
+            coalition_id = db.execute(
+                "SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
+            coalition_ids.append(coalition_id)
 
-            indPop = db.execute(
-                "SELECT population FROM stats WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            population.append(indPop)
+            coalition_name = db.execute(
+                "SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
+            coalition_names.append(coalition_name)
+        except:
+            coalition_ids.append("No Coalition")
+            coalition_names.append("No Coalition")
 
-            name = db.execute(
-                "SELECT username FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            names.append(name)
+    connection.commit()
+    connection.close()
 
-            date = db.execute(
-                "SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
-            dates.append(date)
+    resultAll = zip(population, users, names, coalition_ids,
+                    coalition_names, dates, influences)
 
-            influence = get_influence(str(i[0]))
-            influences.append(influence)
-
-            try:
-                coalition_id = db.execute(
-                    "SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
-                coalition_ids.append(coalition_id)
-
-                coalition_name = db.execute(
-                    "SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
-                coalition_names.append(coalition_name)
-            except:
-                coalition_ids.append("No Coalition")
-                coalition_names.append("No Coalition")
-
-        connection.close()
-
-        resultAll = zip(population, ids, names, coalition_ids,
-                        coalition_names, dates, influences)
-
-        return render_template("countries.html", resultAll=resultAll)
+    return render_template("countries.html", resultAll=resultAll)
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_required
 @app.route("/update_country_info", methods=["POST"])
@@ -226,13 +176,68 @@ def update_info():
 
     #TODO: add some checking for malicious extensions n shit
     file = request.files["flag_input"]
-    current_filename = file.filename
-    extension = current_filename.rsplit('.', 1)[1].lower()
-    filename = f"flag_{cId}" + '.' + extension
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
-    
+    if file and allowed_file(file.filename):
+
+        # Check if the user already has a flag
+        try:
+            current_flag = db.execute("SELECT flag FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
+        except TypeError:
+            pass
+
+        # Save the file & shit
+        current_filename = file.filename
+        extension = current_filename.rsplit('.', 1)[1].lower()
+        filename = f"flag_{cId}" + '.' + extension
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
+        
     connection.commit()  # Commits the data
     connection.close()  # Closes the connection
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country
+
+@login_required
+@app.route("/delete_own_account", methods=["POST"])
+def delete_own_account():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+
+    # Deletes all the info from database created upon signup
+    db.execute("DELETE FROM users WHERE id=(?)", (cId,))
+    db.execute("DELETE FROM stats WHERE id=(?)", (cId,))
+    db.execute("DELETE FROM military WHERE id=(?)", (cId,))
+    db.execute("DELETE FROM resources WHERE id=(?)", (cId,))
+
+    # Deletes all the users provinces and their infrastructure
+    try:
+        province_ids = db.execute("SELECT id FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+        for i in province_ids:
+            db.execute("DELETE FROM provinces WHERE id=(?)", (i[0],))
+            db.execute("DELETE FROM proInfra WHERE id=(?)", (i[0],))
+    except:
+        pass
+
+    connection.commit()
+    connection.close()
+    
+    return redirect("/")
+
+@app.route("/username_available/<username>", methods=["GET"])
+def username_avalaible(username):
+    conn = sqlite3.connect('affo/aao.db') # connects to db
+    db = conn.cursor()
+
+    try:
+        username_exists = db.execute("SELECT username FROM users WHERE username=(?)", (username,)).fetchone()[0]
+        username_exists = True
+    except TypeError:
+        username_exists = False
+
+    if username_exists == True:
+        return "No"
+    else:
+        return "Yes"

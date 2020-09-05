@@ -1,12 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@500&display=swap');
-@font-face {
-    font-family: nexabold;
-    src: url("fonts/nexabold.otf") format('opentype');
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Rubik&family=Ubuntu&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Baloo+Chettan+2&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -35,6 +27,14 @@
     -moz-osx-font-smoothing: grayscale;
     /* Support for IE. */
     font-feature-settings: 'liga';
+}
+
+.red {
+    color: red !important;
+}
+
+.blue {
+    color: #00a7e1 !important;
 }
 
 .iconblue {
@@ -196,6 +196,34 @@
     }
 }
 
+.theme-light {
+    --background: #f7f9fd;
+    --foreground: white;
+    --foregroundTwo: #fdfdfd;
+    --foregroundThree: #f7f7f7;
+    --foregroundFour: rgb(246.5, 246.5, 246.5);
+    --foregroundFive: #fdfdfd;
+    --border: #e3e9f0;
+    --tableOne: #f7f9fd95;
+    --tableTwo: white;
+    --colorOne: rgb(0, 0, 0);
+    --colorTwo: rgb(255, 255, 255);
+}
+
+.theme-dark {
+    --background: #4a4c58;
+    --foreground: #42444e;
+    --foregroundTwo: #4a4c58;
+    --foregroundThree: #4a4c58;
+    --foregroundFour: #5d606b;
+    --foregroundFive: #525561;
+    --border: #e3e9f000;
+    --tableOne: #42444e;
+    --tableTwo: #4a4c58;
+    --colorOne: rgb(255, 255, 255);
+    --colorTwo: rgb(255, 255, 255);
+}
+
 body::-webkit-scrollbar {
     width: 14px;
     background: #e3e9f0;
@@ -211,16 +239,11 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 body {
-    background: #f7f9fd;
+    background: var(--background);
     padding: 0;
     margin: 0;
-    /*font-family: "nexabold";
-                            font-family: 'Baloo 2';
-                            background: #f7f9fd;
-                            */
-    font-family: "Ubuntu", sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     animation: textload 0.5s;
-    color: white;
     transition: all 0.3s ease;
 }
 
@@ -237,6 +260,7 @@ label {
     display: block;
     opacity: 0.7;
     font-size: 14px;
+    color: var(--colorOne);
 }
 
 hr {
@@ -569,6 +593,7 @@ hr {
     transition-delay: 0s;
     box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
     text-align: right;
+    z-index: 1;
 }
 
 .resourcedivshow {
@@ -583,6 +608,7 @@ hr {
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
+    color: white;
 }
 
 .resourceicon:hover {
@@ -612,6 +638,7 @@ hr {
     padding-bottom: 20px;
     overflow-y: hidden;
     overflow-x: hidden;
+    color: white;
 }
 
 .resourcedivcontent:hover {
@@ -747,6 +774,10 @@ hr {
     justify-content: space-around !important;
 }
 
+.full {
+    opacity: 1;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -768,7 +799,13 @@ hr {
 }
 
 .whiteblue {
-    background: #f7f9fd;
+    background: var(--background);
+}
+
+@media all and (max-width: 1055px) {
+    .whiteblue {
+        flex-direction: column-reverse !important;
+    }
 }
 
 .imageborder {
@@ -789,7 +826,7 @@ hr {
 }
 
 .templatediv {
-    background: #ffffff;
+    background: var(--foreground);
     width: 90%;
     margin: 50px auto;
     margin-top: 90px;
@@ -948,6 +985,7 @@ hr {
     padding: 10px 20px;
     text-shadow: 0px 1px 4px #084955;
     text-transform: capitalize;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .advert {
@@ -984,27 +1022,27 @@ hr {
 }
 
 .templatecontentheaderleft {
-    background: #f7f7f7;
+    background: var(--foregroundThree);
     font-size: 23px;
     margin: 20px 4px;
     padding: 8px 12px;
-    color: rgba(0, 0, 0, 0.8);
+    color: var(--colorOne);
     border-radius: 4px;
-    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.12);
 }
 
 .templatecontentheadercenter {
     text-align: center;
     font-size: 25px;
     margin-top: 16px;
+    color: var(--colorOne);
 }
 
 .templatecontentpleft {
     text-indent: 25px;
     padding: 8px;
     font-size: 16px;
-    color: rgb(0, 0, 0, 0.75);
-    font-family: 'Ubuntu', sans-serif;
+    color: var(--colorOne);
+    opacity: 0.7;
     font-weight: normal;
     text-align: justify;
 }
@@ -1013,31 +1051,13 @@ hr {
     text-indent: 25px;
     padding: 8px;
     font-size: 17px;
-    color: rgb(0, 0, 0);
-    font-family: 'Ubuntu', sans-serif;
+    color: var(--colorOne);
     font-weight: normal;
     text-align: center;
 }
 
 .templatehr {
     border: 2px solid #e3e9f0;
-}
-
-.templateinfodiv {
-    background: #00a7e170;
-    width: 95%;
-    margin: auto;
-    border-radius: 4px;
-    box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
-    overflow: hidden;
-}
-
-.templateinfodiv ul {
-    color: rgba(0, 0, 0, 0.8) !important;
-    padding: 6px 16px!important;
-    transition: all 0.3s;
-    cursor: pointer;
-    margin: 0px !important;
 }
 
 .templatedivbutton {
@@ -1120,7 +1140,7 @@ hr {
 
 .templatediv ul {
     font-weight: 500;
-    color: black;
+    color: var(--colorOne);
     padding: 0;
     text-align: center;
 }
@@ -1214,15 +1234,17 @@ hr {
     z-index: 9;
     cursor: pointer;
     transition: all 0.25s;
+    color: var(--colorOne);
+    opacity: 0.8 !important;
 }
 
 .radiodiv li:hover label {
-    color: rgba(2, 2, 2, 0.5);
+    opacity: 0.6 !important;
 }
 
 .radiodiv li .check {
     position: absolute;
-    border: 3px solid #00000050;
+    border: 3px solid var(--colorOne);
     border-radius: 100%;
     height: 15px;
     width: 15px;
@@ -1232,10 +1254,11 @@ hr {
     z-index: 5;
     transition: all .25s;
     margin: auto;
+    opacity: 0.8 !important;
 }
 
 .radiodiv li:hover .check {
-    border-color: rgba(2, 2, 2, 0.2);
+    opacity: 0.6;
 }
 
 .radiodiv li .check::before {
@@ -1253,32 +1276,34 @@ hr {
     background-color: rgba(0, 0, 0, 0);
 }
 
-input[type=radio]:checked~.check {
+.radiodiv li input[type=radio]:checked~.check {
     border: 3px solid #00a7e1;
 }
 
-input[type=radio]:checked~.check::before {
+.radiodiv li input[type=radio]:checked~.check::before {
     background: #00a7e1;
     height: 10px;
     width: 10px;
 }
 
-input[type=radio]:checked~label {
+.radiodiv li input[type=radio]:checked~label {
     color: #00a7e1;
 }
 
 .templateselect {
-    border: 1.5px solid #e3e9f0;
     padding: 10px;
     margin: 8px;
     outline: none;
     font-size: 16px;
     transition: all 0.2s;
     cursor: pointer;
-    background: white;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
+    float: none;
 }
 
 .templateselect:hover {
@@ -1290,24 +1315,28 @@ input[type=radio]:checked~label {
     box-shadow: rgba(39, 41, 59, 0.10) 0px 8px 12px 0px;
 }
 
+.templateselect option {
+    background: var(--background);
+}
+
 .imageinput {
     display: block;
     padding-left: 25px;
     margin: 8px;
     cursor: pointer;
     user-select: none;
-    border: 1.5px solid #e3e9f0;
     padding: 8px;
     padding-top: 5px;
     outline: none;
     font-size: 16px;
-    transition: all 0.2s;
     display: block;
     margin: 12px auto;
-    transition: all 0.3s;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
     float: none;
 }
 
@@ -1329,7 +1358,6 @@ input[type=radio]:checked~label {
 }
 
 .templatetextarea {
-    border: 1.5px solid #e3e9f0;
     border-radius: 0px;
     padding: 10px;
     margin: 8px;
@@ -1337,15 +1365,19 @@ input[type=radio]:checked~label {
     font-size: 16px;
     transition: all 0.2s;
     background: white;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
     min-width: 40vw;
     min-height: 40vh;
     max-width: 40vw;
     max-height: 40vh;
-    font-family: "Ubuntu", sans-serif;
     box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    font-family: sans-serif;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
+    float: none;
 }
 
 @media all and (max-width: 600px) {
@@ -1364,9 +1396,13 @@ input[type=radio]:checked~label {
     box-shadow: rgba(39, 41, 59, 0.15) 0px 6px 10px 0px;
 }
 
+.templatetextarea::placeholder {
+    color: var(--colorOne);
+}
+
 .infodiv {
-    background: rgb(252.5, 252.5, 252.5);
-    border: 1.5px solid #e3e9f0;
+    background: var(--foregroundTwo);
+    border: 1.5px solid var(--border);
     padding: 8px;
     width: max-content;
     margin: auto;
@@ -1378,6 +1414,31 @@ input[type=radio]:checked~label {
     margin: auto;
 }
 
+.notificationdiv {
+    margin: auto;
+    width: fit-content;
+}
+
+.notificationdiv div {
+    margin: 0 10px;
+    padding: 0;
+}
+
+.notificationdiv ul {
+    width: max-content;
+    background: #363945;
+    color: #ffffff;
+    box-shadow: 0 0 20px 0 rgba(58, 59, 69, .55);
+    padding: 10px !important;
+    margin: 6px 0 !important;
+    font-size-adjust: 16px;
+    justify-self: end;
+    height: min-content;
+    margin: auto;
+    margin-right: -50%;
+    border-left: 3px solid #00a7e1;
+}
+
 .templatedivflex2 {
     display: flex;
     justify-content: center;
@@ -1385,7 +1446,7 @@ input[type=radio]:checked~label {
 
 @media all and (max-width: 1055px) {
     .templatedivflex2 {
-        display: block;
+        flex-direction: column;
     }
 }
 
@@ -1526,16 +1587,21 @@ button {
 }
 
 .smalltable td {
-    height: 12px !important;
+    line-height: 40px !important;
+    height: 0px !important;
     margin: 0;
     padding: 0;
+}
+
+.talltabletd {
+    line-height: 60px;
 }
 
 .templatetable {
     padding: 8px;
     margin: 8px auto;
     width: 90%;
-    background: white;
+    background: var(--tableTwo);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
@@ -1557,30 +1623,31 @@ button {
 }
 
 .templatetable tr:nth-child(odd) {
-    background: #f5f9fd;
+    background: var(--tableOne);
 }
 
 .templatetable tr:nth-child(even) {
-    background: #ffffff;
+    background: var(--tableTwo);
 }
 
 .templatetable td {
-    padding: 8px;
-    margin: 8px 1%;
-    width: 48%;
-    float: left;
+    margin: 0px 2%;
+    width: 46%;
     text-align: left;
     display: table;
     font-weight: 500;
-    color: rgba(50, 50, 50, 0.9);
-    font-family: 'Ubuntu', sans-serif;
+    color: var(--colorOne);
+    opacity: 0.9;
     font-size: 15px;
     position: relative;
+    float: left;
+    line-height: 45px;
+    height: 0;
 }
 
 .templatetable td:nth-child(even) {
-    float: right;
     text-align: right;
+    float: left;
 }
 
 .templatesmalltd {
@@ -1614,7 +1681,7 @@ button {
     padding: 8px;
     width: 90%;
     margin: 25px auto;
-    background: white;
+    background: var(--tableTwo);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
 }
 
@@ -1682,6 +1749,21 @@ button {
 }
 
 
+/**/
+
+.inverttable {
+    background: var(--tableOne);
+}
+
+.inverttable tr:nth-child(odd) {
+    background: var(--tableTwo);
+}
+
+.inverttable tr:nth-child(even) {
+    background: var(--tableOne);
+}
+
+
 /*flexbox*/
 
 .menuflex2 {
@@ -1692,6 +1774,7 @@ button {
     box-shadow: rgba(39, 41, 59, 0.1) 0px 2px 3px 1px;
     padding: 0;
     overflow: hidden;
+    flex-direction: row;
 }
 
 .menuflex2 div {
@@ -1703,13 +1786,7 @@ button {
     text-transform: uppercase;
     user-select: none;
     border-collapse: collapse;
-    box-shadow: inset 0px 0px 0px 0.75px rgb(246.5, 246.5, 246.5);
-}
-
-@media all and (max-width: 600px) {
-    .menuflex2 div {
-        width: 100%;
-    }
+    background: var(--foregroundFive);
 }
 
 .menuflex2 div h3 {
@@ -1717,10 +1794,11 @@ button {
     font-size: 19px;
     font-weight: normal;
     letter-spacing: 0.5px;
+    color: var(--colorOne);
 }
 
 .menuflex2 div:hover {
-    background: rgb(246.5, 246.5, 246.5);
+    background: var(--foregroundFour);
 }
 
 .warning {
@@ -1735,7 +1813,6 @@ button {
     margin: 12px auto;
     border-radius: 0px;
     width: 90%;
-    box-shadow: inset rgba(0, 0, 0, 0.05) 0 0 4px 0px;
     background: #e3e9f0;
     position: relative;
 }
@@ -1757,10 +1834,9 @@ button {
     top: 5px;
     bottom: 0;
     right: 0;
-    color: rgb(0, 0, 0);
     margin: auto;
     width: fit-content;
-    font-weight: 500px;
+    font-weight: bold;
 }
 
 
@@ -1788,6 +1864,7 @@ button {
     .landingpagetopper {
         height: fit-content;
         padding-bottom: 35px;
+        min-height: auto;
     }
 }
 
@@ -1861,6 +1938,7 @@ button {
     text-indent: 0;
     animation: templatedivtitleload 0.8s;
     position: relative;
+    opacity: 1;
 }
 
 @media all and (max-width: 1055px) {
@@ -1870,7 +1948,7 @@ button {
 }
 
 .landingpageinforight {
-    background: white;
+    background: var(--background);
     box-shadow: 0px 6px 20px 8px #178db860;
     color: black;
     padding: 10px !important;
@@ -1940,6 +2018,12 @@ button {
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
 }
 
+@media all and (max-width: 600px) {
+    .discordlink {
+        width: 85%;
+    }
+}
+
 
 /*LOGINSIGNUP*/
 
@@ -1968,22 +2052,28 @@ button {
 }
 
 .loginsignupinput {
-    border: 1.5px solid #e3e9f0;
-    padding: 13px;
+    padding: 10px;
     outline: none;
     font-size: 16px;
     transition: all 0.2s;
     display: block;
     margin: 14px auto;
-    transition: all 0.3s;
-    background: linear-gradient(-90deg, rgb(246.5, 246.5, 246.5) 50%, rgb(255, 255, 255) 50%);
-    background-size: 200% 200%;
-    background-position: 0% 0%;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
+    border: 1.5px solid var(--border);
+    color: var(--colorOne);
+    background-size: 400% 400%;
+    background-position: -50% 0%;
     float: none;
 }
 
 .loginsignupinput:focus {
     background-position: -100% 0%;
+}
+
+.loginsignupinput::placeholder {
+    color: var(--colorOne);
+    opacity: 0.8;
 }
 
 .loginsignupbutton {
@@ -2113,7 +2203,14 @@ button {
 .countryactionsclick,
 .countryeditclick {
     background: #00a7e1 !important;
-    color: white !important;
+}
+
+.countryviewclick h3,
+.countryrevenueclick h3,
+.countrynewsclick h3,
+.countryactionsclick h3,
+.countryeditclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 
@@ -2142,6 +2239,11 @@ button {
     color: white !important;
 }
 
+.provincecityclick h3,
+.provincelandclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 .electricity,
 .retail,
 .works {
@@ -2161,6 +2263,12 @@ button {
     color: white !important;
 }
 
+.cityelectricityclick h3,
+.cityretailclick h3,
+.cityworksclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 .military,
 .industry,
 .processing {
@@ -2178,6 +2286,12 @@ button {
 .landprocessingclick {
     background: #00a7e1 !important;
     color: white !important;
+}
+
+.landmilitaryclick h3,
+.landindustryclick h3,
+.landprocessingclick h3 {
+    color: var(--colorTwo) !important;
 }
 
 
@@ -2207,9 +2321,10 @@ button {
     user-select: none;
     object-fit: cover;
     position: relative;
-    z-index: 2;
+    z-index: 0;
     top: 0;
     transition: all 0.4s ease-in-out;
+    animation: templatedivcontentload 1.25s;
 }
 
 .unitimage:hover {
@@ -2243,6 +2358,13 @@ button {
     color: white !important;
 }
 
+.militarylandclick h3,
+.militaryairclick h3,
+.militarywaterclick h3,
+.militaryspecialclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 
 /*create_coalition*/
 
@@ -2262,8 +2384,8 @@ button {
 /*WARS*/
 
 .warflexparent {
-    background: rgb(252.5, 252.5, 252.5);
-    border: 1.5px solid #e3e9f0;
+    background: var(--foregroundTwo);
+    border: 1.5px solid var(--border);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
     width: 95%;
@@ -2289,11 +2411,14 @@ button {
     right: 0;
 }
 
+.borderbottom {
+    flex-direction: row;
+}
+
 .borderbottom div {
     border-radius: 0px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     background: #00a7e1;
-    color: rgb(255, 255, 255);
     transition: all 0.3s;
     transform: scale(0.995);
     margin: 8px;
@@ -2308,6 +2433,10 @@ button {
 
 .borderbottom div:hover {
     transform: scale(0.985);
+}
+
+.borderbottom div h2 {
+    color: rgb(255, 255, 255) !important;
 }
 
 
@@ -2338,6 +2467,14 @@ button {
     color: white !important;
 }
 
+.coalitiongeneralclick h3,
+.coalitionaboutclick h3,
+.coalitionjoinclick h3,
+.coalitionleaderclick h3,
+.coalitionmemberclick h3 {
+    color: var(--colorTwo) !important;
+}
+
 .applicanttable {
     max-height: 20vh;
     overflow: hidden;
@@ -2354,8 +2491,9 @@ button {
     position: relative;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 1px, #00a9e140 0px 8px 0px 0px;
     transition: all 0.3s ease-in-out;
-    background: rgb(252.5, 252.5, 252.5);
+    background: var(--tableTwo);
     cursor: pointer;
+    opacity: 1;
 }
 
 .unitcard img {
@@ -2370,6 +2508,28 @@ button {
 .unitcard:focus {
     top: 0;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+}
+
+.unitcardcheck {
+    width: 0%;
+    background: #00a9e1;
+    color: white;
+    padding: 6px 50%;
+    margin: auto;
+    position: static;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
+    opacity: 0;
+    margin-left: -15px;
+    user-select: none;
+    transition: width 0.3s, opacity 0s, padding 0s;
+}
+
+.unitcard input[type=checkbox]:checked~.unitcardcheck {
+    opacity: 1;
+    margin-left: 0;
+    width: 80%;
+    padding: 6px 0;
+    transition: opacity 0.3s, width 0.3s, padding 0.15s;
 }
 
 

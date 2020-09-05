@@ -135,80 +135,54 @@ def establish_coalition():
 
         
 @login_required
-@app.route("/coalitions", methods=["GET", "POST"])
+@app.route("/coalitions", methods=["GET"])
 def coalitions():
-    if request.method == "GET":
 
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
 
+    try:
+        search = request.values.get("search")
+    except TypeError:
+        search = None
+
+    if search == None or search == "":
         coalitions = db.execute("SELECT id FROM colNames").fetchall()
-
-        names = []
-        ids = []
-        members = []
-        types = []
-        influences = []
-
-        for i in coalitions:
-
-            ids.append(i[0])
-
-            idd = str(i[0])
-
-            colType = db.execute(
-                "SELECT type FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
-            types.append(colType)
-
-            colName = db.execute(
-                "SELECT name FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
-            names.append(colName)
-
-            colMembers = db.execute(
-                "SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
-            members.append(colMembers)
-
-            influence = get_coalition_influence(idd)
-            influences.append(influence)
-
-        connection.close()
-
-        resultAll = zip(names, ids, members, types, influences)
-
-        return render_template("coalitions.html", resultAll=resultAll)
-
     else:
+        coalitions = db.execute("SELECT id FROM colNames WHERE name=(?)", (search,)).fetchall()
 
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
+    names = []
+    ids = []
+    members = []
+    types = []
+    influences = []
 
-        search = request.form.get("search")
+    for i in coalitions:
 
-        resultId = db.execute(
-            "SELECT id FROM colNames WHERE name LIKE (?)", ('%'+search+'%',)).fetchall()
-        ids = []
-        names = []
-        members = []
-        types = []
-        influences = []
+        ids.append(i[0])
 
-        for i in resultId:
-            names.append(db.execute(
-                "SELECT name FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
-            ids.append(db.execute(
-                "SELECT id FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
-            members.append(db.execute(
-                "SELECT count(userId) FROM coalitions WHERE colId=(?)", (i[0],)).fetchone()[0])
-            types.append(db.execute(
-                "SELECT type FROM colNames WHERE id=(?)", (i[0],)).fetchone()[0])
-            influences.append(get_coalition_influence(i[0]))
+        idd = str(i[0])
 
-        connection.close()
+        colType = db.execute(
+            "SELECT type FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+        types.append(colType)
 
-        resultAll = zip(names, ids, members, types, influences)
+        colName = db.execute(
+            "SELECT name FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+        names.append(colName)
 
-        return render_template("coalitions.html", resultAll=resultAll)
+        colMembers = db.execute(
+            "SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
+        members.append(colMembers)
 
+        influence = get_coalition_influence(idd)
+        influences.append(influence)
+
+    connection.close()
+
+    resultAll = zip(names, ids, members, types, influences)
+
+    return render_template("coalitions.html", resultAll=resultAll)
 
 @login_required
 @app.route("/join/<colId>", methods=["POST"])

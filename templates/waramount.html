@@ -1,5 +1,5 @@
 {% extends "layout.html"%} {% block title %} Attack Amount {% endblock %} {% block body %}
-
+<!-- -->
 <div class="templatediv">
 
     <div class="templatedivtopper wartopper">
@@ -18,8 +18,8 @@
             <!--FIRST UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
 
-                <ul class="bold medium">[[ firstUnit ]]</ul>
-                <ul>[[ amount ]]</ul>
+                <ul class="bold medium">{{ attack_units[0] }}</ul>
+                <ul>{{ unitamounts[0] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
 
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
@@ -27,8 +27,8 @@
             <!--SECOND UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
 
-                <ul class="bold medium">[[ secondUnit ]]</ul>
-                <ul>[[ amount ]]</ul>
+                <ul class="bold medium">{{ attack_units[1] }}</ul>
+                <ul>{{ unitamounts[1] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />
@@ -36,8 +36,8 @@
             <!--THIRD UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
 
-                <ul class="bold medium">[[ thirdUnit ]]</ul>
-                <ul>[[ amount ]]</ul>
+                <ul class="bold medium">{{ attack_units[2] }}</ul>
+                <ul>{{ unitamounts[2] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" placeholder="[[ amount ]]" />

@@ -4,7 +4,7 @@
 
     <div class="templatedivtopper wartopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
-            military_tech
+                military_tech
             </span>War</h1>
         <div class="templatedivad"></div>
     </div>
@@ -15,22 +15,25 @@
 
                 <div class="templatedivflex2left">
 
-                    <a class="center templatedivbutton smallactionbutton" href="/military"><span class="material-icons-outlined">
-                        payments
+                    <a class="center templatedivbutton smallactionbutton" href="/military"><span
+                            class="material-icons-outlined">
+                            payments
                         </span>Purchase Military</a>
 
                 </div>
                 <div class="templatedivflex2left">
 
-                    <a class="center templatedivbutton smallactionbutton" href="/defense"><span class="material-icons-outlined">
-                        tune
+                    <a class="center templatedivbutton smallactionbutton" href="/defense"><span
+                            class="material-icons-outlined">
+                            tune
                         </span>Organize Defense</a>
 
                 </div>
                 <div class="templatedivflex2right">
 
-                    <a class="center templatedivbutton smallactionbutton" href="/find_targets"><span class="material-icons-outlined">
-                        person_search
+                    <a class="center templatedivbutton smallactionbutton" href="/find_targets"><span
+                            class="material-icons-outlined">
+                            person_search
                         </span>Find Target</a>
 
                 </div>
@@ -48,22 +51,22 @@
                     <th>Special</th>
                 </tr>
                 <tr>
-                    <td>{{ soldiers }} Soldiers</td>
-                    <td>{{ fighters }} Fighter Jets</td>
-                    <td>{{ submarines }} Submarines</td>
-                    <td>{{ spies }} Spies</td>
+                    <td>{{ units["soldiers"] }} Soldiers</td>
+                    <td>{{ units["fighters"] }} Fighter Jets</td>
+                    <td>{{ units["submarines"] }} Submarines</td>
+                    <td>{{ units["spies"] }} Spies</td>
                 </tr>
                 <tr>
-                    <td>{{ artillery }} Artillery</td>
-                    <td>{{ bombers }} Bombers</td>
-                    <td>{{ cruisers }} Cruisers</td>
-                    <td>{{ icbms }} ICBMs</td>
+                    <td>{{ units["artillery"] }} Artillery</td>
+                    <td>{{ units["bombers"] }} Bombers</td>
+                    <td>{{ units["cruisers"] }} Cruisers</td>
+                    <td>{{ units["icbms"] }} ICBMs</td>
                 </tr>
                 <tr>
-                    <td>{{ tanks }} Tanks</td>
-                    <td>{{ apaches }} Apaches</td>
-                    <td>{{ destroyers }} Destroyers</td>
-                    <td>{{ nukes }} Nukes</td>
+                    <td>{{ units["tanks"] }} Tanks</td>
+                    <td>{{ units["apaches"] }} Apaches</td>
+                    <td>{{ units["destroyers"] }} Destroyers</td>
+                    <td>{{ units["nukes"] }} Nukes</td>
                 </tr>
             </table>
         </div>
@@ -95,7 +98,8 @@
             <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink"
+                        href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
 
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
@@ -121,7 +125,8 @@
             </div>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink"
+                        href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
                 <!--aggressor nation flag-->
                 <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
@@ -147,7 +152,8 @@
             <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink"
+                        href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
                 <!--aggressor nation flag-->
                 <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
@@ -171,7 +177,8 @@
             </div>
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
+                <h2 class="templatecontentheadercenter"><a class="templatelink"
+                        href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
                 <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />

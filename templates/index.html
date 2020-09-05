@@ -19,12 +19,11 @@
 
                 <div class="landingpageinforight">
 
-                    <ul class="bold medium">Go to your country</ul>
-                    {% if session.get('user_id') == None %}
+                    <label class="full medium">Go to your country</label> {% if session.get('user_id') == None %}
                     <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login"><span class="material-icons-outlined">
                             login
                             </span>LOGIN</a>
-                    <ul class="bold medium">Or create one!</ul>
+                    <label class="full medium">Or create one!</label>
                     <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup"><span class="material-icons-outlined">
                             add_circle_outline
                             </span>SIGNUP</a> {% elif session.get('user_id') != None %}
@@ -41,7 +40,7 @@
     {% if session.get('user_id') == None %}
     <div class="templatedivcontent">
 
-        <div class="templatedivflex2 menuflex">
+        <div class="templatedivflex2 menuflex whiteblue">
             <div class="templatedivflex2left">
 
                 <!--image of user in /countries declare war-->
@@ -58,7 +57,7 @@
             </div>
         </div>
 
-        <div class="templatedivflex2 menuflex whiteblue">
+        <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
                 <h2 class="templatecontentheadercenter">Join a Coalition</h2>
@@ -74,7 +73,7 @@
             </div>
         </div>
 
-        <div class="templatedivflex2 menuflex">
+        <div class="templatedivflex2 menuflex whiteblue">
             <div class="templatedivflex2left">
 
                 <!--image of user clicking declare war-->
@@ -91,7 +90,7 @@
             </div>
         </div>
 
-        <div class="templatedivflex2 menuflex whiteblue">
+        <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
                 <h2 class="templatecontentheadercenter">Join our Community</h2>
@@ -117,6 +116,45 @@
                     </form>
                 </div>
 
+
+                <head>
+
+
+                    <div class="container">
+                        <h1>Theme Switcher</h1>
+                        <label id="switch" class="switch">
+                                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                                <span class="slider round"></span>
+                            </label>
+                    </div>
+
+                    <script>
+                        // function to set a given theme/color-scheme
+                        function setTheme(themeName) {
+                            localStorage.setItem('theme', themeName);
+                            document.documentElement.className = themeName;
+                        }
+
+                        // function to toggle between light and dark theme
+                        function toggleTheme() {
+                            if (localStorage.getItem('theme') === 'theme-dark') {
+                                setTheme('theme-light');
+                            } else {
+                                setTheme('theme-dark');
+                            }
+                        }
+
+                        // Immediately invoked function to set the theme on initial load
+                        (function() {
+                            if (localStorage.getItem('theme') === 'theme-dark') {
+                                setTheme('theme-dark');
+                                document.getElementById('slider').checked = false;
+                            } else {
+                                setTheme('theme-light');
+                                document.getElementById('slider').checked = true;
+                            }
+                        })();
+                    </script>
             </div>
             <div class="templatedivflex2left">
 

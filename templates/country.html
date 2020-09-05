@@ -83,10 +83,11 @@
             <div class="countryimagediv">
                 <!--country flag-->
                 {% if flag != None %}
-                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">/> <!-- hmm not using url_for, but somewhy it render-->
-                {% else %}                                                                   <!-- tried first with url_for, but it didn't work -- t0dd -->
-                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" />
-                {% endif %}
+                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">
+                <!-- hmm not using url_for, but somewhy it render-->
+                {% else %}
+                <!-- tried first with url_for, but it didn't work -- t0dd -->
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
                 <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
                 <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
@@ -271,25 +272,36 @@
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
                 {% for provinceName, provinceId, population, cities, land in provinces %}
                 <tr>
-                    <td><a class="loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
-                            account_balance
-                            </span>{{ provinceName[0] }}</a>
-                        <table class="templatetable3">
-                            <tr>
-                                <td>Population:</td>
-                                <td>{{ population[0] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Cities:</td>
-                                <td>{{ cities[0] }}</td>
-                            </tr>
-                            <tr>
-                                <td>Land:</td>
-                                <td>{{ land[0] }}</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td class="smallimage"><img class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
+
+                            <td>
+                                <table class="templatetable">
+                                    <tr>
+                                        <th class="anchor"><a class="forgotpasscode loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
+                                            account_balance
+                                            </span>{{ provinceName[0] }}</a></th>
+                                    </tr>
+                                    <tr>
+                                        <td>Population:</td>
+                                        <td>{{ population[0] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cities:</td>
+                                        <td>{{ cities[0] }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Land:</td>
+                                        <td>{{ land[0] }}</td>
+                                    </tr>
+                                </table>
+                            </td>
+
+                        </div>
+                        <div class="templatedivflex2left">
+                            <td class="smallimage"><img class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                        </div>
+                    </div>
                 </tr>
                 {% endfor %}
 
@@ -569,7 +581,42 @@
         <!--News-->
         <div class="news" id="news">
 
-            news
+            <table class="templatetable">
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>War</th>
+                </tr>
+                <tr>
+                    <td class="talltabletd"><strong>Victory over [[ enemyCountry ]]!</strong></td>
+                    <td class="talltabletd">[[ results ]]</td>
+                </tr>
+                <tr>
+                    <td class="talltabletd"><strong>Defeated by [[ enemyCountry ]]!</strong></td>
+                    <td class="talltabletd">[[ results ]]</td>
+                </tr>
+                <tr>
+                    <td class="talltabletd"><strong>Attacked by [[ enemyCountry ]]!</strong></td>
+                    <td class="talltabletd">[[ results ]]</td>
+                </tr>
+                <tr>
+                    <td class="talltabletd"><strong>Decleration of War from [[ enemyCountry ]]!</strong></td>
+                    <td class="talltabletd">[[ declerationMessage ]][[ peaceRequest ]]</td>
+                </tr>
+                <tr>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>Trade</th>
+                </tr>
+                <tr>
+                    <td class="talltabletd"><strong>[[ country ]] has sent you a trade offer</strong></td>
+                    <td class="talltabletd">[[ tradeOffer ]]</td>
+                </tr>
+                <tr>
+                    <td class="talltabletd"><strong>[[ country ]] Traded with you</strong></td>
+                    <td class="talltabletd">You gave [[ amount ]] in return for [[ amount ]]</td>
+                </tr>
+            </table>
 
         </div>
         <!--Edit-->
@@ -593,50 +640,55 @@
                         </div>
 
                     </div>
+                    <div class="templatedivflex2left">
+                        <div class="coalitionimagepreview">
+                            <video>
+                            <source id="imageBackground3" type="video/ogg"/>
+                        </video>
+                        </div>
+                    </div>
                 </div>
                 <form method="POST" enctype="multipart/form-data">
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                    <div class="templatedivflex2 menuflex">
+                        <div class="templatedivflex2left">
 
-                        <label for="bgimage">Choose country flag</label>
+                            <label for="bgimage">Choose country flag</label>
 
-                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                                 </span>Choose Image
                                 <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground(event)">
                               </label>
 
-                    </div>
-                    <div class="templatedivflex2left">
+                        </div>
+                        <div class="templatedivflex2left">
 
-                        <label for="bgimage2">Choose background image</label>
+                            <label for="bgimage2">Choose background image</label>
 
-                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                                 </span>Choose Image
                                 <input type="file" name="bgimage2" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
                               </label>
 
-                    </div>
-                </div>
-                <div class="templatedivflex2left">
-                    <div class="coalitionimagepreview">
-                        <img id="imageBackground3" />
-                    </div>
-                </div>
+                        </div>
+                        <div class="templatedivflex2left">
 
-                <label for="countryName">Choose Anthem</label>
-                <label class="imageinput fit center"><span class="material-icons-outlined">
-                        wallpaper
-                            </span>Choose Image
-                            <input type="file" name="bgimage3" id="imageinput" accept="image/*" onchange="imageBackground3(event)">
-                          </label>
+                            <label for="countryName">Choose Anthem</label>
 
+                            <label class="imageinput fit center"><span class="material-icons-outlined">
+                                slideshow
+                                    </span>Choose Video
+                                    <input type="file" name="bgimage3" id="imageinput" accept="video/*" onchange="imageBackground3(event)">
+                                  </label>
+
+                        </div>
+                    </div>
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
                             <label for="countryName">Change country name</label>
-                            <input class="loginsignupinput" name="countryName" placeholder="Country Name" />
+                            <input class="loginsignupinput" name="countryName" placeholder="New name" />
 
                         </div>
                         <div class="templatedivflex2left">
@@ -1134,7 +1186,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="c14" name="group14">
-                            <label for="c14">Fascism</label>
+                            <label for="c14">Policy 3</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1279,7 +1331,7 @@
 
             <h2 class="templatecontentheaderleft">War</h2>
 
-            <form  action="/declare_war" method="post" class="infodiv">
+            <form action="/declare_war" method="post" class="infodiv">
 
                 <div class="nomarg nopad center">
                     <label for="warType">Pick war type</label>
@@ -1296,7 +1348,7 @@
                 <div class="center">
                     <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
                 </div>
-                
+
                 <!-- <a class="templatedivbutton templatecenteredbutton" href="/declare_war">
                   <span class="material-icons-outlined">
                     check
@@ -1305,7 +1357,7 @@
 
                 <input type="hidden" name="defender" value="{{ username }}">
                 <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
-          </form>
+            </form>
 
             <h2 class="templatecontentheaderleft">Reconnaissance</h2>
 
@@ -1340,59 +1392,63 @@
 
             <h2 class="templatecontentheaderleft">Trade</h2>
 
-            <div class="infodiv">
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left flexchildvanilla">
+            <form method="POST">
+                <div class="infodiv">
+                    <div class="templatedivflex2 divflex2center">
+                        <div class="templatedivflex2left flexchildvanilla">
 
-                        <select name="resource" class="templateselect">
-
+                            <select name="resource" class="templateselect">
                             <option disabled="true" selected="selected">Choose one</option>
-                            <option value="gold" class="templateoption">Gold</option>
-                            <option value="bauxite" class="templateoption">Bauxite</option>
-                            <option value="plutonium" class="templateoption">Plutionium</option>
-                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
-                            <option value="uranium" class="templateoption">Uranium</option>
-                            <option value="thorium" class="templateoption">Thorium</option>
-                            <option value="iron" class="templateoption">Iron</option>
-                            <option value="coal"class="templateoption">Coal</option>
+                            <option value="rations" class="templateoption">Rations</option>
                             <option value="oil" class="templateoption">Oil</option>
+                            <option value="coal" class="templateoption">Coal</option>
+                            <option value="uranium" class="templateoption">Uranium</option>
+                            <option value="bauxite" class="templateoption">Bauxite</option>
+                            <option value="iron" class="templateoption">Iron</option>
                             <option value="lead" class="templateoption">Lead</option>
-                            <option value="silicon" class="templateoption">Silicon</option>
-                            <option value="copper" class="templateoption">Copper</option>
+                            <option value="copper"class="templateoption">Copper</option>
+                            <option value="components" class="templateoption">Components</option>
+                            <option value="steel" class="templateoption">Steel</option>
+                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+                            <option value="copper_plates" class="templateoption">Copper Plates</option>
+                            <option value="aluminium" class="templateoption">Aluminium</option>
+                            <option value="gasoline" class="templateoption">Gasoline</option>
+                            <option value="ammunition" class="templateoption">Ammunition</option>
                         </select>
 
 
+                        </div>
+                        <div class="templatedivflex2left flexchildvanilla">
+
+                            <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
+
+                        </div>
+                        <div class="templatedivflex2left flexchildvanilla">
+
+                            <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
+
+                        </div>
                     </div>
-                    <div class="templatedivflex2left flexchildvanilla">
 
-                        <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
+                    <div class="templatedivflex2 divflex2center">
+                        <div class="templatedivflex2left">
 
-                    </div>
-                    <div class="templatedivflex2left flexchildvanilla">
-
-                        <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
-
-                    </div>
-                </div>
-
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left">
-
-                        <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            <button formaction="/post_trade_offer/buy/{{ cId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             payments
                             </span>Buy offer</button>
 
-                    </div>
+                        </div>
 
-                    <div class="templatedivflex2left">
+                        <div class="templatedivflex2left">
 
-                        <button type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                            <button formaction="/post_trade_offer/sell/{{ cId }}" type="submit" value="Submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             payments
                             </span>Sell Offer</button>
 
-                    </div>
+                        </div>
+            </form>
 
-                </div>
+            </div>
             </div>
             <h2 class="templatecontentheaderleft">Transfer</h2>
 

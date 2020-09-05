@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 import datetime
 import _pickle as pickle
@@ -13,6 +13,7 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
+import bcrypt
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -24,7 +25,7 @@ def login():
         db = connection.cursor()  # creates the cursor for db connection
 
         # gets the password input from the form
-        password = request.form.get("password")
+        password = request.form.get("password").encode("utf-8")
         # gets the username input from the forms
         username = request.form.get("username")
 
@@ -34,10 +35,13 @@ def login():
         # selects data about user, from users
         user = db.execute(
             "SELECT * FROM users WHERE username = (?)", (username,)).fetchone()
-        connection.commit()
+        try:
+            hashed_pw = user[4]
+        except:
+            return error(403, "Wrong password")
 
         # checks if user exists and if the password is correct
-        if user is not None and check_password_hash(user[4], password):
+        if user is not None and bcrypt.checkpw(password, hashed_pw):
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
             try:
@@ -53,7 +57,6 @@ def login():
             connection.commit()
             connection.close()
             return redirect("/")  # redirects user to homepage
-
         return error(403, "Wrong password")
 
     else:
