@@ -105,16 +105,16 @@ def warChoose():
         # typical post redirect get pattern means we should do with the request.form.get values here (the 3 units)
         # store the 3 values in session and retrieve it in waramount later
 
-        unit_list = []
-        unit_list.append(request.form.get("u1"))
-        unit_list.append(request.form.get("u2"))
-        unit_list.append(request.form.get("u3"))
+        attack_units = []
+        attack_units.append(request.form.get("u1"))
+        attack_units.append(request.form.get("u2"))
+        attack_units.append(request.form.get("u3"))
 
         # TODO: add aditional checks for unit_list
-        if len(unit_list) != 3:
+        if len(attack_units) != 3:
             return "the 3 unit selection is not correct"
 
-        # session["attack_units"] = request.form.get("attack_units")
+        session["attack_units"] = attack_units
 
         # could also just retrieve all 9 possibilities from warchoose and just remove the ones that are null if that's easier for you Carson -- Steven
         '''
