@@ -75,15 +75,42 @@ def wars():
         except TypeError:
             defending = 0
 
+
+
+        # the next two for loops delete wars if the war involves a deleted nation.
+        # if wars can be removed when someone deletes their nation or we ban a nation instead of every time anyone opens their war page, that would be faster
+        listOfUserIdTuples = db.execute("SELECT id FROM users").fetchall()
+        userIdsLst = []
+        for tuple in listOfUserIdTuples:
+            for item in tuple:
+                userIdsLst.append(item)
+        defendingIdsLst = []
+        for tuple in defendingIds:
+            for item in tuple:
+                defendingIdsLst.append(item)
+        attackingIdsLst = []
+        for tuple in attackingIds:
+            for item in tuple:
+                attackingIdsLst.append(item)
+
+        for id in defendingIdsLst:
+            if id not in userIdsLst:
+                db.execute(
+                    "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id,id))
+        for id in attackingIdsLst:
+            if id not in userIdsLst:
+                db.execute(
+                    "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id,id))
+        connection.commit()
+
+
         # WHAT DOES THIS DO??? -- Steven
         # Selects how many wars the user is in -- t0dd
         # got it :D
-        warsCount = len(attackingWars) + len(defendingWars)
-        # if a userid is deleted from the game, the war entries with that id should disappear, this should be done upon deletion?
-        # if we check here it would be something like this
-        
-
-        # returns ALL the VALUES to wars.html
+        warsCount = db.execute(
+            "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
+        db.close()
+        connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
 
 # the flask route that activates when you click attack on a nation in your wars page.
