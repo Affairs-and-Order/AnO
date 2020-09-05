@@ -131,6 +131,7 @@ def warChoose():
 def warAmount():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
+    cId = session["user_id"]
     if request.method == "GET":
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
