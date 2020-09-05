@@ -144,10 +144,15 @@
             //     });
             // });
             $(document).ready(function () {
-                $('input.warcheckbox').on('change', function (evt) {
-                    console.log(document.querySelectorAll('input[type=checkbox]').filter(({ checked }) => checked));
-                    console.log('dis should show up')
-                });
+                $('input.warcheckbox').on('change', function (e) {
+                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({ checked }) => checked).length;
+                    if (checkNum > 3) {
+                        this.checked = false;
+                    }
+                    let checkElement = document.querySelector('#chosenAmountChecked');
+                    checkElement.innerHTML = checkNum;
+                    console.log('this is showingasdf')
+                })
             });
 
         </script>
