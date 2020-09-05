@@ -134,11 +134,9 @@
     $(document).ready(function () {
         var limit = 3;
         $('input.warcheckbox').on('change', function (evt) {
-            console.log('hiiiiiiii'); // does show up
             let checkLength = $(this).siblings(':checked').length;
             console.log(checkLength) // this is always 0 -- needs fixed
             if ($(this).siblings(':checked').length >= limit) {
-                console.log(checked)
                 this.checked = false;
             }
             let checkElement = document.getElementById("chosenAmountChecked");
