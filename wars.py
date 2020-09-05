@@ -4,6 +4,7 @@ from flask_session import Session
 import sqlite3
 from helpers import login_required, error
 from attack_scripts import Nation, Military
+from implement_units_management import Units
 import time
 
 '''
@@ -90,10 +91,11 @@ def wars():
 @login_required
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
+    # cId = session["user_id"]
+    cId=2
 
     if request.method == "GET":
         # this is upon first landing on this page after the user clicks attack in wars.html
-        cId = session["user_id"]
         normal_units = Military.get_military(cId)
         # special_units = Military.get_special(cId)
         units = normal_units.copy()
@@ -105,15 +107,17 @@ def warChoose():
         # typical post redirect get pattern means we should do with the request.form.get values here (the 3 units)
         # store the 3 values in session and retrieve it in waramount later
 
-        attack_units = []
-        attack_units.append(request.form.get("u1"))
-        attack_units.append(request.form.get("u2"))
-        attack_units.append(request.form.get("u3"))
+        selected_units = {}
+        selected_units[request.form.get("u1")] = 0
+        selected_units[request.form.get("u2")] = 0
+        selected_units[request.form.get("u3")] = 0
 
-        # TODO: add aditional checks for unit_list
-        if len(attack_units) != 3:
-            return "the 3 unit selection is not correct"
+        attack_units = Units(cId)
 
+        # Output error if any
+        error = attack_units.attach_units(selected_units)
+
+        # cache Unit object reference in session
         session["attack_units"] = attack_units
 
         # could also just retrieve all 9 possibilities from warchoose and just remove the ones that are null if that's easier for you Carson -- Steven
@@ -132,7 +136,7 @@ def warChoose():
 
         '''
 
-        return redirect('waramount.html')
+        return redirect('/waramount')
 
 # page 2 choose how many of each of your units to send
 # how to send only 3 three unit variables that were chosen in the last page??
@@ -143,23 +147,30 @@ def warAmount():
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        cId = session["user_id"]
+        # cId = session["user_id"]
+        cId=2
+
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
+        selected_units = list(attack_units.selected_units.keys())
+
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-        unitamount1 = db.execute(f"SELECT {attack_units[0]} FROM military WHERE id=(?)", (cId,)).fetchone()[
-            0]  # this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
-        unitamount2 = db.execute(
-            f"SELECT {attack_units[1]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        unitamount3 = db.execute(
-            f"SELECT {attack_units[2]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        unitamount1 = db.execute(f"SELECT {selected_units[0]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]  # this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
+        unitamount2 = db.execute(f"SELECT {selected_units[1]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        unitamount3 = db.execute(f"SELECT {selected_units[2]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
         connection.commit()
         db.close()
         connection.close()
+
         # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
-        attack_units = session['attack_units']
+        # attack_units = session['attack_units']
+
         unitamounts = zip(unitamount1, unitamount2, unitamount3)
-        return render_template("waramount.html", attack_units=attack_units, unitamounts=unitamounts)
+
+        print(selected_units)
+        return render_template("waramount.html", attack_units=selected_units, unitamounts=unitamounts)
+        # return render_template("waramount.html", alma={"a": 55})
 
     elif request.method == "POST":
         session["unit_amounts"] = request.form.get("attack_units")
