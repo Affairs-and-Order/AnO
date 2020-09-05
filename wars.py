@@ -146,8 +146,8 @@ def warAmount():
         return render_template("waramount.html", attack_units=attack_units, unitamounts=unitamounts)
 
 
-else:
-    return redirect('warTarget')
+    else:
+        return redirect('warTarget')
 
 # page 3 where you choose what 3 enemy units to attack
 @login_required
