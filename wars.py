@@ -176,8 +176,7 @@ def warAmount():
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-        unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (attack_units[0], cId,)).fetchone()[
-            0]
+        unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (attack_units[0], cId,)).fetchone()[0]
         unitamount2 = db.execute(
             "SELECT ? FROM military WHERE id=(?)", attack_units[1], (cId,)).fetchone()[0]
         unitamount3 = db.execute(
@@ -246,7 +245,7 @@ def declare_war():
         attacker_provinces = attacker.get_provinces()["provinces_number"]
         defender_provinces = defender.get_provinces()["provinces_number"]
 
-        if (attacker_provinces-1 == defender_provinces) or (attacker_provinces+1 == defender_provinces) or (attacker_provinces == defender_provinces):
+        if (abs(attacker_provinces - defender_provinces) <= 1):
             pass
         else:
             return "Can't declare war because the province difference is too big"
