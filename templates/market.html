@@ -98,7 +98,7 @@
 
                 {% for id, type, name, resource, amount, price, offer_id, total_price in offers %}
                 <tr>
-                    <td><a href="/country/id={{ id[0] }}">{{ name }}</a></td>
+                    <td><a href="/country/id={{ id }}">{{ name }}</a></td>
                     <!--Buying or Selling-->
                     {% if type == "buy" %}
                     <td>Buying</a>

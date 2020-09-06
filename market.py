@@ -88,8 +88,7 @@ def market():
                 "SELECT type FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             types.append(offer_type)
 
-            name = db.execute(
-                "SELECT username FROM users WHERE id=(?)", (user_id,)).fetchone()[0]
+            name = db.execute("SELECT username FROM users WHERE id=(?)", (user_id,)).fetchone()[0]
             names.append(name)
 
             resource = db.execute(
