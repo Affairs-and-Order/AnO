@@ -12,6 +12,7 @@ def market():
         # Connection
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
+        cId = session["user_id"]
 
         # GET Query Parameters
         try:
@@ -111,7 +112,7 @@ def market():
         offers = zip(ids, types, names, resources, amounts, prices, offer_ids, total_prices)
         # Zips everything into 1 list
 
-        return render_template("market.html", offers=offers, price_type=price_type)
+        return render_template("market.html", offers=offers, price_type=price_type, cId=cId)
 
 
 @login_required

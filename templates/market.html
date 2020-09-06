@@ -97,6 +97,7 @@
                 </tr>
 
                 {% for id, type, name, resource, amount, price, offer_id, total_price in offers %}
+                {% if id != cId %}
                 <tr>
                     <td><a href="/country/id={{ id }}">{{ name }}</a></td>
                     <!--Buying or Selling-->
@@ -142,6 +143,7 @@
                     </td>
                     <!-- add button here -->
                 </tr>
+                {% endif %}
                 {% endfor %}
             </table>
         </div>
