@@ -176,12 +176,12 @@ def warAmount():
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-        unitamount1 = db.execute(f"SELECT {attack_units[0]} FROM military WHERE id=(?)", (cId,)).fetchone()[
+        unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (attack_units[0], cId,)).fetchone()[
             0]  # this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
         unitamount2 = db.execute(
-            f"SELECT {attack_units[1]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+            "SELECT ? FROM military WHERE id=(?)", attack_units[1], (cId,)).fetchone()[0]
         unitamount3 = db.execute(
-            f"SELECT {attack_units[2]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+            "SELECT ? FROM military WHERE id=(?)", (attack_units[2], cId,)).fetchone()[0]
         connection.commit()
         db.close()
         connection.close()
