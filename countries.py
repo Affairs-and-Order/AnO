@@ -212,6 +212,11 @@ def delete_own_account():
     db.execute("DELETE FROM military WHERE id=(?)", (cId,))
     db.execute("DELETE FROM resources WHERE id=(?)", (cId,))
 
+    # Deletes all wars user was involved in
+    db.execute("DELETE FROM wars WHERE attacker=(?)", (cId,))
+    db.execute("DELETE FROM war WHERE defender=(?)", (cId,))
+    # TODO: Deletes coalition if user was alone in the coalition
+    
     # Deletes all the users provinces and their infrastructure
     try:
         province_ids = db.execute("SELECT id FROM provinces WHERE userId=(?)", (cId,)).fetchall()

@@ -177,7 +177,7 @@ def warAmount():
         attack_units = session["attack_units"]
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
         unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (attack_units[0], cId,)).fetchone()[
-            0]  # this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
+            0]
         unitamount2 = db.execute(
             "SELECT ? FROM military WHERE id=(?)", attack_units[1], (cId,)).fetchone()[0]
         unitamount3 = db.execute(
