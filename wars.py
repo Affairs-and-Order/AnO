@@ -245,10 +245,10 @@ def declare_war():
         attacker_provinces = attacker.get_provinces()["provinces_number"]
         defender_provinces = defender.get_provinces()["provinces_number"]
 
-        if (abs(attacker_provinces - defender_provinces) <= 1):
-            pass
-        else:
-            return "Can't declare war because the province difference is too big"
+        if (attacker_provinces - defender_provinces > 1):
+            return "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
+        if (defender_provinces - attacker_provinces > 3):
+            return "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
 
     except TypeError:
         # Redirects the user to an error page
