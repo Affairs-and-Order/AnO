@@ -6,7 +6,6 @@ path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
 
 class Military:
-    # hey marter why do we need this initialize these values inside the class? Isn't those get_military and get_special commands enough? --steven
     def __init__(self, spies, soldiers, tanks, artillery, bombers, fighters, destroyers, cruisers, submarines, ICBMs, nukes):
         self.spies = spies
         self.soldiers = soldiers
@@ -19,6 +18,20 @@ class Military:
         self.submarines = submarines
         self.ICMBs = ICBMs
         self.nukes = nukes
+
+    # select only needed units instead of all
+    @staticmethod
+    def get_particular_unit(cId, particular_units):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        units = {}
+        for unit in particular_units:
+
+            # IMPORTANT: This is SQL injectable change this when move to production
+            units[unit] = db.execute(f"SELECT {unit} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
+        connection.close()
+        return units
 
     @staticmethod
     def get_military(cId):
@@ -75,6 +88,12 @@ class Military:
             "nukes": nukes
         }
 
+    # @staticmethod
+    # def get_default_defense(cId):
+    #     connection = sqlite3.connect('affo/aao.db')
+    #     db = connection.cursor()
+    #     default_defense = db.execute("SELECT default_defense FROM nation WHERE nation_id=(?)", (1,)).fetchall()
+    #     connection.close()
 
 class Economy:
     # TODO: expand this to cover all resources
