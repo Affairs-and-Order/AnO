@@ -16,40 +16,11 @@
 
         <div class="infodiv">
 
-            <div class="coalitionimagepreview">
-                <img id="imageBackground" />
-            </div>
+            <label class="templatecheckmarklabel fit">Dark Mode
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="templatecheckmark center"></span>
+              </label>
 
-            <div class="templatedivflex2 menuflex">
-                <div class="templatedivflex2left">
-
-                    <label for="bgcolor">Choose a color</label>
-                    <select class="templateselect" name="bgcolor">
-
-                        <option class="templateoption" selected>Default</option>
-                        <option class="templateoption">Gray</option>
-                        <option class="templateoption">Light Blue</option>
-                        <option class="templateoption">Dark Blue</option>
-                        <option class="templateoption">Red</option>
-                        <option class="templateoption">Dark Gray</option>
-                        <option class="templateoption">Black</option>
-                        <option class="templateoption">Green</option>
-                    
-                    </select>
-
-                </div>
-                <div class="templatedivflex2left">
-                    <label for="bgimage">Or a custom image</label>
-
-                    <label class="imageinput fit center"><span class="material-icons-outlined">
-                        wallpaper
-                            </span>Choose Image
-                            <input type="file" name="bgimage" id="imageinput" accept="image/*" onchange="imageBackground(event)">
-                          </label>
-
-                </div>
-            </div>
-            <!--if both an image and color are selected the image overrides the color-->
             <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                 check
                 </span>Update</button>
@@ -72,11 +43,11 @@
             </div>
             <div class="templatedivflex2 menuflex">
                 <form method="POST">
-                <div class="templatedivflex2left">
+                    <div class="templatedivflex2left">
 
-                    <button formaction="/delete_own_account" type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete account</button>
+                        <button formaction="/delete_own_account" type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete account</button>
 
-                </div>
+                    </div>
                 </form>
                 <div class="templatedivflex2left">
 
