@@ -311,7 +311,10 @@ def assembly():
 
 @app.route("/logout")
 def logout():
-    session.clear()
+    if session.get('user_id') is not None: 
+        session.clear()
+    else:
+        pass
     return redirect("/")
 
 @app.route("/tutorial", methods=["GET"])
