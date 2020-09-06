@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.8">
 
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+        rel="stylesheet">
 
     <script src="jquery-3.5.1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -36,74 +38,76 @@
         <div class="navbarloginsignupdiv">
             {% if session.get('user_id') == None %}
             <a class="loginsignup" href="/login"><span class="material-icons-outlined">
-            login
-            </span>Login</a>
+                    login
+                </span>Login</a>
             <a class="loginsignup" href="/signup"><span class="material-icons-outlined">
-            add_circle_outline
-            </span>Signup</a> {% elif session.get('user_id') != None %}
+                    add_circle_outline
+                </span>Signup</a> {% elif session.get('user_id') != None %}
 
 
             <div class="dropdown">
                 <button class="dropbtn">Other<span class="material-icons-outlined iconright">
-                    keyboard_arrow_down
+                        keyboard_arrow_down
                     </span></button>
                 <div class="dropdown-content">
                     <a class="" href="/account"><span class="material-icons-outlined">
-                    perm_identity
-                    </span>Account</a>
+                            perm_identity
+                        </span>Account</a>
                     <a class="" href="/tutorial"><span class="material-icons-outlined">
-                    school
-                    </span>Tutorial</a>
+                            school
+                        </span>Tutorial</a>
                     <a class="" href="/statistics"><span class="material-icons-outlined">
-                    insert_chart_outlined
-                    </span>Statistics</a>
+                            insert_chart_outlined
+                        </span>Statistics</a>
                 </div>
             </div>
             <div class="dropdown">
                 <button class="dropbtn">Global Affairs<span class="material-icons-outlined iconright">
-                    keyboard_arrow_down
+                        keyboard_arrow_down
                     </span></button>
                 <div class="dropdown-content">
                     {% if session.get('user_id') != None %}
                     <a class="" href="/my_coalition"><span class="material-icons-outlined">
-                    group
-                    </span>My Coalition</a> {% endif %}
+                            group
+                        </span>My Coalition</a> {% endif %}
                     <a class="" href="/establish_coalition"><span class="material-icons-outlined">
-                        group_add
+                            group_add
                         </span>Establish a Coalition</a>
                     <a class="" href="/coalitions"><span class="material-icons-outlined">
-                    public
-                    </span>Coalitions</a>
+                            public
+                        </span>Coalitions</a>
                     <a class="" href="/countries"><span class="material-icons-outlined">
-                    person_search
-                    </span>Countries</a>
+                            person_search
+                        </span>Countries</a>
                     <a class="" href="/businesses"><span class="material-icons-outlined">
-                        business
+                            business
                         </span>Businesses</a>
                     <a class="" href="/assembly"><span class="material-icons-outlined">
                             chat
-                            </span>Assembly</a>
+                        </span>Assembly</a>
                 </div>
             </div>
             <div class="dropdown">
                 <button class="dropbtn">Internal Affairs<span class="material-icons-outlined iconright">
-                    keyboard_arrow_down
+                        keyboard_arrow_down
                     </span></button>
                 <div class="dropdown-content">
                     <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
-                        outlined_flag
+                            outlined_flag
                         </span>Country</a>
                     <a class="" href="/provinces"><span class="material-icons-outlined">
-                        account_balance
+                            account_balance
                         </span>Provinces</a>
                     <a class="" href="/market"><span class="material-icons-outlined">
-                        local_grocery_store
+                            local_grocery_store
                         </span>Market</a>
                     <a class="" href="/wars"><span class="material-icons-outlined">
-                        military_tech
+                            military_tech
                         </span>Wars</a>
                 </div>
             </div>
+            <a class="nav-link" href="/logout">Log Out</a>
+
         </div>
         {% endif %}
 
@@ -113,53 +117,53 @@
 
         <h3>Internal Affairs</h3>
         <a class="menubara" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
-            outlined_flag
+                outlined_flag
             </span>Country</a>
         <a class="menubara" href="/provinces"><span class="material-icons-outlined">
-            account_balance
+                account_balance
             </span>Provinces</a>
         <a class="menubara" href="/market"><span class="material-icons-outlined">
-            local_grocery_store
+                local_grocery_store
             </span>Market</a>
         <a class="menubara" href="/wars"><span class="material-icons-outlined">
-            military_tech
+                military_tech
             </span>Wars</a>
 
         <h3>Global Affairs</h3>
         <a class="menubara" href="my_coalition"><span class="material-icons-outlined">
-            group
+                group
             </span>My Coalition</a>
         <a class="menubara" href="/establish_coalition"><span class="material-icons-outlined">
                 group_add
-                </span>Establish a Coalition</a>
+            </span>Establish a Coalition</a>
         <a class="menubara" href="/coalitions"><span class="material-icons-outlined">
-            public
+                public
             </span>Coalitions</a>
         <a class="menubara" href="/countries"><span class="material-icons-outlined">
-            person_search
+                person_search
             </span>Countries</a>
         <a class="menubara" href="/businesses"><span class="material-icons-outlined">
                 business
-                </span>Businesses</a>
+            </span>Businesses</a>
         <a class="menubara" href="/assembly"><span class="material-icons-outlined">
-                    chat
-                    </span>Assembly</a>
+                chat
+            </span>Assembly</a>
 
         <h3>Other</h3>
         <a class="menubara" href="/account"><span class="material-icons-outlined">
                 perm_identity
-                </span>Account</a>
+            </span>Account</a>
         <a class="menubara" href="/tutorial"><span class="material-icons-outlined">
                 school
-                </span>Tutorial</a>
+            </span>Tutorial</a>
         <a class="menubara" href="/statistics"><span class="material-icons-outlined">
                 insert_chart_outlined
-                </span>Statistics</a>
+            </span>Statistics</a>
 
         <div class="resourcediv" id="resourcediv">
             <a> <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
-        monetization_on
-        </span></a>
+                    monetization_on
+                </span></a>
         </div>
 
         <div class="resourcedivcontent" id="resourcedivcontent">
@@ -170,23 +174,44 @@
                 <span id="resourcetag" class="resourcetag">{{ resource_list[0] }}</span>
             </p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[1] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[2] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[3] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[4] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[5] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[6] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[7] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[8] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[9] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img
+                    src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" /><span
+                    id="resourcetag" class="resourcetag">{{ resource_list[1] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img
+                    src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource" /><span
+                    id="resourcetag" class="resourcetag">{{ resource_list[2] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img
+                    src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" /><span
+                    id="resourcetag" class="resourcetag">{{ resource_list[3] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img
+                    src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" /><span
+                    id="resourcetag" class="resourcetag">{{ resource_list[4] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img
+                    src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" /><span
+                    id="resourcetag" class="resourcetag">{{ resource_list[5] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[6] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img
+                    src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" /><span
+                    id="resourcetag" class="resourcetag">{{ resource_list[7] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[8] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[9] }}</span></p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[10] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[11] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[12] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[10] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[11] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[12] }}</span></p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[13] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[14] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[15] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[13] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[14] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag"
+                    class="resourcetag">{{ resource_list[15] }}</span></p>
         </div>
     </div>
     {% endif %}

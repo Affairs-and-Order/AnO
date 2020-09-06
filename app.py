@@ -309,10 +309,10 @@ def assembly():
 
 
 
-"""@app.route("/logout", methods=["GET"])
+@app.route("/logout")
 def logout():
-    session.pop('user_id', None)
-    return redirect("/login")"""
+    session.clear()
+    return redirect("/")
 
 @app.route("/tutorial", methods=["GET"])
 def tutorial():
