@@ -121,6 +121,7 @@ def wars():
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
     cId = session["user_id"]
+    # cId = 2
 
     if request.method == "GET":
 
@@ -173,22 +174,29 @@ def warChoose():
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
     cId = session["user_id"]
+    # cId = 2
 
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        # cId=2
 
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
         selected_units = list(attack_units.selected_units.keys())
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-        unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (attack_units[0], cId,)).fetchone()[0]
-        unitamount2 = db.execute(
-            "SELECT ? FROM military WHERE id=(?)", attack_units[1], (cId,)).fetchone()[0]
-        unitamount3 = db.execute(
-            "SELECT ? FROM military WHERE id=(?)", (attack_units[2], cId,)).fetchone()[0]
+
+        # Hello here, the below code what is commented out is not working so in this way we can't solve the SQL injection problem. When you try to assign dynamically to "SELECT ?" it just gives back the column name.
+        # Possible solution for SQLi: use SQL variables (SQLite doesen't support variables but maybe Postgres does)
+        # unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[0], cId,)).fetchone()[0]
+        # unitamount2 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[1], cId,)).fetchone()[0]
+        # unitamount3 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[2], cId,)).fetchone()[0]
+
+        # this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
+        unitamount1 = db.execute(f"SELECT {selected_units[0]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        unitamount2 = db.execute(f"SELECT {selected_units[1]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        unitamount3 = db.execute(f"SELECT {selected_units[2]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+
         connection.commit()
         db.close()
         connection.close()
@@ -226,7 +234,7 @@ def warAmount():
 
 # page 3 where you choose what 3 enemy units to attack
 @login_required
-@app.route("/wartarget", methods=["GET, POST"])
+@app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
         # all war targets never change regardless of type of war, no variables to send here!
@@ -241,8 +249,8 @@ def warTarget():
 def warResult():
 
     return render_template("warResult.html")
-
 # Endpoint for war declaration
+
 @login_required
 @app.route('/declare_war', methods=["POST"])
 def declare_war():
