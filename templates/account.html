@@ -29,51 +29,61 @@
         <h2 class="templatecontentheaderleft">Account information</h2>
 
         <div class="infodiv">
+
+            <input class="loginsignupinput" name="" placeholder="Discord Username" />
+
             <div class="templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
 
-                    <input class="loginsignupinput" name="discordUsername" placeholder="Discord Username" />
+                    <input class="loginsignupinput" name="" placeholder="New Email" />
 
                 </div>
                 <div class="templatedivflex2left">
 
-
+                    <input class="loginsignupinput" name="" placeholder="New Passcode" />
 
                 </div>
             </div>
+            <div class="templatedivflex2 divflex2center">
+                <div class="templatedivflex2left">
 
-            </form>
-            <div class="templatedivflex2left">
+                    <input class="loginsignupinput" name="" placeholder="Current Passcode" />
 
-                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                                check
-                            </span>Update</button>
+                </div>
+                <div class="templatedivflex2left">
+
+                    <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                        check
+                    </span>Update</button>
+
+                </div>
             </div>
         </div>
+    </div>
 
-        <h2 class="templatecontentheaderleft">Danger Zone</h2>
+    <h2 class="templatecontentheaderleft">Danger Zone</h2>
 
-        <div class="infodiv">
-            <form method="POST">
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+    <div class="infodiv">
+        <form method="POST">
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
 
-                        <button formaction="/delete_own_account" type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                    <button formaction="/delete_own_account" type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
                                 cancel
                                 </span>Delete account</button>
 
-                    </div>
+                </div>
 
-                    <div class="templatedivflex2left">
+                <div class="templatedivflex2left">
 
-                        <a class="templatedivbutton templatecenteredbutton redactionbutton" href="/logout"><span class="material-icons-outlined">
+                    <a class="templatedivbutton templatecenteredbutton redactionbutton" href="/logout"><span class="material-icons-outlined">
                             arrow_forward
                             </span>Log Out</a>
 
-                    </div>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
+</div>
 </div>
 {% endblock %}

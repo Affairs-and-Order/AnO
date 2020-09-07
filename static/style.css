@@ -1061,7 +1061,7 @@ hr {
     transition: all 0.3s ease-in-out;
     background-color: #00a7e1;
     display: block;
-    width: fit-content;
+    width: max-content;
     letter-spacing: 1px;
     box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     border-radius: 100px;
