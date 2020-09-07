@@ -37,25 +37,42 @@
                 </div>
                 <div class="templatedivflex2left">
 
-                    test
+
 
                 </div>
             </div>
-            <div class="templatedivflex2 menuflex">
-                <form method="POST">
-                    <div class="templatedivflex2left">
 
-                        <button formaction="/delete_own_account" type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit">Delete account</button>
+            </form>
+            <div class="templatedivflex2left">
 
-                    </div>
-                </form>
-                <div class="templatedivflex2left">
-
-                    <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                                 check
                             </span>Update</button>
-                </div>
             </div>
+        </div>
+
+        <h2 class="templatecontentheaderleft">Danger Zone</h2>
+
+        <div class="infodiv">
+            <form method="POST">
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <button formaction="/delete_own_account" type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                                cancel
+                                </span>Delete account</button>
+
+                    </div>
+
+                    <div class="templatedivflex2left">
+
+                        <a class="templatedivbutton templatecenteredbutton redactionbutton" href="/logout"><span class="material-icons-outlined">
+                            arrow_forward
+                            </span>Log Out</a>
+
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
