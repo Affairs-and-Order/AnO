@@ -207,8 +207,8 @@ def warAmount():
         unit_to_amount_dict['cruisers'] = allAmounts[0][11]
         unit_to_amount_dict['submarines'] = allAmounts[0][12]
         unitamount1 = unit_to_amount_dict[selected_units[0]]
-        unitamount2 = unit_to_amount_dict[selected_units[0]]
-        unitamount3 = unit_to_amount_dict[selected_units[0]]
+        unitamount2 = unit_to_amount_dict[selected_units[1]]
+        unitamount3 = unit_to_amount_dict[selected_units[2]]
 
         connection.commit()
         db.close()
