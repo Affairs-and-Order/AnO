@@ -188,16 +188,27 @@ def warAmount():
 
         # Hello here, the below code what is commented out is not working so in this way we can't solve the SQL injection problem. When you try to assign dynamically to "SELECT ?" it just gives back the column name.
         # Possible solution for SQLi: use SQL variables (SQLite doesen't support variables but maybe Postgres does)
-        # okay then instead we will use if blocks to see if each unit is inside the attack_unit session. 
-
-        # unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[0], cId,)).fetchone()[0]
-        # unitamount2 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[1], cId,)).fetchone()[0]
-        # unitamount3 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[2], cId,)).fetchone()[0]
-
-        # this version is vulnerable to SQL injection attacks, FIX BEFORE PRODUCTION
-        unitamount1 = db.execute(f"SELECT {selected_units[0]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        unitamount2 = db.execute(f"SELECT {selected_units[1]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-        unitamount3 = db.execute(f"SELECT {selected_units[2]} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # get all the unit amounts
+        # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
+        allAmounts = db.execute("SELECT * FROM military WHERE id=(?)", (cId,)).fetchall()
+        # get the unit amounts based on the selected_units
+        unit_to_amount_dict = {}
+        unit_to_amount_dict['cId'] = allAmounts[0][0]
+        unit_to_amount_dict['soldiers'] = allAmounts[0][1]
+        unit_to_amount_dict['artillery'] = allAmounts[0][2]
+        unit_to_amount_dict['tanks'] = allAmounts[0][3]
+        unit_to_amount_dict['bombers'] = allAmounts[0][4]
+        unit_to_amount_dict['fighters'] = allAmounts[0][5]
+        unit_to_amount_dict['apaches'] = allAmounts[0][6]
+        unit_to_amount_dict['spies'] = allAmounts[0][7]
+        unit_to_amount_dict['ICBMs'] = allAmounts[0][8]
+        unit_to_amount_dict['nukes'] = allAmounts[0][9]
+        unit_to_amount_dict['destroyer'] = allAmounts[0][10]
+        unit_to_amount_dict['cruisers'] = allAmounts[0][11]
+        unit_to_amount_dict['submarines'] = allAmounts[0][12]
+        unitamount1 = unit_to_amount_dict[selected_units[0]]
+        unitamount2 = unit_to_amount_dict[selected_units[0]]
+        unitamount3 = unit_to_amount_dict[selected_units[0]]
 
         connection.commit()
         db.close()
