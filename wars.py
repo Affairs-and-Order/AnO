@@ -215,7 +215,6 @@ def warAmount():
         connection.close()
 
         # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
-        # attack_units = session['attack_units']
 
         unitamounts = [unitamount1, unitamount2, unitamount3]
         return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts)
@@ -225,7 +224,7 @@ def warAmount():
 
         # Separate object's units list from now units list
         selected_units = session["attack_units"].selected_units.copy()
-
+        
         units_name = list(selected_units.keys())
 
         for number in range(1, 4):
@@ -239,7 +238,7 @@ def warAmount():
         # Error code if any
         error = session["attack_units"].attach_units(selected_units)
         print(error)
-
+        
         # same note as before as to how to use this request.form.get to get the unit amounts.
         return redirect('/wartarget')
     else:
