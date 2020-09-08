@@ -19,6 +19,57 @@ class Military:
         self.ICMBs = ICBMs
         self.nukes = nukes
 
+    # NOTICE: in the future we could use this as an instance method unstead of static method
+    @staticmethod
+    def fight(attacker, defender):
+
+        a = list(attacker.selected_units.keys())
+        b = list(defender.selected_units.keys())
+
+        # Each unit will fight 3 times?
+        for attacker_unit, defender_unit in zip(a, b)
+            for i in range(3):
+                attacker_unit_type_bonuses = attacker.attack(attacker_unit, defender_unit, defender)
+                # defender_unit_type_bonuses = defender.attack(defende)
+                # or we can add negative bonuses also in attack method
+
+                attacker_chance = 0
+                defender_chance = 0
+
+                print("ROUND", i)
+
+
+    # def fight(self, enemyNation, attackTypes):
+    #     # attackTypes is a tuple
+    #     attackList = ["water", "ground", "air"]
+    #     attackTypesHash = {"water": 1, "ground": 2, "air": 3}
+    #
+    #     currentAttacks = list(attackTypes)
+    #
+    #     for attack in attackList:
+    #         if attackTypes[0] == attack:
+    #             currentAttacks[0] = attackTypesHash[attack]
+    #         if attackTypes[1] == attack:
+    #             currentAttacks[1] = attackTypesHash[attack]
+    #
+    #     # super simple fight between two nations soldiers
+    #     print(attackTypes[1])
+    #     enemyScore = enemyNation.military.soldiers + \
+    #         abs(random.randrange(-2 *
+    #                              currentAttacks[1], 2 * currentAttacks[1]))
+    #     homeScore = self.military.soldiers + \
+    #         abs(random.randrange(-2 *
+    #                              currentAttacks[0], 2 * currentAttacks[0]))
+    #
+    #     if enemyScore > homeScore:
+    #         print("Enemy Win | ID " + str(enemyNation.id))
+    #         self.losses += 1
+    #         enemyNation.wins += 1
+    #     else:
+    #         print("Home win | ID " + str(self.id))
+    #         enemyNation.losses += 1
+    #         self.wins += 1
+
     # select only needed units instead of all
     @staticmethod
     def get_particular_unit(cId, particular_units):
@@ -181,37 +232,6 @@ class Nation:
 
     def declare_war(self, target_nation):
         pass
-
-    def fight(self, enemyNation, attackTypes):
-        # attackTypes is a tuple
-        attackList = ["water", "ground", "air"]
-        attackTypesHash = {"water": 1, "ground": 2, "air": 3}
-
-        currentAttacks = list(attackTypes)
-
-        for attack in attackList:
-            if attackTypes[0] == attack:
-                currentAttacks[0] = attackTypesHash[attack]
-            if attackTypes[1] == attack:
-                currentAttacks[1] = attackTypesHash[attack]
-
-        # super simple fight between two nations soldiers
-        print(attackTypes[1])
-        enemyScore = enemyNation.military.soldiers + \
-            abs(random.randrange(-2 *
-                                 currentAttacks[1], 2 * currentAttacks[1]))
-        homeScore = self.military.soldiers + \
-            abs(random.randrange(-2 *
-                                 currentAttacks[0], 2 * currentAttacks[0]))
-
-        if enemyScore > homeScore:
-            print("Enemy Win | ID " + str(enemyNation.id))
-            self.losses += 1
-            enemyNation.wins += 1
-        else:
-            print("Home win | ID " + str(self.id))
-            enemyNation.losses += 1
-            self.wins += 1
 
     def get_provinces(self):
 

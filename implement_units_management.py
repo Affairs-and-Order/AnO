@@ -131,7 +131,7 @@ class Units(Military):
                     attack_effects = interface.attack(target)
 
                     # random cost, change it
-                    self.attack_cost(777)
+                    # self.attack_cost(777)
 
                     return attack_effects
         else:
@@ -149,35 +149,44 @@ class Units(Military):
 
 # DEBUGGING
 if __name__ == "__main__":
-    import sqlite3
-    from random import uniform
 
+    # CASE 1
     defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
     attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
 
-    # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
-    # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
-
-    print(defender.selected_units)
-
-    for i in range(3):
-        print("ROUND", i)
-        random_event = uniform(0, 5)
-        size_chance = attacker.selected_units["tanks"] * 30/1000
-        unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender)[1] # tank bonus against soldiers
-        nation1_chance = random_event+size_chance*unit_type_bonuses
-
-        random_event = uniform(0, 5)
-        size_chance = defender.selected_units["soldiers"] * 30/1000
-        unit_type_bonuses = 1
-        nation2_chance = random_event+size_chance*unit_type_bonuses
-
-        print(nation1_chance)
-        print(nation2_chance)
-
-        defender_loss = int(attacker.selected_units["tanks"]*0.12)
-        defender.casualties("soldiers", defender_loss)
+    Military.fight(attacker, defender)
 
 
-    # print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
-    print(defender.selected_units)
+    # CASE 2
+    # import sqlite3
+    # from random import uniform
+    #
+    # defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
+    # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
+    #
+    # # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
+    # # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
+    #
+    # print(defender.selected_units)
+    #
+    # for i in range(3):
+    #     print("ROUND", i)
+    #     random_event = uniform(0, 5)
+    #     size_chance = attacker.selected_units["tanks"] * 30/1000
+    #     unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender)[1] # tank bonus against soldiers
+    #     nation1_chance = random_event+size_chance*unit_type_bonuses
+    #
+    #     random_event = uniform(0, 5)
+    #     size_chance = defender.selected_units["soldiers"] * 30/1000
+    #     unit_type_bonuses = 1
+    #     nation2_chance = random_event+size_chance*unit_type_bonuses
+    #
+    #     print(nation1_chance)
+    #     print(nation2_chance)
+    #
+    #     defender_loss = int(attacker.selected_units["tanks"]*0.12)
+    #     defender.casualties("soldiers", defender_loss)
+    #
+    #
+    # # print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
+    # print(defender.selected_units)

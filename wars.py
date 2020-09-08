@@ -197,13 +197,21 @@ def warAmount():
 
 # page 3 where you choose what 3 enemy units to attack
 @login_required
-@app.route("/wartarget", methods=["GET, POST"])
+@app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
         # all war targets never change regardless of type of war, no variables to send here!
         return render_template("wartarget.html")
     else:
+        # get targeted units
         session['targeted_units'] = request.form.get('targeted_units')
+
+        # Traget cID and targeted units
+        target = Units(3)
+        target.attach_units({"soldiers": 0, "tanks": 0, "bombers": 0})
+        attacker = session["attack_units"]
+        Military.fight(attacker, target)
+
         return redirect('warResult')
 
 # page 4 results and tax set if a morale reaches 0
