@@ -222,7 +222,9 @@ def warAmount():
 
         for number in range(1, 4):
             unit_amount = request.form.get(f"u{number}_amount")
-            print(unit_amount) # debugging
+            print(unit_amount)  # debugging
+            
+            # commented out for now because the flask request doesn't appear to get the values
             # if not unit_amount:
             #     return "Invalid name argument coming in"
 
