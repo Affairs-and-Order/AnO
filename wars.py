@@ -223,8 +223,10 @@ def warAmount():
         # session["unit_amounts"] = request.form.get("attack_units")
 
         # Separate object's units list from now units list
+        # seems this is in the form of a dictionary
         selected_units = session["attack_units"].selected_units.copy()
         
+        # 3 units list
         units_name = list(selected_units.keys())
 
         for number in range(1, 4):
@@ -249,9 +251,7 @@ def warAmount():
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
-        # need to send the amount of enemy units for each.
-        # however, send "Unknown" if that unit was not spied on
-        # 
+
         return render_template("wartarget.html")
     else:
         session['targeted_units'] = request.form.get('targeted_units')
