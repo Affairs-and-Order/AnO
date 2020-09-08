@@ -15,22 +15,26 @@
         <p class="templatecontentpleft">Choose what units you want to attack!</p>
 
         <!--only show enemy unit amount if you have spied on those units in the past 7 days-->
+        <!--workaround for now: do not show enemy unit amounts. However, successful spy operations reveal the enemy unit amounts, which the user would store and share manually. -->
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Soldiers</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
 
             </div>
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Tanks</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
 
             </div>
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Artillery</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
 
             </div>
@@ -39,18 +43,21 @@
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Fighter Jets</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
 
             </div>
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Bombers</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/bomber.jpg') }}" />
 
             </div>
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Apaches</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
 
             </div>
@@ -59,18 +66,21 @@
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Submarines</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
 
             </div>
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Cruisers</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
             </div>
             <div class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Destroyers</ul>
+                <!-- <ul>[[ amount ]]</ul> -->
                 <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
             </div>

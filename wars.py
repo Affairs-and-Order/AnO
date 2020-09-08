@@ -249,7 +249,9 @@ def warAmount():
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
-        # all war targets never change regardless of type of war, no variables to send here!
+        # need to send the amount of enemy units for each.
+        # however, send "Unknown" if that unit was not spied on
+        # 
         return render_template("wartarget.html")
     else:
         session['targeted_units'] = request.form.get('targeted_units')
