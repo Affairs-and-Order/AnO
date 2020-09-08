@@ -20,18 +20,24 @@ class Military:
         self.nukes = nukes
 
     # select only needed units instead of all
+    # particular_units must be a list of string unit names
     @staticmethod
-    def get_particular_unit(cId, particular_units):
+    def get_particular_units(cId, particular_units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         units = {}
-        for unit in particular_units:
+        # for unit in particular_units:
 
-            # IMPORTANT: This is SQL injectable change this when move to production
-            units[unit] = db.execute(f"SELECT {unit} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-
+        #     # IMPORTANT: This is SQL injectable change this when move to production
+        #     units[unit] = db.execute(f"SELECT {unit} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        # non sql injectable workaround to above commented code:
+        allAmounts = db.execute(
+            "SELECT * FROM military WHERE id=(?)", (cId,)).fetchall() # this is a dictionary with all the units
+        units[particular_units[0]] = allAmounts[particular_units[0]]
+        units[particular_units[1]] = allAmounts[particular_units[1]]
+        units[particular_units[2]] = allAmounts[particular_units[2]]
         connection.close()
-        return units
+        return units # this is a dictionary of the format {'soldiers': 100, 'tanks': 50, 'artillery': 40}
 
     @staticmethod
     def get_military(cId):

@@ -183,10 +183,17 @@ def warAmount():
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
         selected_units = list(attack_units.selected_units.keys())
+        print(attack_units, attack_units.selected_units, attack_units.selected_units.keys(), selected_units)  # just investigating the data structure
 
+        # grab supplies amount
+        # if the user is the attacker in the war
+        if cId == db.execute('SELECT attacker FROM wars WHERE ')
+        supplies = db.execute('SELECT attacker_supplies FROM wars WHERE id=(?)', (cId,)).fetchone()[0]
+        
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
 
         # Hello here, the below code what is commented out is not working so in this way we can't solve the SQL injection problem. When you try to assign dynamically to "SELECT ?" it just gives back the column name.
+
         # Possible solution for SQLi: use SQL variables (SQLite doesen't support variables but maybe Postgres does)
         # get all the unit amounts
         # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
@@ -209,20 +216,22 @@ def warAmount():
         unitamount1 = unit_to_amount_dict[selected_units[0]]
         unitamount2 = unit_to_amount_dict[selected_units[1]]
         unitamount3 = unit_to_amount_dict[selected_units[2]]
-
+        unitamounts = [unitamount1, unitamount2, unitamount3]
         connection.commit()
         db.close()
         connection.close()
 
         # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
 
-        unitamounts = [unitamount1, unitamount2, unitamount3]
-        return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts)
+
+        return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts, supplies=supplies)
 
     elif request.method == "POST":
         # session["unit_amounts"] = request.form.get("attack_units")
 
         # Separate object's units list from now units list
+        attack_units = session["attack_units"]
+        selected_units = list(attack_units.selected_units.keys())
         # seems this is in the form of a dictionary
         selected_units = session["attack_units"].selected_units.copy()
         
@@ -230,15 +239,16 @@ def warAmount():
         units_name = list(selected_units.keys())
 
         for number in range(1, 4):
-            unit_amount = request.form.get(f"u{number}_amount", None)
-            if not unit_amount:
-                return "Invalid name argument coming in"
+            unit_amount = request.form.get(f"u{number}_amount")
+            print(unit_amount) # debugging
+            # if not unit_amount:
+            #     return "Invalid name argument coming in"
 
-            selected_units[units_name[number-1]] = int(unit_amount)
-
+            #selected_units[units_name[number-1]] = int(unit_amount)
+        
         # Check every time when user input comes in lest user bypass input validation
         # Error code if any
-        error = session["attack_units"].attach_units(selected_units)
+        #error = session["attack_units"].attach_units(selected_units)
         print(error)
         
         # same note as before as to how to use this request.form.get to get the unit amounts.
