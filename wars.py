@@ -189,7 +189,7 @@ def warAmount():
         # Hello here, the below code what is commented out is not working so in this way we can't solve the SQL injection problem. When you try to assign dynamically to "SELECT ?" it just gives back the column name.
         # Possible solution for SQLi: use SQL variables (SQLite doesen't support variables but maybe Postgres does)
         # okay then instead we will use if blocks to see if each unit is inside the attack_unit session. 
-        print(attack_units)
+
         # unitamount1 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[0], cId,)).fetchone()[0]
         # unitamount2 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[1], cId,)).fetchone()[0]
         # unitamount3 = db.execute("SELECT ? FROM military WHERE id=(?)", (selected_units[2], cId,)).fetchone()[0]
@@ -207,7 +207,7 @@ def warAmount():
         # attack_units = session['attack_units']
 
         unitamounts = [unitamount1, unitamount2, unitamount3]
-        return render_template("waramount.html", attack_units=selected_units, unitamounts=unitamounts)
+        return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts)
 
     elif request.method == "POST":
         # session["unit_amounts"] = request.form.get("attack_units")

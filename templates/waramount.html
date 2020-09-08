@@ -18,40 +18,40 @@
             <!--FIRST UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
                 <!--
-                <ul class="bold medium">{{ attack_units[0] }}</ul>
+                <ul class="bold medium">{{ selected_units[0] }}</ul>
                 <ul>{{ unitamounts[0] }}</ul>
-                <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" /> -->
-
+                <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
+                -->
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search"
-                    placeholder="[[ amount ]]" />
+                    value="{{selected_units[0] | capitalize}}" />
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u1_amount"
-                    placeholder="[[ amount ]]" />
+                    placeholder="{{unitamounts[0]}}" />
             </div>
             <!--SECOND UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
                 <!--
-                <ul class="bold medium">{{ attack_units[1] }}</ul>
+                <ul class="bold medium">{{ selected_units[1] }}</ul>
                 <ul>{{ unitamounts[1] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" /> 
                 -->
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search"
-                    placeholder="[[ amount ]]" />
+                    value="{{selected_units[1] | capitalize}}" />
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u2_amount"
-                    placeholder="[[ amount ]]" />
+                    placeholder="{{unitamounts[1]}}" />
             </div>
             <!--THIRD UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
                 <!--
 
-                <ul class="bold medium">{{ attack_units[2] }}</ul>
+                <ul class="bold medium">{{ selected_units[2] }}</ul>
                 <ul>{{ unitamounts[2] }}</ul>
                 <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
                 -->
 
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search"
-                    placeholder="[[ amount ]]" />
+                    value="{{selected_units[2] | capitalize}}" />
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u3_amount"
-                    placeholder="[[ amount ]]" />
+                    placeholder="{{unitamounts[2]}}" />
             </div>
         </div>
 
