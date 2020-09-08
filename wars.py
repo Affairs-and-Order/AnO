@@ -182,13 +182,13 @@ def warAmount():
 
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
-        selected_units = list(attack_units.selected_units.keys())
-        print(attack_units, attack_units.selected_units, attack_units.selected_units.keys(), selected_units)  # just investigating the data structure
+        selected_units = list(attack_units.selected_units.keys()) # this is of format ['soldiers', 'tanks', 'artillery']
+        print(attack_units, attack_units.selected_units, attack_units.selected_units.keys(), selected_units)  # just clarifying the data structure, comment/delete at production
 
         # grab supplies amount
         # if the user is the attacker in the war
-        if cId == db.execute('SELECT attacker FROM wars WHERE ')
-        supplies = db.execute('SELECT attacker_supplies FROM wars WHERE id=(?)', (cId,)).fetchone()[0]
+        # if cId == db.execute('SELECT attacker FROM wars WHERE ')
+        # supplies = db.execute('SELECT attacker_supplies FROM wars WHERE id=(?)', (cId,)).fetchone()[0]
         
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
 
@@ -196,27 +196,9 @@ def warAmount():
 
         # Possible solution for SQLi: use SQL variables (SQLite doesen't support variables but maybe Postgres does)
         # get all the unit amounts
-        # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
-        allAmounts = db.execute("SELECT * FROM military WHERE id=(?)", (cId,)).fetchall()
-        # get the unit amounts based on the selected_units
-        unit_to_amount_dict = {}
-        unit_to_amount_dict['cId'] = allAmounts[0][0]
-        unit_to_amount_dict['soldiers'] = allAmounts[0][1]
-        unit_to_amount_dict['artillery'] = allAmounts[0][2]
-        unit_to_amount_dict['tanks'] = allAmounts[0][3]
-        unit_to_amount_dict['bombers'] = allAmounts[0][4]
-        unit_to_amount_dict['fighters'] = allAmounts[0][5]
-        unit_to_amount_dict['apaches'] = allAmounts[0][6]
-        unit_to_amount_dict['spies'] = allAmounts[0][7]
-        unit_to_amount_dict['ICBMs'] = allAmounts[0][8]
-        unit_to_amount_dict['nukes'] = allAmounts[0][9]
-        unit_to_amount_dict['destroyer'] = allAmounts[0][10]
-        unit_to_amount_dict['cruisers'] = allAmounts[0][11]
-        unit_to_amount_dict['submarines'] = allAmounts[0][12]
-        unitamount1 = unit_to_amount_dict[selected_units[0]]
-        unitamount2 = unit_to_amount_dict[selected_units[1]]
-        unitamount3 = unit_to_amount_dict[selected_units[2]]
-        unitamounts = [unitamount1, unitamount2, unitamount3]
+
+        unitamounts = Military.get_particular_units_list(cId, selected_units)
+        # turn this dictionary into a list of its values
         connection.commit()
         db.close()
         connection.close()
@@ -224,7 +206,7 @@ def warAmount():
         # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
 
 
-        return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts, supplies=supplies)
+        return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts)
 
     elif request.method == "POST":
         # session["unit_amounts"] = request.form.get("attack_units")

@@ -22,22 +22,41 @@ class Military:
     # select only needed units instead of all
     # particular_units must be a list of string unit names
     @staticmethod
-    def get_particular_units(cId, particular_units):
+    def get_particular_units_list(cId, particular_units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        units = {}
+  
         # for unit in particular_units:
 
         #     # IMPORTANT: This is SQL injectable change this when move to production
         #     units[unit] = db.execute(f"SELECT {unit} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         # non sql injectable workaround to above commented code:
+
+        # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
         allAmounts = db.execute(
-            "SELECT * FROM military WHERE id=(?)", (cId,)).fetchall() # this is a dictionary with all the units
-        units[particular_units[0]] = allAmounts[particular_units[0]]
-        units[particular_units[1]] = allAmounts[particular_units[1]]
-        units[particular_units[2]] = allAmounts[particular_units[2]]
+            "SELECT * FROM military WHERE id=(?)", (cId,)).fetchall()
+        # get the unit amounts based on the selected_units
+        unit_to_amount_dict = {}
+        unit_to_amount_dict['cId'] = allAmounts[0][0]
+        unit_to_amount_dict['soldiers'] = allAmounts[0][1]
+        unit_to_amount_dict['artillery'] = allAmounts[0][2]
+        unit_to_amount_dict['tanks'] = allAmounts[0][3]
+        unit_to_amount_dict['bombers'] = allAmounts[0][4]
+        unit_to_amount_dict['fighters'] = allAmounts[0][5]
+        unit_to_amount_dict['apaches'] = allAmounts[0][6]
+        unit_to_amount_dict['spies'] = allAmounts[0][7]
+        unit_to_amount_dict['ICBMs'] = allAmounts[0][8]
+        unit_to_amount_dict['nukes'] = allAmounts[0][9]
+        unit_to_amount_dict['destroyer'] = allAmounts[0][10]
+        unit_to_amount_dict['cruisers'] = allAmounts[0][11]
+        unit_to_amount_dict['submarines'] = allAmounts[0][12]
+        # make a dictionary with 3 keys, listed in the particular_units list
+        unit_lst = []
+        for unit in particular_units:
+            unit_lst.append(unit_to_amount_dict[unit])
+
         connection.close()
-        return units # this is a dictionary of the format {'soldiers': 100, 'tanks': 50, 'artillery': 40}
+        return unit_lst # this is a list of the format [100, 50, 50]
 
     @staticmethod
     def get_military(cId):
