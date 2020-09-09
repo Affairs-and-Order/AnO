@@ -582,7 +582,7 @@
         top: 65px;
         right: 0px;
         position: fixed;
-        background-color: var(--background);
+        background-color: #363945;
         width: 55px;
         padding-bottom: 10px;
         z-index: 1000;
