@@ -23,11 +23,9 @@
 
                 -->
 
-                <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search"
-                    value="{{selected_units[0] | capitalize}}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u1_amount"
-                    placeholder="{{unitamounts[0]}}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" value="{{selected_units[0] | capitalize}}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u1_amount" placeholder="{{unitamounts[0]}}" />
             </div>
             <!--SECOND UNIT-->
             <div class="templatedivflex2left unitcard nopointer">
@@ -36,12 +34,10 @@
                 <ul>{{ unitamounts[1] }}</ul>
 
                 -->
-                <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search"
-                    value="{{selected_units[1] | capitalize}}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u2_amount"
-                    placeholder="{{unitamounts[1]}}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" value="{{selected_units[1] | capitalize}}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u2_amount" placeholder="{{unitamounts[1]}}" />
 
 
             </div>
@@ -53,12 +49,10 @@
                 <ul>{{ unitamounts[2] }}</ul>
 
                 -->
-                <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search"
-                    value="{{selected_units[2] | capitalize}}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u3_amount"
-                    placeholder="{{unitamounts[2]}}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="search" value="{{selected_units[2] | capitalize}}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="u3_amount" placeholder="{{unitamounts[2]}}" />
 
             </div>
         </div>
