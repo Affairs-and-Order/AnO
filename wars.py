@@ -1,5 +1,5 @@
 from app import app
-from flask import Flask, request, render_template, session, redirect, abort
+from flask import Flask, request, render_template, session, redirect, abort, flash, url_for
 from flask_session import Session
 import sqlite3
 from helpers import login_required, error
@@ -225,8 +225,8 @@ def warAmount():
             print(unit_amount)  # debugging
             
             # commented out for now because the flask request doesn't appear to get the values
-            # if not unit_amount:
-            #     return "Invalid name argument coming in"
+            if not unit_amount:
+                flash("Invalid name argument coming in")
 
             #selected_units[units_name[number-1]] = int(unit_amount)
         
@@ -327,7 +327,7 @@ def find_targets():
         defender_id = db.execute(
             "SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
 
-        return redirect("/country/id={}".format(defender_id))
+        return redirect(f"/country/id={defender_id}")
 
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
 
