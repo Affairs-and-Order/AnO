@@ -83,13 +83,13 @@
             <div class="countryimagediv">
                 <!--country flag-->
                 {% if flag != None %}
-                <img tabindex="0"="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">
+                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">
                 <!-- hmm not using url_for, but somewhy it render-->
                 {% else %}
                 <!-- tried first with url_for, but it didn't work -- t0dd -->
-                <img tabindex="0"="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
                 <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
-                <img tabindex="0"="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
+                <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
 
 
@@ -299,7 +299,7 @@
 
                         </div>
                         <div class="templatedivflex2left">
-                            <td class="smallimage"><img tabindex="0"="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                            <td class="smallimage"><img class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
                         </div>
                     </div>
                 </tr>
