@@ -26,7 +26,7 @@ class TankUnit(BlueprintUnit):
     @staticmethod
     def attack(defending_units):
 
-        # this values are in percentage
+        # these values are in percentage
         damage = 0
         bonus = 0
 
@@ -44,7 +44,19 @@ class SoldierUnit(BlueprintUnit):
 
     @staticmethod
     def attack(defending_units):
-        pass
+
+        # these values are in percentage
+        damage = 0
+        bonus = 0
+
+        if defending_units == "artillery":
+            damage += 55
+            bonus += 10
+
+        elif defending_units == "apaches":
+            pass
+
+        return (damage, bonus)
 
     def buy(amount): pass
 
@@ -54,7 +66,16 @@ class ArtilleryUnit(BlueprintUnit):
 
     @staticmethod
     def attack(defending_units):
-        pass
+
+        # these values are in percentage
+        damage = 0
+        bonus = 0
+
+        if defending_units == "tanks":
+            damage += 100
+            bonus += 5
+
+        return (damage, bonus)
 
     def buy(): pass
 
@@ -75,11 +96,12 @@ class Units(Military):
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
-    def __init__(self, user_id, selected_units=None, bonuses=None):
+    def __init__(self, user_id, selected_units=None, bonuses=None, selected_units_list=None):
         self.user_id = user_id
         self.selected_units = selected_units
         self.bonuses = bonuses
         self.supply_costs = 0
+        self.selected_units_list = selected_units_list
 
     # Validate then attach units
     def attach_units(self, selected_units):
@@ -108,6 +130,7 @@ class Units(Military):
         # If the validation is ended successfully
         else:
             self.selected_units = selected_units
+            self.selected_units_list = list(selected_units.keys())
 
     # Save unit records to the database
     def save(self):
@@ -151,11 +174,14 @@ class Units(Military):
 if __name__ == "__main__":
 
     # CASE 1
-    defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
-    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
+    defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158},  selected_units_list=["artillery", "tanks", "soldiers"])
+    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},  selected_units_list=["artillery", "tanks", "soldiers"])
+
+    # l = Units(1)
+    # l.attach_units({"artillery": 0, "tanks": 0, "soldiers": 0})
+    # print(l.selected_units_list, l.selected_units)
 
     Military.fight(attacker, defender)
-
 
     # CASE 2
     # import sqlite3

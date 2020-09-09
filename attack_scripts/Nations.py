@@ -23,52 +23,23 @@ class Military:
     @staticmethod
     def fight(attacker, defender):
 
-        a = list(attacker.selected_units.keys())
-        b = list(defender.selected_units.keys())
+        attacker_chance = 0
+        defender_chance = 0
+        attacker_unit_type_bonuses = 0
+        attacker_unit_amount_bonuses = 0
 
-        # Each unit will fight 3 times?
-        for attacker_unit, defender_unit in zip(a, b)
-            for i in range(3):
-                attacker_unit_type_bonuses = attacker.attack(attacker_unit, defender_unit, defender)
-                # defender_unit_type_bonuses = defender.attack(defende)
-                # or we can add negative bonuses also in attack method
+        for attacker_unit in attacker.selected_units_list:
+            for defender_unit in defender.selected_units_list:
+                # we can add negative bonuses also in attack method
+                attacker_unit_type_bonuses += attacker.attack(attacker_unit, defender_unit, None)[1]
 
-                attacker_chance = 0
-                defender_chance = 0
+        # attacker_unit_amount_bonuses += *30/100 
 
-                print("ROUND", i)
+        attacker_roll = random.uniform(0, 1)
+        defender_roll = random.uniform(0, 1)
 
-
-    # def fight(self, enemyNation, attackTypes):
-    #     # attackTypes is a tuple
-    #     attackList = ["water", "ground", "air"]
-    #     attackTypesHash = {"water": 1, "ground": 2, "air": 3}
-    #
-    #     currentAttacks = list(attackTypes)
-    #
-    #     for attack in attackList:
-    #         if attackTypes[0] == attack:
-    #             currentAttacks[0] = attackTypesHash[attack]
-    #         if attackTypes[1] == attack:
-    #             currentAttacks[1] = attackTypesHash[attack]
-    #
-    #     # super simple fight between two nations soldiers
-    #     print(attackTypes[1])
-    #     enemyScore = enemyNation.military.soldiers + \
-    #         abs(random.randrange(-2 *
-    #                              currentAttacks[1], 2 * currentAttacks[1]))
-    #     homeScore = self.military.soldiers + \
-    #         abs(random.randrange(-2 *
-    #                              currentAttacks[0], 2 * currentAttacks[0]))
-    #
-    #     if enemyScore > homeScore:
-    #         print("Enemy Win | ID " + str(enemyNation.id))
-    #         self.losses += 1
-    #         enemyNation.wins += 1
-    #     else:
-    #         print("Home win | ID " + str(self.id))
-    #         enemyNation.losses += 1
-    #         self.wins += 1
+        # print(attacker_unit_type_bonuses)
+        # print(attacker_roll, defender_roll)
 
     # select only needed units instead of all
     @staticmethod
