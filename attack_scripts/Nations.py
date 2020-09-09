@@ -23,23 +23,36 @@ class Military:
     @staticmethod
     def fight(attacker, defender):
 
+        attack_effects_bonus = 0
+
+        attacker_roll = random.uniform(0, 6)
         attacker_chance = 0
-        defender_chance = 0
-        attacker_unit_type_bonuses = 0
         attacker_unit_amount_bonuses = 0
 
+        defender_roll = random.uniform(0, 6)
+        defender_chance = 0
+        defender_unit_amount_bonuses = 0
+
+
         for attacker_unit in attacker.selected_units_list:
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*(20/100)
+
             for defender_unit in defender.selected_units_list:
+
                 # we can add negative bonuses also in attack method
-                attacker_unit_type_bonuses += attacker.attack(attacker_unit, defender_unit, None)[1]
+                attack_effects_bonus += attacker.attack(attacker_unit, defender_unit, None)[1]
 
-        # attacker_unit_amount_bonuses += *30/100 
+        for defender_unit in defender.selected_units_list:
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*(20/100)
 
-        attacker_roll = random.uniform(0, 1)
-        defender_roll = random.uniform(0, 1)
+        print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
+        print(attacker_roll, defender_roll)
+        print(attack_effects_bonus)
 
-        # print(attacker_unit_type_bonuses)
-        # print(attacker_roll, defender_roll)
+        attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attack_effects_bonus
+        defender_chance += defender_roll+defender_unit_amount_bonuses
+
+        print(attacker_chance, defender_chance)
 
     # select only needed units instead of all
     @staticmethod

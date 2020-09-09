@@ -13,6 +13,9 @@ class BlueprintUnit(ABC):
         - damage: used to determine the casualties
     """
 
+    damage = 0
+    bonus = 0
+    
     @abstractmethod
     def attack(defending_units): pass
 
@@ -23,18 +26,24 @@ class TankUnit(BlueprintUnit):
 
     unit_type = "tanks"
 
-    @staticmethod
-    def attack(defending_units):
+    def __init__(self, amount):
+        self.amount = amount
 
-        # these values are in percentage
-        damage = 0
-        bonus = 0
-
+    def attack(self, defending_units):
         if 'soldiers' == defending_units:
-            damage += 2
-            bonus += 8
+            self.damage += 2
+            self.bonus += 12
 
-        return (damage, bonus)
+        elif 'artillery' == defending_units:
+            self.bonus -= 15
+
+        elif 'bombers' == defending_units:
+            self.bonus -= 15
+
+        elif 'apaches' == defending_units:
+            self.bonus -= 15
+
+        return (self.damage, self.bonus)
 
     def buy(amount): pass
 
@@ -42,21 +51,18 @@ class SoldierUnit(BlueprintUnit):
 
     unit_type = "soldiers"
 
-    @staticmethod
-    def attack(defending_units):
+    def __init__(self, amount):
+        self.amount = amount
 
-        # these values are in percentage
-        damage = 0
-        bonus = 0
-
+    def attack(self, defending_units):
         if defending_units == "artillery":
-            damage += 55
-            bonus += 10
+            self.damage += 55
+            self.bonus += 10
 
         elif defending_units == "apaches":
             pass
 
-        return (damage, bonus)
+        return (self.damage, self.bonus)
 
     def buy(amount): pass
 
@@ -64,18 +70,15 @@ class ArtilleryUnit(BlueprintUnit):
 
     unit_type = "artillery"
 
-    @staticmethod
-    def attack(defending_units):
+    def __init__(self, amount):
+        self.amount = amount
 
-        # these values are in percentage
-        damage = 0
-        bonus = 0
-
+    def attack(self, defending_units):
         if defending_units == "tanks":
-            damage += 100
-            bonus += 5
+            self.damage += 100
+            self.bonus += 5
 
-        return (damage, bonus)
+        return (self.damage, self.bonus)
 
     def buy(): pass
 
@@ -151,7 +154,19 @@ class Units(Military):
             # Call interface to unit type
             for interface in self.allUnitInterfaces:
                 if interface.unit_type == attacker_unit:
-                    attack_effects = interface.attack(target)
+
+                    # Check unit amount validity
+                    unit_amount = self.selected_units.get(attacker_unit, None)
+
+                    if unit_amount == None:
+                        return "Unit is not valid!"
+                    elif unit_amount != 0:
+                        interface_object = interface(unit_amount)
+                        attack_effects = interface_object.attack(target)
+
+                    # doesen't have any effect if unit amount is zero
+                    else:
+                        return (0, 0)
 
                     # random cost, change it
                     # self.attack_cost(777)
@@ -176,6 +191,10 @@ if __name__ == "__main__":
     # CASE 1
     defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158},  selected_units_list=["artillery", "tanks", "soldiers"])
     attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},  selected_units_list=["artillery", "tanks", "soldiers"])
+
+    # print(attacker.attack('soldiers', 'tanks', None))
+    # print(attacker.attack('tanks', 'soldiers', None))
+    # print(attacker.attack('tanks', 'soldiers', None))
 
     # l = Units(1)
     # l.attach_units({"artillery": 0, "tanks": 0, "soldiers": 0})
