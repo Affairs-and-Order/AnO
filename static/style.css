@@ -533,7 +533,7 @@ hr {
     background-color: #363945;
     min-width: 160px;
     width: max-content;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 12px 22px 0;
     z-index: 1;
     right: -3px;
     top: 60px;
@@ -580,7 +580,7 @@ hr {
 
 .resourcedivshow {
     box-shadow: rgba(58, 59, 69, 0.4) 0px 6px -6px 0px;
-    background-color: #515463;
+    background-color: var(--background);
     padding-left: 145px;
     transition-delay: 0.3s;
 }
@@ -1819,14 +1819,13 @@ button {
     margin: 12px auto;
     border-radius: 0px;
     width: 90%;
-    background: #e3e9f0;
+    background: var(--background);
     position: relative;
 }
 
 .progressbarchild {
     background: #00a7e1;
     padding: 15px;
-    color: white;
     font-size: 17px;
 }
 
@@ -1842,7 +1841,8 @@ button {
     right: 0;
     margin: auto;
     width: fit-content;
-    font-weight: bold;
+    font-weight: 450;
+    color: var(--colorOne);
 }
 
 .video {
@@ -2341,6 +2341,10 @@ button {
 .unitimage:hover {
     box-shadow: 0 20px 50px 10px rgba(39, 41, 59, 0.3);
     transform: scale(1.025);
+}
+
+.unitimage:focus-within {
+    transform: scale(2);
 }
 
 .purchasemilitarydiv {
