@@ -114,7 +114,7 @@ def wars():
         session['enemy_nation'] = request.form.values
         return redirect(url_for('warChoose'))
 
-
+# page 0, kind of a pseudo page where you can click attack vs special
 @login_required
 @app.route("/war/<war_id>", methods=["GET"])
 def war_with_id(war_id):
@@ -214,7 +214,6 @@ def warChoose():
         return redirect('/waramount')
 
 # page 2 choose how many of each of your units to send
-# how to send only 3 three unit variables that were chosen in the last page??
 @login_required
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
@@ -309,7 +308,22 @@ def warTarget():
 @login_required
 @app.route("/warResult", methods=["POST"])
 def warResult():
+    # grab your units from session
+    # grab enemy target units from session
+    # grab defending enemy units from database
 
+    # multiply all your unit powers together, with bonuses if a counter is found
+    # multiply all enemy defending units together, with bonuses if a counter is found
+    
+    # if your score is higher by 3x, annhilation, 
+    # if your score is higher by 2x, big victory
+    # if your score is any higher, close victory, 
+    # if your score is lower, close defeat, 0 damage, 
+    # if your score is lower by 2x, massive defeat, 0 damage
+
+    # if enemy morale reaches 0:
+        # X = your remaining morale
+        # take X % of their res and cash, tax them by X % for 1 day
     return render_template("warResult.html")
 # Endpoint for war declaration
 
