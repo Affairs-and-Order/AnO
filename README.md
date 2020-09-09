@@ -48,7 +48,7 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 3. Run *1* worker by running: `celery -A app.celery worker --loglevel=INFO` in another terminal window.
 4. For `celery` to work, RabbitMQ must be running.
 
-Affairs and Order
+### Affairs and Order
 Now crystal free!
 
 
@@ -97,7 +97,7 @@ Cruisers
 Submarines
 Attacking mechanics
 
-General Stuff
+### General Stuff
 
 VC stuff we discussed that’s worthwhile implementing
 
@@ -130,7 +130,7 @@ In game sue for peace feature
 
 
 
-Countries: 
+### Countries: 
 
 
 New:
@@ -152,7 +152,7 @@ How should we split the revenue? What amount:
 If the game makes revenue it will be split according to work done by each person.
 
 
-Coalitions
+### Coalitions
 
 Coalition typed: trade war eco bank
 
@@ -163,7 +163,7 @@ Eco:
 
 
 
-War:
+### War:
 
 +15% defensive war bonus vs coalitions you haven’t declared war on
 While at war you may only trade within your own coalition 
@@ -176,7 +176,7 @@ Bank:
 Resources:
 
 
-Raw resources:
+### Raw resources:
 
 Bauxite
 Rations
@@ -188,7 +188,7 @@ Lead
 Copper
 Lumber
 
-Processed resources:
+### Processed resources:
 
 Components - aluminium + steel
 Steel-  Coal + Iron
@@ -201,7 +201,7 @@ If your people have rations: Rations increases consumer spending by 300%
 If your military has ammunition: Ammunition increases military power (for every unit) by 1.5x
 
 
-Provinces
+### Provinces
 
 Provinces start with 1 city slot and 1 land slot.
 
@@ -214,7 +214,7 @@ Each province costs 50k rn. To change that, please edit this document -- t0dd
 
 
 
-Cities:
+### Cities:
 
 
 
@@ -223,7 +223,7 @@ Cities:
 More cities can be purchased at an increasing cost for every time. Each city provides another 3 infrastructure slots and +1% overall consumer spending in the province.
 
 
-Land
+### Land
 Population - increases tax income
 Happiness - affects population ( -100% - 100%)
 Pollution - decreases population (0% - 100%)
@@ -241,7 +241,7 @@ City infrastructure:
 
 
 
-Electricity:
+### Electricity:
 
 Coal burner + 4 energy + 30 POLLUTION- $40K / HOUR
 
@@ -256,7 +256,7 @@ Nuclear Reactor +12 energy -$1.2M / HOUR
 NOTE: 1 energy = 1 infrastructure slot (that isn’t electricity) powered. Talk with carson if this is unclear
 
 
-Retail:
+### Retail:
 
 (requires city slots)
 
@@ -274,7 +274,7 @@ Bank +30 consumer goods -$800K / HOUR MAX 4
 
 
 
-Public Works
+### Public Works
 
 
 City Park +3% happiness -$20K / HOUR MAX 4
@@ -320,7 +320,7 @@ Iron mine Iron +25 Iron -$12K / HOUR
 
 
 
-Military:
+### Military:
 
 
 (requires land slots)
@@ -339,7 +339,7 @@ Silo - allows production of missiles and nukes when researched -$120K / HOUR
 
 
 
-Processing:
+### Processing:
 
 (requires land slots)
 
@@ -366,7 +366,7 @@ Oil processor - converts 20 oil into 8 gasoline / HOUR -$160K / HOUR
 
 
 
-Infrastructure
+### Infrastructure
 
 
 
@@ -390,7 +390,7 @@ War policy:
 
 
 
-Public Projects
+### Public Projects
 
 2 project slots every province you own
 7 day project timer
@@ -439,7 +439,7 @@ Description:Helrursus is a continent in the southeast just south of Bosfront it 
 If a resource isnt on a continent it cant be produced there except water that stays at base production 
 
 
-War
+### War
 multiply all your unit powers together, with bonuses if a counter is found
 multiply all enemy defending units together, with bonuses if a counter is found
 
@@ -449,7 +449,7 @@ if your score is higher, close victory,
 if your score is lower, close defeat, 0 damage, 
 if your score is lower by 2x, massive defeat, 0 damage
 
-6 Types of control gained from annihilation (resource, field, city, depth, blockade, air):
+### 6 Types of control gained from annihilation (resource, field, city, depth, blockade, air):
 soldiers: resource control
 tanks: field control and city control
 artillery: field control
@@ -460,7 +460,7 @@ bombers: field control
 apaches: city control
 fighter jets: air control
     
-Counters:
+### Counters:
 soldiers beat artillery
 tanks beat soldiers
 artillery beat tanks
@@ -471,7 +471,7 @@ bombers beat soldiers, tanks, destroyers, cruisers, submarines
 apaches beat soldiers, tanks, bombers, fighter jets
 fighter jets beat bombers
 
-Bonuses gained from control
+### Bonuses gained from control
 Resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers vs Random 10-90% of their total munitions)
 field control: soldiers gain 2x power
 City control: 2x morale damage
@@ -480,14 +480,14 @@ Depth control: missile defenses go from 50% to 20% and nuke defenses go from  35
  Air control: enemy bomber power reduced by 60%
 
 
-WAR POLICIES:
+### WAR POLICIES:
   "empire builder"--> winning gives no loot 2x reparation tax
  "pirate" --> winning gives 2x more loot no reparation tax
  "tactical" --> winning gives 1x loot 1x reparation tax
  "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
  "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% of imposed reparation tax. 
 
-WAR TYPES
+### WAR TYPES
 “raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
 “sustained" --> 1x loot, 1x infra destruction, 1x building destroy
 “loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
@@ -514,7 +514,7 @@ Actions: You perform actions once you have 200 supplies. Supplies can stack up u
 Once you have the necessary 200 supplies you can attack with either your army, air force, navy, or special units. Once you have selected a category, you can choose one of the 3 units in the category to attack with. 
 Special exceptions: Spies cost 0 supplies, ICBMs cost 500, and Nukes cost 1,000 supplies.
 
-Extra actions: 
+### Extra actions: 
 
 You can fortify from enemy advancements. Fortifying costs 200 supplies and gives defensive troops in that province 30% more effectiveness against soldiers, tanks, and apaches. Fortification ends with an attack using any soldiers, tanks, artillery, or apaches. 
 
@@ -523,7 +523,7 @@ Provinces all have 100 morale in each individual war. Attacking defensive war br
 
 If you loose the war you are entitled to pay a days worth of income and ½ of resources on hand. You may go in debt if you do not have the money to pay out. The days worth of revenue is subtracted BEFORE the resources on hand.
 
-Categories:
+### Categories:
 
 Land, air, water - mixed in is high damage, normal, and high attack speed
 
@@ -554,7 +554,7 @@ COST $12,000,000 800 uranium 600 steel
 
 Very powerful against enemy economy
 
-Land
+## Land
 
 Soldiers
 Base power 1
@@ -565,7 +565,7 @@ COST $200 2 rations
 
 Counter artillery, apaches, obtain resource control
 
-Tanks
+## Tanks
 Base power 40
 Consumes 1 munitions and 2 gasoline per 100 tanks to fight
 COST $8,000 5 steel, 5 components
@@ -573,7 +573,7 @@ COST $8,000 5 steel, 5 components
 
 Counter soldiers, obtain field control and city control
 
-Artillery
+## Artillery
 Base power 80
 Consumes 5 munitions and 1 gasoline per 100 artillery to fight
 COST $16,000 12 steel, 3 components
@@ -581,7 +581,7 @@ COST $16,000 12 steel, 3 components
 
 Counter tanks, obtain field control
 
-Air
+## Air
 Bombers
 Base power 100
 Consumes 4 munitions and 10 gasoline per 100 bombers to fight
@@ -640,7 +640,7 @@ Depth control: Enemy iron dome effectiveness reduced from 50% to 20%, and vital 
 Naval blockade: enemy can no longer trade, or transfer
 Air superiority: enemy bomber power reduced by 70%
 
-Attacking mechanics
+### Attacking mechanics
 
 When you win / loose you get a gif
 
@@ -801,7 +801,7 @@ nukes
 
 
 
-Communication between back end and war management menu
+## Communication between back end and war management menu
 
 Page 1:
 Goes to a page where each 3 units choose what type of unit to attack with (12 options, 9 war and 3 special)
@@ -835,7 +835,7 @@ Default defensive units
 
 
 
-Spying
+## Spying
 There is a spyinfo table set up. Whenever a nation spies on an enemy nation, an entry with all the true false values of whether a certain res/unit is revealed. 
 
 The /intelligence.html page will have a table showing all the known information for every spying done in the last week. 
@@ -868,7 +868,7 @@ Alertness in equation
 5 (free)
 1x power
 
-Preparation level
+## Preparation level
 
 Preparation mission cost
 Preparation in equation
