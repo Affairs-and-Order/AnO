@@ -277,7 +277,7 @@ def warAmount():
 
         # Check every time when user input comes in lest user bypass input validation
         # Error code if any
-        #error = session["attack_units"].attach_units(selected_units)
+        error = session["attack_units"].attach_units(selected_units)
         print(error)
 
         # same note as before as to how to use this request.form.get to get the unit amounts.
@@ -294,7 +294,7 @@ def warTarget():
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         revealed_info = db.execute("SELECT * FROM spyinfo WHERE spyer=(?) AND spyee=(?)", (cId, eId,)).fetchall()
-        needed_types = ['soldiers', 'tanks', 'artillery', 'fighters', 'bombers', 'apaches', 'destroyers', 'cruisers', 'submarines'] 
+        needed_types = ['soldiers', 'tanks', 'artillery', 'fighters', 'bombers', 'apaches', 'destroyers', 'cruisers', 'submarines']
         print(revealed_info)
         # cycle through revealed_info. if a value is true, and it's a unit, add it to the units dictionary
         units = {}
@@ -314,11 +314,11 @@ def warResult():
 
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
-    
-    # if your score is higher by 3x, annihilation, 
+
+    # if your score is higher by 3x, annihilation,
     # if your score is higher by 2x, definite victory
-    # if your score is higher, close victory, 
-    # if your score is lower, close defeat, 0 damage, 
+    # if your score is higher, close victory,
+    # if your score is lower, close defeat, 0 damage,
     # if your score is lower by 2x, massive defeat, 0 damage
 
     # from annihilation (resource, field, city, depth, blockade, air):
@@ -326,12 +326,12 @@ def warResult():
     # tanks: field control and city control
     # artillery: field control
     # destroyers: naval blockade
-    # cruisers: naval blockade  
+    # cruisers: naval blockade
     # submarines: depth control
     # bombers: field control
     # apaches: city control
     # fighter jets: air control
-    
+
     # counters:
     # soldiers beat artillery, apaches
     # tanks beat soldiers
@@ -355,7 +355,7 @@ def warResult():
     # B = attackingscore / defendingscore
     # lose A % of all your attacking units, times a random factor between 0.8 and 1, rolled once for each unit (so 3 times)
     # lose B/2 % of all targeted defending units, and B/2 % of all chosen defending units, times a random factor between 0.75 and 1, rolled once for each unit (so 6 times)
-    # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor) 
+    # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor)
     # if you were the defending (beginning of war) country you also lose B infra
 
 
@@ -370,7 +370,7 @@ def warResult():
     # "pirate" --> winning gives 2x more loot no reparation tax
     # "tactical" --> winning gives 1x loot 1x reparation tax
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
-    # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax. 
+    # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
     # WAR TYPES
     # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
