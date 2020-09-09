@@ -245,14 +245,18 @@ def warAmount():
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
-        # spyinfo = db.execute(SELECT spyinformation WHERE cId==(?)).fetchall()
-        #  1. table: spyinfo(id, spyer, spyee, knownunits, knownres, knowncash, date)
-        #  2. checkuser's log. If type = "spy" then put the "info" column string value in the units dictionary
-        # eventually do both
-        
+        cId = session['user_id']
+
+        # find the spyinfo table entry that has: cId as spyer nation, and att
+        # db.execute(SELECT * FROM spyinfo WHERE spyer=(?)), (cId,).fetchall()
+        # attackersdefenders = db.execute(SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?), (cId, cId,)).fetchall
+        # process this data to show only the nations that are not the current user
+        # enemy nations
+        # cycle through every single unit that is true in spyinfo. If a unit is true, find the current units in the spyee nation
+        units = {} # literally an empty dictionary for now, but if spyinfo shows that a certain unit is 'true', then that unit would be revealed 
         # units dictionary here will have the amount value if spied == true
         flash("also have a flash message in the get wartarget path") 
-        return render_template("wartarget.html") # spyinfo=spyinfo
+        return render_template("wartarget.html", units=units) # spyinfo=spyinfo
     else:
         session['targeted_units'] = request.form.get('targeted_units')
         return redirect('warResult')
