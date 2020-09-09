@@ -1825,7 +1825,7 @@
         margin: 12px auto;
         border-radius: 0px;
         width: 90%;
-        background-color: var(--background);
+        background-color: var(--foreground);
         position: relative;
     }
     
