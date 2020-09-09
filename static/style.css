@@ -1277,12 +1277,22 @@ hr {
     pointer-events: all;
 }
 
+.radiodiv:hover .radioright div {
+    top: 0;
+}
+
 .radioright {
     opacity: 0;
     pointer-events: none;
     color: var(--colorOne);
     font-size: 15px;
     width: fit-content;
+    transition: all 0.4s ease;
+}
+
+.radioright div {
+    position: relative;
+    top: -10px;
     transition: all 0.4s ease;
 }
 
