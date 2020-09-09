@@ -333,7 +333,7 @@ def warResult():
     # fighter jets: air control
     
     # counters:
-    # soldiers beat artillery
+    # soldiers beat artillery, apaches
     # tanks beat soldiers
     # artillery beat tanks
     # destroyers beat submarines
