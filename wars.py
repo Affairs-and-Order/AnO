@@ -312,36 +312,50 @@ def warResult():
     # grab enemy target units from session
     # grab defending enemy units from database
 
-    # war policies such as
-    # "empire builder", no loot, high reparation tax
-    # "pacifist" --> no loot, no reparation tax, winning defensive wars lower time required to build a technology project by 5 days, boosts your economy by 10% (can code this as a negative 10% tax), and happiness boost?
-    # "pirate" --> 2x more loot no reparation tax
-
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
     
-
-    # if your score is higher by 3x, annhilation, 
-    # if your score is higher by 2x, big victory
+    # if your score is higher by 3x, annihilation, 
+    # if your score is higher by 2x, definite victory
     # if your score is any higher, close victory, 
     # if your score is lower, close defeat, 0 damage, 
     # if your score is lower by 2x, massive defeat, 0 damage
+
+    # from annihilation (civilian, field, city, depth, blockade, air):
+    # soldiers: civilian control
+    # tanks: field control and city control
+    # artillery: field control
+    # submarines: depth control
+    # destroyers: depth control and blockade control
+    # cruisers: blockade control
+    # bombers: field control control
+    # apaches: city control
+    # fighter jets: air control
+    # 
+
 
     # A = defendingscore / attackingscore
     # B = attackingscore / defendingscore
     # lose A % of all your attacking units, times a random factor between 0.8 and 1, rolled once for each unit (so 3 times)
     # lose B/2 % of all targeted defending units, and B/2 % of all chosen defending units, times a random factor between 0.75 and 1, rolled once for each unit (so 6 times)
     # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor) 
+    # if you were the defending (beginning of war) country you also lose B infra
 
     # if enemy morale reaches 0:
-        # X = your remaining morale
-        # take X % of their res and cash, tax them by X % for 1 day
-        # MODIFIERS to X:
-        # war policies such as
-        # "empire builder", no loot, high reparation tax
-        # "pacifist" --> no loot, no reparation tax, winning defensive wars lower time required to build a technology project by 5 days, boosts your economy by 10% (can code this as a negative 10% tax), and happiness boost?
-        # "pirate" --> 2x more loot no reparation tax
-    
+        # X = your remaining morale (so this is from 0 to 100)
+        # take X / 2 % of their res and cash, tax them by X % for 2 days
+        # minimum 20% loot
+    # MODIFIERS to X (war policies, war type):
+    # WAR POLICIES:
+    # "empire builder", no loot, 2x reparation tax
+    # "pirate" --> 2x more loot no reparation tax
+    # "righteous" --> 1x loot 1x reparation tax
+    # "pacifist" --> no loot, no reparation tax, winning defensive wars lower time required to build a technology project by 5 days, boosts your economy by 10% (can code this as a negative 10% tax), and happiness boost
+    # guerilla: 
+    # WAR TYPES
+    # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+    # "loot" --> 2x loot, destroy less infra, buildings
+    # ""
     return render_template("warResult.html")
 # Endpoint for war declaration
 
