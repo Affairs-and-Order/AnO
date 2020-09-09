@@ -245,8 +245,14 @@ def warAmount():
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
+        # spyinfo = db.execute(SELECT spyinformation WHERE cId==(?)).fetchall()
+        #  1. table: spyinfo(id, spyer, spyee, knownunits, knownres, knowncash, date)
+        #  2. checkuser's log. If type = "spy" then put the "info" column string value in the units dictionary
+        # eventually do both
+        
+        # units dictionary here will have the amount value if spied == true
 
-        return render_template("wartarget.html")
+        return render_template("wartarget.html", units=units)
     else:
         session['targeted_units'] = request.form.get('targeted_units')
         return redirect('warResult')
