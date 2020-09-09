@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from attack_scripts import Military
+from random import randint
 
 # Blueprint for units
 class BlueprintUnit(ABC):
@@ -15,7 +16,17 @@ class BlueprintUnit(ABC):
 
     damage = 0
     bonus = 0
-    
+
+    """
+    attack method:
+
+        Calculates the advantage or disagvantage based on the enemy unit type.
+
+        return: a tuple which contains (damage, bonus)
+
+    buy method:
+        return
+    """
     @abstractmethod
     def attack(defending_units): pass
 
@@ -30,15 +41,21 @@ class TankUnit(BlueprintUnit):
         self.amount = amount
 
     def attack(self, defending_units):
+
+        # One tank beats 4 soldiers
         if 'soldiers' == defending_units:
             self.damage += 2
-            self.bonus += 12
+            self.bonus += 4*self.amount
 
+        # One artillery beats 3 tanks
         elif 'artillery' == defending_units:
-            self.bonus -= 15
+            self.bonus -= 4*self.amount
 
+        # Micro randomization
+        # One bomber beats random number of tanks (where they drop the bombs)
+        # between 2 and 6
         elif 'bombers' == defending_units:
-            self.bonus -= 15
+            self.bonus -= randint(2, 6)*self.amount
 
         elif 'apaches' == defending_units:
             self.bonus -= 15
@@ -54,10 +71,11 @@ class SoldierUnit(BlueprintUnit):
     def __init__(self, amount):
         self.amount = amount
 
+    #
     def attack(self, defending_units):
         if defending_units == "artillery":
             self.damage += 55
-            self.bonus += 10
+            self.bonus += 5
 
         elif defending_units == "apaches":
             pass
@@ -164,6 +182,9 @@ class Units(Military):
                         interface_object = interface(unit_amount)
                         attack_effects = interface_object.attack(target)
 
+                        target_percentage = enemy_unit_object.selected_units[target]/1000
+                        print("EFFECTS", attack_effects[1]*target_percentage, target, attacker_unit)
+
                     # doesen't have any effect if unit amount is zero
                     else:
                         return (0, 0)
@@ -189,7 +210,7 @@ class Units(Military):
 if __name__ == "__main__":
 
     # CASE 1
-    defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158},  selected_units_list=["artillery", "tanks", "soldiers"])
+    defender = Units(1, {"artillery": 20, "tanks": 3, "soldiers": 158},  selected_units_list=["artillery", "tanks", "soldiers"])
     attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},  selected_units_list=["artillery", "tanks", "soldiers"])
 
     # print(attacker.attack('soldiers', 'tanks', None))

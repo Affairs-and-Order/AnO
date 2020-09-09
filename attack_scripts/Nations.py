@@ -25,25 +25,29 @@ class Military:
 
         attack_effects_bonus = 0
 
-        attacker_roll = random.uniform(0, 6)
+        attacker_roll = random.uniform(0, 10)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
 
-        defender_roll = random.uniform(0, 6)
+        defender_roll = random.uniform(0, 10)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
 
 
         for attacker_unit in attacker.selected_units_list:
-            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*(20/100)
+
+            # 10% of unit amount counts
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*(10/100)
 
             for defender_unit in defender.selected_units_list:
 
                 # we can add negative bonuses also in attack method
-                attack_effects_bonus += attacker.attack(attacker_unit, defender_unit, None)[1]
+                attack_effects_bonus += attacker.attack(attacker_unit, defender_unit, defender)[1]
 
         for defender_unit in defender.selected_units_list:
-            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*(20/100)
+
+            # 10% of unit amount counts
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*(10/100)
 
         print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
         print(attacker_roll, defender_roll)
