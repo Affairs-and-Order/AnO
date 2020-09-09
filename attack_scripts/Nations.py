@@ -6,16 +6,17 @@ path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
 
 class Military:
-    def __init__(self, spies, soldiers, tanks, artillery, bombers, fighters, destroyers, cruisers, submarines, ICBMs, nukes):
-        self.spies = spies
+    def __init__(self, spies, soldiers, tanks, artillery, bombers, fighters, apaches, destroyers, cruisers, submarines, ICBMs, nukes):
         self.soldiers = soldiers
         self.tanks = tanks
         self.artilley = artillery
         self.bombers = bombers
-        self.fighters = fighters  # was bomberJets
+        self.fighters = fighters 
+        self.apaches = apaches
         self.destroyers = destroyers
         self.cruisers = cruisers
         self.submarines = submarines
+        self.spies = spies
         self.ICMBs = ICBMs
         self.nukes = nukes
 
