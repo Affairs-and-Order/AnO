@@ -251,8 +251,8 @@ def warTarget():
         # eventually do both
         
         # units dictionary here will have the amount value if spied == true
-
-        return render_template("wartarget.html", units=units)
+        flash("also have a flash message in the get wartarget path") 
+        return render_template("wartarget.html") # spyinfo=spyinfo
     else:
         session['targeted_units'] = request.form.get('targeted_units')
         return redirect('warResult')

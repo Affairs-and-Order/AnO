@@ -20,7 +20,7 @@
             <label for="1" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Soldiers</ul>
-                {% if units["soldiers"] %}
+                {% if units["soldiers"] is defined %}
                 <ul>{{ units["soldiers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
@@ -36,7 +36,7 @@
             <label for="2" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Tanks</ul>
-                {% if units %}
+                {% if units['tanks'] is defined %}
                 <ul>{{ units["tanks"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
@@ -52,7 +52,7 @@
             <label for="3" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Artillery</ul>
-                {% if units %}
+                {% if units["artillery"] %}
                 <ul>{{ units["artillery"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
@@ -70,7 +70,7 @@
             <label for="4" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Fighter Jets</ul>
-                {% if units %}
+                {% if units["fighters"] %}
                 <ul>{{ units["fighters"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
@@ -86,7 +86,7 @@
             <label for="5" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Bombers</ul>
-                {% if units %}
+                {% if units["bombers"] %}
                 <ul>{{ units["bombers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
@@ -102,7 +102,7 @@
             <label for="6" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Apaches</ul>
-                {% if units %}
+                {% if units["apaches"] is defined %}
                 <ul>{{ units["apaches"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
@@ -120,7 +120,7 @@
             <label for="7" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Submarines</ul>
-                {% if units %}
+                {% if units["submarines"] is defined %}
                 <ul>{{ units["submarines"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
@@ -136,7 +136,7 @@
             <label for="8" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Cruisers</ul>
-                {% if units %}
+                {% if units['cruisers'] is defined %}
                 <ul>{{ units["cruisers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul> {% endif %}
@@ -151,7 +151,7 @@
             <label for="9" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Destroyers</ul>
-                {% if units %}
+                {% if units['destroyers'] is defined  %}
                 <ul>{{ units["destroyers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul> {% endif %}
