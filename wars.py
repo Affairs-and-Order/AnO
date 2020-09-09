@@ -283,8 +283,7 @@ def warAmount():
 
         # same note as before as to how to use this request.form.get to get the unit amounts.
         return redirect('/wartarget')
-    else:
-        return "what shenaniganry just happened here?! REPORT TO THE ADMINS!!"
+
 
 # page 3 where you choose what 3 enemy units to attack
 @login_required
@@ -292,18 +291,17 @@ def warAmount():
 def warTarget():
     if request.method == "GET":
         cId = session['user_id']
-
-        # find the spyinfo table entry that has: cId as spyer nation, and att
-        # db.execute(SELECT * FROM spyinfo WHERE spyer=(?)), (cId,).fetchall()
-        # attackersdefenders = db.execute(SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?), (cId, cId,)).fetchall
-        # process this data to show a list of enemy nations
-        # cycle through every single unit that is true in spyinfo. If a unit is true, find the current units in the spyee nation
-        units = {}  # literally an empty dictionary for now, but if spyinfo shows that a certain unit is 'true', then that unit would be revealed
-        # units dictionary here will have the amount value if spied == true
-        flash("also have a flash message in the get wartarget path")
-        # spyinfo=spyinfo
+        eId = session['enemy_id']
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        revealed_info = db.execute("SELECT * FROM spyinfo WHERE spyer=(?) AND spyee=(?)", (cId, eId,)).fetchall()
+        needed_types = ['soldiers', 'tanks', 'artillery', 'fighters', 'bombers', 'apaches', 'destroyers', 'cruisers', 'submarines'] 
+        print(revealed_info)
+        # cycle through revealed_info. if a value is true, and it's a unit, add it to the units dictionary
+        units = {}
+        flash("testing in wartarget get")
         return render_template("wartarget.html", units=units)
-    else:
+    if request.method == "POST":
         session['targeted_units'] = request.form.get('targeted_units')
         return redirect('warResult')
 
