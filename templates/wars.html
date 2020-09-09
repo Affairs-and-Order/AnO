@@ -31,8 +31,7 @@
                 </div>
                 <div class="templatedivflex2right">
 
-                    <a class="center templatedivbutton smallactionbutton" href="/find_targets"><span
-                            class="material-icons-outlined">
+                    class="center templatedivbutton smallactionbutton" href="/find_targets"><span class="material-icons-outlined">
                             person_search
                         </span>Find Target</a>
 
@@ -71,12 +70,12 @@
             </table>
         </div>
 
-        {% if warsCount != 0 %}
+
         <!--if wars == False-->
         <h2 class="templatecontentheadercenter">You have {{ warsCount }} ongoing wars</h2>
         <!--if wars == True-->
+        {% if warsCount != 0 %}
 
-        
         <h2 class="templatecontentheaderleft">Ongoing Wars</h2>
 
         <div class="borderbottom templatedivflex2 menuflex">
@@ -104,7 +103,7 @@
 
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
-                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">90 / 100 Morale</div>
@@ -128,7 +127,7 @@
 
                 <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
                 <!--aggressor nation flag-->
-                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">90 / 100 Morale</div>
@@ -154,7 +153,7 @@
 
                 <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
                 <!--aggressor nation flag-->
-                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">90 / 100 Morale</div>
@@ -179,7 +178,7 @@
                 <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
-                <img class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">90 / 100 Morale</div>

@@ -22,7 +22,7 @@
                             <div class="templatedivflex2left">
 
 
-                                <label for="newProvince" class="mediumsmall">Your next province costs {{ price }}</label>
+                                <label for="newProvince" class="mediumsmall">Your next province costs <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }}</label>
                                 <form action="/createprovince" method="POST">
 
                                     <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Province Name" maxlength="15" required/>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="templatedivflex2left">
 
-                    <img class="unitimage" src="static/images/province.jpg" />
+                    <img tabindex="0" class="unitimage" src="static/images/province.jpg" />
 
                 </div>
             </div>
