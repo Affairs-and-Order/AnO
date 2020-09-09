@@ -226,8 +226,8 @@ def warAmount():
             
             # commented out for now because the flask request doesn't appear to get the values
             if not unit_amount:
-                flash(f"{number}: Invalid name argument coming in")
-            flash("final flash inside post /waramount before redirect to wartarget")
+                flash("Invalid name argument coming in")
+
             #selected_units[units_name[number-1]] = int(unit_amount)
         
         # Check every time when user input comes in lest user bypass input validation
