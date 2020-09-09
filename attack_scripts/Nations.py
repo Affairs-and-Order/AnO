@@ -38,19 +38,9 @@ class Military:
             "SELECT * FROM military WHERE id=(?)", (cId,)).fetchall()
         # get the unit amounts based on the selected_units
         unit_to_amount_dict = {}
-        unit_to_amount_dict['cId'] = allAmounts[0][0]
-        unit_to_amount_dict['soldiers'] = allAmounts[0][1]
-        unit_to_amount_dict['artillery'] = allAmounts[0][2]
-        unit_to_amount_dict['tanks'] = allAmounts[0][3]
-        unit_to_amount_dict['bombers'] = allAmounts[0][4]
-        unit_to_amount_dict['fighters'] = allAmounts[0][5]
-        unit_to_amount_dict['apaches'] = allAmounts[0][6]
-        unit_to_amount_dict['spies'] = allAmounts[0][7]
-        unit_to_amount_dict['ICBMs'] = allAmounts[0][8]
-        unit_to_amount_dict['nukes'] = allAmounts[0][9]
-        unit_to_amount_dict['destroyer'] = allAmounts[0][10]
-        unit_to_amount_dict['cruisers'] = allAmounts[0][11]
-        unit_to_amount_dict['submarines'] = allAmounts[0][12]
+        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','ICBMs','nukes','destroyer','cruisers','submarines']
+        for count, item in enumerate(cidunits):
+            unit_to_amount_dict[item] = allAmounts[0][count]
         # make a dictionary with 3 keys, listed in the particular_units list
         unit_lst = []
         for unit in particular_units:

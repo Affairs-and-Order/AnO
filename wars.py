@@ -358,6 +358,7 @@ def warResult():
     # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor) 
     # if you were the defending (beginning of war) country you also lose B infra
 
+
     # if enemy morale reaches 0:
         # X = your remaining morale (so this is from 0 to 100)
         # take X / 2 % of their res and cash, tax them by X % for 2 days
