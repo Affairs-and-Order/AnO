@@ -312,18 +312,36 @@ def warResult():
     # grab enemy target units from session
     # grab defending enemy units from database
 
+    # war policies such as
+    # "empire builder", no loot, high reparation tax
+    # "pacifist" --> no loot, no reparation tax, winning defensive wars lower time required to build a technology project by 5 days, boosts your economy by 10% (can code this as a negative 10% tax), and happiness boost?
+    # "pirate" --> 2x more loot no reparation tax
+
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
     
+
     # if your score is higher by 3x, annhilation, 
     # if your score is higher by 2x, big victory
     # if your score is any higher, close victory, 
     # if your score is lower, close defeat, 0 damage, 
     # if your score is lower by 2x, massive defeat, 0 damage
 
+    # A = defendingscore / attackingscore
+    # B = attackingscore / defendingscore
+    # lose A % of all your attacking units, times a random factor between 0.8 and 1, rolled once for each unit (so 3 times)
+    # lose B/2 % of all targeted defending units, and B/2 % of all chosen defending units, times a random factor between 0.75 and 1, rolled once for each unit (so 6 times)
+    # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor) 
+
     # if enemy morale reaches 0:
         # X = your remaining morale
         # take X % of their res and cash, tax them by X % for 1 day
+        # MODIFIERS to X:
+        # war policies such as
+        # "empire builder", no loot, high reparation tax
+        # "pacifist" --> no loot, no reparation tax, winning defensive wars lower time required to build a technology project by 5 days, boosts your economy by 10% (can code this as a negative 10% tax), and happiness boost?
+        # "pirate" --> 2x more loot no reparation tax
+    
     return render_template("warResult.html")
 # Endpoint for war declaration
 
