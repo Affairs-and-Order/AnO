@@ -1199,6 +1199,7 @@ hr {
 
 .radiodiv:hover {
     background: var(--foreground);
+    box-shadow: rgba(0, 0, 0, 0.075) 0 12px 22px 0;
 }
 
 .radioleft {
