@@ -337,6 +337,10 @@ def war():
 def warresult():
     return render_template("warresult.html")
 
+@app.route("/mass_purchase", methods=["GET"])
+def mass_purchase():
+    return render_template("mass_purchase.html")
+
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
