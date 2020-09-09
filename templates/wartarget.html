@@ -20,12 +20,12 @@
             <label for="1" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Soldiers</ul>
-                {% if units["soldiers"] %}
+                {% if units["soldiers"] is defined %}
                 <ul>{{ units["soldiers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
                 {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
 
                 <input type="checkbox" id="1" class="warcheckbox hidden" value="soldiers">
                 <span class="material-icons-outlined unitcardcheck">
@@ -36,12 +36,12 @@
             <label for="2" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Tanks</ul>
-                {% if units %}
+                {% if units['tanks'] is defined %}
                 <ul>{{ units["tanks"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
                 {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
 
                 <input type="checkbox" id="2" class="warcheckbox hidden" value="tanks">
                 <span class="material-icons-outlined unitcardcheck">
@@ -52,12 +52,12 @@
             <label for="3" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Artillery</ul>
-                {% if units %}
+                {% if units["artillery"] %}
                 <ul>{{ units["artillery"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
                 {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
 
                 <input type="checkbox" id="3" class="warcheckbox hidden" value="artillery">
                 <span class="material-icons-outlined unitcardcheck">
@@ -70,12 +70,12 @@
             <label for="4" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Fighter Jets</ul>
-                {% if units %}
+                {% if units["fighters"] %}
                 <ul>{{ units["fighters"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
                 {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
 
                 <input type="checkbox" id="4" class="warcheckbox hidden" value="fighters">
                 <span class="material-icons-outlined unitcardcheck">
@@ -86,12 +86,12 @@
             <label for="5" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Bombers</ul>
-                {% if units %}
+                {% if units["bombers"] %}
                 <ul>{{ units["bombers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
                 {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/bomber.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/bomber.jpg') }}" />
 
                 <input type="checkbox" id="5" class="warcheckbox hidden" value="bombers">
                 <span class="material-icons-outlined unitcardcheck">
@@ -102,12 +102,12 @@
             <label for="6" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Apaches</ul>
-                {% if units %}
+                {% if units["apaches"] is defined %}
                 <ul>{{ units["apaches"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
                 {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
 
                 <input type="checkbox" id="6" class="warcheckbox hidden" value="apaches">
                 <span class="material-icons-outlined unitcardcheck">
@@ -120,12 +120,12 @@
             <label for="7" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Submarines</ul>
-                {% if units %}
+                {% if units["submarines"] is defined %}
                 <ul>{{ units["submarines"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul>
                 {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
 
                 <input type="checkbox" id="7" class="warcheckbox hidden" value="submarines">
                 <span class="material-icons-outlined unitcardcheck">
@@ -136,11 +136,11 @@
             <label for="8" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Cruisers</ul>
-                {% if units %}
+                {% if units['cruisers'] is defined %}
                 <ul>{{ units["cruisers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul> {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
                 <input type="checkbox" id="8" class="warcheckbox hidden" value="cruisers">
                 <span class="material-icons-outlined unitcardcheck">
@@ -151,11 +151,11 @@
             <label for="9" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Destroyers</ul>
-                {% if units %}
+                {% if units['destroyers'] is defined  %}
                 <ul>{{ units["destroyers"] }}</ul>
                 {% else %}
                 <ul>Unknown</ul> {% endif %}
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
+                <img class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
 
                 <input type="checkbox" id="9" class="warcheckbox hidden" value="destroyers">
                 <span class="material-icons-outlined unitcardcheck">
@@ -168,8 +168,8 @@
         <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3 Units</h2>
 
         <script>
-            $(document).ready(function() {
-                $('input.warcheckbox').on('change', function(e) {
+            $(document).ready(function () {
+                $('input.warcheckbox').on('change', function (e) {
                     let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
                         checked
                     }) => checked).length;
