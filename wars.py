@@ -464,12 +464,14 @@ def defense():
 
         # Defense units came from POST request (TODO: attach it to the frontend)
         defense_units = ["soldier", "tank", "apache"]
-
+        # defense_units = request.form.get(u1)
+        # defense_units = request.form.get(u2)
+        # defense_units = request.form.get(u3)
         # Default defense
         # nation_id = nation[1]
         # default_defense = nation[2]
 
-        # TODO: check is selected unit names are valid
+        # TODO: check if selected unit names are valid
         if nation:
             if len(defense_units) == 3:
                 # default_defense is stored in the db: 'unit1,unit2,unit3'
