@@ -308,15 +308,13 @@ def warResult():
     eId = session["enemy_id"]  # this data is in the form of an integer
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-
     # this data is in the form of cursor object, looking for a string though
     defenseunits = db.execute(
-        "SELECT default_defense FROM nation WHERE id=(?)", (eId,)).fetchone() #[0]
+        "SELECT default_defense FROM nation WHERE nation_id=(?)", (eId,)).fetchone()  #[0] # this doesnt work because there are no nations in nation right now
 
     print(attackunits.selected_units, "| attack units")
     print(eId, "| eId")
     print(defenseunits, "| defense units")
-
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
 

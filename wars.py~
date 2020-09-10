@@ -217,8 +217,8 @@ def warAmount():
 
         # grab supplies amount
         # if the user is the attacker in the war
-        # if cId == db.execute('SELECT attacker FROM wars WHERE ')
-        # supplies = db.execute('SELECT attacker_supplies FROM wars WHERE id=(?)', (cId,)).fetchone()[0]
+        # if cId == db.execute("SELECT attacker FROM wars WHERE ")
+        # supplies = db.execute("SELECT attacker_supplies FROM wars WHERE id=(?)", (cId,)).fetchone()[0]
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
 
