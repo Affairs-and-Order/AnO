@@ -11,7 +11,7 @@ class BlueprintUnit(ABC):
     Neccessary variables:
         - unit_type: used to identify interfaces (i.e. TankUnit, SoldierUnit) for particular units
         - bonus: used to calculate the battle advantage
-        - damage: used to determine the casualties
+        - damage: used to determine the damage dealt to the target (infra, other buildings)
     """
 
     damage = 0
@@ -52,7 +52,6 @@ class TankUnit(BlueprintUnit):
         # between 2 and 6
         # elif 'bombers' == defending_units:
             # self.bonus -= randint(2, 6)*self.amount
-
 
         return [self.damage, self.bonus]
 

@@ -50,6 +50,25 @@ class Military:
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
 
+        # Determine the winner
+        if defender_chance >= attacker_chance:
+            winner = defender
+            win_type = defender_chance//attacker_chance
+
+        else:
+            winner = attacker
+            win_type = attacker_chance//defender_chance
+
+        # annihilation
+        if win_type >= 3:
+            winner
+
+        # definite victory
+        elif win_type >= 2: pass
+
+        # close victory
+        else: pass
+
         # DEBUGGING:
         # print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
         # print(attacker_roll, defender_roll)
