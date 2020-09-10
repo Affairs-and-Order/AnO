@@ -7,11 +7,11 @@ from attack_scripts import Nation, Military
 from implement_units_management import Units
 import time
 
-'''
+"""
 war page: choose a war
 
 Page 1:
-Goes to a page where each 3 units choose what type of unit to attack with (12 options, 9 war and 3 special). There's up to 8 of these boxes available, since you can attack 5 nations at once or defend from 3 nations at once (make this flexible tho).
+Goes to a page where each 3 units choose what type of unit to attack with (12 options, 9 war and 3 special). There"s up to 8 of these boxes available, since you can attack 5 nations at once or defend from 3 nations at once (make this flexible tho).
 War
 9 check boxes
 
@@ -28,14 +28,14 @@ Goes to a page where you target what all your units attack (13 options: 9 war un
 
 Page 4:
 Whoever lost fewer value in units is the winner. Based on the degree, morale changes. Based on degree on winning, sets a tax on the losing nation.
-'''
+"""
 
 # so this is page 0, war menu, choose a war
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
 def wars():
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
     cId = session["user_id"]
 
@@ -45,7 +45,7 @@ def wars():
         units = normal_units.copy()
         units.update(special_units)
 
-        # obtain the user's country from sql table
+        # obtain the user"s country from sql table
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -111,15 +111,15 @@ def wars():
         connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
     if request.method == "POST":
-        session['enemy_id'] = request.form.values # depends on which enemy nation the user clicked on
-        return redirect(url_for('warChoose'))
+        session["enemy_id"] = request.form.values # depends on which enemy nation the user clicked on
+        return redirect(url_for("warChoose"))
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @login_required
 @app.route("/war/<war_id>", methods=["GET"])
 def war_with_id(war_id):
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
     cId = session["user_id"]
@@ -128,7 +128,7 @@ def war_with_id(war_id):
         return error(400, "War id must be an integer")
     # defender meaning the one who got declared on
     defender = db.execute(
-        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: 'NoneType' object is not subscriptable
+        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: "NoneType" object is not subscriptable
     defender_name = db.execute(
         "SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
     # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
@@ -142,9 +142,9 @@ def war_with_id(war_id):
     agressor_message = db.execute(
         "SELECT agressor_message FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     if cId == attacker:
-        session['enemy_id'] = defender
+        session["enemy_id"] = defender
     else:
-        session['enemy_id'] = attacker
+        session["enemy_id"] = attacker
     if cId == defender:
         cId_type = "defender"
     elif cId == attacker:
@@ -155,7 +155,7 @@ def war_with_id(war_id):
     if cId_type == "spectator":
         return error(400, "You can't view this war")
 
-    return render_template('war.html', defender=defender, attacker=attacker,
+    return render_template("war.html", defender=defender, attacker=attacker,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type)
 
@@ -195,7 +195,7 @@ def warChoose():
         # cache Unit object reference in session
         session["attack_units"] = attack_units
 
-        return redirect('/waramount')
+        return redirect("/waramount")
 
 # page 2 choose how many of each of your units to send
 @login_required
@@ -205,26 +205,26 @@ def warAmount():
     # cId = 2
 
     if request.method == "GET":
-        connection = sqlite3.connect('affo/aao.db')
+        connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
 
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
-        # this is of format ['soldiers', 'tanks', 'artillery']
+        # this is of format ["soldiers", "tanks", "artillery"]
         selected_units = list(attack_units.selected_units.keys())
         print(attack_units, attack_units.selected_units, attack_units.selected_units.keys(
         ), selected_units)  # just clarifying the data structure, comment/delete at production
 
         # grab supplies amount
         # if the user is the attacker in the war
-        # if cId == db.execute('SELECT attacker FROM wars WHERE ')
-        # supplies = db.execute('SELECT attacker_supplies FROM wars WHERE id=(?)', (cId,)).fetchone()[0]
+        # if cId == db.execute("SELECT attacker FROM wars WHERE ")
+        # supplies = db.execute("SELECT attacker_supplies FROM wars WHERE id=(?)", (cId,)).fetchone()[0]
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
 
-        # Hello here, the below code what is commented out is not working so in this way we can't solve the SQL injection problem. When you try to assign dynamically to "SELECT ?" it just gives back the column name.
+        # Hello here, the below code what is commented out is not working so in this way we can"t solve the SQL injection problem. When you try to assign dynamically to "SELECT ?" it just gives back the column name.
 
-        # Possible solution for SQLi: use SQL variables (SQLite doesen't support variables but maybe Postgres does)
+        # Possible solution for SQLi: use SQL variables (SQLite doesen"t support variables but maybe Postgres does)
         # get all the unit amounts
 
         unitamounts = Military.get_particular_units_list(cId, selected_units)
@@ -233,14 +233,14 @@ def warAmount():
         db.close()
         connection.close()
 
-        # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
+        # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
 
         return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts)
 
     elif request.method == "POST":
         # session["unit_amounts"] = request.form.get("attack_units")
 
-        # Separate object's units list from now units list
+        # Separate object"s units list from now units list
         attack_units = session["attack_units"]
         selected_units = list(attack_units.selected_units.keys())
         # seems this is in the form of a dictionary
@@ -255,7 +255,7 @@ def warAmount():
                 unit_amount = request.form.get(f"u{number}_amount")
                 print(unit_amount)  # debugging
 
-                # commented out for now because the flask request doesn't appear to get the values
+                # commented out for now because the flask request doesn"t appear to get the values
                 if not unit_amount:
                     flash("Invalid name argument coming in")
 
@@ -267,9 +267,9 @@ def warAmount():
             print(error)
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
-            return redirect('/warResult') # warTarget route is skipped
+            return redirect("/warResult") # warTarget route is skipped
         elif (len(units_name) == 1):  # this should happen if special
-            return redirect('/wartarget')
+            return redirect("/wartarget")
         else:  # lets just leave this here if something dumb happens, then we can fix it!
             return ("everything just broke")
 
@@ -281,22 +281,22 @@ def warAmount():
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
-        cId = session['user_id']
-        eId = session['enemy_id']
-        connection = sqlite3.connect('affo/aao.db')
+        cId = session["user_id"]
+        eId = session["enemy_id"]
+        connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         revealed_info = db.execute(
             "SELECT * FROM spyinfo WHERE spyer=(?) AND spyee=(?)", (cId, eId,)).fetchall()
-        needed_types = ['soldiers', 'tanks', 'artillery', 'fighters',
-                        'bombers', 'apaches', 'destroyers', 'cruisers', 'submarines']
+        needed_types = ["soldiers", "tanks", "artillery", "fighters",
+                        "bombers", "apaches", "destroyers", "cruisers", "submarines"]
         print(revealed_info)
-        # cycle through revealed_info. if a value is true, and it's a unit, add it to the units dictionary
+        # cycle through revealed_info. if a value is true, and it"s a unit, add it to the units dictionary
         units = {}
         flash("testing in wartarget get")
         return render_template("wartarget.html", units=units)
     if request.method == "POST":
-        session['targeted_units'] = request.form.get('targeted_units')
-        return redirect('warResult')
+        session["targeted_units"] = request.form.get("targeted_units")
+        return redirect("warResult")
 
 # page 4 results
 # infra damage, building damage
@@ -305,16 +305,16 @@ def warTarget():
 @app.route("/warResult", methods=["GET"])
 def warResult():
     # grab your units from session
-    attackunits = session['attack_units']  # this data is in the form of idk
+    attackunits = session["attack_units"]  # this data is in the form of idk
     # grab defending enemy units from database
-    eId = session['enemy_id']  # this data is in the form of an integer?
-    connection = sqlite3.connect('affo/aao.db')
+    eId = session["enemy_id"]  # this data is in the form of an integer?
+    connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
     defenseunits = db.execute("SELECT default_defense FROM nation WHERE id=(?)", (eId,))  # this data is in the form of idk
     
-    print(attackunits)
-    print(eId)
-    print(defenseunits)
+    print(attackunits, "| attack units")
+    print(eId, "| eId")
+    print(defenseunits, "| defense units")
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
 
@@ -383,9 +383,9 @@ def warResult():
 
 
 @login_required
-@app.route('/declare_war', methods=["POST"])
+@app.route("/declare_war", methods=["POST"])
 def declare_war():
-    connection = sqlite3.connect('affo/aao.db')
+    connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
     # Selects the country that the user is attacking
@@ -437,7 +437,7 @@ def find_targets():
         return render_template("find_targets.html")
     else:
         # TODO: maybe delete the sql fetch and create a centralized way to fetch it
-        connection = sqlite3.connect('affo/aao.db')
+        connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
 
         defender = request.form.get("defender")
@@ -459,7 +459,7 @@ def defense():
         return render_template("defense.html", units=units)
 
     elif request.method == "POST":
-        connection = sqlite3.connect('affo/aao.db')
+        connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         nation = db.execute(
             "SELECT * FROM nation WHERE nation_id=(?)", (cId,)).fetchone()
@@ -476,7 +476,7 @@ def defense():
         # TODO: check if selected unit names are valid
         if nation:
             if len(defense_units) == 3:
-                # default_defense is stored in the db: 'unit1,unit2,unit3'
+                # default_defense is stored in the db: "unit1,unit2,unit3"
                 defense_units = ",".join(defense_units)
                 db.execute(
                     "UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
@@ -487,7 +487,7 @@ def defense():
             return "Nation is not created!"
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
-        # next we need to insert the 3 defending units set as a value to the nation's table property (one in each war): defense
+        # next we need to insert the 3 defending units set as a value to the nation"s table property (one in each war): defense
         # db.execute("INSERT INTO wars (attacker, defender) VALUES (?, ?)", (cId, defender_id))
         connection.close()
 
