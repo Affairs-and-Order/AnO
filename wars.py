@@ -354,7 +354,7 @@ def warResult():
     # A = defendingscore / attackingscore
     # B = attackingscore / defendingscore
     # lose A % of all your attacking units, times a random factor between 0.8 and 1, rolled once for each unit (so 3 times)
-    # lose B/2 % of all targeted defending units, and B/2 % of all chosen defending units, times a random factor between 0.75 and 1, rolled once for each unit (so 6 times)
+    # lose B % of all defending units, times a random factor between 0.75 and 1, rolled once for each unit (so 3 times)
     # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor)
     # if you were the defending (beginning of war) country you also lose B infra
 
