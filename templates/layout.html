@@ -10,7 +10,8 @@
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
 
-    <script src="jquery-3.5.1.min.js"></script>
+    <!-- This cause error because src="jquery" is relative path so the /war/<id> will be like this /war/jquery -->
+    <!-- <script src="jquery-3.5.1.min.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <link rel="icon" href="{{ url_for('static', filename='images/titleimage.png') }}" type="image/png">

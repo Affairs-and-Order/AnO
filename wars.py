@@ -126,13 +126,7 @@ def war_with_id(war_id):
     # cId = session["user_id"]
     cId = 2
 
-    # if war_id.isdigit == False:
-        # return error(400, "War id must be an integer")
     # defender meaning the one who got declared on
-
-    # print(war_id)
-    # print(db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
-
     defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: 'NoneType' object is not subscriptable
     defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
 
@@ -162,6 +156,7 @@ def war_with_id(war_id):
     return render_template("war.html", defender=defender, attacker=attacker,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type)
+
 
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
