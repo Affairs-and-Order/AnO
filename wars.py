@@ -299,6 +299,16 @@ def warTarget():
 # page 4 results
 # infra damage, building damage
 # giant loot, coalition loot, reparation tax set if morale reaches 0
+
+# def fight(attackunits, defenseunits):
+#     score = 0
+#     for attunit, attamount in attackunits.items():
+#         for defunit, defamount in defenseunits.items():
+#             if attunit == "soldiers" and defunit == "tanks":
+#                 attamount = attamount * 0.4
+#             if attunit == "soldiers" and 
+
+
 @login_required
 @app.route("/warResult", methods=["GET"])
 def warResult():
@@ -343,16 +353,16 @@ def warResult():
     # apaches: city control
     # fighter jets: air control
 
-    # counters:
-    # soldiers beat artillery, apaches
-    # tanks beat soldiers
-    # artillery beat tanks
-    # destroyers beat submarines
-    # cruisers beat destroyers
-    # submarines beat cruisers
-    # bombers beat soldiers, tanks, destroyers, cruisers, submarines
-    # apaches beat soldiers, tanks, bombers, fighter jets
-    # fighter jets beat bombers
+    # counters | countered by
+    # soldiers beat artillery, apaches | tanks, bombers
+    # tanks beat soldiers | artilllery, bombers
+    # artillery beat tanks | soldiers
+    # destroyers beat submarines | cruisers, bombers
+    # cruisers beat destroyers, jets, apaches | submarines
+    # submarines beat cruisers | destroyers, bombers
+    # bombers beat soldiers, tanks, destroyers, cruisers, submarines | fighters
+    # apaches beat soldiers, tanks, bombers, fighters | soldiers
+    # fighters beat bombers | apaches
 
     # resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers and 50% of their total munitions)
     # field control: soldiers gain 2x power
