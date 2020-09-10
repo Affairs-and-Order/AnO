@@ -115,25 +115,28 @@ def wars():
         return redirect(url_for('warChoose'))
 
 # page 0, kind of a pseudo page where you can click attack vs special
-@login_required
-@app.route("/war/<war_id>", methods=["GET"])
+# @login_required
+@app.route("/war/<int:war_id>", methods=["GET"])
 def war_with_id(war_id):
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
-    cId = session["user_id"]
+    # cId = session["user_id"]
+    cId = 2
 
-    if war_id.isdigit == False:
-        return error(400, "War id must be an integer")
+    # if war_id.isdigit == False:
+        # return error(400, "War id must be an integer")
     # defender meaning the one who got declared on
-    defender = db.execute(
-        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: 'NoneType' object is not subscriptable
-    defender_name = db.execute(
-        "SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
-    # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
-    attacker = db.execute(
-        "SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+
+    # print(war_id)
+    # print(db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
+
+    defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: 'NoneType' object is not subscriptable
+    defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
+
+    # # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
+    attacker = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     attacker_name = db.execute(
         "SELECT username FROM users WHERE id=(?)", (attacker,)).fetchone()[0]
 
@@ -307,7 +310,7 @@ def warResult():
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     defenseunits = db.execute("SELECT default_defense FROM nation WHERE id=(?)", (eId,))  # this data is in the form of idk
-    
+
     print(attackunits)
     print(eId)
     print(defenseunits)
