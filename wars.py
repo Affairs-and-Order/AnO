@@ -444,8 +444,7 @@ def defense():
     elif request.method == "POST":
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        nation = db.execute(
-            "SELECT * FROM nation WHERE nation_id=(?)", (cId,)).fetchone()
+        nation = db.execute("SELECT * FROM nation WHERE nation_id=(?)", (cId,)).fetchone()
 
         # Defense units came from POST request (TODO: attach it to the frontend)
         defense_units = ["soldier", "tank", "apache"]

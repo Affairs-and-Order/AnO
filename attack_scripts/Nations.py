@@ -11,7 +11,7 @@ class Military:
         self.tanks = tanks
         self.artilley = artillery
         self.bombers = bombers
-        self.fighters = fighters 
+        self.fighters = fighters
         self.apaches = apaches
         self.destroyers = destroyers
         self.cruisers = cruisers
@@ -26,7 +26,7 @@ class Military:
     def get_particular_units_list(cId, particular_units):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-  
+
         # for unit in particular_units:
 
         #     # IMPORTANT: This is SQL injectable change this when move to production
@@ -104,12 +104,20 @@ class Military:
             "nukes": nukes
         }
 
-    # @staticmethod
-    # def get_default_defense(cId):
-    #     connection = sqlite3.connect('affo/aao.db')
-    #     db = connection.cursor()
-    #     default_defense = db.execute("SELECT default_defense FROM nation WHERE nation_id=(?)", (1,)).fetchall()
-    #     connection.close()
+    # Check and set default_defense in nation table
+    def set_defense(self, defender_units):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        if len(defense_units) == 3:
+
+            # default_defense is stored in the db: 'unit1,unit2,unit3'
+            defense_units = ",".join(defense_units)
+
+            db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
+            connection.commit()
+        else:
+            return "Invalid number of units selected!"
 
 class Economy:
     # TODO: expand this to cover all resources
