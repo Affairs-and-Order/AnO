@@ -20,6 +20,74 @@ class Military:
         self.ICMBs = ICBMs
         self.nukes = nukes
 
+    # NOTICE: in the future we could use this as an instance method unstead of static method
+    @staticmethod
+    def fight(attacker, defender): # dictionary in format {'unit': amount, 'unit': amount, 'unit': amount}
+
+        attacker_roll = random.uniform(0, 10)
+        attacker_chance = 0
+        attacker_unit_amount_bonuses = 0
+        attacker_bonus = 0
+
+        defender_roll = random.uniform(0, 10)
+        defender_chance = 0
+        defender_unit_amount_bonuses = 0
+        defender_bonus = 0
+
+        for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
+
+            # Unit amount chance - this way still get bonuses even if no counter unit_type
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*10/1000
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*10/1000
+
+            # Compare attacker agains defender
+            for unit in defender.selected_units_list:
+                attacker_bonus += attacker.attack(attacker_unit, unit, defender)[1]
+
+            # Compare defender against attacker
+            for unit in attacker.selected_units_list:
+                defender_bonus += defender.attack(defender_unit, unit, attacker)[1]
+
+        attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
+        defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
+
+        # Determine the winner
+        if defender_chance >= attacker_chance:
+            winner = defender
+            loser = attacker
+            win_type = defender_chance//attacker_chance
+            winner_casulties = attacker_chance//defender_chance
+
+        else:
+            winner = attacker
+            loser = defender
+            win_type = attacker_chance//defender_chance
+            winner_casulties = defender_chance//attacker_chance
+
+        # Effects based on win_type (idk: destroy buildings or something)
+        # loser_casulties = win_type so win_type also is the loser's casulties
+
+        # annihilation
+        if win_type >= 3: pass
+
+        # definite victory
+        elif win_type >= 2: pass
+
+        # close victory
+        else: pass
+
+        for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
+            winner.casualties(winner_unit, winner_casulties*random.uniform(0.8, 1))
+            loser.casualties(loser_unit, win_type*random.uniform(0.8, 1))
+
+        # DEBUGGING:
+        # print("WINNER IS:", winner.user_id)
+        # print(winner_casulties, win_type)
+        # print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
+        # print(attacker_roll, defender_roll)
+        # print(attacker_bonus, defender_bonus)
+        # print(attacker_chance, defender_chance)
+
     # select only needed units instead of all
     # particular_units must be a list of string unit names
     @staticmethod
@@ -205,37 +273,6 @@ class Nation:
 
     def declare_war(self, target_nation):
         pass
-
-    def fight(self, enemyNation, attackTypes):
-        # attackTypes is a tuple
-        attackList = ["water", "ground", "air"]
-        attackTypesHash = {"water": 1, "ground": 2, "air": 3}
-
-        currentAttacks = list(attackTypes)
-
-        for attack in attackList:
-            if attackTypes[0] == attack:
-                currentAttacks[0] = attackTypesHash[attack]
-            if attackTypes[1] == attack:
-                currentAttacks[1] = attackTypesHash[attack]
-
-        # super simple fight between two nations soldiers
-        print(attackTypes[1])
-        enemyScore = enemyNation.military.soldiers + \
-            abs(random.randrange(-2 *
-                                 currentAttacks[1], 2 * currentAttacks[1]))
-        homeScore = self.military.soldiers + \
-            abs(random.randrange(-2 *
-                                 currentAttacks[0], 2 * currentAttacks[0]))
-
-        if enemyScore > homeScore:
-            print("Enemy Win | ID " + str(enemyNation.id))
-            self.losses += 1
-            enemyNation.wins += 1
-        else:
-            print("Home win | ID " + str(self.id))
-            enemyNation.losses += 1
-            self.wins += 1
 
     def get_provinces(self):
 
