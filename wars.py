@@ -45,7 +45,7 @@ def wars():
         units = normal_units.copy()
         units.update(special_units)
 
-        # obtain the user"s country from sql table
+        # obtain the user's country from sql table
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -102,18 +102,16 @@ def wars():
                     "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
         connection.commit()
 
-        # WHAT DOES THIS DO??? -- Steven
-        # Selects how many wars the user is in -- t0dd
-        # got it :D
         warsCount = db.execute(
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
         db.close()
         connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
+        ''' # the post method literally never activates in wars
     if request.method == "POST":
         # depends on which enemy nation the user clicked on
         session["enemy_id"] = request.form.values
-        return redirect(url_for("warChoose"))
+        return redirect(url_for("warChoose"))'''
 
 # page 0, kind of a pseudo page where you can click attack vs special
 # @login_required
@@ -123,8 +121,7 @@ def war_with_id(war_id):
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
-    # cId = session["user_id"]
-    cId = 2
+    cId = session["user_id"]
 
     # if war_id.isdigit == False:
         # return error(400, "War id must be an integer")
@@ -315,7 +312,7 @@ def warResult():
     db = connection.cursor()
     # this data is in the form of cursor object, looking for a string though
     defenseunits = db.execute(
-        "SELECT default_defense FROM nation WHERE nation_id=(?)", (eId,)).fetchone()  #[0] # this doesnt work because there are no nations in nation right now
+        "SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0] # this is in the form of... what
 
     print(attackunits.selected_units, "| attack units")
     print(eId, "| eId")
