@@ -147,36 +147,93 @@
             });
         </script>
 
-        <div class="templatedivflex2 divflex2center">
-            <div class="templatedivflex2left">
 
-                <a class="templatedivbutton templatecenteredbutton" href="/wars"><span class="material-icons-outlined">
-                        arrow_back
-                    </span>Back</a>
+        <form id="next_button" action="/warchoose" method="post">
+            <!-- TODO: disable next button if checkNum < 3 -->
 
-            </div>
-            <div class="templatedivflex2left">
-                <form id="next_button" action="/warchoose" method="post">
-                    <!-- TODO: disable next button if checkNum < 3 -->
-
-                    <!-- This is the original code -->
-                    <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
+            <!-- This is the original code -->
+            <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
                   arrow_forward
                 </span>Next</a> -->
 
-                    <!-- This is the POST submission part -->
-                    <input type="hidden" name="u1">
-                    <input type="hidden" name="u2">
-                    <input type="hidden" name="u3">
+            <!-- This is the POST submission part -->
+            <input type="hidden" name="u1">
+            <input type="hidden" name="u2">
+            <input type="hidden" name="u3">
 
-                    <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
-                    <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
+            <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
+            <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
                         <span class="material-icons-outlined">arrow_forward</span>Next
                     </button>
+        </form>
 
-                </form>
-            </div>
+        <h2 class="templatecontentheaderleft">Choose 1 Unit</h2>
+        <p class="templatecontentpleft">Choose what units to take into war with you!</p>
+
+        <div class="templatedivflex2 menuflex">
+            <label for="10" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">ICBMs</ul>
+                <ul>{{ units["submarines"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/icbm.jpg') }}" />
+
+                <input type="checkbox" id="10" class="warcheckbox warcheckbox2 hidden" value="icbms">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="11" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Nukes</ul>
+                <ul>{{ units["cruisers"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nuke.jpg') }}" />
+
+                <input type="checkbox" id="11" class="warcheckbox warcheckbox2 hidden" value="nukes">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
         </div>
+
+        <h2 id="chosenAmountChecked2" class="templatecontentheadercenter">0 / 1 Unit</h2>
+
+        <script>
+            $(document).ready(function() {
+                $('input.warcheckbox2').on('change', function(e) {
+                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
+                        checked
+                    }) => checked).length;
+                    if (checkNum > 1) {
+                        this.checked = false;
+                        checkNum -= 1
+                    }
+                    let checkElement = document.querySelector('#chosenAmountChecked2');
+                    checkElement.innerHTML = `${checkNum} / 1 Unit`;
+                })
+            });
+        </script>
+
+
+        <form id="next_button" action="/warchoose" method="post">
+            <!-- TODO: disable next button if checkNum < 3 -->
+
+            <!-- This is the original code -->
+            <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
+                  arrow_forward
+                </span>Next</a> -->
+
+            <!-- This is the POST submission part -->
+            <input type="hidden" name="u1">
+            <input type="hidden" name="u2">
+            <input type="hidden" name="u3">
+
+            <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
+            <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
+                        <span class="material-icons-outlined">arrow_forward</span>Next
+                    </button>
+        </form>
     </div>
 </div>
 {% endblock %}
