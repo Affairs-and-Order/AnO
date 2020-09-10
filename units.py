@@ -249,6 +249,7 @@ class Units(Military):
 
         self.selected_units[unit_type] = new_unit_amount
 
+        # Save it to the database
 
     def attack_cost(self, costs):
         self.supply_costs += costs
