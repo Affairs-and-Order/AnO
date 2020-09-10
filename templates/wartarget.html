@@ -1,4 +1,4 @@
-{% extends "layout.html"%} {% block title %} Attack Choose {% endblock %} {% block body %}
+{% extends "layout.html"%} {% block title %} Attack Target {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -11,8 +11,164 @@
 
     <div class="templatedivcontent">
 
-        <h2 class="templatecontentheaderleft">Or Choose 1 Special Unit</h2>
-        <p class="templatecontentpleft">Choose what units to take into war with you!</p>
+        <h2 class="templatecontentheaderleft">Target 1 Unit</h2>
+        <p class="templatecontentpleft">Choose what units to attack!</p>
+
+        <div class="templatedivflex2 menuflex">
+            <label for="1" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Soldiers</ul>
+                <ul>{{ units["soldiers"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/soldier.jpg') }}" />
+
+                <input type="checkbox" id="1" class="warcheckbox hidden" value="soldiers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="2" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Tanks</ul>
+                <ul>{{ units["tanks"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/tank.jpg') }}" />
+
+                <input type="checkbox" id="2" class="warcheckbox hidden" value="tanks">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="3" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Artillery</ul>
+                <ul>{{ units["artillery"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/artillery.jpg') }}" />
+
+                <input type="checkbox" id="3" class="warcheckbox hidden" value="artillery">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+        </div>
+        <div class="templatedivflex2 menuflex">
+            <label for="4" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Fighter Jets</ul>
+                <ul>{{ units["fighters"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/fighterjet.jpg') }}" />
+
+                <input type="checkbox" id="4" class="warcheckbox hidden" value="fighters">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="5" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Bombers</ul>
+                <ul>{{ units["bombers"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/bomber.jpg') }}" />
+
+                <input type="checkbox" id="5" class="warcheckbox hidden" value="bombers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="6" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Apaches</ul>
+                <ul>{{ units["apaches"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/apache.jpg') }}" />
+
+                <input type="checkbox" id="6" class="warcheckbox hidden" value="apaches">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+        </div>
+        <div class="templatedivflex2 menuflex">
+            <label for="7" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Submarines</ul>
+                <ul>{{ units["submarines"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
+
+                <input type="checkbox" id="7" class="warcheckbox hidden" value="submarines">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="8" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Cruisers</ul>
+                <ul>{{ units["cruisers"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
+
+                <input type="checkbox" id="8" class="warcheckbox hidden" value="cruisers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+            <label for="9" class="templatedivflex2left unitcard">
+
+                <ul class="bold medium">Destroyers</ul>
+                <ul>{{ units["destroyers"] }}</ul>
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
+
+                <input type="checkbox" id="9" class="warcheckbox hidden" value="destroyers">
+                <span class="material-icons-outlined unitcardcheck">
+                    check_circle
+                </span>
+
+            </label>
+        </div>
+
+        <h2 id="chosenAmountChecked" class="templatecontentheadercenter">0 / 3 Units</h2>
+
+        <script>
+            $(document).ready(function() {
+                $('input.warcheckbox').on('change', function(e) {
+                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
+                        checked
+                    }) => checked).length;
+                    if (checkNum > 3) {
+                        this.checked = false;
+                        checkNum -= 1
+                    }
+                    let checkElement = document.querySelector('#chosenAmountChecked');
+                    checkElement.innerHTML = `${checkNum} / 3 Units`;
+                })
+            });
+        </script>
+
+
+        <form id="next_button" action="/warchoose" method="post">
+            <!-- TODO: disable next button if checkNum < 3 -->
+
+            <!-- This is the original code -->
+            <!-- <a id="next_button" onclick="assign_values()" class="templatedivbutton templatecenteredbutton" href="/waramount"><span class="material-icons-outlined">
+                  arrow_forward
+                </span>Next</a> -->
+
+            <!-- This is the POST submission part -->
+            <input type="hidden" name="u1">
+            <input type="hidden" name="u2">
+            <input type="hidden" name="u3">
+
+            <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
+            <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
+                        <span class="material-icons-outlined">arrow_forward</span>Next
+                    </button>
+        </form>
+
+        <h2 class="templatecontentheaderleft">Or Target 1 Special Unit</h2>
+        <p class="templatecontentpleft">Choose what special unit to attack!</p>
 
         <div class="templatedivflex2 menuflex">
             <label for="10" class="templatedivflex2left unitcard">
