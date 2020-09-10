@@ -218,7 +218,74 @@ def warTarget():
 @login_required
 @app.route("/warResult", methods=["POST"])
 def warResult():
+    # grab your units from session
+    # grab enemy target units from session
+    # grab defending enemy units from database
 
+    # multiply all your unit powers together, with bonuses if a counter is found
+    # multiply all enemy defending units together, with bonuses if a counter is found
+
+    # if your score is higher by 3x, annihilation,
+    # if your score is higher by 2x, definite victory
+    # if your score is higher, close victory,
+    # if your score is lower, close defeat, 0 damage,
+    # if your score is lower by 2x, massive defeat, 0 damage
+
+    # from annihilation (resource, field, city, depth, blockade, air):
+    # soldiers: resource control
+    # tanks: field control and city control
+    # artillery: field control
+    # destroyers: naval blockade
+    # cruisers: naval blockade
+    # submarines: depth control
+    # bombers: field control
+    # apaches: city control
+    # fighter jets: air control
+
+    # counters:
+    # soldiers beat artillery, apaches
+    # tanks beat soldiers
+    # artillery beat tanks
+    # destroyers beat submarines
+    # cruisers beat destroyers
+    # submarines beat cruisers
+    # bombers beat soldiers, tanks, destroyers, cruisers, submarines
+    # apaches beat soldiers, tanks, bombers, fighter jets
+    # fighter jets beat bombers
+
+    # resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers and 50% of their total munitions)
+    # field control: soldiers gain 2x power
+    # city control: 2x morale damage
+    # depth control: missile defenses go from 50% to 20% and nuke defenses go from  35% to 10%
+    # blockade: enemy can no longer trade
+    # air control: enemy bomber power reduced by 60%
+
+
+    # A = defendingscore / attackingscore
+    # B = attackingscore / defendingscore
+    # lose A % of all your attacking units, times a random factor between 0.8 and 1, rolled once for each unit (so 3 times)
+    # lose B % of all defending units, times a random factor between 0.75 and 1, rolled once for each unit (so 3 times)
+    # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor)
+    # if you were the defending (beginning of war) country you also lose B infra
+
+
+    # if enemy morale reaches 0:
+        # X = your remaining morale (so this is from 0 to 100)
+        # take X / 2 % of their res and cash, tax them by X % for 2 days
+        # minimum 20% loot
+    # MODIFIERS to X (war policies, war type):
+
+    # WAR POLICIES:
+    # "empire builder"--> winning gives no loot 2x reparation tax
+    # "pirate" --> winning gives 2x more loot no reparation tax
+    # "tactical" --> winning gives 1x loot 1x reparation tax
+    # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
+    # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
+
+    # WAR TYPES
+    # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+    # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
+    # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
     return render_template("warResult.html")
 
 # Endpoint for war declaration
