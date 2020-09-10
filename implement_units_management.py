@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from attack_scripts import Military
+from random import randint
 
 # Blueprint for units
 class BlueprintUnit(ABC):
@@ -11,9 +12,21 @@ class BlueprintUnit(ABC):
         - unit_type: used to identify interfaces (i.e. TankUnit, SoldierUnit) for particular units
         - bonus: used to calculate the battle advantage
         - damage: used to determine the casualties
-        - supply_cost: each unit has different supply requirements per unit
     """
 
+    damage = 0
+    bonus = 0
+
+    """
+    attack method:
+
+        Calculates the advantage or disagvantage based on the enemy unit type.
+
+        return: a tuple which contains (damage, bonus)
+
+    buy method:
+        return
+    """
     @abstractmethod
     def attack(defending_units): pass
 
@@ -23,42 +36,67 @@ class BlueprintUnit(ABC):
 class TankUnit(BlueprintUnit):
 
     unit_type = "tanks"
-    supply_cost = 40
 
-    @staticmethod
-    def attack(defending_units):
+    def __init__(self, amount):
+        self.amount = amount
 
-        # this values are in percentage
-        damage = 0
-        bonus = 0
+    def attack(self, defending_units):
 
+        # One tank beats 4 soldiers
         if 'soldiers' == defending_units:
-            damage += 2
-            bonus += 8
+            self.damage += 2
+            self.bonus += 4*self.amount
 
-        return (damage, bonus)
+        # One artillery beats 3 tanks
+        elif 'artillery' == defending_units:
+            self.bonus -= 4*self.amount
+
+        # Micro randomization
+        # One bomber beats random number of tanks (where they drop the bombs)
+        # between 2 and 6
+        elif 'bombers' == defending_units:
+            self.bonus -= randint(2, 6)*self.amount
+
+        elif 'apaches' == defending_units:
+            self.bonus -= 15
+
+        return (self.damage, self.bonus)
 
     def buy(amount): pass
 
 class SoldierUnit(BlueprintUnit):
 
     unit_type = "soldiers"
-    supply_cost = 1
 
-    @staticmethod
-    def attack(defending_units):
-        pass
+    def __init__(self, amount):
+        self.amount = amount
+
+    #
+    def attack(self, defending_units):
+        if defending_units == "artillery":
+            self.damage += 55
+            self.bonus += 5
+
+        elif defending_units == "apaches":
+            pass
+
+        return (self.damage, self.bonus)
 
     def buy(amount): pass
 
 class ArtilleryUnit(BlueprintUnit):
 
     unit_type = "artillery"
-    supply_cost = 80 
 
-    @staticmethod
-    def attack(defending_units):
-        pass
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "tanks":
+            self.damage += 100
+            self.bonus += 5
+
+        return (self.damage, self.bonus)
 
     def buy(): pass
 
@@ -79,11 +117,12 @@ class Units(Military):
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
-    def __init__(self, user_id, selected_units=None, bonuses=None):
+    def __init__(self, user_id, selected_units=None, bonuses=None, selected_units_list=None):
         self.user_id = user_id
         self.selected_units = selected_units
         self.bonuses = bonuses
         self.supply_costs = 0
+        self.selected_units_list = selected_units_list
 
     # Validate then attach units
     def attach_units(self, selected_units):
@@ -112,6 +151,7 @@ class Units(Military):
         # If the validation is ended successfully
         else:
             self.selected_units = selected_units
+            self.selected_units_list = list(selected_units.keys())
 
     # Save unit records to the database
     def save(self):
@@ -132,10 +172,25 @@ class Units(Military):
             # Call interface to unit type
             for interface in self.allUnitInterfaces:
                 if interface.unit_type == attacker_unit:
-                    attack_effects = interface.attack(target)
+
+                    # Check unit amount validity
+                    unit_amount = self.selected_units.get(attacker_unit, None)
+
+                    if unit_amount == None:
+                        return "Unit is not valid!"
+                    elif unit_amount != 0:
+                        interface_object = interface(unit_amount)
+                        attack_effects = interface_object.attack(target)
+
+                        target_percentage = enemy_unit_object.selected_units[target]/1000
+                        print("EFFECTS", attack_effects[1]*target_percentage, target, attacker_unit)
+
+                    # doesen't have any effect if unit amount is zero
+                    else:
+                        return (0, 0)
 
                     # random cost, change it
-                    self.attack_cost(777)
+                    # self.attack_cost(777)
 
                     return attack_effects
         else:
@@ -153,35 +208,51 @@ class Units(Military):
 
 # DEBUGGING
 if __name__ == "__main__":
-    import sqlite3
-    from random import uniform
 
-    defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
-    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
+    # CASE 1
+    defender = Units(1, {"artillery": 20, "tanks": 3, "soldiers": 158},  selected_units_list=["artillery", "tanks", "soldiers"])
+    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},  selected_units_list=["artillery", "tanks", "soldiers"])
 
-    # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
-    # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
+    # print(attacker.attack('soldiers', 'tanks', None))
+    # print(attacker.attack('tanks', 'soldiers', None))
+    # print(attacker.attack('tanks', 'soldiers', None))
 
-    print(defender.selected_units)
+    # l = Units(1)
+    # l.attach_units({"artillery": 0, "tanks": 0, "soldiers": 0})
+    # print(l.selected_units_list, l.selected_units)
 
-    for i in range(3):
-        print("ROUND", i)
-        random_event = uniform(0, 5)
-        size_chance = attacker.selected_units["tanks"] * 30/1000
-        unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender)[1] # tank bonus against soldiers
-        nation1_chance = random_event+size_chance*unit_type_bonuses
+    Military.fight(attacker, defender)
 
-        random_event = uniform(0, 5)
-        size_chance = defender.selected_units["soldiers"] * 30/1000
-        unit_type_bonuses = 1
-        nation2_chance = random_event+size_chance*unit_type_bonuses
-
-        print(nation1_chance)
-        print(nation2_chance)
-
-        defender_loss = int(attacker.selected_units["tanks"]*0.12)
-        defender.casualties("soldiers", defender_loss)
-
-
-    # print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
-    print(defender.selected_units)
+    # CASE 2
+    # import sqlite3
+    # from random import uniform
+    #
+    # defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
+    # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
+    #
+    # # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
+    # # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
+    #
+    # print(defender.selected_units)
+    #
+    # for i in range(3):
+    #     print("ROUND", i)
+    #     random_event = uniform(0, 5)
+    #     size_chance = attacker.selected_units["tanks"] * 30/1000
+    #     unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender)[1] # tank bonus against soldiers
+    #     nation1_chance = random_event+size_chance*unit_type_bonuses
+    #
+    #     random_event = uniform(0, 5)
+    #     size_chance = defender.selected_units["soldiers"] * 30/1000
+    #     unit_type_bonuses = 1
+    #     nation2_chance = random_event+size_chance*unit_type_bonuses
+    #
+    #     print(nation1_chance)
+    #     print(nation2_chance)
+    #
+    #     defender_loss = int(attacker.selected_units["tanks"]*0.12)
+    #     defender.casualties("soldiers", defender_loss)
+    #
+    #
+    # # print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
+    # print(defender.selected_units)
