@@ -111,7 +111,8 @@ def wars():
         connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
     if request.method == "POST":
-        session["enemy_id"] = request.form.values # depends on which enemy nation the user clicked on
+        # depends on which enemy nation the user clicked on
+        session["enemy_id"] = request.form.values
         return redirect(url_for("warChoose"))
 
 # page 0, kind of a pseudo page where you can click attack vs special
@@ -126,11 +127,13 @@ def war_with_id(war_id):
 
     if war_id.isdigit == False:
         return error(400, "War id must be an integer")
-    # defender meaning the one who got declared on
+    # defender meaning the one who got declared on. This line raises an error: TypeError: "NoneType" object is not subscriptable because the fetchone has nothing. So the [0] retrieves None. 
     defender = db.execute(
-        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: "NoneType" object is not subscriptable
+        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    #print("defender in warwithid is " + defender)
     defender_name = db.execute(
         "SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
+    print("defendername in warwithid is " + defender_name)
     # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
     attacker = db.execute(
         "SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
@@ -250,7 +253,7 @@ def warAmount():
         units_name = list(selected_units.keys())
 
         # check if its 3 regular units or 1 special unit (missile or nuke)
-        if (len(units_name) == 3): # this should happen if 3 regular units
+        if (len(units_name) == 3):  # this should happen if 3 regular units
             for number in range(1, 4):
                 unit_amount = request.form.get(f"u{number}_amount")
                 print(unit_amount)  # debugging
@@ -267,12 +270,11 @@ def warAmount():
             print(error)
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
-            return redirect("/warResult") # warTarget route is skipped
+            return redirect("/warResult")  # warTarget route is skipped
         elif (len(units_name) == 1):  # this should happen if special
             return redirect("/wartarget")
         else:  # lets just leave this here if something dumb happens, then we can fix it!
             return ("everything just broke")
-
 
 
 # this page will only show from missile or nuke attacks
@@ -305,19 +307,21 @@ def warTarget():
 @app.route("/warResult", methods=["GET"])
 def warResult():
     # grab your units from session
-    attackunits = session["attack_units"]  # this data is in the form of Units object
+    # this data is in the form of Units object
+    attackunits = session["attack_units"]
     # grab defending enemy units from database
     eId = session["enemy_id"]  # this data is in the form of an integer
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    defenseunits = db.execute("SELECT default_defense FROM nation WHERE id=(?)", (eId,))  # this data is in the form of cursor object, looking for a string
-    
-    print(attackunits.selected, "| attack units")
+    # this data is in the form of cursor object, looking for a string though
+    defenseunits = db.execute(
+        "SELECT default_defense FROM nation WHERE id=(?)", (eId,)).fetchone()[0]
+
+    print(attackunits.selected_units, "| attack units")
     print(eId, "| eId")
     print(defenseunits, "| defense units")
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
-
 
     # if your score is higher by 3x, annihilation,
     # if your score is higher by 2x, definite victory
