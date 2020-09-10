@@ -11,88 +11,82 @@
     <div class="templatedivcontent">
         <p class="templatecontentpleft">This is what mass purchasing is all about.</p>
 
-        <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left">
-                <form method="POST">
-                    <div class="infodiv">
+        <form method="POST">
+            <div class="infodiv">
 
-                        <div class="templatedivflex2 divflex2center">
-                            <div class="templatedivflex2left">
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
 
-                                <select name="resource" class="templateselect">
+                        <select name="resource" class="templateselect">
 
                     <option selected="selected">Add Amount</option>
                     <option class="templateoption">Purchase up to</option>
 
                             </select>
 
-                            </div>
-                        </div>
+                    </div>
+                </div>
 
-                        <label class="vanilla mediumsmall">Purchase Cities</label>
-                        <div class="templatedivflex2 divflex2center">
-                            <div class="templatedivflex2left">
+                <label class="vanilla mediumsmall">Purchase Cities</label>
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
 
-                                <input class="loginsignupinput" autocomplete="off" name="cityCount" placeholder="City Amount" />
+                        <input class="loginsignupinput" autocomplete="off" name="cityCount" placeholder="City Amount" />
 
-                            </div>
-                            <div class="templatedivflex2right">
+                    </div>
+                    <div class="templatedivflex2right">
 
-                                <button formaction="/buy/cityCount/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span
+                        <button formaction="/buy/cityCount/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span
                                 class="material-icons-outlined">
                                 business
                             </span>Purchase</button>
 
-                            </div>
-                        </div>
-                        <label class="vanilla mediumsmall">Purchase Land</label>
-                        <div class="templatedivflex2 divflex2center">
-                            <div class="templatedivflex2left">
+                    </div>
+                </div>
+                <label class="vanilla mediumsmall">Purchase Land</label>
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
 
-                                <input class="loginsignupinput" autocomplete="off" name="land" placeholder="Land Amount" />
+                        <input class="loginsignupinput" autocomplete="off" name="land" placeholder="Land Amount" />
 
-                            </div>
-                            <div class="templatedivflex2right">
+                    </div>
+                    <div class="templatedivflex2right">
 
-                                <button formaction="/buy/land/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span
+                        <button formaction="/buy/land/{{ pId }}" class="templatedivbutton templatecenteredbutton"><span
                                 class="material-icons-outlined">
                                 landscape
                             </span>Purchase</button>
 
-                            </div>
-                        </div>
                     </div>
-                </form>
-            </div>
-            <div class="templatedivflex2left">
-
-                <div class="templateoutertablediv">
-                    <table class="templatetable templatetable2">
-                        <tr>
-                            <th><span class="material-icons-outlined">
-                            account_balance
-                                </span>Name</th>
-                            <th><span class="material-icons-outlined">
-                            business
-                                </span>Cities</th>
-                            <th><span class="material-icons-outlined">
-                            landscape
-                                </span>Land</th>
-                        </tr>
-                        <tr>
-                            <td><span class="material-icons-outlined">
-                            account_balance
-                            </span>[[ name ]]</td>
-                            <td><span class="material-icons-outlined">
-                            business
-                            </span>[[ cities ]]</td>
-                            <td><span class="material-icons-outlined">
-                            landscape
-                            </span>[[ land ]]</td>
-                        </tr>
-                    </table>
                 </div>
             </div>
+        </form>
+
+        <div class="templateoutertablediv">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th><span class="material-icons-outlined">
+                            account_balance
+                                </span>Name</th>
+                    <th><span class="material-icons-outlined">
+                            business
+                                </span>Cities</th>
+                    <th><span class="material-icons-outlined">
+                            landscape
+                                </span>Land</th>
+                </tr>
+                <tr>
+                    <td><span class="material-icons-outlined">
+                            account_balance
+                            </span>[[ name ]]</td>
+                    <td><span class="material-icons-outlined">
+                            business
+                            </span>[[ cities ]]</td>
+                    <td><span class="material-icons-outlined">
+                            landscape
+                            </span>[[ land ]]</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>
