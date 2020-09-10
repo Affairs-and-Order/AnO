@@ -305,14 +305,14 @@ def warTarget():
 @app.route("/warResult", methods=["GET"])
 def warResult():
     # grab your units from session
-    attackunits = session["attack_units"]  # this data is in the form of idk
+    attackunits = session["attack_units"]  # this data is in the form of Units object
     # grab defending enemy units from database
-    eId = session["enemy_id"]  # this data is in the form of an integer?
+    eId = session["enemy_id"]  # this data is in the form of an integer
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    defenseunits = db.execute("SELECT default_defense FROM nation WHERE id=(?)", (eId,))  # this data is in the form of idk
+    defenseunits = db.execute("SELECT default_defense FROM nation WHERE id=(?)", (eId,))  # this data is in the form of cursor object, looking for a string
     
-    print(attackunits, "| attack units")
+    print(attackunits.selected, "| attack units")
     print(eId, "| eId")
     print(defenseunits, "| defense units")
     # multiply all your unit powers together, with bonuses if a counter is found
