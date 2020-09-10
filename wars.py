@@ -166,15 +166,15 @@ def war_with_id(war_id):
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
     cId = session["user_id"]
-    # cId = 2
 
     if request.method == "GET":
 
         # this is upon first landing on this page after the user clicks attack in wars.html
         normal_units = Military.get_military(cId)
-        # special_units = Military.get_special(cId)
+        special_units = Military.get_special(cId)
         units = normal_units.copy()
-        # units.update(special_units)
+        units.update(special_units)
+
         return render_template("warchoose.html", units=units)
 
     elif request.method == "POST":
@@ -202,7 +202,6 @@ def warChoose():
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
     cId = session["user_id"]
-    # cId = 2
 
     if request.method == "GET":
         connection = sqlite3.connect('affo/aao.db')
@@ -210,10 +209,7 @@ def warAmount():
 
         # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
-        # this is of format ['soldiers', 'tanks', 'artillery']
-        selected_units = list(attack_units.selected_units.keys())
-        print(attack_units, attack_units.selected_units, attack_units.selected_units.keys(
-        ), selected_units)  # just clarifying the data structure, comment/delete at production
+        print(attack_units, attack_units.selected_units, attack_units.selected_units_list)  # just clarifying the data structure, comment/delete at production
 
         # grab supplies amount
         # if the user is the attacker in the war
@@ -227,7 +223,7 @@ def warAmount():
         # Possible solution for SQLi: use SQL variables (SQLite doesen't support variables but maybe Postgres does)
         # get all the unit amounts
 
-        unitamounts = Military.get_particular_units_list(cId, selected_units)
+        unitamounts = Military.get_particular_units_list(cId, attack_units.selected_units_list)
         # turn this dictionary into a list of its values
         connection.commit()
         db.close()
@@ -235,15 +231,15 @@ def warAmount():
 
         # if the user comes to this page by bookmark, it might crash because session['attack_units'] wouldn't exist
 
-        return render_template("waramount.html", selected_units=selected_units, unitamounts=unitamounts)
+        return render_template("waramount.html", selected_units=attack_units.selected_units_list, unitamounts=unitamounts)
 
     elif request.method == "POST":
-        # session["unit_amounts"] = request.form.get("attack_units")
 
         # Separate object's units list from now units list
         attack_units = session["attack_units"]
-        selected_units = list(attack_units.selected_units.keys())
-        # seems this is in the form of a dictionary
+        selected_units = attack_units.selected_units_list
+
+        # this is in the form of a dictionary
         selected_units = session["attack_units"].selected_units.copy()
 
         # 3 units list
