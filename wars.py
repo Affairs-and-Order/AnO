@@ -111,7 +111,7 @@ def wars():
         connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
     if request.method == "POST":
-        session['enemy_nation'] = request.form.values # depends on which enemy nation the user clicked on
+        session['enemy_id'] = request.form.values # depends on which enemy nation the user clicked on
         return redirect(url_for('warChoose'))
 
 # page 0, kind of a pseudo page where you can click attack vs special
@@ -128,7 +128,7 @@ def war_with_id(war_id):
         return error(400, "War id must be an integer")
     # defender meaning the one who got declared on
     defender = db.execute(
-        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: 'NoneType' object is not subscriptable
     defender_name = db.execute(
         "SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
     # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
@@ -249,23 +249,30 @@ def warAmount():
         # 3 units list
         units_name = list(selected_units.keys())
 
-        for number in range(1, 4):
-            unit_amount = request.form.get(f"u{number}_amount")
-            print(unit_amount)  # debugging
+        # check if its 3 regular units or 1 special unit (missile or nuke)
+        if (len(units_name) == 3): # this should happen if 3 regular units
+            for number in range(1, 4):
+                unit_amount = request.form.get(f"u{number}_amount")
+                print(unit_amount)  # debugging
 
-            # commented out for now because the flask request doesn't appear to get the values
-            if not unit_amount:
-                flash("Invalid name argument coming in")
+                # commented out for now because the flask request doesn't appear to get the values
+                if not unit_amount:
+                    flash("Invalid name argument coming in")
 
-            #selected_units[units_name[number-1]] = int(unit_amount)
+                #selected_units[units_name[number-1]] = int(unit_amount)
 
-        # Check every time when user input comes in lest user bypass input validation
-        # Error code if any
-        error = session["attack_units"].attach_units(selected_units)
-        print(error)
+            # Check every time when user input comes in lest user bypass input validation
+            # Error code if any
+            error = session["attack_units"].attach_units(selected_units)
+            print(error)
 
-        # same note as before as to how to use this request.form.get to get the unit amounts.
-        return redirect('/wartarget')
+            # same note as before as to how to use this request.form.get to get the unit amounts.
+            return redirect('/warResult') # warTarget route is skipped
+        elif (len(units_name) == 1):  # this should happen if special
+            return redirect('/wartarget')
+        else:  # lets just leave this here if something dumb happens, then we can fix it!
+            return ("everything just broke")
+
 
 
 # this page will only show from missile or nuke attacks
@@ -298,13 +305,19 @@ def warTarget():
 @app.route("/warResult", methods=["GET"])
 def warResult():
     # grab your units from session
+    attackunits = session['attack_units']  # this data is in the form of idk
     # grab defending enemy units from database
-    attackunits = session['attack_units']
+    eId = session['enemy_id']  # this data is in the form of an integer?
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    defenseunits = db.execute("SELECT defenseunits FROM ")
+    defenseunits = db.execute("SELECT default_defense FROM nation WHERE id=(?)", (eId,))  # this data is in the form of idk
+    
+    print(attackunits)
+    print(eId)
+    print(defenseunits)
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
+
 
     # if your score is higher by 3x, annihilation,
     # if your score is higher by 2x, definite victory
