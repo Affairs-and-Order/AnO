@@ -11,4 +11,5 @@ CREATE TABLE 'military'
 'nukes' INTEGER NOT NULL DEFAULT 0,
 'destroyers' INTEGER NOT NULL DEFAULT 0,
 'cruisers' INTEGER NOT NULL DEFAULT 0,
-'submarines' INTEGER NOT NULL DEFAULT 0);
+'submarines' INTEGER NOT NULL DEFAULT 0,
+'default_defense' TEXT NOT NULL DEFAULT 'soldiers,tanks,artillery',);
