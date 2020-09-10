@@ -22,42 +22,39 @@ class Military:
     # NOTICE: in the future we could use this as an instance method unstead of static method
     @staticmethod
     def fight(attacker, defender): # dictionary in format {'unit': amount, 'unit': amount, 'unit': amount}
-        base_dict = {'soldiers': 1, 'tanks': 40, 'artillery': 80, 'bombers': 100, 'fighters': 100, 'apaches': 100, 'destroyers': 100, 'cruisers': 200, 'submarines': 100}
-        attack_score1 = attacker  
-        attack_effects_bonus = 0 #  
 
         attacker_roll = random.uniform(0, 10)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
+        attacker_bonus = 0
 
         defender_roll = random.uniform(0, 10)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
+        defender_bonus = 0
 
+        for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
 
-        for attacker_unit in attacker.selected_units_list:
+            # Unit amount chance - this way still get bonuses even if no counter unit_type
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*10/1000
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*10/1000
 
-            # 10% of unit amount counts
-            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*(10/100)
+            # Compare attacker agains defender
+            for unit in defender.selected_units_list:
+                attacker_bonus += attacker.attack(attacker_unit, unit, defender)[1]
 
-            for defender_unit in defender.selected_units_list:
+            # Compare defender against attacker
+            for unit in attacker.selected_units_list:
+                defender_bonus += defender.attack(defender_unit, unit, attacker)[1]
 
-                # we can add negative bonuses also in attack method
-                attack_effects_bonus += attacker.attack(attacker_unit, defender_unit, defender)[1]
+        attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
+        defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
 
-        for defender_unit in defender.selected_units_list:
-
-            # 10% of unit amount counts
-            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*(10/100)
-
-        print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
-        print(attacker_roll, defender_roll)
-        print(attack_effects_bonus)
-
-        attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attack_effects_bonus
-        defender_chance += defender_roll+defender_unit_amount_bonuses
-
-        print(attacker_chance, defender_chance)
+        # DEBUGGING:
+        # print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
+        # print(attacker_roll, defender_roll)
+        # print(attacker_bonus, defender_bonus)
+        # print(attacker_chance, defender_chance)
 
     # select only needed units instead of all
     @staticmethod
