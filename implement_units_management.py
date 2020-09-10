@@ -11,7 +11,7 @@ class BlueprintUnit(ABC):
         - unit_type: used to identify interfaces (i.e. TankUnit, SoldierUnit) for particular units
         - bonus: used to calculate the battle advantage
         - damage: used to determine the casualties
-        - supply_cost: each unit has different supply requirements
+        - supply_cost: each unit has different supply requirements per unit
     """
 
     @abstractmethod
@@ -23,7 +23,7 @@ class BlueprintUnit(ABC):
 class TankUnit(BlueprintUnit):
 
     unit_type = "tanks"
-    supply_cost = 0
+    supply_cost = 40
 
     @staticmethod
     def attack(defending_units):
@@ -43,7 +43,7 @@ class TankUnit(BlueprintUnit):
 class SoldierUnit(BlueprintUnit):
 
     unit_type = "soldiers"
-    supply_cost = 0
+    supply_cost = 1
 
     @staticmethod
     def attack(defending_units):
@@ -54,7 +54,7 @@ class SoldierUnit(BlueprintUnit):
 class ArtilleryUnit(BlueprintUnit):
 
     unit_type = "artillery"
-    supply_cost = 0
+    supply_cost = 80 
 
     @staticmethod
     def attack(defending_units):

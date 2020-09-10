@@ -29,6 +29,7 @@ CREATE TABLE "spyinfo" (
 	"gasoline"	TEXT NOT NULL DEFAULT 'false',
 	"ammunition"	TEXT NOT NULL DEFAULT 'false',
 	"consumer_goods"	TEXT NOT NULL DEFAULT 'false',
+	"defense" TEXT NOT NULL DEFAULT 'false',
 	"date"	INTEGER NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
