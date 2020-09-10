@@ -130,20 +130,6 @@ def war_with_id(war_id):
         # return error(400, "War id must be an integer")
     # defender meaning the one who got declared on
 
-<<<<<<< HEAD
-    if war_id.isdigit == False:
-        return error(400, "War id must be an integer")
-    # defender meaning the one who got declared on. This line raises an error: TypeError: "NoneType" object is not subscriptable because the fetchone has nothing. So the [0] retrieves None. 
-    defender = db.execute(
-        "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-    #print("defender in warwithid is " + str(defender))
-    defender_name = db.execute(
-        "SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
-    print("defendername in warwithid is " + defender_name)
-    # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
-    attacker = db.execute(
-        "SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-=======
     # print(war_id)
     # print(db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
 
@@ -152,7 +138,6 @@ def war_with_id(war_id):
 
     # # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
     attacker = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
->>>>>>> e1a33a34ef1f32a919698c0d20278d4abdf54bc4
     attacker_name = db.execute(
         "SELECT username FROM users WHERE id=(?)", (attacker,)).fetchone()[0]
 
@@ -328,13 +313,6 @@ def warResult():
     eId = session["enemy_id"]  # this data is in the form of an integer
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-<<<<<<< HEAD
-    defenseunits = db.execute("SELECT default_defense FROM nation WHERE id=(?)", (eId,))  # this data is in the form of idk
-
-    print(attackunits)
-    print(eId)
-    print(defenseunits)
-=======
     # this data is in the form of cursor object, looking for a string though
     defenseunits = db.execute(
         "SELECT default_defense FROM nation WHERE nation_id=(?)", (eId,)).fetchone()  #[0] # this doesnt work because there are no nations in nation right now
@@ -342,7 +320,6 @@ def warResult():
     print(attackunits.selected_units, "| attack units")
     print(eId, "| eId")
     print(defenseunits, "| defense units")
->>>>>>> 7692e5dffb0b2106ecd344d304c77e27afcf440b
     # multiply all your unit powers together, with bonuses if a counter is found
     # multiply all enemy defending units together, with bonuses if a counter is found
 
