@@ -91,9 +91,13 @@ def wars():
         for tuple in attackingIds:
             for item in tuple:
                 attackingIdsLst.append(item)
-
+        print(userIdsLst, 'user')
+        print(defendingIdsLst, "def")
+        print(attackingIdsLst, "att")
+        # if an id inside the defender's list is not in the user list
         for id in defendingIdsLst:
             if id not in userIdsLst:
+                # delete the war with the the nonexistent user inside
                 db.execute(
                     "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
         for id in attackingIdsLst:
