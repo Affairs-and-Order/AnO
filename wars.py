@@ -130,7 +130,7 @@ def war_with_id(war_id):
     # defender meaning the one who got declared on. This line raises an error: TypeError: "NoneType" object is not subscriptable because the fetchone has nothing. So the [0] retrieves None. 
     defender = db.execute(
         "SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-    #print("defender in warwithid is " + defender)
+    #print("defender in warwithid is " + str(defender))
     defender_name = db.execute(
         "SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
     print("defendername in warwithid is " + defender_name)
@@ -314,7 +314,7 @@ def warResult():
     db = connection.cursor()
     # this data is in the form of cursor object, looking for a string though
     defenseunits = db.execute(
-        "SELECT default_defense FROM nation WHERE id=(?)", (eId,)).fetchone() #[0]
+        "SELECT default_defense FROM nation WHERE nation_id=(?)", (eId,)).fetchone()  #[0] # this doesnt work because there are no nations in nation right now
 
     print(attackunits.selected_units, "| attack units")
     print(eId, "| eId")
