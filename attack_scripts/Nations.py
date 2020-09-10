@@ -33,8 +33,11 @@ class Military:
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
 
-
         for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
+
+            # Unit amount chance - this way still get bonuses even if no counter unit_type
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*10/1000
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*10/1000
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
@@ -44,14 +47,14 @@ class Military:
             for unit in attacker.selected_units_list:
                 defender_bonus += defender.attack(defender_unit, unit, attacker)[1]
 
-        print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
-        print(attacker_roll, defender_roll)
-        print(attacker_bonus, defender_bonus)
-
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
 
-        print(attacker_chance, defender_chance)
+        # DEBUGGING:
+        # print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
+        # print(attacker_roll, defender_roll)
+        # print(attacker_bonus, defender_bonus)
+        # print(attacker_chance, defender_chance)
 
     # select only needed units instead of all
     @staticmethod
