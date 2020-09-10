@@ -21,9 +21,10 @@ class Military:
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
     @staticmethod
-    def fight(attacker, defender):
-
-        attack_effects_bonus = 0
+    def fight(attacker, defender): # dictionary in format {'unit': amount, 'unit': amount, 'unit': amount}
+        base_dict = {'soldiers': 1, 'tanks': 40, 'artillery': 80, 'bombers': 100, 'fighters': 100, 'apaches': 100, 'destroyers': 100, 'cruisers': 200, 'submarines': 100}
+        attack_score1 = attacker  
+        attack_effects_bonus = 0 #  
 
         attacker_roll = random.uniform(0, 10)
         attacker_chance = 0
