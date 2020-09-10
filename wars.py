@@ -309,14 +309,21 @@ def warResult():
     eId = session["enemy_id"]  # this data is in the form of an integer
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    # this data is in the form of cursor object, looking for a string though
-    defenseunits = db.execute(
-        "SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0] # this is in the form of... what
+    defensestring = db.execute(
+        "SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
-    print(attackunits.selected_units, "| attack units")
-    print(eId, "| eId")
-    print(defenseunits, "| defense units")
+    # dev: making sure these values are correct
+    print(attackunits.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
+    print(eId, "| eId") # 10 | eId
+    print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
+
+    defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
+    defenseunits = {}
+    for unit in defenselst:
+        defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
+
     # multiply all your unit powers together, with bonuses if a counter is found
+
     # multiply all enemy defending units together, with bonuses if a counter is found
 
     # if your score is higher by 3x, annihilation,
