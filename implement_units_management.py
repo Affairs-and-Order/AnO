@@ -47,20 +47,20 @@ class TankUnit(BlueprintUnit):
             self.damage += 2
             self.bonus += 4*self.amount
 
-        # One artillery beats 3 tanks
-        elif 'artillery' == defending_units:
-            self.bonus -= 4*self.amount
+        # # One artillery beats 3 tanks
+        # elif 'artillery' == defending_units:
+        #     self.bonus -= 4*self.amount
+        #
+        # # Micro randomization
+        # # One bomber beats random number of tanks (where they drop the bombs)
+        # # between 2 and 6
+        # elif 'bombers' == defending_units:
+        #     self.bonus -= randint(2, 6)*self.amount
+        #
+        # elif 'apaches' == defending_units:
+        #     self.bonus -= 15
 
-        # Micro randomization
-        # One bomber beats random number of tanks (where they drop the bombs)
-        # between 2 and 6
-        elif 'bombers' == defending_units:
-            self.bonus -= randint(2, 6)*self.amount
-
-        elif 'apaches' == defending_units:
-            self.bonus -= 15
-
-        return (self.damage, self.bonus)
+        return [self.damage, self.bonus]
 
     def buy(amount): pass
 
@@ -80,7 +80,7 @@ class SoldierUnit(BlueprintUnit):
         elif defending_units == "apaches":
             pass
 
-        return (self.damage, self.bonus)
+        return [self.damage, self.bonus]
 
     def buy(amount): pass
 
@@ -92,11 +92,12 @@ class ArtilleryUnit(BlueprintUnit):
         self.amount = amount
 
     def attack(self, defending_units):
-        if defending_units == "tanks":
-            self.damage += 100
-            self.bonus += 5
 
-        return (self.damage, self.bonus)
+        # One artillery beats 3 tanks
+        if defending_units == "tanks":
+            self.bonus += 3*self.amount
+
+        return [self.damage, self.bonus]
 
     def buy(): pass
 
@@ -166,7 +167,7 @@ class Units(Military):
         connection.close()
 
     # Attack with all units contained in selected_units
-    def attack(self, attacker_unit, target, enemy_unit_object):
+    def attack(self, attacker_unit, target, enemy_object):
         if self.selected_units:
 
             # Call interface to unit type
@@ -179,20 +180,35 @@ class Units(Military):
                     if unit_amount == None:
                         return "Unit is not valid!"
                     elif unit_amount != 0:
+
                         interface_object = interface(unit_amount)
                         attack_effects = interface_object.attack(target)
 
-                        target_percentage = enemy_unit_object.selected_units[target]/1000
-                        print("EFFECTS", attack_effects[1]*target_percentage, target, attacker_unit)
+                        # Calculate bonuses:
+                        # Calculate the percentage of total units will be affected
+                        defending_unit_amount = enemy_object.selected_units[target]
+
+                        # sum of units amount
+                        enemy_units_total_amount = sum(enemy_object.selected_units.values())
+
+                        # the affected percentage from sum of units
+                        unit_of_army = (defending_unit_amount*100)/enemy_units_total_amount
+
+                        # the bonus calculated based on affected percentage
+                        affected_bonus = attack_effects[1]*(unit_of_army/100)
+
+                        # Store at original attack_effects
+                        # divide affected_bonus to make bonus effect less relevant
+                        attack_effects[1] = affected_bonus/100
+
+                        # DEBUGGING:
+                        # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
 
                     # doesen't have any effect if unit amount is zero
                     else:
                         return (0, 0)
 
-                    # random cost, change it
-                    # self.attack_cost(777)
-
-                    return attack_effects
+                    return tuple(attack_effects)
         else:
             return "Units are not attached!"
 
@@ -210,8 +226,8 @@ class Units(Military):
 if __name__ == "__main__":
 
     # CASE 1
-    defender = Units(1, {"artillery": 20, "tanks": 3, "soldiers": 158},  selected_units_list=["artillery", "tanks", "soldiers"])
     attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},  selected_units_list=["artillery", "tanks", "soldiers"])
+    defender = Units(1, {"artillery": 20, "tanks": 3, "soldiers": 158},  selected_units_list=["artillery", "tanks", "soldiers"])
 
     # print(attacker.attack('soldiers', 'tanks', None))
     # print(attacker.attack('tanks', 'soldiers', None))
