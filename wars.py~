@@ -377,7 +377,7 @@ def declare_war():
 
     # Selects the country that the user is attacking
     defender = request.form.get("defender")
-    war_message = request.form.get("description")
+    war_message = request.form.get("description") # war message
     war_type = request.form.get("warType")
 
     try:
