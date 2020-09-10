@@ -45,7 +45,7 @@ def wars():
         units = normal_units.copy()
         units.update(special_units)
 
-        # obtain the user"s country from sql table
+        # obtain the user's country from sql table
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
@@ -91,9 +91,13 @@ def wars():
         for tuple in attackingIds:
             for item in tuple:
                 attackingIdsLst.append(item)
-
+        print(userIdsLst, 'user')
+        print(defendingIdsLst, "def")
+        print(attackingIdsLst, "att")
+        # if an id inside the defender's list is not in the user list
         for id in defendingIdsLst:
             if id not in userIdsLst:
+                # delete the war with the the nonexistent user inside
                 db.execute(
                     "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
         for id in attackingIdsLst:
@@ -102,18 +106,16 @@ def wars():
                     "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
         connection.commit()
 
-        # WHAT DOES THIS DO??? -- Steven
-        # Selects how many wars the user is in -- t0dd
-        # got it :D
         warsCount = db.execute(
             "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
         db.close()
         connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
+        ''' # the post method literally never activates in wars
     if request.method == "POST":
         # depends on which enemy nation the user clicked on
         session["enemy_id"] = request.form.values
-        return redirect(url_for("warChoose"))
+        return redirect(url_for("warChoose"))'''
 
 # page 0, kind of a pseudo page where you can click attack vs special
 # @login_required
@@ -123,8 +125,7 @@ def war_with_id(war_id):
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
-    # cId = session["user_id"]
-    cId = 2
+    cId = session["user_id"]
 
     # defender meaning the one who got declared on
     defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: 'NoneType' object is not subscriptable
@@ -308,14 +309,21 @@ def warResult():
     eId = session["enemy_id"]  # this data is in the form of an integer
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    # this data is in the form of cursor object, looking for a string though
-    defenseunits = db.execute(
-        "SELECT default_defense FROM nation WHERE nation_id=(?)", (eId,)).fetchone()  #[0] # this doesnt work because there are no nations in nation right now
+    defensestring = db.execute(
+        "SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
-    print(attackunits.selected_units, "| attack units")
-    print(eId, "| eId")
-    print(defenseunits, "| defense units")
+    # dev: making sure these values are correct
+    print(attackunits.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
+    print(eId, "| eId") # 10 | eId
+    print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
+
+    defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
+    defenseunits = {}
+    for unit in defenselst:
+        defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
+
     # multiply all your unit powers together, with bonuses if a counter is found
+
     # multiply all enemy defending units together, with bonuses if a counter is found
 
     # if your score is higher by 3x, annihilation,
