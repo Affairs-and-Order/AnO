@@ -242,11 +242,13 @@ class Units(Military):
             return "Units are not attached!"
 
     def casualties(self, unit_type, amount):
-        new_unit_amount = self.selected_units[unit_type]-amount
+        new_unit_amount = int(self.selected_units[unit_type]-amount)
+
         if new_unit_amount < 0:
             new_unit_amount = 0
 
         self.selected_units[unit_type] = new_unit_amount
+
 
     def attack_cost(self, costs):
         self.supply_costs += costs
@@ -259,6 +261,10 @@ if __name__ == "__main__":
     defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},  selected_units_list=["submarines", "apaches", "soldiers"])
 
     Military.fight(attacker, defender)
+
+    print("AFTER CASULTIES")
+    print(attacker.selected_units)
+    print(defender.selected_units)
 
     # CASE 2
     # import sqlite3

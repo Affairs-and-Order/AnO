@@ -53,15 +53,21 @@ class Military:
         # Determine the winner
         if defender_chance >= attacker_chance:
             winner = defender
+            loser = attacker
             win_type = defender_chance//attacker_chance
+            winner_casulties = attacker_chance//defender_chance
 
         else:
             winner = attacker
+            loser = defender
             win_type = attacker_chance//defender_chance
+            winner_casulties = defender_chance//attacker_chance
+
+        # Effects based on win_type (idk: destroy buildings or something)
+        # loser_casulties = win_type so win_type also is the loser's casulties
 
         # annihilation
-        if win_type >= 3:
-            winner
+        if win_type >= 3: pass
 
         # definite victory
         elif win_type >= 2: pass
@@ -69,7 +75,13 @@ class Military:
         # close victory
         else: pass
 
+        for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
+            winner.casualties(winner_unit, winner_casulties*random.uniform(0.8, 1))
+            loser.casualties(loser_unit, win_type*random.uniform(0.8, 1))
+
         # DEBUGGING:
+        # print("WINNER IS:", winner.user_id)
+        # print(winner_casulties, win_type)
         # print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
         # print(attacker_roll, defender_roll)
         # print(attacker_bonus, defender_bonus)
