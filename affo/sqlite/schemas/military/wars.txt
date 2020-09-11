@@ -5,8 +5,6 @@ CREATE TABLE 'wars'
 'war_type' TEXT NOT NULL,
 'agressor_message' VARCHAR(240) NOT NULL,
 -- start_date is a float in seconds
-'start_date' REAL NOT NULL);
-
-INSERT INTO wars VALUES (3, 10, 11, "pirate", "argh", 1000);
-
-DELETE wars;
+'start_date' REAL NOT NULL,
+'attacker_supplies' INTEGER,
+'defender_supplies' INTEGER);
