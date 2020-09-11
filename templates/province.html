@@ -296,52 +296,6 @@
         </div>
         <div class="menudiv">
 
-            <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
-
-            <div class="templatedivflex2 menuflex">
-                <div class="templatedivflex2left">
-
-                    <h3 class="templatecontentheadercenter">You have {{ nuclear_reactors }} Nuclear Reactors</h3>
-
-                    <p class="templatecontentpleft"></p>
-
-                    <ul>Nuclear reactors cost <b>700</b>Each</ul>
-                    <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                    <div class="purchasemilitarydiv">
-                        <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount" />
-
-                        <div class="templatedivflex2 divflex2center">
-                            <div class="templatedivflex2left flexchildvanilla">
-
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
-                                add_circle_outline
-                            </span>Buy</button>
-
-                            </div>
-                            <div class="templatedivflex2left flexchildvanilla">
-
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
-                                remove_circle_outline
-                            </span>Sell</button>
-
-                            </div>
-                        </div>
-                        <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
-                    </div>
-
-                </div>
-                </form>
-                <div class="templatedivflex2left">
-
-
-
-                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nuclearreactor.jpg') }}" />
-                </div>
-            </div>
-        </div>
-        <div class="menudiv">
-
             <h2 class="templatecontentheaderleft">Solar Fields</h2>
 
             <div class="templatedivflex2 menuflex">
@@ -381,6 +335,68 @@
                 <div class="templatedivflex2left">
 
                     <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
+                </div>
+            </div>
+        </div>
+        <div class="menudiv">
+
+            <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
+
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
+
+                    <h3 class="templatecontentheadercenter">You have {{ nuclear_reactors }} Nuclear Reactors</h3>
+
+                    <p class="templatecontentpleft"></p>
+
+                    <ul>Nuclear reactors cost <b>700</b>Each</ul>
+                    <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+
+                    <div class="purchasemilitarydiv">
+                        <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount" />
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton nuclearreactordisabledbutton" formaction="/buy/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
+                                add_circle_outline
+                            </span>Buy</button>
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton nuclearreactordisabledbutton" formaction="/sell/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
+                                remove_circle_outline
+                            </span>Sell</button>
+
+                            </div>
+                        </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
+                                add_circle_outline
+                            </span>Buy</button>
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/nuclear_reactors/{{ pId }}"><span class="material-icons-outlined">
+                                remove_circle_outline
+                            </span>Sell</button>
+
+                            </div>
+                        </div>
+                        <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
+                    </div>
+
+                </div>
+                </form>
+                <div class="templatedivflex2left">
+
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nuclearreactor.jpg') }}" />
                 </div>
             </div>
         </div>
