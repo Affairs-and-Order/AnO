@@ -395,6 +395,8 @@ def warResult():
     # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
     # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
     # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+    
+
     return render_template("warResult.html")
 # Endpoint for war declaration
 
