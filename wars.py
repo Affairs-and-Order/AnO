@@ -190,7 +190,7 @@ def warChoose():
         attack_units = Units(cId)
 
         # Output error if any
-        error = attack_units.attach_units(selected_units)
+        error = attack_units.attach_units(selected_units, 3)
 
         # cache Unit object reference in session
         session["attack_units"] = attack_units
@@ -262,7 +262,7 @@ def warAmount():
 
             # Check every time when user input comes in lest user bypass input validation
             # Error code if any
-            error = session["attack_units"].attach_units(selected_units)
+            error = session["attack_units"].attach_units(selected_units, 3)
             print(error)
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
@@ -306,7 +306,7 @@ def warTarget():
 #         for defunit, defamount in defenseunits.items():
 #             if attunit == "soldiers" and defunit == "tanks":
 #                 attamount = attamount * 0.4
-#             if attunit == "soldiers" and 
+#             if attunit == "soldiers" and
 
 
 @login_required
@@ -395,7 +395,7 @@ def warResult():
     # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
     # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
     # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-    
+
 
     return render_template("warResult.html")
 # Endpoint for war declaration

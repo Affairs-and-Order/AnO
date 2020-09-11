@@ -22,7 +22,7 @@ class Military:
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
     @staticmethod
-    def fight(attacker, defender): # dictionary in format {'unit': amount, 'unit': amount, 'unit': amount}
+    def fight(attacker, defender):
 
         # Calculate bonuses for regular units based on how many units affected
         def calculate_bonuses(attack_effects, enemy_object, target):

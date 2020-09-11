@@ -288,7 +288,7 @@ class Units(Military):
 
     Description of properties:
         - user_id: represents which user the units belongs to, type: integer
-        - selected_units: represents the unit_type and unit_amount, type: dictionary
+        - selected_units: represents the unit_type and unit_amount, type: dictionary; example: {"unit_name1": unit_amount1}
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
@@ -297,10 +297,18 @@ class Units(Military):
         self.selected_units = selected_units
         self.bonuses = bonuses
         self.supply_costs = 0
+
+        # selected_units_list is needed at: Nations.py/Military->fight();
+        # a list of selected_units keys
         self.selected_units_list = selected_units_list
 
     # Validate then attach units
-    def attach_units(self, selected_units):
+    # Function parameter description:
+    #    - selected_units read the Units class document above
+    #    - units_count how many selected_units should be given (will be validated)
+    #        example: units_count = 3 when 3 different unit_type should be selected (like from warchoose)
+    #        example: units_count = 1 when 1 unit_type sould be selected (like a special unit: nuke, icmb)
+    def attach_units(self, selected_units, units_count):
         unit_types = list(selected_units.keys())
         normal_units = self.get_military(self.user_id)
         special_units = self.get_special(self.user_id)
@@ -309,7 +317,7 @@ class Units(Military):
         available_units.update(special_units)
 
         try:
-            units_count = 3
+            # units_count = 3
             while units_count:
                 current_unit = unit_types[units_count-1]
                 if current_unit not in self.allUnits:
@@ -383,8 +391,11 @@ class Units(Military):
 # DEBUGGING
 if __name__ == "__main__":
 
-    l = Units(1, {"nukes": 1})
-    l.attack("nukes", "soldiers")
+    # l = Units(1, {"nukes": 1})
+    l = Units(11)
+    l.attach_units({"nukes": 1}, 1)
+    print(l.attack("nukes", "submarines"))
+
 
     # CASE 1
     # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
