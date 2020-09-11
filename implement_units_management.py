@@ -33,6 +33,27 @@ class BlueprintUnit(ABC):
     @abstractmethod
     def buy(amount): pass
 
+
+class SoldierUnit(BlueprintUnit):
+
+    unit_type = "soldiers"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "artillery":
+            # self.damage += 55
+            self.bonus += 3*(self.amount/1.5)
+
+        elif defending_units == "apaches":
+            self.bonus += 2*(self.amount/2)
+
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
+
+
 class TankUnit(BlueprintUnit):
 
     unit_type = "tanks"
@@ -47,42 +68,16 @@ class TankUnit(BlueprintUnit):
             self.damage += 2
             self.bonus += 4*self.amount
 
-        # # One artillery beats 3 tanks
-        # elif 'artillery' == defending_units:
-        #     self.bonus -= 4*self.amount
-        #
-        # # Micro randomization
-        # # One bomber beats random number of tanks (where they drop the bombs)
-        # # between 2 and 6
-        # elif 'bombers' == defending_units:
-        #     self.bonus -= randint(2, 6)*self.amount
-        #
-        # elif 'apaches' == defending_units:
-        #     self.bonus -= 15
+        # Micro randomization
+        # One bomber beats random number of tanks (where they drop the bombs)
+        # between 2 and 6
+        elif 'bombers' == defending_units:
+            self.bonus -= randint(2, 6)*self.amount
 
         return [self.damage, self.bonus]
 
     def buy(amount): pass
 
-class SoldierUnit(BlueprintUnit):
-
-    unit_type = "soldiers"
-
-    def __init__(self, amount):
-        self.amount = amount
-
-    #
-    def attack(self, defending_units):
-        if defending_units == "artillery":
-            self.damage += 55
-            self.bonus += 5
-
-        elif defending_units == "apaches":
-            pass
-
-        return [self.damage, self.bonus]
-
-    def buy(amount): pass
 
 class ArtilleryUnit(BlueprintUnit):
 
@@ -97,6 +92,105 @@ class ArtilleryUnit(BlueprintUnit):
         if defending_units == "tanks":
             self.bonus += 3*self.amount
 
+        return [self.damage, self.bonus]
+
+    def buy(): pass
+
+
+class BomberUnit(BlueprintUnit):
+
+    unit_type = "bombers"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "tanks":
+            # self.damage += 55
+            self.bonus += 3*(self.amount/1.5)
+
+        elif defending_units == "fighters":
+            self.bonus += 2*(self.amount/2)
+
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
+
+
+class FighterUnit(BlueprintUnit):
+
+    unit_type = "fighters"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "bombers":
+            # self.damage += 55
+            self.bonus += 3*(self.amount/1.5)
+
+        elif defending_units == "apaches":
+            self.bonus += 2*(self.amount/2)
+
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
+
+
+class ApacheUnit(BlueprintUnit):
+
+    unit_type = "apaches"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        return [self.damage, self.bonus]
+
+    def buy(): pass
+
+
+class CruiserUnit(BlueprintUnit):
+
+    unit_type = "soldiers"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "artillery":
+            # self.damage += 55
+            self.bonus += 3*(self.amount/1.5)
+
+        elif defending_units == "apaches":
+            self.bonus += 2*(self.amount/2)
+
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
+
+
+class SubmarineUnit(BlueprintUnit):
+
+    unit_type = "submarines"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        return [self.damage, self.bonus]
+
+    def buy(): pass
+
+
+class DestroyerUnit(BlueprintUnit):
+
+    unit_type = "destroyers"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
         return [self.damage, self.bonus]
 
     def buy(): pass
