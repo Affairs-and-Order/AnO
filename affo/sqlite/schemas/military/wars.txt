@@ -6,5 +6,5 @@ CREATE TABLE 'wars'
 'agressor_message' VARCHAR(240) NOT NULL,
 -- start_date is a float in seconds
 'start_date' REAL NOT NULL,
-'attacker_supplies' INTEGER,
-'defender_supplies' INTEGER);
+'attacker_supplies' INTEGER DEFAULT 200,
+'defender_supplies' INTEGER DEFAULT 200);
