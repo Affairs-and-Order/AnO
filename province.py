@@ -166,11 +166,21 @@ def province_sell_buy(way, units, province_id):
         max_4 = [
             "gas_stations", "general_stores", "farmers_markets", "malls",
             "banks", "city_parks", "hospitals"
-        ]
+        ]    
+
+        gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+        wantedUnits = int(request.form.get(units))
+
+        if units == "cityCount":
+            current_cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
+            multiplier = 1 + ((0.10 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
+            cityCount_price = int(1000 * multiplier) # Each city costs 1000 without the multiplier
+        else:
+            cityCount_price = 0
 
         unit_prices = {
             "land": 100,
-            "cityCount": 500,
+            "cityCount": cityCount_price,
 
             "oil_burners": 350,
             "hydro_dams": 450,
@@ -199,9 +209,6 @@ def province_sell_buy(way, units, province_id):
             table = "proInfra"
 
         price = unit_prices[f"{units}"]
-        gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
-        wantedUnits = int(request.form.get(units))
-
         curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
         totalPrice = int(wantedUnits * price)
         currentUnits = int(db.execute(curUnStat, (province_id,)).fetchone()[0])
