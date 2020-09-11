@@ -134,7 +134,7 @@
         <script>
             $(document).ready(function() {
                 $('input.warcheckbox').on('change', function(e) {
-                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
+                    let checkNum = Array.from(document.querySelectorAll('.warcheckbox')).filter(({
                         checked
                     }) => checked).length;
                     if (checkNum > 3) {
@@ -177,7 +177,7 @@
                 <ul>{{ units["icbms"] }}</ul>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/icbm.jpg') }}" />
 
-                <input type="checkbox" id="10" class="warcheckbox warcheckbox2 hidden" value="icbms">
+                <input type="checkbox" id="10" class="warcheckbox2 hidden" value="icbms">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -189,7 +189,7 @@
                 <ul>{{ units["nukes"] }}</ul>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nuke.jpg') }}" />
 
-                <input type="checkbox" id="11" class="warcheckbox warcheckbox2 hidden" value="nukes">
+                <input type="checkbox" id="11" class="warcheckbox2 hidden" value="nukes">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -202,7 +202,7 @@
         <script>
             $(document).ready(function() {
                 $('input.warcheckbox2').on('change', function(e) {
-                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
+                    let checkNum = Array.from(document.querySelectorAll('.warcheckbox2')).filter(({
                         checked
                     }) => checked).length;
                     if (checkNum > 1) {
