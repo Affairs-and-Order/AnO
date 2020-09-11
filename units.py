@@ -3,6 +3,8 @@ from attack_scripts import Military
 from random import randint
 
 # Blueprint for units
+
+
 class BlueprintUnit(ABC):
 
     """
@@ -33,29 +35,6 @@ class BlueprintUnit(ABC):
     @abstractmethod
     def buy(amount): pass
 
-class TankUnit(BlueprintUnit):
-
-    unit_type = "tanks"
-
-    def __init__(self, amount):
-        self.amount = amount
-
-    def attack(self, defending_units):
-
-        # One tank beats 4 soldiers
-        if 'soldiers' == defending_units:
-            self.damage += 2
-            self.bonus += 4*self.amount
-
-        # Micro randomization
-        # One bomber beats random number of tanks (where they drop the bombs)
-        # between 2 and 6
-        # elif 'bombers' == defending_units:
-            # self.bonus -= randint(2, 6)*self.amount
-
-        return [self.damage, self.bonus]
-
-    def buy(amount): pass
 
 class SoldierUnit(BlueprintUnit):
 
@@ -67,14 +46,44 @@ class SoldierUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "artillery":
             # self.damage += 55
-            self.bonus += 3*(self.amount/1.5)
+            self.bonus += 3 * self.amount
+        if defending_units == "apaches":
+            self.bonus += 2 * self.amount
+        if defending_units == "tanks":
+            self.bonus -= 2 * self.amount
+        if defending_units == "bombers":
+            self.bonus -= 2 * self.amount
+        return [self.damage, self.bonus]
 
-        elif defending_units == "apaches":
-            self.bonus += 2*(self.amount/2)
+    def buy(amount): pass
+
+
+class TankUnit(BlueprintUnit):
+
+    unit_type = "tanks"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+
+        # One tank beats 4 soldiers (if one tank beat only 4 soldiers then soldiers really counter tanks because 1 tank costs the same as ~50 soldiers.)
+        # One tank becomes 4x more effectiveness vs soldiers.
+        if defending_units == 'soldiers':
+            self.damage += 2
+            self.bonus += 4 * self.amount
+        if defending_units == "artillery":
+            self.bonus -= 3 * self.amount
+        # Micro randomization
+        # One bomber beats random number of tanks (where they drop the bombs)
+        # between 2 and 6
+        if 'bombers' == defending_units:
+            self.bonus -= randint(2, 6)*self.amount
 
         return [self.damage, self.bonus]
 
     def buy(amount): pass
+
 
 class ArtilleryUnit(BlueprintUnit):
 
@@ -87,23 +96,61 @@ class ArtilleryUnit(BlueprintUnit):
 
         # One artillery beats 3 tanks
         if defending_units == "tanks":
-            self.bonus += 3*self.amount
+            self.bonus += 2 * self.amount
+        if defending_units == "soldiers":
+            self.bonus -= 2 * self.amount
 
         return [self.damage, self.bonus]
 
     def buy(): pass
 
-class SubmarineUnit(BlueprintUnit):
 
-    unit_type = "submarines"
+class BomberUnit(BlueprintUnit):
+
+    unit_type = "bombers"
 
     def __init__(self, amount):
         self.amount = amount
 
     def attack(self, defending_units):
+        if defending_units == "soldiers":
+            self.bonus += 2 * self.amount
+        if defending_units == "tanks":
+            self.bonus += 2 * self.amount
+        if defending_units == "destroyers":
+            self.bonus += 2 * self.amount
+        if defending_units == "submarines":
+            self.bonus += 2 * self.amount
+        if defending_units == "fighters":
+            self.bonus -= 2 * self.amount
+        if defending_units == "apaches":
+            self.bonus -= 2 * self.amount
+
         return [self.damage, self.bonus]
 
-    def buy(): pass
+    def buy(amount): pass
+
+
+class FighterUnit(BlueprintUnit):
+
+    unit_type = "fighters"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "bombers":
+            # self.damage += 55
+            self.bonus += 4 * self.amount
+        if defending_units == "cruisers":
+            self.bonus -= 2 * self.amount
+        if defending_units == "apaches":
+            self.bonus -= 1 * self.amount
+
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
+
 
 class ApacheUnit(BlueprintUnit):
 
@@ -113,9 +160,18 @@ class ApacheUnit(BlueprintUnit):
         self.amount = amount
 
     def attack(self, defending_units):
+        if defending_units == "soldiers":
+            self.bonus += 1 * self.amount
+        if defending_units == "tanks":
+            self.bonus += 1 * self.amount
+        if defending_units == "bombers":
+            self.bonus += 2 * self.amount
+        if defending_units == "fighter":
+            self.bonus += 2 * self.amount
         return [self.damage, self.bonus]
 
     def buy(): pass
+
 
 class DestroyerUnit(BlueprintUnit):
 
@@ -125,17 +181,107 @@ class DestroyerUnit(BlueprintUnit):
         self.amount = amount
 
     def attack(self, defending_units):
+        if defending_units == "submarines":
+            self.bonus += 1.6 * self.amount
+        if defending_units == "bombers":
+            self.bonus -= 1.5 * self.amount
+        if defending_units == "cruisers":
+            self.bonus -= 0.4 * self.amount
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
+
+
+class CruiserUnit(BlueprintUnit):
+
+    unit_type = "soldiers"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "destroyers":
+            self.bonus += 0.3 * self.amount
+        if defending_units == "fighters":
+            self.bonus += 0.1 * self.amount
+        if defending_units == "apaches":
+            self.bonus += 0.4 * self.amount
+        if defending_units == "submarines":
+            self.bonus -= 3 * self.amount
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
+
+
+class SubmarineUnit(BlueprintUnit):
+
+    unit_type = "submarines"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "cruisers":
+            self.bonus += 0.2 * self.amount
+        if defending_units == "destroyers":
+            self.bonus -= 0.4 * self.amount
+        if defending_units == "bombers":
+            self.bonus -= 4 * self.amount
         return [self.damage, self.bonus]
 
     def buy(): pass
 
+
+class IcbmUnit(BlueprintUnit):
+
+    unit_type = "icbm"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "submarines":
+            self.bonus -= 5 * self.amount
+        return [self.damage, self.bonus]
+
+    def buy(): pass
+
+
+class NukeUnit(BlueprintUnit):
+
+    unit_type = "nukes"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        if defending_units == "submarines":
+            self.bonus -= 5 * self.amount
+        return [self.damage, self.bonus]
+
+    def buy(): pass
+
+
+# does not have attack method, their functionality is coded separately in intelligence.py
+class SpyUnit(BlueprintUnit):
+
+    unit_type = "spies"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def buy(): pass
+
+
 class Units(Military):
 
     allUnits = ["soldiers", "tanks", "artillery",
-                "flying_fortresses", "fighter_jets", "apaches"
+                "bombers", "fighters", "apaches"
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
-    allUnitInterfaces = [SoldierUnit, TankUnit, ArtilleryUnit, ApacheUnit, DestroyerUnit, SubmarineUnit]
+    # spyunit not included because it has no interactions with other units, so it doesnt need to run inside the Units.attack method.
+    allUnitInterfaces = [SoldierUnit, TankUnit, ArtilleryUnit, BomberUnit, FighterUnit,
+                         ApacheUnit, DestroyerUnit, CruiserUnit, SubmarineUnit, IcbmUnit, NukeUnit]
 
     """
     When you want the data to be validated call object.attach_units(selected_units)
@@ -218,10 +364,12 @@ class Units(Military):
                         defending_unit_amount = enemy_object.selected_units[target]
 
                         # sum of units amount
-                        enemy_units_total_amount = sum(enemy_object.selected_units.values())
+                        enemy_units_total_amount = sum(
+                            enemy_object.selected_units.values())
 
                         # the affected percentage from sum of units
-                        unit_of_army = (defending_unit_amount*100)/enemy_units_total_amount
+                        unit_of_army = (defending_unit_amount *
+                                        100)/enemy_units_total_amount
 
                         # the bonus calculated based on affected percentage
                         affected_bonus = attack_effects[1]*(unit_of_army/100)
@@ -254,16 +402,19 @@ class Units(Military):
     def attack_cost(self, costs):
         self.supply_costs += costs
 
+
 # DEBUGGING
 if __name__ == "__main__":
 
     # CASE 1
-    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},  selected_units_list=["artillery", "tanks", "soldiers"])
-    defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},  selected_units_list=["submarines", "apaches", "soldiers"])
+    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
+                     selected_units_list=["artillery", "tanks", "soldiers"])
+    defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},
+                     selected_units_list=["submarines", "apaches", "soldiers"])
 
     Military.fight(attacker, defender)
 
-    print("AFTER CASULTIES")
+    print("AFTER CASUALTIES")
     print(attacker.selected_units)
     print(defender.selected_units)
 

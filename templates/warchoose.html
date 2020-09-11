@@ -134,7 +134,7 @@
         <script>
             $(document).ready(function() {
                 $('input.warcheckbox').on('change', function(e) {
-                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
+                    let checkNum = Array.from(document.querySelectorAll('.warcheckbox')).filter(({
                         checked
                     }) => checked).length;
                     if (checkNum > 3) {
@@ -163,12 +163,12 @@
 
             <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
             <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
-                        <span class="material-icons-outlined">arrow_forward</span>Choose number of units
+                        <span class="material-icons-outlined">arrow_forward</span>Next
                     </button>
         </form>
 
         <h2 class="templatecontentheaderleft">Or Choose 1 Special Unit</h2>
-        <p class="templatecontentpleft">Choose what units to take into war with you!</p>
+        <p class="templatecontentpleft">Choose what unit to take into war with you!</p>
 
         <div class="templatedivflex2 menuflex">
             <label for="10" class="templatedivflex2left unitcard">
@@ -177,7 +177,7 @@
                 <ul>{{ units["icbms"] }}</ul>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/icbm.jpg') }}" />
 
-                <input type="checkbox" id="10" class="warcheckbox warcheckbox2 hidden" value="icbms">
+                <input type="checkbox" id="10" class="warcheckbox2 hidden" value="icbms">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -189,7 +189,7 @@
                 <ul>{{ units["nukes"] }}</ul>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nuke.jpg') }}" />
 
-                <input type="checkbox" id="11" class="warcheckbox warcheckbox2 hidden" value="nukes">
+                <input type="checkbox" id="11" class="warcheckbox2 hidden" value="nukes">
                 <span class="material-icons-outlined unitcardcheck">
                     check_circle
                 </span>
@@ -202,7 +202,7 @@
         <script>
             $(document).ready(function() {
                 $('input.warcheckbox2').on('change', function(e) {
-                    let checkNum = Array.from(document.querySelectorAll('input[type=checkbox]')).filter(({
+                    let checkNum = Array.from(document.querySelectorAll('.warcheckbox2')).filter(({
                         checked
                     }) => checked).length;
                     if (checkNum > 1) {
@@ -231,7 +231,7 @@
 
             <!-- NOTICE: I did in this way (used js to submit form instead of type="submit") because i don't want to mess up the design, maybe change it -->
             <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
-                        <span class="material-icons-outlined">arrow_forward</span>Choose number of explosives
+                        <span class="material-icons-outlined">arrow_forward</span>Next
                     </button>
         </form>
     </div>

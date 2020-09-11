@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from attack_scripts import Military
 from random import randint
 
+# keeping this just for memory purposes?
+
 # Blueprint for units
 class BlueprintUnit(ABC):
 

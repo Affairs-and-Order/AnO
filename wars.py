@@ -299,6 +299,16 @@ def warTarget():
 # page 4 results
 # infra damage, building damage
 # giant loot, coalition loot, reparation tax set if morale reaches 0
+
+# def fight(attackunits, defenseunits):
+#     score = 0
+#     for attunit, attamount in attackunits.items():
+#         for defunit, defamount in defenseunits.items():
+#             if attunit == "soldiers" and defunit == "tanks":
+#                 attamount = attamount * 0.4
+#             if attunit == "soldiers" and 
+
+
 @login_required
 @app.route("/warResult", methods=["GET"])
 def warResult():
@@ -343,16 +353,16 @@ def warResult():
     # apaches: city control
     # fighter jets: air control
 
-    # counters:
-    # soldiers beat artillery, apaches
-    # tanks beat soldiers
-    # artillery beat tanks
-    # destroyers beat submarines
-    # cruisers beat destroyers
-    # submarines beat cruisers
-    # bombers beat soldiers, tanks, destroyers, cruisers, submarines
-    # apaches beat soldiers, tanks, bombers, fighter jets
-    # fighter jets beat bombers
+    # counters | countered by
+    # soldiers beat artillery, apaches | tanks, bombers
+    # tanks beat soldiers | artilllery, bombers
+    # artillery beat tanks | soldiers
+    # destroyers beat submarines | cruisers, bombers
+    # cruisers beat destroyers, fighters, apaches | submarines
+    # submarines beat cruisers | destroyers, bombers
+    # bombers beat soldiers, tanks, destroyers, submarines | fighters, apaches
+    # apaches beat soldiers, tanks, bombers, fighters | soldiers
+    # fighters beat bombers | apaches, cruisers
 
     # resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers and 50% of their total munitions)
     # field control: soldiers gain 2x power
@@ -385,6 +395,8 @@ def warResult():
     # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
     # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
     # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+    
+
     return render_template("warResult.html")
 # Endpoint for war declaration
 
