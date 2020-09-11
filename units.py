@@ -237,11 +237,12 @@ class SpyUnit(BlueprintUnit):
 class Units(Military):
 
     allUnits = ["soldiers", "tanks", "artillery",
-                "flying_fortresses", "fighter_jets", "apaches"
+                "bombers", "fighters", "apaches"
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
-    allUnitInterfaces = [SoldierUnit, TankUnit,
-                         ArtilleryUnit, ApacheUnit, DestroyerUnit, SubmarineUnit]
+    # spyunit not included because it has no interactions with other units, so it doesnt need to run inside the Units.attack method.
+    allUnitInterfaces = [SoldierUnit, TankUnit, ArtilleryUnit, BomberUnit, FighterUnit,
+                         ApacheUnit, DestroyerUnit, CruiserUnit, SubmarineUnit, IcbmUnit, NukeUnit]
 
     """
     When you want the data to be validated call object.attach_units(selected_units)
