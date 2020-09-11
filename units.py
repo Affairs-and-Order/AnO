@@ -131,7 +131,7 @@ class FighterUnit(BlueprintUnit):
             # self.damage += 55
             self.bonus += 3*(self.amount/1.5)
 
-        elif defending_units == "apaches":
+        elif defending_units == "fighters":
             self.bonus += 2*(self.amount/2)
 
         return [self.damage, self.bonus]
@@ -150,6 +150,19 @@ class ApacheUnit(BlueprintUnit):
         return [self.damage, self.bonus]
 
     def buy(): pass
+
+
+class DestroyerUnit(BlueprintUnit):
+
+    unit_type = "destroyers"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        return [self.damage, self.bonus]
+
+    def buy(amount): pass
 
 
 class CruiserUnit(BlueprintUnit):
@@ -185,10 +198,21 @@ class SubmarineUnit(BlueprintUnit):
     def buy(): pass
 
 
+class IcbmUnit(BlueprintUnit):
 
-class DestroyerUnit(BlueprintUnit):
+    unit_type = "icbm"
 
-    unit_type = "destroyers"
+    def __init__(self, amount):
+        self.amount = amount
+
+    def attack(self, defending_units):
+        return [self.damage, self.bonus]
+
+    def buy(): pass
+
+class NukeUnit(BlueprintUnit):
+
+    unit_type = "nukes"
 
     def __init__(self, amount):
         self.amount = amount
@@ -199,14 +223,25 @@ class DestroyerUnit(BlueprintUnit):
     def buy(): pass
 
 
+class SpyUnit(BlueprintUnit):  # does not have attack method, their functionality is coded separately in intelligence.py
+
+    unit_type = "spies"
+
+    def __init__(self, amount):
+        self.amount = amount
+
+    def buy(): pass
+
+
 class Units(Military):
 
     allUnits = ["soldiers", "tanks", "artillery",
-                "flying_fortresses", "fighter_jets", "apaches"
+                "bombers", "fighters", "apaches"
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
-    allUnitInterfaces = [SoldierUnit, TankUnit,
-                         ArtilleryUnit, ApacheUnit, DestroyerUnit, SubmarineUnit]
+    # spyunit not included because it has no interactions with other units, so it doesnt need to run inside the Units.attack method.
+    allUnitInterfaces = [SoldierUnit, TankUnit, ArtilleryUnit, BomberUnit, FighterUnit,
+                         ApacheUnit, DestroyerUnit, CruiserUnit, SubmarineUnit, IcbmUnit, NukeUnit]
 
     """
     When you want the data to be validated call object.attach_units(selected_units)
