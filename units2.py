@@ -3,6 +3,8 @@ from attack_scripts import Military
 from random import randint
 
 # Blueprint for units
+
+
 class BlueprintUnit(ABC):
 
     """
