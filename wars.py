@@ -358,11 +358,11 @@ def warResult():
     # tanks beat soldiers | artilllery, bombers
     # artillery beat tanks | soldiers
     # destroyers beat submarines | cruisers, bombers
-    # cruisers beat destroyers, jets, apaches | submarines
+    # cruisers beat destroyers, fighters, apaches | submarines
     # submarines beat cruisers | destroyers, bombers
-    # bombers beat soldiers, tanks, destroyers, cruisers, submarines | fighters
+    # bombers beat soldiers, tanks, destroyers, submarines | fighters, apaches
     # apaches beat soldiers, tanks, bombers, fighters | soldiers
-    # fighters beat bombers | apaches
+    # fighters beat bombers | apaches, cruisers
 
     # resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers and 50% of their total munitions)
     # field control: soldiers gain 2x power
