@@ -24,6 +24,30 @@ class Military:
     @staticmethod
     def fight(attacker, defender): # dictionary in format {'unit': amount, 'unit': amount, 'unit': amount}
 
+        # Calculate bonuses for regular units based on how many units affected
+        def calculate_bonuses(attack_effects, enemy_object, target):
+
+            # Calculate the percentage of total units will be affected
+            defending_unit_amount = enemy_object.selected_units[target]
+
+            # sum of units amount
+            enemy_units_total_amount = sum(enemy_object.selected_units.values())
+
+            # the affected percentage from sum of units
+            unit_of_army = (defending_unit_amount*100)/enemy_units_total_amount
+
+            # the bonus calculated based on affected percentage
+            affected_bonus = attack_effects[1]*(unit_of_army/100)
+
+            # divide affected_bonus to make bonus effect less relevant
+            attack_effects = affected_bonus/100
+
+            # DEBUGGING:
+            # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
+
+            return attack_effects
+
+
         attacker_roll = random.uniform(0, 10)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
@@ -42,11 +66,11 @@ class Military:
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
-                attacker_bonus += attacker.attack(attacker_unit, unit, defender)[1]
+                attacker_bonus += calculate_bonuses(attacker.attack(attacker_unit, unit), defender, unit)
 
             # Compare defender against attacker
             for unit in attacker.selected_units_list:
-                defender_bonus += defender.attack(defender_unit, unit, attacker)[1]
+                defender_bonus += calculate_bonuses(defender.attack(defender_unit, unit), attacker, unit)
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
