@@ -48,34 +48,22 @@
 
         <h2 class="templatecontentheadercenter">[[ countryName ]]'s known Resources</h2>
 
-        <div class="templateoutertablediv">
-            <table class="templatetable templatetable2">
-                <tr>
-                    <th>Army</th>
-                    <th>Air Force</th>
-                    <th>Navy</th>
-                    <th>Special</th>
-                </tr>
-                <tr>
-                    <td>{{ units["soldiers"] }} Soldiers</td>
-                    <td>{{ units["fighters"] }} Fighter Jets</td>
-                    <td>{{ units["submarines"] }} Submarines</td>
-                    <td>{{ units["spies"] }} Spies</td>
-                </tr>
-                <tr>
-                    <td>{{ units["artillery"] }} Artillery</td>
-                    <td>{{ units["bombers"] }} Bombers</td>
-                    <td>{{ units["cruisers"] }} Cruisers</td>
-                    <td>{{ units["icbms"] }} ICBMs</td>
-                </tr>
-                <tr>
-                    <td>{{ units["tanks"] }} Tanks</td>
-                    <td>{{ units["apaches"] }} Apaches</td>
-                    <td>{{ units["destroyers"] }} Destroyers</td>
-                    <td>{{ units["nukes"] }} Nukes</td>
-                </tr>
-            </table>
-        </div>
+        <table class="templatetable">
+            <tr>
+                <th>Raw</th>
+            </tr>
+            <tr>
+                <td>{{ units["soldiers"] }} Soldiers</td>
+                <td>{{ units["fighters"] }} Fighter Jets</td>
+            </tr>
+            <tr>
+                <th>Processed</th>
+            </tr>
+            <tr>
+                <td>{{ units["soldiers"] }} Soldiers</td>
+                <td>{{ units["fighters"] }} Fighter Jets</td>
+            </tr>
+        </table>
 
     </div>
 </div>
