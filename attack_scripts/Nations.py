@@ -42,11 +42,11 @@ class Military:
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
-                attacker_bonus += attacker.attack(attacker_unit, unit, defender)[1]
+                attacker_bonus += calculate_bonuses(attacker.attack(attacker_unit, unit), defender, unit)
 
             # Compare defender against attacker
             for unit in attacker.selected_units_list:
-                defender_bonus += defender.attack(defender_unit, unit, attacker)[1]
+                defender_bonus += calculate_bonuses(defender.attack(defender_unit, unit), attacker, unit)
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus

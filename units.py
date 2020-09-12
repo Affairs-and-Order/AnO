@@ -288,7 +288,7 @@ class Units(Military):
 
     Description of properties:
         - user_id: represents which user the units belongs to, type: integer
-        - selected_units: represents the unit_type and unit_amount, type: dictionary
+        - selected_units: represents the unit_type and unit_amount, type: dictionary; example: {"unit_name1": unit_amount1}
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
@@ -297,10 +297,18 @@ class Units(Military):
         self.selected_units = selected_units
         self.bonuses = bonuses
         self.supply_costs = 0
+
+        # selected_units_list is needed at: Nations.py/Military->fight();
+        # a list of selected_units keys
         self.selected_units_list = selected_units_list
 
     # Validate then attach units
-    def attach_units(self, selected_units): # selected units is dictionary of  3 units
+    # Function parameter description:
+    #    - selected_units read the Units class document above
+    #    - units_count how many selected_units should be given (will be validated)
+    #        example: units_count = 3 when 3 different unit_type should be selected (like from warchoose)
+    #        example: units_count = 1 when 1 unit_type sould be selected (like a special unit: nuke, icmb)
+    def attach_units(self, selected_units, units_count):
         unit_types = list(selected_units.keys())
         normal_units = self.get_military(self.user_id)
         special_units = self.get_special(self.user_id)
@@ -309,7 +317,7 @@ class Units(Military):
         available_units.update(special_units)
 
         try:
-            units_count = 3
+            # units_count = 3
             while units_count:
                 current_unit = unit_types[units_count-1]
                 if current_unit not in self.allUnits:
@@ -341,7 +349,7 @@ class Units(Military):
         connection.close()
 
     # Attack with all units contained in selected_units
-    def attack(self, attacker_unit, target, enemy_object):
+    def attack(self, attacker_unit, target):
         if self.selected_units:
 
             # Call interface to unit type
@@ -355,31 +363,8 @@ class Units(Military):
                         return "Unit is not valid!"
 
                     elif unit_amount != 0:
-
                         interface_object = interface(unit_amount)
                         attack_effects = interface_object.attack(target)
-
-                        # Calculate bonuses:
-                        # Calculate the percentage of total units will be affected
-                        defending_unit_amount = enemy_object.selected_units[target]
-
-                        # sum of units amount
-                        enemy_units_total_amount = sum(
-                            enemy_object.selected_units.values())
-
-                        # the affected percentage from sum of units
-                        unit_of_army = (defending_unit_amount *
-                                        100)/enemy_units_total_amount
-
-                        # the bonus calculated based on affected percentage
-                        affected_bonus = attack_effects[1]*(unit_of_army/100)
-
-                        # Store at original attack_effects
-                        # divide affected_bonus to make bonus effect less relevant
-                        attack_effects[1] = affected_bonus/100
-
-                        # DEBUGGING:
-                        # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
 
                     # doesen't have any effect if unit amount is zero
                     else:
@@ -406,17 +391,23 @@ class Units(Military):
 # DEBUGGING
 if __name__ == "__main__":
 
+    # l = Units(1, {"nukes": 1})
+    l = Units(11)
+    l.attach_units({"nukes": 1}, 1)
+    print(l.attack("nukes", "submarines"))
+
+
     # CASE 1
-    attacker = Units(2, {"artillery": 1000, "tanks": 1000, "soldiers": 1000},
-                     selected_units_list=["artillery", "tanks", "soldiers"])
-    defender = Units(1, {"submarines": 1000, "apaches": 1000, "soldiers": 1000},
-                     selected_units_list=["submarines", "apaches", "soldiers"])
-
-    Military.fight(attacker, defender)
-
-    print("AFTER CASUALTIES")
-    print(attacker.selected_units)
-    print(defender.selected_units)
+    # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
+    #                  selected_units_list=["artillery", "tanks", "soldiers"])
+    # defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},
+    #                  selected_units_list=["submarines", "apaches", "soldiers"])
+    #
+    # Military.fight(attacker, defender)
+    #
+    # print("AFTER CASUALTIES")
+    # print(attacker.selected_units)
+    # print(defender.selected_units)
 
     # CASE 2
     # import sqlite3

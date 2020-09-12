@@ -134,6 +134,35 @@ def createprovince():
         price = int(50000 * multiplier)
         return render_template("createprovince.html", price=price)
 
+def get_used_slots(pId): # pId = province id
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 3
+    hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 6
+    nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 12
+    solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 3
+
+    gas_stations = db.execute("SELECT gas_stations FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    general_stores = db.execute("SELECT general_stores FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    farmers_markets = db.execute("SELECT farmers_markets FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    malls = db.execute("SELECT malls FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    banks = db.execute("SELECT banks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+
+    city_parks = db.execute("SELECT city_parks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    hospitals = db.execute("SELECT hospitals FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    libraries = db.execute("SELECT libraries FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    universities = db.execute("SELECT universities FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    monorails = db.execute("SELECT monorails FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+
+    infra_list = [oil_burners, hydro_dams, nuclear_reactors, solar_fields,
+    gas_stations, general_stores, farmers_markets, malls, banks,
+    city_parks, hospitals, libraries, universities, monorails]
+
+    total_slots = sum(infra_list)
+
+    return total_slots
 
 @login_required
 @app.route("/<way>/<units>/<province_id>", methods=["POST"])
@@ -166,11 +195,21 @@ def province_sell_buy(way, units, province_id):
         max_4 = [
             "gas_stations", "general_stores", "farmers_markets", "malls",
             "banks", "city_parks", "hospitals"
-        ]
+        ]    
+
+        gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+        wantedUnits = int(request.form.get(units))
+
+        if units == "cityCount":
+            current_cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
+            multiplier = 1 + ((0.10 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
+            cityCount_price = int(1000 * multiplier) # Each city costs 1000 without the multiplier
+        else:
+            cityCount_price = 0
 
         unit_prices = {
             "land": 100,
-            "cityCount": 500,
+            "cityCount": cityCount_price,
 
             "oil_burners": 350,
             "hydro_dams": 450,
@@ -199,12 +238,14 @@ def province_sell_buy(way, units, province_id):
             table = "proInfra"
 
         price = unit_prices[f"{units}"]
-        gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
-        wantedUnits = int(request.form.get(units))
-
         curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
         totalPrice = int(wantedUnits * price)
         currentUnits = int(db.execute(curUnStat, (province_id,)).fetchone()[0])
+
+        total_infra_slots = current_cityCount * 3
+        used_slots = get_used_slots(province_id)
+        free_infra_slots = used_slots - total_infra_slots
+        print(free_infra_slots)
 
         if way == "sell":
 
