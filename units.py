@@ -300,7 +300,7 @@ class Units(Military):
         self.selected_units_list = selected_units_list
 
     # Validate then attach units
-    def attach_units(self, selected_units):
+    def attach_units(self, selected_units): # selected units is dictionary of  3 units
         unit_types = list(selected_units.keys())
         normal_units = self.get_military(self.user_id)
         special_units = self.get_special(self.user_id)
@@ -407,9 +407,9 @@ class Units(Military):
 if __name__ == "__main__":
 
     # CASE 1
-    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
+    attacker = Units(2, {"artillery": 1000, "tanks": 1000, "soldiers": 1000},
                      selected_units_list=["artillery", "tanks", "soldiers"])
-    defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},
+    defender = Units(1, {"submarines": 1000, "apaches": 1000, "soldiers": 1000},
                      selected_units_list=["submarines", "apaches", "soldiers"])
 
     Military.fight(attacker, defender)

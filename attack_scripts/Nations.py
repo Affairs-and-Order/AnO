@@ -22,14 +22,14 @@ class Military:
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
     @staticmethod
-    def fight(attacker, defender): # dictionary in format {'unit': amount, 'unit': amount, 'unit': amount}
+    def fight(attacker, defender): # each arg is Units object, defined in units.py, allUnits list, allUnitInterfaces list, attach_units function, save function, attack function, casualties function, attack_cost function
 
-        attacker_roll = random.uniform(0, 10)
+        attacker_roll = random.uniform(0.95, 1.05)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
         attacker_bonus = 0
 
-        defender_roll = random.uniform(0, 10)
+        defender_roll = random.uniform(0.95, 1.05)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
@@ -37,8 +37,8 @@ class Military:
         for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
 
             # Unit amount chance - this way still get bonuses even if no counter unit_type
-            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*10/1000
-            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*10/1000
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]/100 # is dict
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]/100
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
