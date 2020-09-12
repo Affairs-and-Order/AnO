@@ -331,8 +331,8 @@ def warResult():
     # multiply all enemy defending units together, with bonuses if a counter is found
     # something something Units, Nations, Military
     
-    # how do units fight. ummmmm call the fight method somewhere lets find it
-    # units.attachunits does what? Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
+    # how do units fight: call the fight method somewhere lets find it
+    # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
 
     # if your score is higher by 3x, annihilation,
