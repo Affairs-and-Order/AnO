@@ -29,6 +29,7 @@ from military import military, military_sell_buy
 from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
 from discord import update_discord
+from intelligence import intelligence
 
 #basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()

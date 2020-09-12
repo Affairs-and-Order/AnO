@@ -42,7 +42,9 @@ class Military:
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
-                attacker_bonus += calculate_bonuses(attacker.attack(attacker_unit, unit), defender, unit)
+                attacker_bonus += calculate_bonuses(attacker.attack (attacker_unit, unit), defender, unit) 
+                # used to be += attacker.attack(attacker_unit, unit, defender)[1]
+
 
             # Compare defender against attacker
             for unit in attacker.selected_units_list:
@@ -233,8 +235,9 @@ class Economy:
                    (resource, originalUser, self.nationID))
         db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
                    (resource, destinationUser, destinationID))
-
+        
         connection.commit()
+
 
 
 class Nation:
@@ -275,7 +278,8 @@ class Nation:
         pass
 
     def get_provinces(self):
-
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
         if self.provinces == None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
             provinces_number = self.db.execute(
