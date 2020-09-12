@@ -139,10 +139,10 @@ def get_used_slots(pId): # pId = province id
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
-    oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 3
-    hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 6
-    nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 12
-    solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0] * 3
+    oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
 
     gas_stations = db.execute("SELECT gas_stations FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
     general_stores = db.execute("SELECT general_stores FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
@@ -242,9 +242,9 @@ def province_sell_buy(way, units, province_id):
         totalPrice = int(wantedUnits * price)
         currentUnits = int(db.execute(curUnStat, (province_id,)).fetchone()[0])
 
-        total_infra_slots = current_cityCount * 3
+        total_infra_slots = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0] 
         used_slots = get_used_slots(province_id)
-        free_infra_slots = used_slots - total_infra_slots
+        free_infra_slots = total_infra_slots - used_slots
         print(free_infra_slots)
 
         if way == "sell":
