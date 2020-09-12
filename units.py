@@ -39,7 +39,8 @@ class BlueprintUnit(ABC):
 class SoldierUnit(BlueprintUnit):
 
     unit_type = "soldiers"
-    self.damage = 1
+    damage = 1
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -61,7 +62,8 @@ class SoldierUnit(BlueprintUnit):
 class TankUnit(BlueprintUnit):
 
     unit_type = "tanks"
-    self.damage=40
+    damage = 40
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -88,7 +90,8 @@ class TankUnit(BlueprintUnit):
 class ArtilleryUnit(BlueprintUnit):
 
     unit_type = "artillery"
-    self.damage = 80
+    damage = 80
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -108,7 +111,8 @@ class ArtilleryUnit(BlueprintUnit):
 class BomberUnit(BlueprintUnit):
 
     unit_type = "bombers"
-    self.damage = 100
+    damage = 100
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -134,7 +138,8 @@ class BomberUnit(BlueprintUnit):
 class FighterUnit(BlueprintUnit):
 
     unit_type = "fighters"
-    self.damage = 100
+    damage = 100
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -155,7 +160,8 @@ class FighterUnit(BlueprintUnit):
 class ApacheUnit(BlueprintUnit):
 
     unit_type = "apaches"
-    self.damage = 100
+    damage = 100
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -176,7 +182,8 @@ class ApacheUnit(BlueprintUnit):
 class DestroyerUnit(BlueprintUnit):
 
     unit_type = "destroyers"
-    self.damage = 100
+    damage = 100
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -195,7 +202,8 @@ class DestroyerUnit(BlueprintUnit):
 class CruiserUnit(BlueprintUnit):
 
     unit_type = "soldiers"
-    self.damage = 200
+    damage = 200
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -216,7 +224,8 @@ class CruiserUnit(BlueprintUnit):
 class SubmarineUnit(BlueprintUnit):
 
     unit_type = "submarines"
-    self.damage = 100
+    damage = 100
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -235,7 +244,8 @@ class SubmarineUnit(BlueprintUnit):
 class IcbmUnit(BlueprintUnit):
 
     unit_type = "icbm"
-    self.damage = 1000
+    damage = 1000
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -250,7 +260,8 @@ class IcbmUnit(BlueprintUnit):
 class NukeUnit(BlueprintUnit):
 
     unit_type = "nukes"
-    self.damage = 8000
+    damage = 8000
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -266,7 +277,8 @@ class NukeUnit(BlueprintUnit):
 class SpyUnit(BlueprintUnit):
 
     unit_type = "spies"
-    self.damage = 0 # does not attack anyway
+    damage = 0  # does not attack anyway
+
     def __init__(self, amount):
         self.amount = amount
 
@@ -395,7 +407,6 @@ if __name__ == "__main__":
     l = Units(11)
     l.attach_units({"nukes": 1}, 1)
     print(l.attack("nukes", "submarines"))
-
 
     # CASE 1
     # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
