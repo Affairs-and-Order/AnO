@@ -1465,16 +1465,17 @@
             
             .notificationdiv {
                 margin: auto;
-                width: fit-content;
+                max-width: 20%;
+                flex-wrap: wrap;
             }
             
             .notificationdiv div {
                 margin: 0 10px;
                 padding: 0;
+                width: fit-content;
             }
             
             .notificationdiv ul {
-                width: max-content;
                 background: #363945;
                 color: #ffffff;
                 box-shadow: 0 0 20px 0 rgba(58, 59, 69, .55);
@@ -1482,10 +1483,9 @@
                 margin: 6px 0 !important;
                 font-size-adjust: 16px;
                 justify-self: end;
-                height: min-content;
-                margin: auto;
-                margin-right: -50%;
+                height: fit-content;
                 border-left: 3px solid #00a7e1;
+                text-align: left;
             }
             
             .templatedivflex2 {
