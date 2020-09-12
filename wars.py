@@ -111,11 +111,7 @@ def wars():
         db.close()
         connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
-        ''' # the post method literally never activates in wars
-    if request.method == "POST":
-        # depends on which enemy nation the user clicked on
-        session["enemy_id"] = request.form.values
-        return redirect(url_for("warChoose"))'''
+
 
 # page 0, kind of a pseudo page where you can click attack vs special
 # @login_required
@@ -273,8 +269,7 @@ def warAmount():
             return ("everything just broke")
 
 
-# this page will only show from missile or nuke attacks
-# SKIP THIS ROUTE FOR REGULAR ATTACKS
+# This route is only for ICMB or nuke attacks
 @login_required
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
@@ -290,7 +285,6 @@ def warTarget():
         print(revealed_info)
         # cycle through revealed_info. if a value is true, and it"s a unit, add it to the units dictionary
         units = {}
-        flash("testing in wartarget get")
         return render_template("wartarget.html", units=units)
     if request.method == "POST":
         session["targeted_units"] = request.form.get("targeted_units")
@@ -335,6 +329,11 @@ def warResult():
     # multiply all your unit powers together, with bonuses if a counter is found
 
     # multiply all enemy defending units together, with bonuses if a counter is found
+    # something something Units, Nations, Military
+    
+    # how do units fight. ummmmm call the fight method somewhere lets find it
+    # units.attachunits does what? Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
+
 
     # if your score is higher by 3x, annihilation,
     # if your score is higher by 2x, definite victory
