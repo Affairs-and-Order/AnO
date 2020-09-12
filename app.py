@@ -29,6 +29,7 @@ from military import military, military_sell_buy
 from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
 from discord import update_discord
+from intelligence import intelligence
 
 #basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -340,6 +341,10 @@ def warresult():
 @app.route("/mass_purchase", methods=["GET"])
 def mass_purchase():
     return render_template("mass_purchase.html")
+
+@app.route("/upgrades", methods=["GET"])
+def upgrades():
+    return render_template("upgrades.html")
 
 # available to run if double click the file
 if __name__ == "__main__":

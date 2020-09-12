@@ -22,38 +22,14 @@ class Military:
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
     @staticmethod
-    def fight(attacker, defender):
+    def fight(attacker, defender): # each arg is Units object, defined in units.py, allUnits list, allUnitInterfaces list, attach_units function, save function, attack function, casualties function, attack_cost function
 
-        # Calculate bonuses for regular units based on how many units affected
-        def calculate_bonuses(attack_effects, enemy_object, target):
-
-            # Calculate the percentage of total units will be affected
-            defending_unit_amount = enemy_object.selected_units[target]
-
-            # sum of units amount
-            enemy_units_total_amount = sum(enemy_object.selected_units.values())
-
-            # the affected percentage from sum of units
-            unit_of_army = (defending_unit_amount*100)/enemy_units_total_amount
-
-            # the bonus calculated based on affected percentage
-            affected_bonus = attack_effects[1]*(unit_of_army/100)
-
-            # divide affected_bonus to make bonus effect less relevant
-            attack_effects = affected_bonus/100
-
-            # DEBUGGING:
-            # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
-
-            return attack_effects
-
-
-        attacker_roll = random.uniform(0, 10)
+        attacker_roll = random.uniform(0.95, 1.05)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
         attacker_bonus = 0
 
-        defender_roll = random.uniform(0, 10)
+        defender_roll = random.uniform(0.95, 1.05)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
@@ -61,12 +37,14 @@ class Military:
         for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
 
             # Unit amount chance - this way still get bonuses even if no counter unit_type
-            defender_unit_amount_bonuses += defender.selected_units[defender_unit]*10/1000
-            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]*10/1000
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]/100 # is dict
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]/100
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
-                attacker_bonus += calculate_bonuses(attacker.attack(attacker_unit, unit), defender, unit)
+                attacker_bonus += calculate_bonuses(attacker.attack (attacker_unit, unit), defender, unit) 
+                # used to be += attacker.attack(attacker_unit, unit, defender)[1]
+
 
             # Compare defender against attacker
             for unit in attacker.selected_units_list:
@@ -257,8 +235,9 @@ class Economy:
                    (resource, originalUser, self.nationID))
         db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
                    (resource, destinationUser, destinationID))
-
+        
         connection.commit()
+
 
 
 class Nation:
@@ -299,7 +278,8 @@ class Nation:
         pass
 
     def get_provinces(self):
-
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
         if self.provinces == None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
             provinces_number = self.db.execute(
