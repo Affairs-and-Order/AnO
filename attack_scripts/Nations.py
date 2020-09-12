@@ -175,10 +175,10 @@ class Military:
         }
 
     # Check and set default_defense in nation table
-    def set_defense(self, defender_units):
+    def set_defense(self, defense_string):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-
+        defense_list = defense_string.split(",")
         if len(defense_units) == 3:
 
             # default_defense is stored in the db: 'unit1,unit2,unit3'
@@ -187,7 +187,8 @@ class Military:
             db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
             connection.commit()
         else:
-            return "Invalid number of units selected!"
+            # user should never reach here, msg for beta testers
+            return "Invalid number of units given to set_defense, report to admin"
 
 class Economy:
     # TODO: expand this to cover all resources
