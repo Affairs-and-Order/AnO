@@ -7,4 +7,5 @@ CREATE TABLE 'wars'
 -- start_date is a float in seconds
 'start_date' REAL NOT NULL,
 'attacker_supplies' INTEGER DEFAULT 200,
-'defender_supplies' INTEGER DEFAULT 200);
+'defender_supplies' INTEGER DEFAULT 200,
+'last_visited' REAL NOT NULL);

@@ -119,11 +119,11 @@
                                     </span>Purchase</button>
 
                             </div>
-                    </form>
                     </div>
                 </div>
             </div>
         </div>
+    </form>
         <div class="templatedivflex2 menuflex2">
             <div class="templatedivflex2left" id="provincecity" onclick="provincecity()">
 
@@ -237,7 +237,6 @@
                                 </div>
 
                             </div>
-        </form>
         <div class="templatedivflex2left">
 
 
@@ -284,7 +283,6 @@
                     </div>
 
                 </div>
-                </form>
                 <div class="templatedivflex2left">
 
 
@@ -331,7 +329,6 @@
                     </div>
 
                 </div>
-                </form>
                 <div class="templatedivflex2left">
 
                     <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
@@ -390,8 +387,7 @@
                         <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
                     </div>
 
-                </div>
-                </form>
+                </div
                 <div class="templatedivflex2left">
 
 
@@ -441,7 +437,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -488,7 +483,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -535,7 +529,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -581,7 +574,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -627,7 +619,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -677,7 +668,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -724,7 +714,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -771,7 +760,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -817,7 +805,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -863,7 +850,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -900,27 +886,27 @@
                     </tr>
                     <!--FOR CARSON - make these tds links in the future (using IDs)-->
                     <tr>
-                        <td>1 Army Bases</td>
+                        <td>{{ army_bases }} Army Bases</td>
                         <td>1 Farms</td>
                         <td>1 Component Factories</td>
                     </tr>
                     <tr>
-                        <td>1 Aerodomes</td>
+                        <td>{{ aerodomes }} Aerodomes</td>
                         <td>1 [[ raw #1]]</td>
                         <td>1 Steel Mills</td>
                     </tr>
                     <tr>
-                        <td>1 Harbours</td>
+                        <td>{{ harbours }} Harbours</td>
                         <td>1 [[ raw #2]]</td>
                         <td>1 Ammunition Factories</td>
                     </tr>
                     <tr>
-                        <td>1 Administrative Buildings</td>
+                        <td>{{ admin_buildings }} Administrative Buildings</td>
                         <td>1 [[ raw #3]]</td>
                         <td>1 Aluminum Refineries</td>
                     </tr>
                     <tr>
-                        <td>1 Silos</td>
+                        <td>{{ silos }} Silos</td>
                         <td>1 [[ raw #4]]</td>
                         <td>1 Oil Refineries</td>
                     </tr>
@@ -937,7 +923,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ oil_plant }} Oil Plants</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ army_bases }} Army Bases</h3>
 
                             <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
 
@@ -945,12 +931,12 @@
                             <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                <input class="loginsignupinput" autocomplete="off" name="army_bases" type="number" placeholder="Amount" />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/army_bases/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -958,7 +944,7 @@
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/army_bases/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -968,7 +954,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -985,7 +971,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ hydro_dam }} Hydro Dam</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ aerodomes }} Aerodomes</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -993,12 +979,12 @@
                             <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                <input class="loginsignupinput" autocomplete="off" name="aerodomes" type="number" placeholder="Amount" />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/aerodomes/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1006,7 +992,7 @@
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/aerodomes/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -1016,7 +1002,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1033,7 +1019,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ harbours }} Harbours</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -1041,12 +1027,12 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                <input class="loginsignupinput" autocomplete="off" name="harbours" type="number" placeholder="Amount" />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/harbours/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1054,7 +1040,7 @@
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/harbours/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -1064,7 +1050,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1080,7 +1066,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ admin_buildings }} Administrative Buildings</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -1088,12 +1074,12 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                <input class="loginsignupinput" autocomplete="off" name="admin_buildings" type="number" placeholder="Amount" />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/admin_buildings/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1101,7 +1087,7 @@
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/admin_buildings/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -1111,7 +1097,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1127,7 +1113,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ silos }} Silos</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -1135,12 +1121,12 @@
                             <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                             <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                <input class="loginsignupinput" autocomplete="off" name="silos" type="number" placeholder="Amount" />
 
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/silo/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1148,7 +1134,7 @@
                                     </div>
                                     <div class="templatedivflex2left flexchildvanilla">
 
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/silos/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -1158,7 +1144,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1209,7 +1195,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1257,7 +1243,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1305,7 +1291,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1353,7 +1339,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1401,7 +1387,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1449,7 +1435,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1497,7 +1483,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1545,7 +1531,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1592,7 +1578,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -1643,7 +1628,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1691,7 +1676,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1739,7 +1724,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1787,7 +1772,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1834,7 +1819,7 @@
                             </div>
 
                         </div>
-                        </form>
+
                         <div class="templatedivflex2left">
 
 
@@ -1844,7 +1829,7 @@
                     </div>
                 </div>
             </div>
-            </form>
+        </form>
 
         </div>
     </div>
