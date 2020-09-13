@@ -8,5 +8,4 @@ CREATE TABLE 'wars'
 'start_date' REAL NOT NULL,
 'attacker_supplies' INTEGER DEFAULT 200,
 'defender_supplies' INTEGER DEFAULT 200,
-'attacker_supply_date' REAL NOT NULL,
-'defender_supply_date' REAL NOT NULL);
+'last_visited' REAL NOT NULL);

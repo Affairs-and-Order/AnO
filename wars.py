@@ -30,6 +30,27 @@ Page 4:
 Whoever lost fewer value in units is the winner. Based on the degree, morale changes. Based on degree on winning, sets a tax on the losing nation.
 """
 
+# NOTICE put this inside a different file like utils.py
+# Update supplies amount only when user visit page where supplies interaction neccessary
+# Call this from every function which displays or works with the supplies
+def update_supply(war_id):
+    connection = sqlite3.connect("affo/aao.db")
+    db = connection.cursor()
+
+    attacker_supplies, defender_supplies, supply_date = db.execute("SELECT attacker_supplies,defender_supplies,last_visited FROM wars WHERE id=?", (war_id,)).fetchall()[0]
+    current_time = time.time()
+
+    if current_time < int(supply_date):
+        return "TIME STAMP IS CORRUPTED"
+
+    time_difference = current_time - supply_date
+    hours_count = time_difference//3600
+    supply_by_hours = hours_count*50 # 50 supply in every hour
+
+    if supply_by_hours > 0:
+        db.execute("UPDATE wars SET attacker_supplies=(?), defender_supplies=(?), last_visited=(?) WHERE id=(?)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
+        connection.commit()
+
 # so this is page 0, war menu, choose a war
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
@@ -114,9 +135,10 @@ def wars():
 
 
 # page 0, kind of a pseudo page where you can click attack vs special
-# @login_required
+@login_required
 @app.route("/war/<int:war_id>", methods=["GET"])
 def war_with_id(war_id):
+    update_supply(war_id)
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -397,38 +419,6 @@ def warResult():
 
 
     return render_template("warResult.html")
-
-# NOTICE put this inside a different file like utils.py
-# Update supplies amount only when user visit page where supplies interaction neccessary
-def update_supply(war_id, state):
-    connection = sqlite3.connect("affo/aao.db")
-    db = connection.cursor()
-
-    if state == "attacker":
-        supplies, supply_date = db.execute("SELECT attacker_supplies,attacker_supply_date FROM wars WHERE id=?", (war_id,)).fetchall()[0]
-        columns = ("attacker_supplies", "attacker_supply_date")
-    elif state == "defender":
-        supplies, supply_date = db.execute("SELECT defender_supplies,defender_supply_date FROM wars WHERE id=?", (war_id,)).fetchall()[0]
-        columns = ("defender_supplies", "defender_supply_date")
-    else:
-        print("INVALID USER STATE")
-        return ""
-
-    current_time = time.time()
-
-    if current_time < supply_date:
-        print("TIME STAMP IS CORRUPTED")
-        return ""
-
-    time_difference = current_time - supply_date
-    hours_count = time_difference//3600
-    supply_by_hours = hours_count*100 # 100 supply in every hour
-
-    if supply_by_hours > 0:
-
-        # Not SQL injectable because the `columns` are hardcoded
-        db.execute(f"UPDATE wars SET {columns[0]}=(?), {columns[1]}=(?) WHERE id=(?)", (supply_by_hours+supplies, time.time(), war_id))
-        connection.commit()
 
 # Endpoint for war declaration
 @login_required
