@@ -42,7 +42,7 @@ class Military:
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
-                attacker_bonus += calculate_bonuses(attacker.attack (attacker_unit, unit), defender, unit) 
+                attacker_bonus += calculate_bonuses(attacker.attack (attacker_unit, unit), defender, unit)
                 # used to be += attacker.attack(attacker_unit, unit, defender)[1]
 
 
@@ -236,7 +236,7 @@ class Economy:
                    (resource, originalUser, self.nationID))
         db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
                    (resource, destinationUser, destinationID))
-        
+
         connection.commit()
 
 
@@ -315,26 +315,4 @@ class Nation:
 
 # DEBUGGING:
 if __name__ == "__main__":
-    n = Nation(3, None, None)
-    n.get_provinces()
-    print(n.provinces)
-
-    n.get_current_wars()
-
-    # # temporary definitions for nations economy and military
-    # nat1M = Military(0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-    # nat1E = Economy(2).get_economy()
-    # # create nation1
-    # nation1 = Nation(1, nat1M, nat1E)
-    #
-    # # temporary definitions for nations economy and military
-    # nat2M = Military(0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-    # nat2E = Economy(0)
-    # # create nation1
-    # nation2 = Nation(2, nat2M, nat2E)
-    #
-    # for i in range(0, 3):
-    #     nation1.fight(nation2, ("water", "air"))
-    #
-    # nation1.printStatistics()
-    # nation2.printStatistics()
+    pass

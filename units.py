@@ -402,7 +402,6 @@ class Units(Military):
 
 # DEBUGGING
 if __name__ == "__main__":
-
     # l = Units(1, {"nukes": 1})
     l = Units(11)
     l.attach_units({"nukes": 1}, 1)

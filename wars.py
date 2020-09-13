@@ -30,6 +30,27 @@ Page 4:
 Whoever lost fewer value in units is the winner. Based on the degree, morale changes. Based on degree on winning, sets a tax on the losing nation.
 """
 
+# NOTICE put this inside a different file like utils.py
+# Update supplies amount only when user visit page where supplies interaction neccessary
+# Call this from every function which displays or works with the supplies
+def update_supply(war_id):
+    connection = sqlite3.connect("affo/aao.db")
+    db = connection.cursor()
+
+    attacker_supplies, defender_supplies, supply_date = db.execute("SELECT attacker_supplies,defender_supplies,last_visited FROM wars WHERE id=?", (war_id,)).fetchall()[0]
+    current_time = time.time()
+
+    if current_time < int(supply_date):
+        return "TIME STAMP IS CORRUPTED"
+
+    time_difference = current_time - supply_date
+    hours_count = time_difference//3600
+    supply_by_hours = hours_count*50 # 50 supply in every hour
+
+    if supply_by_hours > 0:
+        db.execute("UPDATE wars SET attacker_supplies=(?), defender_supplies=(?), last_visited=(?) WHERE id=(?)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
+        connection.commit()
+
 # so this is page 0, war menu, choose a war
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
@@ -114,9 +135,10 @@ def wars():
 
 
 # page 0, kind of a pseudo page where you can click attack vs special
-# @login_required
+@login_required
 @app.route("/war/<int:war_id>", methods=["GET"])
 def war_with_id(war_id):
+    update_supply(war_id)
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -330,7 +352,7 @@ def warResult():
 
     # multiply all enemy defending units together, with bonuses if a counter is found
     # something something Units, Nations, Military
-    
+
     # how do units fight: call the fight method somewhere lets find it
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
@@ -397,9 +419,8 @@ def warResult():
 
 
     return render_template("warResult.html")
+
 # Endpoint for war declaration
-
-
 @login_required
 @app.route("/declare_war", methods=["POST"])
 def declare_war():
@@ -439,8 +460,9 @@ def declare_war():
         # Redirects the user to an error page
         return error(400, "No such country")
 
-    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date) VALUES (?, ?, ?, ?, ?)",
-               (attacker.id, defender_id, war_type, war_message, time.time()))
+    start_dates = time.time()
+    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (?, ?, ?, ?, ?, ?)",
+               (attacker.id, defender_id, war_type, war_message, start_dates, start_dates))
     connection.commit()
     connection.close()
 
