@@ -52,46 +52,34 @@ def province(pId):
         db = connection.cursor()
 
         name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        population = db.execute(
-            "SELECT population FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        pollution = db.execute(
-            "SELECT pollution FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        pollution = db.execute("SELECT pollution FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
 
-        cityCount = db.execute(
-            "SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        land = db.execute(
-            "SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
 
-        oil_burners = db.execute(
-            "SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        hydro_dams = db.execute(
-            "SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        nuclear_reactors = db.execute(
-            "SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        solar_fields = db.execute(
-            "SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
 
-        gas_stations = db.execute(
-            "SELECT gas_stations FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        general_stores = db.execute(
-            "SELECT general_stores FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        farmers_markets = db.execute(
-            "SELECT farmers_markets FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        malls = db.execute(
-            "SELECT malls FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        banks = db.execute(
-            "SELECT banks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        gas_stations = db.execute("SELECT gas_stations FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        general_stores = db.execute("SELECT general_stores FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        farmers_markets = db.execute("SELECT farmers_markets FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        malls = db.execute("SELECT malls FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        banks = db.execute("SELECT banks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
 
-        city_parks = db.execute(
-            "SELECT city_parks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        hospitals = db.execute(
-            "SELECT hospitals FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        libraries = db.execute(
-            "SELECT libraries FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        universities = db.execute(
-            "SELECT universities FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        monorails = db.execute(
-            "SELECT monorails FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        city_parks = db.execute("SELECT city_parks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        hospitals = db.execute("SELECT hospitals FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        libraries = db.execute("SELECT libraries FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        universities = db.execute("SELECT universities FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        monorails = db.execute("SELECT monorails FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+
+        army_bases = db.execute("SELECT army_bases FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        harbours = db.execute("SELECT harbours FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        aerodomes = db.execute("SELECT aerodomes FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        admin_buildings = db.execute("SELECT admin_buildings FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+        silos = db.execute("SELECT silos FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
 
         connection.close()
 
@@ -100,7 +88,10 @@ def province(pId):
                                oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
                                gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
                                banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
-                               monorails=monorails)
+                               monorails=monorails,
+                               
+                               army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings,
+                               silos=silos)
 
 
 @login_required
