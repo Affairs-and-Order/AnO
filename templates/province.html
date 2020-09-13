@@ -123,6 +123,7 @@
                 </div>
             </div>
         </div>
+    </form>
         <div class="templatedivflex2 menuflex2">
             <div class="templatedivflex2left" id="provincecity" onclick="provincecity()">
 
@@ -885,27 +886,27 @@
                     </tr>
                     <!--FOR CARSON - make these tds links in the future (using IDs)-->
                     <tr>
-                        <td>1 Army Bases</td>
+                        <td>{{ army_bases }} Army Bases</td>
                         <td>1 Farms</td>
                         <td>1 Component Factories</td>
                     </tr>
                     <tr>
-                        <td>1 Aerodomes</td>
+                        <td>{{ aerodomes }} Aerodomes</td>
                         <td>1 [[ raw #1]]</td>
                         <td>1 Steel Mills</td>
                     </tr>
                     <tr>
-                        <td>1 Harbours</td>
+                        <td>{{ harbours }} Harbours</td>
                         <td>1 [[ raw #2]]</td>
                         <td>1 Ammunition Factories</td>
                     </tr>
                     <tr>
-                        <td>1 Administrative Buildings</td>
+                        <td>{{ admin_buildings }} Administrative Buildings</td>
                         <td>1 [[ raw #3]]</td>
                         <td>1 Aluminum Refineries</td>
                     </tr>
                     <tr>
-                        <td>1 Silos</td>
+                        <td>{{ silos }} Silos</td>
                         <td>1 [[ raw #4]]</td>
                         <td>1 Oil Refineries</td>
                     </tr>
@@ -922,7 +923,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ army_bases }} Oil Plants</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ army_bases }} Army Bases</h3>
 
                             <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
 
@@ -970,7 +971,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ aerodoms }} Hydro Dam</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ aerodomes }} Aerodomes</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -1018,7 +1019,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ harbours }} Nuclear Reactors</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ harbours }} Harbours</h3>
 
                             <p class="templatecontentpleft"></p>
 
@@ -1065,7 +1066,7 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <h3 class="templatecontentheadercenter">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                            <h3 class="templatecontentheadercenter">You have {{ admin_buildings }} Administrative Buildings</h3>
 
                             <p class="templatecontentpleft"></p>
 
