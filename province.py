@@ -189,7 +189,9 @@ def province_sell_buy(way, units, province_id):
             "land", "cityCount",
             "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
             "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
-            "city_parks", "hospitals", "libraries", "universities", "monorails"
+            "city_parks", "hospitals", "libraries", "universities", "monorails",
+
+            "army_bases", "harbours", "aerodomes", "admin_buildings", "silos"
         ]
 
         max_4 = [
@@ -226,7 +228,13 @@ def province_sell_buy(way, units, province_id):
             "hospitals": 500,
             "libraries": 500,
             "universities": 500,
-            "monorails": 500
+            "monorails": 500,
+
+            "army_bases": 500,
+            "harbours": 500,
+            "aerodomes": 500,
+            "admin_buildings": 500,
+            "silos": 500
         }
 
         if units not in allUnits:
@@ -245,7 +253,6 @@ def province_sell_buy(way, units, province_id):
         total_infra_slots = int(db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0])
         used_slots = int(get_used_slots(province_id))
         free_infra_slots = total_infra_slots - used_slots
-        print(free_infra_slots)
 
         if way == "sell":
 
