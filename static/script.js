@@ -536,7 +536,39 @@ function coalitionmember() {
     document.getElementById("leader").classList.remove("leaderclick");
 
 }
+//UPGRADES SLIDER
+$(document).ready(function() {
+
+    document.getElementById("upgradeseconomic").classList.add("upgradeseconomicclick");
+    document.getElementById("economic").classList.add("economicclick");
+
+});
 //
+function upgradeseconomic() {
+
+    document.getElementById("upgradeseconomic").classList.add("upgradeseconomicclick");
+    document.getElementById("economic").classList.add("economicclick");
+
+    //
+
+    document.getElementById("upgradesmilitary").classList.remove("upgradesmilitaryclick");
+    document.getElementById("military").classList.remove("militaryclick");
+
+}
+//
+function upgradesmilitary() {
+
+    document.getElementById("upgradesmilitary").classList.add("upgradesmilitaryclick");
+    document.getElementById("military").classList.add("militaryclick");
+
+    //
+
+    document.getElementById("upgradeseconomic").classList.remove("upgradeseconomicclick");
+    document.getElementById("economic").classList.remove("economicclick");
+
+}
+//
+
 var loadFile = function(event) {
     var output = document.getElementById('output');
     output.src = URL.createObjectURL(event.target.files[0]);

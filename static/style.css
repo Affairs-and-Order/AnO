@@ -2571,6 +2571,28 @@
                 padding: 6px 0;
                 transition: opacity 0.3s, width 0.3s, padding 0.15s;
             }
+            /*UPGRADES*/
+            
+            .economic,
+            .military {
+                display: none;
+            }
+            
+            .economicclick,
+            .militaryclick {
+                display: initial;
+            }
+            
+            .upgradeseconomicclick,
+            .upgradesmilitaryclick {
+                background: #00a7e1 !important;
+                color: white !important;
+            }
+            
+            .upgradeseconomicclick h3,
+            .upgradesmilitaryclick h3 {
+                color: var(--colorTwo) !important;
+            }
             /*FOOTER*/
             
             .footer {

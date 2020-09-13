@@ -1,0 +1,86 @@
+{% extends "layout.html"%} {% block title %} Upgrades {% endblock %} {% block body %}
+
+<div class="templatediv">
+
+    <div class="templatedivtopper wartopper">
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+            engineering
+            </span>Upgrades</h1>
+        <div class="templatedivad"></div>
+    </div>
+
+    <div class="templatedivcontent">
+
+        <div class="templatedivflex2 menuflex2">
+            <div class="templatedivflex2left" id="upgradeseconomic" onclick="upgradeseconomic()">
+
+                <h3 class="smallheader"><span class="material-icons-outlined">
+                    account_balance
+                </span>Economy
+                </h3>
+
+            </div>
+            <div class="templatedivflex2left" id="upgradesmilitary" onclick="upgradesmilitary()">
+
+                <h3 class="smallheader"><span class="material-icons-outlined">
+                    military_tech
+                </span>Military
+                </h3>
+
+            </div>
+        </div>
+        <!--ECONOMIC-->
+        <div class="economic" id="economic">
+
+            <div class="menudiv">
+
+                <h2 class="templatecontentheaderleft">Project 1</h2>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <p class="templatecontentpleft">this is what project one does</p>
+
+                        <div class="purchasemilitarydiv">
+
+                            <div class="templatedivflex2 divflex2center">
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/hydro_dams/{{ pId }}"><span class="material-icons-outlined">
+                                    add_circle_outline
+                                </span>Buy</button>
+
+                                </div>
+                                <div class="templatedivflex2left flexchildvanilla">
+
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/hydro_dams/{{ pId }}"><span class="material-icons-outlined">
+                                    remove_circle_outline
+                                </span>Sell</button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    </form>
+                    <div class="templatedivflex2left">
+
+
+
+                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/hydrodam.jpg') }}" />
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <!--MILITARY-->
+        <div class="military" id="military">
+
+
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
