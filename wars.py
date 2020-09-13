@@ -461,8 +461,8 @@ def declare_war():
         return error(400, "No such country")
 
     start_dates = time.time()
-    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, attacker_supply_date, defender_supply_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
-               (attacker.id, defender_id, war_type, war_message, start_dates, start_dates, start_dates))
+    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (?, ?, ?, ?, ?, ?)",
+               (attacker.id, defender_id, war_type, war_message, start_dates, start_dates))
     connection.commit()
     connection.close()
 
