@@ -402,6 +402,41 @@ class Units(Military):
 
 # DEBUGGING
 if __name__ == "__main__":
+    def update_supply(war_id, state):
+        import sqlite3
+        import time
+
+        connection = sqlite3.connect("affo/aao.db")
+        db = connection.cursor()
+
+        if state == "attacker":
+            supplies, supply_date = db.execute("SELECT attacker_supplies,attacker_supply_date FROM wars WHERE id=?", (war_id,)).fetchall()[0]
+            columns = ("attacker_supplies", "attacker_supply_date")
+        elif state == "defender":
+            supplies, supply_date = db.execute("SELECT defender_supplies,defender_supply_date FROM wars WHERE id=?", (war_id,)).fetchall()[0]
+            columns = ("defender_supplies", "defender_supply_date")
+        else:
+            print("INVALID USER STATE")
+            return ""
+
+        current_time = time.time()
+
+        if current_time < supply_date:
+            print("TIME STAMP IS CORRUPTED")
+            return ""
+
+        time_difference = current_time - supply_date
+        hours_count = time_difference//3600
+        supply_by_hours = hours_count*100 # 100 supply in every hour
+
+        if supply_by_hours > 0:
+
+            # Not SQL injectable because the `columns` are hardcoded
+            db.execute(f"UPDATE wars SET {columns[0]}=(?), {columns[1]}=(?) WHERE id=(?)", (supply_by_hours+supplies, time.time(), war_id))
+            connection.commit()
+
+    update_supply(3, "attacker")
+
 
     # l = Units(1, {"nukes": 1})
     l = Units(11)

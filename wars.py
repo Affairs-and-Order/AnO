@@ -330,7 +330,7 @@ def warResult():
 
     # multiply all enemy defending units together, with bonuses if a counter is found
     # something something Units, Nations, Military
-    
+
     # how do units fight: call the fight method somewhere lets find it
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
@@ -397,9 +397,40 @@ def warResult():
 
 
     return render_template("warResult.html")
+
+# NOTICE put this inside a different file like utils.py
+# Update supplies amount only when user visit page where supplies interaction neccessary
+def update_supply(war_id, state):
+    connection = sqlite3.connect("affo/aao.db")
+    db = connection.cursor()
+
+    if state == "attacker":
+        supplies, supply_date = db.execute("SELECT attacker_supplies,attacker_supply_date FROM wars WHERE id=?", (war_id,)).fetchall()[0]
+        columns = ("attacker_supplies", "attacker_supply_date")
+    elif state == "defender":
+        supplies, supply_date = db.execute("SELECT defender_supplies,defender_supply_date FROM wars WHERE id=?", (war_id,)).fetchall()[0]
+        columns = ("defender_supplies", "defender_supply_date")
+    else:
+        print("INVALID USER STATE")
+        return ""
+
+    current_time = time.time()
+
+    if current_time < supply_date:
+        print("TIME STAMP IS CORRUPTED")
+        return ""
+
+    time_difference = current_time - supply_date
+    hours_count = time_difference//3600
+    supply_by_hours = hours_count*100 # 100 supply in every hour
+
+    if supply_by_hours > 0:
+
+        # Not SQL injectable because the `columns` are hardcoded
+        db.execute(f"UPDATE wars SET {columns[0]}=(?), {columns[1]}=(?) WHERE id=(?)", (supply_by_hours+supplies, time.time(), war_id))
+        connection.commit()
+
 # Endpoint for war declaration
-
-
 @login_required
 @app.route("/declare_war", methods=["POST"])
 def declare_war():
@@ -439,8 +470,9 @@ def declare_war():
         # Redirects the user to an error page
         return error(400, "No such country")
 
-    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date) VALUES (?, ?, ?, ?, ?)",
-               (attacker.id, defender_id, war_type, war_message, time.time()))
+    start_dates = time.time()
+    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, attacker_supply_date, defender_supply_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
+               (attacker.id, defender_id, war_type, war_message, start_dates, start_dates, start_dates))
     connection.commit()
     connection.close()
 
