@@ -30,7 +30,7 @@ Page 4:
 Whoever lost fewer value in units is the winner. Based on the degree, morale changes. Based on degree on winning, sets a tax on the losing nation.
 """
 
-# NOTICE put this inside a different file like utils.py
+# NOTICE put these "not routes" inside a different file like utils.py
 # Update supplies amount only when user visit page where supplies interaction neccessary
 # Call this from every function which displays or works with the supplies
 def update_supply(war_id):
@@ -50,6 +50,18 @@ def update_supply(war_id):
     if supply_by_hours > 0:
         db.execute("UPDATE wars SET attacker_supplies=(?), defender_supplies=(?), last_visited=(?) WHERE id=(?)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
         connection.commit()
+
+# def check_peace(db):
+#     # Check if nation currently at peace with another nation
+#     current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (10, 10, 11, 11)).fetchone()
+#
+#     # 259200 = 3 days
+#     if current_peace[0]:
+#         if (current_peace[0]+259200) > time.time():
+#
+#             # continue = False, message = You can't declare war because truce has not expired!
+#             return (False, "You can't declare war because truce has not expired!")
+#     return (True,)
 
 # so this is page 0, war menu, choose a war
 @login_required
@@ -74,13 +86,13 @@ def wars():
         try:
             # selecting all current defenders of cId
             attackingWars = db.execute(
-                "SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender", (cId,)).fetchall()
+                "SELECT defender FROM wars WHERE attacker=(?) AND peace_date IS NULL ORDER BY defender", (cId,)).fetchall()
             # selecting all usernames of current defenders of cId
             attackingNames = db.execute(
                 "SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
             # generates list of tuples. The first element of each tuple is the country being attacked, the second element is the username of the countries being attacked.
             attackingIds = db.execute(
-                "SELECT id FROM wars WHERE attacker=(?)", (cId,)).fetchall()
+                "SELECT id FROM wars WHERE attacker=(?) AND peace_date IS NULL", (cId,)).fetchall()
             attacking = zip(attackingWars, attackingNames, attackingIds)
         except TypeError:
             attacking = 0
@@ -88,7 +100,7 @@ def wars():
         # gets a defending tuple
         try:
             defendingWars = db.execute(
-                "SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender", (cId,)).fetchall()
+                "SELECT attacker FROM wars WHERE defender=(?) AND peace_date IS NULL ORDER BY defender ", (cId,)).fetchall()
             defendingNames = db.execute(
                 "SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
             defendingIds = db.execute(
@@ -127,8 +139,7 @@ def wars():
                     "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
         connection.commit()
 
-        warsCount = db.execute(
-            "SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?)", (cId, cId)).fetchone()[0]
+        warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?) AND peace_date IS NULL", (cId, cId)).fetchone()[0]
         db.close()
         connection.close()
         return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
@@ -438,12 +449,13 @@ def declare_war():
 
         attacker = Nation(session["user_id"])
         defender = Nation(defender_id)
+        # attacker = Nation(11)
+        # defender = Nation(10)
 
         if attacker.id == defender.id:
             return "Can't declare war on yourself"
 
-        already_war_with = db.execute(
-            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (attacker.id, attacker.id,)).fetchall()
+        already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (attacker.id, attacker.id,)).fetchall()
 
         if (attacker.id, defender_id,) in already_war_with or (defender_id, attacker.id) in already_war_with:
             return "You already fight against..."
@@ -458,13 +470,17 @@ def declare_war():
             return "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
 
         # Check if nation currently at peace with another nation
-        current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (10, 10, 11, 11)).fetchone()
+        current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (attacker.id, attacker.id, defender_id, defender_id)).fetchone()
 
         # 259200 = 3 days
-        if (current_peace[0]+259200) > time.time():
-            return "You can't declare war because truce has not expired!"
+        if current_peace[0]:
+            if (current_peace[0]+259200) > time.time():
+                return "You can't declare war because truce has not expired!"
 
-    except TypeError:
+    except Exception as e:
+        print("RUNN")
+        print(e)
+
         # Redirects the user to an error page
         return error(400, "No such country")
 
@@ -489,10 +505,12 @@ def find_targets():
         db = connection.cursor()
 
         defender = request.form.get("defender")
-        defender_id = db.execute(
-            "SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
+        defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()
+        if defender_id:
+            return redirect(f"/country/id={defender_id[0]}")
+        else:
+            return "Country not found!"
 
-        return redirect(f"/country/id={defender_id}")
 
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
 
