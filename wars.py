@@ -448,6 +448,7 @@ def declare_war():
         if (attacker.id, defender_id,) in already_war_with or (defender_id, attacker.id) in already_war_with:
             return "You already fight against..."
 
+        # Check province difference
         attacker_provinces = attacker.get_provinces()["provinces_number"]
         defender_provinces = defender.get_provinces()["provinces_number"]
 
@@ -455,6 +456,10 @@ def declare_war():
             return "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
         if (defender_provinces - attacker_provinces > 3):
             return "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
+
+        # Check if nation currently at peace with another nation
+        current_peace = db.execute("SELECT nation1, nation2 FROM protected WHERE nation1=(?) OR nation2=(?)", (attacker.id, attacker.id))
+        print(current_peace)
 
     except TypeError:
         # Redirects the user to an error page

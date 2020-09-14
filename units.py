@@ -407,6 +407,17 @@ if __name__ == "__main__":
     l.attach_units({"nukes": 1}, 1)
     print(l.attack("nukes", "submarines"))
 
+
+    import sqlite3
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    current_peace = db.execute("SELECT nation1, nation2 FROM protected WHERE nation1=(?) OR nation2=(?) AND nation1=(?) OR nation2=(?)", (1, 1, 2, 2)).fetchone()
+    if current_peace:
+        print(current_peace)
+
+    connection.close()
+
     # CASE 1
     # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
     #                  selected_units_list=["artillery", "tanks", "soldiers"])

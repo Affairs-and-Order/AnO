@@ -1,6 +1,0 @@
--- War protection for nations against another after peace made for a certain period of time
-CREATE TABLE 'protected'
-('nation1' INTEGER NOT NULL,
-'nation2' INTEGER NOT NULL,
-'peace_date' REAL NOT NULL
-);
