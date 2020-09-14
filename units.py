@@ -409,13 +409,16 @@ if __name__ == "__main__":
 
 
     import sqlite3
+    import time
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
-    current_peace = db.execute("SELECT max(peace_date) FROM protected WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (attacker.id, attacker.id, defender.id, defender.id))
-    # current_peace = db.execute("SELECT nation1, nation2 FROM protected WHERE nation1=(?) OR nation2=(?) AND nation1=(?) OR nation2=(?)", (1, 1, 2, 2)).fetchone()
-    if current_peace:
-        print(current_peace)
+    current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (10, 10, 11, 11)).fetchone()
+    print((time.time() - current_peace[0]))
+    if (current_peace[0]+259200) > time.time():
+        print("peace not expired")
+
+    print(current_peace)
 
     connection.close()
 

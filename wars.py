@@ -458,8 +458,11 @@ def declare_war():
             return "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
 
         # Check if nation currently at peace with another nation
-        current_peace = db.execute("SELECT max(peace_date) FROM protected WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (attacker.id, attacker.id, defender.id, defender.id))
-        print(current_peace)
+        current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (10, 10, 11, 11)).fetchone()
+
+        # 259200 = 3 days
+        if (current_peace[0]+259200) > time.time():
+            return "You can't declare war because truce has not expired!"
 
     except TypeError:
         # Redirects the user to an error page
