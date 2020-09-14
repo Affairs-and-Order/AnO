@@ -458,7 +458,7 @@ def declare_war():
             return "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
 
         # Check if nation currently at peace with another nation
-        current_peace = db.execute("SELECT nation1, nation2 FROM protected WHERE nation1=(?) OR nation2=(?)", (attacker.id, attacker.id))
+        current_peace = db.execute("SELECT max(peace_date) FROM protected WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (attacker.id, attacker.id, defender.id, defender.id))
         print(current_peace)
 
     except TypeError:

@@ -412,7 +412,8 @@ if __name__ == "__main__":
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
-    current_peace = db.execute("SELECT nation1, nation2 FROM protected WHERE nation1=(?) OR nation2=(?) AND nation1=(?) OR nation2=(?)", (1, 1, 2, 2)).fetchone()
+    current_peace = db.execute("SELECT max(peace_date) FROM protected WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (attacker.id, attacker.id, defender.id, defender.id))
+    # current_peace = db.execute("SELECT nation1, nation2 FROM protected WHERE nation1=(?) OR nation2=(?) AND nation1=(?) OR nation2=(?)", (1, 1, 2, 2)).fetchone()
     if current_peace:
         print(current_peace)
 
