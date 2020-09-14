@@ -407,6 +407,23 @@ if __name__ == "__main__":
     l.attach_units({"nukes": 1}, 1)
     print(l.attack("nukes", "submarines"))
 
+
+    import sqlite3
+    import time
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    # current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (10, 10, 11, 11)).fetchone()
+    # print((time.time() - current_peace[0]))
+    # if (current_peace[0]+259200) > time.time():
+    #     print("peace not expired")
+    #
+    # print(current_peace)
+    already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?) AND peace_date IS NULL", (11,11)).fetchall()
+    print(already_war_with)
+
+    connection.close()
+
     # CASE 1
     # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
     #                  selected_units_list=["artillery", "tanks", "soldiers"])
