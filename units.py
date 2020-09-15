@@ -246,6 +246,7 @@ class IcbmUnit(BlueprintUnit):
 
     unit_type = "icbm"
     damage = 1000
+    supply_cost = 400
 
     def __init__(self, amount):
         self.amount = amount
@@ -270,6 +271,8 @@ class NukeUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "submarines":
             self.bonus -= 5 * self.amount
+        else:
+            pass
         return [self.damage, self.bonus]
 
     def buy(): pass
@@ -376,8 +379,12 @@ class Units(Military):
 
                     if unit_amount == None:
                         return "Unit is not valid!"
+                    
+                    supply = self.attack_cost(interface.supply_cost)
+                    if supply:
+                        return supply
 
-                    elif unit_amount != 0:
+                    if unit_amount != 0:
                         interface_object = interface(unit_amount)
                         attack_effects = interface_object.attack(target)
 
@@ -418,32 +425,32 @@ class Units(Military):
                 self.available_supplies = db.execute("SELECT defender_supplies FROM wars WHERE defender=(?)", (self.user_id,)).fetchone()[0]
 
         if cost > self.available_supplies:
-            return "Not enought supplies available"
+            return "Not enougth supplies available"
 
 
 # DEBUGGING
 if __name__ == "__main__":
     # l = Units(1, {"nukes": 1})
-    l = Units(11)
-    l.attach_units({"nukes": 1}, 1)
-    print(l.attack("nukes", "submarines"))
+    # l = Units(11)
+    # l.attach_units({"nukes": 1}, 1)
+    # print(l.attack("nukes", "submarines"))
 
-    l.attack_cost(600)
+    # l.attack_cost(100)
 
-    l = Units(10)
-    l.attack_cost(600)
+    # l = Units(10)
+    # l.attack_cost(600)
 
     # CASE 1
-    # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
-    #                  selected_units_list=["artillery", "tanks", "soldiers"])
-    # defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},
-    #                  selected_units_list=["submarines", "apaches", "soldiers"])
-    #
-    # Military.fight(attacker, defender)
-    #
-    # print("AFTER CASUALTIES")
-    # print(attacker.selected_units)
-    # print(defender.selected_units)
+    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
+                     selected_units_list=["artillery", "tanks", "soldiers"])
+    defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},
+                     selected_units_list=["submarines", "apaches", "soldiers"])
+
+    Military.fight(attacker, defender)
+
+    print("AFTER CASUALTIES")
+    print(attacker.selected_units)
+    print(defender.selected_units)
 
     # CASE 2
     # import sqlite3
