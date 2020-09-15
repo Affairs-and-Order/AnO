@@ -241,6 +241,7 @@ class SubmarineUnit(BlueprintUnit):
     def buy(): pass
 
 
+# Special units attack method handeled differently (not using the fight method)
 class IcbmUnit(BlueprintUnit):
 
     unit_type = "icbm"
@@ -261,6 +262,7 @@ class NukeUnit(BlueprintUnit):
 
     unit_type = "nukes"
     damage = 8000
+    supply_cost = 600
 
     def __init__(self, amount):
         self.amount = amount
@@ -309,6 +311,7 @@ class Units(Military):
         self.selected_units = selected_units
         self.bonuses = bonuses
         self.supply_costs = 0
+        self.available_supplies = None
 
         # selected_units_list is needed at: Nations.py/Military->fight();
         # a list of selected_units keys
@@ -396,8 +399,26 @@ class Units(Military):
 
         # Save it to the database
 
-    def attack_cost(self, costs):
-        self.supply_costs += costs
+    # Determine supply cost from unit_interface and check if user can't pay for it (can't give enought supplies)
+    def attack_cost(self, cost):
+
+        if not self.available_supplies:
+            import sqlite3
+            connection = sqlite3.connect('affo/aao.db')
+            db = connection.cursor()
+
+            attacker_id = db.execute("SELECT attacker FROM wars WHERE attacker=(?)", (self.user_id,)).fetchone()
+
+            # If the user is the attacker (maybe optimize this to store the user role in the war)
+            if attacker_id:
+                self.available_supplies = db.execute("SELECT attacker_supplies FROM wars WHERE attacker=(?)", (self.user_id,)).fetchone()[0]
+
+            # the user is defender
+            else:
+                self.available_supplies = db.execute("SELECT defender_supplies FROM wars WHERE defender=(?)", (self.user_id,)).fetchone()[0]
+
+        if cost > self.available_supplies:
+            return "Not enought supplies available"
 
 
 # DEBUGGING
@@ -407,22 +428,10 @@ if __name__ == "__main__":
     l.attach_units({"nukes": 1}, 1)
     print(l.attack("nukes", "submarines"))
 
+    l.attack_cost(600)
 
-    import sqlite3
-    import time
-    connection = sqlite3.connect('affo/aao.db')
-    db = connection.cursor()
-
-    # current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE attacker=(?) OR defender=(?) AND attacker=(?) OR defender=(?)", (10, 10, 11, 11)).fetchone()
-    # print((time.time() - current_peace[0]))
-    # if (current_peace[0]+259200) > time.time():
-    #     print("peace not expired")
-    #
-    # print(current_peace)
-    already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?) AND peace_date IS NULL", (11,11)).fetchall()
-    print(already_war_with)
-
-    connection.close()
+    l = Units(10)
+    l.attack_cost(600)
 
     # CASE 1
     # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},

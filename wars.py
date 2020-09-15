@@ -509,7 +509,7 @@ def find_targets():
         if defender_id:
             return redirect(f"/country/id={defender_id[0]}")
         else:
-            return "Country not found!"
+            return error(400, "No such country")
 
 
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
