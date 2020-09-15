@@ -40,6 +40,7 @@ class SoldierUnit(BlueprintUnit):
 
     unit_type = "soldiers"
     damage = 1
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -63,6 +64,7 @@ class TankUnit(BlueprintUnit):
 
     unit_type = "tanks"
     damage = 40
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -91,6 +93,7 @@ class ArtilleryUnit(BlueprintUnit):
 
     unit_type = "artillery"
     damage = 80
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -112,6 +115,7 @@ class BomberUnit(BlueprintUnit):
 
     unit_type = "bombers"
     damage = 100
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -139,6 +143,7 @@ class FighterUnit(BlueprintUnit):
 
     unit_type = "fighters"
     damage = 100
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -161,6 +166,7 @@ class ApacheUnit(BlueprintUnit):
 
     unit_type = "apaches"
     damage = 100
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -183,6 +189,7 @@ class DestroyerUnit(BlueprintUnit):
 
     unit_type = "destroyers"
     damage = 100
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -203,6 +210,7 @@ class CruiserUnit(BlueprintUnit):
 
     unit_type = "soldiers"
     damage = 200
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -225,6 +233,7 @@ class SubmarineUnit(BlueprintUnit):
 
     unit_type = "submarines"
     damage = 100
+    supply_cost = 5
 
     def __init__(self, amount):
         self.amount = amount
@@ -263,7 +272,7 @@ class NukeUnit(BlueprintUnit):
 
     unit_type = "nukes"
     damage = 8000
-    supply_cost = 600
+    supply_cost = 100
 
     def __init__(self, amount):
         self.amount = amount
@@ -379,7 +388,7 @@ class Units(Military):
 
                     if unit_amount == None:
                         return "Unit is not valid!"
-                    
+
                     supply = self.attack_cost(interface.supply_cost)
                     if supply:
                         return supply
@@ -440,17 +449,22 @@ if __name__ == "__main__":
     # l = Units(10)
     # l.attack_cost(600)
 
+    # CASE FOR SPECIAL FIGHT
+    attacker = Units(11, {"nukes": 1}, selected_units_list=["nukes"])
+    # defender = Units(10, {""})
+    Military.special_fight(attacker, None, "submarines")
+
     # CASE 1
-    attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24},
-                     selected_units_list=["artillery", "tanks", "soldiers"])
-    defender = Units(1, {"submarines": 20, "apaches": 3, "soldiers": 158},
-                     selected_units_list=["submarines", "apaches", "soldiers"])
-
-    Military.fight(attacker, defender)
-
-    print("AFTER CASUALTIES")
-    print(attacker.selected_units)
-    print(defender.selected_units)
+    # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},
+    #                  selected_units_list=["artillery", "tanks", "soldiers"])
+    # defender = Units(10, {"submarines": 20, "apaches": 3, "soldiers": 158},
+    #                  selected_units_list=["submarines", "apaches", "soldiers"])
+    #
+    # Military.fight(attacker, defender)
+    #
+    # print("AFTER CASUALTIES")
+    # print(attacker.selected_units)
+    # print(defender.selected_units)
 
     # CASE 2
     # import sqlite3
