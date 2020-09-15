@@ -75,7 +75,6 @@ def get_coalition_influence(coalition_id):
 
     return total_influence
 
-
 def generate_province_revenue(): # Runs each turn
 
     infra = {
@@ -123,23 +122,43 @@ def generate_province_revenue(): # Runs each turn
     'universities_money': 150000,
 
     'monorails': {'productivity': 15},
-    'monorails_money': 210000
+    'monorails_money': 210000,
 
+    'army_bases_money': 25000, # Costs $25k
+
+    'harbours_money': 35000,
+
+    'aerodomes_money': 55000,
+
+    'admin_buildings_money': 60000,
+
+    'silos_money': 120000
     }
 
     conn = sqlite3.connect('affo/aao.db') # connects to db
     db = conn.cursor()
 
-    columns = ['oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields']
+    columns = [
+    'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
+    'gas_stations', 'general_stores', 'farmers_markets', 'malls',
+    'banks', 'city_parks', 'hospitals', 'libraries', 'universities', 'monorails',
+
+    'army_bases', 'harbours', 'aerodomes', 'admin_buildings', 'silos'
+    ]
 
     infra_ids = db.execute("SELECT id FROM proInfra").fetchall()
 
     for unit in columns:
         
-        plus_data = next(iter(infra[f'{unit}_plus'].items()))
+        try:
+            plus_data = next(iter(infra[f'{unit}_plus'].items()))
 
-        plus_resource = plus_data[0]
-        plus_amount = plus_data[1]
+            plus_resource = plus_data[0]
+            plus_amount = plus_data[1]
+
+            plus = True
+        except KeyError:
+            plus = False
 
         operating_costs = int(infra[f'{unit}_money'])
 
@@ -173,10 +192,13 @@ def generate_province_revenue(): # Runs each turn
                 if pollution_amount != None:
                     pollution_amount *= unit_amount
                     
-                ### ADDING ENERGY
-                current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
-                new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
-                db.execute(f"UPDATE provinces SET {plus_resource}=(?) WHERE id=(?)", (new_resource_number, user_id))
+                ### ADDING RESOURCES
+                if plus == True:
+                    current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
+                    new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+                    db.execute(f"UPDATE provinces SET {plus_resource}=(?) WHERE id=(?)", (new_resource_number, user_id))
+                ###
+
                 ### REMOVING MONEY
                 current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (user_id,)).fetchone()[0])
                 if current_money < operating_costs:

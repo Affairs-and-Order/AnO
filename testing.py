@@ -51,13 +51,13 @@ def generate_province_revenue(): # Runs each turn
 
     'army_bases_money': 25000, # Costs $25k
 
-    'harbours': 35000,
+    'harbours_money': 35000,
 
-    'aerodromes': 55000,
+    'aerodomes_money': 55000,
 
-    'admin_buildings': 60000,
+    'admin_buildings_money': 60000,
 
-    'silos': 120000
+    'silos_money': 120000
     }
 
     conn = sqlite3.connect('affo/aao.db') # connects to db
@@ -68,7 +68,7 @@ def generate_province_revenue(): # Runs each turn
     'gas_stations', 'general_stores', 'farmers_markets', 'malls',
     'banks', 'city_parks', 'hospitals', 'libraries', 'universities', 'monorails',
 
-    # 'army_bases', 'harbours', 'aerodomes', 'admin_buildings', 'silos'
+    'army_bases', 'harbours', 'aerodomes', 'admin_buildings', 'silos'
     ]
 
     infra_ids = db.execute("SELECT id FROM proInfra").fetchall()
