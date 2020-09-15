@@ -49,7 +49,15 @@ def generate_province_revenue(): # Runs each turn
     'monorails': {'productivity': 15},
     'monorails_money': 210000,
 
+    'army_bases_money': 25000, # Costs $25k
 
+    'harbours': 35000,
+
+    'aerodromes': 55000,
+
+    'admin_buildings': 60000,
+
+    'silos': 120000
     }
 
     conn = sqlite3.connect('affo/aao.db') # connects to db
