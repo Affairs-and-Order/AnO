@@ -444,10 +444,12 @@ class Units(Military):
             else:
                 self.available_supplies = db.execute("SELECT defender_supplies FROM wars WHERE defender=(?)", (self.user_id,)).fetchone()[0]
 
-        if cost > self.available_supplies:
-            return "Not enougth supplies available"
+        if self.available_supplies < 200:
+            return "The minimum supply amount is 200"
 
-        print(cost, self.available_supplies)
+        self.supply_costs += cost
+        if self.supply_costs > self.available_supplies:
+            return "Not enougth supplies available"
 
 # DEBUGGING
 if __name__ == "__main__":
@@ -466,7 +468,8 @@ if __name__ == "__main__":
     # defender = Units(10, {""})
     # Military.special_fight(attacker, None, "submarines")
     attacker = Units(11)
-    attacker.attach_units({"nukes": 3}, 1)
+    # attacker.attach_units({"nukes": 3}, 1)
+    # print(attacker.attach_units({"artillery": 10, "tanks": 31, "soldiers": 10}, 3))
 
     # CASE 1
     # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},
