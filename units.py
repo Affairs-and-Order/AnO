@@ -389,7 +389,8 @@ class Units(Military):
                     if unit_amount == None:
                         return "Unit is not valid!"
 
-                    supply = self.attack_cost(interface.supply_cost)
+                    # interface.supply_cost*self.selected_units[attacker_unit] - calculates the supply cost based on unit amount
+                    supply = self.attack_cost(interface.supply_cost*self.selected_units[attacker_unit])
                     if supply:
                         return supply
 
@@ -415,7 +416,7 @@ class Units(Military):
 
         # Save it to the database
 
-    # Determine supply cost from unit_interface and check if user can't pay for it (can't give enought supplies)
+    # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
     def attack_cost(self, cost):
 
         if not self.available_supplies:
@@ -435,7 +436,8 @@ class Units(Military):
 
         if cost > self.available_supplies:
             return "Not enougth supplies available"
-
+            
+        print(cost, self.available_supplies)
 
 # DEBUGGING
 if __name__ == "__main__":
@@ -450,7 +452,7 @@ if __name__ == "__main__":
     # l.attack_cost(600)
 
     # CASE FOR SPECIAL FIGHT
-    attacker = Units(11, {"nukes": 1}, selected_units_list=["nukes"])
+    attacker = Units(11, {"nukes": 2}, selected_units_list=["nukes"])
     # defender = Units(10, {""})
     Military.special_fight(attacker, None, "submarines")
 
