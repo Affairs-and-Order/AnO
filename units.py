@@ -302,7 +302,7 @@ class SpyUnit(BlueprintUnit):
 class Units(Military):
 
     allUnits = ["soldiers", "tanks", "artillery",
-                "bombers", "fighters", "apaches"
+                "bombers", "fighters", "apaches",
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
     # spyunit not included because it has no interactions with other units, so it doesnt need to run inside the Units.attack method.
