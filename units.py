@@ -353,6 +353,16 @@ class Units(Military):
                 if selected_units[current_unit] > available_units[current_unit]:
                     return "Invalid amount selected!"
 
+                # Check for attack cost
+                for interface in self.allUnitInterfaces:
+                    if interface.unit_type == current_unit:
+                        supply_check = self.attack_cost(interface.supply_cost*selected_units[current_unit])
+
+                        if supply_check:
+                            return supply_check
+
+                        break
+
                 units_count -= 1
         except Exception as e:
             print(e)
@@ -390,9 +400,9 @@ class Units(Military):
                         return "Unit is not valid!"
 
                     # interface.supply_cost*self.selected_units[attacker_unit] - calculates the supply cost based on unit amount
-                    supply = self.attack_cost(interface.supply_cost*self.selected_units[attacker_unit])
-                    if supply:
-                        return supply
+                    # supply = self.attack_cost(interface.supply_cost*self.selected_units[attacker_unit])
+                    # if supply:
+                        # return supply
 
                     if unit_amount != 0:
                         interface_object = interface(unit_amount)
@@ -436,7 +446,7 @@ class Units(Military):
 
         if cost > self.available_supplies:
             return "Not enougth supplies available"
-            
+
         print(cost, self.available_supplies)
 
 # DEBUGGING
@@ -452,9 +462,11 @@ if __name__ == "__main__":
     # l.attack_cost(600)
 
     # CASE FOR SPECIAL FIGHT
-    attacker = Units(11, {"nukes": 2}, selected_units_list=["nukes"])
+    # attacker = Units(11, {"nukes": 2}, selected_units_list=["nukes"])
     # defender = Units(10, {""})
-    Military.special_fight(attacker, None, "submarines")
+    # Military.special_fight(attacker, None, "submarines")
+    attacker = Units(11)
+    attacker.attach_units({"nukes": 3}, 1)
 
     # CASE 1
     # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},
