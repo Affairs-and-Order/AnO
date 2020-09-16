@@ -295,7 +295,7 @@ def warAmount():
                 selected_units[units_name[number-1]] = int(unit_amount)
 
             # Check every time when user input comes in lest user bypass input validation
-            # Error code if any
+            # Error code if any else return None
             error = session["attack_units"].attach_units(selected_units, 3)
             if error:
                 return error
@@ -304,7 +304,11 @@ def warAmount():
             return redirect("/warResult")  # warTarget route is skipped
 
         elif len(units_name) == 1:  # this should happen if special
-            # error = session["attack_units"].attach_units(selected_units, 1)
+            selected_units[units_name[0]] = int(request.form.get("u1_amount"))
+            error = session["attack_units"].attach_units(selected_units, 1)
+            if error:
+                return error
+
             return redirect("/wartarget")
 
         else:  # lets just leave this here if something dumb happens, then we can fix it!
