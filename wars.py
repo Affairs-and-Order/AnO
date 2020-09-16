@@ -194,7 +194,8 @@ def war_with_id(war_id):
 @login_required
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
-    cId = session["user_id"]
+    # cId = session["user_id"]
+    cId = 11
 
     if request.method == "GET":
 
@@ -212,14 +213,24 @@ def warChoose():
         # store the 3 values in session and retrieve it in waramount later
 
         selected_units = {}
-        selected_units[request.form.get("u1")] = 0
-        selected_units[request.form.get("u2")] = 0
-        selected_units[request.form.get("u3")] = 0
+
+        # If special unit sent
+        special_unit = request.form.get("special_unit")
+        if special_unit:
+            selected_units[special_unit] = 0
+            unit_amount = 1
+
+         # If regular units sent
+        else:
+            selected_units[request.form.get("u1")] = 0
+            selected_units[request.form.get("u2")] = 0
+            selected_units[request.form.get("u3")] = 0
+            unit_amount = 3
 
         attack_units = Units(cId)
 
         # Output error if any
-        error = attack_units.attach_units(selected_units, 3)
+        error = attack_units.attach_units(selected_units, unit_amount)
         if error:
             return error
 
@@ -228,10 +239,11 @@ def warChoose():
         return redirect("/waramount")
 
 # page 2 choose how many of each of your units to send
-@login_required
+# @login_required
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
-    cId = session["user_id"]
+    # cId = session["user_id"]
+    cId = 11
 
     if request.method == "GET":
         connection = sqlite3.connect("affo/aao.db")
