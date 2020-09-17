@@ -432,7 +432,7 @@ def warResult():
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
-    return render_template("warResult.html", yourNation=)
+    return render_template("warResult.html", yourNation="You", enemyNation="Them", attackResult="attackResult", resStolen="resStolen")
 
 # Endpoint for war declaration
 @login_required
