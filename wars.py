@@ -383,7 +383,8 @@ def warResult():
     # how do units fight: call the fight method somewhere lets find it
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
-
+    # how to make a Units object hmmm
+    Military.fight(attackers, defenders)
     # if your score is higher by 3x, annihilation,
     # if your score is higher by 2x, definite victory
     # if your score is higher, close victory,
@@ -535,7 +536,7 @@ def find_targets():
 @app.route("/defense", methods=["GET", "POST"])
 def defense():
     cId = session["user_id"]
-    units = Military.get_military(cId)
+    units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
 
     if request.method == "GET":
         return render_template("defense.html", units=units)

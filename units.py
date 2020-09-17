@@ -299,7 +299,7 @@ class SpyUnit(BlueprintUnit):
 
     def buy(): pass
 
-
+# make an instance of this object with Units(cId)
 class Units(Military):
 
     allUnits = ["soldiers", "tanks", "artillery",
