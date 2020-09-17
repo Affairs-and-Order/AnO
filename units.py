@@ -338,7 +338,7 @@ class Units(Military):
     #    - units_count how many selected_units should be given (will be validated)
     #        example: units_count = 3 when 3 different unit_type should be selected (like from warchoose)
     #        example: units_count = 1 when 1 unit_type sould be selected (like a special unit: nuke, icmb)
-    def attach_units(self, selected_units: dict, units_count: int) -> Union(str, None):
+    def attach_units(self, selected_units: dict, units_count: int) -> Union[str, None]:
         unit_types = list(selected_units.keys())
         normal_units = self.get_military(self.user_id)
         special_units = self.get_special(self.user_id)
@@ -388,7 +388,7 @@ class Units(Military):
         connection.close()
 
     # Attack with all units contained in selected_units
-    def attack(self, attacker_unit: str, target: str) -> Union(str, tuple, None):
+    def attack(self, attacker_unit: str, target: str) -> Union[str, tuple, None]:
         if self.selected_units:
 
             # Call interface to unit type
