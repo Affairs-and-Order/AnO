@@ -286,13 +286,13 @@ def warAmount():
         if len(units_name) == 3:  # this should happen if 3 regular units
             for number in range(1, 4):
                 unit_amount = request.form.get(f"u{number}_amount")
-                print(unit_amount)  # debugging
-
-                # commented out for now because the flask request doesn"t appear to get the values
+                print(unit_amount)
                 if not unit_amount:
                     flash("Invalid name argument coming in")
-
-                selected_units[units_name[number-1]] = int(unit_amount)
+                try:
+                    selected_units[units_name[number-1]] = int(unit_amount)
+                except:
+                    return "Unit amount entered was not a number" # add javascript checks for this in the front end
 
             # Check every time when user input comes in lest user bypass input validation
             # Error code if any else return None
@@ -354,8 +354,8 @@ def warResult():
     attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
 
     # grab defending enemy units from database
-    # eId = session["enemy_id"]  # this data is in the form of an integer
-    eId = 10
+    eId = session["enemy_id"]
+    # eId = 10
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
     defensestring = db.execute(
