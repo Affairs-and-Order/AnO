@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from attack_scripts import Military
 from random import randint
+from typing import Union
 
 # Blueprint for units
 
@@ -319,7 +320,7 @@ class Units(Military):
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
-    def __init__(self, user_id, selected_units=None, bonuses=None, selected_units_list=None):
+    def __init__(self, user_id, selected_units: dict=None, bonuses: int=None, selected_units_list: list=None):
         self.user_id = user_id
         self.selected_units = selected_units
         self.bonuses = bonuses
@@ -336,7 +337,7 @@ class Units(Military):
     #    - units_count how many selected_units should be given (will be validated)
     #        example: units_count = 3 when 3 different unit_type should be selected (like from warchoose)
     #        example: units_count = 1 when 1 unit_type sould be selected (like a special unit: nuke, icmb)
-    def attach_units(self, selected_units, units_count):
+    def attach_units(self, selected_units: dict, units_count: int) -> Union(str, None):
         unit_types = list(selected_units.keys())
         normal_units = self.get_military(self.user_id)
         special_units = self.get_special(self.user_id)
@@ -386,7 +387,7 @@ class Units(Military):
         connection.close()
 
     # Attack with all units contained in selected_units
-    def attack(self, attacker_unit, target):
+    def attack(self, attacker_unit: str, target: str) -> Union(str, tuple, None):
         if self.selected_units:
 
             # Call interface to unit type
@@ -416,7 +417,7 @@ class Units(Military):
         else:
             return "Units are not attached!"
 
-    def casualties(self, unit_type, amount):
+    def casualties(self, unit_type: str, amount: int):
         new_unit_amount = int(self.selected_units[unit_type]-amount)
 
         if new_unit_amount < 0:
