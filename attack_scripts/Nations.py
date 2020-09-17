@@ -103,9 +103,13 @@ class Military:
         # close victory
         else: pass
 
+        # Maybe use the damage property also in unit loss
+        # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
             winner.casualties(winner_unit, winner_casulties*random.uniform(0.8, 1))
-            loser.casualties(loser_unit, win_type*random.uniform(0.8, 1))
+            loser.casualties(loser_unit, win_type*6*random.uniform(0.8, 1))
+
+        return winner.user_id
 
         # DEBUGGING:
         # print("WINNER IS:", winner.user_id)

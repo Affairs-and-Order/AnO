@@ -357,9 +357,13 @@ def warTarget():
 def warResult():
     # grab your units from session
     # this data is in the form of Units object
-    attackunits = session["attack_units"]
+
+    # attackunits = session["attack_units"]
+    attackunits = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
+
     # grab defending enemy units from database
-    eId = session["enemy_id"]  # this data is in the form of an integer
+    # eId = session["enemy_id"]  # this data is in the form of an integer
+    eId = 10
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
     defensestring = db.execute(
@@ -375,6 +379,8 @@ def warResult():
     for unit in defenselst:
         defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
 
+    print(defenseunits)
+
     # multiply all your unit powers together, with bonuses if a counter is found
 
     # multiply all enemy defending units together, with bonuses if a counter is found
@@ -383,7 +389,33 @@ def warResult():
     # how do units fight: call the fight method somewhere lets find it
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
+    # Currently only for normal units (note: for special units also implemented but not connected to warResult)
+    defender = Units(eId, defenseunits, selected_units_list=list(defenseunits.keys()))
+    print(attackunits.selected_units)
+    winner = Military.fight(attackunits, defender)
 
+    print(winner, defender.selected_units)
+    print(attackunits.selected_units)
+    if winner == defender.user_id:
+        pass
+    else:
+        # TODO: Add morale to wars table
+        morale = 0
+
+        # When lose the war
+        if morale == 0:
+            # WAR TYPES
+            # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+            # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
+            # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+            war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attackunits.user_id, defender.user_id)).fetchall()[-1]
+            if war_type == "raze" : pass
+            elif war_type == "sustained": pass
+            elif war_type == "loot": pass
+            else:
+                print("INVALID WARTYPE")
+
+    # This is already checked in the Military->fight
     # if your score is higher by 3x, annihilation,
     # if your score is higher by 2x, definite victory
     # if your score is higher, close victory,
@@ -438,12 +470,6 @@ def warResult():
     # "tactical" --> winning gives 1x loot 1x reparation tax
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
-
-    # WAR TYPES
-    # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
-    # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
-    # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-
 
     return render_template("warResult.html")
 
