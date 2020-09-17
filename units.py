@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from attack_scripts import Military
 from random import randint
 from typing import Union
+import sqlite3
 
 # Blueprint for units
 
