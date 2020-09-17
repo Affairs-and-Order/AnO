@@ -4,7 +4,7 @@ import os
 
 path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
-def calculate_bonuses(attack_effects, enemy_object, target):
+def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -> int
     # Calculate the percentage of total units will be affected
     defending_unit_amount = enemy_object.selected_units[target]
 
@@ -24,10 +24,11 @@ def calculate_bonuses(attack_effects, enemy_object, target):
     # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
     return attack_effects
 
+# there are no instances of base class Military
 class Military:
 
     @staticmethod
-    def special_fight(attacker, defender, target):
+    def special_fight(attacker, defender, target): # Units, Units, int -> str, None
         target_amount = defender.get_military(defender.user_id).get(target, None)
 
         if target_amount != None:
@@ -83,7 +84,7 @@ class Military:
     blockade: enemy can no longer trade
     air control: enemy bomber power reduced by 60%'''
     @staticmethod
-    def fight(attacker, defender): # each arg is Units object, defined in units.py, allUnits list, allUnitInterfaces list, attach_units function, save function, attack function, casualties function, attack_cost function
+    def fight(attacker, defender): # Units, Units -> int
 
         attacker_roll = random.uniform(0, 10)
         attacker_chance = 0
@@ -158,7 +159,7 @@ class Military:
     # select only needed units instead of all
     # particular_units must be a list of string unit names
     @staticmethod
-    def get_particular_units_list(cId, particular_units):
+    def get_particular_units_list(cId, particular_units): # int, list -> list
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
@@ -186,7 +187,7 @@ class Military:
         return unit_lst # this is a list of the format [100, 50, 50]
 
     @staticmethod
-    def get_military(cId):
+    def get_military(cId): # int -> dict
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         tanks = db.execute(
@@ -223,7 +224,7 @@ class Military:
         }
 
     @staticmethod
-    def get_special(cId):
+    def get_special(cId): # int -> dict
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         spies = db.execute(
@@ -241,7 +242,7 @@ class Military:
         }
 
     # Check and set default_defense in nation table
-    def set_defense(self, defense_string):
+    def set_defense(self, defense_string): # str -> None
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         defense_list = defense_string.split(",")
