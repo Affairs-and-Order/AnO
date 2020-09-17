@@ -28,8 +28,22 @@ class Military:
 
     @staticmethod
     def special_fight(attacker, defender, target):
-        attack_effects = attacker.attack(attacker.selected_units_list[0], target)
-        
+        target_amount = defender.get_military(defender.user_id).get(target, None)
+
+        if target_amount != None:
+            special_unit = attacker.selected_units_list[0]
+            attack_effects = attacker.attack(special_unit, target)
+
+            # Surely destroy this percentage of the targeted units
+            min_destruction = target_amount*(1/5)*(attack_effects[0]*attacker.selected_units[special_unit])
+
+            # Random bonus on unit destruction
+            destruction_rate = random.uniform(1, 2)
+
+            final_destruction = destruction_rate*min_destruction
+
+        else:
+            return "Invalid target is selected!"
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
     @staticmethod
@@ -122,6 +136,7 @@ class Military:
         cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','ICBMs','nukes','destroyer','cruisers','submarines']
         for count, item in enumerate(cidunits):
             unit_to_amount_dict[item] = allAmounts[0][count]
+        print(unit_to_amount_dict)
         # make a dictionary with 3 keys, listed in the particular_units list
         unit_lst = []
         for unit in particular_units:

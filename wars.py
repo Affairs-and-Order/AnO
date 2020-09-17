@@ -320,8 +320,11 @@ def warAmount():
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
     if request.method == "GET":
-        cId = session["user_id"]
-        eId = session["enemy_id"]
+        # cId = session["user_id"]
+        # eId = session["enemy_id"]
+        cId = 11
+        eId = 10
+
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         revealed_info = db.execute(

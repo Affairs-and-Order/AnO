@@ -13,7 +13,8 @@ class BlueprintUnit(ABC):
     Neccessary variables:
         - unit_type: used to identify interfaces (i.e. TankUnit, SoldierUnit) for particular units
         - bonus: used to calculate the battle advantage
-        - damage: used to determine the damage dealt to the target (infra, other buildings)
+        - damage: used to determine the damage dealt to a specific target (infra, other buildings), used for percentage calculation
+            * in case of nukes: damage in nuke is the pure damage to units and infrastructure (when nuke targeted to a single object/unit damage is dealt)
     """
 
     damage = 0
@@ -379,7 +380,6 @@ class Units(Military):
         db = connection.cursor()
 
         # IMPORTANT: this is used during development because it is SQL injectable
-        # print("RUN")
         # db.execute("UPDATE military SET {}=(?) WHERE id=(?)".format("soldiers=0, tanks=123 where id=1 --"), (66, self.user_id))
 
         connection.commit()
@@ -422,9 +422,8 @@ class Units(Military):
         if new_unit_amount < 0:
             new_unit_amount = 0
 
-        self.selected_units[unit_type] = new_unit_amount
-
         # Save it to the database
+        self.selected_units[unit_type] = new_unit_amount
 
     # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
     def attack_cost(self, cost):
@@ -464,12 +463,16 @@ if __name__ == "__main__":
     # l.attack_cost(600)
 
     # CASE FOR SPECIAL FIGHT
-    # attacker = Units(11, {"nukes": 2}, selected_units_list=["nukes"])
-    # defender = Units(10, {""})
-    # Military.special_fight(attacker, None, "submarines")
     attacker = Units(11)
-    # attacker.attach_units({"nukes": 3}, 1)
-    # print(attacker.attach_units({"artillery": 10, "tanks": 31, "soldiers": 10}, 3))
+    defender = Units(10)
+
+    defender.attach_units({"soldiers": 10, "tanks": 0, "artillery": 0}, 3)
+    error = attacker.attach_units({"nukes": 1}, 1)
+    if error:
+        print(error)
+
+    attacker.special_fight(attacker, defender, "soldiers")
+
 
     # CASE 1
     # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},
