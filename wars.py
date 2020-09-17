@@ -343,14 +343,6 @@ def warTarget():
 # infra damage, building damage
 # giant loot, coalition loot, reparation tax set if morale reaches 0
 
-# def fight(attackunits, defenseunits):
-#     score = 0
-#     for attunit, attamount in attackunits.items():
-#         for defunit, defamount in defenseunits.items():
-#             if attunit == "soldiers" and defunit == "tanks":
-#                 attamount = attamount * 0.4
-#             if attunit == "soldiers" and
-
 
 @login_required
 @app.route("/warResult", methods=["GET"])
@@ -358,8 +350,8 @@ def warResult():
     # grab your units from session
     # this data is in the form of Units object
 
-    # attackunits = session["attack_units"]
-    attackunits = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
+    # attacker = session["attack_units"]
+    attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
 
     # grab defending enemy units from database
     # eId = session["enemy_id"]  # this data is in the form of an integer
@@ -370,7 +362,7 @@ def warResult():
         "SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
     # dev: making sure these values are correct
-    print(attackunits.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
+    print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
     print(eId, "| eId") # 10 | eId
     print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
 
@@ -385,12 +377,12 @@ def warResult():
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
     # Currently only for normal units (note: for special units also implemented but not connected to warResult)
-    defender = Units(eId, defenseunits, selected_units_list=list(defenseunits.keys()))
-    print(attackunits.selected_units)
-    winner = Military.fight(attackunits, defender)
+    defender = Units(eId, defenseunits, selected_units_list=defenselst)
+    print(attacker.selected_units)
+    winner = Military.fight(attacker, defender)
 
     print(winner, defender.selected_units)
-    print(attackunits.selected_units)
+    print(attacker.selected_units)
     if winner == defender.user_id:
         pass
     else:
@@ -403,7 +395,7 @@ def warResult():
             # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
             # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
             # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-            war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attackunits.user_id, defender.user_id)).fetchall()[-1]
+            war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attacker.user_id, defender.user_id)).fetchall()[-1]
             if war_type == "raze" : pass
             elif war_type == "sustained": pass
             elif war_type == "loot": pass
