@@ -25,7 +25,7 @@ function menubardrop() {
 
     document.getElementById("menubardiv").classList.toggle("menubardivshow");
 
-    //    
+    //
 
     document.getElementById("bar1").classList.toggle("barclick1");
 
@@ -673,6 +673,16 @@ function assign_parameters() {
     }
 
     return false;
+}
+
+function submit_special(e) {
+  const special_unit = document.querySelector("input[name=special_unit]");
+  if(document.getElementById(11).checked) {
+    special_unit.value = "nukes";
+  }
+  else if(document.getElementById(10).checked) {
+    special_unit.value = "icmbs"
+  }
 }
 
 function submit_next(e) {

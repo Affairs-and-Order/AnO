@@ -302,7 +302,7 @@ class SpyUnit(BlueprintUnit):
 class Units(Military):
 
     allUnits = ["soldiers", "tanks", "artillery",
-                "bombers", "fighters", "apaches"
+                "bombers", "fighters", "apaches",
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
     # spyunit not included because it has no interactions with other units, so it doesnt need to run inside the Units.attack method.
@@ -353,6 +353,16 @@ class Units(Military):
                 if selected_units[current_unit] > available_units[current_unit]:
                     return "Invalid amount selected!"
 
+                # Check for attack cost
+                for interface in self.allUnitInterfaces:
+                    if interface.unit_type == current_unit:
+                        supply_check = self.attack_cost(interface.supply_cost*selected_units[current_unit])
+
+                        if supply_check:
+                            return supply_check
+
+                        break
+
                 units_count -= 1
         except Exception as e:
             print(e)
@@ -389,9 +399,10 @@ class Units(Military):
                     if unit_amount == None:
                         return "Unit is not valid!"
 
-                    supply = self.attack_cost(interface.supply_cost)
-                    if supply:
-                        return supply
+                    # interface.supply_cost*self.selected_units[attacker_unit] - calculates the supply cost based on unit amount
+                    # supply = self.attack_cost(interface.supply_cost*self.selected_units[attacker_unit])
+                    # if supply:
+                        # return supply
 
                     if unit_amount != 0:
                         interface_object = interface(unit_amount)
@@ -415,7 +426,7 @@ class Units(Military):
 
         # Save it to the database
 
-    # Determine supply cost from unit_interface and check if user can't pay for it (can't give enought supplies)
+    # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
     def attack_cost(self, cost):
 
         if not self.available_supplies:
@@ -433,9 +444,12 @@ class Units(Military):
             else:
                 self.available_supplies = db.execute("SELECT defender_supplies FROM wars WHERE defender=(?)", (self.user_id,)).fetchone()[0]
 
-        if cost > self.available_supplies:
-            return "Not enougth supplies available"
+        if self.available_supplies < 200:
+            return "The minimum supply amount is 200"
 
+        self.supply_costs += cost
+        if self.supply_costs > self.available_supplies:
+            return "Not enougth supplies available"
 
 # DEBUGGING
 if __name__ == "__main__":
@@ -450,9 +464,12 @@ if __name__ == "__main__":
     # l.attack_cost(600)
 
     # CASE FOR SPECIAL FIGHT
-    attacker = Units(11, {"nukes": 1}, selected_units_list=["nukes"])
+    # attacker = Units(11, {"nukes": 2}, selected_units_list=["nukes"])
     # defender = Units(10, {""})
-    Military.special_fight(attacker, None, "submarines")
+    # Military.special_fight(attacker, None, "submarines")
+    attacker = Units(11)
+    # attacker.attach_units({"nukes": 3}, 1)
+    # print(attacker.attach_units({"artillery": 10, "tanks": 31, "soldiers": 10}, 3))
 
     # CASE 1
     # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},

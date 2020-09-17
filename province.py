@@ -54,6 +54,9 @@ def province(pId):
         name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         pollution = db.execute("SELECT pollution FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        happiness = db.execute("SELECT happiness FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        productivity = db.execute("SELECT productivity FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        consumer_spending = db.execute("SELECT happiness FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
 
         cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
@@ -84,7 +87,9 @@ def province(pId):
         connection.close()
 
         return render_template("province.html", pId=pId, population=population, name=name,
-                               cityCount=cityCount, land=land, pollution=pollution,
+                               cityCount=cityCount, land=land, pollution=pollution, consumer_spending=consumer_spending,
+                               happiness=happiness, productivity=productivity,
+
                                oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
                                gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
                                banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,

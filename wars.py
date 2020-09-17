@@ -194,7 +194,8 @@ def war_with_id(war_id):
 @login_required
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
-    cId = session["user_id"]
+    # cId = session["user_id"]
+    cId = 11
 
     if request.method == "GET":
 
@@ -212,36 +213,45 @@ def warChoose():
         # store the 3 values in session and retrieve it in waramount later
 
         selected_units = {}
-        selected_units[request.form.get("u1")] = 0
-        selected_units[request.form.get("u2")] = 0
-        selected_units[request.form.get("u3")] = 0
+
+        # If special unit sent
+        special_unit = request.form.get("special_unit")
+        if special_unit:
+            selected_units[special_unit] = 0
+            unit_amount = 1
+
+         # If regular units sent
+        else:
+            selected_units[request.form.get("u1")] = 0
+            selected_units[request.form.get("u2")] = 0
+            selected_units[request.form.get("u3")] = 0
+            unit_amount = 3
 
         attack_units = Units(cId)
 
         # Output error if any
-        error = attack_units.attach_units(selected_units, 3)
+        error = attack_units.attach_units(selected_units, unit_amount)
+        if error:
+            return error
 
         # cache Unit object reference in session
         session["attack_units"] = attack_units
-
         return redirect("/waramount")
 
 # page 2 choose how many of each of your units to send
-@login_required
+# @login_required
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
-    cId = session["user_id"]
+    # cId = session["user_id"]
+    cId = 11
 
     if request.method == "GET":
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
-
-        # after the user clicks choose amount, they come to this page.
         attack_units = session["attack_units"]
 
-
-
-        print(attack_units, attack_units.selected_units, attack_units.selected_units_list)  # just clarifying the data structure, comment/delete at production
+        print("from waramount")
+        print(attack_units, attack_units.selected_units, attack_units.selected_units_list)
 
         # grab supplies amount
         # if the user is the attacker in the war
@@ -249,11 +259,6 @@ def warAmount():
         # supplies = db.execute("SELECT attacker_supplies FROM wars WHERE id=(?)", (cId,)).fetchone()[0]
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-
-        # Hello here, the below code what is commented out is not working so in this way we can"t solve the SQL injection problem. When you try to assign dynamically to "SELECT ?" it just gives back the column name.
-
-        # Possible solution for SQLi: use SQL variables (SQLite doesen"t support variables but maybe Postgres does)
-        # get all the unit amounts
 
         unitamounts = Military.get_particular_units_list(cId, attack_units.selected_units_list)
         # turn this dictionary into a list of its values
@@ -267,7 +272,7 @@ def warAmount():
 
     elif request.method == "POST":
 
-        # Separate object"s units list from now units list
+        # Separate object's units list from new units list
         attack_units = session["attack_units"]
         selected_units = attack_units.selected_units_list
 
@@ -278,7 +283,7 @@ def warAmount():
         units_name = list(selected_units.keys())
 
         # check if its 3 regular units or 1 special unit (missile or nuke)
-        if (len(units_name) == 3):  # this should happen if 3 regular units
+        if len(units_name) == 3:  # this should happen if 3 regular units
             for number in range(1, 4):
                 unit_amount = request.form.get(f"u{number}_amount")
                 print(unit_amount)  # debugging
@@ -287,17 +292,25 @@ def warAmount():
                 if not unit_amount:
                     flash("Invalid name argument coming in")
 
-                #selected_units[units_name[number-1]] = int(unit_amount)
+                selected_units[units_name[number-1]] = int(unit_amount)
 
             # Check every time when user input comes in lest user bypass input validation
-            # Error code if any
+            # Error code if any else return None
             error = session["attack_units"].attach_units(selected_units, 3)
-            print(error)
+            if error:
+                return error
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
             return redirect("/warResult")  # warTarget route is skipped
-        elif (len(units_name) == 1):  # this should happen if special
+
+        elif len(units_name) == 1:  # this should happen if special
+            selected_units[units_name[0]] = int(request.form.get("u1_amount"))
+            error = session["attack_units"].attach_units(selected_units, 1)
+            if error:
+                return error
+
             return redirect("/wartarget")
+
         else:  # lets just leave this here if something dumb happens, then we can fix it!
             return ("everything just broke")
 
