@@ -46,6 +46,42 @@ class Military:
             return "Invalid target is selected!"
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
+    '''
+    This is already checked in the Military->fight
+    if your score is higher by 3x, annihilation,
+    if your score is higher by 2x, definite victory
+    if your score is higher, close victory,
+    if your score is lower, close defeat, 0 damage,
+    if your score is lower by 2x, massive defeat, 0 damage
+
+    from annihilation (resource, field, city, depth, blockade, air):
+    soldiers: resource control
+    tanks: field control and city control
+    artillery: field control
+    destroyers: naval blockade
+    cruisers: naval blockade
+    submarines: depth control
+    bombers: field control
+    apaches: city control
+    fighter jets: air control
+
+    counters | countered by
+    soldiers beat artillery, apaches | tanks, bombers
+    tanks beat soldiers | artilllery, bombers
+    artillery beat tanks | soldiers
+    destroyers beat submarines | cruisers, bombers
+    cruisers beat destroyers, fighters, apaches | submarines
+    submarines beat cruisers | destroyers, bombers
+    bombers beat soldiers, tanks, destroyers, submarines | fighters, apaches
+    apaches beat soldiers, tanks, bombers, fighters | soldiers
+    fighters beat bombers | apaches, cruisers
+
+    resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers and 50% of their total munitions)
+    field control: soldiers gain 2x power
+    city control: 2x morale damage
+    depth control: missile defenses go from 50% to 20% and nuke defenses go from  35% to 10%
+    blockade: enemy can no longer trade
+    air control: enemy bomber power reduced by 60%'''
     @staticmethod
     def fight(attacker, defender): # each arg is Units object, defined in units.py, allUnits list, allUnitInterfaces list, attach_units function, save function, attack function, casualties function, attack_cost function
 
@@ -103,9 +139,13 @@ class Military:
         # close victory
         else: pass
 
+        # Maybe use the damage property also in unit loss
+        # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
             winner.casualties(winner_unit, winner_casulties*random.uniform(0.8, 1))
-            loser.casualties(loser_unit, win_type*random.uniform(0.8, 1))
+            loser.casualties(loser_unit, win_type*6*random.uniform(0.8, 1))
+
+        return winner.user_id
 
         # DEBUGGING:
         # print("WINNER IS:", winner.user_id)

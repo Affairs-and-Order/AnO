@@ -357,9 +357,13 @@ def warTarget():
 def warResult():
     # grab your units from session
     # this data is in the form of Units object
-    attackunits = session["attack_units"]
+
+    # attackunits = session["attack_units"]
+    attackunits = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
+
     # grab defending enemy units from database
-    eId = session["enemy_id"]  # this data is in the form of an integer
+    # eId = session["enemy_id"]  # this data is in the form of an integer
+    eId = 10
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
     defensestring = db.execute(
@@ -375,50 +379,38 @@ def warResult():
     for unit in defenselst:
         defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
 
-    # multiply all your unit powers together, with bonuses if a counter is found
+    print(defenseunits)
 
-    # multiply all enemy defending units together, with bonuses if a counter is found
-    # something something Units, Nations, Military
 
-    # how do units fight: call the fight method somewhere lets find it
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
-    # how to make a Units object hmmm
-    Military.fight(attackers, defenders)
-    # if your score is higher by 3x, annihilation,
-    # if your score is higher by 2x, definite victory
-    # if your score is higher, close victory,
-    # if your score is lower, close defeat, 0 damage,
-    # if your score is lower by 2x, massive defeat, 0 damage
+    # Currently only for normal units (note: for special units also implemented but not connected to warResult)
+    defender = Units(eId, defenseunits, selected_units_list=list(defenseunits.keys()))
+    print(attackunits.selected_units)
+    winner = Military.fight(attackunits, defender)
 
-    # from annihilation (resource, field, city, depth, blockade, air):
-    # soldiers: resource control
-    # tanks: field control and city control
-    # artillery: field control
-    # destroyers: naval blockade
-    # cruisers: naval blockade
-    # submarines: depth control
-    # bombers: field control
-    # apaches: city control
-    # fighter jets: air control
+    print(winner, defender.selected_units)
+    print(attackunits.selected_units)
+    if winner == defender.user_id:
+        pass
+    else:
+        # TODO: Add morale to wars table
+        morale = 0
 
-    # counters | countered by
-    # soldiers beat artillery, apaches | tanks, bombers
-    # tanks beat soldiers | artilllery, bombers
-    # artillery beat tanks | soldiers
-    # destroyers beat submarines | cruisers, bombers
-    # cruisers beat destroyers, fighters, apaches | submarines
-    # submarines beat cruisers | destroyers, bombers
-    # bombers beat soldiers, tanks, destroyers, submarines | fighters, apaches
-    # apaches beat soldiers, tanks, bombers, fighters | soldiers
-    # fighters beat bombers | apaches, cruisers
+        # When lose the war
+        if morale == 0:
+            # WAR TYPES
+            # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+            # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
+            # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+            war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attackunits.user_id, defender.user_id)).fetchall()[-1]
+            if war_type == "raze" : pass
+            elif war_type == "sustained": pass
+            elif war_type == "loot": pass
+            else:
+                print("INVALID WARTYPE")
 
-    # resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers and 50% of their total munitions)
-    # field control: soldiers gain 2x power
-    # city control: 2x morale damage
-    # depth control: missile defenses go from 50% to 20% and nuke defenses go from  35% to 10%
-    # blockade: enemy can no longer trade
-    # air control: enemy bomber power reduced by 60%
+
 
     # A = defendingscore / attackingscore
     # B = attackingscore / defendingscore
@@ -439,12 +431,6 @@ def warResult():
     # "tactical" --> winning gives 1x loot 1x reparation tax
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
-
-    # WAR TYPES
-    # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
-    # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
-    # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-
 
     return render_template("warResult.html")
 

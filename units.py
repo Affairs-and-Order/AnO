@@ -76,7 +76,7 @@ class TankUnit(BlueprintUnit):
         # One tank becomes 4x more effectiveness vs soldiers.
         if defending_units == 'soldiers':
             self.damage += 2
-            self.bonus += 4 * self.amount
+            self.bonus += 6 * self.amount
         if defending_units == "artillery":
             self.bonus -= 3 * self.amount
         # Micro randomization
