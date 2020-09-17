@@ -44,10 +44,10 @@ class SoldierUnit(BlueprintUnit):
     damage = 1
     supply_cost = 5
 
-    def __init__(self, amount):
+    def __init__(self, amount: int) -> None:
         self.amount = amount
 
-    def attack(self, defending_units):
+    def attack(self, defending_units: str) -> list:
         if defending_units == "artillery":
             # self.damage += 55
             self.bonus += 3 * self.amount
@@ -368,7 +368,7 @@ class Units(Military):
                 units_count -= 1
         except Exception as e:
             print(e)
-            return "Not enoutgh unit type selected"
+            return "Not enough unit type selected"
 
         # If the validation is ended successfully
         else:
@@ -417,7 +417,7 @@ class Units(Military):
         else:
             return "Units are not attached!"
 
-    def casualties(self, unit_type: str, amount: int):
+    def casualties(self, unit_type: str, amount: int) -> None:
         new_unit_amount = int(self.selected_units[unit_type]-amount)
 
         if new_unit_amount < 0:
@@ -427,7 +427,7 @@ class Units(Military):
         self.selected_units[unit_type] = new_unit_amount
 
     # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
-    def attack_cost(self, cost):
+    def attack_cost(self, cost: int) -> str:
 
         if not self.available_supplies:
             import sqlite3
