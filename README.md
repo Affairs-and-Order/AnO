@@ -48,7 +48,9 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 3. Run *1* worker by running: `celery -A app.celery worker --loglevel=INFO` in another terminal window.
 4. For `celery` to work, RabbitMQ must be running.
 
-### Affairs and Order
+Google doc version control below:
+
+Affairs and Order
 Now crystal free!
 
 
@@ -97,7 +99,7 @@ Cruisers
 Submarines
 Attacking mechanics
 
-### General Stuff
+General Stuff
 
 VC stuff we discussed that’s worthwhile implementing
 
@@ -130,7 +132,7 @@ In game sue for peace feature
 
 
 
-### Countries: 
+Countries: 
 
 
 New:
@@ -151,8 +153,7 @@ How should we split the revenue? What amount:
 
 If the game makes revenue it will be split according to work done by each person.
 
-
-### Coalitions
+Coalitions
 
 Coalition typed: trade war eco bank
 
@@ -163,7 +164,7 @@ Eco:
 
 
 
-### War:
+War:
 
 +15% defensive war bonus vs coalitions you haven’t declared war on
 While at war you may only trade within your own coalition 
@@ -176,7 +177,7 @@ Bank:
 Resources:
 
 
-### Raw resources:
+Raw resources:
 
 Bauxite
 Rations
@@ -188,7 +189,7 @@ Lead
 Copper
 Lumber
 
-### Processed resources:
+Processed resources:
 
 Components - aluminium + steel
 Steel-  Coal + Iron
@@ -201,29 +202,21 @@ If your people have rations: Rations increases consumer spending by 300%
 If your military has ammunition: Ammunition increases military power (for every unit) by 1.5x
 
 
-### Provinces
+Provinces
 
 Provinces start with 1 city slot and 1 land slot.
 
-Each province costs 50k rn. To change that, please edit this document -- t0dd
+The first province costs 50k, with a 0.25x increase in price for each province
+. To change that, please edit this document -- t0dd
+Cities:
 
 
+More cities can be purchased at an increasing cost for every time (done, right now the default is 10%).
+
+Each city provides another 1 infrastructure slots and +1% overall consumer spending in the province.
 
 
-
-
-
-
-### Cities:
-
-
-
-
-
-More cities can be purchased at an increasing cost for every time. Each city provides another 3 infrastructure slots and +1% overall consumer spending in the province.
-
-
-### Land
+Land
 Population - increases tax income
 Happiness - affects population ( -100% - 100%)
 Pollution - decreases population (0% - 100%)
@@ -241,52 +234,53 @@ City infrastructure:
 
 
 
-### Electricity:
+Electricity:
 
-Coal burner + 4 energy + 30 POLLUTION- $40K / HOUR
+Coal burner + 4 energy -48 coal + 30 POLLUTION- $45K / HOUR
 
-Oil burner + 3 energy + 25 POLLUTION -$60K / HOUR
+Oil burner + 3 energy -56 oil + 21 POLLUTION -$60K / HOUR
 
 Solar field + 3 energy -$150K / HOUR
 
 Hydro Dam + 6 energy- $250K / HOUR
 
-Nuclear Reactor +12 energy -$1.2M / HOUR
+Nuclear Reactor +12 energy -32 uranium -$1.2M / HOUR
 
 NOTE: 1 energy = 1 infrastructure slot (that isn’t electricity) powered. Talk with carson if this is unclear
 
 
-### Retail:
+Retail:
 
 (requires city slots)
 
-Gas Station +4 consumer goods -$20K / HOUR MAX 4
+Gas Station +12 consumer goods +4% pollution -$20K / HOUR MAX 4
 
-General Store +9 consumer goods -$35K / HOUR MAX 4
+General Store +9 consumer goods + 1% pollution -$35K / HOUR MAX 4
 
-Farmers Market +15 consumer goods -$110K / HOUR MAX 4
-
-Mall +22 consumer goods -$300K / HOUR MAX 4
+Farmers Market +16 consumer goods +6% pollution -$110K / HOUR MAX 4
 
 
-Bank +30 consumer goods -$800K / HOUR MAX 4
+Bank +25 consumer goods -$320K / HOUR MAX 4
+
+Mall +34 consumer goods +10% pollution  -$750K / HOUR MAX 4
+
+
+Public Works
 
 
 
 
-### Public Works
+Library + 2% happiness +2% productivity -$90K / HOUR MAX 2
 
 
-City Park +3% happiness -$20K / HOUR MAX 4
+City Park +3% happiness -6% pollution -$20K / HOUR MAX 4
 
-Hospital +8% happiness -$60K / HOUR MAX 4
+Hospital +8% population -$60K / HOUR MAX 4
 
-Library + 5% happiness +5% productivity -$90K / HOUR MAX 2
-
-University + 12% productivity -$150K / HOUR MAX 2
+University + 6% productivity +6% Happiness  -$150K / HOUR MAX 2
 
 
-Skytrain + 15% productivity -$210K / HOUR MAX 2
+Monorail + 12% productivity -10% pollution -$210K / HOUR MAX 2
 
 
 
@@ -303,24 +297,24 @@ Rations ALWAYS: Farm + 30 food / HOUR PER / 1 land slot -3K /HOUR
 
 4 other continent specific resources
 
-Pumpjacks - oil +25 oil -$10K / HOUR
+Pumpjacks - oil +23 oil -$10K / HOUR
 
-Coal mine - Coal oil +25 Coal -$10K / HOUR
+Coal mine - Coal oil +26 Coal -$10K / HOUR
 
 
-Bauxite mine Bauxite +25 Bauxite -$8K / HOUR
+Bauxite mine Bauxite +20 Bauxite -$8K / HOUR
 
-Copper mine Copper +25 Copper -$8K / HOUR
+Copper mine Copper +32 Copper -$8K / HOUR
 
-Uranium mine Uranium +25 Uranium -$18K / HOUR
+Uranium mine Uranium +12 Uranium -$18K / HOUR
 
-Lead mine Lead +25 Lead -$12K / HOUR
+Lead mine Lead +18 Lead -$12K / HOUR
 
 Iron mine Iron +25 Iron -$12K / HOUR
 
 
 
-### Military:
+Military:
 
 
 (requires land slots)
@@ -335,26 +329,25 @@ Administrative building - allows recruitment of spies -$60K / HOUR
 
 Silo - allows production of missiles and nukes when researched -$120K / HOUR
 
+Adding more army bases after the first one would have the benefit of allowing more recruitment per hour and total capacity (applies for all military buildings)
+
+Since multiple units all come from the same building, each building would share the same recruiting pool. EX: 1 army base can recruit 100 soldier, or 10 tanks, or 5 artillery per hour, up to a max of 10,000 soldiers, 1,000 tanks, and 500 artillery per base.
 
 
 
 
-### Processing:
+Processing:
 
 (requires land slots)
 
 
-Components factory - produces components  converts 40 oil into 5 components/ HOUR -$220K / HOUR
+Components factory - converts 20 copper, 10 steel, and 15 aluminium into 5 components/ HOUR -$220K / HOUR
 
 Steel Mill - converts 35 coal and iron into 15 steel / HOUR -$180K / HOUR
 
 Ammunition Factory - converts 10 copper and 20 lead into 10 ammunition / HOUR -$140K / HOUR
 
 Aluminum refinery - converts 15 bauxite into 12 aluminum/ HOUR -$150K / HOUR
-
-
-//not enough space
-Warehouse - produces consumer goods
 
 Oil processor - converts 20 oil into 8 gasoline / HOUR -$160K / HOUR
 
@@ -366,7 +359,7 @@ Oil processor - converts 20 oil into 8 gasoline / HOUR -$160K / HOUR
 
 
 
-### Infrastructure
+Infrastructure
 
 
 
@@ -390,26 +383,79 @@ War policy:
 
 
 
-### Public Projects
+Upgrades
 
-2 project slots every province you own
+2 upgrade slots for every province you own
 7 day project timer
 15-20 total projects
 More branching off projects, 3 or 4 tiers 
 
-Propaganda Center:
 
-Loose 10% less morale in war, at anupkeep cost of 150,000 a day
 
-Homeless Shelters: Happiness + 15%
 
-nuclear testing facility: Allows development and deployment of nuclear bombs and advanced nuclear power plants to be built
+Economic Projects
 
-Missile Launch Base: Allows the development and and deployment short range missiles (they can only hit nations in the continent they are on)
+Electricity
 
-Intercontinental Missile Launch Base:Allows the deployment and development of long range missiles (they can hit any nation regardless of continent)
+(also requires a nuclear testing facility)
+Better engineering: Nuclear Reactors power 15 infrastructure slots instead of 12.
 
-Mercenary Market:allows the buying and selling of military units
+Cheaper Materials: Oil burners cost $40K per hour in upkeep instead of $60K
+
+Retail
+
+Online Shopping: Malls require $550K per hour in upkeep costs, instead of $750K per hour
+
+Government Regulation: retail pollution production -25%
+
+Public Works
+
+Nation Health Institution: Increases hospital population increase from 8% to 14%
+
+High Speed Rail: Increases monorail productivity increase from 12% to 16%
+
+Industry
+
+Advanced Machinery: Increases farm output per land per hour from 30 / land to 45 / land
+
+Stronger Explosives: Bauxite mines increase output from 20 per hour to 28 per hour
+
+Military
+
+Widespread Propaganda: Soldier recruitment cost $150 instead of $200, and cost 1 rations instead of 2 rations
+
+Increased Funding: Administrative Buildings can recruit x spies a day instead of x, and prodive a capacity of x instead of x.
+
+Processing
+
+Automation Integration: Components are made from 15 copper, 8 steel, and 12 aluminium instead of 20 copper, 10 steel, and 15 aluminium
+
+Larger Forges: Requires only 25 coal instead of 35 coal to produce steel
+
+War Projects
+
+Looting Teams: You will produce 210 supplies per hour for every war you’re, instead of 200 supplies
+
+| Unlockes
+
+Organized Supply Lines: Your military now gets 225 supplies per hour for every war, instead of 210
+
+| Unlockes
+
+Large Storehouses: Allows you to now produce 260 supplies per war for every war, instead of 225
+
+Ballistic Missile Launch Base: Allows the development and and deployment of Ballistic Missiles (they can only hit nations in the continent they are on)
+
+| Unlockes
+
+Intercontinental Ballistic Missile Launch Base:Allows the deployment and development of Inter-Continental Ballistic Missiles (they can hit any nation regardless of continent)
+
+| Unlockes
+
+nuclear testing facility: Allows development and deployment of nuclear bombs and nuclear reactors to be built
+
+
+
 Continents 
 
 
@@ -439,7 +485,7 @@ Description:Helrursus is a continent in the southeast just south of Bosfront it 
 If a resource isnt on a continent it cant be produced there except water that stays at base production 
 
 
-### War
+War
 multiply all your unit powers together, with bonuses if a counter is found
 multiply all enemy defending units together, with bonuses if a counter is found
 
@@ -449,7 +495,7 @@ if your score is higher, close victory,
 if your score is lower, close defeat, 0 damage, 
 if your score is lower by 2x, massive defeat, 0 damage
 
-### 6 Types of control gained from annihilation (resource, field, city, depth, blockade, air):
+6 Types of control gained from annihilation (resource, field, city, depth, blockade, air):
 soldiers: resource control
 tanks: field control and city control
 artillery: field control
@@ -460,7 +506,7 @@ bombers: field control
 apaches: city control
 fighter jets: air control
     
-### Counters:
+Counters:
 soldiers beat artillery
 tanks beat soldiers
 artillery beat tanks
@@ -471,7 +517,7 @@ bombers beat soldiers, tanks, destroyers, cruisers, submarines
 apaches beat soldiers, tanks, bombers, fighter jets
 fighter jets beat bombers
 
-### Bonuses gained from control
+Bonuses gained from control
 Resource control: soldiers can now loot enemy munitions (minimum between 1 per 100 soldiers vs Random 10-90% of their total munitions)
 field control: soldiers gain 2x power
 City control: 2x morale damage
@@ -480,14 +526,14 @@ Depth control: missile defenses go from 50% to 20% and nuke defenses go from  35
  Air control: enemy bomber power reduced by 60%
 
 
-### WAR POLICIES:
+WAR POLICIES:
   "empire builder"--> winning gives no loot 2x reparation tax
  "pirate" --> winning gives 2x more loot no reparation tax
  "tactical" --> winning gives 1x loot 1x reparation tax
  "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
  "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% of imposed reparation tax. 
 
-### WAR TYPES
+WAR TYPES
 “raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
 “sustained" --> 1x loot, 1x infra destruction, 1x building destroy
 “loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
@@ -514,7 +560,7 @@ Actions: You perform actions once you have 200 supplies. Supplies can stack up u
 Once you have the necessary 200 supplies you can attack with either your army, air force, navy, or special units. Once you have selected a category, you can choose one of the 3 units in the category to attack with. 
 Special exceptions: Spies cost 0 supplies, ICBMs cost 500, and Nukes cost 1,000 supplies.
 
-### Extra actions: 
+Extra actions: 
 
 You can fortify from enemy advancements. Fortifying costs 200 supplies and gives defensive troops in that province 30% more effectiveness against soldiers, tanks, and apaches. Fortification ends with an attack using any soldiers, tanks, artillery, or apaches. 
 
@@ -523,7 +569,7 @@ Provinces all have 100 morale in each individual war. Attacking defensive war br
 
 If you loose the war you are entitled to pay a days worth of income and ½ of resources on hand. You may go in debt if you do not have the money to pay out. The days worth of revenue is subtracted BEFORE the resources on hand.
 
-### Categories:
+Categories:
 
 Land, air, water - mixed in is high damage, normal, and high attack speed
 
@@ -554,7 +600,7 @@ COST $12,000,000 800 uranium 600 steel
 
 Very powerful against enemy economy
 
-## Land
+Land
 
 Soldiers
 Base power 1
@@ -565,7 +611,7 @@ COST $200 2 rations
 
 Counter artillery, apaches, obtain resource control
 
-## Tanks
+Tanks
 Base power 40
 Consumes 1 munitions and 2 gasoline per 100 tanks to fight
 COST $8,000 5 steel, 5 components
@@ -573,7 +619,7 @@ COST $8,000 5 steel, 5 components
 
 Counter soldiers, obtain field control and city control
 
-## Artillery
+Artillery
 Base power 80
 Consumes 5 munitions and 1 gasoline per 100 artillery to fight
 COST $16,000 12 steel, 3 components
@@ -581,7 +627,7 @@ COST $16,000 12 steel, 3 components
 
 Counter tanks, obtain field control
 
-## Air
+Air
 Bombers
 Base power 100
 Consumes 4 munitions and 10 gasoline per 100 bombers to fight
@@ -640,7 +686,7 @@ Depth control: Enemy iron dome effectiveness reduced from 50% to 20%, and vital 
 Naval blockade: enemy can no longer trade, or transfer
 Air superiority: enemy bomber power reduced by 70%
 
-### Attacking mechanics
+Attacking mechanics
 
 When you win / loose you get a gif
 
@@ -801,7 +847,7 @@ nukes
 
 
 
-## Communication between back end and war management menu
+Communication between back end and war management menu
 
 Page 1:
 Goes to a page where each 3 units choose what type of unit to attack with (12 options, 9 war and 3 special)
@@ -835,7 +881,7 @@ Default defensive units
 
 
 
-## Spying
+Spying
 There is a spyinfo table set up. Whenever a nation spies on an enemy nation, an entry with all the true false values of whether a certain res/unit is revealed. 
 
 The /intelligence.html page will have a table showing all the known information for every spying done in the last week. 
@@ -868,7 +914,7 @@ Alertness in equation
 5 (free)
 1x power
 
-## Preparation level
+Preparation level
 
 Preparation mission cost
 Preparation in equation
