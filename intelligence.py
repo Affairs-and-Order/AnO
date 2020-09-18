@@ -101,6 +101,10 @@ def spyAmount():
                 spyEntry[resource] = 'true'
             else:
                 spyEntry[resource] = 'false'
+        if random() * revealChance > 0.5:
+            spyEntry["defaultdefense"] = 'true'
+        else:
+            spyEntry["defaultdefense"] = 'false'
 
         # insert spyEntry into spytable with
         date = time.time()
