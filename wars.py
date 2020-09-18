@@ -242,16 +242,13 @@ def warChoose():
 # @login_required
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     if request.method == "GET":
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         attack_units = session["attack_units"]
-
-        print("from waramount")
-        print(attack_units, attack_units.selected_units, attack_units.selected_units_list)
 
         # grab supplies amount
         # if the user is the attacker in the war
@@ -319,11 +316,11 @@ def warAmount():
 @login_required
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
+    cId = session["user_id"]
+    eId = session["enemy_id"]
+    # cId = 11
+    # eId = 10
     if request.method == "GET":
-        # cId = session["user_id"]
-        # eId = session["enemy_id"]
-        cId = 11
-        eId = 10
 
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
@@ -335,8 +332,15 @@ def warTarget():
         # cycle through revealed_info. if a value is true, and it"s a unit, add it to the units dictionary
         units = {}
         return render_template("wartarget.html", units=units)
+
     if request.method == "POST":
-        session["targeted_units"] = request.form.get("targeted_units")
+        target = request.form.get("targeted_units")
+        target_amount = Military.get_particular_units_list(eId, [target])
+
+        # Skip attach_units because no need for validation since the data coming directly from the db without user affection
+        session["defending_units"] = Units(eId, {target: target_amount}, selected_units_list=[target])
+
+        # session["targeted_units"] = request.form.get("targeted_units")
         return redirect("warResult")
 
 # page 4 results
@@ -350,8 +354,8 @@ def warResult():
     # grab your units from session
     # this data is in the form of Units object
 
-    # attacker = session["attack_units"]
-    attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
+    attacker = session["attack_units"]
+    # attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
 
     # grab defending enemy units from database
     eId = session["enemy_id"]
