@@ -26,7 +26,10 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
 
 # there are no instances of base class Military
 class Military:
-
+    allUnits = ["soldiers", "tanks", "artillery",
+                "bombers", "fighters", "apaches",
+                "destroyers", "cruisers", "submarines",
+                "spies", "icbms", "nukes"]
     @staticmethod
     def special_fight(attacker, defender, target): # Units, Units, int -> str, None
         target_amount = defender.get_military(defender.user_id).get(target, None)
