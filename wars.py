@@ -316,10 +316,10 @@ def warAmount():
 @login_required
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
-    cId = session["user_id"]
-    eId = session["enemy_id"]
-    # cId = 11
-    # eId = 10
+    # cId = session["user_id"]
+    # eId = session["enemy_id"]
+    cId = 11
+    eId = 10
     if request.method == "GET":
 
         connection = sqlite3.connect("affo/aao.db")

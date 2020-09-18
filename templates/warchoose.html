@@ -196,33 +196,6 @@
 
             </label>
         </div>
-
-        <h2 id="chosenAmountChecked2" class="templatecontentheadercenter">0 / 1 Unit</h2>
-
-        <script>
-            $(document).ready(function() {
-                $('input.warcheckbox2').on('change', function(e) {
-                    let checkNum = Array.from(document.querySelectorAll('.warcheckbox2')).filter(({
-                        checked
-                    }) => checked).length;
-                    if (checkNum > 1) {
-                        this.checked = false;
-                        checkNum -= 1
-                    }
-                    let checkElement = document.querySelector('#chosenAmountChecked2');
-                    checkElement.innerHTML = `${checkNum} / 1 Unit`;
-                })
-            });
-        </script>
-
-
-        <form id="next_button" action="/warchoose" method="post">
-            <input type="hidden" name="special_unit">
-
-            <button class="templatedivbutton templatecenteredbutton" onclick="submit_special(event)">
-              <span class="material-icons-outlined">arrow_forward</span>Next
-            </button>
-        </form>
     </div>
 </div>
 {% endblock %}
