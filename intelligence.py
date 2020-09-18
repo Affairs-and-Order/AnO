@@ -37,15 +37,16 @@ def intelligence():
                 eId = tupleEntry[2]
                 spyEntries[i]['eName'] = db.execute(
                     "SELECT username FROM users WHERE id=(?)", (eId,)).fetchone()[0]
+                for j, unittype in enumerate(Military.allUnits):
+                    if tupleEntry[j+2] == 'true':
+                        spyEntries[i][unittype] = db.execute(
+                            f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
             except:
                 spyEntries[i]['eName'] = 'Enemy Nation Name'
                 # return "enemy nation doesn't exist"
 
-            for j, unittype in enumerate(Military.allUnits):
 
-                if tupleEntry[j+2] == 'true':
-                    spyEntries[i][unittype] = db.execute(
-                        f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
+            print(spyEntries)
 
         db.close()
         connection.close()
