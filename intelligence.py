@@ -21,7 +21,6 @@ def intelligence():
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
         units = 378985
-        print(Military.allUnits)
         emptyCountryDict = {'eName': 'placeholder', 'soldiers': 'Unknown', 'tanks': 'Unknown', 'artillery': 'Unknown', 'bombers': 'Unknown', 'fighters': 'Unknown', 'apaches': 'Unknown',
                             'destroyers': 'Unknown', 'cruisers': 'Unknown', 'submarines': 'Unknown', 'spies': 'Unknown', 'icbms': 'Unknown', 'nukes': 'Unknown'}
         # retrieve all entries from the spy table where spyer = cId
@@ -30,58 +29,23 @@ def intelligence():
             "SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
         print(spyinfodb)
         spyEntries = []
-        for index, tupleEntry in enumerate(spyinfodb, start=0):
-            print(index)
-            print(tupleEntry)
+        for i, tupleEntry in enumerate(spyinfodb, start=0):
+
             spyEntries.append(emptyCountryDict)
 
             try:
                 eId = tupleEntry[2]
-                spyEntries[index]['eName'] = db.execute(
+                spyEntries[i]['eName'] = db.execute(
                     "SELECT username FROM users WHERE id=(?)", (eId,)).fetchone()[0]
             except:
-                spyEntries[index]['eName'] = 'Enemy Nation Name'
+                spyEntries[i]['eName'] = 'Enemy Nation Name'
                 # return "enemy nation doesn't exist"
 
+            for j, unittype in enumerate(Military.allUnits):
 
-            if tupleEntry[3] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[4] == 'true':
-                spyEntries[index]['tanks'] = db.execute(
-                    "SELECT tanks FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[5] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[6] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[7] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[8] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[9] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[10] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[11] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[12] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[3] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            if tupleEntry[3] == 'true':
-                spyEntries[index]['soldiers'] = db.execute(
-                    "SELECT soldiers FROM military WHERE id=(?)", (eId,)).fetchone()[0]
-            spyEntries[index]['soldiers'] = tupleEntry[3]
-            print('hi')
+                if tupleEntry[j+2] == 'true':
+                    spyEntries[i][unittype] = db.execute(
+                        f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
 
         db.close()
         connection.close()
