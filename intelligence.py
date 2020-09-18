@@ -15,18 +15,17 @@ def intelligence():
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         cId = session["user_id"]
-        print(cId)
+        
+        # db.execute("DELETE FROM spyentries WHERE date<(?)", (datenow-14days,))
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
         emptyCountryDict = {'eName': 'placeholder'}
         for unittype in Military.allUnits:
             emptyCountryDict[unittype] = 'Unknown'
-        # retrieve all entries from the spy table where spyer = cId
 
         spyinfodb = db.execute(
             "SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
-        print(spyinfodb)
         spyEntries = []
         for i, tupleEntry in enumerate(spyinfodb, start=0):
 
@@ -42,9 +41,10 @@ def intelligence():
                             f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
             except:
                 spyEntries[i]['eName'] = 'Enemy Nation Name'
+                # delete the spy entry if the spyee doesnt exist anymore
+                # db.execute("DELETE FROM spyentries WHERE id=(?)", (eId,))
+                # commented so we dont delete test spyentries
                 # return "enemy nation doesn't exist"
-
-            print(spyEntries)
 
         db.close()
         connection.close()
