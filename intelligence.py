@@ -20,13 +20,18 @@ def intelligence():
         # delete entries older than 14 days
         # db.execute("DELETE FROM spyentries WHERE date<(?)",
         #            (floor(time.time())-86400*14,))
-        
+
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
         emptyCountryDict = {'eName': 'placeholder'}
         for unittype in Military.allUnits:
             emptyCountryDict[unittype] = 'Unknown'
+
+        resources = ["rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
+                     "lumber", "components", "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"]
+        for resource in resources:
+            emptyCountryDict[resource] = "Unknown"
 
         spyinfodb = db.execute(
             "SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
@@ -43,6 +48,9 @@ def intelligence():
                     if tupleEntry[j+2] == 'true':
                         spyEntries[i][unittype] = db.execute(
                             f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
+                for j, resource in enumerate(resources):
+                    if tupleEntry[j+14] == 'true':
+                        spyEntries[i][resource] = db.execute(f"SELECT {resource} FROM resources WHERE id", (eId,)).fetchone()[0]
             except:
                 spyEntries[i]['eName'] = 'Enemy Nation Name'
                 # delete the spy entry if the spyee doesnt exist anymore
