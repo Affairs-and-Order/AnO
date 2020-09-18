@@ -690,3 +690,17 @@ function submit_next(e) {
         e.target.parentElement.submit();
     }
 }
+
+// POST request for wartarget
+function war_target() {
+  const element = document.getElementsByName("targeted_unit")[0];
+  const all_inputs = document.querySelectorAll("input[type=checkbox]");
+
+  if(element) {
+    for (let i = 0; i < all_inputs.length; i++) {
+      if (all_inputs[i].checked) {
+        element.value = all_inputs[i].value;
+      }
+    }
+  }
+}
