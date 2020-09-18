@@ -403,28 +403,14 @@ def warResult():
                 print("INVALID WARTYPE")
 
 
-
-    # A = defendingscore / attackingscore
-    # B = attackingscore / defendingscore
-    # lose A % of all your attacking units, times a random factor between 0.8 and 1, rolled once for each unit (so 3 times)
-    # lose B % of all defending units, times a random factor between 0.75 and 1, rolled once for each unit (so 3 times)
-    # defending country loses B * 10 morale. (so if your score was 10x higher than opponent, you win in average 1 attack other than the random factor)
-    # if you were the defending (beginning of war) country you also lose B infra
-
-    # if enemy morale reaches 0:
-    # X = your remaining morale (so this is from 0 to 100)
-    # take X / 2 % of their res and cash, tax them by X % for 2 days
-    # minimum 20% loot
-    # MODIFIERS to X (war policies, war type):
-
-    # WAR POLICIES:
+    # possible war policies:
     # "empire builder"--> winning gives no loot 2x reparation tax
     # "pirate" --> winning gives 2x more loot no reparation tax
     # "tactical" --> winning gives 1x loot 1x reparation tax
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
-    return render_template("warResult.html", yourNation="You", enemyNation="Them", attackResult="attackResult", resStolen="resStolen")
+    return render_template("warResult.html", yourNation="You", enemyNation="Them", attackResult="attackResult", resStolen="resStolen") # resStolen needs to be a dictionary
 
 # Endpoint for war declaration
 @login_required

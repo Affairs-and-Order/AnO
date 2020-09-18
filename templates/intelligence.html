@@ -12,10 +12,10 @@
     <div class="templatedivcontent">
 
         <!--duplicate for every country you've spied on in the last 14 days-->
-        <h2 class="templatecontentheaderleft">[[ countryName ]]</h2>
+        <h2 class="templatecontentheaderleft">{{yourCountry}}</h2>
 
 
-        <h2 class="templatecontentheadercenter">[[ countryName ]]'s known Military</h2>
+        <h2 class="templatecontentheadercenter">{{enemyCountry}}'s known Military</h2>
 
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
@@ -26,22 +26,22 @@
                     <th>Special</th>
                 </tr>
                 <tr>
-                    <td>{{ units["soldiers"] }} Soldiers</td>
-                    <td>{{ units["fighters"] }} Fighter Jets</td>
-                    <td>{{ units["submarines"] }} Submarines</td>
-                    <td>{{ units["spies"] }} Spies</td>
+                    <td>[[ units["soldiers"]] Soldiers</td>
+                    <td>[[ units["fighters"]] Fighter Jets</td>
+                    <td>[[ units["submarines"]] Submarines</td>
+                    <td>[[ units["spies"]] Spies</td>
                 </tr>
                 <tr>
-                    <td>{{ units["artillery"] }} Artillery</td>
-                    <td>{{ units["bombers"] }} Bombers</td>
-                    <td>{{ units["cruisers"] }} Cruisers</td>
-                    <td>{{ units["icbms"] }} ICBMs</td>
+                    <td>[[ units["artillery"]] Artillery</td>
+                    <td>[[ units["bombers"] ] ]Bombers</td>
+                    <td>[[ units["cruisers"]] Cruisers</td>
+                    <td>[[ units["icbms"]] ICBMs</td>
                 </tr>
                 <tr>
-                    <td>{{ units["tanks"] }} Tanks</td>
-                    <td>{{ units["apaches"] }} Apaches</td>
-                    <td>{{ units["destroyers"] }} Destroyers</td>
-                    <td>{{ units["nukes"] }} Nukes</td>
+                    <td>[[ units["tanks"]] Tanks</td>
+                    <td>[[ units["apaches"]] Apaches</td>
+                    <td>[[ units["destroyers"]] Destroyers</td>
+                    <td>[[ units["nukes"]] Nukes</td>
                 </tr>
             </table>
         </div>
@@ -53,15 +53,15 @@
                 <th>Raw</th>
             </tr>
             <tr>
-                <td>{{ units["soldiers"] }} Soldiers</td>
-                <td>{{ units["fighters"] }} Fighter Jets</td>
+                <td>[[ units["soldiers"]]Soldiers</td>
+                <td>[[ units["fighters"]]Fighter Jets</td>
             </tr>
             <tr>
                 <th>Processed</th>
             </tr>
             <tr>
-                <td>{{ units["soldiers"] }} Soldiers</td>
-                <td>{{ units["fighters"] }} Fighter Jets</td>
+                <td>[[ units["soldiers"]]Soldiers</td>
+                <td>[[ units["fighters"]]Fighter Jets</td>
             </tr>
         </table>
 
