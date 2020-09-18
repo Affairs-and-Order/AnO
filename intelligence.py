@@ -20,21 +20,38 @@ def intelligence():
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-        units = 37894562385
+        units = 378985
         emptyCountryDict = {'eName': 'placeholder', 'soldiers': 'Unknown', 'tanks': 'Unknown', 'artillery': 'Unknown', 'bombers': 'Unknown', 'fighters': 'Unknown', 'apaches': 'Unknown',
                             'destroyers': 'Unknown', 'cruisers': 'Unknown', 'submarines': 'Unknown', 'spies': 'Unknown', 'icbms': 'Unknown', 'nukes': 'Unknown'}
         # retrieve all entries from the spy table where spyer = cId
 
-        spyinfodb = db.execute("SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
+        spyinfodb = db.execute(
+            "SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
         print(spyinfodb)
         spyEntries = []
-        for tuple in spyinfodb:
+        for index, tupleEntry in enumerate(spyinfodb, start=0):
+            print(index)
+            print(tupleEntry)
             spyEntries.append(emptyCountryDict)
-            spyEntries['eName'] = db.execute("SELECT username FROM users WHERE id=(?)", (tuple[2],)).fetchone()[0]
-        
-        # for each entry make a 'enemyNation': emptyCountryDict and add to a list of spyEntries
+            try:
+                spyEntries[index]['eName'] = db.execute(
+                    "SELECT username FROM users WHERE id=(?)", (tupleEntry[2],)).fetchone()[0]
+            except:
+                spyEntries[index]['eName'] = 'Enemy Nation Name'
+                # return "enemy nation doesn't exist"
+
+            if tupleEntry[3]:
+                print('soldier was true')
+            else:
+                print('soldier was false')
+            if tupleEntry[4]:
+                print('tank was true')
+            else:
+                print('tank was false')
+            spyEntries[index]['soldiers'] = tupleEntry[3]
+            print('hi')
 
         db.close()
         connection.close()
-        return render_template("intelligence.html", units=units, yourCountry=yourCountry, enemyCountry="enemyCountry")
+        return render_template("intelligence.html", yourCountry=yourCountry, spyEntries=spyEntries)
     return 'hi'

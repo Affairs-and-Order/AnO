@@ -12,10 +12,10 @@
     <div class="templatedivcontent">
 
         <!--duplicate for every country you've spied on in the last 14 days-->
-        <h2 class="templatecontentheaderleft">{{yourCountry}}</h2>
+        <h2 class="templatecontentheaderleft">{{ yourCountry }}</h2>
 
-
-        <h2 class="templatecontentheadercenter">{{enemyCountry}}'s known Military</h2>
+        {% for dictEntry in spyEntries %}
+        <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Military</h2>
 
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
@@ -46,7 +46,7 @@
             </table>
         </div>
 
-        <h2 class="templatecontentheadercenter">[[ countryName ]]'s known Resources</h2>
+        <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Resources</h2>
 
         <table class="templatetable">
             <tr>
@@ -64,7 +64,7 @@
                 <td>[[ spyentries["fighters"]] Fighter Jets</td>
             </tr>
         </table>
-
+        {% endfor %}
     </div>
 </div>
 {% endblock %}
