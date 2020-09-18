@@ -61,3 +61,30 @@ def intelligence():
         db.close()
         connection.close()
         return render_template("intelligence.html", yourCountry=yourCountry, spyEntries=spyEntries)
+
+@login_required
+@app.route("/spyAmount", methods=["GET", "POST"])
+def spyAmount():
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+    cId = session["user_id"]
+    if request.method == "GET":
+        yourCountry = db.execute(
+            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+        return render_template("spyAmount.html", yourCountry=yourCountry, spies=spies)
+    if request.method == "POST":
+        request.form.get("prep")
+        request.form.get("amount")
+        eId = request.form.get("enemy")
+        eDefcon = db.execute("SELECT defcon FROM users WHERE id=(?)", (eId,)).fetchone()[0]
+        eSpies = db.execute("SELECT spies FROM military WHERE id=(?)", (eId,)).fetchone()[0]
+        # calculate what values have been revealed based on prep, amount, eid
+        session["spyEntry"] = spyEntry
+        return redirect("/spyResult")
+
+@login_required
+@app.route("/spyResult", methods=["GET"])
+def spyResult():
+    spyEntry = session["spyEntry"]
+    # You've conducted a spy operation on {{enemyNation}} and revealed the following information {{spyEntry}}.
+    return render_template
