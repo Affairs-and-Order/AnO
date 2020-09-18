@@ -9,9 +9,8 @@ import time
 
 
 @login_required
-@app.route("/intelligence", methods=["GET", "POST"])
+@app.route("/intelligence", methods=["GET"])
 def intelligence():
-
     if request.method == "GET":
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
@@ -50,4 +49,3 @@ def intelligence():
         db.close()
         connection.close()
         return render_template("intelligence.html", yourCountry=yourCountry, spyEntries=spyEntries)
-    return 'hi'
