@@ -172,10 +172,9 @@
             });
         </script>
 
-
-        <form id="next_button" action="/warchoose" method="post">
-            <input type="hidden" name="u1">
-            <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
+        <form id="next_button" action="/wartarget" method="post">
+            <input type="hidden" name="targeted_unit">
+            <button class="templatedivbutton templatecenteredbutton" onclick="war_target()">
               <span class="material-icons-outlined">arrow_forward</span>Next
             </button>
         </form>

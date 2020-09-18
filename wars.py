@@ -334,13 +334,14 @@ def warTarget():
         return render_template("wartarget.html", units=units)
 
     if request.method == "POST":
-        target = request.form.get("targeted_units")
+
+        # TODO: check if targeted_unit is send a valid unit type like soldiers and not like sdfsgsdw
+        target = request.form.get("targeted_unit")
         target_amount = Military.get_particular_units_list(eId, [target])
 
         # Skip attach_units because no need for validation since the data coming directly from the db without user affection
         session["defending_units"] = Units(eId, {target: target_amount}, selected_units_list=[target])
 
-        # session["targeted_units"] = request.form.get("targeted_units")
         return redirect("warResult")
 
 # page 4 results
