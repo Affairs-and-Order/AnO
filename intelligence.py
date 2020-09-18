@@ -40,11 +40,11 @@ def intelligence():
                 spyEntries[index]['eName'] = 'Enemy Nation Name'
                 # return "enemy nation doesn't exist"
 
-            if tupleEntry[3]:
+            if tupleEntry[3] == 'true':
                 print('soldier was true')
             else:
                 print('soldier was false')
-            if tupleEntry[4]:
+            if tupleEntry[4] == 'true':
                 print('tank was true')
             else:
                 print('tank was false')
