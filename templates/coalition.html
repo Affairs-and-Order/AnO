@@ -37,12 +37,14 @@
                     joinhide();
 
                 });
-            </script>{% endif %}
+            </script>
+            {% endif %}
 
             <div class="templatedivflex2left" id="coalitionjoin" onclick="coalitionjoin()">
                 <h3 class="smallheader">Join</h3>
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
+            
             {% if userLeader == False %}
             <script>
                 $(document).ready(function() {
