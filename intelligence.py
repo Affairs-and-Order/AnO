@@ -20,9 +20,9 @@ def intelligence():
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-        units = 378985
-        emptyCountryDict = {'eName': 'placeholder', 'soldiers': 'Unknown', 'tanks': 'Unknown', 'artillery': 'Unknown', 'bombers': 'Unknown', 'fighters': 'Unknown', 'apaches': 'Unknown',
-                            'destroyers': 'Unknown', 'cruisers': 'Unknown', 'submarines': 'Unknown', 'spies': 'Unknown', 'icbms': 'Unknown', 'nukes': 'Unknown'}
+        emptyCountryDict = {'eName': 'placeholder'}
+        for unittype in Military.allUnits:
+            emptyCountryDict[unittype] = 'Unknown'
         # retrieve all entries from the spy table where spyer = cId
 
         spyinfodb = db.execute(
@@ -44,7 +44,6 @@ def intelligence():
             except:
                 spyEntries[i]['eName'] = 'Enemy Nation Name'
                 # return "enemy nation doesn't exist"
-
 
             print(spyEntries)
 
