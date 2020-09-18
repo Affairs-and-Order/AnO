@@ -6,6 +6,7 @@ from helpers import login_required, error
 from attack_scripts import Nation, Military
 from units import Units
 import time
+from math import floor
 
 
 @login_required
@@ -15,8 +16,11 @@ def intelligence():
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         cId = session["user_id"]
+
+        # delete entries older than 14 days
+        # db.execute("DELETE FROM spyentries WHERE date<(?)",
+        #            (floor(time.time())-86400*14,))
         
-        # db.execute("DELETE FROM spyentries WHERE date<(?)", (datenow-14days,))
         yourCountry = db.execute(
             "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
