@@ -21,4 +21,9 @@ def intelligence():
         db.close()
         connection.close()
         units = 234234
+        emptyCountryDict = {'soldiers': 'Unknown', 'tanks': 'Unknown', 'artillery': 'Unknown', 'bombers': 'Unknown', 'fighters': 'Unknown', 'apaches': 'Unknown', 'destroyers': 'Unknown', 'cruisers': 'Unknown', 'submarines': 'Unknown', 'spies': 'Unknown', 'icbms': 'Unknown', 'nukes': 'Unknown'}
+        # retrieve all entries from the spy table where spyer = cId
+        # for each entry make a 'enemyNation': emptyCountryDict and add to a list of spyEntries
+        spyEntries = []
+        # units is a dictionary of dictionaries. {eName: {}}
         return render_template("intelligence.html", units=units, yourCountry=yourCountry, enemyCountry="enemyCountry")
