@@ -377,6 +377,7 @@ class Units(Military):
             self.selected_units_list = list(selected_units.keys())
 
     # Save unit records to the database
+
     def save(self):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
@@ -386,7 +387,6 @@ class Units(Military):
 
         connection.commit()
         connection.close()
-
     # Attack with all units contained in selected_units
     def attack(self, attacker_unit: str, target: str) -> Union[str, tuple, None]:
         if self.selected_units:
@@ -425,6 +425,7 @@ class Units(Military):
             new_unit_amount = 0
 
         # Save it to the database
+        # print(new_unit_amount)
         self.selected_units[unit_type] = new_unit_amount
 
     # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)

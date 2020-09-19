@@ -4,8 +4,8 @@
 
     <div class="templatedivtopper wartopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
-            
-            </span>{{yourNation}} VS {{enemyNation}}</h1>
+
+            </span>{{attacker["nation_name"]}} VS {{defender["nation_name"]}}</h1>
         <div class="templatedivad"></div>
     </div>
 
@@ -14,11 +14,19 @@
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
-                <h2 class="templatecontentheadercenter">{{ attackResult }}</h2>
-                <!--exerpt on war result - randomized-->
+                <h2>The winner of the fight: {{winner}}</h2>
+                <h3 class="templatecontentheadercenter">Attack effects</h3>
                 <p class="templatecontentpleft">
-                    <!--this is an example-->
-                    your soldiers, tanks, and destroyers marched to {{enemyNation }} and annihilated 80 aircraft, 60 artillery, and 0 cuirsers. Furthermore they destroyed 5 infrastructure buildings, killed 800,000 people.
+                    {{attacker["nation_name"]}}<br>
+                    {% for key,value in attacker["loss"].items() %}
+                      Losed {{value}} from {{key}}<br>
+                    {% endfor %}
+                </p>
+                <p class="templatecontentpleft">
+                  {{defender["nation_name"]}}<br>
+                  {% for key,value in defender["loss"].items() %}
+                    Losed {{value}} from {{key}}<br>
+                  {% endfor %}
                 </p>
 
             </div>

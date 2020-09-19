@@ -358,8 +358,8 @@ def warResult():
     # attacker = session["attack_units"]
 
     # DEBUGGING
-    # attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
-    # session["targeted_defending_units"] = Units(10, {"soldiers": 10}, selected_units_list=["soldiers"])
+    attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 10}, selected_units_list=["soldiers", "tanks", "artillery"])
+    session["targeted_defending_units"] = Units(10, {"soldiers": 1, "tanks": 1, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
 
     # grab defending enemy units from database
     # eId = session["enemy_id"]
@@ -377,6 +377,7 @@ def warResult():
     # If user came from /wartarget only then they have targeted_defending_units session
     defender = session.get("targeted_defending_units", None)
     if not defender:
+        print("UNIQ")
         defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
         defenseunits = {}
         for unit in defenselst:
@@ -385,11 +386,26 @@ def warResult():
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
 
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
+
+    # Used to print out the stats units before fight
+    prev_defender = dict(defender.selected_units)
+    prev_attacker = dict(attacker.selected_units)
+
     winner = Military.fight(attacker, defender)
 
-    print(attacker.selected_units)
-    print(winner, defender.selected_units)
-    print(attacker.selected_units)
+    defender_loss = {}
+    attacker_loss = {}
+
+    for unit in defender.selected_units_list:
+        defender_loss[unit] = prev_defender[unit]-defender.selected_units[unit]
+
+    for unit in attacker.selected_units_list:
+        attacker_loss[unit] = prev_attacker[unit]-attacker.selected_units[unit]
+
+    # print("ATK", attacker.selected_units)
+    # print(winner, defender.selected_units)
+    # print(attacker.selected_units)
+    # print("LOSS", attacker_loss)
 
     if winner == defender.user_id:
         pass
@@ -418,7 +434,16 @@ def warResult():
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
-    return render_template("warResult.html", yourNation="You", enemyNation="Them", attackResult="attackResult", resStolen="resStolen") # resStolen needs to be a dictionary
+    attacker_name = db.execute("SELECT username FROM users WHERE id=(?)", (attacker.user_id,)).fetchone()[0]
+    defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender.user_id,)).fetchone()[0]
+    if winner == attacker.user_id:
+        winner_name=attacker_name
+    else:
+        winner_name=defender_name
+
+    return render_template(
+        "warResult.html", winner=winner_name, attacker={"nation_name": attacker_name, "loss": attacker_loss}, defender={"nation_name": defender_name, "loss": defender_loss},
+        attackResult="attackResult", resStolen="resStolen") # resStolen needs to be a dictionary
 
 # Endpoint for war declaration
 @login_required
