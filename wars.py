@@ -358,8 +358,8 @@ def warResult():
     # attacker = session["attack_units"]
 
     # DEBUGGING
-    attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 10}, selected_units_list=["soldiers", "tanks", "artillery"])
-    session["targeted_defending_units"] = Units(10, {"soldiers": 1, "tanks": 1, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
+    attacker = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
+    session["targeted_defending_units"] = Units(10, {"soldiers": 5, "tanks": 1, "artillery": 15}, selected_units_list=["soldiers", "tanks", "artillery"])
 
     # grab defending enemy units from database
     # eId = session["enemy_id"]
@@ -402,10 +402,10 @@ def warResult():
     for unit in attacker.selected_units_list:
         attacker_loss[unit] = prev_attacker[unit]-attacker.selected_units[unit]
 
-    # print("ATK", attacker.selected_units)
-    # print(winner, defender.selected_units)
-    # print(attacker.selected_units)
-    # print("LOSS", attacker_loss)
+    print("ATK", attacker.selected_units)
+    print(winner, defender.selected_units)
+    print(attacker.selected_units)
+    print("LOSS", attacker_loss)
 
     if winner == defender.user_id:
         pass
@@ -415,17 +415,17 @@ def warResult():
 
         # When lose the war
         if morale == 0:
-            # WAR TYPES
-            # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
-            # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
-            # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-            war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attacker.user_id, defender.user_id)).fetchall()[-1]
-            if war_type == "raze" : pass
-            elif war_type == "sustained": pass
-            elif war_type == "loot": pass
-            else:
-                print("INVALID WARTYPE")
+            pass
 
+        # WAR TYPES
+        # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+        # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
+        # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+        war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attacker.user_id, defender.user_id)).fetchall()[-1]
+        if war_type == "raze" : pass
+        elif war_type == "sustained": pass
+        elif war_type == "loot": pass
+        else: print("INVALID WARTYPE")
 
     # possible war policies:
     # "empire builder"--> winning gives no loot 2x reparation tax
@@ -442,8 +442,12 @@ def warResult():
         winner_name=defender_name
 
     return render_template(
-        "warResult.html", winner=winner_name, attacker={"nation_name": attacker_name, "loss": attacker_loss}, defender={"nation_name": defender_name, "loss": defender_loss},
-        attackResult="attackResult", resStolen="resStolen") # resStolen needs to be a dictionary
+        "warResult.html",
+        winner=winner_name,
+        attacker={"nation_name": attacker_name, "loss": attacker_loss},
+        defender={"nation_name": defender_name, "loss": defender_loss},
+        attackResult="attackResult",
+        resStolen="resStolen") # resStolen needs to be a dictionary
 
 # Endpoint for war declaration
 @login_required

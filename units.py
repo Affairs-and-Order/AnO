@@ -54,10 +54,6 @@ class SoldierUnit(BlueprintUnit):
             self.bonus += 3 * self.amount
         if defending_units == "apaches":
             self.bonus += 2 * self.amount
-        if defending_units == "tanks":
-            self.bonus -= 2 * self.amount
-        if defending_units == "bombers":
-            self.bonus -= 2 * self.amount
         return [self.damage, self.bonus]
 
     def buy(amount): pass
@@ -79,8 +75,7 @@ class TankUnit(BlueprintUnit):
         if defending_units == 'soldiers':
             self.damage += 2
             self.bonus += 6 * self.amount
-        if defending_units == "artillery":
-            self.bonus -= 3 * self.amount
+
         # Micro randomization
         # One bomber beats random number of tanks (where they drop the bombs)
         # between 2 and 6
@@ -106,9 +101,6 @@ class ArtilleryUnit(BlueprintUnit):
         # One artillery beats 3 tanks
         if defending_units == "tanks":
             self.bonus += 2 * self.amount
-        if defending_units == "soldiers":
-            self.bonus -= 2 * self.amount
-
         return [self.damage, self.bonus]
 
     def buy(): pass
@@ -132,11 +124,6 @@ class BomberUnit(BlueprintUnit):
             self.bonus += 2 * self.amount
         if defending_units == "submarines":
             self.bonus += 2 * self.amount
-        if defending_units == "fighters":
-            self.bonus -= 2 * self.amount
-        if defending_units == "apaches":
-            self.bonus -= 2 * self.amount
-
         return [self.damage, self.bonus]
 
     def buy(amount): pass
@@ -155,11 +142,6 @@ class FighterUnit(BlueprintUnit):
         if defending_units == "bombers":
             # self.damage += 55
             self.bonus += 4 * self.amount
-        if defending_units == "cruisers":
-            self.bonus -= 2 * self.amount
-        if defending_units == "apaches":
-            self.bonus -= 1 * self.amount
-
         return [self.damage, self.bonus]
 
     def buy(amount): pass
@@ -200,10 +182,6 @@ class DestroyerUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "submarines":
             self.bonus += 1.6 * self.amount
-        if defending_units == "bombers":
-            self.bonus -= 1.5 * self.amount
-        if defending_units == "cruisers":
-            self.bonus -= 0.4 * self.amount
         return [self.damage, self.bonus]
 
     def buy(amount): pass
@@ -225,8 +203,6 @@ class CruiserUnit(BlueprintUnit):
             self.bonus += 0.1 * self.amount
         if defending_units == "apaches":
             self.bonus += 0.4 * self.amount
-        if defending_units == "submarines":
-            self.bonus -= 3 * self.amount
         return [self.damage, self.bonus]
 
     def buy(amount): pass
@@ -244,10 +220,6 @@ class SubmarineUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "cruisers":
             self.bonus += 0.2 * self.amount
-        if defending_units == "destroyers":
-            self.bonus -= 0.4 * self.amount
-        if defending_units == "bombers":
-            self.bonus -= 4 * self.amount
         return [self.damage, self.bonus]
 
     def buy(): pass

@@ -29,6 +29,9 @@ class Military:
                 "bombers", "fighters", "apaches",
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
+
+    def infrastructure_damage(self): pass
+
     @staticmethod
     def special_fight(attacker, defender, target): # Units, Units, int -> str, None
         target_amount = defender.get_military(defender.user_id).get(target, None)
@@ -50,7 +53,6 @@ class Military:
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
     '''
-    This is already checked in the Military->fight
     if your score is higher by 3x, annihilation,
     if your score is higher by 2x, definite victory
     if your score is higher, close victory,
@@ -88,12 +90,12 @@ class Military:
     @staticmethod
     def fight(attacker, defender): # Units, Units -> int
 
-        attacker_roll = random.uniform(0, 10)
+        attacker_roll = random.uniform(0, 2)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
         attacker_bonus = 0
 
-        defender_roll = random.uniform(0, 10)
+        defender_roll = random.uniform(0,2)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
@@ -116,19 +118,21 @@ class Military:
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
+        print("BONUSES", attacker_bonus, defender_bonus)
+        print("CHANCES", attacker_chance, defender_chance)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
             winner = defender
             loser = attacker
-            win_type = defender_chance//attacker_chance
-            winner_casulties = attacker_chance//defender_chance
+            win_type = defender_chance/attacker_chance
+            winner_casulties = attacker_chance/defender_chance
 
         else:
             winner = attacker
             loser = defender
-            win_type = attacker_chance//defender_chance
-            winner_casulties = defender_chance//attacker_chance
+            win_type = attacker_chance/defender_chance
+            winner_casulties = defender_chance/attacker_chance
 
         # Effects based on win_type (idk: destroy buildings or something)
         # loser_casulties = win_type so win_type also is the loser's casulties
@@ -149,9 +153,10 @@ class Military:
 
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
+        print("WINTYOE", win_type)
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            w_casualties = winner_casulties*random.uniform(0.8, 1)
-            l_casualties =  win_type*random.uniform(0.8, 1)
+            w_casualties = winner_casulties*random.uniform(0.6, 1)*1.5
+            l_casualties =  win_type*random.uniform(0.8, 1)*1.5
 
             winner.casualties(winner_unit, w_casualties)
             loser.casualties(loser_unit, l_casualties)
