@@ -216,6 +216,9 @@ def delete_own_account():
     db.execute("DELETE FROM wars WHERE attacker=(?)", (cId,))
     db.execute("DELETE FROM war WHERE defender=(?)", (cId,))
     # TODO: Deletes coalition if user was alone in the coalition
+
+    # Deletes all market things the user is associateed with
+    db.execute("DELETE FROM offers WHERE user_id=(?)", (cId,))
     
     # Deletes all the users provinces and their infrastructure
     try:
