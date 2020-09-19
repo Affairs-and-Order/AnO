@@ -421,11 +421,14 @@ def warResult():
         # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-        war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attacker.user_id, defender.user_id)).fetchall()[-1]
-        if war_type == "raze" : pass
-        elif war_type == "sustained": pass
-        elif war_type == "loot": pass
-        else: print("INVALID WARTYPE")
+        war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
+        if len(war_type) > 0:
+            if war_type == "raze" : pass
+            elif war_type == "sustained": pass
+            elif war_type == "loot": pass
+            else: print("INVALID WARTYPE")
+        else:
+            print("INVALID USER IDs")
 
     # possible war policies:
     # "empire builder"--> winning gives no loot 2x reparation tax
