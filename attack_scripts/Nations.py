@@ -24,7 +24,6 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
     # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
     return attack_effects
 
-# there are no instances of base class Military
 class Military:
     allUnits = ["soldiers", "tanks", "artillery",
                 "bombers", "fighters", "apaches",

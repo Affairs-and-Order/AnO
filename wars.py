@@ -242,16 +242,13 @@ def warChoose():
 # @login_required
 @app.route("/waramount", methods=["GET", "POST"])
 def warAmount():
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     if request.method == "GET":
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         attack_units = session["attack_units"]
-
-        print("from waramount")
-        print(attack_units, attack_units.selected_units, attack_units.selected_units_list)
 
         # grab supplies amount
         # if the user is the attacker in the war
@@ -319,11 +316,11 @@ def warAmount():
 @login_required
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
+    # cId = session["user_id"]
+    # eId = session["enemy_id"]
+    cId = 11
+    eId = 10
     if request.method == "GET":
-        # cId = session["user_id"]
-        # eId = session["enemy_id"]
-        cId = 11
-        eId = 10
 
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
@@ -335,8 +332,16 @@ def warTarget():
         # cycle through revealed_info. if a value is true, and it"s a unit, add it to the units dictionary
         units = {}
         return render_template("wartarget.html", units=units)
+
     if request.method == "POST":
-        session["targeted_units"] = request.form.get("targeted_units")
+
+        # TODO: check if targeted_unit is send a valid unit type like soldiers and not like sdfsgsdw
+        target = request.form.get("targeted_unit")
+        target_amount = Military.get_particular_units_list(eId, [target])
+
+        # Skip attach_units because no need for validation since the data coming directly from the db without user affection
+        session["targeted_defending_units"] = Units(eId, {target: target_amount}, selected_units_list=[target])
+
         return redirect("warResult")
 
 # page 4 results
@@ -351,38 +356,41 @@ def warResult():
     # this data is in the form of Units object
 
     # attacker = session["attack_units"]
-    attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
+
+    # DEBUGGING
+    # attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
+    # session["targeted_defending_units"] = Units(10, {"soldiers": 10}, selected_units_list=["soldiers"])
 
     # grab defending enemy units from database
-    eId = session["enemy_id"]
-    # eId = 10
+    # eId = session["enemy_id"]
+    eId = 10
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    defensestring = db.execute(
-        "SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
+    defensestring = db.execute("SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
     # dev: making sure these values are correct
     print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
     print(eId, "| eId") # 10 | eId
     print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
 
-    defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
-    defenseunits = {}
-    for unit in defenselst:
-        defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
 
-    print(defenseunits)
+    # If user came from /wartarget only then they have targeted_defending_units session
+    defender = session.get("targeted_defending_units", None)
+    if not defender:
+        defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
+        defenseunits = {}
+        for unit in defenselst:
+            defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
 
+        defender = Units(eId, defenseunits, selected_units_list=defenselst)
 
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
-
-    # Currently only for normal units (note: for special units also implemented but not connected to warResult)
-    defender = Units(eId, defenseunits, selected_units_list=defenselst)
-    print(attacker.selected_units)
     winner = Military.fight(attacker, defender)
 
+    print(attacker.selected_units)
     print(winner, defender.selected_units)
     print(attacker.selected_units)
+
     if winner == defender.user_id:
         pass
     else:
