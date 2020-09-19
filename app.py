@@ -346,6 +346,9 @@ def mass_purchase():
 def upgrades():
     return render_template("upgrades.html")
 
+@app.route("/peace", methods=["GET", "POST"])
+def peace():
+    return render_template("peace.html")
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
