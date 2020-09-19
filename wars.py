@@ -534,8 +534,10 @@ def defense():
         # nation_id = nation[1]
         # default_defense = nation[2]
 
-        # TODO: check if selected unit names are valid
         if nation:
+            for item in defense_units:
+                if item not in Military.allUnits:
+                    return "Invalid unit types!"
             if len(defense_units) == 3:
                 # default_defense is stored in the db: "unit1,unit2,unit3"
                 defense_units = ",".join(defense_units)
