@@ -32,6 +32,43 @@ class Military:
 
     def infrastructure_damage(self): pass
 
+    # Update the morale and give back the win type name
+    @staticmethod
+    def morale_change(column, win_type, attacker, defender):
+        connection = sqlite3.connect("affo/aao.db")
+        db = connection.cursor()
+        war_id = db.execute(f"SELECT id FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1][0]
+
+        morale = db.execute(f"SELECT {column} FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+
+        # annihilation
+        # 50 morale change
+        if win_type >= 3:
+            morale = morale-50
+            win_condition = "annihilation"
+
+        # definite victory
+        # 35 morale change
+        elif win_type >= 2:
+            morale = morale-35
+            win_condition = "definite victory"
+
+        # close victory
+        # 25 morale change
+        else:
+            morale = morale-25
+            win_condition = "close victory"
+
+        # Win the war
+        if morale <= 0:
+            print("THE WAR IS OVER")
+
+        db.execute(f"UPDATE wars SET {column}=(?) WHERE id=(?)", (morale, war_id))
+        connection.commit()
+        connection.close()
+
+        return win_condition
+
     @staticmethod
     def special_fight(attacker, defender, target): # Units, Units, int -> str, None
         target_amount = defender.get_military(defender.user_id).get(target, None)
@@ -124,12 +161,20 @@ class Military:
         # Determine the winner
         if defender_chance >= attacker_chance:
             winner = defender
+
+            # morale column of the loser
+            morale_column = "attacker_morale"
+
             loser = attacker
             win_type = defender_chance/attacker_chance
             winner_casulties = attacker_chance/defender_chance
 
         else:
             winner = attacker
+
+            # morale column of the loser
+            morale_column = "defender_morale"
+
             loser = defender
             win_type = attacker_chance/defender_chance
             winner_casulties = defender_chance/attacker_chance
@@ -137,23 +182,10 @@ class Military:
         # Effects based on win_type (idk: destroy buildings or something)
         # loser_casulties = win_type so win_type also is the loser's casulties
 
-        # annihilation
-        if win_type >= 3: pass
-
-        # definite victory
-        elif win_type >= 2: pass
-
-        # close victory
-        else: pass
-
-        # Return casulties list (in this case to warResult)
-        # return_winner_cas = []
-        # return_loser_cas = []
-
+        win_condition = Military.morale_change(morale_column, win_type, attacker, defender)
 
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
-        print("WINTYOE", win_type)
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
             w_casualties = winner_casulties*random.uniform(0.6, 1)*1.5
             l_casualties =  win_type*random.uniform(0.8, 1)*1.5
@@ -161,11 +193,8 @@ class Military:
             winner.casualties(winner_unit, w_casualties)
             loser.casualties(loser_unit, l_casualties)
 
-            # return_winner_cas.append(w_casualties)
-            # return_loser_cas.append(l_casualties)
-
         # return (winner.user_id, return_winner_cas, return_loser_cas)
-        return winner.user_id
+        return (winner.user_id, win_condition)
 
         # DEBUGGING:
         # print("WINNER IS:", winner.user_id)

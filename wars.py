@@ -352,9 +352,6 @@ def warTarget():
 @login_required
 @app.route("/warResult", methods=["GET"])
 def warResult():
-    # grab your units from session
-    # this data is in the form of Units object
-
     # attacker = session["attack_units"]
 
     # DEBUGGING
@@ -391,7 +388,7 @@ def warResult():
     prev_defender = dict(defender.selected_units)
     prev_attacker = dict(attacker.selected_units)
 
-    winner = Military.fight(attacker, defender)
+    winner, win_condition = Military.fight(attacker, defender)
 
     defender_loss = {}
     attacker_loss = {}
@@ -447,6 +444,7 @@ def warResult():
     return render_template(
         "warResult.html",
         winner=winner_name,
+        win_condition=win_condition,
         attacker={"nation_name": attacker_name, "loss": attacker_loss},
         defender={"nation_name": defender_name, "loss": defender_loss},
         attackResult="attackResult",
