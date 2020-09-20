@@ -481,24 +481,33 @@ def declare_war():
 
     return redirect("/wars")
 
-
+# this should go to countries with a specific URL influence arguments set up by taking the user's influence and putting in the lower and upper bounds.
 @login_required
-@app.route("/find_targets", methods=["GET", "POST"])
+@app.route("/find_targets", methods=["GET"])
 def find_targets():
-
     if request.method == "GET":
-        return render_template("find_targets.html")
-    else:
-        # TODO: maybe delete the sql fetch and create a centralized way to fetch it
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
 
-        defender = request.form.get("defender")
-        defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()
-        if defender_id:
-            return redirect(f"/country/id={defender_id[0]}")
-        else:
-            return error(400, "No such country")
+        influence = db.execute("SELECT influence FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+
+        upper = influence * 2
+        lower = influence * 0.9
+        return redirect(f"/countries/search?=upperinf={upper}&lowerinf={lower}")
+
+    # if request.method == "GET":
+    #     return render_template("find_targets.html")
+    # else:
+    #     # TODO: maybe delete the sql fetch and create a centralized way to fetch it
+    #     connection = sqlite3.connect("affo/aao.db")
+    #     db = connection.cursor()
+
+    #     defender = request.form.get("defender")
+    #     defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()
+    #     if defender_id:
+    #         return redirect(f"/country/id={defender_id[0]}")
+    #     else:
+    #         return error(400, "No such country")
 
 
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
@@ -520,15 +529,15 @@ def defense():
 
         # Defense units came from POST request (TODO: attach it to the frontend)
         defense_units = ["soldier", "tank", "apache"]
-        # defense_units = request.form.get(u1)
-        # defense_units = request.form.get(u2)
-        # defense_units = request.form.get(u3)
+        # defense_units = [request.form.get(u1), request.form.get(u2), request.form.get(u3)]
         # Default defense
         # nation_id = nation[1]
         # default_defense = nation[2]
 
-        # TODO: check if selected unit names are valid
         if nation:
+            for item in defense_units:
+                if item not in Military.allUnits:
+                    return "Invalid unit types!"
             if len(defense_units) == 3:
                 # default_defense is stored in the db: "unit1,unit2,unit3"
                 defense_units = ",".join(defense_units)
