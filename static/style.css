@@ -1866,7 +1866,7 @@
                 width: 90%;
                 background-color: var(--foreground);
                 position: relative;
-                box-shadow: inset rgba(0, 0, 0, 0.075) 0 0 1000px 0;
+                box-shadow: inset rgba(0, 0, 0, 0.015) 0 0 1000px 0, rgba(0, 0, 0, 0.03) 0px 2px 16px 0px, rgba(39, 41, 59, 0.06) 0px 2px 5px 0px;
             }
             
             .progressbarparentlight {
