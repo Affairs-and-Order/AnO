@@ -98,10 +98,41 @@ def countries():  # TODO: fix shit ton of repeated code in function
     except TypeError:
         search = None
 
-    if search == None or search == "":
+    try:
+        lowerinf = int(request.values.get("lowerinf"))
+    except TypeError:
+        lowerinf = None
+
+    try:
+        upperinf = int(request.values.get("upperinf"))
+    except TypeError:
+        upperinf = None
+
+
+    # Unoptimize
+    if search == None or search == "" and upperinf == None and lowerinf == None:
         users = db.execute("SELECT id FROM users ORDER BY id").fetchall()
-    else:
+    elif search != None and upperinf == None and lowerinf == None:
         users = db.execute("SELECT id FROM users WHERE username=(?) ORDER BY id", (search,)).fetchall()
+
+    if lowerinf != None and upperinf == None:
+        for user in users:
+            user_id = int(user[0])
+            if get_influence(user_id) < lowerinf:
+                users.remove(user)
+
+    elif upperinf != None and lowerinf == None:
+        for user in users:
+            user_id = int(user[0])
+            if get_influence(user_id) > upperinf:
+                users.remove(user)
+
+    elif upperinf != None and lowerinf != None:
+        for user in users:
+            user_influence = get_influence(int(user[0]))
+            if user_influence > upperinf or user_influence < lowerinf:
+                users.remove(user)
+
 
     population = db.execute("SELECT population FROM stats ORDER BY id").fetchall()
     names = db.execute("SELECT username FROM users ORDER BY id").fetchall()
