@@ -823,6 +823,16 @@
                 display: block;
             }
             
+            .warflexparentcolors {
+                background: var(--foregroundTwo);
+                border: 1.5px solid var(--border);
+                transition: all 0.3s ease-in-out;
+                width: 95%;
+                margin: 12px auto;
+                position: relative !important;
+                box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
+            }
+            
             .templatediv {
                 background: var(--foreground);
                 width: 90%;
@@ -1100,7 +1110,7 @@
             
             .templatecenteredbutton {
                 transition: all 0.2s;
-                margin: auto;
+                margin: 5px auto;
             }
             
             .smallactionbutton {
@@ -1856,6 +1866,11 @@
                 width: 90%;
                 background-color: var(--foreground);
                 position: relative;
+                box-shadow: inset rgba(0, 0, 0, 0.075) 0 0 1000px 0;
+            }
+            
+            .progressbarparentlight {
+                background-color: var(--background);
             }
             
             .progressbarchild {
