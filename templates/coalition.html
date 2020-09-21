@@ -44,7 +44,7 @@
                 <h3 class="smallheader">Join</h3>
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
-            
+
             {% if userLeader == False %}
             <script>
                 $(document).ready(function() {
@@ -233,8 +233,8 @@
 
         </div>
         <!--JOIN-->
-        <form action="/join/{{ colId }}" method="POST">
-            <div class="join" id="join">
+        <div class="join" id="join">
+            <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
@@ -248,6 +248,7 @@
                         <ul>
                             {{ name }} is a [coalition type (economic, war, trade)] coalition.
                         </ul>
+                        {% endif %}
                         <!--if not at war don't show the warning below-->
                         <ul class="warning">
                             {{ name }} is currently at war!
@@ -259,9 +260,11 @@
                     </div>
 
                 </div>
-
+                {% if colType == "Invite Only" %}
                 <form action="/join/{{ colId }}" method="POST">
-                    <button type="submit" value="submit" class="templatedivbutton loginsignupbutton">Request to join</button>
+                    <button type="submit" value="submit" class="templatedivbutton loginsignupbutton"><span class="material-icons-outlined">
+                    arrow_forward
+                    </span>Request to join</button>
                 </form>
                 {% endif %}
 
@@ -270,16 +273,19 @@
 
                 <!-- currently only added join for open coalitions, without message-->
 
-        </form>
+                </form>
 
-        {% if colType == "Open" %}
-        <form action="/join/{{ colId }}" method="POST">
-            <button type="submit" class="templatedivbutton loginsignupbutton" value="submit">Join</button>
-        </form>
-        {% endif %}
-        <!--There buttons will be deactivated-->
-        <!-- <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button> -->
-        <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
+                {% if colType == "Open" %}
+                <form action="/join/{{ colId }}" method="POST">
+                    <button type="submit" class="templatedivbutton loginsignupbutton" value="submit"><span class="material-icons-outlined">
+                    arrow_forward
+                    </span>Join</button>
+                </form>
+                {% endif %}
+                <!--There buttons will be deactivated-->
+                <!-- <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button> -->
+                <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
+            </div>
         </div>
 
         <!--LEADER PANEL-->
