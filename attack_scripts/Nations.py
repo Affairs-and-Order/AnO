@@ -1,6 +1,6 @@
 import random
 import sqlite3
-import os
+import os, time
 
 path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
@@ -23,6 +23,95 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
     # DEBUGGING:
     # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
     return attack_effects
+
+class Nation:
+
+    # TODO: someone should update this docs -- marter
+    """
+    Description of properties:
+
+        If values aren't passed to the parameters then should fetch from the database
+
+        - nationID: represents the nation identifier, type: integer
+        - military: represents the ...., type: unknown
+        - economy: re...., type:
+        - provinces: represents the provinces that belongs to the nation, type: dictionary
+          -- structure: provinces_number -> number of provinces, type: integer
+                        provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
+    """
+
+    def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
+        self.id = nationID  # integer ID
+
+        self.military = military
+        self.economy = economy
+        self.provinces = provinces
+
+        self.current_wars = current_wars
+        self.wins = 0
+        self.losses = 0
+
+        # Database management
+        # TODO: find a more effective way to handle database stuff
+        path = ''.join(
+            [os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+        self.connection = sqlite3.connect(path)
+        self.db = self.connection.cursor()
+
+    def declare_war(self, target_nation):
+        pass
+
+    def get_provinces(self):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        if self.provinces == None:
+            self.provinces = {"provinces_number": 0, "province_stats": {}}
+            provinces_number = self.db.execute(
+                "SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
+            self.provinces["provinces_number"] = provinces_number
+
+            if provinces_number > 0:
+                provinces = db.execute(
+                    "SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
+                for province in provinces:
+                    self.provinces["province_stats"][province[1]] = {
+                        "userId": province[0],
+                        "provinceName": province[2],
+                        "cityCount": province[3],
+                        "land": province[4],
+                        "population": province[5],
+                        "energy": province[6],
+                        "pollution": province[7]
+                    }
+
+        return self.provinces
+
+    def get_current_wars(self):
+        id_list = self.db.execute(
+            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
+        print(id_list)
+
+    def printStatistics(self):
+        print("Nation {}:\nWins {}\nLosses: {}".format(
+            self.id, self.wins, self.losses))
+
+    @staticmethod
+    def set_peace(war_id):
+        self.db.execute("UPDATE wars SET peace_date=(?) WHERE war_id=(?)", (time.time(), war_id))
+        self.connection.commit()
+
+    @staticmethod
+    def check_peace(attacker, defender):
+        # Check if nation currently at peace with another nation
+        current_peace = self.db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchone()
+
+        # 259200 = 3 days
+        if current_peace[0]:
+            if (current_peace[0]+259200) > time.time():
+
+                # continue = False, message = You can't declare war because truce has not expired!
+                return (False, "You can't declare war because truce has not expired!")
+        return (True,)
 
 class Military:
     allUnits = ["soldiers", "tanks", "artillery",
@@ -61,6 +150,7 @@ class Military:
 
         # Win the war
         if morale <= 0:
+            Nation.set_peace(war_id)
             print("THE WAR IS OVER")
 
         db.execute(f"UPDATE wars SET {column}=(?) WHERE id=(?)", (morale, war_id))
@@ -356,76 +446,6 @@ class Economy:
 
 
 
-class Nation:
-
-    # TODO: someone should update this docs -- marter
-    """
-    Description of properties:
-
-        If values aren't passed to the parameters then should fetch from the database
-
-        - nationID: represents the nation identifier, type: integer
-        - military: represents the ...., type: unknown
-        - economy: re...., type:
-        - provinces: represents the provinces that belongs to the nation, type: dictionary
-          -- structure: provinces_number -> number of provinces, type: integer
-                        provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
-    """
-
-    def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
-        self.id = nationID  # integer ID
-
-        self.military = military
-        self.economy = economy
-        self.provinces = provinces
-
-        self.current_wars = current_wars
-        self.wins = 0
-        self.losses = 0
-
-        # Database management
-        # TODO: find a more effective way to handle database stuff
-        path = ''.join(
-            [os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
-        self.connection = sqlite3.connect(path)
-        self.db = self.connection.cursor()
-
-    def declare_war(self, target_nation):
-        pass
-
-    def get_provinces(self):
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-        if self.provinces == None:
-            self.provinces = {"provinces_number": 0, "province_stats": {}}
-            provinces_number = self.db.execute(
-                "SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
-            self.provinces["provinces_number"] = provinces_number
-
-            if provinces_number > 0:
-                provinces = db.execute(
-                    "SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
-                for province in provinces:
-                    self.provinces["province_stats"][province[1]] = {
-                        "userId": province[0],
-                        "provinceName": province[2],
-                        "cityCount": province[3],
-                        "land": province[4],
-                        "population": province[5],
-                        "energy": province[6],
-                        "pollution": province[7]
-                    }
-
-        return self.provinces
-
-    def get_current_wars(self):
-        id_list = self.db.execute(
-            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
-        print(id_list)
-
-    def printStatistics(self):
-        print("Nation {}:\nWins {}\nLosses: {}".format(
-            self.id, self.wins, self.losses))
 
 
 # DEBUGGING:

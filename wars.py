@@ -51,18 +51,6 @@ def update_supply(war_id):
         db.execute("UPDATE wars SET attacker_supplies=(?), defender_supplies=(?), last_visited=(?) WHERE id=(?)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
         connection.commit()
 
-# def check_peace(db):
-#     # Check if nation currently at peace with another nation
-#     current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (10, 10, 11, 11)).fetchone()
-#
-#     # 259200 = 3 days
-#     if current_peace[0]:
-#         if (current_peace[0]+259200) > time.time():
-#
-#             # continue = False, message = You can't declare war because truce has not expired!
-#             return (False, "You can't declare war because truce has not expired!")
-#     return (True,)
-
 # so this is page 0, war menu, choose a war
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
