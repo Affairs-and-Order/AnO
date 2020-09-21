@@ -26,7 +26,7 @@
                     <label class="full medium">Or create one!</label>
                     <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup"><span class="material-icons-outlined">
                             add_circle_outline
-                            </span>SIGNUP</a> {% elif session.get('user_id') != None %}
+                            </span>SIGN UP</a> {% elif session.get('user_id') != None %}
                     <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                             outlined_flag
                             </span>COUNTRY</a> {% endif %}
