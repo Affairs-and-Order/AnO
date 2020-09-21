@@ -351,6 +351,163 @@
                     </span>Update</button>
             </div>
 
+            <h2 class="templatecontentheaderleft">Bank</h2>
+
+            <div class="infodiv">
+
+                <div class="templateoutertablediv inverttable">
+                    <table class="templatetable templatetable2">
+                        <tr>
+                            <th>Resource</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>Money:</td>
+                            <td>{{ gross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Rations:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Oil:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Coal:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Uranium:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Iron:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Lead:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Bauxite:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Copper:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Lumber:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Components:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Steel:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Consumer goods:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Aluminum:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Gasoline:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Ammunition:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            feedback
+                            </span>Request</button>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            arrow_downward
+                            </span>Deposit</button>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            arrow_forward
+                            </span>Withdraw</button>
+
+                    </div>
+                </div>
+
+                <div class="templateoutertablediv inverttable">
+                    <table class="templatetable templatetable2">
+                        <tr>
+                            <th>Name</th>
+                            <th>Request</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>[[ countryName ]]</td>
+                            <td>
+                                <!--for every resource requested-->
+                                [[ resource ]]<br/>
+                                <!---->
+                            </td>
+                            <td>
+                                <div class="templatedivflex2 menuflex">
+                                    <div class="templatedivflex2left">
+
+                                        <span class="material-icons iconred">
+                                            remove_circle_outline
+                                            </span>
+
+                                    </div>
+                                    <div class="templatedivflex2left">
+
+                                        <span class="material-icons iconblue">
+                                            add_circle_outline
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
             <h2 class="templatecontentheaderleft">Diplomacy</h2>
 
             <div class="infodiv">
@@ -553,6 +710,118 @@
         </div>
         <!--MEMBER-->
         <div class="member" id="member">
+
+            <h2 class="templatecontentheaderleft">Bank</h2>
+
+            <div class="infodiv">
+
+                <div class="templateoutertablediv inverttable">
+                    <table class="templatetable templatetable2">
+                        <tr>
+                            <th>Resource</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                        <tr>
+                            <td>Money:</td>
+                            <td>{{ gross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Rations:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Oil:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Coal:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Uranium:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Iron:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Lead:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Bauxite:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Copper:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Lumber:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Components:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Steel:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Consumer goods:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Aluminum:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Gasoline:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                        <tr>
+                            <td>Ammunition:</td>
+                            <td>{{ rationsGross }}%</td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            feedback
+                            </span>Request</button>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            arrow_downward
+                            </span>Deposit</button>
+
+                    </div>
+                </div>
+            </div>
 
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
