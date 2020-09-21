@@ -486,20 +486,21 @@
             .loginsignup {
                 float: right;
                 width: fit-content;
-                margin-top: 10px;
-                margin-right: 10px;
                 transition: all 0.2s;
-                padding: 4px 12px;
+                line-height: 35px;
+                border: 2.5px transparent solid;
+                padding: 0 10px;
                 text-decoration: none;
                 color: white;
                 font-size: 18px;
                 user-select: none;
                 cursor: pointer;
                 border-radius: 4px;
+                margin: 7.5px 7.5px;
             }
             
             .loginsignup:hover {
-                color: rgba(255, 255, 255, 0.5);
+                color: rgba(255, 255, 255, 0.55);
             }
             /* Style The Dropdown Button */
             
@@ -1156,6 +1157,15 @@
             
             .nuclearreactordisabledbutton {
                 content: "You require the Nuclear Testing Facility project to build a Nuclear Reactor";
+            }
+            
+            .borderbutton {
+                background: #00a9e1;
+            }
+            
+            .borderbutton:hover {
+                color: white;
+                opacity: 0.7;
             }
             
             .smallheader {
