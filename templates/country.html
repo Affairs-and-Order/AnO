@@ -40,7 +40,8 @@
                     edithide();
 
                 });
-            </script>{% endif %}
+            </script>
+            {% endif %}
             <div class="templatedivflex2left" id="countryrevenue" onclick="countryrevenue()">
 
                 <h3 class="smallheader">Revenue</h3>
@@ -361,6 +362,10 @@
                             <td>{{ rationsGross }}%</td>
                         </tr>
                         <tr>
+                            <td>Lumber:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
                             <th><span class="material-icons-outlined">
                                 article
                                 </span>Gross Processed</th>
@@ -375,10 +380,6 @@
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ rationsGross }}%</td>
-                        </tr>
-                        <tr>
-                            <td>Copper plates:</td>
                             <td>{{ rationsGross }}%</td>
                         </tr>
                         <tr>
@@ -445,6 +446,10 @@
                             <td>{{ rationsGross }}%</td>
                         </tr>
                         <tr>
+                            <td>Lumber:</td>
+                            <td>{{ rationsGross }}%</td>
+                        </tr>
+                        <tr>
                             <th><span class="material-icons-outlined">
                                 article
                                 </span>Net Processed</th>
@@ -459,10 +464,6 @@
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ rationsGross }}%</td>
-                        </tr>
-                        <tr>
-                            <td>Copper plates:</td>
                             <td>{{ rationsGross }}%</td>
                         </tr>
                         <tr>
@@ -543,6 +544,10 @@
                     <td>{{ rationsGross }}%</td>
                 </tr>
                 <tr>
+                    <td>Lumber:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
                     <th><span class="material-icons-outlined">
                         article
                         </span>Before Tax Processed</th>
@@ -557,10 +562,6 @@
                 </tr>
                 <tr>
                     <td>Consumer goods:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Copper plates:</td>
                     <td>{{ rationsGross }}%</td>
                 </tr>
                 <tr>
@@ -751,7 +752,7 @@
                     <div class="vanilla radiodiv">
                         <li class="radioleft">
                             <input type="radio" id="a1" name="group1">
-                            <label for="a1">Force them to work in labor camps</label>
+                            <label>Force them to work in labor camps</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -766,7 +767,7 @@
                     <div class="vanilla radiodiv">
                         <li class="radioleft">
                             <input type="radio" id="b1" name="group1">
-                            <label for="b1">Put them through rehabilitation</label>
+                            <label>Put them through rehabilitation</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -782,7 +783,7 @@
                     <div class="vanilla radiodiv">
                         <li class="radioleft">
                             <input type="radio" id="c1" name="group1">
-                            <label for="c1">Make them serve in the military</label>
+                            <label>Make them serve in the military</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -803,7 +804,7 @@
                     <div class="vanilla radiodiv">
                         <li class="radioleft">
                             <input type="radio" id="a2" name="group2">
-                            <label for="a2">Continue to use fossil fuels</label>
+                            <label>Continue to use fossil fuels</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -819,7 +820,7 @@
                     <div class="vanilla radiodiv">
                         <li class="radioleft">
                             <input type="radio" id="b2" name="group2">
-                            <label for="b2">Switch over to green energy</label>
+                            <label>Switch over to green energy</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -835,7 +836,7 @@
                     <div class="vanilla radiodiv">
                         <li class="radioleft">
                             <input type="radio" id="c2" name="group2">
-                            <label for="c2">Use the military to acquire more fossil fuels</label>
+                            <label>Use the military to acquire more fossil fuels</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -849,130 +850,50 @@
                     </div>
                 </div>
                 <hr />
-                <ul>How should you react to drug use?</ul>
-
-                <div class="vanilla templatedivflex2 space">
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="a3" name="group3">
-                            <label for="a3">Make all drugs legal with little restriction</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="b3" name="group3">
-                            <label for="b3">Provide rehabilitation for addicts</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="c3" name="group3">
-                            <label for="c3">Force them to wait out a sentence in prison</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-                </div>
-                <hr />
-                <ul>What should be the minimum time served in the military?</ul>
-
-                <div class="vanilla templatedivflex2 space">
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="a4" name="group4">
-                            <label for="a4">Citizens will be forced to defend</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="b4" name="group4">
-                            <label for="b4">None, service should be optional</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="c4" name="group4">
-                            <label for="c4">10 years, and stay in reserve</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-                </div>
-                <hr />
                 <ul>How should the country deal with immigration?</ul>
 
                 <div class="vanilla templatedivflex2 space">
-
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="a5" name="group5">
-                            <label for="a5">Only wealthy immigrants are allowed</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c3" name="group3">
+                            <label>Only very wealthy immigrants are allowed</label>
 
                             <div class="vanilla check"></div>
                         </li>
-                    </div>
+                        <li class="radioright">
 
+                            <div>-3% food needs</div>
+                            <div>-5% happiness</div>
+
+                        </li>
+                    </div>
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="b5" name="group5">
-                            <label for="b5">All immigrants are allowed</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c3" name="group3">
+                            <label>All immigrants are allowed and are provided with resources</label>
 
                             <div class="vanilla check"></div>
                         </li>
-                    </div>
+                        <li class="radioright">
 
+                            <div>-5% consumer goods needs</div>
+                            <div>-5% productivity</div>
+
+                        </li>
+                    </div>
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="c5" name="group5">
-                            <label for="c5">Walls will block all immigration</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c3" name="group3">
+                            <label>Immigrants will be indoctrinated into the military</label>
 
                             <div class="vanilla check"></div>
                         </li>
-                    </div>
-                </div>
-                <hr />
-                <ul>What should the country do about guns?</ul>
+                        <li class="radioright">
 
-                <div class="vanilla templatedivflex2 space">
+                            <div>-6% military units money cost</div>
+                            <div>-5% happiness</div>
+                            <div>-3% productivity</div>
 
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="a6" name="group6">
-                            <label for="a6">Gun sale is restricted</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="b6" name="group6">
-                            <label for="b6">Guns are not allowed</label>
-
-                            <div class="vanilla check"></div>
-                        </li>
-                    </div>
-
-                    <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="c6" name="group6">
-                            <label for="c6">Every citizen must own a gun</label>
-
-                            <div class="vanilla check"></div>
                         </li>
                     </div>
                 </div>
@@ -982,65 +903,103 @@
                 <div class="vanilla templatedivflex2 space">
 
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="a7" name="group7">
-                            <label for="a7">Taxes only on the rich</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c4" name="group4">
+                            <label>Taxes only on companies and the rich</label>
 
                             <div class="vanilla check"></div>
+                        </li>
+                        <li class="radioright">
+
+                            <div>+6% productivity</div>
+                            <div>-7% happiness</div>
+
                         </li>
                     </div>
 
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="b7" name="group7">
-                            <label for="b7">High taxes on every citizen</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c4" name="group4">
+                            <label>High taxes for social programs</label>
 
                             <div class="vanilla check"></div>
+                        </li>
+                        <li class="radioright">
+
+                            <div>+8% public works effectiveness</div>
+                            <div>-6% productivity</div>
+
                         </li>
                     </div>
 
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="c7" name="group7">
-                            <label for="c7">No taxes</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c4" name="group4">
+                            <label>Only taxes to fund the military</label>
 
                             <div class="vanilla check"></div>
+                        </li>
+                        <li class="radioright">
+
+                            <div>+5 supplies per hour</div>
+                            <div>+5% harbour and aerodome capacity</div>
+                            <div>-6% happiness</div>
+
                         </li>
                     </div>
                 </div>
                 <hr />
-                <ul>What is your climate change policy?</ul>
+                <ul>What is your military doctrine?</ul>
 
                 <div class="vanilla templatedivflex2 space">
 
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="a8" name="group8">
-                            <label for="a8">Climate change does not exist</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c5" name="group5">
+                            <label>Uphold decent military strength to defend allies</label>
 
                             <div class="vanilla check"></div>
+                        </li>
+                        <li class="radioright">
+
+                            <div>+5% productivity</div>
+                            <div>-6% happiness</div>
+
                         </li>
                     </div>
 
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="b8" name="group8">
-                            <label for="b8">The country will work to stop climate change immediately</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c5" name="group5">
+                            <label>Strong pacifism</label>
 
                             <div class="vanilla check"></div>
+                        </li>
+                        <li class="radioright">
+
+                            <div>+6% happiness</div>
+                            <div>-7% productivity</div>
+
                         </li>
                     </div>
 
                     <div class="vanilla radiodiv">
-                        <li>
-                            <input type="radio" id="c8" name="group8">
-                            <label for="c8">The government will provide subsidies</label>
+                        <li class="radioleft">
+                            <input type="radio" id="c5" name="group5">
+                            <label>Imperialist policies persueing resources</label>
 
                             <div class="vanilla check"></div>
+                        </li>
+                        <li class="radioright">
+
+                            <div>+7% looting resources</div>
+                            <div>-9% happiness</div>
+
                         </li>
                     </div>
                 </div>
                 <hr />
+                <!---->
                 <ul>How should you handle healthcare?</ul>
 
                 <div class="vanilla templatedivflex2 space">
@@ -1048,7 +1007,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="a9" name="group9">
-                            <label for="a9">Emergency healthcare will be funded</label>
+                            <label>Emergency healthcare will be publically funded</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1057,7 +1016,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="b9" name="group9">
-                            <label for="b9">All healthcare will be publicly funded</label>
+                            <label>All healthcare will be publicly funded</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1066,7 +1025,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="c9" name="group9">
-                            <label for="c9">The healthcare sector will private</label>
+                            <label>The healthcare sector will private</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1080,7 +1039,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="a10" name="group10">
-                            <label for="a10">Policy 1</label>
+                            <label>Policy 1</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1089,7 +1048,7 @@
                     <div class="vanilla radiodiv">
                         <li>
                             <input type="radio" id="b10" name="group10">
-                            <label for="b10">Policy 2</label>
+                            <label>Policy 2</label>
 
                             <div class="vanilla check"></div>
                         </li>
@@ -1408,13 +1367,12 @@
                         <label for="warType">Choose opperation</label>
                         <select class="templateselect" name="warType">
 
-                                    <option class="templateoption">Assasinate spies</option>
-                                    <option class="templateoption">Spy on ground troops</option>
-                                    <option class="templateoption">Spy on air forces</option>
-                                    <option class="templateoption">Spy on water forces</option>
-                                    <option class="templateoption">Spy on special units</option>
+                                <option class="templateoption">Spy on unit amounts</option>
+                                <option class="templateoption">Spy on defensive units</option>
+                                <option class="templateoption">Spy on resources</option>
+                                <option class="templateoption">Assasinate spies</option>
 
-                                </select>
+                        </select>
 
                     </div>
                     <div class="templatedivflex2left">

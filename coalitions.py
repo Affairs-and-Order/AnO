@@ -37,10 +37,8 @@ def coalition(colId):
 
         # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
 
-        leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[
-            0]  # The id of the coalition leader
-        leaderName = db.execute(
-            "SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
+        leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]  # The id of the coalition leader
+        leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
 
         treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
 

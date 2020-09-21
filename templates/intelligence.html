@@ -12,7 +12,7 @@
     <div class="templatedivcontent">
 
         <!--duplicate for every country you've spied on in the last 14 days-->
-        <h2 class="templatecontentheaderleft">{{ yourCountry }}</h2>
+        <h2 class="templatecontentheaderleft">[[ enemyCountry ]]</h2>
 
         {% for dictEntry in spyEntries %}
         <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Military</h2>
@@ -50,18 +50,73 @@
 
         <table class="templatetable">
             <tr>
-                <th>Raw</th>
+                <th><span class="material-icons-outlined">
+                    article
+                    </span>Resources</th>
             </tr>
             <tr>
-                <td>[[ spyentries["soldiers"]] Soldiers</td>
-                <td>[[ spyentries["fighters"]] Fighter Jets</td>
+                <td>Money:</td>
+                <td>{{ gross }}%</td>
             </tr>
             <tr>
-                <th>Processed</th>
+                <td>Rations:</td>
+                <td>{{ rationsGross }}%</td>
             </tr>
             <tr>
-                <td>[[ spyentries["soldiers"]] Soldiers</td>
-                <td>[[ spyentries["fighters"]] Fighter Jets</td>
+                <td>Oil:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Coal:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Uranium:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Iron:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Lead:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Bauxite:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Copper:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Lumber:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Components:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Steel:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Consumer goods:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Aluminum:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Gasoline:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Ammunition:</td>
+                <td>{{ rationsGross }}%</td>
             </tr>
         </table>
         {% endfor %}
