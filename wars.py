@@ -51,18 +51,6 @@ def update_supply(war_id):
         db.execute("UPDATE wars SET attacker_supplies=(?), defender_supplies=(?), last_visited=(?) WHERE id=(?)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
         connection.commit()
 
-# def check_peace(db):
-#     # Check if nation currently at peace with another nation
-#     current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (10, 10, 11, 11)).fetchone()
-#
-#     # 259200 = 3 days
-#     if current_peace[0]:
-#         if (current_peace[0]+259200) > time.time():
-#
-#             # continue = False, message = You can't declare war because truce has not expired!
-#             return (False, "You can't declare war because truce has not expired!")
-#     return (True,)
-
 # so this is page 0, war menu, choose a war
 @login_required
 @app.route("/wars", methods=["GET", "POST"])
@@ -352,14 +340,11 @@ def warTarget():
 @login_required
 @app.route("/warResult", methods=["GET"])
 def warResult():
-    # grab your units from session
-    # this data is in the form of Units object
-
     # attacker = session["attack_units"]
 
     # DEBUGGING
-    # attacker = Units(11, {"soldiers": 20, "tanks": 20, "artillery": 5}, selected_units_list=["soldiers", "tanks", "artillery"])
-    # session["targeted_defending_units"] = Units(10, {"soldiers": 10}, selected_units_list=["soldiers"])
+    attacker = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
+    session["targeted_defending_units"] = Units(10, {"soldiers": 5, "tanks": 1, "artillery": 15}, selected_units_list=["soldiers", "tanks", "artillery"])
 
     # grab defending enemy units from database
     # eId = session["enemy_id"]
@@ -377,6 +362,7 @@ def warResult():
     # If user came from /wartarget only then they have targeted_defending_units session
     defender = session.get("targeted_defending_units", None)
     if not defender:
+        print("UNIQ")
         defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
         defenseunits = {}
         for unit in defenselst:
@@ -385,11 +371,26 @@ def warResult():
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
 
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
-    winner = Military.fight(attacker, defender)
 
-    print(attacker.selected_units)
+    # Used to print out the stats units before fight
+    prev_defender = dict(defender.selected_units)
+    prev_attacker = dict(attacker.selected_units)
+
+    winner, win_condition = Military.fight(attacker, defender)
+
+    defender_loss = {}
+    attacker_loss = {}
+
+    for unit in defender.selected_units_list:
+        defender_loss[unit] = prev_defender[unit]-defender.selected_units[unit]
+
+    for unit in attacker.selected_units_list:
+        attacker_loss[unit] = prev_attacker[unit]-attacker.selected_units[unit]
+
+    print("ATK", attacker.selected_units)
     print(winner, defender.selected_units)
     print(attacker.selected_units)
+    print("LOSS", attacker_loss)
 
     if winner == defender.user_id:
         pass
@@ -399,17 +400,20 @@ def warResult():
 
         # When lose the war
         if morale == 0:
-            # WAR TYPES
-            # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
-            # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
-            # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-            war_type = db.execute("SELECT war_type FROM wars WHERE attacker=(?) AND defender=(?)", (attacker.user_id, defender.user_id)).fetchall()[-1]
+            pass
+
+        # WAR TYPES
+        # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+        # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
+        # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+        war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
+        if len(war_type) > 0:
             if war_type == "raze" : pass
             elif war_type == "sustained": pass
             elif war_type == "loot": pass
-            else:
-                print("INVALID WARTYPE")
-
+            else: print("INVALID WARTYPE")
+        else:
+            print("INVALID USER IDs")
 
     # possible war policies:
     # "empire builder"--> winning gives no loot 2x reparation tax
@@ -418,7 +422,21 @@ def warResult():
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
-    return render_template("warResult.html", yourNation="You", enemyNation="Them", attackResult="attackResult", resStolen="resStolen") # resStolen needs to be a dictionary
+    attacker_name = db.execute("SELECT username FROM users WHERE id=(?)", (attacker.user_id,)).fetchone()[0]
+    defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender.user_id,)).fetchone()[0]
+    if winner == attacker.user_id:
+        winner_name=attacker_name
+    else:
+        winner_name=defender_name
+
+    return render_template(
+        "warResult.html",
+        winner=winner_name,
+        win_condition=win_condition,
+        attacker={"nation_name": attacker_name, "loss": attacker_loss},
+        defender={"nation_name": defender_name, "loss": defender_loss},
+        attackResult="attackResult",
+        resStolen="resStolen") # resStolen needs to be a dictionary
 
 # Endpoint for war declaration
 @login_required

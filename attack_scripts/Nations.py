@@ -1,6 +1,6 @@
 import random
 import sqlite3
-import os
+import os, time
 
 path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
 
@@ -24,11 +24,141 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
     # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
     return attack_effects
 
+class Nation:
+
+    # TODO: someone should update this docs -- marter
+    """
+    Description of properties:
+
+        If values aren't passed to the parameters then should fetch from the database
+
+        - nationID: represents the nation identifier, type: integer
+        - military: represents the ...., type: unknown
+        - economy: re...., type:
+        - provinces: represents the provinces that belongs to the nation, type: dictionary
+          -- structure: provinces_number -> number of provinces, type: integer
+                        provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
+    """
+
+    def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
+        self.id = nationID  # integer ID
+
+        self.military = military
+        self.economy = economy
+        self.provinces = provinces
+
+        self.current_wars = current_wars
+        self.wins = 0
+        self.losses = 0
+
+        # Database management
+        # TODO: find a more effective way to handle database stuff
+        path = ''.join(
+            [os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+        self.connection = sqlite3.connect(path)
+        self.db = self.connection.cursor()
+
+    def declare_war(self, target_nation):
+        pass
+
+    def get_provinces(self):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        if self.provinces == None:
+            self.provinces = {"provinces_number": 0, "province_stats": {}}
+            provinces_number = self.db.execute(
+                "SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
+            self.provinces["provinces_number"] = provinces_number
+
+            if provinces_number > 0:
+                provinces = db.execute(
+                    "SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
+                for province in provinces:
+                    self.provinces["province_stats"][province[1]] = {
+                        "userId": province[0],
+                        "provinceName": province[2],
+                        "cityCount": province[3],
+                        "land": province[4],
+                        "population": province[5],
+                        "energy": province[6],
+                        "pollution": province[7]
+                    }
+
+        return self.provinces
+
+    def get_current_wars(self):
+        id_list = self.db.execute(
+            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
+        print(id_list)
+
+    def printStatistics(self):
+        print("Nation {}:\nWins {}\nLosses: {}".format(
+            self.id, self.wins, self.losses))
+
+    @staticmethod
+    def set_peace(war_id):
+        self.db.execute("UPDATE wars SET peace_date=(?) WHERE war_id=(?)", (time.time(), war_id))
+        self.connection.commit()
+
+    @staticmethod
+    def check_peace(attacker, defender):
+        # Check if nation currently at peace with another nation
+        current_peace = self.db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchone()
+
+        # 259200 = 3 days
+        if current_peace[0]:
+            if (current_peace[0]+259200) > time.time():
+
+                # continue = False, message = You can't declare war because truce has not expired!
+                return (False, "You can't declare war because truce has not expired!")
+        return (True,)
+
 class Military:
     allUnits = ["soldiers", "tanks", "artillery",
                 "bombers", "fighters", "apaches",
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
+
+    def infrastructure_damage(self): pass
+
+    # Update the morale and give back the win type name
+    @staticmethod
+    def morale_change(column, win_type, attacker, defender):
+        connection = sqlite3.connect("affo/aao.db")
+        db = connection.cursor()
+        war_id = db.execute(f"SELECT id FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1][0]
+
+        morale = db.execute(f"SELECT {column} FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+
+        # annihilation
+        # 50 morale change
+        if win_type >= 3:
+            morale = morale-50
+            win_condition = "annihilation"
+
+        # definite victory
+        # 35 morale change
+        elif win_type >= 2:
+            morale = morale-35
+            win_condition = "definite victory"
+
+        # close victory
+        # 25 morale change
+        else:
+            morale = morale-25
+            win_condition = "close victory"
+
+        # Win the war
+        if morale <= 0:
+            Nation.set_peace(war_id)
+            print("THE WAR IS OVER")
+
+        db.execute(f"UPDATE wars SET {column}=(?) WHERE id=(?)", (morale, war_id))
+        connection.commit()
+        connection.close()
+
+        return win_condition
+
     @staticmethod
     def special_fight(attacker, defender, target): # Units, Units, int -> str, None
         target_amount = defender.get_military(defender.user_id).get(target, None)
@@ -50,7 +180,6 @@ class Military:
 
     # NOTICE: in the future we could use this as an instance method unstead of static method
     '''
-    This is already checked in the Military->fight
     if your score is higher by 3x, annihilation,
     if your score is higher by 2x, definite victory
     if your score is higher, close victory,
@@ -88,12 +217,12 @@ class Military:
     @staticmethod
     def fight(attacker, defender): # Units, Units -> int
 
-        attacker_roll = random.uniform(0, 10)
+        attacker_roll = random.uniform(0, 2)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
         attacker_bonus = 0
 
-        defender_roll = random.uniform(0, 10)
+        defender_roll = random.uniform(0,2)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
@@ -116,39 +245,46 @@ class Military:
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
+        print("BONUSES", attacker_bonus, defender_bonus)
+        print("CHANCES", attacker_chance, defender_chance)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
             winner = defender
+
+            # morale column of the loser
+            morale_column = "attacker_morale"
+
             loser = attacker
-            win_type = defender_chance//attacker_chance
-            winner_casulties = attacker_chance//defender_chance
+            win_type = defender_chance/attacker_chance
+            winner_casulties = attacker_chance/defender_chance
 
         else:
             winner = attacker
+
+            # morale column of the loser
+            morale_column = "defender_morale"
+
             loser = defender
-            win_type = attacker_chance//defender_chance
-            winner_casulties = defender_chance//attacker_chance
+            win_type = attacker_chance/defender_chance
+            winner_casulties = defender_chance/attacker_chance
 
         # Effects based on win_type (idk: destroy buildings or something)
         # loser_casulties = win_type so win_type also is the loser's casulties
 
-        # annihilation
-        if win_type >= 3: pass
-
-        # definite victory
-        elif win_type >= 2: pass
-
-        # close victory
-        else: pass
+        win_condition = Military.morale_change(morale_column, win_type, attacker, defender)
 
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            winner.casualties(winner_unit, winner_casulties*random.uniform(0.8, 1))
-            loser.casualties(loser_unit, win_type*6*random.uniform(0.8, 1))
+            w_casualties = winner_casulties*random.uniform(0.6, 1)*1.5
+            l_casualties =  win_type*random.uniform(0.8, 1)*1.5
 
-        return winner.user_id
+            winner.casualties(winner_unit, w_casualties)
+            loser.casualties(loser_unit, l_casualties)
+
+        # return (winner.user_id, return_winner_cas, return_loser_cas)
+        return (winner.user_id, win_condition)
 
         # DEBUGGING:
         # print("WINNER IS:", winner.user_id)
@@ -310,76 +446,6 @@ class Economy:
 
 
 
-class Nation:
-
-    # TODO: someone should update this docs -- marter
-    """
-    Description of properties:
-
-        If values aren't passed to the parameters then should fetch from the database
-
-        - nationID: represents the nation identifier, type: integer
-        - military: represents the ...., type: unknown
-        - economy: re...., type:
-        - provinces: represents the provinces that belongs to the nation, type: dictionary
-          -- structure: provinces_number -> number of provinces, type: integer
-                        provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
-    """
-
-    def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
-        self.id = nationID  # integer ID
-
-        self.military = military
-        self.economy = economy
-        self.provinces = provinces
-
-        self.current_wars = current_wars
-        self.wins = 0
-        self.losses = 0
-
-        # Database management
-        # TODO: find a more effective way to handle database stuff
-        path = ''.join(
-            [os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
-        self.connection = sqlite3.connect(path)
-        self.db = self.connection.cursor()
-
-    def declare_war(self, target_nation):
-        pass
-
-    def get_provinces(self):
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-        if self.provinces == None:
-            self.provinces = {"provinces_number": 0, "province_stats": {}}
-            provinces_number = self.db.execute(
-                "SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
-            self.provinces["provinces_number"] = provinces_number
-
-            if provinces_number > 0:
-                provinces = db.execute(
-                    "SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
-                for province in provinces:
-                    self.provinces["province_stats"][province[1]] = {
-                        "userId": province[0],
-                        "provinceName": province[2],
-                        "cityCount": province[3],
-                        "land": province[4],
-                        "population": province[5],
-                        "energy": province[6],
-                        "pollution": province[7]
-                    }
-
-        return self.provinces
-
-    def get_current_wars(self):
-        id_list = self.db.execute(
-            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
-        print(id_list)
-
-    def printStatistics(self):
-        print("Nation {}:\nWins {}\nLosses: {}".format(
-            self.id, self.wins, self.losses))
 
 
 # DEBUGGING:
