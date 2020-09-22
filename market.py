@@ -212,7 +212,7 @@ def sell_market_offer(offer_id):
     if amount_wanted > total_amount:
         return error(400, "The amount of resources you're selling is higher than what the buyer wants")
 
-    # Checks if it's more than what the seller wants to sell
+    # Checks if it's less than what the seller wants to sell
     if sellers_resource < amount_wanted:
         return error(400, "You don't have enough of that resource")
 
@@ -600,10 +600,11 @@ def accept_trade(trade_id):
     if amount < 1:  # Checks if the amount is negative
         return error(400, "Amount must be greater than 0")
 
-    seller_id = offerer
 
     if trade_type == "sell":
         
+        seller_id = offerer
+
         buyers_gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
 
         if (amount * price) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
@@ -627,6 +628,44 @@ def accept_trade(trade_id):
         sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
         new_sellers_money = sellers_money + (amount * price)
         db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id))
+
+    elif trade_type == "buy":
+
+        seller_id = cId
+        buyer_id = offerer
+
+        # Sees how much of the resource the seller has
+        resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        sellers_resource = db.execute(resource_statement, (seller_id,)).fetchone()[0]
+
+        # Checks if it's less than what the seller wants to sell
+        if sellers_resource < amount:
+            return error(400, "You don't have enough of that resource")
+
+        # Removes the resource from the seller
+        new_sellers_resource = sellers_resource - amount
+        res_upd_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(res_upd_statement, (new_sellers_resource, seller_id))
+
+        # Gives the resource to the buyer
+        buyers_resource = db.execute(resource_statement, (buyer_id,)).fetchone()[0] # Selects how many resources of wanted resource the buyer has
+        new_buyers_resource = buyers_resource + amount # Generates the new amount by adding current amount + bought amount
+
+        db.execute(res_upd_statement, (new_buyers_resource, buyer_id))
+
+        # Takes away the money used for buying from the buyer
+
+        current_buyers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (buyer_id,)).fetchone()[0]
+        new_buyers_money = current_buyers_money - (price * amount)
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_buyers_money, buyer_id,))
+
+        # Gives the money to the seller
+
+        current_sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
+        new_sellers_money = current_sellers_money + (price * amount)
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id,))
 
     db.execute("DELETE FROM trades WHERE offer_id=(?)", (trade_id,)) # Deletes the offer
     
