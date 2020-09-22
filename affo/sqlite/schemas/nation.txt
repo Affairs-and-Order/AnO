@@ -1,7 +1,0 @@
--- this way user can't declare war after war
-CREATE TABLE 'nation'
-(
--- If war_fatigue is 0 then user can attack
-'war_fatigue'
-
-)

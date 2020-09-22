@@ -4,7 +4,7 @@
 
     <div class="templatedivtopper wartopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
-            engineering
+                engineering
             </span>Upgrades</h1>
         <div class="templatedivad"></div>
     </div>
@@ -15,16 +15,16 @@
             <div class="templatedivflex2left" id="upgradeseconomic" onclick="upgradeseconomic()">
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
-                    account_balance
-                </span>Economic
+                        account_balance
+                    </span>Economic
                 </h3>
 
             </div>
             <div class="templatedivflex2left" id="upgradesmilitary" onclick="upgradesmilitary()">
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
-                    military_tech
-                </span>Military
+                        military_tech
+                    </span>Military
                 </h3>
 
             </div>
@@ -39,39 +39,55 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Nuclear Reactors now power 15 infrastructure slots instead of 12</p>
+                        <p class="templatecontentpleft">Nuclear Reactors now power 15 infrastructure slots instead of 12
+                        </p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
+                                    {% if upgrades["betterengineering"] %}
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction="">
+                                        <span class="material-icons-outlined">
+                                            add_circle_outline
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                        </span>Buy</button>
+                                    {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
+                                    {% if upgrades["betterengineering"] %}
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction="">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                        <span class="material-icons-outlined">
+                                            remove_circle_outline
+
+
+                                        </span>Sell</button>
+                                    {% endif %}
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
-
+                                    {% if not upgrades["betterengineering"] %}
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="">
+                                        <span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
+                                    {% endif %}
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    {% if not upgrades["betterengineering"] %}
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -83,7 +99,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/betterengineering.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/betterengineering.jpg') }}" />
                     </div>
                 </div>
 
@@ -97,39 +114,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Oil burners now cost $40,000 per hour in upkeep instead of $60,000</p>
+                        <p class="templatecontentpleft">Oil burners now cost $40,000 per hour in upkeep instead of
+                            $60,000</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -141,7 +165,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/cheapermaterials.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/cheapermaterials.jpg') }}" />
                     </div>
                 </div>
 
@@ -155,39 +180,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Malls only require $550,000 in upkeep instead of $750,000 per hour</p>
+                        <p class="templatecontentpleft">Malls only require $550,000 in upkeep instead of $750,000 per
+                            hour</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -199,7 +231,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/onlineshopping.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/onlineshopping.jpg') }}" />
                     </div>
                 </div>
 
@@ -221,32 +254,38 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -258,7 +297,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/governmentregulation.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/governmentregulation.jpg') }}" />
                     </div>
                 </div>
 
@@ -279,32 +319,38 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -316,7 +362,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nationalhealthinstitution.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/nationalhealthinstitution.jpg') }}" />
                     </div>
                 </div>
 
@@ -337,32 +384,38 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -374,7 +427,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/highspeedrail.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/highspeedrail.jpg') }}" />
                     </div>
                 </div>
 
@@ -388,39 +442,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Increases farm output to 45 food per land per hour to 30 food per land per hour</p>
+                        <p class="templatecontentpleft">Increases farm output to 45 food per land per hour to 30 food
+                            per land per hour</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -432,7 +493,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/advancedmachinery.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/advancedmachinery.jpg') }}" />
                     </div>
                 </div>
 
@@ -453,32 +515,38 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -490,7 +558,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/strongerexplosives.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/strongerexplosives.jpg') }}" />
                     </div>
                 </div>
 
@@ -504,39 +573,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Soldier recruitment costs $150 instead of $200, and 1 ration instead of 2 rations</p>
+                        <p class="templatecontentpleft">Soldier recruitment costs $150 instead of $200, and 1 ration
+                            instead of 2 rations</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -548,7 +624,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/widespreadpropaganda.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/widespreadpropaganda.jpg') }}" />
                     </div>
                 </div>
 
@@ -562,39 +639,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Administrative Buildings can now recruit x spies per day instead of x, and have a capacity of x instead of x</p>
+                        <p class="templatecontentpleft">Administrative Buildings can now recruit x spies per day instead
+                            of x, and have a capacity of x instead of x</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -606,7 +690,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/increasedfunding.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/increasedfunding.jpg') }}" />
                     </div>
                 </div>
 
@@ -619,39 +704,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Components are made from 15 copper, 8 steel, and 12 aluminium instead of 20 copper, 10 steel, and 15 aluminium</p>
+                        <p class="templatecontentpleft">Components are made from 15 copper, 8 steel, and 12 aluminium
+                            instead of 20 copper, 10 steel, and 15 aluminium</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -663,7 +755,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/automationintegration.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/automationintegration.jpg') }}" />
                     </div>
                 </div>
 
@@ -683,32 +776,38 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -720,7 +819,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/largerforges.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/largerforges.jpg') }}" />
                     </div>
                 </div>
 
@@ -737,39 +837,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">you will produce 210 supplies per hour for every war you're in, instead of 200 supplies</p>
+                        <p class="templatecontentpleft">you will produce 210 supplies per hour for every war you're in,
+                            instead of 200 supplies</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -781,7 +888,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/lootingteams.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/lootingteams.jpg') }}" />
                     </div>
                 </div>
 
@@ -793,39 +901,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Your military now gets 225 supplies per hour for every war, instead of 210</p>
+                        <p class="templatecontentpleft">Your military now gets 225 supplies per hour for every war,
+                            instead of 210</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -837,7 +952,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/organizedsupplylines.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/organizedsupplylines.jpg') }}" />
                     </div>
                 </div>
 
@@ -849,39 +965,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Allows you to now produce 260 supplies per war for every war, instead of 225</p>
+                        <p class="templatecontentpleft">Allows you to now produce 260 supplies per war for every war,
+                            instead of 225</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -893,7 +1016,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/largestorehouses.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/largestorehouses.jpg') }}" />
                     </div>
                 </div>
 
@@ -905,39 +1029,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Provides the ability to develop and deploy ballistic missiles (you may only attack countries that are in your continent)</p>
+                        <p class="templatecontentpleft">Provides the ability to develop and deploy ballistic missiles
+                            (you may only attack countries that are in your continent)</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -949,7 +1080,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/ballisticmissilesilo.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/ballisticmissilesilo.jpg') }}" />
                     </div>
                 </div>
 
@@ -961,39 +1093,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Allows the deployment and production of ICBMs (they may hit any country on any continent)</p>
+                        <p class="templatecontentpleft">Allows the deployment and production of ICBMs (they may hit any
+                            country on any continent)</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -1005,7 +1144,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/intercontinentalballisticmissilesilo.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/intercontinentalballisticmissilesilo.jpg') }}" />
                     </div>
                 </div>
 
@@ -1017,39 +1157,46 @@
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Gives you the ability to create nuclear bombs and nuclear reactors</p>
+                        <p class="templatecontentpleft">Gives you the ability to create nuclear bombs and nuclear
+                            reactors</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button disabled
+                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
+                                        formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
+                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -1061,7 +1208,8 @@
 
 
 
-                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nucleartestingfacility.jpg') }}" />
+                        <img tabindex="0" class="unitimage"
+                            src="{{ url_for('static', filename='images/nucleartestingfacility.jpg') }}" />
                     </div>
                 </div>
 
