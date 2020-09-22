@@ -1448,6 +1448,7 @@
 
             </div>
             </div>
+            <form method="POST" action="/transfer/{{ cId }}">
             <h2 class="templatecontentheaderleft">Transfer</h2>
 
             <div class="infodiv">
@@ -1456,19 +1457,27 @@
 
                         <select name="resource" class="templateselect">
 
-                            <option disabled="true" selected="selected">Choose one</option>
-                            <option value="gold" class="templateoption">Gold</option>
-                            <option value="bauxite" class="templateoption">Bauxite</option>
-                            <option value="plutonium" class="templateoption">Plutionium</option>
-                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
-                            <option value="uranium" class="templateoption">Uranium</option>
-                            <option value="thorium" class="templateoption">Thorium</option>
-                            <option value="iron" class="templateoption">Iron</option>
-                            <option value="coal"class="templateoption">Coal</option>
-                            <option value="oil" class="templateoption">Oil</option>
-                            <option value="lead" class="templateoption">Lead</option>
-                            <option value="silicon" class="templateoption">Silicon</option>
-                            <option value="copper" class="templateoption">Copper</option>
+                        <option disabled="true" selected="selected">Choose one</option>
+
+                        <option value="gold" class="templateoption">Money</option>
+
+                        <option disabled="true" class="templateoption">---------</option>
+
+                        <option value="rations" class="templateoption">Rations</option>
+                        <option value="oil" class="templateoption">Oil</option>
+                        <option value="coal" class="templateoption">Coal</option>
+                        <option value="uranium" class="templateoption">Uranium</option>
+                        <option value="bauxite" class="templateoption">Bauxite</option>
+                        <option value="iron" class="templateoption">Iron</option>
+                        <option value="lead" class="templateoption">Lead</option>
+                        <option value="copper" class="templateoption">Copper</option>
+                        <option value="lumber" class="templateoption">Lumber</option>
+                        <option value="components" class="templateoption">Components</option>
+                        <option value="steel" class="templateoption">Steel</option>
+                        <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+                        <option value="aluminium" class="templateoption">Aluminium</option>
+                        <option value="gasoline" class="templateoption">Gasoline</option>
+                        <option value="ammunition" class="templateoption">Ammunition</option>
                         </select>
 
 
@@ -1485,6 +1494,7 @@
                             </span>Confirm</button>
 
             </div>
+            </form>
         </div>
     </div>
 </div>

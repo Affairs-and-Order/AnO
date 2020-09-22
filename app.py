@@ -344,7 +344,28 @@ def mass_purchase():
 
 @app.route("/upgrades", methods=["GET"])
 def upgrades():
-    return render_template("upgrades.html")
+    # TODO: replace the falses with db selects
+    upgrades = {
+        'betterEngineering': False,
+        'cheaperMaterials': False,
+        'onlineShopping': False,
+        'governmentRegulation': False,
+        'nationalHealthInstitution': False,
+        'highSpeedRail': False,
+        'advancedMachinery': False,
+        'strongerExplosives': False,
+        'widespreadPropaganda': False,
+        'increasedFunding': False,
+        'automationIntegration': False,
+        'largerForges': False,
+        'lootingTeams': False,
+        'organizedSupplyLines': False,
+        'largeStorehouses' : False,
+        'ballisticMissileSilo': False,
+        'ICBMSilo': False,
+        'nuclearTestingFacility': False
+    }
+    return render_template("upgrades.html", upgrades=upgrades)
 
 @app.route("/peace", methods=["GET", "POST"])
 def peace():
