@@ -604,6 +604,7 @@ def accept_trade(trade_id):
 
     if trade_type == "sell":
 
+        pass
 
     db.execute("DELETE FROM offers WHERE offer_id=(?)", (trade_id,)) # Deletes the offer
     
