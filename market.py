@@ -672,3 +672,34 @@ def accept_trade(trade_id):
     connection.commit()
     connection.close()
     return redirect("/my_offers")
+
+@login_required
+@app.route("/transfer/<country_id>", methods=["POST"])
+def transfer(country_id):
+        
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    resource = request.form.get("resource")
+    amount = request.form.get("amount")
+
+    ### DEFINITIONS ###
+
+    # user - the user transferring the resource, whose id is 'cId'
+    # transferee - the user upon whom the resource is transferred
+
+    ###################
+
+    user_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+    user_resource = db.execute(user_resource_statement, (cId,)).fetchone()[0]
+
+    if amount > user_resource:
+        return error(400, "You don't have enough resources")
+
+    
+    # Removes the resource from the user
+
+
+    # Gives the resource to the transferee
