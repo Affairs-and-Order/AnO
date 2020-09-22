@@ -560,3 +560,53 @@ def decline_trade(trade_id):
     connection.close()
 
     return redirect("/my_offers")
+
+@login_required
+@app.route("/accept_trade/<trade_id>", methods=["POST"])
+def accept_trade(trade_id):
+        
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    trade_offeree = db.execute("SELECT offeree FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    if trade_offeree != cId:
+        return error(400, "You can't accept that offer")
+
+    trade_type = db.execute("SELECT type FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    offerer = db.execute("SELECT offerer FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    resource = db.execute("SELECT resource FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+    amount = db.execute("SELECT amount FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+    price = db.execute("SELECT price FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    trade_types = ["buy", "sell"]
+    if trade_type not in trade_types:
+        return error(400, "Trade type must be 'buy' or 'sell'")
+
+    # List of all the resources in the game
+    resources = [
+        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+        "lumber", "components", "steel", "consumer_goods", "aluminium",
+        "gasoline", "ammunition"
+    ]
+
+    if resource not in resources:  # Checks if the resource the user selected actually exists
+        return error(400, "No such resource")
+
+    if amount < 1:  # Checks if the amount is negative
+        return error(400, "Amount must be greater than 0")
+
+    seller_id = offerer
+
+    if trade_type == "sell":
+
+
+    db.execute("DELETE FROM offers WHERE offer_id=(?)", (trade_id,)) # Deletes the offer
+    
+    connection.commit()
+    connection.close()
+    return redirect("/my_offers")
