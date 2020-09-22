@@ -364,7 +364,6 @@ def upgrades():
         'ballisticMissileSilo': False,
         'ICBMSilo': False,
         'nuclearTestingFacility': False
-
     }
     return render_template("upgrades.html", upgrades=upgrades)
 
