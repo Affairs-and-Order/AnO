@@ -2041,28 +2041,28 @@
                 color: white;
                 border-radius: 190px;
                 position: relative;
-                top: -5px;
-                box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 4px 12px 1px #00a7e130;
+                box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 4px 12px 1px #00a7e130, #007ca5 0 6px;
                 transition: all 0.1.5s linear;
                 width: 65% !important;
                 padding-top: 15.5px !important;
                 animation: templatelandingpagebuttonload 1.25s;
+                top: -4px;
             }
             
             .landingpagebutton:hover {
                 background: #00a7e1;
                 background-position: 0;
                 border: none;
-                top: 0;
-                box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110;
+                top: 0px;
+                box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110, #007ca5 0 0px;
             }
             
             .landingpagebutton:focus {
                 background: #00a7e1;
                 background-position: 0;
                 border: none;
-                top: 0;
-                box-shadow: inset rgba(39, 41, 59, 0.45) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110;
+                top: 0px;
+                box-shadow: inset rgba(39, 41, 59, 0.45) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110, #007ca5 0 0px;
             }
             
             .landingpagebutton span {
