@@ -344,6 +344,7 @@ def mass_purchase():
 
 @app.route("/upgrades", methods=["GET"])
 def upgrades():
+    # TODO: replace the falses with db selects
     upgrades = {
         'betterEngineering': False,
         'cheaperMaterials': False,
@@ -356,7 +357,14 @@ def upgrades():
         'widespreadPropaganda': False,
         'increasedFunding': False,
         'automationIntegration': False,
-        'largerForges': False
+        'largerForges': False,
+        'lootingTeams': False,
+        'organizedSupplyLines': False,
+        'largeStorehouses' : False,
+        'ballisticMissileSilo': False,
+        'ICBMSilo': False,
+        'nuclearTestingFacility': False
+
     }
     return render_template("upgrades.html", upgrades=upgrades)
 
