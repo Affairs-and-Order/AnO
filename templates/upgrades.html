@@ -53,7 +53,7 @@
                                         <span class="material-icons-outlined">
                                             add_circle_outline
 
-                                        </span>Buy</button> 
+                                        </span>Buy</button>
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
@@ -66,7 +66,7 @@
                                             remove_circle_outline
 
 
-                                        </span>Sell</button> 
+                                        </span>Sell</button>
 
                                 </div>
                             </div>
@@ -76,7 +76,7 @@
                                     <button class="templatedivbutton templatecenteredbutton" formaction="">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
-                                        </span>Buy</button> 
+                                        </span>Buy</button>
                                     {% endif %}
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
@@ -84,7 +84,7 @@
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
                                             remove_circle_outline
-                                        </span>Sell</button> 
+                                        </span>Sell</button>
                                     {% endif %}
 
                                 </div>
@@ -126,7 +126,7 @@
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
-{% endif %}
+                                    {% endif %}
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if upgrades["cheaperMaterials"] %}
@@ -136,7 +136,7 @@
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -148,7 +148,7 @@
                                             class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
-                                        {% endif %}
+                                    {% endif %}
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if not upgrades["cheaperMaterials"] %}
@@ -157,7 +157,7 @@
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -198,7 +198,7 @@
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
@@ -209,7 +209,7 @@
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -221,7 +221,7 @@
                                             class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
@@ -231,7 +231,7 @@
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -272,7 +272,7 @@
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
@@ -283,7 +283,7 @@
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -295,7 +295,7 @@
                                             class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
@@ -305,7 +305,7 @@
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button>
-                                        {% endif %}
+                                    {% endif %}
 
                                 </div>
                             </div>
@@ -339,7 +339,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["nationalHealthInstitution"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -348,7 +348,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["nationalHealthInstitution"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -358,7 +358,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-
+                                    {% if not upgrades["nationalHealthInstitution"] %} 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
                                             add_circle_outline
@@ -366,7 +366,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-
+                                    {% if not upgrades["nationalHealthInstitution"] %} 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
                                             remove_circle_outline
@@ -404,7 +404,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["highSpeedRail"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -412,7 +412,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["highSpeedRail"] %}
                                     <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
@@ -423,7 +423,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["highSpeedRail"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -432,7 +432,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["highSpeedRail"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -472,7 +472,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["advancedMachinery"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -480,7 +480,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["advancedMachinery"] %}
 
                                     <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
@@ -492,7 +492,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["advancedMachinery"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -501,7 +501,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["advancedMachinery"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -540,7 +540,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["strongerExplosives"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -549,7 +549,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["strongerExplosives"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -559,7 +559,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["strongerExplosives"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -568,7 +568,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["strongerExplosives"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -608,7 +608,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["widespreadPropaganda"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -617,7 +617,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["widespreadPropaganda"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -627,7 +627,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["widespreadPropaganda"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -636,7 +636,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["widespreadPropaganda"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -676,7 +676,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["increasedFunding"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -685,7 +685,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["increasedFunding"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -695,7 +695,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["increasedFunding"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -704,7 +704,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["increasedFunding"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -743,7 +743,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["automationIntegration"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -752,7 +752,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["automationIntegration"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -762,7 +762,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["automationIntegration"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -771,7 +771,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["automationIntegration"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -809,7 +809,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -818,7 +818,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -828,7 +828,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -837,7 +837,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -899,7 +899,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["betterengineering"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -908,7 +908,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["betterengineering"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -965,7 +965,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["betterengineering"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -974,7 +974,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["betterengineering"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1012,7 +1012,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -1021,7 +1021,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -1031,7 +1031,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1040,7 +1040,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1078,7 +1078,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -1087,7 +1087,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -1097,7 +1097,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1106,7 +1106,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1144,7 +1144,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -1153,7 +1153,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -1163,7 +1163,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1172,7 +1172,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1210,7 +1210,7 @@
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
@@ -1219,7 +1219,7 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["betterengineering"] %} <button disabled
+                                    {% if upgrades["largerForges"] %} <button disabled
                                         class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
                                         formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
@@ -1229,7 +1229,7 @@
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
@@ -1238,7 +1238,7 @@
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %} 
+                                    {% if upgrades["largerForges"] %}
 
                                     <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
