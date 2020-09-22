@@ -603,10 +603,32 @@ def accept_trade(trade_id):
     seller_id = offerer
 
     if trade_type == "sell":
+        
+        buyers_gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
 
-        pass
+        if (amount * price) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
+            return error(400, "You don't have enough gold") # Returns error if true
+        gold_sold = buyers_gold - (amount * price)
 
-    db.execute("DELETE FROM offers WHERE offer_id=(?)", (trade_id,)) # Deletes the offer
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
+
+        # Gets current amount of resource for the buyer
+        currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)"
+        buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0]  # executes the statement
+
+        # Generates the number of the resource the buyer should have
+        newBuyerResource = int(buyerResource) + int(amount)
+
+        # Gives the buyer the amount of resource he bought
+        buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(buyUpdStat, (newBuyerResource, cId))  # executes the statement
+
+        # Gives money to the seller
+        sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
+        new_sellers_money = sellers_money + (amount * price)
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id))
+
+    db.execute("DELETE FROM trades WHERE offer_id=(?)", (trade_id,)) # Deletes the offer
     
     connection.commit()
     connection.close()
