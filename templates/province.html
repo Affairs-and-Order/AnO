@@ -13,19 +13,46 @@
 
         <div class="center fit notificationparent divflex2full">
             <div class="left fit notificationchild">
-                <ul class="right vanilla"><span class="material-icons-outlined blue">
+                <!--If they have-->
+                <ul class="right vanilla">
+                    <span class="material-icons-outlined blue">
                     check
-                    </span>Your province is powered</ul>
-            </div>
-            <div class="left fit notificationchild">
-                <ul class="right vanilla"><span class="material-icons-outlined blue">
-                    check
-                    </span>Your citizens are nourished</ul>
-            </div>
-            <div class="left fit notificationchild">
-                <ul class="right vanilla"><span class="material-icons-outlined red">
+                    </span>Your province is powered
+                </ul>
+                <!--If they do not have-->
+                <ul class="right vanilla">
+                    <span class="material-icons-outlined red">
                     clear
-                    </span>Your citizens do not have consumer goods</ul>
+                    </span>Your province is not powered
+                </ul>
+            </div>
+            <div class="left fit notificationchild">
+                <!--If they have-->
+                <ul class="right vanilla">
+                    <span class="material-icons-outlined blue">
+                    check
+                    </span>Your citizens have food
+                </ul>
+                <!--If they do not have-->
+                <ul class="right vanilla">
+                    <span class="material-icons-outlined red">
+                    clear
+                    </span>Your citizens do not have food
+                </ul>
+            </div>
+            <div class="left fit notificationchild">
+                <!--If they have-->
+                <ul class="right vanilla">
+                    <span class="material-icons-outlined blue">
+                    check
+                    </span>Your citizens do not have consumer goods
+                </ul>
+                <!--If they do not have-->
+                <ul class="right vanilla">
+                    <span class="material-icons-outlined red">
+                    clear
+                    </span>Your citizens do not have consumer goods
+                </ul>
             </div>
         </div>
 
@@ -88,6 +115,22 @@
             <div class="templatedivflex2left">
                 <div class="infodiv">
                     <form method="POST">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left">
+
+                                <label>Purchase type</label>
+
+                                <select name="resource" class="templateselect">
+        
+                            <option selected="selected">Add Amount</option>
+                            <option class="templateoption">Purchase up to</option>
+        
+                                    </select>
+
+                            </div>
+                        </div>
+
                         <label class="vanilla mediumsmall">Purchase Cities</label>
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
