@@ -674,8 +674,8 @@ def accept_trade(trade_id):
     return redirect("/my_offers")
 
 @login_required
-@app.route("/transfer/<country_id>", methods=["POST"])
-def transfer(country_id):
+@app.route("/transfer/<transferee>", methods=["POST"])
+def transfer(transferee):
         
     cId = session["user_id"]
 
@@ -683,7 +683,7 @@ def transfer(country_id):
     db = connection.cursor()
 
     resource = request.form.get("resource")
-    amount = request.form.get("amount")
+    amount = int(request.form.get("amount"))
 
     ### DEFINITIONS ###
 
@@ -692,14 +692,47 @@ def transfer(country_id):
 
     ###################
 
-    user_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-    user_resource = db.execute(user_resource_statement, (cId,)).fetchone()[0]
+    # List of all the resources in the game
+    resources = [
+            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+            "lumber", "components", "steel", "consumer_goods", "aluminium",
+            "gasoline", "ammunition"
+        ]
 
-    if amount > user_resource:
-        return error(400, "You don't have enough resources")
+    if resource not in resources and resource != "gold":  # Checks if the resource the user selected actually exists
+        return error(400, "No such resource")
+            
+    if resource != "gold":
 
+        user_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        user_resource = int(db.execute(user_resource_statement, (cId,)).fetchone()[0])
+
+        if amount > user_resource:
+            return error(400, "You don't have enough resources")
+
+        # Calculates the amount of resource the user should have
+        new_user_resource_amount = user_resource - amount
+
+        # Removes the resource from the user
+        user_resource_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(user_resource_update_statement, (new_user_resource_amount, cId))
+
+        # Sees how much of the resource the transferee has
+        transferee_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        transferee_resource = int(db.execute(transferee_resource_statement, (cId,)).fetchone()[0])
+
+        # Calculates the amount of resource the transferee should have
+        new_transferee_resource_amount = amount + transferee_resource
+
+        # Gives the resource to the transferee
+        transferee_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(transferee_update_statement, (new_transferee_resource_amount, transferee))
+
+    else:
+
+        return error(400, "Money is not implemented yet")
+
+    connection.commit()
+    connection.close()
     
-    # Removes the resource from the user
-
-
-    # Gives the resource to the transferee
+    return redirect(f"/country/id={transferee}")
