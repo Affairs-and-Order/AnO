@@ -1,0 +1,6 @@
+CREATE TABLE 'wars'
+('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+'attacker' INTEGER NOT NULL,
+'defender' INTEGER NOT NULL,
+'war_type' INTEGER NOT NULL,
+'agressor_message' VARCHAR(240) NOT NULL);
