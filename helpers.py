@@ -27,6 +27,7 @@ def get_influence(country_id):
     db = connection.cursor()
     cId = country_id
     # re-calculate influence here
+    # military score first
     # ground
     tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
@@ -40,31 +41,28 @@ def get_influence(country_id):
     cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     # special
-    spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+    spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
     militaryScore = tanks * 40 + soldiers * 1 + artillery * 80 + bombers * 100 + fighters * 100 + apaches * 100 + destroyers * 100 + cruisers * 200 + submarines * 100 + spies * 100 + icbms * 300 + nukes * 10000
 
-    # later fetch the resource, province amounts
+    # civilian score second
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    # fetch resources
+    # TODO: fetch resources maybe, more sophisticatedly, calc score at market price
 
     # fetch provinces
-    
+    cityCounts = db.execute("SELECT cityCount FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+    print(cityCounts) # see data type
+    x = db.execute("SELECT soldiers FROM military").fetchall()
+    print(x)
     civilianScore = gold * 0.01 + population * 0.1 # + resources * 1 + provinces * 1000000
 
 
 
-
-
-
-    # select influence here
-    # influence = db.execute("SELECT influence FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    # gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-
-    # influence = int(round(gold * 0.75))
+    # user may want military and civilian scores in a score breakdown later in a stats page
+    influence = militaryScore + civilianScore
 
     return influence
 
@@ -223,3 +221,6 @@ def generate_province_revenue(): # Runs each turn
         conn.commit()
 
     conn.close()
+
+if __name__ == "__main__":
+    get_influence(10)
