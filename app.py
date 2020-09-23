@@ -406,24 +406,24 @@ def upgrades():
     cId = session["user_id"]
     try:
         upgrades = {
-            'betterEngineering': db.execute("SELECT betterEngineering FROM upgrades WHERE user_id=(?)", (cId,)),
-            'cheaperMaterials': db.execute("SELECT cheaperMaterials FROM upgrades WHERE user_id=(?)", (cId,)),
-            'onlineShopping': db.execute("SELECT onlineShopping FROM upgrades WHERE user_id=(?)", (cId,)),
-            'governmentRegulation': db.execute("SELECT governmentRegulation FROM upgrades WHERE user_id=(?)", (cId,)),
-            'nationalHealthInstitution': db.execute("SELECT nationalHealthInstitution FROM upgrades WHERE user_id=(?)", (cId,)),
-            'highSpeedRail': db.execute("SELECT highSpeedRail FROM upgrades WHERE user_id=(?)", (cId,)),
-            'advancedMachinery': db.execute("SELECT advancedMachinery FROM upgrades WHERE user_id=(?)", (cId,)),
-            'strongerExplosives': db.execute("SELECT strongerExplosives FROM upgrades WHERE user_id=(?)", (cId,)),
-            'widespreadPropaganda': db.execute("SELECT widespreadPropaganda FROM upgrades WHERE user_id=(?)", (cId,)),
-            'increasedFunding': db.execute("SELECT increasedFunding FROM upgrades WHERE user_id=(?)", (cId,)),
-            'automationIntegration': db.execute("SELECT automationIntegration FROM upgrades WHERE user_id=(?)", (cId,)),
-            'largerForges': db.execute("SELECT largerForges FROM upgrades WHERE user_id=(?)", (cId,)),
-            'lootingTeams': db.execute("SELECT lootingTeams FROM upgrades WHERE user_id=(?)", (cId,)),
-            'organizedSupplyLines': db.execute("SELECT organizedSupplyLines FROM upgrades WHERE user_id=(?)", (cId,)),
-            'largeStorehouses' : db.execute("SELECT largeStorehouses FROM upgrades WHERE user_id=(?)", (cId,)),
-            'ballisticMissileSilo': db.execute("SELECT ballisticMissileSilo FROM upgrades WHERE user_id=(?)", (cId,)),
-            'ICBMSilo': db.execute("SELECT ICBMSilo FROM upgrades WHERE user_id=(?)", (cId,)),
-            'nuclearTestingFacility': db.execute("SELECT nuclearTestingFacility FROM upgrades WHERE user_id=(?)", (cId,))
+            'betterEngineering': db.execute("SELECT betterEngineering FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'cheaperMaterials': db.execute("SELECT cheaperMaterials FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'onlineShopping': db.execute("SELECT onlineShopping FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'governmentRegulation': db.execute("SELECT governmentRegulation FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'nationalHealthInstitution': db.execute("SELECT nationalHealthInstitution FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'highSpeedRail': db.execute("SELECT highSpeedRail FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'advancedMachinery': db.execute("SELECT advancedMachinery FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'strongerExplosives': db.execute("SELECT strongerExplosives FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'widespreadPropaganda': db.execute("SELECT widespreadPropaganda FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'increasedFunding': db.execute("SELECT increasedFunding FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'automationIntegration': db.execute("SELECT automationIntegration FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'largerForges': db.execute("SELECT largerForges FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'lootingTeams': db.execute("SELECT lootingTeams FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'organizedSupplyLines': db.execute("SELECT organizedSupplyLines FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'largeStorehouses' : db.execute("SELECT largeStorehouses FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'ballisticMissileSilo': db.execute("SELECT ballisticMissileSilo FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'ICBMSilo': db.execute("SELECT ICBMSilo FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
+            'nuclearTestingFacility': db.execute("SELECT nuclearTestingFacility FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0]
         }
     except:
         return "FATAL ERROR: User has no upgrades table! Contact admin to fix."
