@@ -58,7 +58,8 @@ def wars():
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    cId = session["user_id"]
+    # cId = session["user_id"]
+    cId = 11
 
     if request.method == "GET":
         normal_units = Military.get_military(cId)
@@ -81,7 +82,7 @@ def wars():
             # generates list of tuples. The first element of each tuple is the country being attacked, the second element is the username of the countries being attacked.
             attackingIds = db.execute(
                 "SELECT id FROM wars WHERE attacker=(?) AND peace_date IS NULL", (cId,)).fetchall()
-            attacking = zip(attackingWars, attackingNames, attackingIds)
+            # attacking = zip(attackingWars, attackingNames, attackingIds)
         except TypeError:
             attacking = 0
 
@@ -93,7 +94,7 @@ def wars():
                 "SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
             defendingIds = db.execute(
                 "SELECT id FROM wars WHERE defender=(?)", (cId,)).fetchall()
-            defending = zip(defendingWars, defendingNames, defendingIds)
+            # defending = zip(defendingWars, defendingNames, defendingIds)
         except TypeError:
             defending = 0
 
@@ -128,9 +129,30 @@ def wars():
         connection.commit()
 
         warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?) AND peace_date IS NULL", (cId, cId)).fetchone()[0]
+
+        # NOTE: at defender_stats and attacker_stats later maybe use the  Military.get_morale("defender_morale", attacker, defender) for morale check
+        # because the code below is redundant but the get_morale function works only for Units instances currently
+        complete_war_ids = attackingIdsLst+defendingIdsLst
+        attacking_morale = []
+        defending_morale = []
+
+        for war_id in complete_war_ids:
+            attacking_morale.append(db.execute("SELECT defender_morale FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
+            defending_morale.append(db.execute("SELECT attacker_morale FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
+
+        # defending_morale and attacking_morale include to wars.html
+        defending = zip(defendingWars, defendingNames, defendingIds, defending_morale)
+        attacking = zip(attackingWars, attackingNames, attackingIds, attacking_morale)
+
         db.close()
         connection.close()
-        return render_template("wars.html", units=units, cId=cId, yourCountry=yourCountry, warsCount=warsCount, defending=defending, attacking=attacking)
+
+        return render_template(
+        "wars.html", units=units, cId=cId,
+        yourCountry=yourCountry, warsCount=warsCount,
+        defending=defending, attacking=attacking,
+        defender_stats={"supply": 0, "morale": 0},
+        attacker_stats={"supply": 0, "morale": 0})
 
 
 # page 0, kind of a pseudo page where you can click attack vs special
