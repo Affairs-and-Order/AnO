@@ -66,9 +66,11 @@
                 {% endfor %}
             </table>
         </div>
+        {% if incoming_amount == 0 %}
         <!--if no offers-->
         <h2 class="templatecontentheadercenter">You have 0 incoming offers</h2>
         <!--if there are offers-->
+        {% elif incoming_amount > 0 %}
         <h2 class="templatecontentheaderleft">Incoming Offers</h2>
 
         <div class="templateoutertablediv">
@@ -130,6 +132,7 @@
                 {% endfor %}
             </table>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

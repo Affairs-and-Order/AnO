@@ -375,9 +375,11 @@ def my_offers():
 
     my_offers = zip(offer_ids, prices, resources, amounts, offer_types, total_prices)
 
-    ## USER'S TRADES
+    ## USER'S INCOMING TRADES
 
     trade_ids_list = db.execute("SELECT offer_id FROM trades WHERE offeree=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    incoming_amount = len(trade_ids_list)
 
     trade_ids = []
     total_pricess = []
@@ -409,11 +411,12 @@ def my_offers():
         offerer_ids.append(offerer)
         offerer_names.append(offerer_name)
 
-    trades = zip(trade_ids, pricess, resourcess, amountss, offer_typess, total_pricess, offerer_ids, offerer_names)
+    incoming_trades = zip(trade_ids, pricess, resourcess, amountss, offer_typess, total_pricess, offerer_ids, offerer_names)
 
     connection.close()
 
-    return render_template("my_offers.html", cId=cId, my_offers=my_offers, trades=trades)
+    return render_template("my_offers.html", cId=cId, my_offers=my_offers,
+    incoming_trades=incoming_trades, incoming_amount=incoming_amount)
 
 @login_required
 @app.route("/delete_offer/<offer_id>", methods=["POST"])
