@@ -29,44 +29,45 @@ def signup():
         email = request.form.get("email")
         password = request.form.get("password").encode('utf-8')
         confirmation = request.form.get("confirmation").encode('utf-8')
-        loc = request.form.get("location_name")
 
         # Selected continent by user
         continent = request.form.get("continent")
-        print(continent)
 
         key = request.form.get("key")
 
-        allKeys = db.execute("SELECT key FROM keys").fetchall()
+        try:
+            correct_key = db.execute("SELECT key FROM keys WHERE key=(?)", (key)).fetchone()[0]
+        except TypeError:
+            correct_key = None
+            return error(400, "Key not found")
 
         if password != confirmation:  # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
-        for keys in allKeys:  # lmao shitty way to do it idk why i did this im the epitomy of stupid
-            if key == keys[0]:  # i should've just used a fucking select statement
-                # Hashes the inputted password
-                hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
 
-                db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(
-                    datetime.date.today())))  # creates a new user || added account creation date
+        if correct_key != None:
+            # Hashes the inputted password
+            hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
 
-                user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()[0]
+            db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(
+                datetime.date.today())))  # creates a new user || added account creation date
 
-                # set's the user's "id" column to the sessions variable "user_id"
-                session["user_id"] = user
+            user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()[0]
 
-                db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", ((
-                    session["user_id"]), ("Bosfront")))  # TODO  change the default location
+            # set's the user's "id" column to the sessions variable "user_id"
+            session["user_id"] = user
 
-                db.execute("INSERT INTO military (id) VALUES (?)",
-                           (session["user_id"],))
-                db.execute("INSERT INTO resources (id) VALUES (?)",
-                           (session["user_id"],))
-                db.execute("INSERT INTO upgrades (id) VALUES (?)", (session["user_id"],))
+            db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", (user, continent))  # TODO  change the default location
 
-                db.execute("DELETE FROM keys WHERE key=(?)",
-                           (key,))  # deletes the used key
-                connection.commit()
-                connection.close()
-                return redirect("/")
+            db.execute("INSERT INTO military (id) VALUES (?)",
+                        (user,))
+            db.execute("INSERT INTO resources (id) VALUES (?)",
+                        (user,))
+
+            db.execute("INSERT INTO upgrades (user_id) VALUES (?)", (user,))
+
+            db.execute("DELETE FROM keys WHERE key=(?)", (key,))  # deletes the used key
+            connection.commit()
+            connection.close()
+            return redirect("/")
     else:
         return render_template("signup.html")

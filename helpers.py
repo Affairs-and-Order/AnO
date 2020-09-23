@@ -52,10 +52,10 @@ def get_influence(country_id):
     bombers + fighters + apaches +\
     destroyers + cruisers + submarines + \
     spies + icbms + nukes"""
+    influence = db.execute("SELECT influence FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    # gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
-    gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-
-    influence = int(round(gold * 0.75))
+    # influence = int(round(gold * 0.75))
 
     return influence
 

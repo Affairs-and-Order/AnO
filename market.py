@@ -347,8 +347,10 @@ def my_offers():
 
     cId = session["user_id"]
 
-    ## USER'S OWN OFFERS
+    ## USER'S OUTGOING OFFERS
     offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE user_id=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    outgoing_offer_amount = len(offer_ids_list)
 
     offer_ids = []
     total_prices = []
@@ -415,7 +417,7 @@ def my_offers():
 
     connection.close()
 
-    return render_template("my_offers.html", cId=cId, my_offers=my_offers,
+    return render_template("my_offers.html", cId=cId, my_offers=my_offers, outgoing_offer_amount=outgoing_offer_amount,
     incoming_trades=incoming_trades, incoming_amount=incoming_amount)
 
 @login_required
@@ -704,8 +706,30 @@ def transfer(transferee):
 
     if resource not in resources and resource != "gold":  # Checks if the resource the user selected actually exists
         return error(400, "No such resource")
-            
-    if resource != "gold":
+    
+    if resource == "gold":
+
+        user_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+
+        if amount > user_money:
+            return error(400, "You don't have enough money")
+
+        # Calculates the amount of money the user should have
+        new_user_money_amount = user_money - amount
+
+        # Removes the money from the user
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_user_money_amount, cId))
+
+        # Sees how much money the transferee has
+        transferee_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (transferee,)).fetchone()[0])
+
+        # Calculates the amount of money the transferee should have
+        new_transferee_resource_amount = amount + transferee_money
+
+        # Gives the money to the transferee
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_transferee_resource_amount, transferee))
+
+    else:
 
         user_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
         user_resource = int(db.execute(user_resource_statement, (cId,)).fetchone()[0])
@@ -722,7 +746,7 @@ def transfer(transferee):
 
         # Sees how much of the resource the transferee has
         transferee_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-        transferee_resource = int(db.execute(transferee_resource_statement, (cId,)).fetchone()[0])
+        transferee_resource = int(db.execute(transferee_resource_statement, (transferee,)).fetchone()[0])
 
         # Calculates the amount of resource the transferee should have
         new_transferee_resource_amount = amount + transferee_resource
@@ -730,10 +754,6 @@ def transfer(transferee):
         # Gives the resource to the transferee
         transferee_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
         db.execute(transferee_update_statement, (new_transferee_resource_amount, transferee))
-
-    else:
-
-        return error(400, "Money is not implemented yet")
 
     connection.commit()
     connection.close()
