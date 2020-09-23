@@ -78,12 +78,16 @@ def country(cId):
     except TypeError:
         flag = None
 
+    spyCount = db.execute(
+        "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    
+    successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
                            happiness=happiness, population=population, location=location, gold=gold, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
-                           provinces=provinces, colId=colId, flag=flag)
+                           provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance)
 
 
 @login_required
