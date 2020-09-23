@@ -26,6 +26,9 @@
                 <div class="templatedivflex2left">
                     <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
                 </div>
+
+                <input id="continent" name="continent" type="hidden">
+
             </div>
 
             <div class="templatedivflex2 divflex2center signupdiv">
@@ -39,7 +42,7 @@
 
             <input class="loginsignupinput" autocomplete="off" name="key" placeholder="Special Key" required/>
 
-        
+
             <h2 class="templatecontentheaderleft">Choose a location:</h2>
             <div class="mapselect">
 
@@ -57,7 +60,7 @@
                         pointer-events: none;
                         z-index: 9;
                     }
-                    
+
                     .slider-control {
                         right: 0;
                         left: 0;
@@ -67,7 +70,7 @@
                         overflow: hidden;
                         z-index: 99;
                     }
-                    
+
                     .slider-control .control {
                         width: fit-content;
                         height: fit-content;
@@ -82,38 +85,38 @@
                         user-select: none;
                         color: white;
                         line-height: 100%;
+
                     }
-                    
+
                     .controlleft {
                         left: 10px;
                     }
-                    
                     .controlleft:hover {
                         left: 5px;
                     }
-                    
+
                     .controlright {
                         right: 10px;
                     }
-                    
+
                     .controlright:hover {
                         right: 5px;
                     }
-                    
+
                     .slider-control .control .icon {
                         pointer-events: none;
                         transition: .3s all ease;
                     }
-                    
+
                     .slider-control .control.disabled {
                         pointer-events: none;
                         opacity: 0.5;
                     }
-                    
+
                     .slider-control .control.disabled .icon {
                         opacity: .5;
                     }
-                    
+
                     .slide {
                         position: absolute;
                         top: 0;
@@ -125,37 +128,37 @@
                         clip-path: inset(0 0 0 0);
                         margin: 0;
                     }
-                    
+
                     .slide.slide-on {
                         -webkit-clip-path: inset(0 100% 0 0);
                         clip-path: inset(0 100% 0 0);
                     }
-                    
+
                     .slide.text-on .title {
                         transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.45s;
                         -webkit-clip-path: inset(0 0 0 0);
                         clip-path: inset(0 0 0 0);
                     }
-                    
+
                     .slide.text-on .author {
                         transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.6s;
                         -webkit-clip-path: inset(0 0 0 0);
                         clip-path: inset(0 0 0 0);
                     }
-                    
+
                     .slide img {
                         width: 100%;
                         height: 100%;
                         user-select: none;
                         object-fit: cover;
                     }
-                    
+
                     .slide figcaption {
                         position: absolute;
                         top: 30px;
                         left: 30px;
                     }
-                    
+
                     .title {
                         font-size: 50px;
                         margin-bottom: 2px;
@@ -168,7 +171,7 @@
                         text-transform: uppercase;
                         position: relative;
                     }
-                    
+
                     .author {
                         font-size: 16px;
                         color: white;
@@ -184,43 +187,43 @@
                 </style>
                 </head>
 
-                <figure class="slide"><img src="{{ url_for('static', filename='images/northamerica.png') }}">
+                <figure data-continent="northamerica" class="slide"><img src="{{ url_for('static', filename='images/northamerica.png') }}">
                     <figcaption>
                         <div class="title">North America</div>
                         <div class="author">information</div>
                     </figcaption>
                 </figure>
-                <figure class="slide"><img src="{{ url_for('static', filename='images/southamerica.png') }}">
+                <figure data-continent="southamerica" class="slide"><img src="{{ url_for('static', filename='images/southamerica.png') }}">
                     <figcaption>
                         <div class="title">South America</div>
                         <div class="author">information</div>
                     </figcaption>
                 </figure>
-                <figure class="slide"><img src="{{ url_for('static', filename='images/europe.png') }}">
+                <figure data-continent="europe" class="slide"><img src="{{ url_for('static', filename='images/europe.png') }}">
                     <figcaption>
                         <div class="title">Europe</div>
                         <div class="author">information</div>
                     </figcaption>
                 </figure>
-                <figure class="slide"><img src="{{ url_for('static', filename='images/asia.png') }}">
+                <figure data-continent="asia" class="slide"><img src="{{ url_for('static', filename='images/asia.png') }}">
                     <figcaption>
                         <div class="title">Asia</div>
                         <div class="author">information</div>
                     </figcaption>
                 </figure>
-                <figure class="slide"><img src="{{ url_for('static', filename='images/africa.png') }}">
+                <figure data-continent="africa" class="slide"><img src="{{ url_for('static', filename='images/africa.png') }}">
                     <figcaption>
                         <div class="title">Africa</div>
                         <div class="author">information</div>
                     </figcaption>
                 </figure>
-                <figure class="slide"><img src="{{ url_for('static', filename='images/australia.png') }}">
+                <figure data-continent="australia" class="slide"><img src="{{ url_for('static', filename='images/australia.png') }}">
                     <figcaption>
                         <div class="title">Australia</div>
                         <div class="author">information</div>
                     </figcaption>
                 </figure>
-                <figure class="slide"><img src="{{ url_for('static', filename='images/antarctica.png') }}">
+                <figure data-continent="antarctica" class="slide"><img src="{{ url_for('static', filename='images/antarctica.png') }}">
                     <figcaption>
                         <div class="title">Antarctica</div>
                         <div class="author">information</div>
@@ -240,6 +243,7 @@
                     </div>
                 </div>
                 <script>
+
                     // buttons
                     var sliderControl = document.querySelector(".slider-control");
 
@@ -255,6 +259,9 @@
 
                     // slide current
                     var slideCurrent = 0;
+
+                    const continent_input = document.getElementById("continent");
+                    continent_input.value = "antarctica";
 
                     sliderControl.addEventListener("click", function(e) {
                         target = e.target;
@@ -306,6 +313,7 @@
 
                         }
 
+                        continent_input.value = slidesArr[slideCurrent].getAttribute("data-continent");
                     });
 
                     balapaCop("Image Slider", "#999");
@@ -319,11 +327,11 @@
                 }
             </script>
 
-            <button 
+            <button
             class="g-recaptcha templatedivbutton loginsignupbutton"
             type="submit"
-            data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" 
-            data-callback='onSubmit' 
+            data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn"
+            data-callback='onSubmit'
             data-action='submit'>
             <span class="material-icons-outlined">
                 add_circle_outline
