@@ -61,14 +61,11 @@ def get_influence(country_id):
     resources = 0
     resourceList = db.execute("SELECT * FROM resources WHERE id=(?)", (cId,)).fetchall()
     iterator = iter(resourceList)
-    next(iterator)
+    next(iterator) # skip id
     for tuple in iterator:
         resources += tuple[0]
     civilianScore = gold * 0.01 + population * 0.1 + cities * 100000 + provinces * 1000000 + resources * 1
 
-    print(resourceList)
-    print(iterator)
-    
     # user may want military and civilian scores in a score breakdown later in a stats page
     influence = militaryScore + civilianScore
 
