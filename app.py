@@ -1,14 +1,4 @@
-from intelligence import intelligence
-from discord import update_discord
-from market import market, buy_market_offer, marketoffer, my_offers
-from province import createprovince, province, provinces, province_sell_buy
-from military import military, military_sell_buy
-from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
-from countries import country, countries, update_info
-from signup import signup
-from login import login
-from wars import wars, find_targets
-from testroutes import testfunc
+
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
@@ -30,6 +20,17 @@ app = Flask(__name__)
 
 
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
+from testroutes import testfunc
+from wars import wars, find_targets
+from login import login
+from signup import signup
+from countries import country, countries, update_info
+from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
+from military import military, military_sell_buy
+from province import createprovince, province, provinces, province_sell_buy
+from market import market, buy_market_offer, marketoffer, my_offers
+from discord import update_discord
+from intelligence import intelligence
 
 # basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -397,7 +398,7 @@ def warresult():
 def mass_purchase():
     return render_template("mass_purchase.html")
 
-
+@login_required
 @app.route("/upgrades", methods=["GET"])
 def upgrades():
     # TODO: replace the falses with db selects
