@@ -506,12 +506,13 @@ def find_targets():
     if request.method == "GET":
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
-
+        cId = session["user_id"]
         influence = db.execute("SELECT influence FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
         upper = influence * 2
         lower = influence * 0.9
-        return redirect(f"/countries/search?=upperinf={upper}&lowerinf={lower}")
+        return redirect(f"/countries?lowerinf={lower}&upperinf={upper}")
+        # return redirect(f"/countries/search?=upperinf={upper}&lowerinf={lower}")
 
     # if request.method == "GET":
     #     return render_template("find_targets.html")
