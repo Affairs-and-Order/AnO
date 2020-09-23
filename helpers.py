@@ -26,33 +26,42 @@ def get_influence(country_id):
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = country_id
+    # re-calculate influence here
     # ground
-
-    """
-    tanks = db.execute("SELECT tanks FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-    soldiers = db.execute("SELECT soldiers FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-    artillery = db.execute("SELECT artillery FROM ground WHERE id=(?)", (cId,)).fetchone()[0]
-    connection.commit()
+    tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     # air
-    bombers = db.execute("SELECT bombers FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-    fighters = db.execute("SELECT fighters FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-    apaches = db.execute("SELECT apaches FROM air WHERE id=(?)", (cId,)).fetchone()[0]
-    connection.commit()
+    bombers = db.execute("SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    fighters = db.execute("SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     # water
-    destroyers = db.execute("SELECT destroyers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-    cruisers = db.execute("SELECT cruisers FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-    submarines = db.execute("SELECT submarines FROM water WHERE id=(?)", (cId,)).fetchone()[0]
-    connection.commit()
+    destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     # special
     spies = db.execute("SELECT spies FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-    icbms = db.execute("SELECT ICBMs FROM special WHERE id=(?)", (cId,)).fetchone()[0]
-    nukes = db.execute("SELECT nukes FROM special WHERE id=(?)", (cId,)).fetchone()[0]
+    icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
-    military = tanks + soldiers + artillery + \
-    bombers + fighters + apaches +\
-    destroyers + cruisers + submarines + \
-    spies + icbms + nukes"""
-    influence = db.execute("SELECT influence FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    militaryScore = tanks * 40 + soldiers * 1 + artillery * 80 + bombers * 100 + fighters * 100 + apaches * 100 + destroyers * 100 + cruisers * 200 + submarines * 100 + spies * 100 + icbms * 300 + nukes * 10000
+
+    # later fetch the resource, province amounts
+    gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    # fetch resources
+
+    # fetch provinces
+    
+    civilianScore = gold * 0.01 + population * 0.1 # + resources * 1 + provinces * 1000000
+
+
+
+
+
+
+    # select influence here
+    # influence = db.execute("SELECT influence FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     # gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
 
     # influence = int(round(gold * 0.75))

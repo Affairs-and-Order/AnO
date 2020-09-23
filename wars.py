@@ -6,6 +6,7 @@ from helpers import login_required, error
 from attack_scripts import Nation, Military
 from units import Units
 import time
+from helpers import get_influence
 
 """
 war page: choose a war
@@ -507,8 +508,7 @@ def find_targets():
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         cId = session["user_id"]
-        influence = db.execute("SELECT influence FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-
+        influence = get_influence(cId)
         upper = influence * 2
         lower = influence * 0.9
         return redirect(f"/countries?lowerinf={lower}&upperinf={upper}")
