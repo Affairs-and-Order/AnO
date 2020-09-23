@@ -347,8 +347,10 @@ def my_offers():
 
     cId = session["user_id"]
 
-    ## USER'S OWN OFFERS
+    ## USER'S OUTGOING OFFERS
     offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE user_id=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    outgoing_offer_amount = len(offer_ids_list)
 
     offer_ids = []
     total_prices = []
@@ -415,7 +417,7 @@ def my_offers():
 
     connection.close()
 
-    return render_template("my_offers.html", cId=cId, my_offers=my_offers,
+    return render_template("my_offers.html", cId=cId, my_offers=my_offers, outgoing_offer_amount=outgoing_offer_amount,
     incoming_trades=incoming_trades, incoming_amount=incoming_amount)
 
 @login_required
