@@ -30,7 +30,10 @@ def signup():
         password = request.form.get("password").encode('utf-8')
         confirmation = request.form.get("confirmation").encode('utf-8')
         loc = request.form.get("location_name")
-        print(loc)
+
+        # Selected continent by user
+        continent = request.form.get("continent")
+        print(continent)
 
         key = request.form.get("key")
 
