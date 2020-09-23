@@ -58,6 +58,7 @@ def signup():
                            (session["user_id"],))
                 db.execute("INSERT INTO resources (id) VALUES (?)",
                            (session["user_id"],))
+                db.execute("INSERT INTO upgrades (id) VALUES (?)", (session["user_id"]))
 
                 db.execute("DELETE FROM keys WHERE key=(?)",
                            (key,))  # deletes the used key
