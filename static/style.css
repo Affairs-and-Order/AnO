@@ -2279,6 +2279,23 @@
             }
             /*PROVINCE*/
             
+            .notificationparent {
+                display: flex;
+            }
+            
+            @media all and (max-width: 600px) {
+                .notificationparent {
+                    flex-direction: column;
+                }
+            }
+            
+            .notificationchild {
+                background: var(--background);
+                margin: 8px;
+                line-height: 30px;
+                padding: 10px;
+            }
+            
             .provinceimage {
                 margin-top: -15px;
                 width: 100%;

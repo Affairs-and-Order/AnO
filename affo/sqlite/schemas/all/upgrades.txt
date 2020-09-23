@@ -1,0 +1,23 @@
+CREATE TABLE "upgrades" (
+	"user_id"	INTEGER DEFAULT 0,
+	"betterEngineering"	INTEGER DEFAULT 0 UNIQUE,
+	"cheaperMaterials"	INTEGER DEFAULT 0 UNIQUE,
+	"onlineShopping"	INTEGER DEFAULT 0 UNIQUE,
+	"governmentRegulation"	INTEGER DEFAULT 0 UNIQUE,
+	"nationalHealthInstitution"	INTEGER DEFAULT 0 UNIQUE,
+	"highSpeedRail"	INTEGER DEFAULT 0 UNIQUE,
+	"advancedMachinery"	INTEGER DEFAULT 0 UNIQUE,
+	"strongerExplosives"	INTEGER DEFAULT 0 UNIQUE,
+	"widespreadPropaganda"	INTEGER DEFAULT 0 UNIQUE,
+	"increasedFunding"	INTEGER DEFAULT 0 UNIQUE,
+	"automationIntegration"	INTEGER DEFAULT 0 UNIQUE,
+	"largerForges"	INTEGER DEFAULT 0 UNIQUE,
+	"lootingTeams"	INTEGER DEFAULT 0 UNIQUE,
+	"organizedSupplyLines"	INTEGER DEFAULT 0 UNIQUE,
+	"largeStorehouses"	INTEGER DEFAULT 0 UNIQUE,
+	"ballisticMissileSilo"	INTEGER DEFAULT 0 UNIQUE,
+	"ICBMSilo"	INTEGER DEFAULT 0 UNIQUE,
+	"nuclearTestingFacility"	INTEGER DEFAULT 0 UNIQUE,
+	FOREIGN KEY("user_id") REFERENCES "users"("id"),
+	PRIMARY KEY("user_id")
+);
