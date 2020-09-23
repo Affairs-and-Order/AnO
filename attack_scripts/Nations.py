@@ -95,23 +95,11 @@ class Nation:
         print("Nation {}:\nWins {}\nLosses: {}".format(
             self.id, self.wins, self.losses))
 
+    # set the peace_date in wars table for a particular war
     @staticmethod
-    def set_peace(war_id):
-        self.db.execute("UPDATE wars SET peace_date=(?) WHERE war_id=(?)", (time.time(), war_id))
-        self.connection.commit()
-
-    @staticmethod
-    def check_peace(attacker, defender):
-        # Check if nation currently at peace with another nation
-        current_peace = self.db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchone()
-
-        # 259200 = 3 days
-        if current_peace[0]:
-            if (current_peace[0]+259200) > time.time():
-
-                # continue = False, message = You can't declare war because truce has not expired!
-                return (False, "You can't declare war because truce has not expired!")
-        return (True,)
+    def set_peace(db, connection, war_id):
+        db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
+        connection.commit()
 
 class Military:
     allUnits = ["soldiers", "tanks", "artillery",
@@ -121,14 +109,22 @@ class Military:
 
     def infrastructure_damage(self): pass
 
-    # Update the morale and give back the win type name
+    # Returns the morale either for the attacker or the defender, and with the war_id
     @staticmethod
-    def morale_change(column, win_type, attacker, defender):
+    def get_morale(column, attacker, defender):
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         war_id = db.execute(f"SELECT id FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1][0]
-
         morale = db.execute(f"SELECT {column} FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+        return (war_id, morale)
+
+    # Update the morale and give back the win type name
+    @staticmethod
+    def morale_change(war_id, morale, column, win_type):
+        connection = sqlite3.connect("affo/aao.db")
+        db = connection.cursor()
+        # war_id = db.execute(f"SELECT id FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1][0]
+        # morale = db.execute(f"SELECT {column} FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
 
         # annihilation
         # 50 morale change
@@ -150,7 +146,8 @@ class Military:
 
         # Win the war
         if morale <= 0:
-            Nation.set_peace(war_id)
+            Nation.set_peace(db, connection, war_id)
+            # TODO: need a method for give the winner the pize for winning the war (this is not negotiation because the enemy completly lost the war since morale is 0)
             print("THE WAR IS OVER")
 
         db.execute(f"UPDATE wars SET {column}=(?) WHERE id=(?)", (morale, war_id))
@@ -272,7 +269,9 @@ class Military:
         # Effects based on win_type (idk: destroy buildings or something)
         # loser_casulties = win_type so win_type also is the loser's casulties
 
-        win_condition = Military.morale_change(morale_column, win_type, attacker, defender)
+        war_id, morale = Military.get_morale(morale_column, attacker, defender)
+        win_condition = Military.morale_change(war_id, morale, morale_column, win_type)
+        # win_condition = Military.morale_change(morale_column, win_type, attacker, defender)
 
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
