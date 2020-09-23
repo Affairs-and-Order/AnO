@@ -435,9 +435,19 @@ def upgrades():
         return "FATAL ERROR: User has no upgrades table! Contact admin to fix."
     return render_template("upgrades.html", upgrades=upgrades)
 
-@app.route("/peace", methods=["GET", "POST"])
-def peace():
-    return render_template("peace.html")
+# Peace offers show up here
+# Even there is and offer or there is a demand without negotitation (when the war totally lost)
+@app.route("/peace/<int:war_id>", methods=["GET", "POST"])
+def peace(war_id):
+    conn = sqlite3.connect('affo/aao.db')  # connects to db
+    db = conn.cursor()
+
+    # cId = session["user_id"]
+    cId = 10
+    user_nation_name = db.execute("SELECT username FROM users where id=(?)", (cId,))
+
+
+    return render_template("peace.html", user_nation={"name": user_nation_name})
 # available to run if double click the file
 if __name__ == "__main__":
     app.run(debug=True) # Runs the app with debug mode on
