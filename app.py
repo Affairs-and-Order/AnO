@@ -426,6 +426,11 @@ def upgrades():
             'ICBMSilo': db.execute("SELECT ICBMSilo FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
             'nuclearTestingFacility': db.execute("SELECT nuclearTestingFacility FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0]
         }
+        # working examples based on whether user has the upgrade. Database stores 0 or 1.
+        # upgrades['betterEngineering'] = 0
+        # upgrades['cheaperMaterials'] = 1
+        # upgrades['onlineShopping'] = True
+        # upgrades['governmentRegulation'] = False
     except:
         return "FATAL ERROR: User has no upgrades table! Contact admin to fix."
     return render_template("upgrades.html", upgrades=upgrades)
