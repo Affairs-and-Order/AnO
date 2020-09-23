@@ -48,8 +48,16 @@ def provinces():
 @app.route("/province/<pId>", methods=["GET", "POST"])
 def province(pId):
     if request.method == "GET":
+
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
+        cId = session["user_id"]
+
+        province_user = db.execute("SELECT userId FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        if province_user == cId:
+            ownProvince = True
+        else:
+            ownProvince = False
 
         name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
         population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
@@ -96,7 +104,8 @@ def province(pId):
                                monorails=monorails,
                                
                                army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings,
-                               silos=silos)
+                               silos=silos, ownProvince=ownProvince
+                               )
 
 
 @login_required

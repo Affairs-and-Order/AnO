@@ -9,7 +9,11 @@
     </div>
 
     <div class="templatedivcontent">
-
+        <!--if no offers-->
+        {% if outgoing_offer_amount == 0 %}
+        <h2 class="templatecontentheadercenter">You have 0 outgoing offers</h2>
+        {% elif outgoing_offer_amount > 0 %}
+        <!--if there are offers-->
         <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
 
         <div class="templateoutertablediv">
@@ -64,6 +68,13 @@
                 {% endfor %}
             </table>
         </div>
+        {% endif %}
+
+        {% if incoming_amount == 0 %}
+        <!--if no offers-->
+        <h2 class="templatecontentheadercenter">You have 0 incoming offers</h2>
+        <!--if there are offers-->
+        {% elif incoming_amount > 0 %}
         <h2 class="templatecontentheaderleft">Incoming Offers</h2>
 
         <div class="templateoutertablediv">
@@ -110,7 +121,7 @@
                             <form method="POST">
                                 <div class="templatedivflex2 divflex2center">
                                     <div class="templatedivflex2left">
-                                        <button formaction="/delete/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                        <button formaction="/accept_trade/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                                     check
                                     </span>Accept</button>
                                     </div>
@@ -125,6 +136,7 @@
                 {% endfor %}
             </table>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -212,7 +212,7 @@ def sell_market_offer(offer_id):
     if amount_wanted > total_amount:
         return error(400, "The amount of resources you're selling is higher than what the buyer wants")
 
-    # Checks if it's more than what the seller wants to sell
+    # Checks if it's less than what the seller wants to sell
     if sellers_resource < amount_wanted:
         return error(400, "You don't have enough of that resource")
 
@@ -347,8 +347,10 @@ def my_offers():
 
     cId = session["user_id"]
 
-    ## USER'S OWN OFFERS
+    ## USER'S OUTGOING OFFERS
     offer_ids_list = db.execute("SELECT offer_id FROM offers WHERE user_id=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    outgoing_offer_amount = len(offer_ids_list)
 
     offer_ids = []
     total_prices = []
@@ -375,9 +377,11 @@ def my_offers():
 
     my_offers = zip(offer_ids, prices, resources, amounts, offer_types, total_prices)
 
-    ## USER'S TRADES
+    ## USER'S INCOMING TRADES
 
     trade_ids_list = db.execute("SELECT offer_id FROM trades WHERE offeree=(?) ORDER BY offer_id ASC", (cId,)).fetchall()
+
+    incoming_amount = len(trade_ids_list)
 
     trade_ids = []
     total_pricess = []
@@ -409,11 +413,12 @@ def my_offers():
         offerer_ids.append(offerer)
         offerer_names.append(offerer_name)
 
-    trades = zip(trade_ids, pricess, resourcess, amountss, offer_typess, total_pricess, offerer_ids, offerer_names)
+    incoming_trades = zip(trade_ids, pricess, resourcess, amountss, offer_typess, total_pricess, offerer_ids, offerer_names)
 
     connection.close()
 
-    return render_template("my_offers.html", cId=cId, my_offers=my_offers, trades=trades)
+    return render_template("my_offers.html", cId=cId, my_offers=my_offers, outgoing_offer_amount=outgoing_offer_amount,
+    incoming_trades=incoming_trades, incoming_amount=incoming_amount)
 
 @login_required
 @app.route("/delete_offer/<offer_id>", methods=["POST"])
@@ -560,3 +565,197 @@ def decline_trade(trade_id):
     connection.close()
 
     return redirect("/my_offers")
+
+@login_required
+@app.route("/accept_trade/<trade_id>", methods=["POST"])
+def accept_trade(trade_id):
+        
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    trade_offeree = db.execute("SELECT offeree FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    if trade_offeree != cId:
+        return error(400, "You can't accept that offer")
+
+    trade_type = db.execute("SELECT type FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    offerer = db.execute("SELECT offerer FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    resource = db.execute("SELECT resource FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+    amount = db.execute("SELECT amount FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+    price = db.execute("SELECT price FROM trades WHERE offer_id=(?)", (trade_id,)).fetchone()[0]
+
+    trade_types = ["buy", "sell"]
+    if trade_type not in trade_types:
+        return error(400, "Trade type must be 'buy' or 'sell'")
+
+    # List of all the resources in the game
+    resources = [
+        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+        "lumber", "components", "steel", "consumer_goods", "aluminium",
+        "gasoline", "ammunition"
+    ]
+
+    if resource not in resources:  # Checks if the resource the user selected actually exists
+        return error(400, "No such resource")
+
+    if amount < 1:  # Checks if the amount is negative
+        return error(400, "Amount must be greater than 0")
+
+
+    if trade_type == "sell":
+        
+        seller_id = offerer
+
+        buyers_gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+
+        if (amount * price) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
+            return error(400, "You don't have enough gold") # Returns error if true
+        gold_sold = buyers_gold - (amount * price)
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
+
+        # Gets current amount of resource for the buyer
+        currentBuyerResource = f"SELECT {resource} FROM resources WHERE id=(?)"
+        buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0]  # executes the statement
+
+        # Generates the number of the resource the buyer should have
+        newBuyerResource = int(buyerResource) + int(amount)
+
+        # Gives the buyer the amount of resource he bought
+        buyUpdStat = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(buyUpdStat, (newBuyerResource, cId))  # executes the statement
+
+        # Gives money to the seller
+        sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
+        new_sellers_money = sellers_money + (amount * price)
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id))
+
+    elif trade_type == "buy":
+
+        seller_id = cId
+        buyer_id = offerer
+
+        # Sees how much of the resource the seller has
+        resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        sellers_resource = db.execute(resource_statement, (seller_id,)).fetchone()[0]
+
+        # Checks if it's less than what the seller wants to sell
+        if sellers_resource < amount:
+            return error(400, "You don't have enough of that resource")
+
+        # Removes the resource from the seller
+        new_sellers_resource = sellers_resource - amount
+        res_upd_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(res_upd_statement, (new_sellers_resource, seller_id))
+
+        # Gives the resource to the buyer
+        buyers_resource = db.execute(resource_statement, (buyer_id,)).fetchone()[0] # Selects how many resources of wanted resource the buyer has
+        new_buyers_resource = buyers_resource + amount # Generates the new amount by adding current amount + bought amount
+
+        db.execute(res_upd_statement, (new_buyers_resource, buyer_id))
+
+        # Takes away the money used for buying from the buyer
+
+        current_buyers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (buyer_id,)).fetchone()[0]
+        new_buyers_money = current_buyers_money - (price * amount)
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_buyers_money, buyer_id,))
+
+        # Gives the money to the seller
+
+        current_sellers_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (seller_id,)).fetchone()[0]
+        new_sellers_money = current_sellers_money + (price * amount)
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_sellers_money, seller_id,))
+
+    db.execute("DELETE FROM trades WHERE offer_id=(?)", (trade_id,)) # Deletes the offer
+    
+    connection.commit()
+    connection.close()
+    return redirect("/my_offers")
+
+@login_required
+@app.route("/transfer/<transferee>", methods=["POST"])
+def transfer(transferee):
+        
+    cId = session["user_id"]
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    resource = request.form.get("resource")
+    amount = int(request.form.get("amount"))
+
+    ### DEFINITIONS ###
+
+    # user - the user transferring the resource, whose id is 'cId'
+    # transferee - the user upon whom the resource is transferred
+
+    ###################
+
+    # List of all the resources in the game
+    resources = [
+            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+            "lumber", "components", "steel", "consumer_goods", "aluminium",
+            "gasoline", "ammunition"
+        ]
+
+    if resource not in resources and resource != "gold":  # Checks if the resource the user selected actually exists
+        return error(400, "No such resource")
+    
+    if resource == "gold":
+
+        user_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+
+        if amount > user_money:
+            return error(400, "You don't have enough money")
+
+        # Calculates the amount of money the user should have
+        new_user_money_amount = user_money - amount
+
+        # Removes the money from the user
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_user_money_amount, cId))
+
+        # Sees how much money the transferee has
+        transferee_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (transferee,)).fetchone()[0])
+
+        # Calculates the amount of money the transferee should have
+        new_transferee_resource_amount = amount + transferee_money
+
+        # Gives the money to the transferee
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_transferee_resource_amount, transferee))
+
+    else:
+
+        user_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        user_resource = int(db.execute(user_resource_statement, (cId,)).fetchone()[0])
+
+        if amount > user_resource:
+            return error(400, "You don't have enough resources")
+
+        # Calculates the amount of resource the user should have
+        new_user_resource_amount = user_resource - amount
+
+        # Removes the resource from the user
+        user_resource_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(user_resource_update_statement, (new_user_resource_amount, cId))
+
+        # Sees how much of the resource the transferee has
+        transferee_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        transferee_resource = int(db.execute(transferee_resource_statement, (transferee,)).fetchone()[0])
+
+        # Calculates the amount of resource the transferee should have
+        new_transferee_resource_amount = amount + transferee_resource
+
+        # Gives the resource to the transferee
+        transferee_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(transferee_update_statement, (new_transferee_resource_amount, transferee))
+
+    connection.commit()
+    connection.close()
+    
+    return redirect(f"/country/id={transferee}")

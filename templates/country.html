@@ -694,7 +694,7 @@
                         </div>
                         <div class="templatedivflex2left">
 
-                            <label for="countryLocation">Change location [ numberOfMovesLeft ]</label>
+                            <label for="countryLocation">Change location</label>
                             <select class="templateselect" name="countryLocation">
 
                                             <option class="templateoption">Antarctica</option>
@@ -1357,20 +1357,20 @@
                 <input type="hidden" name="defender" value="{{ username }}">
                 <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
             </form>
-
+            <form action="/spyResult" method="post"">
             <h2 class="templatecontentheaderleft">Reconnaissance</h2>
 
             <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2left">
 
-                        <label for="warType">Choose opperation</label>
+                        <label for="warType">Choose operation</label>
                         <select class="templateselect" name="warType">
 
                                 <option class="templateoption">Spy on unit amounts</option>
                                 <option class="templateoption">Spy on defensive units</option>
                                 <option class="templateoption">Spy on resources</option>
-                                <option class="templateoption">Assasinate spies</option>
+                                <option class="templateoption">Assassinate spies</option>
 
                         </select>
 
@@ -1378,7 +1378,7 @@
                     <div class="templatedivflex2left">
 
                         <label for="countryName">Number of spies</label>
-                        <input class="loginsignupinput" name="countryName" placeholder="[[ spyCount ]]" />
+                        <input class="loginsignupinput" name="countryName" value="{{spyCount}}" />
 
                     </div>
                 </div> <label for="warType">[[ successChance ]]</label>
@@ -1387,7 +1387,7 @@
                     check
                     </span>Perform</button>
             </div>
-
+            </form>
             <h2 class="templatecontentheaderleft">Trade</h2>
 
             <form method="POST">
@@ -1448,6 +1448,7 @@
 
             </div>
             </div>
+            <form method="POST" action="/transfer/{{ cId }}">
             <h2 class="templatecontentheaderleft">Transfer</h2>
 
             <div class="infodiv">
@@ -1456,19 +1457,27 @@
 
                         <select name="resource" class="templateselect">
 
-                            <option disabled="true" selected="selected">Choose one</option>
-                            <option value="gold" class="templateoption">Gold</option>
-                            <option value="bauxite" class="templateoption">Bauxite</option>
-                            <option value="plutonium" class="templateoption">Plutionium</option>
-                            <option value="consumer_goods" class="templateoption">Consumer Goods</option>
-                            <option value="uranium" class="templateoption">Uranium</option>
-                            <option value="thorium" class="templateoption">Thorium</option>
-                            <option value="iron" class="templateoption">Iron</option>
-                            <option value="coal"class="templateoption">Coal</option>
-                            <option value="oil" class="templateoption">Oil</option>
-                            <option value="lead" class="templateoption">Lead</option>
-                            <option value="silicon" class="templateoption">Silicon</option>
-                            <option value="copper" class="templateoption">Copper</option>
+                        <option disabled="true" selected="selected">Choose one</option>
+
+                        <option value="gold" class="templateoption">Money</option>
+
+                        <option disabled="true" class="templateoption">---------</option>
+
+                        <option value="rations" class="templateoption">Rations</option>
+                        <option value="oil" class="templateoption">Oil</option>
+                        <option value="coal" class="templateoption">Coal</option>
+                        <option value="uranium" class="templateoption">Uranium</option>
+                        <option value="bauxite" class="templateoption">Bauxite</option>
+                        <option value="iron" class="templateoption">Iron</option>
+                        <option value="lead" class="templateoption">Lead</option>
+                        <option value="copper" class="templateoption">Copper</option>
+                        <option value="lumber" class="templateoption">Lumber</option>
+                        <option value="components" class="templateoption">Components</option>
+                        <option value="steel" class="templateoption">Steel</option>
+                        <option value="consumer_goods" class="templateoption">Consumer Goods</option>
+                        <option value="aluminium" class="templateoption">Aluminium</option>
+                        <option value="gasoline" class="templateoption">Gasoline</option>
+                        <option value="ammunition" class="templateoption">Ammunition</option>
                         </select>
 
 
@@ -1485,6 +1494,7 @@
                             </span>Confirm</button>
 
             </div>
+            </form>
         </div>
     </div>
 </div>
