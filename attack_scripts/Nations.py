@@ -40,6 +40,8 @@ class Nation:
                         provinces_stats -> the actual information about the provinces, type: dictionary -> provinceId, type: integer
     """
 
+    public_works = ["libraries", "universities", "hospitals", "city_parks", "monorails"]
+
     def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
         self.id = nationID  # integer ID
 
@@ -94,6 +96,17 @@ class Nation:
     def printStatistics(self):
         print("Nation {}:\nWins {}\nLosses: {}".format(
             self.id, self.wins, self.losses))
+
+    # Get everything from proInfra table which is in the "public works" category
+    def get_public_works(self, province_id):
+        public_works_string = ",".join(self.public_works)
+        fetch_public = self.db.execute(f"SELECT {public_works_string} FROM proInfra WHERE id=(?)", (province_id,)).fetchone()
+        public_works_dict = {}
+
+        for public in range(0, len(self.public_works)):
+            public_works_dict[self.public_works[public]] = fetch_public[public]
+
+        return public_works_dict
 
     # set the peace_date in wars table for a particular war
     @staticmethod
@@ -443,10 +456,8 @@ class Economy:
 
         connection.commit()
 
-
-
-
-
 # DEBUGGING:
 if __name__ == "__main__":
-    pass
+    l = Nation(10)
+    p = l.get_public_works(14)
+    print(p)
