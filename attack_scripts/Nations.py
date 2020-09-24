@@ -42,6 +42,12 @@ class Nation:
 
     public_works = ["libraries", "universities", "hospitals", "city_parks", "monorails"]
 
+    # Database management
+    # TODO: find a more effective way to handle database stuff
+    path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+    connection = sqlite3.connect(path)
+    db = connection.cursor()
+
     def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
         self.id = nationID  # integer ID
 
@@ -52,13 +58,6 @@ class Nation:
         self.current_wars = current_wars
         self.wins = 0
         self.losses = 0
-
-        # Database management
-        # TODO: find a more effective way to handle database stuff
-        path = ''.join(
-            [os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
-        self.connection = sqlite3.connect(path)
-        self.db = self.connection.cursor()
 
     def declare_war(self, target_nation):
         pass
@@ -98,6 +97,7 @@ class Nation:
             self.id, self.wins, self.losses))
 
     # Get everything from proInfra table which is in the "public works" category
+    @classmethod
     def get_public_works(self, province_id):
         public_works_string = ",".join(self.public_works)
         fetch_public = self.db.execute(f"SELECT {public_works_string} FROM proInfra WHERE id=(?)", (province_id,)).fetchone()
@@ -114,13 +114,55 @@ class Nation:
         db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
         connection.commit()
 
-class Military:
+class Military(Nation):
     allUnits = ["soldiers", "tanks", "artillery",
                 "bombers", "fighters", "apaches",
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
 
-    def infrastructure_damage(self): pass
+    # description of the function: deal damage to random buildings based on particular_infra
+    # particular_infra parameter example: for public_works -> {"libraries": 3, "hospitals": x, etc.}
+    # note: also could use this for population damage when attack happens
+    @staticmethod
+    def infrastructure_damage(damage, particular_infra):
+        province_id = 14
+        public_works = Nation.get_public_works(province_id)
+        available_buildings = []
+
+        connection = sqlite3.connect("affo/aao.db")
+        db = connection.cursor()
+
+        for building in public_works.keys():
+            amount = public_works[building]
+            if amount > 0:
+
+                # If there are multiple of the same building add those multiple times
+                for i in range(0, amount):
+                    available_buildings.append(building)
+
+        # Damage logic (even include population damage)
+        # health is the damage required to destroy a building
+        health = 1500
+
+        while damage > 0:
+            max_range = len(available_buildings)-1
+            random_building = random.randint(0, max_range)
+
+            target = available_buildings[random_building]
+
+            # destroy target
+            if (damage-health) >= 0:
+                public_works[target] -= 1
+
+                db.execute(f"UPDATE proInfra SET {target}=(?) WHERE id=(?)", (public_works[target], province_id))
+                connection.commit()
+
+                available_buildings.pop(random_building)
+
+            # NOTE: possible feature, when a building not destroyed but could be unusable (the reparation cost lower than rebuying it)
+            else: max_damage = abs(damage-health)
+
+            damage -= health
 
     # Returns the morale either for the attacker or the defender, and with the war_id
     @staticmethod
@@ -458,6 +500,5 @@ class Economy:
 
 # DEBUGGING:
 if __name__ == "__main__":
-    l = Nation(10)
-    p = l.get_public_works(14)
+    p = Nation.get_public_works(14)
     print(p)

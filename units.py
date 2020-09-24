@@ -448,6 +448,8 @@ if __name__ == "__main__":
 
     attacker.special_fight(attacker, defender, "soldiers")
 
+    attacker.infrastructure_damage(1500, {})
+
 
     # CASE 1
     # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},
