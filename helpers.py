@@ -21,11 +21,11 @@ def login_required(f):
 def error(code, message):
     return render_template("error.html", code=code, message=message)
 
-
+@login_required
 def get_influence(country_id):
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
-    cId = country_id
+    cId = session["user_id"]
     # re-calculate influence here
     # military score first
     # ground
