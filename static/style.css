@@ -2530,7 +2530,6 @@
             /*Coalition*/
             
             .general,
-            .about,
             .join,
             .leader,
             .member {
@@ -2538,7 +2537,6 @@
             }
             
             .generalclick,
-            .aboutclick,
             .joinclick,
             .leaderclick,
             .memberclick {
@@ -2546,7 +2544,6 @@
             }
             
             .coalitiongeneralclick,
-            .coalitionaboutclick,
             .coalitionjoinclick,
             .coalitionleaderclick,
             .coalitionmemberclick {
@@ -2555,7 +2552,6 @@
             }
             
             .coalitiongeneralclick h3,
-            .coalitionaboutclick h3,
             .coalitionjoinclick h3,
             .coalitionleaderclick h3,
             .coalitionmemberclick h3 {

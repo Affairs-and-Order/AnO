@@ -434,33 +434,6 @@ function coalitiongeneral() {
 
     //
 
-    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
-    document.getElementById("about").classList.remove("aboutclick");
-
-    document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
-    document.getElementById("join").classList.remove("joinclick");
-
-    document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
-    document.getElementById("leader").classList.remove("leaderclick");
-
-    document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
-    document.getElementById("member").classList.remove("memberclick");
-
-
-}
-//
-function coalitionabout() {
-
-
-
-    document.getElementById("coalitionabout").classList.add("coalitionaboutclick");
-    document.getElementById("about").classList.add("aboutclick");
-
-    //
-
-    document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
-    document.getElementById("general").classList.remove("generalclick");
-
     document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
     document.getElementById("join").classList.remove("joinclick");
 
@@ -483,9 +456,6 @@ function coalitionjoin() {
     document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
     document.getElementById("general").classList.remove("generalclick");
 
-    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
-    document.getElementById("about").classList.remove("aboutclick");
-
     document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
     document.getElementById("leader").classList.remove("leaderclick");
 
@@ -505,9 +475,6 @@ function coalitionleader() {
     document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
     document.getElementById("general").classList.remove("generalclick");
 
-    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
-    document.getElementById("about").classList.remove("aboutclick");
-
     document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
     document.getElementById("join").classList.remove("joinclick");
 
@@ -525,9 +492,6 @@ function coalitionmember() {
 
     document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
     document.getElementById("general").classList.remove("generalclick");
-
-    document.getElementById("coalitionabout").classList.remove("coalitionaboutclick");
-    document.getElementById("about").classList.remove("aboutclick");
 
     document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
     document.getElementById("join").classList.remove("joinclick");
@@ -676,13 +640,12 @@ function assign_parameters() {
 }
 
 function submit_special(e) {
-  const special_unit = document.querySelector("input[name=special_unit]");
-  if(document.getElementById(11).checked) {
-    special_unit.value = "nukes";
-  }
-  else if(document.getElementById(10).checked) {
-    special_unit.value = "icmbs"
-  }
+    const special_unit = document.querySelector("input[name=special_unit]");
+    if (document.getElementById(11).checked) {
+        special_unit.value = "nukes";
+    } else if (document.getElementById(10).checked) {
+        special_unit.value = "icmbs"
+    }
 }
 
 function submit_next(e) {
@@ -693,14 +656,14 @@ function submit_next(e) {
 
 // POST request for wartarget
 function war_target() {
-  const element = document.getElementsByName("targeted_unit")[0];
-  const all_inputs = document.querySelectorAll("input[type=checkbox]");
+    const element = document.getElementsByName("targeted_unit")[0];
+    const all_inputs = document.querySelectorAll("input[type=checkbox]");
 
-  if(element) {
-    for (let i = 0; i < all_inputs.length; i++) {
-      if (all_inputs[i].checked) {
-        element.value = all_inputs[i].value;
-      }
+    if (element) {
+        for (let i = 0; i < all_inputs.length; i++) {
+            if (all_inputs[i].checked) {
+                element.value = all_inputs[i].value;
+            }
+        }
     }
-  }
 }

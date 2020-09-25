@@ -24,11 +24,6 @@
                 <h3 class="smallheader">General</h3>
 
             </div>
-            <div class="templatedivflex2left" id="coalitionabout" onclick="coalitionabout()">
-
-                <h3 class="smallheader">About</h3>
-
-            </div>
             {% if userInCol == True %}
             <!-- if user isnt in coalition, maybe this is wrong ?-->
             <script>
@@ -80,6 +75,24 @@
         <!--GENERAL-->
         <div class="general" id="general">
 
+            <div class="countryimagediv" style="background-image: url();">
+                <!--coalition flag-->
+                {% if flag != None %}
+                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">
+                <!-- hmm not using url_for, but somewhy it render-->
+                {% else %}
+                <!-- tried first with url_for, but it didn't work -- t0dd -->
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
+                <!--Coalition Leader's flag-->
+                <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
+            </div>
+
+            {% if description != None %}
+            <h2 class="templatecontentheaderleft">About</h2>
+
+            <div class="strongpadding">{{ description }}</div>
+
+            {% endif %}
 
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
@@ -223,7 +236,6 @@
         <!--ABOUT-->
         <div class="about" id="about">
 
-            <div class="strongpadding">{{ description }}</div>
 
             <!--<div class="coalitionimagediv">
 
