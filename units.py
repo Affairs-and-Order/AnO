@@ -246,7 +246,7 @@ class IcbmUnit(BlueprintUnit):
 class NukeUnit(BlueprintUnit):
 
     unit_type = "nukes"
-    damage = 8000
+    damage = 3000
     supply_cost = 100
 
     def __init__(self, amount):
@@ -448,7 +448,7 @@ if __name__ == "__main__":
 
     attacker.special_fight(attacker, defender, "soldiers")
 
-    attacker.infrastructure_damage(1500, {})
+    # attacker.infrastructure_damage(1500, {})
 
 
     # CASE 1
