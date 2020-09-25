@@ -146,6 +146,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
     coalition_names = []
     dates = []
     influences = []
+    flags = []
 
     for i in users:
 
@@ -155,6 +156,13 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
         influence = get_influence(str(i[0]))
         influences.append(influence)
+
+        try:
+            flag = db.execute("SELECT flag FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+        except TypeError:
+            flag = None
+
+        flags.append(flag)    
 
         try:
             coalition_id = db.execute(
@@ -172,7 +180,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
     connection.close()
 
     resultAll = zip(population, users, names, coalition_ids,
-                    coalition_names, dates, influences)
+                    coalition_names, dates, influences, flags)
 
     return render_template("countries.html", resultAll=resultAll)
 

@@ -57,13 +57,21 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
+                    <td>Flag</td>
                     <th>Name</th>
                     <th>Influence</th>
                     <th>Date Created</th>
                     <th>Coalition</th>
 
-                    {% for pop, id, name, colId, colName, date, influence in resultAll %}
+                    {% for pop, id, name, colId, colName, date, influence, flag in resultAll %}
                     <tr>
+
+                        {% if flag != None %}
+                        <td></td>
+                        <!-- you can acess the flag here with the {{ flag }} var -->
+                        <td>{{ flag }}</td>
+                        {% endif %}
+
                         <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
                         <td>{{ influence }}</td>
                         <td>{{ date }}</td>
@@ -72,6 +80,8 @@
                         {% endif %} {% if colName != "No Coalition" %}
                         <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                         {% endif %}
+
+
                     </tr>
                     {% endfor %}
 
