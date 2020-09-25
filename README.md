@@ -323,15 +323,16 @@ Army Base - allows you to recruit land units -$25K / HOUR
 
 Harbour - allows you to recruit water units -$35K / HOUR
 
-Aerodrome - allows recruit of air units -$55K / HOUR
+Aerodrome - allows you to recruit of air units -$55K / HOUR
 
 Administrative building - allows recruitment of spies -$60K / HOUR
 
-Silo - allows production of missiles and nukes when researched -$120K / HOUR
 
 Adding more army bases after the first one would have the benefit of allowing more recruitment per hour and total capacity (applies for all military buildings)
 
 Since multiple units all come from the same building, each building would share the same recruiting pool. EX: 1 army base can recruit 100 soldier, or 10 tanks, or 5 artillery per hour, up to a max of 10,000 soldiers, 1,000 tanks, and 500 artillery per base.
+
+Nukes and ICBMs require the upgrades for them, but do not have Military buildings.
 
 
 
@@ -444,11 +445,11 @@ Organized Supply Lines: Your military now gets 225 supplies per hour for every w
 
 Large Storehouses: Allows you to now produce 260 supplies per war for every war, instead of 225
 
-Ballistic Missile Launch Base: Allows the development and and deployment of Ballistic Missiles (they can only hit nations in the continent they are on)
+Ballistic Missile Silo: Allows the development and and deployment of Ballistic Missiles (they can only hit nations in the continent they are on)
 
 | Unlockes
 
-Intercontinental Ballistic Missile Launch Base:Allows the deployment and development of Inter-Continental Ballistic Missiles (they can hit any nation regardless of continent)
+Intercontinental Ballistic Missile Launch Silo: Allows the deployment and development of Inter-Continental Ballistic Missiles (they can hit any nation regardless of continent)
 
 | Unlockes
 
@@ -690,7 +691,7 @@ Attacking mechanics
 
 When you win / loose you get a gif
 
-War fatigue: after declaring a war you cannot declare a war again for some time
+War fatigue: after declaring a war you cannot declare a war again on the same person for some time
 This is to stop a player from constantly bombarding a player 
 
 Attacking pits your units against the enemy units you choose (no civilian / economy damage) when you win the war you then inflict civilian and eco damage.
@@ -701,7 +702,8 @@ The more of a type of military building you have the cheaper ($) by % recruiting
 
 “Annihilating” the opponent entitles you to 25% of their income for the next 3 days
 
-Cities have 100 “health” per war. When they reach 0% they riot and you loose => 10% of your total infrastructure slots (only loose the actual infrastructure buildings)
+When using BMs, ICBMs, or Nukes, the user can select any of the 12 unit types to hit from /wartarget. It will additionally damage a random province.
+BMs are the same as ICBMs but they can only hit nations in the same continent.
 
 Coalitions
 
