@@ -208,7 +208,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 resource_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
                 db.execute(resource_update_statement, (new_resource, cId,))
 
-            for resource_number in range(1, len(iterable_resources)):
+            for resource_number in range(1, (len(iterable_resources) + 1)):
                 update_resource_minus(resource_number)
 
         else:
