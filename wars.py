@@ -351,8 +351,9 @@ def warTarget():
         target = request.form.get("targeted_unit")
         target_amount = Military.get_particular_units_list(eId, [target])
 
-        # Skip attach_units because no need for validation since the data coming directly from the db without user affection
-        session["targeted_defending_units"] = Units(eId, {target: target_amount}, selected_units_list=[target])
+        # Skip attach_units because no need for validation for target_amount since the data coming directly from the db without user affection
+        # only validate is targeted_unit is valid
+        session["targeted_defending_units"] = Units(eId, {target: target_amount[0]}, selected_units_list=[target])
 
         return redirect("warResult")
 
@@ -368,7 +369,7 @@ def warResult():
 
     # DEBUGGING
     attacker = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
-    session["targeted_defending_units"] = Units(10, {"soldiers": 5, "tanks": 1, "artillery": 15}, selected_units_list=["soldiers", "tanks", "artillery"])
+    # session["targeted_defending_units"] = Units(10, {"soldiers": 5, "tanks": 1, "artillery": 15}, selected_units_list=["soldiers", "tanks", "artillery"])
     eId = 10
 
     # grab defending enemy units from database
@@ -378,10 +379,9 @@ def warResult():
     defensestring = db.execute("SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
     # dev: making sure these values are correct
-    print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
-    print(eId, "| eId") # 10 | eId
-    print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
-
+    # print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
+    # print(eId, "| eId") # 10 | eId
+    # print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
 
     # If user came from /wartarget only then they have targeted_defending_units session
     defender = session.get("targeted_defending_units", None)
@@ -393,14 +393,16 @@ def warResult():
             defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
 
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
+        winner, win_condition = Military.fight(attacker, defender)
+    else:
+        winner, win_condition = Military.special_fight(attacker, defender, defender.selected_units_list[0])
+        print("FROM ELSE", winner, win_condition)
 
     # units.attachunits does what: Input: selected_units, units_count. gives Units object the selected_units dictionary and selected_units_list list
 
     # Used to print out the stats units before fight
     prev_defender = dict(defender.selected_units)
     prev_attacker = dict(attacker.selected_units)
-
-    winner, win_condition = Military.fight(attacker, defender)
 
     defender_loss = {}
     attacker_loss = {}

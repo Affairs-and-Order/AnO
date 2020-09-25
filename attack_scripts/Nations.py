@@ -67,7 +67,7 @@ class Nation:
         db = connection.cursor()
         if self.provinces == None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
-            provinces_number = self.db.execute(
+            provinces_number = db.execute(
                 "SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
             self.provinces["provinces_number"] = provinces_number
 
@@ -88,7 +88,9 @@ class Nation:
         return self.provinces
 
     def get_current_wars(self):
-        id_list = self.db.execute(
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        id_list = db.execute(
             "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
         print(id_list)
 
@@ -99,8 +101,10 @@ class Nation:
     # Get everything from proInfra table which is in the "public works" category
     @classmethod
     def get_public_works(self, province_id):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
         public_works_string = ",".join(self.public_works)
-        fetch_public = self.db.execute(f"SELECT {public_works_string} FROM proInfra WHERE id=(?)", (province_id,)).fetchone()
+        fetch_public = db.execute(f"SELECT {public_works_string} FROM proInfra WHERE id=(?)", (province_id,)).fetchone()
         public_works_dict = {}
 
         for public in range(0, len(self.public_works)):
@@ -232,13 +236,15 @@ class Military(Nation):
             attack_effects = attacker.attack(special_unit, target)
 
             # Surely destroy this percentage of the targeted units
-            # NOTE: devided attack_effects[0] by 25 otherwise special units damage are too overpowered maybe give it other value
-            min_destruction = target_amount*(1/5)*(attack_effects[0]/(25+attack_effects[1])*attacker.selected_units[special_unit])
+            # NOTE: devided attack_effects[0] by 20 otherwise special units damage are too overpowered maybe give it other value
+            min_destruction = target_amount*(1/5)*(attack_effects[0]/(20+attack_effects[1])*attacker.selected_units[special_unit])
 
             # Random bonus on unit destruction
             destruction_rate = random.uniform(0.5, 0.8)
             final_destruction = destruction_rate*min_destruction
 
+            print(target, "he is the teatfygk", final_destruction)
+            print(defender.selected_units, attack_effects)
             defender.casualties(target, final_destruction)
 
             # infrastructure damage
