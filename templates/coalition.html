@@ -299,7 +299,7 @@
 
 
                 <div class="templatedivflex2 divflex2center menuflex">
-                    <div class="templatedivflex2left vanilla">
+                    <div class="templatedivflex2left">
 
                         <select class="templateselect" name="diplomacy">
                             <option class="templateoption" selected disabled>Choose Position</option>
@@ -310,7 +310,7 @@
                         </select>
 
                     </div>
-                    <div class="templatedivflex2left vanilla">
+                    <div class="templatedivflex2left">
 
                         <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Enter Username" />
 
@@ -321,7 +321,7 @@
                     </span>Go</button>
 
                 <!--max lenth of 10-->
-                <div class="templateoutertablediv">
+                <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
                             <th>Role</th>
@@ -480,16 +480,16 @@
                                 <div class="templatedivflex2 menuflex">
                                     <div class="templatedivflex2left">
 
-                                        <span class="material-icons iconred">
-                                            remove_circle_outline
-                                            </span>
+                                        <span class="material-icons iconblue">
+                                            add_circle_outline
+                                        </span>
 
                                     </div>
                                     <div class="templatedivflex2left">
 
-                                        <span class="material-icons iconblue">
-                                            add_circle_outline
-                                        </span>
+                                        <span class="material-icons iconred">
+                                            remove_circle_outline
+                                            </span>
 
                                     </div>
                                 </div>
@@ -499,6 +499,10 @@
                     </table>
                 </div>
 
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
+
             </div>
 
             <h2 class="templatecontentheaderleft">Diplomacy</h2>
@@ -506,7 +510,7 @@
             <div class="infodiv">
 
                 <h2 class="templatecontentheadercenter">Current Allies</h2>
-                <div class="templateoutertablediv">
+                <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
                             <th>Action</th>
@@ -524,8 +528,9 @@
                     </table>
                 </div>
 
+                <h2 class="templatecontentheadercenter">Add Ally</h2>
                 <div class="templatedivflex2 divflex2center menuflex">
-                    <div class="templatedivflex2left vanilla">
+                    <div class="templatedivflex2left">
 
                         <select class="templateselect" name="diplomacy">
                             <option class="templateoption" selected disabled>Choose Treaty</option>
@@ -537,7 +542,7 @@
                         </select>
 
                     </div>
-                    <div class="templatedivflex2left vanilla">
+                    <div class="templatedivflex2left">
 
                         <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Filter Coalitions" />
 
@@ -547,7 +552,7 @@
                     check
                     </span>Go</button>
 
-                <div class="templateoutertablediv">
+                <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
                             <th>Coalition Name</th>
@@ -569,19 +574,20 @@
                     </span>Update</button>
             </div>
 
-            <!--HIDE if alliance type is "open"-->
-
+            <!--HIDE ALL OF THIS infodiv and header if coalition type is "open"-->
             <h2 class="templatecontentheaderleft">Applicants</h2>
-
+            <!--show if coalition has 0 applicants-->
+            <h2 class="templatecontentheadercenter">You have 0 applicants</h2>
+            <!--hide is coalition has 0 applicants-->
             <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
                     <div class="templatedivflex2 divflex2center menuflex">
-                        <div class="templatedivflex2left vanilla">
+                        <div class="templatedivflex2left">
 
                             <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Filter Applicants" />
 
                         </div>
-                        <div class="templatedivflex2left vanilla">
+                        <div class="templatedivflex2left">
 
                             <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                                     check
@@ -590,17 +596,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="templateoutertablediv">
-                    <table class="templatetable templatetable2 applicanttable">
+                <div class="templateoutertablediv inverttable">
+                    <table class="templatetable templatetable2 scrolltable">
                         <tr>
-                            <th>Action</th>
                             <th>Name</th>
                             <th>Influence</th>
                             <th>Message</th>
+                            <th>Action</th>
                         </tr>
                         <!--for every applicant make a row-->
                         {% for id, name, message in requests %}
                         <tr>
+                            <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
+                            <td></td>
+                            <td class="templatesmalltd">{{ message[0] }}</td>
                             <td>
                                 <form method="POST">
                                     <div class="templatedivflex2 menuflex">
@@ -623,13 +632,11 @@
                                     </div>
                                 </form>
                             </td>
-                            <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
-                            <td></td>
-                            <td class="templatesmalltd">{{ message[0] }}</td>
                         </tr>
                         {% endfor %}
                     </table>
                 </div>
+
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
@@ -677,7 +684,7 @@
                     </span>Update</button>
             </div>
 
-            <h2 class="templatecontentheaderleft"></h2>
+            <h2 class="templatecontentheaderleft">Danger Zone</h2>
 
             <form method="POST">
                 <div class="infodiv">
@@ -815,26 +822,18 @@
                     </div>
                 </div>
             </div>
+            <h2 class="templatecontentheaderleft">Danger Zone</h2>
 
-            <div class="templatedivflex2">
-                <div class="templatedivflex2left">
+            <div class="infodiv">
+                <form action="/leave/{{ colId }}" method="POST">
 
-
-
-                </div>
-                <div class="templatedivflex2right">
-
-
-
-                </div>
-            </div>
-            <form action="/leave/{{ colId }}" method="POST">
-
-                <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                    <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
                     arrow_forward
                     </span>Leave Coalition</button>
 
-            </form>
+                </form>
+            </div>
+
         </div>
 
         <!-- currently disabled this because of bug, moved it elsewhere-->

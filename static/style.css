@@ -2562,9 +2562,9 @@
                 color: var(--colorTwo) !important;
             }
             
-            .applicanttable {
+            .scrolltable {
                 max-height: 20vh;
-                overflow: hidden;
+                overflow: scroll;
             }
             /*DEFENSE*/
             
