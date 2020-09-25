@@ -232,24 +232,27 @@ class Military(Nation):
             attack_effects = attacker.attack(special_unit, target)
 
             # Surely destroy this percentage of the targeted units
-            min_destruction = target_amount*(1/5)*(attack_effects[0]*attacker.selected_units[special_unit])
+            # NOTE: devided attack_effects[0] by 25 otherwise special units damage are too overpowered maybe give it other value
+            min_destruction = target_amount*(1/5)*(attack_effects[0]/(25+attack_effects[1])*attacker.selected_units[special_unit])
 
             # Random bonus on unit destruction
-            destruction_rate = random.uniform(1, 2)
-
+            destruction_rate = random.uniform(0.5, 0.8)
             final_destruction = destruction_rate*min_destruction
 
+            defender.casualties(target, final_destruction)
+
+            # infrastructure damage
             connection = sqlite3.connect('affo/aao.db')
             db = connection.cursor()
-
             province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
             random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
 
             # If nuke damage public_works
             public_works = Nation.get_public_works(random_province)
-            damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
 
-            print(damage_effects)
+            # {target: final_destruction} <- the target and the destroyed amount
+            return ({target: final_destruction}, infra_damage_effects)
 
         else:
             return "Invalid target is selected!"
