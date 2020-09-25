@@ -243,9 +243,9 @@ class Military(Nation):
             destruction_rate = random.uniform(0.5, 0.8)
             final_destruction = destruction_rate*min_destruction
 
-            print(target, "he is the teatfygk", final_destruction)
-            print(defender.selected_units, attack_effects)
+            before_casulaties = list(dict(defender.selected_units).values())[0]
             defender.casualties(target, final_destruction)
+
 
             # infrastructure damage
             connection = sqlite3.connect('affo/aao.db')
@@ -257,8 +257,8 @@ class Military(Nation):
             public_works = Nation.get_public_works(random_province)
             infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
 
-            # {target: final_destruction} <- the target and the destroyed amount
-            return ({target: final_destruction}, infra_damage_effects)
+            # {target: losed_amount} <- the target and the destroyed amount
+            return ({target: before_casulaties-list(dict(defender.selected_units).values())[0]}, infra_damage_effects)
 
         else:
             return "Invalid target is selected!"
