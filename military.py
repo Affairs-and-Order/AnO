@@ -106,6 +106,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "nukes_resource2": {"steel": 600} # Costs 600 steel
 
         }
+        
         iterable_resources = []
 
         price = mil_dict[f"{units}_price"]
@@ -163,6 +164,22 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 int(gold) + int(wantedUnits) * int(price)), cId,))  # clean
             flash(f"You sold {wantedUnits} {units}")
 
+            def update_resource_plus(x):
+
+                resource = resource_dict[f'resource_{x}']['resource']
+                resource_amount = resource_dict[f'resource_{x}']['amount']
+                
+                current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+                current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
+
+                new_resource = current_resource + resource_amount
+
+                resource_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+                db.execute(resource_update_statement, (new_resource, cId,))
+
+            for resource_number in range(1, (len(iterable_resources) + 1)):
+                update_resource_plus(resource_number)
+
         elif way == "buy":
 
             if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
@@ -176,12 +193,12 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))
             flash(f"You bought {wantedUnits} {units}")
 
-            def update_resource(x):
+            def update_resource_minus(x):
                 resource = resource_dict[f'resource_{x}']['resource']
                 resource_amount = resource_dict[f'resource_{x}']['amount']
                 
                 current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-                current_resource = db.execute(current_resource_statement, (cId,)).fetchone()[0]
+                current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
 
                 if current_resource < resource_amount:
                     return error(400, "You don't have enough resources")
@@ -192,7 +209,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 db.execute(resource_update_statement, (new_resource, cId,))
 
             for resource_number in range(1, len(iterable_resources)):
-                update_resource(resource_number)
+                update_resource_minus(resource_number)
 
         else:
             return error(404, "Page not found")
