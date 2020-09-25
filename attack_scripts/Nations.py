@@ -142,6 +142,8 @@ class Military(Nation):
         # health is the damage required to destroy a building
         health = 1500
 
+        damage_effects = {}
+
         while damage > 0:
             if not len(available_buildings):
                 break
@@ -160,10 +162,19 @@ class Military(Nation):
 
                 available_buildings.pop(random_building)
 
+                if damage_effects.get(target, 0):
+                    damage_effects[target][1] += 1
+                else:
+                    damage_effects[target] = ["destroyed", 1]
+
             # NOTE: possible feature, when a building not destroyed but could be unusable (the reparation cost lower than rebuying it)
             else: max_damage = abs(damage-health)
 
             damage -= health
+
+        # will return: how many buildings are damaged or destroyed
+        # format: {building_name: ["effect name", affected_amount]}
+        return damage_effects
 
     # Returns the morale either for the attacker or the defender, and with the war_id
     @staticmethod
@@ -236,7 +247,9 @@ class Military(Nation):
 
             # If nuke damage public_works
             public_works = Nation.get_public_works(random_province)
-            Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+
+            print(damage_effects)
 
         else:
             return "Invalid target is selected!"
