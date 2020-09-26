@@ -660,12 +660,13 @@
                             <img id="imageBackground" />
                         </div>
 
+                        <form action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
                         <label for="bgimage">Choose coalition flag</label>
 
                         <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                                 </span>Choose Image
-                                <input type="file" name="bgimage" id="imageinput" accept="image/*" onchange="imageBackground(event)">
+                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground(event)">
                               </label>
 
                     </div>
@@ -689,6 +690,7 @@
                     check
                     </span>Update</button>
             </div>
+            </form>
 
             <h2 class="templatecontentheaderleft">Danger Zone</h2>
 

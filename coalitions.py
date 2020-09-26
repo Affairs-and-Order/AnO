@@ -340,7 +340,7 @@ def delete_coalition(colId):
 
 
 @login_required
-@app.route("/update_info/<colId>", methods=["POST"])
+@app.route("/update_col_info/<colId>", methods=["POST"])
 def update_col_info(colId):
 
     connection = sqlite3.connect('affo/aao.db')
@@ -365,17 +365,17 @@ def update_col_info(colId):
         try:
             current_flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
+            # If he does, delete the flag
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
         except TypeError:
             pass
 
-        # Save the file & shit
+        # Save the file
         current_filename = file.filename
-        if allowed_file(current_filename):
-            extension = current_filename.rsplit('.', 1)[1].lower()
-            filename = f"flag_{colId}" + '.' + extension
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            db.execute("UPDATE colNames SET flag=(?) WHERE id=(?)", (filename, colId))
+        extension = current_filename.rsplit('.', 1)[1].lower()
+        filename = f"col_flag_{colId}" + '.' + extension
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        db.execute("UPDATE colNames SET flag=(?) WHERE id=(?)", (filename, colId))
 
     connection.commit()
     connection.close()
