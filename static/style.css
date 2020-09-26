@@ -1063,7 +1063,9 @@
             .templatecontentheadercenter {
                 text-align: center;
                 font-size: 25px;
-                margin-top: 16px;
+                padding-top: 16px;
+                padding-bottom: 20px;
+                margin: 0;
                 color: var(--colorOne);
             }
             
@@ -2156,9 +2158,41 @@
                 animation-delay: 1.2s;
             }
             
-            .cardparent {}
+            .cardparent {
+                margin: 50px;
+                padding: 0px;
+                border-radius: 12px;
+                overflow: hidden;
+                background: var(--foregroundFive);
+                position: relative;
+                top: 0px;
+                box-shadow: rgba(0, 0, 0, 0.05) 0 8px 32px 0;
+                transition: all 0.3s ease;
+            }
             
-            .cardchild {}
+            .cardparent:hover {
+                top: -5px;
+                box-shadow: rgba(0, 0, 0, 0.1) 0 8px 32px 0, rgba(0, 0, 0, 0.075) 0 12px 12px;
+            }
+            
+            .cardimage {
+                width: 100%;
+            }
+            
+            .cardcontent {
+                padding: 30px 15px;
+            }
+            
+            .landingcontactdiv {
+                margin: 50px;
+                padding: 20px;
+                border-radius: 20px;
+                width: fit-content;
+            }
+            
+            .twitter-timeline {
+                height: 40px !important;
+            }
             /*LOGINSIGNUP*/
             
             .loginsignupdiv {
