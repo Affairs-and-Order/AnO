@@ -312,6 +312,8 @@ class Military(Nation):
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
 
+        defender_infra_damage = 0
+
         for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
 
             # Unit amount chance - this way still get bonuses even if no counter unit_type
@@ -320,9 +322,11 @@ class Military(Nation):
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
-                attacker_bonus += calculate_bonuses(attacker.attack(attacker_unit, unit), defender, unit)
+                attack_effects = attacker.attack(attacker_unit, unit)
+                attacker_bonus += calculate_bonuses(attack_effects, defender, unit)
                 # used to be += attacker.attack(attacker_unit, unit, defender)[1]
 
+                defender_infra_damage += attack_effects[0]
 
             # Compare defender against attacker
             for unit in attacker.selected_units_list:
@@ -330,8 +334,6 @@ class Military(Nation):
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
-        print("BONUSES", attacker_bonus, defender_bonus)
-        print("CHANCES", attacker_chance, defender_chance)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
@@ -364,14 +366,24 @@ class Military(Nation):
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            w_casualties = winner_casulties*random.uniform(0.6, 1)*1.5
-            l_casualties =  win_type*random.uniform(0.8, 1)*1.5
+            w_casualties = winner_casulties*random.uniform(0.6, 1.5)*2.5
+            l_casualties =  win_type*random.uniform(0.8, 1.5)*2.5
 
             winner.casualties(winner_unit, w_casualties)
             loser.casualties(loser_unit, l_casualties)
 
+        # infrastructure damage
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
+        random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
+
+        # Currently units only affect public works
+        public_works = Nation.get_public_works(random_province)
+        infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+
         # return (winner.user_id, return_winner_cas, return_loser_cas)
-        return (winner.user_id, win_condition)
+        return (winner.user_id, win_condition, infra_damage_effects)
 
         # DEBUGGING:
         # print("WINNER IS:", winner.user_id)
