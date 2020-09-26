@@ -13,6 +13,7 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
+import os
 
 
 # rawCol (for easy finding using CTRL + F)
@@ -330,7 +331,53 @@ def delete_coalition(colId):
     db.execute("DELETE FROM coalitions WHERE colId=(?)", (colId,))
     
     connection.commit()
+    connection.close()
 
     flash(f"{coalition_name} coalition was deleted.")
 
     return redirect("/")
+
+
+
+@login_required
+@app.route("/update_info/<colId>", methods=["POST"])
+def update_info(colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if leader != cId:
+        return error(400, "You aren't the leader of this coalition")
+
+    ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+
+    def allowed_file(filename):
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+    file = request.files["flag_input"]
+    if file and allowed_file(file.filename):
+
+        # Check if the user already has a flag
+        try:
+            current_flag = db.execute("SELECT flag FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
+        except TypeError:
+            pass
+
+        # Save the file & shit
+        current_filename = file.filename
+        if allowed_file(current_filename):
+            extension = current_filename.rsplit('.', 1)[1].lower()
+            filename = f"flag_{cId}" + '.' + extension
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
+
+    connection.commit()
+    connection.close()
+
+    return redirect(f"/coalition/{colId}")

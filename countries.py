@@ -184,10 +184,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     return render_template("countries.html", resultAll=resultAll)
 
-ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @login_required
 @app.route("/update_country_info", methods=["POST"])
@@ -218,6 +215,11 @@ def update_info():
             # Updates the username to the new one
             db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
 
+    ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+
+    def allowed_file(filename):
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        
     #TODO: add some checking for malicious extensions n shit
     file = request.files["flag_input"]
     if file and allowed_file(file.filename):
