@@ -27,12 +27,9 @@ def coalition(colId):
 
         cId = session["user_id"]
 
-        name = db.execute(
-            "SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        colType = db.execute(
-            "SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        members = db.execute(
-            "SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
+        name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
         total_influence = get_coalition_influence(colId)
         average_influence = total_influence / members
 
@@ -42,6 +39,11 @@ def coalition(colId):
         leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
 
         treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
+
+        try:
+            flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        except TypeError:
+            flag = None
 
         if leader == cId:
             userLeader = True
@@ -57,22 +59,18 @@ def coalition(colId):
 
         requests = zip(requestIds, requestNames, requestMessages)
 
-        description = db.execute(
-            "SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
-        colType = db.execute(
-            "SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         try:
-            userInCol = db.execute(
-                "SELECT userId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+            userInCol = db.execute("SELECT userId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
             userInCol = True
         except:
             userInCol = False
 
         try:
-            userInCurCol = db.execute(
-                "SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
+            userInCurCol = db.execute("SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
             userInCurCol = True
         except:
             userInCurCol = False
@@ -82,7 +80,8 @@ def coalition(colId):
         return render_template("coalition.html", name=name, colId=colId, members=members,
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
-                               average_influence=average_influence, leaderName=leaderName, leader=leader)
+                               average_influence=average_influence, leaderName=leaderName, leader=leader,
+                               flag=flag)
 
 
 @login_required
