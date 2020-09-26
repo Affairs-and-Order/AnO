@@ -314,7 +314,7 @@
                     <div class="templatedivflex2left">
 
                         <select class="templateselect" name="diplomacy">
-                            <option class="templateoption" selected disabled>Choose Position</option>
+                            <option class="templateoption" selected disabled>Give Position</option>
                             <option class="templateoption">Leader</option>
                             <option class="templateoption">High Government</option>
                             <option class="templateoption">Low Government</option>
@@ -344,12 +344,8 @@
                             <td>[[ leaders ]]</td>
                         </tr>
                         <tr>
-                            <td>High Government:</td>
-                            <td>[[ leaders ]]</td>
-                        </tr>
-                        <tr>
-                            <td>Low Government:</td>
-                            <td>[[ leaders ]]</td>
+                            <td>Members:</td>
+                            <td>[[ members ]]</td>
                         </tr>
                         <tr>
                             <td>Members:</td>
@@ -654,40 +650,38 @@
                     </span>Update</button>
             </div>
 
-            <h2 class="templatecontentheaderleft">Coalition Background</h2>
+            <h2 class="templatecontentheaderleft">General</h2>
 
             <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <label for="bgcolor">Choose a color</label>
-                        <select class="templateselect" name="bgcolor">
-    
-                            <option class="templateoption" selected>Defualt</option>
-                            <option class="templateoption">Gray</option>
-                            <option class="templateoption">Light Blue</option>
-                            <option class="templateoption">Dark Blue</option>
-                            <option class="templateoption">Red</option>
-                            <option class="templateoption">Dark Gray</option>
-                            <option class="templateoption">Black</option>
-                            <option class="templateoption">Green</option>
-                        
-                        </select>
-
-                    </div>
                     <div class="templatedivflex2left">
 
                         <div class="coalitionimagepreview">
                             <img id="imageBackground" />
                         </div>
 
-                        <label for="bgimage">Or a custom image</label>
+                        <label for="bgimage">Choose coalition flag</label>
 
                         <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                                 </span>Choose Image
                                 <input type="file" name="bgimage" id="imageinput" accept="image/*" onchange="imageBackground(event)">
                               </label>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <div class="coalitionimagepreview">
+                            <img id="imageBackground2" />
+                        </div>
+
+                        <label for="bgimage2">Choose flag background</label>
+
+                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                        wallpaper
+                            </span>Choose Image
+                            <input type="file" name="bgimage2" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
+                          </label>
 
                     </div>
                 </div>
