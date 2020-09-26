@@ -334,9 +334,6 @@ class Military(Nation):
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
-        print("BONUSES", attacker_bonus, defender_bonus)
-        print("CHANCES", attacker_chance, defender_chance)
-        print("INFRA DAMAE", defender_infra_damage)
 
         # Determine the winner
         if defender_chance >= attacker_chance:

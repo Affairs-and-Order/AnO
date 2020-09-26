@@ -48,6 +48,9 @@ def update_supply(war_id):
     hours_count = time_difference//3600
     supply_by_hours = hours_count*50 # 50 supply in every hour
 
+    # TODO: give bonus supplies if there is specific infrastructure for it
+    # if supply_bonus: xy
+
     if supply_by_hours > 0:
         db.execute("UPDATE wars SET attacker_supplies=(?), defender_supplies=(?), last_visited=(?) WHERE id=(?)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
         connection.commit()
@@ -59,8 +62,8 @@ def wars():
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     if request.method == "GET":
         normal_units = Military.get_military(cId)
@@ -129,7 +132,7 @@ def wars():
                     "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
         connection.commit()
 
-        warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=(?) OR attacker=(?) AND peace_date IS NULL", (cId, cId)).fetchone()[0]
+        warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE (defender=(?) OR attacker=(?)) AND peace_date IS NULL", (cId, cId)).fetchone()[0]
 
         # NOTE: at defender_stats and attacker_stats later maybe use the  Military.get_morale("defender_morale", attacker, defender) for morale check
         # because the code below is redundant but the get_morale function works only for Units instances currently
@@ -205,8 +208,8 @@ def war_with_id(war_id):
 @login_required
 @app.route("/warchoose", methods=["GET", "POST"])
 def warChoose():
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     if request.method == "GET":
 
@@ -327,11 +330,13 @@ def warAmount():
 @login_required
 @app.route("/wartarget", methods=["GET", "POST"])
 def warTarget():
-    # cId = session["user_id"]
-    # eId = session["enemy_id"]
-    cId = 11
-    eId = 10
-    session["attack_units"] = Units(cId, {"nukes": 1}, selected_units_list=["nukes"])
+    cId = session["user_id"]
+    eId = session["enemy_id"]
+
+    # DEBUG DATA:
+    # cId = 11
+    # eId = 10
+    # session["attack_units"] = Units(cId, {"nukes": 1}, selected_units_list=["nukes"])
 
     if request.method == "GET":
 
@@ -342,7 +347,6 @@ def warTarget():
         needed_types = ["soldiers", "tanks", "artillery", "fighters",
                         "bombers", "apaches", "destroyers", "cruisers", "submarines"]
 
-        print(revealed_info)
         # cycle through revealed_info. if a value is true, and it"s a unit, add it to the units dictionary
         units = {}
         return render_template("wartarget.html", units=units)
@@ -359,8 +363,6 @@ def warTarget():
         defender = Units(eId, {target: target_amount[0]}, selected_units_list=[target])
         session["from_wartarget"] = Military.special_fight(session["attack_units"], defender, defender.selected_units_list[0])
 
-        print("HEEER")
-        print(session["from_wartarget"])
         return redirect("warResult")
 
 # page 4 results
@@ -369,15 +371,16 @@ def warTarget():
 @login_required
 @app.route("/warResult", methods=["GET"])
 def warResult():
-    # attacker = session["attack_units"]
-    session["attack_units"] = Units(11, {"soldiers": 1200, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
-    eId = 10
 
-    session["enemy_id"] = eId
-    session["user_id"] = 11
+    # DEBUG DATA:
+    # session["attack_units"] = Units(11, {"soldiers": 1200, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
+    # eId = 10
+    # session["enemy_id"] = eId
+    # session["user_id"] = 11
 
+    attacker = session["attack_units"]
     # grab defending enemy units from database
-    # eId = session["enemy_id"]
+    eId = session["enemy_id"]
 
     # dev: making sure these values are correct
     # print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
@@ -412,10 +415,6 @@ def warResult():
         # Save the stats before the fight which used to calculate the lost amount from unit
         prev_defender = dict(defender.selected_units)
         prev_attacker = dict(attacker.selected_units)
-
-        print("RUNN")
-        print(prev_attacker)
-        print(prev_defender)
 
         winner, win_condition, infra_damage_effects = Military.fight(attacker, defender)
         defender_result["infra_damage"] = infra_damage_effects
