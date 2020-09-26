@@ -370,7 +370,7 @@ def warTarget():
 @app.route("/warResult", methods=["GET"])
 def warResult():
     # attacker = session["attack_units"]
-    session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
+    session["attack_units"] = Units(11, {"soldiers": 1200, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
     eId = 10
 
     session["enemy_id"] = eId
@@ -419,13 +419,6 @@ def warResult():
             winner = defender_name
         else: winner = attacker_name
 
-            # TODO: Add morale to wars table
-            # morale = 0
-        #
-        #     # When lose the war
-        #     if morale == 0:
-        #         pass
-        #
         #     # WAR TYPES
         #     # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
         #     # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
@@ -453,11 +446,6 @@ def warResult():
     else:
         defender_result["unit_loss"] = result[0]
         defender_result["infra_damage"] = result[1]
-
-    # print("ATK", attacker.selected_units)
-    # print(winner, defender.selected_units)
-    # print(attacker.selected_units)
-    # print("LOSS", attacker_loss)
 
     # possible war policies:
     # "empire builder"--> winning gives no loot 2x reparation tax
