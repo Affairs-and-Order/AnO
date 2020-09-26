@@ -1995,32 +1995,33 @@
             @media all and (max-width: 1055px) {
                 .landingpagetopperdivparent {
                     padding-top: 25px;
+                    padding-bottom: 40px;
                 }
             }
             
             .landingpagetopperdivchild {
-                width: 90%;
                 padding: 0;
-                margin: auto !important;
+                width: 90% !important;
             }
             
             .landingpageinforight,
             .landingpageinfoleft {
-                color: black !important;
+                color: black;
                 height: fit-content;
+                width: 100% !important;
             }
             
             .landingpageinfoleft {
                 color: white;
                 text-shadow: 0px 1px 4px #084955;
                 animation: templatedivtitleload 0.4s;
-                justify-content: center !important;
+                justify-content: center;
                 padding-left: 15% !important;
             }
             
             @media all and (max-width: 1055px) {
                 .landingpageinfoleft {
-                    padding-left: initial !important;
+                    padding-left: initial;
                 }
             }
             
@@ -2052,17 +2053,16 @@
                 background: var(--background);
                 box-shadow: 0px 6px 20px 8px #178db860;
                 color: black;
-                padding: 10px !important;
-                padding-bottom: 20px !important;
-                width: 60% !important;
+                padding: 10px;
                 animation: templatedivtitleload 1.2s;
                 border-radius: 4px;
                 transition: all 0.3s;
+                width: 60% !important;
             }
             
             @media all and (max-width: 600px) {
                 .landingpageinforight {
-                    width: 90% !important;
+                    width: 90%;
                 }
             }
             
@@ -2137,6 +2137,7 @@
                 margin: auto;
                 box-shadow: rgba(0, 0, 0, 0.15) 0 0px 40px 3px;
                 animation: scrolldownparentload 1.2s;
+                transition: all 0.3 ease;
             }
             
             .scrolldownchild {
