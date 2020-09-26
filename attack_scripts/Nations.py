@@ -369,8 +369,8 @@ class Military(Nation):
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            w_casualties = winner_casulties*random.uniform(0.6, 1)*1.5
-            l_casualties =  win_type*random.uniform(0.8, 1)*1.5
+            w_casualties = winner_casulties*random.uniform(0.6, 1.5)*2.5
+            l_casualties =  win_type*random.uniform(0.8, 1.5)*2.5
 
             winner.casualties(winner_unit, w_casualties)
             loser.casualties(loser_unit, l_casualties)

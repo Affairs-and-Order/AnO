@@ -413,6 +413,10 @@ def warResult():
         prev_defender = dict(defender.selected_units)
         prev_attacker = dict(attacker.selected_units)
 
+        print("RUNN")
+        print(prev_attacker)
+        print(prev_defender)
+
         winner, win_condition, infra_damage_effects = Military.fight(attacker, defender)
         defender_result["infra_damage"] = infra_damage_effects
 
@@ -420,18 +424,18 @@ def warResult():
             winner = defender_name
         else: winner = attacker_name
 
-        #     # WAR TYPES
-        #     # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
-        #     # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
-        #     # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-        #     war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
-        #     if len(war_type) > 0:
-        #         if war_type == "raze" : pass
-        #         elif war_type == "sustained": pass
-        #         elif war_type == "loot": pass
-        #         else: print("INVALID WARTYPE")
-        #     else:
-        #         print("INVALID USER IDs")
+            # WAR TYPES
+            # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+            # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
+            # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+            # war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
+            # if len(war_type) > 0:
+            #     if war_type == "raze" : pass
+            #     elif war_type == "sustained": pass
+            #     elif war_type == "loot": pass
+            #     else: print("INVALID WARTYPE")
+            # else:
+            #     print("INVALID USER IDs")
 
         defender_loss = {}
         attacker_loss = {}
@@ -455,7 +459,6 @@ def warResult():
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
-    print(defender_result)
     return render_template(
         "warResult.html",
         winner=winner,
