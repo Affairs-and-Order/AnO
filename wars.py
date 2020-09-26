@@ -56,8 +56,8 @@ def update_supply(war_id):
         connection.commit()
 
 # so this is page 0, war menu, choose a war
-@login_required
 @app.route("/wars", methods=["GET", "POST"])
+@login_required
 def wars():
 
     connection = sqlite3.connect("affo/aao.db")
@@ -179,8 +179,8 @@ def wars():
 
 
 # page 0, kind of a pseudo page where you can click attack vs special
-@login_required
 @app.route("/war/<int:war_id>", methods=["GET"])
+@login_required
 def war_with_id(war_id):
     update_supply(war_id)
 
@@ -224,8 +224,8 @@ def war_with_id(war_id):
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
 # page 1: where you can select what units to attack with
-@login_required
 @app.route("/warchoose", methods=["GET", "POST"])
+@login_required
 def warChoose():
     cId = session["user_id"]
     # cId = 11
@@ -272,8 +272,8 @@ def warChoose():
         return redirect("/waramount")
 
 # page 2 choose how many of each of your units to send
-# @login_required
 @app.route("/waramount", methods=["GET", "POST"])
+@login_required
 def warAmount():
     cId = session["user_id"]
     # cId = 11
@@ -346,8 +346,8 @@ def warAmount():
 
 
 # This route is only for ICMB or nuke attacks
-@login_required
 @app.route("/wartarget", methods=["GET", "POST"])
+@login_required
 def warTarget():
     cId = session["user_id"]
     eId = session["enemy_id"]
@@ -387,8 +387,8 @@ def warTarget():
 # page 4 results
 # infra damage, building damage
 # giant loot, coalition loot, reparation tax set if morale reaches 0
-@login_required
 @app.route("/warResult", methods=["GET"])
+@login_required
 def warResult():
 
     # DEBUG DATA:
@@ -492,8 +492,8 @@ def warResult():
         resStolen="resStolen") # resStolen needs to be a dictionary
 
 # Endpoint for war declaration
-@login_required
 @app.route("/declare_war", methods=["POST"])
+@login_required
 def declare_war():
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -553,8 +553,8 @@ def declare_war():
     return redirect("/wars")
 
 # this should go to countries with a specific URL influence arguments set up by taking the user's influence and putting in the lower and upper bounds.
-@login_required
 @app.route("/find_targets", methods=["GET"])
+@login_required
 def find_targets():
     if request.method == "GET":
         connection = sqlite3.connect("affo/aao.db")
@@ -584,8 +584,8 @@ def find_targets():
 # if everything went through, remove the cost of supplies from the amount of supplies the country has.
 
 
-@login_required
 @app.route("/defense", methods=["GET", "POST"])
+@login_required
 def defense():
     cId = session["user_id"]
     units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}

@@ -10,11 +10,14 @@ def login_required(f):
 
     http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
     """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
-        if session.get('user_id') is None:
+        if not session.get('user_id', None):
             return redirect("/login")
+
         return f(*args, **kwargs)
+
     return decorated_function
 
 
@@ -50,7 +53,7 @@ def get_influence(country_id):
     # civilian score second
     gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
     population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    
+
     cityCounts = db.execute("SELECT cityCount FROM provinces WHERE userId=(?)", (cId,)).fetchall()
     cities = 0
     provinces = 0
@@ -161,7 +164,7 @@ def generate_province_revenue(): # Runs each turn
     infra_ids = db.execute("SELECT id FROM proInfra").fetchall()
 
     for unit in columns:
-        
+
         try:
             plus_data = next(iter(infra[f'{unit}_plus'].items()))
 
@@ -178,14 +181,14 @@ def generate_province_revenue(): # Runs each turn
             pollution_amount = int(infra[f'{unit}_pollution'])
         except KeyError:
             pollution_amount = None
-        
+
         """
         print(f"Unit: {unit}")
         print(f"Add {plus_amount} to {plus_resource}")
         print(f"Remove ${operating_costs} as operating costs")
         print(f"\n")
         """
-        
+
         for province_id in infra_ids:
 
             province_id = province_id[0]
@@ -203,7 +206,7 @@ def generate_province_revenue(): # Runs each turn
                 operating_costs *= unit_amount
                 if pollution_amount != None:
                     pollution_amount *= unit_amount
-                    
+
                 ### ADDING RESOURCES
                 if plus == True:
                     current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
