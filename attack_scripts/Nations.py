@@ -124,16 +124,14 @@ class Military(Nation):
     # particular_infra parameter example: for public_works -> {"libraries": 3, "hospitals": x, etc.}
     # note: also could use this for population damage when attack happens
     @staticmethod
-    def infrastructure_damage(damage, particular_infra):
-        province_id = 14
-        public_works = Nation.get_public_works(province_id)
+    def infrastructure_damage(damage, particular_infra, province_id):
         available_buildings = []
 
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
 
-        for building in public_works.keys():
-            amount = public_works[building]
+        for building in particular_infra.keys():
+            amount = particular_infra[building]
             if amount > 0:
 
                 # If there are multiple of the same building add those multiple times
@@ -144,7 +142,12 @@ class Military(Nation):
         # health is the damage required to destroy a building
         health = 1500
 
+        damage_effects = {}
+
         while damage > 0:
+            if not len(available_buildings):
+                break
+
             max_range = len(available_buildings)-1
             random_building = random.randint(0, max_range)
 
@@ -152,17 +155,26 @@ class Military(Nation):
 
             # destroy target
             if (damage-health) >= 0:
-                public_works[target] -= 1
+                particular_infra[target] -= 1
 
-                db.execute(f"UPDATE proInfra SET {target}=(?) WHERE id=(?)", (public_works[target], province_id))
+                db.execute(f"UPDATE proInfra SET {target}=(?) WHERE id=(?)", (particular_infra[target], province_id))
                 connection.commit()
 
                 available_buildings.pop(random_building)
+
+                if damage_effects.get(target, 0):
+                    damage_effects[target][1] += 1
+                else:
+                    damage_effects[target] = ["destroyed", 1]
 
             # NOTE: possible feature, when a building not destroyed but could be unusable (the reparation cost lower than rebuying it)
             else: max_damage = abs(damage-health)
 
             damage -= health
+
+        # will return: how many buildings are damaged or destroyed
+        # format: {building_name: ["effect name", affected_amount]}
+        return damage_effects
 
     # Returns the morale either for the attacker or the defender, and with the war_id
     @staticmethod
@@ -220,12 +232,27 @@ class Military(Nation):
             attack_effects = attacker.attack(special_unit, target)
 
             # Surely destroy this percentage of the targeted units
-            min_destruction = target_amount*(1/5)*(attack_effects[0]*attacker.selected_units[special_unit])
+            # NOTE: devided attack_effects[0] by 25 otherwise special units damage are too overpowered maybe give it other value
+            min_destruction = target_amount*(1/5)*(attack_effects[0]/(25+attack_effects[1])*attacker.selected_units[special_unit])
 
             # Random bonus on unit destruction
-            destruction_rate = random.uniform(1, 2)
-
+            destruction_rate = random.uniform(0.5, 0.8)
             final_destruction = destruction_rate*min_destruction
+
+            defender.casualties(target, final_destruction)
+
+            # infrastructure damage
+            connection = sqlite3.connect('affo/aao.db')
+            db = connection.cursor()
+            province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
+            random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
+
+            # If nuke damage public_works
+            public_works = Nation.get_public_works(random_province)
+            infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+
+            # {target: final_destruction} <- the target and the destroyed amount
+            return ({target: final_destruction}, infra_damage_effects)
 
         else:
             return "Invalid target is selected!"
@@ -501,4 +528,5 @@ class Economy:
 # DEBUGGING:
 if __name__ == "__main__":
     p = Nation.get_public_works(14)
+    Military.infrastructure_damage(20, p)
     print(p)

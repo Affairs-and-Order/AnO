@@ -56,18 +56,6 @@ def coalition(colId):
 
         requests = zip(requestIds, requestNames, requestMessages)
 
-        """def avgStat(unit):
-            peopleUnit = db.execute("SELECT (?) FROM stats WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (unit, colId,)).fetchall()
-            totalUnit = []
-            for i in peopleUnit:
-                totalUnit.append(i[0])
-            peopleUnit = sum(totalUnit)
-            return peopleUnit
-
-        gold = avgStat("gold")
-        happiness = avgStat("happiness")
-        population = avgStat("population")"""
-
         description = db.execute(
             "SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 

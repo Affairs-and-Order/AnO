@@ -339,6 +339,7 @@ def warTarget():
             "SELECT * FROM spyinfo WHERE spyer=(?) AND spyee=(?)", (cId, eId,)).fetchall()
         needed_types = ["soldiers", "tanks", "artillery", "fighters",
                         "bombers", "apaches", "destroyers", "cruisers", "submarines"]
+
         print(revealed_info)
         # cycle through revealed_info. if a value is true, and it"s a unit, add it to the units dictionary
         units = {}
@@ -368,10 +369,10 @@ def warResult():
     # DEBUGGING
     attacker = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 1}, selected_units_list=["soldiers", "tanks", "artillery"])
     session["targeted_defending_units"] = Units(10, {"soldiers": 5, "tanks": 1, "artillery": 15}, selected_units_list=["soldiers", "tanks", "artillery"])
+    eId = 10
 
     # grab defending enemy units from database
     # eId = session["enemy_id"]
-    eId = 10
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
     defensestring = db.execute("SELECT default_defense FROM military WHERE id=(?)", (eId,)).fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
