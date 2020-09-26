@@ -366,6 +366,7 @@ def update_col_info(colId):
 
             # If he does, delete the flag
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
+            db.execute("UPDATE colNames SET flag=null WHERE id=(?)", (colId,))
         except TypeError:
             pass
 
