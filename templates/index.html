@@ -4,8 +4,8 @@
 
     <div class="landingpagetopper noboxshadowtopper">
 
-        <div class="templatedivflex2 divflex2center">
-            <div class="templatedivflex2left">
+        <div class="templatedivflex2 divflex2center landingpagetopperdivparent">
+            <div class="templatedivflex2left landingpagetopperdivchild">
                 <div class="landingpageinfoleft">
 
                     <h1>Lead a Country!</h1>
@@ -15,7 +15,7 @@
 
                 </div>
             </div>
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left landingpagetopperdivchild">
 
                 <div class="landingpageinforight">
 
@@ -36,28 +36,74 @@
 
             </div>
         </div>
+
+        <div class="scrolldownparent" id="scrolldownparent">
+            <div class="scrolldownchild"></div>
+        </div>
+
     </div>
     {% if session.get('user_id') == None %}
     <div class="templatedivcontent">
 
-        <div class="templatedivflex2 menuflex whiteblue">
-            <div class="templatedivflex2left">
+        <h2 class="templatecontentheaderleft">Run an Economy</h2>
 
-                <!--image of user in /countries declare war-->
-                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/indexcountries.png') }}" />
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left cardparent">
+
+                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+
+                <div class="cardcontent">
+
+                    <h2 class="templatecontentheadercenter">Resource Production</h2>
+
+                    <p class="templatecontentpleft">
+                        Start off producing resources like food, oil, coal, uranium, wood, and much more, and sell them on the market to other players.
+                    </p>
+                    <p class="templatecontentpleft">
+                        Eventually build up a strong economy to support production of advanced resources, like components, steel, ammunition, aluminium, and gasoline.
+                    </p>
+
+                </div>
 
             </div>
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left cardparent">
 
-                <h2 class="templatecontentheadercenter">Play With Real Players</h2>
-                <p class="templatecontentpleft">Raid other players for profit, and defend your country in brutal warfare. Create the strongest army and work with your friends to become the strongest coalition
-                    <br /><br />
-                </p>
+                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+
+                <div class="cardcontent">
+
+                    <h2 class="templatecontentheadercenter">Tax Collection</h2>
+
+                    <p class="templatecontentpleft">
+                        Try to keep your people as happy and healthy as possible to collect as much taxes as you can.
+                    </p>
+                    <p class="templatecontentpleft">
+                        Once you can produce enough money, purchase consumer goods and provide enough to your population to make more money.
+                    </p>
+
+                </div>
+
+            </div>
+            <div class="templatedivflex2left cardparent">
+
+                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+
+                <div class="cardcontent">
+
+                    <h2 class="templatecontentheadercenter">War Looting</h2>
+
+                    <p class="templatecontentpleft">
+                        Brandsh your firearms and wage war against other players. Build up tanks, bombers, destroyers, and submarines to crush your enemies and steal their resources
+                    </p>
+                    <p class="templatecontentpleft">
+                        When you have enough resources, build up missiles and nukes and send them aloft to your enemy.
+                    </p>
+
+                </div>
 
             </div>
         </div>
-
-        <div class="templatedivflex2 menuflex">
+        <div class="templatedivflex2 menuflex whiteblue">
             <div class="templatedivflex2left">
 
                 <h2 class="templatecontentheadercenter">Join a Coalition</h2>
@@ -72,14 +118,23 @@
 
             </div>
         </div>
-
-        <div class="templatedivflex2 menuflex whiteblue">
+        <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
-                <!--image of user clicking declare war-->
-                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/indexwar.png') }}" />
+                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
 
             </div>
+            <div class="templatedivflex2left">
+
+                <!---->
+                <h2 class="templatecontentheadercenter">Join a Coalition</h2>
+                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
+                </p>
+
+            </div>
+        </div>
+
+        <div class="templatedivflex2 menuflex whiteblue">
             <div class="templatedivflex2left">
 
                 <h2 class="templatecontentheadercenter">Fight in Global Wars</h2>
@@ -88,38 +143,33 @@
                 </p>
 
             </div>
+            <div class="templatedivflex2left">
+
+                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/indexwar.png') }}" />
+
+            </div>
         </div>
 
-        <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left">
+        <div class="landingcontactdiv warflexparentcolors">
 
-                <h2 class="templatecontentheadercenter">Join our Community</h2>
-                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
-                </p>
+            <h2 class="templatecontentheadercenter">Join our Community</h2>
 
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left">
+            <p class="templatecontentpleft">
+                Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
+            </p>
 
-                        <a href="https://www.reddit.com/r/AffairsAndOrder/" target="blank" class="center redactionbutton templatedivbutton"><span class="material-icons-outlined">
-                            open_in_new
-                            </span>Reddit</a>
+            <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2left">
 
-                    </div>
-                    <div class="templatedivflex2right">
+                    <a class="twitter-timeline" data-height="450px" data-width="65%" data-theme="dark" href="https://twitter.com/AffairsOrder?ref_src=twsrc%5Etfw">Tweets by AffairsOrder</a>
+                    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-                        <a href="https://twitter.com/AffairsOrder" target="blank" class="center templatedivbutton"><span class="material-icons-outlined">
-                            open_in_new
-                            </span>Twitter</a>
-
-                    </div>
-
-                    </form>
                 </div>
-            </div>
-            <div class="templatedivflex2left">
+                <div class="templatedivflex2left">
 
-                <iframe src="https://discordapp.com/widget?id=708006319658893385&theme=dark" class="discordlink"></iframe>
+                    <iframe src="https://discordapp.com/widget?id=708006319658893385&theme=dark" class="discordlink"></iframe>
 
+                </div>
             </div>
         </div>
     </div>

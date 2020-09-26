@@ -18,6 +18,25 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
         }
     });
     */
+//SCROLLBAR ANIMATION
+window.onscroll = function() { scrolltop() };
+
+function scrolltop() {
+
+    if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
+
+        document.getElementById("scrolldownparent").style.bottom = "0";
+        document.getElementById("scrolldownparent").style.opacity = "0";
+        document.getElementById("scrolldownparent").style.transition = "all .3s ease";
+
+    } else {
+
+        document.getElementById("scrolldownparent").style.bottom = "15px";
+        document.getElementById("scrolldownparent").style.opacity = "1";
+        document.getElementById("scrolldownparent").style.transition = "all .3s ease";
+
+    }
+}
 //navbar events
 function menubardrop() {
 

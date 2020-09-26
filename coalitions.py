@@ -13,6 +13,7 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
+import os
 
 
 # rawCol (for easy finding using CTRL + F)
@@ -26,12 +27,9 @@ def coalition(colId):
 
         cId = session["user_id"]
 
-        name = db.execute(
-            "SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        colType = db.execute(
-            "SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        members = db.execute(
-            "SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
+        name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
         total_influence = get_coalition_influence(colId)
         average_influence = total_influence / members
 
@@ -41,6 +39,11 @@ def coalition(colId):
         leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
 
         treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
+
+        try:
+            flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        except TypeError:
+            flag = None
 
         if leader == cId:
             userLeader = True
@@ -56,22 +59,18 @@ def coalition(colId):
 
         requests = zip(requestIds, requestNames, requestMessages)
 
-        description = db.execute(
-            "SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
-        colType = db.execute(
-            "SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         try:
-            userInCol = db.execute(
-                "SELECT userId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+            userInCol = db.execute("SELECT userId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
             userInCol = True
         except:
             userInCol = False
 
         try:
-            userInCurCol = db.execute(
-                "SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
+            userInCurCol = db.execute("SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
             userInCurCol = True
         except:
             userInCurCol = False
@@ -81,7 +80,8 @@ def coalition(colId):
         return render_template("coalition.html", name=name, colId=colId, members=members,
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
-                               average_influence=average_influence, leaderName=leaderName, leader=leader)
+                               average_influence=average_influence, leaderName=leaderName, leader=leader,
+                               flag=flag)
 
 
 @login_required
@@ -330,7 +330,54 @@ def delete_coalition(colId):
     db.execute("DELETE FROM coalitions WHERE colId=(?)", (colId,))
     
     connection.commit()
+    connection.close()
 
     flash(f"{coalition_name} coalition was deleted.")
 
     return redirect("/")
+
+
+
+@login_required
+@app.route("/update_col_info/<colId>", methods=["POST"])
+def update_col_info(colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+    if leader != cId:
+        return error(400, "You aren't the leader of this coalition")
+
+    ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+
+    def allowed_file(filename):
+        return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+    file = request.files["flag_input"]
+    if file and allowed_file(file.filename):
+
+        # Check if the user already has a flag
+        try:
+            current_flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+
+            # If he does, delete the flag
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
+            db.execute("UPDATE colNames SET flag=null WHERE id=(?)", (colId,))
+        except TypeError:
+            pass
+
+        # Save the file
+        current_filename = file.filename
+        extension = current_filename.rsplit('.', 1)[1].lower()
+        filename = f"col_flag_{colId}" + '.' + extension
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        db.execute("UPDATE colNames SET flag=(?) WHERE id=(?)", (filename, colId))
+
+    connection.commit()
+    connection.close()
+
+    return redirect(f"/coalition/{colId}")
