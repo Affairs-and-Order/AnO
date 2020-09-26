@@ -43,7 +43,7 @@ class SoldierUnit(BlueprintUnit):
 
     unit_type = "soldiers"
     damage = 1
-    supply_cost = 5
+    supply_cost = 1
 
     def __init__(self, amount: int) -> None:
         self.amount = amount
@@ -401,7 +401,10 @@ class Units(Military):
         self.selected_units[unit_type] = new_unit_amount
 
     # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
+    # TODO: decrease the supplies amount in db
     def attack_cost(self, cost: int) -> str:
+
+        print("COST", cost)
 
         if not self.available_supplies:
             import sqlite3

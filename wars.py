@@ -63,7 +63,7 @@ def wars():
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
     cId = session["user_id"]
-    # cId = 11
+    # cId = 10
 
     if request.method == "GET":
         normal_units = Military.get_military(cId)
@@ -117,9 +117,11 @@ def wars():
         for tuple in attackingIds:
             for item in tuple:
                 attackingIdsLst.append(item)
+
         print(userIdsLst, 'user')
         print(defendingIdsLst, "def")
         print(attackingIdsLst, "att")
+
         # if an id inside the defender's list is not in the user list
         for id in defendingIdsLst:
             if id not in userIdsLst:
@@ -136,17 +138,34 @@ def wars():
 
         # NOTE: at defender_stats and attacker_stats later maybe use the  Military.get_morale("defender_morale", attacker, defender) for morale check
         # because the code below is redundant but the get_morale function works only for Units instances currently
-        complete_war_ids = attackingIdsLst+defendingIdsLst
-        attacking_morale = []
-        defending_morale = []
 
-        for war_id in complete_war_ids:
-            attacking_morale.append(db.execute("SELECT defender_morale FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
-            defending_morale.append(db.execute("SELECT attacker_morale FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
+        # *_war_morales = [our_morale, enemy_morale]
+        attacking_war_morales = []
+        defending_war_morales = []
+
+        for war_id in attackingIds:
+            attacking_war_morales.append([
+            db.execute("SELECT attacker_morale FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0],
+            db.execute("SELECT defender_morale FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+            ])
+
+        for war_id in defendingIds:
+            defending_war_morales.append([
+            db.execute("SELECT attacker_morale FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0],
+            db.execute("SELECT defender_morale FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+            ])
+
+        # complete_war_ids = attackingIdsLst+defendingIdsLst
+        # attacking_morale = []
+        # defending_morale = []
+        #
+        # for war_id in complete_war_ids:
+        #     attacking_morale.append(db.execute("SELECT defender_morale FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
+        #     defending_morale.append(db.execute("SELECT attacker_morale FROM wars WHERE id=(?)", (war_id,)).fetchone()[0])
 
         # defending_morale and attacking_morale include to wars.html
-        defending = zip(defendingWars, defendingNames, defendingIds, defending_morale)
-        attacking = zip(attackingWars, attackingNames, attackingIds, attacking_morale)
+        defending = zip(defendingWars, defendingNames, defendingIds, defending_war_morales)
+        attacking = zip(attackingWars, attackingNames, attackingIds, attacking_war_morales)
 
         db.close()
         connection.close()
@@ -451,12 +470,18 @@ def warResult():
         defender_result["unit_loss"] = result[0]
         defender_result["infra_damage"] = result[1]
 
+        # unlink the session values so user can't just reattack when reload or revisit this page
+        del session["from_wartarget"]
+
     # possible war policies:
     # "empire builder"--> winning gives no loot 2x reparation tax
     # "pirate" --> winning gives 2x more loot no reparation tax
     # "tactical" --> winning gives 1x loot 1x reparation tax
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
+
+    # unlink the session values so user can't just reattack when reload or revisit this page
+    del session["attack_units"]
 
     return render_template(
         "warResult.html",
