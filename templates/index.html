@@ -4,8 +4,8 @@
 
     <div class="landingpagetopper noboxshadowtopper">
 
-        <div class="templatedivflex2 divflex2center">
-            <div class="templatedivflex2left">
+        <div class="templatedivflex2 divflex2center landingpagetopperdivparent">
+            <div class="templatedivflex2left landingpagetopperdivchild">
                 <div class="landingpageinfoleft">
 
                     <h1>Lead a Country!</h1>
@@ -15,7 +15,7 @@
 
                 </div>
             </div>
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left landingpagetopperdivchild">
 
                 <div class="landingpageinforight">
 
@@ -36,6 +36,11 @@
 
             </div>
         </div>
+
+        <div class="scrolldownparent">
+            <div class="scrolldownchild"></div>
+        </div>
+
     </div>
     {% if session.get('user_id') == None %}
     <div class="templatedivcontent">
