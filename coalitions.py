@@ -363,7 +363,7 @@ def update_col_info(colId):
 
         # Check if the user already has a flag
         try:
-            current_flag = db.execute("SELECT flag FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+            current_flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
         except TypeError:
@@ -373,9 +373,9 @@ def update_col_info(colId):
         current_filename = file.filename
         if allowed_file(current_filename):
             extension = current_filename.rsplit('.', 1)[1].lower()
-            filename = f"flag_{cId}" + '.' + extension
+            filename = f"flag_{colId}" + '.' + extension
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
+            db.execute("UPDATE colNames SET flag=(?) WHERE id=(?)", (filename, colId))
 
     connection.commit()
     connection.close()
