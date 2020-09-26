@@ -341,7 +341,7 @@ def delete_coalition(colId):
 
 @login_required
 @app.route("/update_info/<colId>", methods=["POST"])
-def update_info(colId):
+def update_col_info(colId):
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
