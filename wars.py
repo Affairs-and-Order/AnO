@@ -413,7 +413,8 @@ def warResult():
         prev_defender = dict(defender.selected_units)
         prev_attacker = dict(attacker.selected_units)
 
-        winner, win_condition = Military.fight(attacker, defender)
+        winner, win_condition, infra_damage_effects = Military.fight(attacker, defender)
+        defender_result["infra_damage"] = infra_damage_effects
 
         if winner == defender.user_id:
             winner = defender_name
@@ -454,6 +455,7 @@ def warResult():
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
+    print(defender_result)
     return render_template(
         "warResult.html",
         winner=winner,
