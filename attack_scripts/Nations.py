@@ -257,7 +257,7 @@ class Military(Nation):
 
             # decrease special unit amount after attack
             # TODO: check if too much special_unit amount is selected
-            # TODO: check
+            # TODO: decreate only the selected amount when attacker (ex. db 100 soldiers, attack with 20, don't decreate from 100)
             special_unit_fetch = db.execute(f"SELECT {special_unit} FROM military WHERE id=(?)", (attacker.user_id,)).fetchone()[0]
             db.execute(f"UPDATE military SET {special_unit}=(?) WHERE id=(?)", (special_unit_fetch-attacker.selected_units[special_unit], attacker.user_id))
             connection.commit()

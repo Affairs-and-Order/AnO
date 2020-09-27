@@ -390,19 +390,31 @@ class Units(Military):
         else:
             return "Units are not attached!"
 
+    # Save casualties to the db and check for casualty validity
+    # NOTE: to save the data to the db later on put it to the save method
     def casualties(self, unit_type: str, amount: int) -> None:
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
         new_unit_amount = int(self.selected_units[unit_type]-amount)
+        available_unit_amount = db.execute(f"SELECT {unit_type} FROM military WHERE id=(?)", (self.user_id,)).fetchone()[0]
+        db_record = int(available_unit_amount-amount)
 
         if new_unit_amount < 0:
             new_unit_amount = 0
 
+        if db_record < 0:
+            db_record = 0
+
         self.selected_units[unit_type] = new_unit_amount
 
         # Save it to the database
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
 
-        db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (new_unit_amount, self.user_id))
+        if db_record < 0:
+            db_record = amount
+
+        # DEBUG: every column is decreased even if not displayed
+        db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (int(available_unit_amount-amount), self.user_id))
 
         connection.commit()
 
