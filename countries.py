@@ -80,9 +80,14 @@ def country(cId):
 
     spyCount = db.execute(
         "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    spyPrep = 1 # this is an integer from 1 to 5
+    eSpyCount = 0 # this is an integer from 0 to 100
+    eDefcon = 1 # this is an integer from 1 to 5
     
-    successChance = 0 # spyCount * spyPrep / eSpyCount / eDefcon 
-    # temporarily disabled this because it breaks /country
+    if eSpyCount == 0:
+        successChance = 100
+    else:
+        successChance = spyCount * spyPrep / eSpyCount / eDefcon 
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
