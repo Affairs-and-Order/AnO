@@ -37,9 +37,11 @@
             </div>
         </div>
 
+        {% if session.get('user_id') == None %}
         <div class="scrolldownparent" id="scrolldownparent">
             <div class="scrolldownchild"></div>
         </div>
+        {% endif %}
 
     </div>
     {% if session.get('user_id') == None %}
@@ -57,10 +59,10 @@
                     <h2 class="templatecontentheadercenter">Resource Production</h2>
 
                     <p class="templatecontentpleft">
-                        Start off producing resources like food, oil, coal, uranium, wood, and much more, and sell them on the market to other players.
+                        Start off producing resources, like food, oil, coal, uranium, wood, and much more, and sell them on the market to other players.
                     </p>
                     <p class="templatecontentpleft">
-                        Eventually build up a strong economy to support production of advanced resources, like components, steel, ammunition, aluminium, and gasoline.
+                        Eventually build up a strong economy to support production of advanced resources, such as components, steel, ammunition, aluminium, and gasoline.
                     </p>
 
                 </div>
