@@ -396,9 +396,15 @@ class Units(Military):
         if new_unit_amount < 0:
             new_unit_amount = 0
 
-        # Save it to the database
-        # print(new_unit_amount)
         self.selected_units[unit_type] = new_unit_amount
+
+        # Save it to the database
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+
+        db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (new_unit_amount, self.user_id))
+
+        connection.commit()
 
     # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
     # TODO: decrease the supplies amount in db
@@ -407,7 +413,6 @@ class Units(Military):
         print("COST", cost)
 
         if not self.available_supplies:
-            import sqlite3
             connection = sqlite3.connect('affo/aao.db')
             db = connection.cursor()
 
@@ -444,7 +449,10 @@ if __name__ == "__main__":
     attacker = Units(11)
     defender = Units(10)
 
-    defender.attach_units({"soldiers": 10, "tanks": 0, "artillery": 0}, 3)
+    p = defender.attach_units({"soldiers": 10, "tanks": 0, "artillery": 0}, 3)
+
+    print(p)
+
     error = attacker.attach_units({"nukes": 1}, 1)
     if error:
         print(error)

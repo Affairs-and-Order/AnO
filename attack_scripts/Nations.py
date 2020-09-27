@@ -243,6 +243,8 @@ class Military(Nation):
             destruction_rate = random.uniform(0.5, 0.8)
             final_destruction = destruction_rate*min_destruction
 
+            print(defender.selected_units)
+
             before_casulaties = list(dict(defender.selected_units).values())[0]
             defender.casualties(target, final_destruction)
 
@@ -252,6 +254,13 @@ class Military(Nation):
             db = connection.cursor()
             province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
             random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
+
+            # decrease special unit amount after attack
+            # TODO: check if too much special_unit amount is selected
+            # TODO: check
+            special_unit_fetch = db.execute(f"SELECT {special_unit} FROM military WHERE id=(?)", (attacker.user_id,)).fetchone()[0]
+            db.execute(f"UPDATE military SET {special_unit}=(?) WHERE id=(?)", (special_unit_fetch-attacker.selected_units[special_unit], attacker.user_id))
+            connection.commit()
 
             # If nuke damage public_works
             public_works = Nation.get_public_works(random_province)
