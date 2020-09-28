@@ -182,10 +182,22 @@ def wars():
 @app.route("/war/<int:war_id>", methods=["GET"])
 @login_required
 def war_with_id(war_id):
-    update_supply(war_id)
-
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
+
+    # Check if war_exist
+    valid_war = db.execute("SELECT * FROM wars WHERE id=(?)",(war_id,)).fetchone()
+    if not valid_war:
+        return "This war doesen't exist"
+
+    # Check if peace already made
+    peace_made = db.execute("SELECT peace_date FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    print(peace_made, "THE PEACE MADE")
+    if peace_made:
+        return "This war already ended"
+
+    update_supply(war_id)
+
 
     cId = session["user_id"]
 
@@ -481,10 +493,12 @@ def warResult():
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
 
     # save method only function for the attacker now, and maybe we won't change that
+    # saves the decreased supply amount
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
     del session["attack_units"]
+    del session["enemy_id"]
 
     return render_template(
         "warResult.html",
