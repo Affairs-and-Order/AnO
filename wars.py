@@ -392,14 +392,14 @@ def warTarget():
 def warResult():
 
     # DEBUG DATA:
-    session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 0, "artillery": 0}, selected_units_list=["soldiers", "tanks", "artillery"])
-    eId = 10
-    session["enemy_id"] = eId
-    session["user_id"] = 11
+    # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
+    # eId = 10
+    # session["enemy_id"] = eId
+    # session["user_id"] = 11
 
-    # attacker = session["attack_units"]
+    attacker = session["attack_units"]
     # grab defending enemy units from database
-    # eId = session["enemy_id"]
+    eId = session["enemy_id"]
 
     # dev: making sure these values are correct
     # print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
@@ -458,14 +458,12 @@ def warResult():
         defender_loss = {}
         attacker_loss = {}
 
-
         for unit in defender.selected_units_list:
             defender_loss[unit] = prev_defender[unit]-defender.selected_units[unit]
 
         for unit in attacker.selected_units_list:
             attacker_loss[unit] = prev_attacker[unit]-attacker.selected_units[unit]
 
-        print("LOSS", attacker_loss)
         defender_result["unit_loss"] = defender_loss
         attacker_result["unit_loss"] = attacker_loss
     else:
@@ -481,6 +479,9 @@ def warResult():
     # "tactical" --> winning gives 1x loot 1x reparation tax
     # "pacifist" --> winning gives no loot no reparation tax, lowers project timer by 5 days, boosts your economy by 10%
     # "guerilla": --> winning gives 1x loot no reparation tax, losing makes you lose 40% less loot, and you resist 60% reparation tax.
+
+    # save method only function for the attacker now, and maybe we won't change that
+    attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
     del session["attack_units"]
