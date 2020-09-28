@@ -348,17 +348,6 @@ class Units(Military):
             self.selected_units = selected_units
             self.selected_units_list = list(selected_units.keys())
 
-    # Save unit records to the database
-
-    def save(self):
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-
-        # IMPORTANT: this is used during development because it is SQL injectable
-        # db.execute("UPDATE military SET {}=(?) WHERE id=(?)".format("soldiers=0, tanks=123 where id=1 --"), (66, self.user_id))
-
-        connection.commit()
-        connection.close()
     # Attack with all units contained in selected_units
     def attack(self, attacker_unit: str, target: str) -> Union[str, tuple, None]:
         if self.selected_units:
@@ -392,30 +381,26 @@ class Units(Military):
 
     # Save casualties to the db and check for casualty validity
     # NOTE: to save the data to the db later on put it to the save method
+
+    # unit_type -> name of the unit type, amount -> used to decreate by it
     def casualties(self, unit_type: str, amount: int) -> None:
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
-        new_unit_amount = int(self.selected_units[unit_type]-amount)
+        # Make sure this is and integer
+        # TODO: optimize this by creating integer at the user side
+        amount = int(amount)
+
+        unit_amount = self.selected_units[unit_type]
+
+        if amount > unit_amount:
+            amount = unit_amount
+
+        self.selected_units[unit_type] = unit_amount-amount
+
+        # Save records to the database
         available_unit_amount = db.execute(f"SELECT {unit_type} FROM military WHERE id=(?)", (self.user_id,)).fetchone()[0]
-        db_record = int(available_unit_amount-amount)
-
-        if new_unit_amount < 0:
-            new_unit_amount = 0
-
-        if db_record < 0:
-            db_record = 0
-
-        self.selected_units[unit_type] = new_unit_amount
-
-        # Save it to the database
-
-        if db_record < 0:
-            db_record = amount
-
-        # DEBUG: every column is decreased even if not displayed
-        db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (int(available_unit_amount-amount), self.user_id))
-
+        db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (available_unit_amount-amount, self.user_id))
         connection.commit()
 
     # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
