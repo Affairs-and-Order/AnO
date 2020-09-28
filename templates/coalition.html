@@ -75,14 +75,12 @@
         <!--GENERAL-->
         <div class="general" id="general">
 
-            <div class="countryimagediv" style="background-image: url();">
+            <div class="countryimagediv" style="background-image: url(https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg);">
 
                 <!--coalition flag-->
                 {% if flag != None %}
-                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">
-                {% else %}
-                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}"/>
-                {% endif %}
+                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}"> {% else %}
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
                 <!--Coalition Leader's flag-->
                 <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
@@ -661,9 +659,9 @@
                         </div>
 
                         <form action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
-                        <label for="bgimage">Choose coalition flag</label>
+                            <label for="bgimage">Choose coalition flag</label>
 
-                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                                 </span>Choose Image
                                 <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground(event)">
