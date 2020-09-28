@@ -6,7 +6,7 @@ from helpers import login_required, error
 from attack_scripts import Nation, Military
 from units import Units
 import time
-from helpers import get_influence
+from helpers import get_influence, check_required
 
 """
 war page: choose a war
@@ -238,6 +238,7 @@ def war_with_id(war_id):
 # page 1: where you can select what units to attack with
 @app.route("/warchoose", methods=["GET", "POST"])
 @login_required
+@check_required
 def warChoose():
     cId = session["user_id"]
     # cId = 11
@@ -286,6 +287,7 @@ def warChoose():
 # page 2 choose how many of each of your units to send
 @app.route("/waramount", methods=["GET", "POST"])
 @login_required
+@check_required
 def warAmount():
     cId = session["user_id"]
     # cId = 11
