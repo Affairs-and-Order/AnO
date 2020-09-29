@@ -2326,6 +2326,7 @@
                 object-fit: cover;
                 background-position-y: 50%;
                 border: 6px solid #36394590;
+                position: relative;
             }
             
             .countrycoalitionimage {
@@ -2340,6 +2341,7 @@
                 object-fit: cover;
                 background-position-y: 50%;
                 border: 6px solid #36394590;
+                position: relative;
             }
             
             .countryanthem {
