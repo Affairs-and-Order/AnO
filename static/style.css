@@ -2217,11 +2217,9 @@
             }
             
             .mapselect {
-                background: rgba(0, 0, 0, 0.75);
-                width: 90%;
+                width: 50vw;
                 height: 50vh;
-                border: 4px solid #e3e9f0;
-                margin: 0px auto;
+                border: 10px solid var(--foregroundFive);
                 box-shadow: rgba(39, 41, 59, 0.2) 0px 20px 50px 10px;
                 position: relative;
             }
