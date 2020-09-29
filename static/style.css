@@ -2169,7 +2169,8 @@
                 padding: 0px;
                 border-radius: 12px;
                 overflow: hidden;
-                background: var(--background);
+                background: var(--foregroundTwo);
+                border: 1.5px solid var(--border);
                 position: relative;
                 top: 0px;
                 box-shadow: rgba(0, 0, 0, 0.05) 0 8px 32px 0;
@@ -2178,7 +2179,7 @@
             
             .cardparent:hover {
                 top: -5px;
-                box-shadow: rgba(0, 0, 0, 0.1) 0 8px 32px 0, rgba(0, 0, 0, 0.075) 0 12px 12px;
+                box-shadow: rgba(0, 0, 0, 0.025) 0 8px 32px 0, rgba(0, 0, 0, 0.075) 0 12px 12px;
             }
             
             .cardimage {
