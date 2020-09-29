@@ -1971,6 +1971,12 @@
                 }
             }
             
+            @media all and (min-width: 2500px) {
+                .landingpagetopper {
+                    min-height: auto;
+                }
+            }
+            
             .landingpagetopper h1 {
                 animation: none;
                 padding-top: 75px;
