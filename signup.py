@@ -125,13 +125,13 @@ def discord_register():
             discord_auth = f"discord:{discord_user_id}"
 
             try:
-                duplicate = db.execute("SELECT * FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
-                duplicate = True
+                duplicate_name = db.execute("SELECT username FROM users WHERE username=(?)", (username,)).fetchone()[0]
+                duplicate_name = True
             except TypeError:
-                duplicate = False
-
-            if duplicate == True:
-                return redirect("/error")
+                duplicate_name = False
+            
+            if duplicate_name == True:
+                return error(400, "Duplicate name, choose another one")
 
             date = str(datetime.date.today())
 
@@ -188,7 +188,6 @@ def discord_login():
     session.pop('oauth2_token')
 
     return redirect("/")
-    
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -215,10 +214,19 @@ def signup():
             correct_key = None
             return error(400, "Key not found")
 
+        try:
+            duplicate_name = db.execute("SELECT username FROM users WHERE username=(?)", (username,)).fetchone()[0]
+            duplicate_name = True
+        except TypeError:
+            duplicate_name = False
+
+        if duplicate_name == True:
+                return error(400, "Duplicate name, choose another one")
+
         if password != confirmation:  # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
 
-        if correct_key != None:
+        if correct_key != None and duplicate_name != True:
             # Hashes the inputted password
             hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
 
