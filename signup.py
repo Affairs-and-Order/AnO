@@ -162,6 +162,34 @@ def discord_register():
             connection.close()
             return redirect("/")
 
+@app.route('/discord_login', methods=["GET"])
+def discord_login():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    discord = make_session(token=session.get('oauth2_token'))
+    discord_user_id = discord.get(API_BASE_URL + '/users/@me').json()['id']
+
+    discord_auth = f"discord:{discord_user_id}"
+
+    user_id = db.execute("SELECT id FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+
+    connection.close()
+
+    session['user_id'] = user_id
+    
+    # clears session variables from oauth
+    try:
+        session.pop('oauth2_state')
+    except KeyError:
+        pass
+
+    session.pop('oauth2_token')
+
+    return redirect("/")
+    
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
