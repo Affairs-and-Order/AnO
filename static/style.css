@@ -1994,7 +1994,6 @@
             
             .landingpagetopperdivparent {
                 margin: auto;
-                width: 100%;
                 top: 0;
                 bottom: 0;
                 padding-top: 250px;
@@ -2024,12 +2023,13 @@
                 text-shadow: 0px 1px 4px #084955;
                 animation: templatedivtitleload 0.4s;
                 justify-content: center;
+                width: fit-content;
                 padding-left: 15% !important;
             }
             
             @media all and (max-width: 1055px) {
                 .landingpageinfoleft {
-                    padding-left: initial;
+                    padding-left: 0px !important;
                 }
             }
             
