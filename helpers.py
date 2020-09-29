@@ -20,6 +20,17 @@ def login_required(f):
 
     return decorated_function
 
+# Check for neccessary values without them user can't access a pace
+# example: can't access /warchoose or /waramount without enemy_id
+def check_required(func):
+
+    @wraps(func)
+    def check_session(*args, **kwargs):
+        if not session.get("enemy_id", None):
+            return redirect("/wars")
+        return func(*args, **kwargs)
+
+    return check_session
 
 def error(code, message):
     return render_template("error.html", code=code, message=message)
