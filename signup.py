@@ -62,7 +62,7 @@ def discord():
 @app.route('/callback')
 def callback():
 
-    connection = sqlite3.connect('database.db')
+    connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
     if request.values.get('error'):
@@ -99,57 +99,68 @@ def discord_register():
 
     elif request.method == "POST":
 
-        connection = sqlite3.connect('database.db')
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
         discord = make_session(token=session.get('oauth2_token'))
         
         username = request.form.get("username")
-
-
-        discord_user = discord.get(API_BASE_URL + '/users/@me').json()
-        discord_user_id = discord_user['id']
-        email = discord_user['email']
-
-        discord_auth = f"discord:{discord_user_id}"
+        continent = request.form.get("continent")
+        key = request.form.get("key")
 
         try:
-            duplicate = db.execute("SELECT * FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
-            duplicate = True
+            correct_key = db.execute("SELECT key FROM keys WHERE key=(?)", (key,)).fetchone()[0]
+            correct_key = True
         except TypeError:
-            duplicate = False
+            correct_key = False
+            return error(400, "Key not found")
 
-        if duplicate == True:
-            return redirect("/error")
-        
-        db.execute("INSERT INTO users (username, email, hash) VALUES (?, ?, ?)", (username, email, discord_auth))
-        db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", (user, continent))  # TODO  change the default location
+        if correct_key != False:
 
-        db.execute("INSERT INTO military (id) VALUES (?)",
-                    (user,))
-        db.execute("INSERT INTO resources (id) VALUES (?)",
-                    (user,))
+            discord_user = discord.get(API_BASE_URL + '/users/@me').json()
 
-        db.execute("INSERT INTO upgrades (user_id) VALUES (?)", (user,))
+            discord_user_id = discord_user['id']
+            email = discord_user['email']
 
-        db.execute("DELETE FROM keys WHERE key=(?)", (key,))  # deletes the used key
-        user_id = db.execute("SELECT id FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+            discord_auth = f"discord:{discord_user_id}"
 
-        session["user_id"] = user_id
+            try:
+                duplicate = db.execute("SELECT * FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+                duplicate = True
+            except TypeError:
+                duplicate = False
 
-        # clears session variables from oauth
-        
-        # clears session variables from oauth
-        try:
-            session.pop('oauth2_state')
-        except KeyError:
-            pass
-        
-        session.pop('oauth2_token')
+            if duplicate == True:
+                return redirect("/error")
 
-        connection.commit()
-        connection.close()
-        return redirect("/")
+            date = str(datetime.date.today())
+
+            db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, discord_auth, date))
+
+            db.execute("DELETE FROM keys WHERE key=(?)", (key,))  # deletes the used key
+
+            user_id = db.execute("SELECT id FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+
+            session["user_id"] = user_id
+
+            user = user_id
+            
+            db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", (user, continent))  # TODO  change the default location
+            db.execute("INSERT INTO military (id) VALUES (?)", (user,))
+            db.execute("INSERT INTO resources (id) VALUES (?)", (user,))
+            db.execute("INSERT INTO upgrades (user_id) VALUES (?)", (user,))
+
+            # clears session variables from oauth
+            try:
+                session.pop('oauth2_state')
+            except KeyError:
+                pass
+            
+            session.pop('oauth2_token')
+
+            connection.commit()
+            connection.close()
+            return redirect("/")
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
