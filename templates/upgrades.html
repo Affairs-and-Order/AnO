@@ -30,6 +30,7 @@
             </div>
         </div>
         <!--ECONOMIC-->
+        <form method="POST">
         <div class="economic" id="economic">
 
             <div class="menudiv">
@@ -145,7 +146,9 @@
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if not upgrades["cheaperMaterials"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                    <button class="templatedivbutton templatecenteredbutton" 
+                                            formaction="/upgrades_sb/buy/cheaperMaterials">
+                                            <span
                                             class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
@@ -1262,9 +1265,8 @@
                 </div>
 
             </div>
-
+            </form>
         </div>
-
     </div>
 </div>
 {% endblock %}

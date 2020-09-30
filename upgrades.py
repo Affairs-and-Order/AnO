@@ -60,7 +60,8 @@ def upgrade_sell_buy(ttype, thing):
     cId = session["user_id"]
 
     prices = {
-        "betterEngineering": 50000
+        "betterEngineering": 50000,
+        'cheaperMaterials': 50000
 
     }
 
@@ -84,7 +85,7 @@ def upgrade_sell_buy(ttype, thing):
     elif ttype == "sell":
         pass
 
-    conncetion.commit()
-    connection.close()
+    conn.commit()
+    conn.close()
 
     return redirect("/upgrades")
