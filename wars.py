@@ -179,7 +179,7 @@ def wars():
 
 # TODO: put the Peace offers lable under "Internal Affairs" or "Other"
 @login_required
-@app.route("/peace_offers")
+@app.route("/peace_offers", methods=["POST", "GET"])
 def peace_offers():
     # cId = session["user_id"]
     cId = 11
@@ -201,29 +201,56 @@ def peace_offers():
                 # Every offer has a different subset
                 offers[offer_id] = {}
 
-                resources = db.execute("SELECT demanded_resources FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
-                if resources:
-                    amounts = db.execute("SELECT demanded_amount FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0].split(",")
-                    resources = resources.split(",")
+                resources_fetch = db.execute("SELECT demanded_resources FROM peace WHERE id=(?)", (offer_id,)).fetchone()
+                
+                if resources_fetch:
+                    resources = resources_fetch[0]
+                    if resources:
+                        amounts = db.execute("SELECT demanded_amount FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0].split(",")
+                        resources = resources.split(",")
 
-                    offers[offer_id]["resource_count"] = len(resources)
-                    offers[offer_id]["resources"] = resources
-                    offers[offer_id]["amounts"] = amounts
+                        offers[offer_id]["resource_count"] = len(resources)
+                        offers[offer_id]["resources"] = resources
+                        offers[offer_id]["amounts"] = amounts
 
-                    # for resource, amount in zip(resources, amounts):
-                        # offers[offer_id][resource] = amount
+                        # for resource, amount in zip(resources, amounts):
+                            # offers[offer_id][resource] = amount
 
-                # white peace
-                else:
-                    offers[offer_id]["peace_type"] = "white"
+                    # white peace
+                    else:
+                        offers[offer_id]["peace_type"] = "white"
 
-                author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
-                offers[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
+                    author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
+                    offers[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
 
-        print("OFFERS", offers)
+            print("OFFERS", offers)
 
     # except:
         # return "Something went wrong."
+
+    if request.method == "POST":
+        offer_id = request.form.get("peace_offer", None)
+
+        try:
+            offer_id = int(offer_id)
+        except:
+            return "Peace offer is invalid!"
+
+        decision = request.form.get("decision", None)
+
+        # Offer rejected
+        if decision == "0":
+            db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
+            connection.commit()
+
+        # Offer accepted
+        elif decision == "1":
+            pass
+
+        else:
+            return "No decision was made."
+
+
 
     return render_template("peace_offers.html", cId=cId, peace_offers=offers)
 
