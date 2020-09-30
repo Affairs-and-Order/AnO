@@ -181,8 +181,51 @@ def wars():
 @login_required
 @app.route("/peace_offers")
 def peace_offers():
+    # cId = session["user_id"]
+    cId = 11
 
-    return render_template("peace_offers.html")
+    connection = sqlite3.connect("affo/aao.db")
+    db = connection.cursor()
+
+    # FETCH PEACE OFFER DATA AND PARSE IT
+    peace_offers = db.execute("SELECT peace_offer_id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (cId, cId)).fetchall()
+
+    # try:
+    if peace_offers:
+        offers = {}
+
+        for offer in peace_offers:
+            offer_id = offer[0]
+            if offer_id != None:
+
+                # Every offer has a different subset
+                offers[offer_id] = {}
+
+                resources = db.execute("SELECT demanded_resources FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
+                if resources:
+                    amounts = db.execute("SELECT demanded_amount FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0].split(",")
+                    resources = resources.split(",")
+
+                    offers[offer_id]["resource_count"] = len(resources)
+                    offers[offer_id]["resources"] = resources
+                    offers[offer_id]["amounts"] = amounts
+
+                    # for resource, amount in zip(resources, amounts):
+                        # offers[offer_id][resource] = amount
+
+                # white peace
+                else:
+                    offers[offer_id]["peace_type"] = "white"
+
+                author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
+                offers[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
+
+        print("OFFERS", offers)
+
+    # except:
+        # return "Something went wrong."
+
+    return render_template("peace_offers.html", cId=cId, peace_offers=offers)
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])

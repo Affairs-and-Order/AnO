@@ -3,6 +3,7 @@
 CREATE TABLE 'peace'
 (
 'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+'author' INTEGER NOT NULL,
 
 -- If this field is null the it will be white peace (means no one give anything)
 -- stored as coal,money,something
@@ -10,3 +11,5 @@ CREATE TABLE 'peace'
 
 -- 50,120,323 => demanded coal = 50, etc.
 'demanded_amount' TEXT DEFAULT NULL);
+
+-- insert into peace values (1, 11, "coal,iron,money", "100, 100, 200");
