@@ -202,7 +202,7 @@ def peace_offers():
                 offers[offer_id] = {}
 
                 resources_fetch = db.execute("SELECT demanded_resources FROM peace WHERE id=(?)", (offer_id,)).fetchone()
-                
+
                 if resources_fetch:
                     resources = resources_fetch[0]
                     if resources:
@@ -241,14 +241,22 @@ def peace_offers():
         # Offer rejected
         if decision == "0":
             db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
+            db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(?)", (offer_id,))
             connection.commit()
 
         # Offer accepted
         elif decision == "1":
+
+            # TODO: check validity if amount is not bigger
+            # TODO: send a message about the decision to the participants
+            # maybe do the above using a table created for metadata this way we can also send other message not just the peace offer
+
             pass
 
         else:
             return "No decision was made."
+
+        return redirect("/peace_offers")
 
 
 
