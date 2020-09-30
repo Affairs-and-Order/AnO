@@ -31,6 +31,7 @@ from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
 from discord import update_discord
 from intelligence import intelligence
+from upgrades import upgrades
 
 # basic cache configuration
 app.config["SESSION_FILE_DIR"] = mkdtemp()
@@ -397,43 +398,6 @@ def warresult():
 @app.route("/mass_purchase", methods=["GET"])
 def mass_purchase():
     return render_template("mass_purchase.html")
-
-@login_required
-@app.route("/upgrades", methods=["GET"])
-def upgrades():
-    # TODO: replace the falses with db selects
-    conn = sqlite3.connect('affo/aao.db')  # connects to db
-    db = conn.cursor()
-    cId = session["user_id"]
-    try:
-        upgrades = {
-            'betterEngineering': db.execute("SELECT betterEngineering FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'cheaperMaterials': db.execute("SELECT cheaperMaterials FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'onlineShopping': db.execute("SELECT onlineShopping FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'governmentRegulation': db.execute("SELECT governmentRegulation FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'nationalHealthInstitution': db.execute("SELECT nationalHealthInstitution FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'highSpeedRail': db.execute("SELECT highSpeedRail FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'advancedMachinery': db.execute("SELECT advancedMachinery FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'strongerExplosives': db.execute("SELECT strongerExplosives FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'widespreadPropaganda': db.execute("SELECT widespreadPropaganda FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'increasedFunding': db.execute("SELECT increasedFunding FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'automationIntegration': db.execute("SELECT automationIntegration FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'largerForges': db.execute("SELECT largerForges FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'lootingTeams': db.execute("SELECT lootingTeams FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'organizedSupplyLines': db.execute("SELECT organizedSupplyLines FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'largeStorehouses' : db.execute("SELECT largeStorehouses FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'ballisticMissileSilo': db.execute("SELECT ballisticMissileSilo FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'ICBMSilo': db.execute("SELECT ICBMSilo FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
-            'nuclearTestingFacility': db.execute("SELECT nuclearTestingFacility FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0]
-        }
-        # working examples based on whether user has the upgrade. Database stores 0 or 1.
-        # upgrades['betterEngineering'] = 0
-        # upgrades['cheaperMaterials'] = 1
-        # upgrades['onlineShopping'] = True
-        # upgrades['governmentRegulation'] = False
-    except:
-        return "FATAL ERROR: User has no upgrades table! Contact admin to fix."
-    return render_template("upgrades.html", upgrades=upgrades)
 
 # Peace offers show up here
 # Even there is and offer or there is a demand without negotitation (when the war totally lost)
