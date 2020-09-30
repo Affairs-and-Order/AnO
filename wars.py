@@ -177,6 +177,12 @@ def wars():
         defender_stats={"supply": 0, "morale": 0},
         attacker_stats={"supply": 0, "morale": 0})
 
+# TODO: put the Peace offers lable under "Internal Affairs" or "Other"
+@login_required
+@app.route("/peace_offers")
+def peace_offers():
+
+    return render_template("peace_offers.html")
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])
