@@ -50,3 +50,11 @@ def upgrades():
     except:
         return "FATAL ERROR: User has no upgrades table! Contact admin to fix."
     return render_template("upgrades.html", upgrades=upgrades)
+
+@login_required
+@app.route("/upgrades_sb/<type>/<thing>", methods=["POST"])
+def upgrade_sell_buy(type, thing):
+    
+    conn = sqlite3.connect('affo/aao.db')  # connects to db
+    db = conn.cursor()
+    cId = session["user_id"]
