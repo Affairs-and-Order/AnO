@@ -2,14 +2,11 @@
 
 CREATE TABLE 'peace'
 (
--- It is attached to the wars table so there is no need to store attacker,defender ids
 'id' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 
--- stored as coal,money,something
---           50,120,323 => demanded coal = 50, etc.
-
 -- If this field is null the it will be white peace (means no one give anything)
+-- stored as coal,money,something
 'demanded_resources' TEXT DEFAULT NULL,
-'demanded_amount': TEXT DEFAULT NULL,
 
-);
+-- 50,120,323 => demanded coal = 50, etc.
+'demanded_amount' TEXT DEFAULT NULL);
