@@ -52,9 +52,39 @@ def upgrades():
     return render_template("upgrades.html", upgrades=upgrades)
 
 @login_required
-@app.route("/upgrades_sb/<type>/<thing>", methods=["POST"])
-def upgrade_sell_buy(type, thing):
-    
+@app.route("/upgrades_sb/<ttype>/<thing>", methods=["POST"])
+def upgrade_sell_buy(ttype, thing):
+
     conn = sqlite3.connect('affo/aao.db')  # connects to db
     db = conn.cursor()
     cId = session["user_id"]
+
+    prices = {
+        "betterEngineering": 50000
+
+    }
+
+    if ttype == "buy":
+        
+        price = prices[thing]
+
+        current_gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+
+        if current_gold > price:
+            return error(400, "You don't have enough gold")
+        
+        new_gold = current_gold - price
+
+        # Removes the gold from the user
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_gold, cId))
+
+        upgrade_statement = f"UPDATE upgrades SET {thing}=1 WHERE user_id=(?)"
+        db.execute(upgrade_statement, (cId,))
+
+    elif ttype == "sell":
+        pass
+
+    conncetion.commit()
+    connection.close()
+
+    return redirect("/upgrades")
