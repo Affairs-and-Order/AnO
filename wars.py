@@ -182,7 +182,7 @@ def wars():
 @app.route("/peace_offers", methods=["POST", "GET"])
 def peace_offers():
     # cId = session["user_id"]
-    cId = 10
+    cId = 11
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -244,21 +244,18 @@ def peace_offers():
         except:
             return "Peace offer is invalid!"
 
-        return "da"
-
         decision = request.form.get("decision", None)
 
-        if author_id != cId:
+        # Offer rejected or revoked
+        if decision == "0":
+            db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
+            db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(?)", (offer_id,))
+            connection.commit()
 
-            # Offer rejected or revoked
-            if decision == "0":
-
-                db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
-                db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(?)", (offer_id,))
-                connection.commit()
+        elif author_id != cId:
 
             # Offer accepted
-            elif decision == "1":
+            if decision == "1":
                 from attack_scripts import Economy
                 # TODO: send a message about the decision to the participants
                 # maybe do the above using a table created for metadata this way we can also send other message not just the peace offer
@@ -281,7 +278,7 @@ def peace_offers():
                 return "No decision was made."
 
         else:
-            return "You can't accept/reject your own offer."
+            return "You can't accept your own offer."
 
         return redirect("/peace_offers")
 
