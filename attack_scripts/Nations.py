@@ -119,7 +119,7 @@ class Nation:
         if war_id != None:
             db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
         else:
-            option = operations["option"]
+            option = options["option"]
             db.execute(f"UPDATE wars SET peace_date=(?) WHERE {option}=(?)", (time.time(), options["value"]))
         connection.commit()
 
@@ -560,16 +560,16 @@ class Economy:
             return "Invalid resource"
 
         # get amount of resource
-        originalUser = db.execute(f"SELECT {resource} FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
-        destinationUser = db.execute(f"SELECT {resource} FROM stats WHERE id=(?)", (destinationID)).fetchone()[0]
+        originalUser = int(db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0])
+        destinationUser = int(db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (destinationID,)).fetchone()[0])
 
         # subtracts the resource from one nation to another
         originalUser -= amount
         destinationUser += amount
 
         # writes changes in db
-        db.execute(f"UPDATE stats SET {resource}=(?) WHERE id=(?)", (originalUser, self.nationID))
-        db.execute(f"UPDATE stats SET {resource}=(?) WHERE id(?)", (destinationUser, destinationID))
+        db.execute(f"UPDATE resources SET {resource}=(?) WHERE id=(?)", (originalUser, self.nationID))
+        db.execute(f"UPDATE resources SET {resource}=(?) WHERE id=(?)", (destinationUser, destinationID))
 
         connection.commit()
 

@@ -189,10 +189,10 @@ def peace_offers():
 
     # FETCH PEACE OFFER DATA AND PARSE IT
     peace_offers = db.execute("SELECT peace_offer_id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (cId, cId)).fetchall()
+    offers = {}
 
     # try:
     if peace_offers:
-        offers = {}
 
         for offer in peace_offers:
             offer_id = offer[0]
@@ -261,10 +261,10 @@ def peace_offers():
                     if int(amounts[count]) > value:
                         return "Can't accept peace offer because you don't have the required resources!"
 
-                    eco.transfer_resources(resources[count], amounts[count], author_id)
+                    eco.transfer_resources(resources[count], int(amounts[count]), author_id)
                     count += 1
 
-                Nation.set_peace(connection, None, {"option": "peace_offer_id", "value": offer_id})
+                Nation.set_peace(db, connection, None, {"option": "peace_offer_id", "value": offer_id})
 
             else:
                 return "No decision was made."
