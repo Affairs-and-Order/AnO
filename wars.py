@@ -249,23 +249,22 @@ def peace_offers():
             # Offer accepted
             elif decision == "1":
                 from attack_scripts import Economy
-                # TODO: check validity if amount is not bigger
                 # TODO: send a message about the decision to the participants
                 # maybe do the above using a table created for metadata this way we can also send other message not just the peace offer
 
                 eco = Economy(cId)
                 resource_dict = eco.get_particular_resources(resources)
 
+                # check validity if amount is bigger than available resources
                 count = 0
                 for value in resource_dict.values():
                     if int(amounts[count]) > value:
                         return "Can't accept peace offer because you don't have the required resources!"
 
+                    eco.transfer_resources(resources[count], amounts[count], author_id)
                     count += 1
 
-                print(resource_dict)
-
-                # Nation.set_peace(connection, None, {"option": "peace_offer_id", "value": offer_id})
+                Nation.set_peace(connection, None, {"option": "peace_offer_id", "value": offer_id})
 
             else:
                 return "No decision was made."
