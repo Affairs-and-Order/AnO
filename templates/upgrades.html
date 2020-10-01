@@ -30,6 +30,7 @@
             </div>
         </div>
         <!--ECONOMIC-->
+        <form method="POST">
         <div class="economic" id="economic">
 
             <div class="menudiv">
@@ -44,6 +45,7 @@
 
                         <div class="purchasemilitarydiv">
 
+                            <!-- DISABLED BUTTONS -->
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if upgrades["betterengineering"] %}
@@ -71,10 +73,14 @@
                                     {% endif %}
                                 </div>
                             </div>
+                            <!-- END OF DISABLED BUTTONS -->
+
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if not upgrades["betterengineering"] %}
-                                    <button class="templatedivbutton templatecenteredbutton" formaction="">
+                                    <button class="templatedivbutton templatecenteredbutton"
+                                    formaction="/upgrades_sb/buy/betterEngineering">
+
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
@@ -82,7 +88,9 @@
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if not upgrades["betterengineering"] %}
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                    <button class="templatedivbutton templatecenteredbutton"
+                                            formaction="/upgrades_sb/sell/betterEngineering">
+                                            <span
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button>
@@ -119,6 +127,7 @@
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
+                                <!-- DISABLED BUTTONS -->
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if upgrades["cheaperMaterials"] %}
 
@@ -140,12 +149,16 @@
                                     {% endif %}
 
                                 </div>
+                                <!-- END OF DISABLED BUTTONS -->
+
                             </div>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
                                     {% if not upgrades["cheaperMaterials"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                    <button class="templatedivbutton templatecenteredbutton" 
+                                            formaction="/upgrades_sb/buy/cheaperMaterials">
+                                            <span
                                             class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
@@ -1262,9 +1275,8 @@
                 </div>
 
             </div>
-
+            </form>
         </div>
-
     </div>
 </div>
 {% endblock %}
