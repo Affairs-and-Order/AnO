@@ -1507,6 +1507,7 @@
                 width: max-content;
                 margin: auto;
                 box-shadow: rgba(0, 0, 0, 0.05) 0 16px 26px 0;
+                border-radius: 4px;
             }
             
             .infodiv div div {
@@ -2019,7 +2020,7 @@
             .landingpageinfoleft {
                 color: black;
                 height: fit-content;
-                width: 100% !important;
+                width: 100%;
             }
             
             .landingpageinfoleft {
@@ -2070,6 +2071,7 @@
                 border-radius: 4px;
                 transition: all 0.3s;
                 width: 60% !important;
+                margin: auto;
             }
             
             @media all and (max-width: 600px) {
