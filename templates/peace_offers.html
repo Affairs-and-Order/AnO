@@ -18,14 +18,15 @@
         <input type="hidden" name="peace_offer" value="{{key}}">
 
         {% if value.get("owned", None) == None %}
-        <!-- Maybe change it to radioboxes for a better look -->
-        <select name="decision">
-          <option value="0">Reject offer</option>
-          <option value="1">Accept offer</option>
-        </select>
-        <input type="submit" name="submit" value="Submit answer">
+          <!-- Maybe change it to radioboxes for a better look -->
+          <select name="decision">
+            <option value="0">Reject offer</option>
+            <option value="1">Accept offer</option>
+          </select>
+          <input type="submit" name="submit" value="Submit answer">
         {% else %}
-        <input type="submit" name="revoke" value="Revoke offer">
+          <input type="hidden" name="decision" value="0">
+          <input type="submit" name="revoke" value="Revoke offer">
         {% endif %}
 
       </form>

@@ -225,25 +225,34 @@ def peace_offers():
                     # author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
                     offers[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
 
-            print("OFFERS", offers)
-
     # except:
         # return "Something went wrong."
 
     if request.method == "POST":
         offer_id = request.form.get("peace_offer", None)
 
+        # Validate inputs
         try:
             offer_id = int(offer_id)
+
+            # Verifies that others can't accept,delete,etc. the peace offer other than the participants
+            check_validity = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_offer_id=(?) AND peace_date IS NULL",
+            (cId, cId, offer_id)).fetchone()
+            if len(check_validity) != 1:
+                raise TypeError
+
         except:
             return "Peace offer is invalid!"
 
+        return "da"
+
         decision = request.form.get("decision", None)
 
-        # Offer rejected
         if author_id != cId:
 
+            # Offer rejected or revoked
             if decision == "0":
+
                 db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
                 db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(?)", (offer_id,))
                 connection.commit()
