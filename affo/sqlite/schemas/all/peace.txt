@@ -12,4 +12,4 @@ CREATE TABLE 'peace'
 -- 50,120,323 => demanded coal = 50, etc.
 'demanded_amount' TEXT DEFAULT NULL);
 
--- insert into peace values (1, 11, "coal,iron,money", "100, 100, 200");
+-- insert into peace values (1, 11, "coal,iron,lead", "100, 100, 200");

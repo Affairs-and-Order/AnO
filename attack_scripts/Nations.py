@@ -2,7 +2,8 @@ import random
 import sqlite3
 import os, time
 
-path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
+# path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
+path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
 
 def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -> int
     # Calculate the percentage of total units will be affected
@@ -44,7 +45,7 @@ class Nation:
 
     # Database management
     # TODO: find a more effective way to handle database stuff
-    path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+    # path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
     connection = sqlite3.connect(path)
     db = connection.cursor()
 
@@ -114,8 +115,12 @@ class Nation:
 
     # set the peace_date in wars table for a particular war
     @staticmethod
-    def set_peace(db, connection, war_id):
-        db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
+    def set_peace(db, connection, war_id=None, options=None):
+        if war_id != None:
+            db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
+        else:
+            option = operations["option"]
+            db.execute(f"UPDATE wars SET peace_date=(?) WHERE {option}=(?)", (time.time(), options["value"]))
         connection.commit()
 
 class Military(Nation):
@@ -509,16 +514,32 @@ class Economy:
         self.nationID = nationID
 
     def get_economy(self):
-        dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, '/affo/aao.db')
-        print(filename)
+        # dirname = os.path.dirname(__file__)
+        # filename = os.path.join(dirname, '/affo/aao.db')
+        # print(filename)
         # TODO find a way to get the database to work on relative directories
         connection = sqlite3.connect(path)
         db = connection.cursor()
 
         # TODO fix this when the databases changes and update to include all resources
-        self.gold = db.execute(
-            "SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
+        self.gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
+
+    def get_particular_resources(self, resources):
+        connection = sqlite3.connect(path)
+        db = connection.cursor()
+
+        resource_dict = {}
+
+        try:
+            for resource in resources:
+                resource_dict[resource] = db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
+        except:
+
+            # TODO ERROR HANDLER OR RETURN THE ERROR AS A VAlUE
+            print("INVALID RESOURCE NAME")
+            return "Invalid resource"
+
+        return resource_dict
 
     def grant_resources(self, resource, amount):
         # TODO find a way to get the database to work on relative directories
