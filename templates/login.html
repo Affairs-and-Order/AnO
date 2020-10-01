@@ -18,12 +18,12 @@
 
     <div class="templatedivcontent">
 
-        <form id="login-form" class="loginsignupform" action="/login" method="POST">
+        <form id="login-form" class="loginsignupform" method="POST">
 
-            <input class="loginsignupinput" name="username" placeholder="Country Name" type="text" required/>
+            <input class="loginsignupinput" name="username" placeholder="Country Name" type="text"/>
             <!-- maybe accept emails later on -->
 
-            <input class="loginsignupinput" name="password" placeholder="Password" type="password" required/>
+            <input class="loginsignupinput" name="password" placeholder="Password" type="password"/>
 
             <div class="templatedivflex2 divflex2center">
                 <div class="templatedivflex2left">
@@ -50,7 +50,7 @@
             <div class="templatedivflex2 divflex2center signupdiv">
                 <div class="templatedivflex2left">
 
-                    <button class="g-recaptcha templatedivbutton discordbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
+                    <button formaction="/discord" class="templatedivbutton discordbutton" formaction="/discord">
                             <span class="material-icons-outlined">
                                 login
                                 </span>Discord</button>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="templatedivflex2left">
 
-                    <button class="g-recaptcha templatedivbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
+                    <button formaction="login" class="g-recaptcha templatedivbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
                         <span class="material-icons-outlined">
                             login
                             </span>Login</button>

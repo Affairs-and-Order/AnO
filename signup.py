@@ -47,7 +47,7 @@ def make_session(token=None, state=None, scope=None):
         auto_refresh_url=TOKEN_URL,
         token_updater=token_updater)
 
-@app.route('/discord')
+@app.route('/discord', methods=["GET", "POST"])
 def discord():
 
     scope = request.args.get(
