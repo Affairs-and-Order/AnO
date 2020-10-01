@@ -22,6 +22,7 @@
             <img id="imageBackground" />
         </div>
 
+        <!--
         <div class="templatedivflex2 menuflex divflex2center strongpadding">
             <div class="templatedivflex2left">
 
@@ -40,7 +41,10 @@
 
             </div>
         </div>
+        -->
 
+        {% if way != "discord" %}
+        <form action="/discord" method="POST">
         <div class="templatedivflex2 menuflex divflex2center">
             <div class="templatedivflex2left">
 
@@ -49,7 +53,7 @@
                 <div class="templatedivflex2">
                     <div class="templatedivflex2left">
 
-                        <button class="g-recaptcha templatedivbutton discordbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
+                        <button class="templatedivbutton discordbutton">
             <span class="material-icons-outlined">
                 add_circle_outline
                         </span>Discord Sign Up</button>
@@ -58,10 +62,13 @@
                 </div>
 
             </div>
+        </form>
+        {% endif %}
+     
 
             <div class="templatedivflex2left warflexparentcolors">
 
-                <div class="templatecontentheadercenter">Or Sign Up Normally</div>
+                <div class="templatecontentheadercenter">Sign Up</div>
 
                 {% if way != "discord" %}
                 <form id="signup-form" class="loginsignupform" action="/signup" method="POST">
