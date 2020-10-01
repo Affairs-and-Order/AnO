@@ -1195,6 +1195,10 @@
                 box-shadow: rgba(39, 41, 59, .7) 0px 4px 6px 0px;
             }
             
+            .discordbutton {
+                background: #7289da;
+            }
+            
             .smallheader {
                 font-size: 1.2rem;
             }

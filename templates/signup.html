@@ -20,332 +20,346 @@
 
         {% if way != "discord" %}
         <form id="signup-form" class="loginsignupform" action="/signup" method="POST">
-        {% elif way == "discord" %}
-        <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
-        {% endif %}
-            <div class="templatedivflex2 divflex2center signupdiv">
-                <div class="templatedivflex2left">
-                    <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
+            {% elif way == "discord" %}
+            <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
+                {% endif %}
+                <div class="templatedivflex2 divflex2center signupdiv">
+                    <div class="templatedivflex2left">
+                        <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
+                    </div>
+                    {% if way != "discord" %}
+                    <div class="templatedivflex2left">
+                        <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
+                    </div>
+                    {% endif %}
+
+                    <input id="continent" name="continent" type="hidden">
+
                 </div>
+
                 {% if way != "discord" %}
-                <div class="templatedivflex2left">
-                    <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
+                <div class="templatedivflex2 divflex2center signupdiv">
+                    <div class="templatedivflex2left">
+                        <input class="loginsignupinput" autocomplete="off" type="password" name="password" placeholder="Password" required/>
+                    </div>
+                    <div class="templatedivflex2left">
+                        <input class="loginsignupinput" autocomplete="off" type="password" name="confirmation" placeholder="Confirm Password" required/>
+                    </div>
                 </div>
                 {% endif %}
 
-                <input id="continent" name="continent" type="hidden">
 
-            </div>
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
 
-            {% if way != "discord" %}
-            <div class="templatedivflex2 divflex2center signupdiv">
-                <div class="templatedivflex2left">
-                    <input class="loginsignupinput" autocomplete="off" type="password" name="password" placeholder="Password" required/>
+                        <button class="g-recaptcha templatedivbutton discordbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
+                    <span class="material-icons-outlined">
+                        add_circle_outline
+                                </span>Connect Discord</button>
+
+                    </div>
                 </div>
-                <div class="templatedivflex2left">
-                    <input class="loginsignupinput" autocomplete="off" type="password" name="confirmation" placeholder="Confirm Password" required/>
-                </div>
-            </div>
-            {% endif %}
-
-            <input class="loginsignupinput" autocomplete="off" name="key" placeholder="Special Key" required/>
 
 
-            <h2 class="templatecontentheaderleft">Choose a location:</h2>
-            <div class="mapselect">
+                <input class="loginsignupinput" autocomplete="off" name="key" placeholder="Special Key" required/>
 
-                <style>
-                    .slider-ctr:after {
-                        width: 100%;
-                        height: 100%;
-                        content: "";
-                        top: 0;
-                        right: 0;
-                        bottom: 0;
-                        left: 0;
-                        background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.6) 100%);
-                        background: -webkit-linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.6) 100%);
-                        pointer-events: none;
-                        z-index: 9;
-                    }
 
-                    .slider-control {
-                        right: 0;
-                        left: 0;
-                        bottom: 0;
-                        top: 0;
-                        width: 100%;
-                        overflow: hidden;
-                        z-index: 99;
-                    }
 
-                    .slider-control .control {
-                        width: fit-content;
-                        height: fit-content;
-                        display: block;
-                        text-align: center;
-                        cursor: pointer;
-                        transition: .3s all ease;
-                        margin: auto;
-                        position: absolute;
-                        top: 0;
-                        bottom: 0;
-                        user-select: none;
-                        color: white;
-                        line-height: 100%;
+                <h2 class="templatecontentheaderleft">Choose a location:</h2>
+                <div class="mapselect">
 
-                    }
+                    <style>
+                        .slider-ctr:after {
+                            width: 100%;
+                            height: 100%;
+                            content: "";
+                            top: 0;
+                            right: 0;
+                            bottom: 0;
+                            left: 0;
+                            background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.6) 100%);
+                            background: -webkit-linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.6) 100%);
+                            pointer-events: none;
+                            z-index: 9;
+                        }
+                        
+                        .slider-control {
+                            right: 0;
+                            left: 0;
+                            bottom: 0;
+                            top: 0;
+                            width: 100%;
+                            overflow: hidden;
+                            z-index: 99;
+                        }
+                        
+                        .slider-control .control {
+                            width: fit-content;
+                            height: fit-content;
+                            display: block;
+                            text-align: center;
+                            cursor: pointer;
+                            transition: .3s all ease;
+                            margin: auto;
+                            position: absolute;
+                            top: 0;
+                            bottom: 0;
+                            user-select: none;
+                            color: white;
+                            line-height: 100%;
+                        }
+                        
+                        .controlleft {
+                            left: 10px;
+                        }
+                        
+                        .controlleft:hover {
+                            left: 5px;
+                        }
+                        
+                        .controlright {
+                            right: 10px;
+                        }
+                        
+                        .controlright:hover {
+                            right: 5px;
+                        }
+                        
+                        .slider-control .control .icon {
+                            pointer-events: none;
+                            transition: .3s all ease;
+                        }
+                        
+                        .slider-control .control.disabled {
+                            pointer-events: none;
+                            opacity: 0.5;
+                        }
+                        
+                        .slider-control .control.disabled .icon {
+                            opacity: .5;
+                        }
+                        
+                        .slide {
+                            position: absolute;
+                            top: 0;
+                            right: 0;
+                            bottom: 0;
+                            left: 0;
+                            transition: 0.45s all cubic-bezier(0.65, 0.05, 0.36, 1);
+                            -webkit-clip-path: inset(0 0 0 0);
+                            clip-path: inset(0 0 0 0);
+                            margin: 0;
+                        }
+                        
+                        .slide.slide-on {
+                            -webkit-clip-path: inset(0 100% 0 0);
+                            clip-path: inset(0 100% 0 0);
+                        }
+                        
+                        .slide.text-on .title {
+                            transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.45s;
+                            -webkit-clip-path: inset(0 0 0 0);
+                            clip-path: inset(0 0 0 0);
+                        }
+                        
+                        .slide.text-on .author {
+                            transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.6s;
+                            -webkit-clip-path: inset(0 0 0 0);
+                            clip-path: inset(0 0 0 0);
+                        }
+                        
+                        .slide img {
+                            width: 100%;
+                            height: 100%;
+                            user-select: none;
+                            object-fit: cover;
+                        }
+                        
+                        .slide figcaption {
+                            position: absolute;
+                            top: 30px;
+                            left: 30px;
+                        }
+                        
+                        .title {
+                            font-size: 50px;
+                            margin-bottom: 2px;
+                            color: white;
+                            transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.45s;
+                            -webkit-clip-path: inset(0 0 0 100%);
+                            clip-path: inset(0 0 0 100%);
+                            font-weight: 400;
+                            letter-spacing: 10px;
+                            text-transform: uppercase;
+                            position: relative;
+                        }
+                        
+                        .author {
+                            font-size: 16px;
+                            color: white;
+                            opacity: .8;
+                            transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.45s;
+                            -webkit-clip-path: inset(0 0 0 100%);
+                            clip-path: inset(0 0 0 100%);
+                            font-weight: 300;
+                            letter-spacing: 3px;
+                            position: relative;
+                            z-index: 9;
+                        }
+                    </style>
+                    </head>
 
-                    .controlleft {
-                        left: 10px;
-                    }
-                    .controlleft:hover {
-                        left: 5px;
-                    }
+                    <figure data-continent="northamerica" class="slide"><img src="{{ url_for('static', filename='images/northamerica.png') }}">
+                        <figcaption>
+                            <div class="title">North America</div>
+                            <div class="author">information</div>
+                        </figcaption>
+                    </figure>
+                    <figure data-continent="southamerica" class="slide"><img src="{{ url_for('static', filename='images/southamerica.png') }}">
+                        <figcaption>
+                            <div class="title">South America</div>
+                            <div class="author">information</div>
+                        </figcaption>
+                    </figure>
+                    <figure data-continent="europe" class="slide"><img src="{{ url_for('static', filename='images/europe.png') }}">
+                        <figcaption>
+                            <div class="title">Europe</div>
+                            <div class="author">information</div>
+                        </figcaption>
+                    </figure>
+                    <figure data-continent="asia" class="slide"><img src="{{ url_for('static', filename='images/asia.png') }}">
+                        <figcaption>
+                            <div class="title">Asia</div>
+                            <div class="author">information</div>
+                        </figcaption>
+                    </figure>
+                    <figure data-continent="africa" class="slide"><img src="{{ url_for('static', filename='images/africa.png') }}">
+                        <figcaption>
+                            <div class="title">Africa</div>
+                            <div class="author">information</div>
+                        </figcaption>
+                    </figure>
+                    <figure data-continent="australia" class="slide"><img src="{{ url_for('static', filename='images/australia.png') }}">
+                        <figcaption>
+                            <div class="title">Australia</div>
+                            <div class="author">information</div>
+                        </figcaption>
+                    </figure>
+                    <figure data-continent="antarctica" class="slide"><img src="{{ url_for('static', filename='images/antarctica.png') }}">
+                        <figcaption>
+                            <div class="title">Antarctica</div>
+                            <div class="author">information</div>
+                        </figcaption>
+                    </figure>
 
-                    .controlright {
-                        right: 10px;
-                    }
-
-                    .controlright:hover {
-                        right: 5px;
-                    }
-
-                    .slider-control .control .icon {
-                        pointer-events: none;
-                        transition: .3s all ease;
-                    }
-
-                    .slider-control .control.disabled {
-                        pointer-events: none;
-                        opacity: 0.5;
-                    }
-
-                    .slider-control .control.disabled .icon {
-                        opacity: .5;
-                    }
-
-                    .slide {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        bottom: 0;
-                        left: 0;
-                        transition: 0.45s all cubic-bezier(0.65, 0.05, 0.36, 1);
-                        -webkit-clip-path: inset(0 0 0 0);
-                        clip-path: inset(0 0 0 0);
-                        margin: 0;
-                    }
-
-                    .slide.slide-on {
-                        -webkit-clip-path: inset(0 100% 0 0);
-                        clip-path: inset(0 100% 0 0);
-                    }
-
-                    .slide.text-on .title {
-                        transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.45s;
-                        -webkit-clip-path: inset(0 0 0 0);
-                        clip-path: inset(0 0 0 0);
-                    }
-
-                    .slide.text-on .author {
-                        transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.6s;
-                        -webkit-clip-path: inset(0 0 0 0);
-                        clip-path: inset(0 0 0 0);
-                    }
-
-                    .slide img {
-                        width: 100%;
-                        height: 100%;
-                        user-select: none;
-                        object-fit: cover;
-                    }
-
-                    .slide figcaption {
-                        position: absolute;
-                        top: 30px;
-                        left: 30px;
-                    }
-
-                    .title {
-                        font-size: 50px;
-                        margin-bottom: 2px;
-                        color: white;
-                        transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.45s;
-                        -webkit-clip-path: inset(0 0 0 100%);
-                        clip-path: inset(0 0 0 100%);
-                        font-weight: 400;
-                        letter-spacing: 10px;
-                        text-transform: uppercase;
-                        position: relative;
-                    }
-
-                    .author {
-                        font-size: 16px;
-                        color: white;
-                        opacity: .8;
-                        transition: 0.3s all cubic-bezier(0.65, 0.05, 0.36, 1) 0.45s;
-                        -webkit-clip-path: inset(0 0 0 100%);
-                        clip-path: inset(0 0 0 100%);
-                        font-weight: 300;
-                        letter-spacing: 3px;
-                        position: relative;
-                        z-index: 9;
-                    }
-                </style>
-                </head>
-
-                <figure data-continent="northamerica" class="slide"><img src="{{ url_for('static', filename='images/northamerica.png') }}">
-                    <figcaption>
-                        <div class="title">North America</div>
-                        <div class="author">information</div>
-                    </figcaption>
-                </figure>
-                <figure data-continent="southamerica" class="slide"><img src="{{ url_for('static', filename='images/southamerica.png') }}">
-                    <figcaption>
-                        <div class="title">South America</div>
-                        <div class="author">information</div>
-                    </figcaption>
-                </figure>
-                <figure data-continent="europe" class="slide"><img src="{{ url_for('static', filename='images/europe.png') }}">
-                    <figcaption>
-                        <div class="title">Europe</div>
-                        <div class="author">information</div>
-                    </figcaption>
-                </figure>
-                <figure data-continent="asia" class="slide"><img src="{{ url_for('static', filename='images/asia.png') }}">
-                    <figcaption>
-                        <div class="title">Asia</div>
-                        <div class="author">information</div>
-                    </figcaption>
-                </figure>
-                <figure data-continent="africa" class="slide"><img src="{{ url_for('static', filename='images/africa.png') }}">
-                    <figcaption>
-                        <div class="title">Africa</div>
-                        <div class="author">information</div>
-                    </figcaption>
-                </figure>
-                <figure data-continent="australia" class="slide"><img src="{{ url_for('static', filename='images/australia.png') }}">
-                    <figcaption>
-                        <div class="title">Australia</div>
-                        <div class="author">information</div>
-                    </figcaption>
-                </figure>
-                <figure data-continent="antarctica" class="slide"><img src="{{ url_for('static', filename='images/antarctica.png') }}">
-                    <figcaption>
-                        <div class="title">Antarctica</div>
-                        <div class="author">information</div>
-                    </figcaption>
-                </figure>
-
-                <div class="slider-control">
-                    <div class="control controlleft prev disabled">
-                        <div class="icon ion-chevron-left"><span class="material-icons-outlined iconbig">
+                    <div class="slider-control">
+                        <div class="control controlleft prev disabled">
+                            <div class="icon ion-chevron-left"><span class="material-icons-outlined iconbig">
                                     keyboard_arrow_left
                                     </span></div>
-                    </div>
-                    <div class="control controlright next">
-                        <div class="icon ion-chevron-right"><span class="material-icons-outlined iconbig">
+                        </div>
+                        <div class="control controlright next">
+                            <div class="icon ion-chevron-right"><span class="material-icons-outlined iconbig">
                                     keyboard_arrow_right
                                     </span></div>
+                        </div>
                     </div>
+                    <script>
+                        // buttons
+                        var sliderControl = document.querySelector(".slider-control");
+
+                        // slides informations
+                        var slides = document.querySelectorAll(".slide"),
+                            slidesLength = slides.length;
+
+                        // slides array
+                        var slidesArr = [].slice.call(slides);
+
+                        // reverse array sorting
+                        slidesArr = slidesArr.reverse();
+
+                        // slide current
+                        var slideCurrent = 0;
+
+                        const continent_input = document.getElementById("continent");
+                        continent_input.value = "antarctica";
+
+                        sliderControl.addEventListener("click", function(e) {
+                            target = e.target;
+
+                            // get next button
+                            if (target.classList.contains("next")) {
+
+                                next = e.target,
+                                    prev = next.previousElementSibling,
+                                    nextSlide = slidesArr[slideCurrent + 1],
+                                    slide = slidesArr[slideCurrent];
+
+                                slide.classList.add("slide-on");
+                                slide.classList.remove("text-on");
+                                nextSlide.classList.add("text-on");
+
+                                slideCurrent += 1;
+
+                                if (slideCurrent > 0) {
+                                    prev.classList.remove("disabled");
+                                }
+
+                                if (slideCurrent === slidesLength - 1) {
+                                    next.classList.add("disabled");
+                                }
+                            }
+
+                            // get prev button
+                            if (target.classList.contains("prev")) {
+
+                                slideCurrent -= 1;
+
+                                prev = e.target,
+                                    next = prev.nextElementSibling,
+                                    prevSlide = slidesArr[slideCurrent + 1],
+                                    slide = slidesArr[slideCurrent];
+
+                                prevSlide.classList.remove("text-on");
+                                slide.classList.remove("slide-on");
+                                slide.classList.add("text-on");
+
+                                if (slideCurrent === slidesLength - 2) {
+                                    next.classList.remove("disabled");
+                                }
+
+                                if (slideCurrent === 0) {
+                                    prev.classList.add("disabled");
+                                }
+
+                            }
+
+                            continent_input.value = slidesArr[slideCurrent].getAttribute("data-continent");
+                        });
+
+                        balapaCop("Image Slider", "#999");
+                    </script>
+
                 </div>
+
                 <script>
-
-                    // buttons
-                    var sliderControl = document.querySelector(".slider-control");
-
-                    // slides informations
-                    var slides = document.querySelectorAll(".slide"),
-                        slidesLength = slides.length;
-
-                    // slides array
-                    var slidesArr = [].slice.call(slides);
-
-                    // reverse array sorting
-                    slidesArr = slidesArr.reverse();
-
-                    // slide current
-                    var slideCurrent = 0;
-
-                    const continent_input = document.getElementById("continent");
-                    continent_input.value = "antarctica";
-
-                    sliderControl.addEventListener("click", function(e) {
-                        target = e.target;
-
-                        // get next button
-                        if (target.classList.contains("next")) {
-
-                            next = e.target,
-                                prev = next.previousElementSibling,
-                                nextSlide = slidesArr[slideCurrent + 1],
-                                slide = slidesArr[slideCurrent];
-
-                            slide.classList.add("slide-on");
-                            slide.classList.remove("text-on");
-                            nextSlide.classList.add("text-on");
-
-                            slideCurrent += 1;
-
-                            if (slideCurrent > 0) {
-                                prev.classList.remove("disabled");
-                            }
-
-                            if (slideCurrent === slidesLength - 1) {
-                                next.classList.add("disabled");
-                            }
-                        }
-
-                        // get prev button
-                        if (target.classList.contains("prev")) {
-
-                            slideCurrent -= 1;
-
-                            prev = e.target,
-                                next = prev.nextElementSibling,
-                                prevSlide = slidesArr[slideCurrent + 1],
-                                slide = slidesArr[slideCurrent];
-
-                            prevSlide.classList.remove("text-on");
-                            slide.classList.remove("slide-on");
-                            slide.classList.add("text-on");
-
-                            if (slideCurrent === slidesLength - 2) {
-                                next.classList.remove("disabled");
-                            }
-
-                            if (slideCurrent === 0) {
-                                prev.classList.add("disabled");
-                            }
-
-                        }
-
-                        continent_input.value = slidesArr[slideCurrent].getAttribute("data-continent");
-                    });
-
-                    balapaCop("Image Slider", "#999");
+                    function onSubmit(token) {
+                        document.getElementById("signup-form").submit();
+                    }
                 </script>
 
-            </div>
+                <div class="templatedivflex2 divflex2center">
+                    <div class="templatedivflex2left">
 
-            <script>
-                function onSubmit(token) {
-                    document.getElementById("signup-form").submit();
-                }
-            </script>
+                        <button class="g-recaptcha templatedivbutton center" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
+                            <span class="material-icons-outlined">
+                                add_circle_outline
+                                </span>Signup</button>
 
-            <button
-            class="g-recaptcha templatedivbutton loginsignupbutton"
-            type="submit"
-            data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn"
-            data-callback='onSubmit'
-            data-action='submit'>
-            <span class="material-icons-outlined">
-                add_circle_outline
-                </span>Signup</button>
+                    </div>
+                </div>
 
-        </form>
+            </form>
     </div>
 
 
