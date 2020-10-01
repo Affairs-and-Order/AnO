@@ -202,6 +202,7 @@ def peace_offers():
                 offers[offer_id] = {}
 
                 resources_fetch = db.execute("SELECT demanded_resources FROM peace WHERE id=(?)", (offer_id,)).fetchone()
+                author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
 
                 if resources_fetch:
                     resources = resources_fetch[0]
@@ -213,14 +214,15 @@ def peace_offers():
                         offers[offer_id]["resources"] = resources
                         offers[offer_id]["amounts"] = amounts
 
-                        # for resource, amount in zip(resources, amounts):
-                            # offers[offer_id][resource] = amount
+                        if cId == author_id:
+                            offers[offer_id]["owned"] = 1
 
+                    # TODO: make peace at post when clicked
                     # white peace
                     else:
                         offers[offer_id]["peace_type"] = "white"
 
-                    author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
+                    # author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
                     offers[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
 
             print("OFFERS", offers)
