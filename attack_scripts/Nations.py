@@ -88,12 +88,12 @@ class Nation:
 
         return self.provinces
 
-    def get_current_wars(self):
+    @staticmethod
+    def get_current_wars(id):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        id_list = db.execute(
-            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
-        print(id_list)
+        id_list = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (id, id,)).fetchall()
+        return id_list
 
     def printStatistics(self):
         print("Nation {}:\nWins {}\nLosses: {}".format(

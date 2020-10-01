@@ -178,8 +178,8 @@ def wars():
         attacker_stats={"supply": 0, "morale": 0})
 
 # TODO: put the Peace offers lable under "Internal Affairs" or "Other"
-@login_required
 @app.route("/peace_offers", methods=["POST", "GET"])
+# @login_required
 def peace_offers():
     # cId = session["user_id"]
     cId = 11
@@ -283,7 +283,18 @@ def peace_offers():
         return redirect("/peace_offers")
 
     # TODO: put a button to revoke the peace offer made by the author
-    return render_template("peace_offers.html", cId=cId, peace_offers=offers)
+    return render_template("peace/peace_offers.html", cId=cId, peace_offers=offers)
+
+@app.route("/send_peace_offer", methods=["GET"])
+# @login_required
+def send_peace_offer():
+    # cId = session["user_id"]
+    cId = 11
+    wars = Nation.get_current_wars(cId)
+
+    print(wars)
+
+    return render_template("peace/send_peace_offer.html")
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])
