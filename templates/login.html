@@ -18,42 +18,45 @@
 
     <div class="templatedivcontent">
 
-        <div class="infodiv">
-            <form id="login-form" class="loginsignupform" action="/login" method="POST">
+        <form id="login-form" class="loginsignupform" action="/login" method="POST">
 
-                <input class="loginsignupinput" name="username" placeholder="Country Name" type="text" required/>
-                <!-- maybe accept emails later on -->
+            <input class="loginsignupinput" name="username" placeholder="Country Name" type="text" required/>
+            <!-- maybe accept emails later on -->
 
-                <input class="loginsignupinput" name="password" placeholder="Password" type="password" required/>
+            <input class="loginsignupinput" name="password" placeholder="Password" type="password" required/>
 
-                <div class="templatedivflex2 divflex2center">
-                    <div class="templatedivflex2left">
+            <div class="templatedivflex2 divflex2center">
+                <div class="templatedivflex2left">
 
-                        <a class="forgotpasscode loginsignupforgot" href="/forgotpasscode">Forgot passcode</a>
+                    <a class="forgotpasscode loginsignupforgot" href="/forgotpasscode">Forgot passcode</a>
 
-                    </div>
-                    <div class="templatedivflex2left">
+                </div>
+                <div class="templatedivflex2left">
 
-                        <label class="templatecheckmarklabel fit">Remember Me
+                    <label class="templatecheckmarklabel fit">Remember Me
                         <input type="checkbox" name="rememberme">
                         <span class="templatecheckmark center"></span>
                       </label>
 
-                    </div>
                 </div>
+            </div>
 
-                <script>
-                    function onSubmit(token) {
-                        document.getElementById("login-form").submit();
-                    }
-                </script>
+            <script>
+                function onSubmit(token) {
+                    document.getElementById("login-form").submit();
+                }
+            </script>
 
-                <button class="g-recaptcha templatedivbutton templatecenteredbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
+            <button 
+            class="g-recaptcha templatedivbutton loginsignupbutton"
+            type="submit"
+            data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" 
+            data-callback='onSubmit' 
+            data-action='submit'>
             <span class="material-icons-outlined">
                 login
                 </span>Login</button>
-            </form>
-        </div>
+        </form>
     </div>
 </div>
 {% endblock %}
