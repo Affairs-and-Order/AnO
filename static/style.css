@@ -2173,7 +2173,6 @@
             .cardparent {
                 margin: 50px;
                 padding: 0px;
-                border-radius: 12px;
                 overflow: hidden;
                 background: var(--foregroundTwo);
                 border: 1.5px solid var(--border);
@@ -2181,6 +2180,7 @@
                 top: 0px;
                 box-shadow: rgba(0, 0, 0, 0.05) 0 8px 32px 0;
                 transition: all 0.3s ease;
+                border-radius: 4px;
             }
             
             .cardparent:hover {
@@ -2199,7 +2199,7 @@
             .landingcontactdiv {
                 margin: 50px;
                 padding: 20px;
-                border-radius: 20px;
+                border-radius: 4px;
                 width: fit-content;
             }
             
