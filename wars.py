@@ -182,7 +182,7 @@ def wars():
 @app.route("/peace_offers", methods=["POST", "GET"])
 def peace_offers():
     # cId = session["user_id"]
-    cId = 11
+    cId = 10
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -239,32 +239,43 @@ def peace_offers():
         decision = request.form.get("decision", None)
 
         # Offer rejected
-        if decision == "0":
-            db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
-            db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(?)", (offer_id,))
-            connection.commit()
+        if author_id != cId:
 
-        # Offer accepted
-        elif decision == "1":
-            from attack_scripts import Economy
-            # TODO: check validity if amount is not bigger
-            # TODO: send a message about the decision to the participants
-            # maybe do the above using a table created for metadata this way we can also send other message not just the peace offer
+            if decision == "0":
+                db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
+                db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(?)", (offer_id,))
+                connection.commit()
 
-            eco = Economy(cId)
-            resource_dict = eco.get_particular_resources(resources)
+            # Offer accepted
+            elif decision == "1":
+                from attack_scripts import Economy
+                # TODO: check validity if amount is not bigger
+                # TODO: send a message about the decision to the participants
+                # maybe do the above using a table created for metadata this way we can also send other message not just the peace offer
 
-            print(resource_dict)
+                eco = Economy(cId)
+                resource_dict = eco.get_particular_resources(resources)
 
-            # Nation.set_peace(connection, None, {"option": "peace_offer_id", "value": offer_id})
+                count = 0
+                for value in resource_dict.values():
+                    if int(amounts[count]) > value:
+                        return "Can't accept peace offer because you don't have the required resources!"
+
+                    count += 1
+
+                print(resource_dict)
+
+                # Nation.set_peace(connection, None, {"option": "peace_offer_id", "value": offer_id})
+
+            else:
+                return "No decision was made."
 
         else:
-            return "No decision was made."
+            return "You can't accept/reject your own offer."
 
         return redirect("/peace_offers")
 
-
-
+    # TODO: put a button to revoke the peace offer made by the author
     return render_template("peace_offers.html", cId=cId, peace_offers=offers)
 
 # page 0, kind of a pseudo page where you can click attack vs special

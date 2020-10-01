@@ -509,15 +509,17 @@ class Military(Nation):
             return "Invalid number of units given to set_defense, report to admin"
 
 class Economy:
-    # TODO: expand this to cover all resources
+
+    resources = [
+    "rations", "oil", "coal", "uranium", "uranium",
+    "iron", "lead", "copper", "lumber", "components",
+    "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"
+    ]
+
     def __init__(self, nationID):
         self.nationID = nationID
 
     def get_economy(self):
-        # dirname = os.path.dirname(__file__)
-        # filename = os.path.join(dirname, '/affo/aao.db')
-        # print(filename)
-        # TODO find a way to get the database to work on relative directories
         connection = sqlite3.connect(path)
         db = connection.cursor()
 
@@ -551,25 +553,23 @@ class Economy:
         connection.commit()
 
     def transfer_resources(self, resource, amount, destinationID):
-        # TODO find a way to get the database to work on relative directories
         connection = sqlite3.connect(path)
         db = connection.cursor()
 
+        if resource not in self.resources:
+            return "Invalid resource"
+
         # get amount of resource
-        originalUser = db.execute(
-            "SELECT (?) FROM stats WHERE id=(?)", (resource, self.nationID)).fetchone()[0]
-        destinationUser = db.execute(
-            "SELECT (?) FROM stats WHERE id=(?)", (resource, destinationID)).fetchone()[0]
+        originalUser = db.execute(f"SELECT {resource} FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
+        destinationUser = db.execute(f"SELECT {resource} FROM stats WHERE id=(?)", (destinationID)).fetchone()[0]
 
         # subtracts the resource from one nation to another
         originalUser -= amount
         destinationUser += amount
 
         # writes changes in db
-        db.execute("UPDATE stats SET (?) = (?) WHERE id=(?)",
-                   (resource, originalUser, self.nationID))
-        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
-                   (resource, destinationUser, destinationID))
+        db.execute(f"UPDATE stats SET {resource}=(?) WHERE id=(?)", (originalUser, self.nationID))
+        db.execute(f"UPDATE stats SET {resource}=(?) WHERE id(?)", (destinationUser, destinationID))
 
         connection.commit()
 
