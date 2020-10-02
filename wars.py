@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, session, redirect, abort, fla
 from flask_session import Session
 import sqlite3
 from helpers import login_required, error
-from attack_scripts import Nation, Military
+from attack_scripts import Nation, Military, Economy
 from units import Units
 import time
 from helpers import get_influence, check_required
@@ -165,8 +165,8 @@ def wars():
 
         # defending_morale and attacking_morale include to wars.html
         defending = zip(defendingWars, defendingNames, defendingIds, defending_war_morales)
-        attacking = zip(attackingWars, attackingNames, attackingIds, attacking_war_morales)
 
+        attacking = zip(attackingWars, attackingNames, attackingIds, attacking_war_morales)
         db.close()
         connection.close()
 
@@ -256,7 +256,6 @@ def peace_offers():
 
             # Offer accepted
             if decision == "1":
-                from attack_scripts import Economy
                 # TODO: send a message about the decision to the participants
                 # maybe do the above using a table created for metadata this way we can also send other message not just the peace offer
 
@@ -307,7 +306,7 @@ def send_peace_offer():
             else:
                 enemy_ = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
 
-                enemy.append(db.execute("SELECT username FROM users WHERE id=(?)", (enemy_,)).fetchone()[0])
+            enemy.append(db.execute("SELECT username FROM users WHERE id=(?)", (enemy_,)).fetchone()[0])
 
         return render_template("peace/send_peace_offer.html", enemy=enemy)
 
@@ -319,30 +318,38 @@ def send_peace_offer():
 
         # Input validation
         try:
+            if not target:
+                raise Exception("Target is invalid")
+
             if resources and resources_amount:
+                resources_amount = resources_amount[:-1]
+                resources = resources[:-1]
+
                 r = resources.split(",")
                 a = resources_amount.split(",")
 
                 for res, amo in zip(r, a):
-                    if resource not in self.resources:
+                    if res not in Economy.resources:
                         raise Exception("Invalid resource")
 
                     int(amo)
 
-                db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((?),(?),(?))", (cId, resources[:-1], resources_amount[:-1]))
-                enemy_id = db.execute("SELECT id FROM users WHERE username=(?)", (targe, target)).fetchone()[0]
+                db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((?),(?),(?))", (cId, resources, resources_amount))
+
+                enemy_id = db.execute("SELECT id FROM users WHERE username=(?)", (target,)).fetchone()[0]
+
                 war_id = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?)) AND peace_date IS NULL",
                 (cId, cId, enemy_id, enemy_id)).fetchone()[0]
 
-                print(cursor.lastrowid)
-                db.execute("UPDATE wars SET peace_offer_id=(?) WHERE id=(?)", (cursor.lastrowid, war_id))
-
+                db.execute("UPDATE wars SET peace_offer_id=(?) WHERE id=(?)", (db.lastrowid, war_id))
                 connection.commit()
 
             else:
                 raise TypeError
         except:
             return "ERROR"
+        else:
+            return redirect("/peace_offers")
 
 
 # page 0, kind of a pseudo page where you can click attack vs special
