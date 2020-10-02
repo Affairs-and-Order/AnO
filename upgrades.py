@@ -60,7 +60,7 @@ def upgrade_sell_buy(ttype, thing):
     cId = session["user_id"]
 
     prices = {
-        "betterEngineering": 50000,
+        'betterEngineering': 50000,
         'cheaperMaterials': 50000
 
     }
