@@ -16,9 +16,11 @@ from app import app
 import bcrypt
 from requests_oauthlib import OAuth2Session
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
-OAUTH2_CLIENT_ID = '712251542425567309'
-OAUTH2_CLIENT_SECRET = 'tbnBXz3CNZ3WsrA14xrBEJIs3eQUc75q'
+OAUTH2_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
+OAUTH2_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
 OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'
 
 API_BASE_URL = os.environ.get('API_BASE_URL', 'https://discordapp.com/api')
