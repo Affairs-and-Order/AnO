@@ -178,11 +178,12 @@ def wars():
         attacker_stats={"supply": 0, "morale": 0})
 
 # TODO: put the Peace offers lable under "Internal Affairs" or "Other"
+# Peace offers show up here
 @app.route("/peace_offers", methods=["POST", "GET"])
-# @login_required
+@login_required
 def peace_offers():
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -285,13 +286,13 @@ def peace_offers():
     return render_template("peace/peace_offers.html", cId=cId, peace_offers=offers)
 
 @app.route("/send_peace_offer", methods=["GET", "POST"])
-# @login_required
+@login_required
 def send_peace_offer():
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     if request.method == "GET":
         wars = Nation.get_current_wars(cId)
@@ -350,7 +351,6 @@ def send_peace_offer():
             return "ERROR"
         else:
             return redirect("/peace_offers")
-
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])
