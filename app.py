@@ -1,4 +1,3 @@
-
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
@@ -13,6 +12,9 @@ import sqlite3
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
+from dotenv import load_dotenv
+load_dotenv()
+import os
 
 from attack_scripts import Military
 
@@ -39,8 +41,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-app.config["CELERY_BROKER_URL"] = 'amqp://ano:ano@localhost:5672/ano'
-app.config["CELERY_RESULT_BACKEND"] = 'amqp://ano:ano@localhost:5672/ano'
+app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
+app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 
 celery_beat_schedule = {
     "population_growth": {
