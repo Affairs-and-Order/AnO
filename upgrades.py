@@ -61,8 +61,23 @@ def upgrade_sell_buy(ttype, thing):
 
     prices = {
         'betterEngineering': 50000,
-        'cheaperMaterials': 50000
-
+        'cheaperMaterials': 50000,
+        'onlineShopping': 50000,
+        'governmentRegulation': 50000,
+        'nationalHealthInstitution': 50000,
+        'highSpeedRail': 50000,
+        'advancedMachinery': 50000,
+        'strongerExplosives': 50000,
+        'widespreadPropaganda': 50000,
+        'increasedFunding': 50000,
+        'automationIntegration': 50000,
+        'largerForges': 50000,
+        'lootingTeams': 50000,
+        'organizedSupplyLines': 50000,
+        'largeStorehouses': 50000,
+        'ballisticMissileSilo': 50000,
+        'ICBMSilo': 50000,
+        'nuclearTestingFacility': 50000,
     }
 
     if ttype == "buy":
