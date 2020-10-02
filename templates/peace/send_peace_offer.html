@@ -3,17 +3,75 @@
 <div style="margin: 5em;">
   <h1>Send peace offer</h1>
 
-  <h2>Select where to send an offer</h2>
-  <table>
-    
-    <tr>
-      <td>Hey</td>
-    </tr>
-    <tr>
-      <td>ho</td>
-    </tr>
-  </table>
+  <!-- Select where to send an offer -->
+  <h2>You're currently fighting against:</h2>
+  <form action="" method="post">
 
+    <!-- Can send peace offer to the following users -->
+    <div>
+      {% for e in enemy %}
+        <input id="{{e}}" type="radio" name="enemy" value="{{e}}">
+        <label for="{{e}}">{{e}}</label>
+      {% endfor %}
+    </div>
+
+  <!-- Choose the demands -->
+  <h2>Choose your demands</h2>
+  <table>
+
+      <!-- Choice table -->
+      <thead>
+        <tr>
+          <td>
+            <h5>Select resource:</h5>
+          </td>
+          <td>
+            <select id="resource">
+              <option value="coal">coal</option>
+              <option value="iron">iron</option>
+            </select>
+          </td>
+          <td>
+            <input id="resource_amount" type="number" placeholder="Resource amount">
+          </td>
+          <td>
+            <button id="adder" type="button">Add to selected</button>
+          </td>
+        </tr>
+      </thead>
+
+      <!-- Selected resources appears here -->
+      <tbody id="selected_container">
+
+      </tbody>
+
+    </table>
+
+    <input type="submit" name="enemy" value="Send peace offer">
+  </form>
 </div>
+
+<script type="text/javascript">
+  let adder = document.getElementById("adder");
+  adder.addEventListener("click", (e) => {
+    let resource_selector = document.getElementById("resource");
+    let selected_resource = resource_selector.options[resource_selector.selectedIndex].value;
+    let selected_amount = document.getElementById("resource_amount").value;
+
+    const container = document.getElementById("selected_container");
+    let row = document.createElement("tr");
+
+    let resource_add = document.createElement("td");
+    resource_add.innerText = selected_resource;
+
+    let amount_add = document.createElement("td");
+    amount_add.innerText = selected_amount;
+
+    row.appendChild(resource_add);
+    row.appendChild(amount_add);
+
+    container.appendChild(row);
+  });
+</script>
 
 {% endblock %}

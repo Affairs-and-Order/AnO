@@ -93,6 +93,17 @@ class Nation:
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         id_list = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (id, id,)).fetchall()
+
+        # # determine wheter the user is the aggressor or the defender
+        # current_wars_result = []
+        # for war_id in id_list:
+        #     is_attacker = db.execute("SELECT 1 FROM wars WHERE id=(?) AND attacker=(?)", (war_id[0], id)).fetchone()
+        #
+        #     if is_attacker:
+        #         war_id.append("attacker")
+        #     else:
+        #         war_id.append("defender")
+
         return id_list
 
     def printStatistics(self):

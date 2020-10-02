@@ -235,7 +235,7 @@ def peace_offers():
         try:
             offer_id = int(offer_id)
 
-            # Verifies that others can't accept,delete,etc. the peace offer other than the participants
+            # Make sure that others can't accept,delete,etc. the peace offer other than the participants
             check_validity = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_offer_id=(?) AND peace_date IS NULL",
             (cId, cId, offer_id)).fetchone()
             if len(check_validity) != 1:
@@ -288,13 +288,26 @@ def peace_offers():
 @app.route("/send_peace_offer", methods=["GET"])
 # @login_required
 def send_peace_offer():
+    connection = sqlite3.connect("affo/aao.db")
+    db = connection.cursor()
+
     # cId = session["user_id"]
     cId = 11
     wars = Nation.get_current_wars(cId)
+    enemy = []
 
-    print(wars)
+    # determine wheter the user is the aggressor or the defender
+    for war_id in wars:
+        is_attacker = db.execute("SELECT 1 FROM wars WHERE id=(?) AND attacker=(?)", (war_id[0], cId)).fetchone()
 
-    return render_template("peace/send_peace_offer.html")
+        if is_attacker:
+            enemy_ = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+        else:
+            enemy_ = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+
+        enemy.append(db.execute("SELECT username FROM users WHERE id=(?)", (enemy_,)).fetchone()[0])
+
+    return render_template("peace/send_peace_offer.html", enemy=enemy)
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])
