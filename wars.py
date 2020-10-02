@@ -227,10 +227,12 @@ def war_with_id(war_id):
 
     if cId_type == "spectator":
         return error(400, "You can't view this war")
+    
+    spyCount = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
     return render_template("war.html", defender=defender, attacker=attacker,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
-                           agressor_message=agressor_message, cId_type=cId_type)
+                           agressor_message=agressor_message, cId_type=cId_type, spyCount)
 
 
 # the flask route that activates when you click attack on a nation in your wars page.
