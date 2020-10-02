@@ -14,6 +14,8 @@ from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import bcrypt
+import os
+from requests_oauthlib import OAuth2Session
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -61,3 +63,61 @@ def login():
     else:
         # renders login.html when "/login" is acessed via get
         return render_template("login.html")
+
+OAUTH2_CLIENT_ID = '712251542425567309'
+OAUTH2_CLIENT_SECRET = 'tbnBXz3CNZ3WsrA14xrBEJIs3eQUc75q'
+OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'
+
+API_BASE_URL = os.environ.get('API_BASE_URL', 'https://discordapp.com/api')
+AUTHORIZATION_BASE_URL = API_BASE_URL + '/oauth2/authorize'
+TOKEN_URL = API_BASE_URL + '/oauth2/token'
+
+app.config['SECRET_KEY'] = OAUTH2_CLIENT_SECRET
+
+if 'http://' in OAUTH2_REDIRECT_URI:
+    os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = 'true'
+
+def token_updater(token):
+    session['oauth2_token'] = token
+    
+def make_session(token=None, state=None, scope=None):
+    return OAuth2Session(
+        client_id=OAUTH2_CLIENT_ID,
+        token=token,
+        state=state,
+        scope=scope,
+        redirect_uri=OAUTH2_REDIRECT_URI,
+        auto_refresh_kwargs={
+            'client_id': OAUTH2_CLIENT_ID,
+            'client_secret': OAUTH2_CLIENT_SECRET,
+        },
+        auto_refresh_url=TOKEN_URL,
+
+        token_updater=token_updater)
+
+@app.route('/discord_login', methods=["GET"])
+def discord_login():
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    discord = make_session(token=session.get('oauth2_token'))
+    discord_user_id = discord.get(API_BASE_URL + '/users/@me').json()['id']
+
+    discord_auth = f"discord:{discord_user_id}"
+
+    user_id = db.execute("SELECT id FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+
+    connection.close()
+
+    session['user_id'] = user_id
+    
+    # clears session variables from oauth
+    try:
+        session.pop('oauth2_state')
+    except KeyError:
+        pass
+
+    session.pop('oauth2_token')
+
+    return redirect("/")
