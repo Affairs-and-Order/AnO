@@ -83,7 +83,18 @@ def upgrade_sell_buy(ttype, thing):
         db.execute(upgrade_statement, (cId,))
 
     elif ttype == "sell":
-        pass
+        
+        price = prices[thing]
+
+        current_gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+
+        new_gold = current_gold + price
+
+        # Removes the gold from the user
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_gold, cId))
+
+        upgrade_statement = f"UPDATE upgrades SET {thing}=0 WHERE user_id=(?)"
+        db.execute(upgrade_statement, (cId,))
 
     conn.commit()
     conn.close()
