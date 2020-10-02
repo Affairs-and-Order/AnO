@@ -19,6 +19,9 @@
   <h2>Choose your demands</h2>
   <table>
 
+    <input type="hidden" name="resources_send" value="">
+    <input type="hidden" name="resources_amount_send" value="">
+
       <!-- Choice table -->
       <thead>
         <tr>
@@ -47,12 +50,14 @@
 
     </table>
 
-    <input type="submit" name="enemy" value="Send peace offer">
+    <input id="submit_it" type="submit" value="Send peace offer">
   </form>
 </div>
 
 <script type="text/javascript">
-  let adder = document.getElementById("adder");
+  window.localStorage["resource"] = "{}";
+
+  const adder = document.getElementById("adder");
   adder.addEventListener("click", (e) => {
     let resource_selector = document.getElementById("resource");
     let selected_resource = resource_selector.options[resource_selector.selectedIndex].value;
@@ -70,8 +75,35 @@
     row.appendChild(resource_add);
     row.appendChild(amount_add);
 
+    // TODO: remove from local storage when deleted from table
+    // TODO: If user add same resource multiple times only keep the last
+    let s = JSON.parse(window.localStorage["resource"]);
+    s[selected_resource] = selected_amount;
+
+    window.localStorage["resource"] = JSON.stringify(s);
     container.appendChild(row);
   });
+
+  const submit_it = document.getElementById("submit_it");
+  submit_it.addEventListener("click", (e) => {
+    e.preventDefault();
+    const s = JSON.parse(window.localStorage["resource"]);
+
+    let res_string="", amo_string="", i;
+    let keys = Object.keys(s);
+
+    for(i=0; i<keys.length; i++) {
+        res_string += keys[i]+",";
+        amo_string += s[keys[i]]+",";
+    }
+
+    document.getElementsByName("resources_send")[0].value = res_string;
+    document.getElementsByName("resources_amount_send")[0].value = amo_string;
+
+    e.submit();
+
+  });
+
 </script>
 
 {% endblock %}
