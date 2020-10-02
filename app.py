@@ -31,7 +31,6 @@ from coalitions import leave_col, join_col, coalitions, coalition, establish_coa
 from military import military, military_sell_buy
 from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
-from discord import update_discord
 from intelligence import intelligence
 from upgrades import upgrades
 
