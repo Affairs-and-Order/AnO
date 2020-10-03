@@ -530,3 +530,45 @@ def withdraw_from_bank(colId):
     connection.close()
 
     return redirect(f"/coalition/{colId}")
+
+@login_required
+@app.route("/request_from_bank/<colId>", methods=["POST"])
+def request_from_bank(colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE userId=(?) and colId=(?)", (cId, colId)).fetchone()[0]
+    except TypeError:
+        return redirect(400, "You aren't in this coalition")
+
+    resources = [
+                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
+                "lumber", "components", "steel", "consumer_goods", "aluminium",
+                "gasoline", "ammunition"
+    ]
+
+    requested_resources = []
+
+    for res in resources:
+        resource = request.form.get(res)
+        if resource != "":
+            res_tuple = (res, int(resource))
+            requested_resources.append(res_tuple)
+
+    if len(requested_resources) > 1:
+        return error(400, "You can only request one resource at a time")
+
+    requested_resources = tuple(requested_resources[0])
+    print(requested_resources)
+
+    db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (?, ?, ?, ?)", 
+    (cId, colId, requested_resources[1], requested_resources[0]))
+
+    connection.commit()
+    connection.close()
+
+    return redirect(f"/coalition/{colId}")
