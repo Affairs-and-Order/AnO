@@ -468,6 +468,65 @@ def withdraw_from_bank(colId):
     cId = session["user_id"]
 
     try:
-        db.execute("SELECT leader FROM coalitions WHERE leader=(?) and id=(?)", (cId, colId)).fetchone()[0]
+        db.execute("SELECT leader FROM colNames WHERE leader=(?) and id=(?)", (cId, colId))
     except TypeError:
-        return redirect(400, "You aren't the leader of this coalition")
+        return error(400, "You aren't the leader of this coalition")
+
+    resources = [
+        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
+        "lumber", "components", "steel", "consumer_goods", "aluminium",
+        "gasoline", "ammunition"
+    ]
+
+    withdrew_resources = []
+
+    for res in resources:
+        resource = request.form.get(res)
+        if resource != "":
+            res_tuple = (res, int(resource))
+            withdrew_resources.append(res_tuple)
+
+    def withdraw(resource, amount):
+
+        # Removes the resource from the coalition bank
+        current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
+        current_resource = int(db.execute(current_resource_statement, (colId,)).fetchone()[0])
+
+        if current_resource < amount:
+            return error(400, f"Your coalition doesn't have enough {resource}")
+
+        new_resource = current_resource - amount
+
+        update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
+        db.execute(update_statement, (new_resource, colId))
+
+        # Gives the leader his resource
+        # If the resource is money, gives him money
+        if resource == "money":
+
+            current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+
+            new_money = current_money + amount
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+
+        # If the resource is not money, gives him that resource
+        else:
+
+            current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+            current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
+
+            new_resource = current_resource + amount
+
+            update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+            db.execute(update_statement, (new_resource, cId))
+
+    for resource in withdrew_resources:
+        name = resource[0]
+        amount = resource[1]
+        withdraw(name, amount)
+
+    connection.commit()
+    connection.close()
+
+    return redirect(f"/coalition/{colId}")
