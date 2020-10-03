@@ -20,6 +20,7 @@ import os
 @login_required
 @app.route("/coalition/<colId>", methods=["GET"])
 def coalition(colId):
+
     if request.method == "GET":
 
         connection = sqlite3.connect('affo/aao.db')
@@ -75,13 +76,17 @@ def coalition(colId):
         except:
             userInCurCol = False
 
+        if userLeader == True:
+            bankRequests = db.execute("SELECT reqId, amount, resource FROM colBanksRequests WHERE colId=(?)", (colId,)).fetchall()
+        else:
+            bankRequests = []
         connection.close()
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
                                average_influence=average_influence, leaderName=leaderName, leader=leader,
-                               flag=flag)
+                               flag=flag, bankRequests=bankRequests)
 
 
 @login_required
@@ -563,7 +568,6 @@ def request_from_bank(colId):
         return error(400, "You can only request one resource at a time")
 
     requested_resources = tuple(requested_resources[0])
-    print(requested_resources)
 
     db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (?, ?, ?, ?)", 
     (cId, colId, requested_resources[1], requested_resources[0]))
@@ -572,3 +576,12 @@ def request_from_bank(colId):
     connection.close()
 
     return redirect(f"/coalition/{colId}")
+
+@login_required
+@app.route("/remove_bank_request/<reqId>/<colId>", methods=["POST"])
+def remove_bank_request(reqId, colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
