@@ -10,7 +10,6 @@ def login_required(f):
 
     http://flask.pocoo.org/docs/1.0/patterns/viewdecorators/
     """
-
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get('user_id', None):
@@ -82,6 +81,7 @@ def get_influence(country_id):
 
     # user may want military and civilian scores in a score breakdown later in a stats page
     influence = militaryScore + civilianScore
+    influence = round(influence)
 
     return influence
 
