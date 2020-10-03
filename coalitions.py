@@ -108,10 +108,9 @@ def establish_coalition():
                 # TODO gives a key error, look into this
                 db.execute("INSERT INTO colNames (name, leader, type, description) VALUES (?, ?, ?, ?)",
                            (name, session["user_id"], cType, desc))
-                colId = db.execute(
-                    "SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
-                db.execute(
-                    "INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
+                colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
+                db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
+                db.execute("INSERT INTO colBanks (coalition_id) VALUES (?)", (colId,))
 
                 connection.commit()
                 connection.close()
@@ -381,3 +380,13 @@ def update_col_info(colId):
     connection.close()
 
     return redirect(f"/coalition/{colId}")
+
+### COALITION BANK STUFF ###
+@login_required
+@app.route("/deposit_into_bank/<colId>", methods=["POST"])
+def deposit_into_bank(colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
