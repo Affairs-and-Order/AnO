@@ -406,10 +406,8 @@ def deposit_into_bank(colId):
     for res in resources:
         resource = request.form.get(res)
         if resource != "":
-            res_tuple = (res, resource)
+            res_tuple = (res, int(resource))
             deposited_resources.append(res_tuple)
-
-    print(deposited_resources)
 
     def deposit(resource, amount):
 
@@ -430,7 +428,16 @@ def deposit_into_bank(colId):
         # If it isn't, removes the resource from the giver
         else:
 
-            pass
+            current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+            current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
+
+            if current_resource < amount:
+                return error(400, f"You don't have enough {resource}")
+
+            new_resource = current_resource - amount
+
+            update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+            db.execute(update_statement, (new_resource, cId))
 
         # Gives the coalition the resource
         current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
@@ -441,7 +448,10 @@ def deposit_into_bank(colId):
         update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
         db.execute(update_statement, (new_resource, colId))
 
-    # deposit("money", money)
+    for resource in deposited_resources:
+        name = resource[0]
+        amount = resource[1]
+        deposit(name, amount)
 
     connection.commit()
     connection.close()
