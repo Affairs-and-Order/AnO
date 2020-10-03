@@ -591,9 +591,10 @@
             </div>
 
             <!--HIDE ALL OF THIS infodiv and header if coalition type is "open"-->
+            {% if colType == "closed" %}
             <h2 class="templatecontentheaderleft">Applicants</h2>
             <!--show if coalition has 0 applicants-->
-            <h2 class="templatecontentheadercenter">You have 0 applicants</h2>
+            <h2 class="templatecontentheadercenter">You have {{ len(requests) }} applicants</h2>
             <!--hide is coalition has 0 applicants-->
             <div class="infodiv">
                 <div class="templatedivflex2 menuflex">
@@ -653,10 +654,12 @@
                     </table>
                 </div>
 
+
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
             </div>
+            {% endif %}
 
             <h2 class="templatecontentheaderleft">General</h2>
 
