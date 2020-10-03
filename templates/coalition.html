@@ -485,12 +485,12 @@
                             <th>Request</th>
                             <th>Action</th>
                         </tr>
-                        {% for reqId, amount, resource in bankRequests %}
+                        {% for data in bankRequests %}
                         <tr>
-                            <td><a href="/country/id={{ reqId }}">country {{ reqId }}</a></td>
+                            <td><a href="/country/id={{ data[0] }}">{{ data[3] }}</a></td>
                             <td>
                                 <!--for every resource requested-->
-                                {{ amount }} {{ resource }}<br/>
+                                {{ data[1] }} {{ data[2] }}<br/>
                                 <!---->
                             </td>
                             <td>

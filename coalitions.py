@@ -77,7 +77,16 @@ def coalition(colId):
             userInCurCol = False
 
         if userLeader == True:
+
             bankRequests = db.execute("SELECT reqId, amount, resource FROM colBanksRequests WHERE colId=(?)", (colId,)).fetchall()
+
+            banks = []
+            for reqId, amount, resource in bankRequests:
+                username = db.execute("SELECT username FROM users WHERE id=(?)", (reqId,)).fetchone()[0]
+                data_tuple = (reqId, amount, resource, username)
+                banks.append(data_tuple)
+
+            bankRequests = banks
         else:
             bankRequests = []
         connection.close()
