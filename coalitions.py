@@ -78,12 +78,12 @@ def coalition(colId):
 
         if userLeader == True:
 
-            bankRequests = db.execute("SELECT reqId, amount, resource FROM colBanksRequests WHERE colId=(?)", (colId,)).fetchall()
+            bankRequests = db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(?)", (colId,)).fetchall()
 
             banks = []
-            for reqId, amount, resource in bankRequests:
+            for reqId, amount, resource, bankId in bankRequests:
                 username = db.execute("SELECT username FROM users WHERE id=(?)", (reqId,)).fetchone()[0]
-                data_tuple = (reqId, amount, resource, username)
+                data_tuple = (reqId, amount, resource, bankId, username)
                 banks.append(data_tuple)
 
             bankRequests = banks
@@ -587,13 +587,23 @@ def request_from_bank(colId):
     return redirect(f"/coalition/{colId}")
 
 @login_required
-@app.route("/remove_bank_request/<reqId>/<colId>", methods=["POST"])
-def remove_bank_request(reqId, colId):
+@app.route("/remove_bank_request/<bankId>", methods=["POST"])
+def remove_bank_request(bankId):
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
     cId = session["user_id"]
 
+    colId = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    try:
+        db.execute("SELECT leader FROM colNames WHERE leader=(?) and id=(?)", (cId, colId))
+    except TypeError:
+        return error(400, "You aren't the leader of this coalition")
+
+    db.execute("DELETE FROM colBanksRequests WHERE id=(?)", (bankId,))
+
+    connection.commit()
     connection.close()
-    return redirect(f"/coalition/{colId}")
+    return redirect("/my_coalition")
