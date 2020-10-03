@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS 'colBanksRequests' 
+('reqId' INTEGER NOT NULL,
+'colId' INTEGER NOT NULL,
+'amount' INTEGER NOT NULL,
+'resource' VARCHAR(30));
