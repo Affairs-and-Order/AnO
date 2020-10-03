@@ -25,21 +25,18 @@ def provinces():
 
         cId = session["user_id"]
 
-        cityCount = db.execute(
-            "SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        population = db.execute(
-            "SELECT population FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        name = db.execute(
-            "SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        pId = db.execute(
-            "SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        land = db.execute(
-            "SELECT land FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        pId = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        happiness = db.execute("SELECT happiness FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        productivity = db.execute("SELECT productivity FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
 
         connection.close()
 
         # zips the above SELECT statements into one list.
-        pAll = zip(cityCount, population, name, pId, land)
+        pAll = zip(cityCount, population, name, pId, land, happiness, productivity)
 
         return render_template("provinces.html", pAll=pAll)
 
@@ -54,6 +51,7 @@ def province(pId):
         cId = session["user_id"]
 
         province_user = db.execute("SELECT userId FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+        
         if province_user == cId:
             ownProvince = True
         else:

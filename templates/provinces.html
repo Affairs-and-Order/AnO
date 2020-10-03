@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        {% for cityCount, population, name, pId, land in pAll %}
+        {% for cityCount, population, name, pId, land, happiness, productivity in pAll %}
         <a href="/province/{{ pId[0] }}">
             <div class="warflexparent templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
@@ -48,13 +48,13 @@
                             <td><span class="material-icons-outlined">
                                         sentiment_satisfied
                                         </span>Happiness:</td>
-                            <td>{{ happiness }}%</td>
+                            <td>{{ happiness[0] }}%</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
                                         arrow_circle_up
                                         </span>Productivity:</td>
-                            <td>{{ happiness }}%</td>
+                            <td>{{ productivity[0] }}%</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
@@ -65,8 +65,8 @@
                         <tr>
                             <td><span class="material-icons-outlined">
                                         landscape
-                                        </span>land:</td>
-                            <td>{{ land[0] }}km</td>
+                                        </span>Land:</td>
+                            <td>{{ land[0] }}km²</td>
                         </tr>
                     </table>
                 </div>
