@@ -396,7 +396,20 @@ def deposit_into_bank(colId):
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
-    money = int(request.form.get("money"))
+    resources = [
+                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
+                "lumber", "components", "steel", "consumer_goods", "aluminium",
+                "gasoline", "ammunition"]
+
+    deposited_resources = []
+
+    for res in resources:
+        resource = request.form.get(res)
+        if resource != "":
+            res_tuple = (res, resource)
+            deposited_resources.append(res_tuple)
+
+    print(deposited_resources)
 
     def deposit(resource, amount):
 
@@ -428,7 +441,7 @@ def deposit_into_bank(colId):
         update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
         db.execute(update_statement, (new_resource, colId))
 
-    deposit("money", money)
+    # deposit("money", money)
 
     connection.commit()
     connection.close()
