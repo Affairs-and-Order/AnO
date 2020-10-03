@@ -457,3 +457,17 @@ def deposit_into_bank(colId):
     connection.close()
 
     return redirect(f"/coalition/{colId}")
+
+@login_required
+@app.route("/withdraw_from_bank/<colId>", methods=["POST"])
+def withdraw_from_bank(colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    try:
+        db.execute("SELECT leader FROM coalitions WHERE leader=(?) and id=(?)", (cId, colId)).fetchone()[0]
+    except TypeError:
+        return redirect(400, "You aren't the leader of this coalition")
