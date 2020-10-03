@@ -594,3 +594,6 @@ def remove_bank_request(reqId, colId):
     db = connection.cursor()
 
     cId = session["user_id"]
+
+    connection.close()
+    return redirect(f"/coalition/{colId}")

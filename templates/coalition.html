@@ -478,6 +478,7 @@
                 </div>
             </form>
 
+                <form method="POST">
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
@@ -504,9 +505,9 @@
                                     </div>
                                     <div class="templatedivflex2left">
 
-                                        <span class="material-icons iconred">
+                                        <button formaction="/remove_bank_request/{{ data[0] }}/{{ colId }}"><span class="material-icons iconred">
                                             remove_circle_outline
-                                            </span>
+                                            </span></button>
 
                                     </div>
                                 </div>
@@ -516,6 +517,7 @@
                         {% endfor %}
                     </table>
                 </div>
+            </form>
 
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
