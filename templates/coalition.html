@@ -369,6 +369,7 @@
 
             <div class="infodiv">
 
+                <form method="POST">
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
@@ -379,27 +380,27 @@
                         <tr>
                             <td>Money:</td>
                             <td>{{ gross }}%</td>
-                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="money" placeholder="Amount" /></td>
                         </tr>
                         <tr>
                             <td>Rations:</td>
                             <td>{{ rationsGross }}%</td>
-                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="rations" placeholder="Amount" /></td>
                         </tr>
                         <tr>
                             <td>Oil:</td>
                             <td>{{ rationsGross }}%</td>
-                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="oil" placeholder="Amount" /></td>
                         </tr>
                         <tr>
                             <td>Coal:</td>
                             <td>{{ rationsGross }}%</td>
-                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="coal" placeholder="Amount" /></td>
                         </tr>
                         <tr>
                             <td>Uranium:</td>
                             <td>{{ rationsGross }}%</td>
-                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="uranium" placeholder="Amount" /></td>
                         </tr>
                         <tr>
                             <td>Iron:</td>
@@ -462,7 +463,7 @@
                 <div class="templatedivflex2 divflex2center">
                     <div class="templatedivflex2left">
 
-                        <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                        <button formaction="/deposit_into_bank/{{ colId }}" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                             arrow_downward
                             </span>Deposit</button>
 
@@ -475,6 +476,7 @@
 
                     </div>
                 </div>
+            </form>
 
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
@@ -740,7 +742,7 @@
                         <tr>
                             <td>Money:</td>
                             <td>{{ gross }}%</td>
-                            <td><input class="loginsignupinput" autocomplete="on" name="" placeholder="Amount" /></td>
+                            <td><input class="loginsignupinput" autocomplete="on" name="money" placeholder="Amount" /></td>
                         </tr>
                         <tr>
                             <td>Rations:</td>
@@ -830,7 +832,7 @@
                     </div>
                     <div class="templatedivflex2left">
 
-                        <button formaction="/" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                        <button formaction="/deposit_into_bank/{{ colId }}" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                             arrow_downward
                             </span>Deposit</button>
 

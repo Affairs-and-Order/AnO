@@ -110,7 +110,7 @@ def establish_coalition():
                            (name, session["user_id"], cType, desc))
                 colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
                 db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
-                db.execute("INSERT INTO colBanks (coalition_id) VALUES (?)", (colId,))
+                db.execute("INSERT INTO colBanks (colId) VALUES (?)", (colId,))
 
                 connection.commit()
                 connection.close()
@@ -390,3 +390,47 @@ def deposit_into_bank(colId):
     db = connection.cursor()
 
     cId = session["user_id"]
+
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE userId=(?) and colId=(?)", (cId, colId)).fetchone()[0]
+    except TypeError:
+        return redirect(400, "You aren't in this coalition")
+
+    money = int(request.form.get("money"))
+
+    def deposit(resource, amount):
+
+        # Removes the resource from the giver
+
+        # If the resource is money, removes the money from the seller
+        if resource == "money":
+
+            current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+
+            if current_money < amount:
+                return error(400, "You don't have enough money")
+
+            new_money = current_money - amount
+
+            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+
+        # If it isn't, removes the resource from the giver
+        else:
+
+            pass
+
+        # Gives the coalition the resource
+        current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
+        current_resource = int(db.execute(current_resource_statement, (colId,)).fetchone()[0])
+
+        new_resource = current_resource + amount
+
+        update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
+        db.execute(update_statement, (new_resource, colId))
+
+    deposit("money", money)
+
+    connection.commit()
+    connection.close()
+
+    return redirect(f"/coalition/{colId}")
