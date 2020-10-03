@@ -18,55 +18,70 @@
 
     <div class="templatedivcontent">
 
-        <form id="login-form" class="loginsignupform" method="POST">
+        <div class="templatedivflex2 menuflex divflex2center">
 
-            <input class="loginsignupinput" name="username" placeholder="Country Name" type="text"/>
-            <!-- maybe accept emails later on -->
+            <div class="templatedivflex2left">
 
-            <input class="loginsignupinput" name="password" placeholder="Password" type="password"/>
+                <div class="templatecontentheadercenter">Discord Login</div>
 
-            <div class="templatedivflex2 divflex2center">
-                <div class="templatedivflex2left">
+                <button formaction="/discord" class="templatedivbutton discordbutton" formaction="/discord">
+                    <span class="material-icons-outlined">
+                        login
+                        </span>Discord</button>
 
-                    <a class="forgotpasscode loginsignupforgot" href="/forgotpasscode">Forgot passcode</a>
+            </div>
+            <div class="templatedivflex2left warflexparentcolors">
+                <form id="login-form" class="loginsignupform" method="POST">
 
-                </div>
-                <div class="templatedivflex2left">
+                    <div class="templatecontentheadercenter">Default Login</div>
 
-                    <label class="templatecheckmarklabel fit">Remember Me
+                    <div class="templatedivflex2 divflex2center signupdiv">
+                        <div class="templatedivflex2left">
+
+                            <input class="loginsignupinput" name="username" placeholder="Country Name" type="text" />
+                            <!-- maybe accept emails later on -->
+
+                        </div>
+                        <div class="templatedivflex2left">
+
+                            <input class="loginsignupinput" name="password" placeholder="Password" type="password" />
+
+                        </div>
+                    </div>
+
+                    <div class="templatedivflex2 divflex2center">
+                        <div class="templatedivflex2left">
+
+                            <a class="forgotpasscode loginsignupforgot" href="/forgotpasscode">Forgot passcode</a>
+
+                        </div>
+                        <div class="templatedivflex2left">
+
+                            <label class="templatecheckmarklabel fit">Remember Me
                         <input type="checkbox" name="rememberme">
                         <span class="templatecheckmark center"></span>
                       </label>
 
-                </div>
-            </div>
+                        </div>
+                    </div>
 
-            <script>
-                function onSubmit(token) {
-                    document.getElementById("login-form").submit();
-                }
-            </script>
+                    <script>
+                        function onSubmit(token) {
+                            document.getElementById("login-form").submit();
+                        }
+                    </script>
 
-            <div class="templatedivflex2 divflex2center signupdiv">
-                <div class="templatedivflex2left">
+                    <div class="templatedivflex2 divflex2center signupdiv">
 
-                    <button formaction="/discord" class="templatedivbutton discordbutton" formaction="/discord">
+                        <button formaction="login" class="g-recaptcha templatedivbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
                             <span class="material-icons-outlined">
                                 login
-                                </span>Discord</button>
+                                </span>Login</button>
 
-                </div>
-                <div class="templatedivflex2left">
-
-                    <button formaction="login" class="g-recaptcha templatedivbutton" type="submit" data-sitekey="6LcvV7sZAAAAAPIGN2Bn-A4FENOH3VdY7POTzTWn" data-callback='onSubmit' data-action='submit'>
-                        <span class="material-icons-outlined">
-                            login
-                            </span>Login</button>
-
-                </div>
+                    </div>
+                </form>
             </div>
-
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}
