@@ -472,6 +472,44 @@ def deposit_into_bank(colId):
 
     return redirect(f"/coalition/{colId}")
 
+def withdraw(resource, amount, user_id, colId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    # Removes the resource from the coalition bank
+    current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
+    current_resource = int(db.execute(current_resource_statement, (colId,)).fetchone()[0])
+
+    if current_resource < amount:
+        return error(400, f"Your coalition doesn't have enough {resource}")
+
+    new_resource = current_resource - amount
+
+    update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
+    db.execute(update_statement, (new_resource, colId))
+
+    # Gives the leader his resource
+    # If the resource is money, gives him money
+    if resource == "money":
+
+        current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (user_id,)).fetchone()[0])
+
+        new_money = current_money + amount
+
+        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, user_id))
+
+    # If the resource is not money, gives him that resource
+    else:
+
+        current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
+        current_resource = int(db.execute(current_resource_statement, (user_id,)).fetchone()[0])
+
+        new_resource = current_resource + amount
+
+        update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        db.execute(update_statement, (new_resource, user_id))
+
 @login_required
 @app.route("/withdraw_from_bank/<colId>", methods=["POST"])
 def withdraw_from_bank(colId):
@@ -500,45 +538,11 @@ def withdraw_from_bank(colId):
             res_tuple = (res, int(resource))
             withdrew_resources.append(res_tuple)
 
-    def withdraw(resource, amount):
-
-        # Removes the resource from the coalition bank
-        current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
-        current_resource = int(db.execute(current_resource_statement, (colId,)).fetchone()[0])
-
-        if current_resource < amount:
-            return error(400, f"Your coalition doesn't have enough {resource}")
-
-        new_resource = current_resource - amount
-
-        update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
-        db.execute(update_statement, (new_resource, colId))
-
-        # Gives the leader his resource
-        # If the resource is money, gives him money
-        if resource == "money":
-
-            current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
-
-            new_money = current_money + amount
-
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
-
-        # If the resource is not money, gives him that resource
-        else:
-
-            current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-            current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
-
-            new_resource = current_resource + amount
-
-            update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
-            db.execute(update_statement, (new_resource, cId))
 
     for resource in withdrew_resources:
         name = resource[0]
         amount = resource[1]
-        withdraw(name, amount)
+        withdraw(name, amount, cId, colId)
 
     connection.commit()
     connection.close()
@@ -595,7 +599,7 @@ def remove_bank_request(bankId):
 
     cId = session["user_id"]
 
-    colId = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+    colId = db.execute("SELECT colId FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
 
     try:
         db.execute("SELECT leader FROM colNames WHERE leader=(?) and id=(?)", (cId, colId))
@@ -603,6 +607,32 @@ def remove_bank_request(bankId):
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM colBanksRequests WHERE id=(?)", (bankId,))
+
+    connection.commit()
+    connection.close()
+    return redirect("/my_coalition")
+
+@login_required
+@app.route("/accept_bank_request/<bankId>", methods=["POST"])
+def accept_bank_request(bankId):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    colId = db.execute("SELECT colId FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
+
+    try:
+        db.execute("SELECT leader FROM colNames WHERE leader=(?) and id=(?)", (cId, colId))
+    except TypeError:
+        return error(400, "You aren't the leader of this coalition")
+
+    resource = db.execute("SELECT resource FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
+    amount = db.execute("SELECT amount FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
+    user_id = db.execute("SELECT reqId FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
+
+    withdraw(resource, amount, user_id, colId)
 
     connection.commit()
     connection.close()
