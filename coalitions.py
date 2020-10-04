@@ -637,6 +637,8 @@ def accept_bank_request(bankId):
 
     withdraw(resource, amount, user_id, colId)
 
+    db.execute("DELETE FROM colBanksRequests WHERE id=(?)", (bankId,))
+    
     connection.commit()
     connection.close()
 
