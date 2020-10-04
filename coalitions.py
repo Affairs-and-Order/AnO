@@ -478,6 +478,7 @@ def withdraw(resource, amount, user_id, colId):
     db = connection.cursor()
 
     # Removes the resource from the coalition bank
+
     current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
     current_resource = int(db.execute(current_resource_statement, (colId,)).fetchone()[0])
 
@@ -510,6 +511,9 @@ def withdraw(resource, amount, user_id, colId):
         update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
         db.execute(update_statement, (new_resource, user_id))
 
+    connection.commit()
+    connection.close()
+
 @login_required
 @app.route("/withdraw_from_bank/<colId>", methods=["POST"])
 def withdraw_from_bank(colId):
@@ -538,10 +542,10 @@ def withdraw_from_bank(colId):
             res_tuple = (res, int(resource))
             withdrew_resources.append(res_tuple)
 
-
     for resource in withdrew_resources:
         name = resource[0]
         amount = resource[1]
+        print(name, amount, cId, colId)
         withdraw(name, amount, cId, colId)
 
     connection.commit()
@@ -636,4 +640,5 @@ def accept_bank_request(bankId):
 
     connection.commit()
     connection.close()
+    
     return redirect("/my_coalition")
