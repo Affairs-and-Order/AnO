@@ -411,7 +411,7 @@ def deposit_into_bank(colId):
         return redirect(400, "You aren't in this coalition")
 
     resources = [
-                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
+                "money", "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
                 "lumber", "components", "steel", "consumer_goods", "aluminium",
                 "gasoline", "ammunition"]
 
@@ -419,9 +419,12 @@ def deposit_into_bank(colId):
 
     for res in resources:
         resource = request.form.get(res)
+        print(resource)
         if resource != "":
             res_tuple = (res, int(resource))
             deposited_resources.append(res_tuple)
+
+    print(deposited_resources)
 
     def deposit(resource, amount):
 
@@ -529,7 +532,7 @@ def withdraw_from_bank(colId):
         return error(400, "You aren't the leader of this coalition")
 
     resources = [
-        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
+        "money", "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
         "lumber", "components", "steel", "consumer_goods", "aluminium",
         "gasoline", "ammunition"
     ]
@@ -640,5 +643,5 @@ def accept_bank_request(bankId):
 
     connection.commit()
     connection.close()
-    
+
     return redirect("/my_coalition")
