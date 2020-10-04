@@ -1406,6 +1406,7 @@
                 background-size: 400% 400%;
                 background-position: -50% 0%;
                 float: none;
+                border-radius: 4px;
             }
             
             .templateselect:hover {
@@ -1459,7 +1460,7 @@
             }
             
             .templatetextarea {
-                border-radius: 0px;
+                border-radius: 4px;
                 padding: 10px;
                 margin: 8px;
                 outline: none;
@@ -1711,6 +1712,7 @@
                 width: 90%;
                 background: var(--tableTwo);
                 box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
+                border-radius: 4px;
             }
             
             .templatetable tr {
@@ -1790,6 +1792,7 @@
                 margin: 25px auto;
                 background: var(--tableTwo);
                 box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
+                border-radius: 4px;
             }
             
             .templatetable2 {
@@ -1876,6 +1879,7 @@
                 padding: 0;
                 overflow: hidden;
                 flex-direction: row;
+                border-radius: 4px;
             }
             
             .menuflex2 div {
@@ -2248,6 +2252,7 @@
                 background-size: 400% 400%;
                 background-position: -50% 0%;
                 float: none;
+                border-radius: 4px;
             }
             
             .loginsignupinput:focus {
@@ -2525,6 +2530,7 @@
                 animation: templatedivcontentload 1.25s;
                 outline: none;
                 cursor: pointer;
+                border-radius: 4px;
             }
             
             .unitimage:focus {
