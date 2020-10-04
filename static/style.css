@@ -1728,6 +1728,7 @@
                 position: relative;
                 box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
                 text-transform: capitalize;
+                text-align: center;
             }
             
             .templatetable tr:nth-child(odd) {
@@ -2506,7 +2507,9 @@
             }
             
             .smallimage img {
-                height: 150px;
+                margin: 8px;
+                height: 204px;
+                vertical-align: middle;
             }
             
             .unitimage {

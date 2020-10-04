@@ -130,12 +130,13 @@
                             {% elif location == "asia" %}
                             <td>Asia</td>
                             {% elif location == "africa" %}
-                            <td>Africa<td>
-                            {% elif location == "australia" %}
-                            <td>Australia</td>
-                            {% elif location == "antarctica" %}
-                            <td>Antarctica</td>
-                            {% endif%}
+                            <td>Africa
+                                <td>
+                                    {% elif location == "australia" %}
+                                    <td>Australia</td>
+                                    {% elif location == "antarctica" %}
+                                    <td>Antarctica</td>
+                                    {% endif%}
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
@@ -286,7 +287,7 @@
                 <tr>
                     <th><span class="material-icons-outlined">
                         account_balance
-                        </span>Provinces ({{ provinceCount }}) </th>
+                        </span>Provinces ({{ provinceCount }})</th>
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
                 {% for provinceName, provinceId, population, cities, land in provinces %}
@@ -295,11 +296,11 @@
                         <div class="templatedivflex2left">
 
                             <td>
-                                <table class="templatetable">
+                                <table class="templatetable inverttable">
                                     <tr>
-                                        <th class="anchor"><a class="forgotpasscode loginsignupforgot" href="/province/{{ provinceId[0] }}"><span class="material-icons-outlined">
+                                        <th><span class="material-icons-outlined">
                                             account_balance
-                                            </span>{{ provinceName[0] }}</a></th>
+                                            </span>{{ provinceName[0] }}</th>
                                     </tr>
                                     <tr>
                                         <td>Population:</td>
