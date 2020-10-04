@@ -853,6 +853,7 @@
                 margin: 12px auto;
                 position: relative !important;
                 box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
+                border-radius: 4px;
             }
             
             .templatediv {
@@ -2603,6 +2604,7 @@
                 width: 95%;
                 margin: 12px auto;
                 position: relative !important;
+                border-radius: 4px;
             }
             
             .warflexparent:hover {
