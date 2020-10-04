@@ -225,14 +225,12 @@ def leave_col(colId):
 
     cId = session["user_id"]
 
-    leader = db.execute(
-        "SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
     if cId == leader:
-        return error(400, "Can't leave coalition, you're the leader")
+        error(400, "Can't leave coalition, you're the leader")
 
-    db.execute(
-        "DELETE FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId))
+    db.execute("DELETE FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId))
 
     connection.commit()
     connection.close()
@@ -252,11 +250,11 @@ def my_coalition():
         coalition = db.execute(
             "SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
     except TypeError:
-        coalition = ""
+        coalition = None
 
     connection.close()
 
-    if len(str(coalition)) == 0:
+    if coalition == None:
         return redirect("/")  # Redirects to home page instead of an error
     else:
         return redirect(f"/coalition/{coalition}")
@@ -270,28 +268,24 @@ def adding(uId):
     db = connection.cursor()
 
     try:
-        colId = db.execute(
-            "SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
+        colId = db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
     except TypeError:
         return error(400, "User hasn't posted a request to join")
 
     cId = session["user_id"]
 
-    leader = db.execute(
-        "SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
     if leader != cId:
-
         return error(400, "You are not the leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
-    db.execute(
-        "INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
+    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
 
     connection.commit()
     connection.close()
 
-    return redirect(f"/coalition/{ colId }")
+    return redirect(f"/coalition/{colId}")
 
 
 @login_required
