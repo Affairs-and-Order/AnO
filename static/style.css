@@ -1290,6 +1290,7 @@
                 display: flex;
                 flex-direction: column;
                 transition: all 0.4s ease;
+                border-radius: 4px;
             }
             
             .radiodiv:hover {
@@ -1440,6 +1441,7 @@
                 background-position: -50% 0%;
                 float: none;
                 opacity: 1;
+                border-radius: 4px;
             }
             
             .imageinput:hover {
