@@ -3,7 +3,7 @@ from flask import Flask, request, render_template, session, redirect, abort, fla
 from flask_session import Session
 import sqlite3
 from helpers import login_required, error
-from attack_scripts import Nation, Military
+from attack_scripts import Nation, Military, Economy
 from units import Units
 import time
 from helpers import get_influence, check_required
@@ -165,8 +165,8 @@ def wars():
 
         # defending_morale and attacking_morale include to wars.html
         defending = zip(defendingWars, defendingNames, defendingIds, defending_war_morales)
-        attacking = zip(attackingWars, attackingNames, attackingIds, attacking_war_morales)
 
+        attacking = zip(attackingWars, attackingNames, attackingIds, attacking_war_morales)
         db.close()
         connection.close()
 
@@ -177,6 +177,180 @@ def wars():
         defender_stats={"supply": 0, "morale": 0},
         attacker_stats={"supply": 0, "morale": 0})
 
+# TODO: put the Peace offers lable under "Internal Affairs" or "Other"
+# Peace offers show up here
+@app.route("/peace_offers", methods=["POST", "GET"])
+@login_required
+def peace_offers():
+    cId = session["user_id"]
+    # cId = 11
+
+    connection = sqlite3.connect("affo/aao.db")
+    db = connection.cursor()
+
+    # FETCH PEACE OFFER DATA AND PARSE IT
+    peace_offers = db.execute("SELECT peace_offer_id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (cId, cId)).fetchall()
+    offers = {}
+
+    # try:
+    if peace_offers:
+
+        for offer in peace_offers:
+            offer_id = offer[0]
+            if offer_id != None:
+
+                # Every offer has a different subset
+                offers[offer_id] = {}
+
+                resources_fetch = db.execute("SELECT demanded_resources FROM peace WHERE id=(?)", (offer_id,)).fetchone()
+                author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
+
+                if resources_fetch:
+                    resources = resources_fetch[0]
+                    if resources:
+                        amounts = db.execute("SELECT demanded_amount FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0].split(",")
+                        resources = resources.split(",")
+
+                        offers[offer_id]["resource_count"] = len(resources)
+                        offers[offer_id]["resources"] = resources
+                        offers[offer_id]["amounts"] = amounts
+
+                        if cId == author_id:
+                            offers[offer_id]["owned"] = 1
+
+                    # TODO: make peace at post when clicked
+                    # white peace
+                    else:
+                        offers[offer_id]["peace_type"] = "white"
+
+                    # author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
+                    offers[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
+
+    # except:
+        # return "Something went wrong."
+
+    if request.method == "POST":
+        offer_id = request.form.get("peace_offer", None)
+
+        # Validate inputs
+        try:
+            offer_id = int(offer_id)
+
+            # Make sure that others can't accept,delete,etc. the peace offer other than the participants
+            check_validity = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_offer_id=(?) AND peace_date IS NULL",
+            (cId, cId, offer_id)).fetchone()
+            if len(check_validity) != 1:
+                raise TypeError
+
+        except:
+            return "Peace offer is invalid!"
+
+        decision = request.form.get("decision", None)
+
+        # Offer rejected or revoked
+        if decision == "0":
+            db.execute("DELETE FROM peace WHERE id=(?)", (offer_id,))
+            db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(?)", (offer_id,))
+            connection.commit()
+
+        elif author_id != cId:
+
+            # Offer accepted
+            if decision == "1":
+                # TODO: send a message about the decision to the participants
+                # maybe do the above using a table created for metadata this way we can also send other message not just the peace offer
+
+                eco = Economy(cId)
+                resource_dict = eco.get_particular_resources(resources)
+
+                # check validity if amount is bigger than available resources
+                count = 0
+                for value in resource_dict.values():
+                    if int(amounts[count]) > value:
+                        return "Can't accept peace offer because you don't have the required resources!"
+
+                    eco.transfer_resources(resources[count], int(amounts[count]), author_id)
+                    count += 1
+
+                Nation.set_peace(db, connection, None, {"option": "peace_offer_id", "value": offer_id})
+
+            else:
+                return "No decision was made."
+
+        else:
+            return "You can't accept your own offer."
+
+        return redirect("/peace_offers")
+
+    # TODO: put a button to revoke the peace offer made by the author
+    return render_template("peace/peace_offers.html", cId=cId, peace_offers=offers)
+
+@app.route("/send_peace_offer", methods=["GET", "POST"])
+@login_required
+def send_peace_offer():
+    connection = sqlite3.connect("affo/aao.db")
+    db = connection.cursor()
+
+    cId = session["user_id"]
+    # cId = 11
+
+    if request.method == "GET":
+        wars = Nation.get_current_wars(cId)
+        enemy = []
+
+        # determine wheter the user is the aggressor or the defender
+        for war_id in wars:
+            is_attacker = db.execute("SELECT 1 FROM wars WHERE id=(?) AND attacker=(?)", (war_id[0], cId)).fetchone()
+
+            if is_attacker:
+                enemy_ = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+            else:
+                enemy_ = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+
+            enemy.append(db.execute("SELECT username FROM users WHERE id=(?)", (enemy_,)).fetchone()[0])
+
+        return render_template("peace/send_peace_offer.html", enemy=enemy)
+
+    elif request.method == "POST":
+
+        target = request.form.get("enemy")
+        resources = request.form.get("resources_send", None)
+        resources_amount = request.form.get("resources_amount_send", None)
+
+        # Input validation
+        try:
+            if not target:
+                raise Exception("Target is invalid")
+
+            if resources and resources_amount:
+                resources_amount = resources_amount[:-1]
+                resources = resources[:-1]
+
+                r = resources.split(",")
+                a = resources_amount.split(",")
+
+                for res, amo in zip(r, a):
+                    if res not in Economy.resources:
+                        raise Exception("Invalid resource")
+
+                    int(amo)
+
+                db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((?),(?),(?))", (cId, resources, resources_amount))
+
+                enemy_id = db.execute("SELECT id FROM users WHERE username=(?)", (target,)).fetchone()[0]
+
+                war_id = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?)) AND peace_date IS NULL",
+                (cId, cId, enemy_id, enemy_id)).fetchone()[0]
+
+                db.execute("UPDATE wars SET peace_offer_id=(?) WHERE id=(?)", (db.lastrowid, war_id))
+                connection.commit()
+
+            else:
+                raise TypeError
+        except:
+            return "ERROR"
+        else:
+            return redirect("/peace_offers")
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])

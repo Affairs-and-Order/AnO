@@ -16,5 +16,8 @@ CREATE TABLE IF NOT EXISTS 'wars'
 
 -- morale of each party
 'attacker_morale' INTEGER DEFAULT 100,
-'defender_morale' INTEGER DEFAULT 100
-);
+'defender_morale' INTEGER DEFAULT 100,
+
+-- Attached peace offer
+'peace_offer_id' INTEGER DEFAULT NULL,
+FOREIGN KEY('peace_offer_id') REFERENCES peace('id'));

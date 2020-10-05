@@ -1,1 +1,1 @@
-from .Nations import Nation, Military
+from .Nations import Nation, Military, Economy

@@ -1,0 +1,38 @@
+{% extends "layout.html"%} {% block title %} Peace offers {% endblock %} {% block body %}
+
+<div style="margin: 5em;">
+  <h1>Peace offers</h1>
+  <h5>You can see the offers received and sent by you</h5>
+
+  {% for key, value in peace_offers.items() %}
+    {% if value.get("author", None) and value.get("resources", None) and value.get("amounts") %}
+      <div class="peaceOffer">
+        Sent by {{value["author"][1]}}
+        and demands:
+        {% for index in range(0, value["resource_count"]) %}
+          <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
+        {% endfor %}
+      </div>
+
+      <form action="" method="post">
+        <input type="hidden" name="peace_offer" value="{{key}}">
+
+        {% if value.get("owned", None) == None %}
+          <!-- Maybe change it to radioboxes for a better look -->
+          <select name="decision">
+            <option value="0">Reject offer</option>
+            <option value="1">Accept offer</option>
+          </select>
+          <input type="submit" name="submit" value="Submit answer">
+        {% else %}
+          <input type="hidden" name="decision" value="0">
+          <input type="submit" name="revoke" value="Revoke offer">
+        {% endif %}
+
+      </form>
+    {% endif %}
+  {% endfor %}
+  <a href="/send_peace_offer">Send peace offer</a>
+</div>
+
+{% endblock %}

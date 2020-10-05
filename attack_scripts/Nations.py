@@ -2,7 +2,8 @@ import random
 import sqlite3
 import os, time
 
-path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
+# path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
+path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
 
 def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -> int
     # Calculate the percentage of total units will be affected
@@ -24,6 +25,71 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
     # print("UOA", unit_of_army, attacker_unit, target, self.user_id, affected_bonus)
     return attack_effects
 
+class Economy:
+
+    resources = [
+    "rations", "oil", "coal", "uranium", "uranium",
+    "iron", "lead", "copper", "lumber", "components",
+    "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"
+    ]
+
+    def __init__(self, nationID):
+        self.nationID = nationID
+
+    def get_economy(self):
+        connection = sqlite3.connect(path)
+        db = connection.cursor()
+
+        # TODO fix this when the databases changes and update to include all resources
+        self.gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
+
+    def get_particular_resources(self, resources):
+        connection = sqlite3.connect(path)
+        db = connection.cursor()
+
+        resource_dict = {}
+
+        try:
+            for resource in resources:
+                resource_dict[resource] = db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
+        except:
+
+            # TODO ERROR HANDLER OR RETURN THE ERROR AS A VAlUE
+            print("INVALID RESOURCE NAME")
+            return "Invalid resource"
+
+        return resource_dict
+
+    def grant_resources(self, resource, amount):
+        # TODO find a way to get the database to work on relative directories
+        connection = sqlite3.connect(path)
+        db = connection.cursor()
+        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
+                   (resource, amount, self.nationID))
+
+        connection.commit()
+
+    def transfer_resources(self, resource, amount, destinationID):
+        connection = sqlite3.connect(path)
+        db = connection.cursor()
+
+        if resource not in self.resources:
+            return "Invalid resource"
+
+        # get amount of resource
+        originalUser = int(db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0])
+        destinationUser = int(db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (destinationID,)).fetchone()[0])
+
+        # subtracts the resource from one nation to another
+        originalUser -= amount
+        destinationUser += amount
+
+        # writes changes in db
+        db.execute(f"UPDATE resources SET {resource}=(?) WHERE id=(?)", (originalUser, self.nationID))
+        db.execute(f"UPDATE resources SET {resource}=(?) WHERE id=(?)", (destinationUser, destinationID))
+
+        connection.commit()
+
 class Nation:
 
     # TODO: someone should update this docs -- marter
@@ -44,7 +110,7 @@ class Nation:
 
     # Database management
     # TODO: find a more effective way to handle database stuff
-    path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
+    # path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
     connection = sqlite3.connect(path)
     db = connection.cursor()
 
@@ -87,12 +153,23 @@ class Nation:
 
         return self.provinces
 
-    def get_current_wars(self):
+    @staticmethod
+    def get_current_wars(id):
         connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        id_list = db.execute(
-            "SELECT attacker, defender FROM wars WHERE attacker=(?) OR defender=(?)", (self.id, self.id,)).fetchall()
-        print(id_list)
+        id_list = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (id, id,)).fetchall()
+
+        # # determine wheter the user is the aggressor or the defender
+        # current_wars_result = []
+        # for war_id in id_list:
+        #     is_attacker = db.execute("SELECT 1 FROM wars WHERE id=(?) AND attacker=(?)", (war_id[0], id)).fetchone()
+        #
+        #     if is_attacker:
+        #         war_id.append("attacker")
+        #     else:
+        #         war_id.append("defender")
+
+        return id_list
 
     def printStatistics(self):
         print("Nation {}:\nWins {}\nLosses: {}".format(
@@ -114,8 +191,12 @@ class Nation:
 
     # set the peace_date in wars table for a particular war
     @staticmethod
-    def set_peace(db, connection, war_id):
-        db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
+    def set_peace(db, connection, war_id=None, options=None):
+        if war_id != None:
+            db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
+        else:
+            option = options["option"]
+            db.execute(f"UPDATE wars SET peace_date=(?) WHERE {option}=(?)", (time.time(), options["value"]))
         connection.commit()
 
 class Military(Nation):
@@ -217,8 +298,9 @@ class Military(Nation):
 
         # Win the war
         if morale <= 0:
-            Nation.set_peace(db, connection, war_id)
             # TODO: need a method for give the winner the pize for winning the war (this is not negotiation because the enemy completly lost the war since morale is 0)
+            Nation.set_peace(db, connection, war_id)
+            # eco = Economy()
             print("THE WAR IS OVER")
 
         db.execute(f"UPDATE wars SET {column}=(?) WHERE id=(?)", (morale, war_id))
@@ -375,8 +457,8 @@ class Military(Nation):
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            w_casualties = winner_casulties*random.uniform(0.6, 1.5)*2.5
-            l_casualties =  win_type*random.uniform(0.8, 1.5)*2.5
+            w_casualties = winner_casulties*random.uniform(0.5, 1.5)*10
+            l_casualties =  win_type*random.uniform(0.8, 1.5)*10
 
             winner.casualties(winner_unit, w_casualties)
             loser.casualties(loser_unit, l_casualties)
@@ -502,55 +584,6 @@ class Military(Nation):
         else:
             # user should never reach here, msg for beta testers
             return "Invalid number of units given to set_defense, report to admin"
-
-class Economy:
-    # TODO: expand this to cover all resources
-    def __init__(self, nationID):
-        self.nationID = nationID
-
-    def get_economy(self):
-        dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, '/affo/aao.db')
-        print(filename)
-        # TODO find a way to get the database to work on relative directories
-        connection = sqlite3.connect(path)
-        db = connection.cursor()
-
-        # TODO fix this when the databases changes and update to include all resources
-        self.gold = db.execute(
-            "SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
-
-    def grant_resources(self, resource, amount):
-        # TODO find a way to get the database to work on relative directories
-        connection = sqlite3.connect(path)
-        db = connection.cursor()
-        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
-                   (resource, amount, self.nationID))
-
-        connection.commit()
-
-    def transfer_resources(self, resource, amount, destinationID):
-        # TODO find a way to get the database to work on relative directories
-        connection = sqlite3.connect(path)
-        db = connection.cursor()
-
-        # get amount of resource
-        originalUser = db.execute(
-            "SELECT (?) FROM stats WHERE id=(?)", (resource, self.nationID)).fetchone()[0]
-        destinationUser = db.execute(
-            "SELECT (?) FROM stats WHERE id=(?)", (resource, destinationID)).fetchone()[0]
-
-        # subtracts the resource from one nation to another
-        originalUser -= amount
-        destinationUser += amount
-
-        # writes changes in db
-        db.execute("UPDATE stats SET (?) = (?) WHERE id=(?)",
-                   (resource, originalUser, self.nationID))
-        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
-                   (resource, destinationUser, destinationID))
-
-        connection.commit()
 
 # DEBUGGING:
 if __name__ == "__main__":
