@@ -1210,6 +1210,8 @@
                 transition: all 0.2s;
                 text-decoration: none;
                 cursor: pointer;
+                background: transparent;
+                border: transparent;
             }
             
             .templatelink:hover {
