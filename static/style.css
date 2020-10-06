@@ -1283,6 +1283,16 @@
                 transform: rotate(45deg);
             }
             
+            .radiodivparent {
+                justify-content: center !important;
+            }
+            
+            @media all and (max-width: 1400px) {
+                .radiodivparent {
+                    flex-direction: column;
+                }
+            }
+            
             .radiodiv {
                 list-style: none;
                 margin: 0;
