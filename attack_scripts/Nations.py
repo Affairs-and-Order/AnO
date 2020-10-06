@@ -28,10 +28,11 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
 class Economy:
 
     resources = [
-    "rations", "oil", "coal", "uranium", "uranium",
+    "rations", "oil", "coal", "uranium", "bauxite",
     "iron", "lead", "copper", "lumber", "components",
     "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"
     ]
+
 
     def __init__(self, nationID):
         self.nationID = nationID
@@ -107,6 +108,10 @@ class Nation:
     """
 
     public_works = ["libraries", "universities", "hospitals", "city_parks", "monorails"]
+
+    # structure of upgrade dictionaries is "name_of_upgrade": "bonus gived by upgrade"
+    supply_related_upgrades = {"lootingTeams": 10}
+    economy_related_upgrades = {}
 
     # Database management
     # TODO: find a more effective way to handle database stuff
@@ -198,6 +203,20 @@ class Nation:
             option = options["option"]
             db.execute(f"UPDATE wars SET peace_date=(?) WHERE {option}=(?)", (time.time(), options["value"]))
         connection.commit()
+
+    # Get the list of owned upgrades like supply amount increaser from 200 to 210, etc.
+    @classmethod
+    def get_upgrades(cls, upgrade_type, user_id):
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        upgrades = {}
+
+        if upgrade_type == "supplies":
+            for upgrade in cls.supply_related_upgrades.keys():
+                count = db.execute(f"SELECT {upgrade} FROM upgrades WHERE user_id=(?)", (user_id,)).fetchone()[0]
+                upgrades[upgrade] = count
+
+        return upgrades
 
 class Military(Nation):
     allUnits = ["soldiers", "tanks", "artillery",
@@ -471,6 +490,9 @@ class Military(Nation):
 
         # Currently units only affect public works
         public_works = Nation.get_public_works(random_province)
+
+        # TODO: enforce war type like raze,etc.
+        # example for the above line: if war_type is raze then attack_effects[0]*10
         infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
 
         # return (winner.user_id, return_winner_cas, return_loser_cas)

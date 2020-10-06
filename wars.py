@@ -52,6 +52,19 @@ def update_supply(war_id):
     # if supply_bonus: xy
 
     if supply_by_hours > 0:
+        attacker_id, defender_id = db.execute("SELECT attacker,defender FROM wars where id=(?)", (war_id,)).fetchone()
+
+        # TODO: this isn't tested yet until the END TODO, so test it
+        attacker_upgrades = Nation.get_upgrades("supplies", attacker_id)
+        defender_upgrades = Nation.get_upgrades("supplies", defender_id)
+
+        for i in attacker_upgrades.values():
+            attacker_supplies += i
+
+        for i in defender_upgrades.values():
+            defender_supplies += i
+        # END TODO
+
         db.execute("UPDATE wars SET attacker_supplies=(?), defender_supplies=(?), last_visited=(?) WHERE id=(?)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
         connection.commit()
 
@@ -263,6 +276,7 @@ def peace_offers():
                 eco = Economy(cId)
                 resource_dict = eco.get_particular_resources(resources)
 
+                # TODO: move the below check to the transfer_resources
                 # check validity if amount is bigger than available resources
                 count = 0
                 for value in resource_dict.values():

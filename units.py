@@ -5,8 +5,6 @@ from typing import Union
 import sqlite3
 
 # Blueprint for units
-
-
 class BlueprintUnit(ABC):
 
     """
