@@ -1212,6 +1212,8 @@
                 cursor: pointer;
                 background: transparent;
                 border: transparent;
+                outline: none;
+                font-size: 16px;
             }
             
             .templatelink:hover {
@@ -2771,6 +2773,11 @@
             .upgradeseconomicclick h3,
             .upgradesmilitaryclick h3 {
                 color: var(--colorTwo) !important;
+            }
+            /*TUTORIAL*/
+            
+            .tutorialdiv {
+                position: relative;
             }
             /*FOOTER*/
             
