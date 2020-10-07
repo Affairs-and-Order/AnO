@@ -11,7 +11,7 @@
 
     <div class="templatedivcontent">
 
-        <div class="templatedivflex2 menuflex2">
+        <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left" id="upgradeseconomic" onclick="upgradeseconomic()">
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
@@ -31,853 +31,768 @@
         </div>
         <!--ECONOMIC-->
         <form method="POST">
-        <div class="economic" id="economic">
+            <div class="economic" id="economic">
 
-            <div class="menudiv">
+                <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Better Engineering</h2>
+                    <h2 class="templatecontentheaderleft">Better Engineering</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                    <div class="templatedivflex2 menuflex warflexparentcolors">
+                        <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Nuclear Reactors now power 15 infrastructure slots instead of 12
-                        </p>
+                            <p class="templatecontentpleft">Nuclear Reactors now power 15 infrastructure slots instead of 12
+                            </p>
 
-                        <div class="purchasemilitarydiv">
+                            <div class="purchasemilitarydiv">
 
-                            <!-- DISABLED BUTTONS -->
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %}
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction="">
-                                        <span class="material-icons-outlined">
-                                            add_circle_outline
-
-                                        </span>Buy</button>
-                                        {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["betterengineering"] %}
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction="">
-
-                                        <span class="material-icons-outlined">
-                                            remove_circle_outline
-
-
-                                        </span>Sell</button>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <!-- END OF DISABLED BUTTONS -->
-
-
-                            <!-- ENABLED BUTTONS -->
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["betterengineering"] %}
-                                    <button class="templatedivbutton templatecenteredbutton"
-                                    formaction="/upgrades_sb/buy/betterEngineering">
-                                        <span class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button>
-                                    {% endif %}
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["betterengineering"] %}
-                                    <button class="templatedivbutton templatecenteredbutton"
-                                            formaction="/upgrades_sb/sell/betterEngineering">
-                                            <span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button>
-                                    {% endif %}
-
-                                </div>
-                            </div>
-                            <!-- END OF ENABLED BUTTONS -->
-                        </div>
-
-                    </div>
-                    </form>
-                    <div class="templatedivflex2left">
-
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/betterengineering.jpg') }}" />
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="menudiv">
-
-                <h2 class="templatecontentheaderleft">Cheaper Materials</h2>
-
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <p class="templatecontentpleft">Oil burners now cost $40,000 per hour in upkeep instead of
-                            $60,000</p>
-
-                        <div class="purchasemilitarydiv">
-
-                            <div class="templatedivflex2 divflex2center">
                                 <!-- DISABLED BUTTONS -->
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["cheaperMaterials"] %}
-
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction="">
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+                                        {% if upgrades["betterengineering"] %}
+                                        <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction="">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
-                                        </span>Buy</button>
-                                    {% endif %}
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["cheaperMaterials"] %}
 
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                        </span>Buy</button> {% endif %}
+
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+                                        {% if upgrades["betterengineering"] %}
+                                        <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction="">
+
+                                        <span class="material-icons-outlined">
                                             remove_circle_outline
-                                        </span>Sell</button>
-                                    {% endif %}
 
+
+                                        </span>Sell</button> {% endif %}
+                                    </div>
                                 </div>
                                 <!-- END OF DISABLED BUTTONS -->
 
-                            </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["cheaperMaterials"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" 
-                                            formaction="/upgrades_sb/buy/cheaperMaterials">
-                                            <span class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button>
-                                    {% endif %}
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["cheaperMaterials"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" 
-                                            formaction="/upgrades_sb/sell/cheaperMaterials">
-                                            <span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button>
-                                    {% endif %}
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    </form>
-                    <div class="templatedivflex2left">
-
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/cheapermaterials.jpg') }}" />
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="menudiv">
-
-                <h2 class="templatecontentheaderleft">Online Shopping</h2>
-
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <p class="templatecontentpleft">Malls only require $550,000 in upkeep instead of $750,000 per
-                            hour</p>
-
-                        <div class="purchasemilitarydiv">
-
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["onlineShopping"] %}
-
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction="">
+                                <!-- ENABLED BUTTONS -->
+                                <div class="templatedivflex2 divflex2center">
+                                    <div class="templatedivflex2left flexchildvanilla">
+                                        {% if not upgrades["betterengineering"] %}
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
-                                        </span>Buy</button>
-                                    {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["onlineShopping"] %}
-
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                        </span>Buy</button> {% endif %}
+                                    </div>
+                                    <div class="templatedivflex2left flexchildvanilla">
+                                        {% if not upgrades["betterengineering"] %}
+                                        <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                                            <span class="material-icons-outlined">
                                             remove_circle_outline
-                                        </span>Sell</button>
-                                    {% endif %}
+                                        </span>Sell</button> {% endif %}
 
+                                    </div>
                                 </div>
+                                <!-- END OF ENABLED BUTTONS -->
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["onlineShopping"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" 
-                                            formaction="">
+                        </div>
+        </form>
+        <div class="templatedivflex2left">
+
+
+
+            <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/betterengineering.jpg') }}" />
+        </div>
+        </div>
+
+        </div>
+
+
+        <div class="menudiv">
+
+            <h2 class="templatecontentheaderleft">Cheaper Materials</h2>
+
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
+
+                    <p class="templatecontentpleft">Oil burners now cost $40,000 per hour in upkeep instead of $60,000
+                    </p>
+
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <!-- DISABLED BUTTONS -->
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["cheaperMaterials"] %}
+
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction="">
+                                        <span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["cheaperMaterials"] %}
+
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                            <!-- END OF DISABLED BUTTONS -->
+
+                        </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["cheaperMaterials"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/cheaperMaterials">
                                             <span class="material-icons-outlined">
                                             add_circle_outline
-                                        </span>Buy</button>
-                                    {% endif %}
+                                        </span>Buy</button> {% endif %}
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["cheaperMaterials"] %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["onlineShopping"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/cheaperMaterials">
+                                            <span class="material-icons-outlined">
                                             remove_circle_outline
-                                        </span>Sell</button>
-                                    {% endif %}
+                                        </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
-
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
 
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/onlineshopping.jpg') }}" />
-                    </div>
                 </div>
+                </form>
+                <div class="templatedivflex2left">
 
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/cheapermaterials.jpg') }}" />
+                </div>
             </div>
 
+        </div>
 
 
-            <div class="menudiv">
+        <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Government Regulation</h2>
+            <h2 class="templatecontentheaderleft">Online Shopping</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Retail pollution production -25%</p>
+                    <p class="templatecontentpleft">Malls only require $550,000 in upkeep instead of $750,000 per hour
+                    </p>
 
-                        <div class="purchasemilitarydiv">
+                    <div class="purchasemilitarydiv">
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["governmentRegulation"] %}
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["onlineShopping"] %}
 
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction="">
+                                        <span class="material-icons-outlined">
                                             add_circle_outline
-                                        </span>Buy</button>
-                                    {% endif %}
+                                        </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["governmentRegulation"] %}
-
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button>
-                                    {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["governmentRegulation"] %}
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["onlineShopping"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button>
-                                    {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["governmentRegulation"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
-                                        </span>Sell</button>
-                                    {% endif %}
+                                        </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["onlineShopping"] %}
 
-                    </div>
-                    </form>
-                    <div class="templatedivflex2left">
-
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/governmentregulation.jpg') }}" />
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="menudiv">
-
-                <h2 class="templatecontentheaderleft">National Health Institution</h2>
-
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <p class="templatecontentpleft">Hospitals increase population more, from 8% to 14%</p>
-
-                        <div class="purchasemilitarydiv">
-
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["nationalHealthInstitution"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                <button class="templatedivbutton templatecenteredbutton" formaction="">
+                                            <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["nationalHealthInstitution"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["nationalHealthInstitution"] %}
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["onlineShopping"] %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["nationalHealthInstitution"] %}
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
-
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
 
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/nationalhealthinstitution.jpg') }}" />
-                    </div>
                 </div>
+                </form>
+                <div class="templatedivflex2left">
 
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/onlineshopping.jpg') }}" />
+                </div>
             </div>
 
+        </div>
 
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">High Speed Rail</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+        <div class="menudiv">
 
-                        <p class="templatecontentpleft">Increases monorail productivity increase from 12% to 16%</p>
+            <h2 class="templatecontentheaderleft">Government Regulation</h2>
 
-                        <div class="purchasemilitarydiv">
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
+                    <p class="templatecontentpleft">Retail pollution production -25%</p>
 
-                                    {% if upgrades["highSpeedRail"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["governmentRegulation"] %}
+
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["highSpeedRail"] %}
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["highSpeedRail"] %}
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["governmentRegulation"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["highSpeedRail"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["governmentRegulation"] %}
 
-                    </div>
-                    </form>
-                    <div class="templatedivflex2left">
-
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/highspeedrail.jpg') }}" />
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="menudiv">
-
-                <h2 class="templatecontentheaderleft">Advanced Machinery</h2>
-
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <p class="templatecontentpleft">Increases farm output to 45 food per land per hour to 30 food
-                            per land per hour</p>
-
-                        <div class="purchasemilitarydiv">
-
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["advancedMachinery"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if upgrades["advancedMachinery"] %}
-
-                                    <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["advancedMachinery"] %}
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["governmentRegulation"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["advancedMachinery"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
-
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
 
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/advancedmachinery.jpg') }}" />
-                    </div>
                 </div>
+                </form>
+                <div class="templatedivflex2left">
 
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/governmentregulation.jpg') }}" />
+                </div>
             </div>
 
+        </div>
 
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Stronger Explosives</h2>
+        <div class="menudiv">
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+            <h2 class="templatecontentheaderleft">National Health Institution</h2>
 
-                        <p class="templatecontentpleft">Bauxite mines now produce 28 bauxite per hour instead of 20</p>
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
 
-                        <div class="purchasemilitarydiv">
+                    <p class="templatecontentpleft">Hospitals increase population more, from 8% to 14%</p>
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
+                    <div class="purchasemilitarydiv">
 
-                                    {% if upgrades["strongerExplosives"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["nationalHealthInstitution"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["strongerExplosives"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["strongerExplosives"] %}
+                            <div class="templatedivflex2left flexchildvanilla">
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["strongerExplosives"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
+                                {% if upgrades["nationalHealthInstitution"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
-
-                    </div>
-                    </form>
-                    <div class="templatedivflex2left">
-
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/strongerexplosives.jpg') }}" />
-                    </div>
-                </div>
-
-            </div>
-
-
-            <div class="menudiv">
-
-                <h2 class="templatecontentheaderleft">Widespread Propaganda</h2>
-
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <p class="templatecontentpleft">Soldier recruitment costs $150 instead of $200, and 1 ration
-                            instead of 2 rations</p>
-
-                        <div class="purchasemilitarydiv">
-
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["widespreadPropaganda"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["nationalHealthInstitution"] %}
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["widespreadPropaganda"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["widespreadPropaganda"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["widespreadPropaganda"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["nationalHealthInstitution"] %}
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
-
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
 
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/widespreadpropaganda.jpg') }}" />
-                    </div>
                 </div>
+                </form>
+                <div class="templatedivflex2left">
 
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nationalhealthinstitution.jpg') }}" />
+                </div>
             </div>
 
+        </div>
 
-            <div class="menudiv">
 
-                <h2 class="templatecontentheaderleft">Increased Funding</h2>
+        <div class="menudiv">
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+            <h2 class="templatecontentheaderleft">High Speed Rail</h2>
 
-                        <p class="templatecontentpleft">Administrative Buildings can now recruit x spies per day instead
-                            of x, and have a capacity of x instead of x</p>
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
 
-                        <div class="purchasemilitarydiv">
+                    <p class="templatecontentpleft">Increases monorail productivity increase from 12% to 16%</p>
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
+                    <div class="purchasemilitarydiv">
 
-                                    {% if upgrades["increasedFunding"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["highSpeedRail"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["increasedFunding"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["increasedFunding"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["increasedFunding"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["highSpeedRail"] %}
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["highSpeedRail"] %}
 
-                    </div>
-                    </form>
-                    <div class="templatedivflex2left">
-
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/increasedfunding.jpg') }}" />
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="menudiv">
-
-                <h2 class="templatecontentheaderleft">Automation integration</h2>
-
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
-
-                        <p class="templatecontentpleft">Components are made from 15 copper, 8 steel, and 12 aluminium
-                            instead of 20 copper, 10 steel, and 15 aluminium</p>
-
-                        <div class="purchasemilitarydiv">
-
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["automationIntegration"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["automationIntegration"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["automationIntegration"] %}
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["highSpeedRail"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["automationIntegration"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
                                             class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
-
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
 
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/automationintegration.jpg') }}" />
-                    </div>
                 </div>
+                </form>
+                <div class="templatedivflex2left">
 
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/highspeedrail.jpg') }}" />
+                </div>
             </div>
 
-            <div class="menudiv">
+        </div>
 
-                <h2 class="templatecontentheaderleft">Larger Forges</h2>
 
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+        <div class="menudiv">
 
-                        <p class="templatecontentpleft">Requires only 25 coal instead of 25 coal to produce steel</p>
+            <h2 class="templatecontentheaderleft">Advanced Machinery</h2>
 
-                        <div class="purchasemilitarydiv">
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
 
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
+                    <p class="templatecontentpleft">Increases farm output to 45 food per land per hour to 30 food per land per hour</p>
 
-                                    {% if upgrades["largerForges"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["advancedMachinery"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-
-                                    {% if upgrades["largerForges"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
-                                </div>
                             </div>
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["largerForges"] %}
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if upgrades["advancedMachinery"] %}
 
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button> {% endif %}
-
-                                </div>
-                                <div class="templatedivflex2left flexchildvanilla">
-                                    {% if not upgrades["largerForges"] %}
-
-                                    <button class="templatedivbutton templatecenteredbutton" formaction=""><span
-                                            class="material-icons-outlined">
+                                <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
-                                </div>
                             </div>
                         </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["advancedMachinery"] %}
 
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["advancedMachinery"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
                     </div>
-                    </form>
-                    <div class="templatedivflex2left">
 
-
-
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/largerforges.jpg') }}" />
-                    </div>
                 </div>
+                </form>
+                <div class="templatedivflex2left">
 
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/advancedmachinery.jpg') }}" />
+                </div>
             </div>
+
+        </div>
+
+
+        <div class="menudiv">
+
+            <h2 class="templatecontentheaderleft">Stronger Explosives</h2>
+
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
+
+                    <p class="templatecontentpleft">Bauxite mines now produce 28 bauxite per hour instead of 20</p>
+
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["strongerExplosives"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["strongerExplosives"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["strongerExplosives"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["strongerExplosives"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </form>
+                <div class="templatedivflex2left">
+
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/strongerexplosives.jpg') }}" />
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="menudiv">
+
+            <h2 class="templatecontentheaderleft">Widespread Propaganda</h2>
+
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
+
+                    <p class="templatecontentpleft">Soldier recruitment costs $150 instead of $200, and 1 ration instead of 2 rations</p>
+
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["widespreadPropaganda"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["widespreadPropaganda"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["widespreadPropaganda"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["widespreadPropaganda"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </form>
+                <div class="templatedivflex2left">
+
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/widespreadpropaganda.jpg') }}" />
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="menudiv">
+
+            <h2 class="templatecontentheaderleft">Increased Funding</h2>
+
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
+
+                    <p class="templatecontentpleft">Administrative Buildings can now recruit x spies per day instead of x, and have a capacity of x instead of x</p>
+
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["increasedFunding"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["increasedFunding"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["increasedFunding"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["increasedFunding"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </form>
+                <div class="templatedivflex2left">
+
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/increasedfunding.jpg') }}" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="menudiv">
+
+            <h2 class="templatecontentheaderleft">Automation integration</h2>
+
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
+
+                    <p class="templatecontentpleft">Components are made from 15 copper, 8 steel, and 12 aluminium instead of 20 copper, 10 steel, and 15 aluminium</p>
+
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["automationIntegration"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["automationIntegration"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["automationIntegration"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["automationIntegration"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </form>
+                <div class="templatedivflex2left">
+
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/automationintegration.jpg') }}" />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="menudiv">
+
+            <h2 class="templatecontentheaderleft">Larger Forges</h2>
+
+            <div class="templatedivflex2 menuflex warflexparentcolors">
+                <div class="templatedivflex2left">
+
+                    <p class="templatecontentpleft">Requires only 25 coal instead of 25 coal to produce steel</p>
+
+                    <div class="purchasemilitarydiv">
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["largerForges"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+
+                                {% if upgrades["largerForges"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["largerForges"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            add_circle_outline
+                                        </span>Buy</button> {% endif %}
+
+                            </div>
+                            <div class="templatedivflex2left flexchildvanilla">
+                                {% if not upgrades["largerForges"] %}
+
+                                <button class="templatedivbutton templatecenteredbutton" formaction=""><span
+                                            class="material-icons-outlined">
+                                            remove_circle_outline
+                                        </span>Sell</button> {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                </form>
+                <div class="templatedivflex2left">
+
+
+
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/largerforges.jpg') }}" />
+                </div>
+            </div>
+
+        </div>
         </div>
 
         <!--MILITARY-->
@@ -887,29 +802,24 @@
 
                 <h2 class="templatecontentheaderleft">Looting Teams</h2>
 
-                <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2 menuflex warflexparentcolors">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">you will produce 210 supplies per hour for every war you're in,
-                            instead of 200 supplies</p>
+                        <p class="templatecontentpleft">you will produce 210 supplies per hour for every war you're in, instead of 200 supplies</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["lootingTeams"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["lootingTeams"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["lootingTeams"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["lootingTeams"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
@@ -943,8 +853,7 @@
 
 
 
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/lootingteams.jpg') }}" />
+                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/lootingteams.jpg') }}" />
                     </div>
                 </div>
 
@@ -953,29 +862,24 @@
 
                 <h2 class="templatecontentheaderleft">Organized Supply Lines</h2>
 
-                <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2 menuflex warflexparentcolors">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Your military now gets 225 supplies per hour for every war,
-                            instead of 210</p>
+                        <p class="templatecontentpleft">Your military now gets 225 supplies per hour for every war, instead of 210</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["organizedSupplyLines"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["organizedSupplyLines"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["organizedSupplyLines"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["organizedSupplyLines"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
@@ -1009,8 +913,7 @@
 
 
 
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/organizedsupplylines.jpg') }}" />
+                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/organizedsupplylines.jpg') }}" />
                     </div>
                 </div>
 
@@ -1019,29 +922,24 @@
 
                 <h2 class="templatecontentheaderleft">Large Storehouses</h2>
 
-                <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2 menuflex warflexparentcolors">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Allows you to now produce 260 supplies per war for every war,
-                            instead of 225</p>
+                        <p class="templatecontentpleft">Allows you to now produce 260 supplies per war for every war, instead of 225</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["largeStorehouses"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["largeStorehouses"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["largeStorehouses"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["largeStorehouses"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
@@ -1075,8 +973,7 @@
 
 
 
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/largestorehouses.jpg') }}" />
+                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/largestorehouses.jpg') }}" />
                     </div>
                 </div>
 
@@ -1085,29 +982,24 @@
 
                 <h2 class="templatecontentheaderleft">Ballistic Missile Silo</h2>
 
-                <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2 menuflex warflexparentcolors">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Provides the ability to develop and deploy ballistic missiles
-                            (you may only attack countries that are in your continent)</p>
+                        <p class="templatecontentpleft">Provides the ability to develop and deploy ballistic missiles (you may only attack countries that are in your continent)</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["ballisticMissileSilo"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["ballisticMissileSilo"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["ballisticMissileSilo"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["ballisticMissileSilo"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
@@ -1141,8 +1033,7 @@
 
 
 
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/ballisticmissilesilo.jpg') }}" />
+                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/ballisticmissilesilo.jpg') }}" />
                     </div>
                 </div>
 
@@ -1151,29 +1042,24 @@
 
                 <h2 class="templatecontentheaderleft">Inter-Continental Ballistic Missile Silo</h2>
 
-                <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2 menuflex warflexparentcolors">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Allows the deployment and production of ICBMs (they may hit any
-                            country on any continent)</p>
+                        <p class="templatecontentpleft">Allows the deployment and production of ICBMs (they may hit any country on any continent)</p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["ICBMSilo"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["ICBMSilo"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["ICBMSilo"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["ICBMSilo"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
@@ -1207,8 +1093,7 @@
 
 
 
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/intercontinentalballisticmissilesilo.jpg') }}" />
+                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/intercontinentalballisticmissilesilo.jpg') }}" />
                     </div>
                 </div>
 
@@ -1217,29 +1102,25 @@
 
                 <h2 class="templatecontentheaderleft">Nuclear Testing Facility</h2>
 
-                <div class="templatedivflex2 menuflex">
+                <div class="templatedivflex2 menuflex warflexparentcolors">
                     <div class="templatedivflex2left">
 
-                        <p class="templatecontentpleft">Gives you the ability to create nuclear bombs and nuclear
-                            reactors</p>
+                        <p class="templatecontentpleft">Gives you the ability to create nuclear bombs and nuclear reactors
+                        </p>
 
                         <div class="purchasemilitarydiv">
 
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["nuclearTestingFacility"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["nuclearTestingFacility"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %}
 
                                 </div>
                                 <div class="templatedivflex2left flexchildvanilla">
 
-                                    {% if upgrades["nuclearTestingFacility"] %} <button disabled
-                                        class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton"
-                                        formaction=""><span class="material-icons-outlined">
+                                    {% if upgrades["nuclearTestingFacility"] %} <button disabled class="templatedivbutton templatecenteredbutton templateclosedbutton project1disabledbutton" formaction=""><span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
 
@@ -1273,8 +1154,7 @@
 
 
 
-                        <img tabindex="0" class="unitimage"
-                            src="{{ url_for('static', filename='images/nucleartestingfacility.jpg') }}" />
+                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nucleartestingfacility.jpg') }}" />
                     </div>
                 </div>
 
