@@ -2743,6 +2743,7 @@
                 margin-left: -15px;
                 user-select: none;
                 transition: width 0.3s, opacity 0s, padding 0s;
+                pointer-events: none;
             }
             
             .unitcard input[type=checkbox]:checked~.unitcardcheck {
@@ -2778,6 +2779,39 @@
             
             .tutorialdiv {
                 position: relative;
+                overflow: hidden;
+            }
+            
+            .checkmarkparent {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                margin: auto;
+                height: min-content;
+                width: min-content;
+                padding: 50px;
+                background: #00a7e1;
+                z-index: 100;
+                box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0, rgba(0, 0, 0, 0.2) 0 0 0 10000px;
+                width: 80%;
+                padding: 6px 0;
+                color: white;
+                opacity: 0;
+                pointer-events: none;
+            }
+            
+            .tutorialdivactive {
+                pointer-events: none;
+            }
+            
+            .tutorialdivactive .templatedivflex2left {
+                opacity: 0.5;
+            }
+            
+            .tutorialdivactive .checkmarkparent {
+                opacity: 1;
             }
             /*FOOTER*/
             
