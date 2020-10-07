@@ -1641,7 +1641,7 @@
             
             .templatedivflex2left,
             .templatedivflex2right {
-                width: 50%;
+                width: 100%;
                 margin: 20px auto;
                 padding: 8px;
                 flex-direction: column;
