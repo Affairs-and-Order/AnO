@@ -1750,6 +1750,16 @@
                 text-align: center;
             }
             
+            .templatetable th:first-child {
+                border-top-left-radius: 4px;
+                border-bottom-left-radius: 4px;
+            }
+            
+            .templatetable th:last-child {
+                border-top-right-radius: 4px;
+                border-bottom-right-radius: 4px;
+            }
+            
             .templatetable tr:nth-child(odd) {
                 background: var(--tableOne);
             }
