@@ -415,16 +415,16 @@ def war_with_id(war_id):
 
     if cId_type == "spectator":
         return error(400, "You can't view this war")
-    
+
     spyCount = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     spyPrep = 1 # this is an integer from 1 to 5
     eSpyCount = 0 # this is an integer from 0 to 100
     eDefcon = 1 # this is an integer from 1 to 5
-    
+
     if eSpyCount == 0:
         successChance = 100
     else:
-        successChance = spyCount * spyPrep / eSpyCount / eDefcon 
+        successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
     return render_template("war.html", defender=defender, attacker=attacker,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,

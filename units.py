@@ -74,12 +74,6 @@ class TankUnit(BlueprintUnit):
             self.damage += 2
             self.bonus += 6 * self.amount
 
-        # Micro randomization
-        # One bomber beats random number of tanks (where they drop the bombs)
-        # between 2 and 6
-        if 'bombers' == defending_units:
-            self.bonus -= randint(2, 6)*self.amount
-
         return [self.damage, self.bonus]
 
     def buy(amount): pass
@@ -116,8 +110,14 @@ class BomberUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "soldiers":
             self.bonus += 2 * self.amount
+
+        # Micro randomization
+        # One bomber beats random number of tanks (where they drop the bombs)
+        # between 2 and 6
         if defending_units == "tanks":
-            self.bonus += 2 * self.amount
+            self.bonus += randint(2, 6)*self.amount
+            # self.bonus += 2 * self.amount
+
         if defending_units == "destroyers":
             self.bonus += 2 * self.amount
         if defending_units == "submarines":
