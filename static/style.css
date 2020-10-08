@@ -2449,7 +2449,7 @@
                 background: var(--background);
                 margin: 8px;
                 line-height: 30px;
-                padding: 10px;
+                padding: 10px !important;
             }
             
             .provinceimage {
