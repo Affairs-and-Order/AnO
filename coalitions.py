@@ -700,3 +700,20 @@ def accept_treaty(offer_id):
     db = connection.cursor()
 
     cId = session["user_id"]
+
+    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+
+    if str(cId) != coalition_leader:
+        error(400, "You aren't the leader of your coalition.")
+
+    treaty_name = db.execute("SELECT treaty_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_coalition")
+
+
+
