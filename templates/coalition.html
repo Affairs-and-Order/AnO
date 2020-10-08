@@ -500,7 +500,7 @@
 
                                             <button formaction="/accept_bank_request/{{ data[3] }}"><span class="material-icons iconblue">
                                             check_circle_outline
-                                        </span></button
+                                        </span></button>
 
                                     </div>
                                     <div class="templatedivflex2left">
@@ -576,15 +576,19 @@
                     <table class="templatetable templatetable2">
                         <tr>
                             <th>Coalition Name</th>
+                            <th>Treaty name</th>
                             <th>Action</th>
                         </tr>
                         <!--for every coalition make a row with 10 max-->
+                        {% for col1_id, treaty_id in ingoing_treaties %}
                         <tr>
-                            <td>Coalition Name</td>
+                            <td>{{ col1_id }}</td>
+                            <td>{{ treaty_id }}</td>
                             <td><span class="material-icons iconblue">
                                 check_circle_outline
                                         </span></td>
                         </tr>
+                        {% endfor %}
                     </table>
                 </div>
 

@@ -1,4 +1,5 @@
 CREATE TABLE 'treaties'
 ('col1_id' INTEGER NOT NULL,
 'col2_id' INTEGER NOT NULL,
-'treaty_id' INTEGER NOT NULL);
+'treaty_id' INTEGER NOT NULL,
+'status' VARCHAR(20));

@@ -32,31 +32,30 @@ def coalition(colId):
         colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
         members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
         total_influence = get_coalition_influence(colId)
-        average_influence = total_influence / members
+        average_influence = total_influence // members
 
         # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
 
         leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]  # The id of the coalition leader
         leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
 
-        treaties = db.execute("SELECT name FROM treaty_ids").fetchall()
+        ingoing_treaties = db.execute("SELECT col1_id, treaty_id FROM treaties WHERE col2_id=(?) AND status='Pending'", (colId,)).fetchall()
 
+        ### FLAG STUFF
         try:
             flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
         except TypeError:
             flag = None
+        ### 
 
         if leader == cId:
             userLeader = True
         else:
             userLeader = False
 
-        requestMessages = db.execute(
-            "SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
-        requestIds = db.execute(
-            "SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
-        requestNames = db.execute(
-            "SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(?))", (colId,)).fetchall()
+        requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
+        requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
+        requestNames = db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(?))", (colId,)).fetchall()
 
         requests = zip(requestIds, requestNames, requestMessages)
 
@@ -64,6 +63,7 @@ def coalition(colId):
 
         colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
+        ### STUFF FOR JINJA
         try:
             userInCol = db.execute("SELECT userId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
             userInCol = True
@@ -75,7 +75,9 @@ def coalition(colId):
             userInCurCol = True
         except:
             userInCurCol = False
+        ###
 
+        ### BANK STUFF
         if userLeader == True:
 
             bankRequests = db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(?)", (colId,)).fetchall()
@@ -89,11 +91,13 @@ def coalition(colId):
             bankRequests = banks
         else:
             bankRequests = []
+        ### 
+
         connection.close()
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-                               requests=requests, userInCurCol=userInCurCol, treaties=treaties, total_influence=total_influence,
+                               requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
                                average_influence=average_influence, leaderName=leaderName, leader=leader,
                                flag=flag, bankRequests=bankRequests)
 
