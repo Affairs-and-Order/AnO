@@ -646,25 +646,28 @@ def accept_bank_request(bankId):
     return redirect("/my_coalition")
 
 @login_required
-@app.route("/offer_treaty/<colName>", methods=["POST"])
-def offer_treaty(colName):
+@app.route("/offer_treaty", methods=["POST"])
+def offer_treaty():
 
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
     cId = session["user_id"]
 
+    col2_name = request.form.get("coalition_name")
+    col2_id = db.execute("SELECT id FROM colNames WHERE name=(?)", (col2_name,)).fetchone()[0]
+
     user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
 
     coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
 
-    if cId != coalition_leader:
-        return error(400, "You aren't the leader of your coalition.")
+    if str(cId) != coalition_leader:
+        error(400, "You aren't the leader of your coalition.")
 
     treaty_name = request.form.get("treaty_name")
     treaty_id = db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(?)", (treaty_name,)).fetchone()[0]
 
-    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id)", (user_coalition, colName, treaty_id))
+    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id) VALUES (?, ?, ?)", (user_coalition, col2_id, treaty_id))
 
     connection.commit()
     connection.close()
