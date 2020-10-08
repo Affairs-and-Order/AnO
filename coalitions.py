@@ -661,9 +661,10 @@ def offer_treaty(colName):
     if cId != coalition_leader:
         return error(400, "You aren't the leader of your coalition.")
 
+    treaty_name = request.form.get("treaty_name")
+    treaty_id = db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(?)", (treaty_name,)).fetchone()[0]
 
-
-
+    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id)", (user_coalition, colName, treaty_id))
 
     connection.commit()
     connection.close()
