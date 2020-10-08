@@ -2126,7 +2126,7 @@
                 color: white;
                 border-radius: 190px;
                 position: relative;
-                box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 4px 12px 1px #00a7e130, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px, #007ca5 0 6px;
+                box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 4px 12px 1px #00a7e130, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px, #0093c4 0 6px;
                 transition: all 0.1.5s linear;
                 width: 65% !important;
                 padding-top: 15.5px !important;
@@ -2139,7 +2139,7 @@
                 background-position: 0;
                 border: none;
                 top: 0px;
-                box-shadow: inset rgba(39, 41, 59, 0.3) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110, rgba(39, 41, 59, 0.15) 0px 4px 6px 0px, #007ca5 0 0px;
+                box-shadow: inset rgba(39, 41, 59, 0.3) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110, rgba(39, 41, 59, 0.15) 0px 4px 6px 0px, #0093c4 0 0px;
             }
             
             .landingpagebutton:focus {
@@ -2147,7 +2147,7 @@
                 background-position: 0;
                 border: none;
                 top: 0px;
-                box-shadow: inset rgba(39, 41, 59, 0.5) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110, rgba(39, 41, 59, .4) 0px 4px 6px 0px, #007ca5 0 0px;
+                box-shadow: inset rgba(39, 41, 59, 0.5) 0px 0px 150px 2px, 0px 6px 8px 2px #00a7e110, rgba(39, 41, 59, .4) 0px 4px 6px 0px, #0093c4 0 0px;
             }
             
             .landingpagebutton span {
