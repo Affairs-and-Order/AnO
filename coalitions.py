@@ -691,3 +691,12 @@ def offer_treaty():
     connection.close()
 
     return redirect("/my_coalition")
+
+@login_required
+@app.route("/accept_treaty/<offer_id>", methods=["POST"])
+def accept_treaty(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
