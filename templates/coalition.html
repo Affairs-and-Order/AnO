@@ -554,11 +554,11 @@
 
                         <select class="templateselect" name="diplomacy">
                             <option class="templateoption" selected disabled>Choose Treaty</option>
-                            {% for i in treaties%}
-    <!--hovering over the options tags will tell the users what they do-->
-                            <option class="templateoption">{{ i[0] }}</option>
-                            {% endfor %}
-                        
+                            <!--hovering over the options tags will tell the users what they do-->
+                            <option value="MDOAP" class="templateoption">MDOAP</option>
+                            <option value="MDP" class="templateoption">MDP</option>
+                            <option value="NAP" class="templateoption">NAP</option>
+                            <option value="ODP" class="templateoption">ODP</option>
                         </select>
 
                     </div>

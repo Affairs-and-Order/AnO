@@ -39,7 +39,9 @@ def coalition(colId):
         leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]  # The id of the coalition leader
         leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
 
+        ### TREATIES
         ingoing_treaties = db.execute("SELECT col1_id, treaty_id FROM treaties WHERE col2_id=(?) AND status='Pending'", (colId,)).fetchall()
+        ###
 
         ### FLAG STUFF
         try:
@@ -48,10 +50,6 @@ def coalition(colId):
             flag = None
         ### 
 
-        if leader == cId:
-            userLeader = True
-        else:
-            userLeader = False
 
         requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
         requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
@@ -75,6 +73,11 @@ def coalition(colId):
             userInCurCol = True
         except:
             userInCurCol = False
+
+        if leader == cId:
+            userLeader = True
+        else:
+            userLeader = False
         ###
 
         ### BANK STUFF
@@ -637,6 +640,31 @@ def accept_bank_request(bankId):
 
     db.execute("DELETE FROM colBanksRequests WHERE id=(?)", (bankId,))
     
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_coalition")
+
+@login_required
+@app.route("/offer_treaty/<colName>", methods=["POST"])
+def offer_treaty(colName):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+
+    if cId != coalition_leader:
+        return error(400, "You aren't the leader of your coalition.")
+
+
+
+
+
     connection.commit()
     connection.close()
 
