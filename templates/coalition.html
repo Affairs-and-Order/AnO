@@ -582,10 +582,10 @@
                             <th>Action</th>
                         </tr>
                         <!--for every coalition make a row with 10 max-->
-                        {% for col1_id, treaty_id in ingoing_treaties %}
+                        {% for treaty_id, col_id, col_name, treaty_name in ingoing_treaties %}
                         <tr>
-                            <td>{{ col1_id }}</td>
-                            <td>{{ treaty_id }}</td>
+                            <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
+                            <td>{{ treaty_name }}</td>
                             <td><span class="material-icons iconblue">
                                 check_circle_outline
                                         </span></td>

@@ -40,7 +40,25 @@ def coalition(colId):
         leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
 
         ### TREATIES
-        ingoing_treaties = db.execute("SELECT col1_id, treaty_id FROM treaties WHERE col2_id=(?) AND status='Pending'", (colId,)).fetchall()
+        treaty_ids = db.execute("SELECT treaty_id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
+        coalition_ids = []
+        coalition_names = []
+        treaty_names = []
+
+        for treaty_idd in treaty_ids:
+
+            treaty_id = treaty_idd[0]
+
+            col_id = db.execute("SELECT col1_id FROM treaties WHERE treaty_id=(?)", (treaty_id,)).fetchone()[0]
+            coalition_ids.append(col_id)
+
+            coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (col_id,)).fetchone()[0]
+            coalition_names.append(coalition_name)
+
+            treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(?)", (treaty_id,)).fetchone()[0]
+            treaty_names.append(treaty_name)
+
+        ingoing_treaties = zip(treaty_ids, coalition_ids, coalition_names, treaty_names)
         ###
 
         ### FLAG STUFF
