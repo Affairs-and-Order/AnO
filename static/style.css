@@ -1589,6 +1589,7 @@
             }
             
             .divflex2full div {
+                width: fit-content;
                 padding: 0;
                 text-align: center;
                 margin: 10px auto;
@@ -1646,6 +1647,7 @@
             
             .templatedivflex2left,
             .templatedivflex2right {
+                width: 100%;
                 margin: 20px auto;
                 padding: 8px;
                 flex-direction: column;
@@ -2664,7 +2666,6 @@
                 transition: all 0.3s;
                 transform: scale(0.995);
                 margin: 12px !important;
-                width: 100%;
             }
             
             @media all and (max-width: 1055px) {
