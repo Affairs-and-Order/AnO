@@ -42,7 +42,7 @@ def coalition(colId):
         ############## TREATIES ##################
 
         #### INGOING ####
-        ingoing_ids = db.execute("SELECT treaty_id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
+        ingoing_ids = db.execute("SELECT id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
         coalition_ids = []
         coalition_names = []
         treaty_names = []
@@ -57,7 +57,7 @@ def coalition(colId):
             coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (col_id,)).fetchone()[0]
             coalition_names.append(coalition_name)
 
-            treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(?)", (treaty_id,)).fetchone()[0]
+            treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (treaty_id,)).fetchone()[0]
             treaty_names.append(treaty_name)
 
         ingoing_treaties = zip(ingoing_ids, coalition_ids, coalition_names, treaty_names)
