@@ -47,9 +47,9 @@ def coalition(colId):
         col_names = []
         trt_names = []
 
-        for treaty_idd in ingoing_ids:
+        for treaty_iddd in ingoing_ids:
 
-            treaty_id = treaty_idd[0]
+            treaty_id = treaty_iddd[0]
 
             col_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (treaty_id,)).fetchone()[0]
             col_ids.append(col_id)
@@ -65,7 +65,8 @@ def coalition(colId):
 
         #### ACTIVE ####
 
-        active_ids = db.execute(
+        
+        raw_active_ids = db.execute(
         """SELECT id FROM treaties WHERE col2_id=(?) OR col1_id=(?) AND status='Active' ORDER BY treaty_id ASC""",
         (colId, colId)).fetchall()
 
@@ -74,11 +75,10 @@ def coalition(colId):
         coalition_names = []
         treaty_names = []
 
-        for treaty_idd in active_ids:
-            print(treaty_idd)
-            offer_id = treaty_idd[0]
 
-            print(offer_id)
+        for i in raw_active_ids:
+
+            offer_id = i[0]
 
             active_ids.append(offer_id)
 
@@ -97,9 +97,6 @@ def coalition(colId):
             treaty_names.append(treaty_name)
 
         active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
-
-        for i, j, k, l in active_treaties:
-            print(i, j, k, l)
 
         ################
 
