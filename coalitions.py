@@ -708,12 +708,9 @@ def accept_treaty(offer_id):
     if str(cId) != coalition_leader:
         error(400, "You aren't the leader of your coalition.")
 
-    treaty_name = db.execute("SELECT treaty_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+    db.execute("UPDATE treaties SET status='Active' WHERE id=(?)", (offer_id,))
 
     connection.commit()
     connection.close()
 
     return redirect("/my_coalition")
-
-
-

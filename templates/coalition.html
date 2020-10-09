@@ -586,9 +586,11 @@
                         <tr>
                             <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
                             <td>{{ treaty_name }}</td>
-                            <td><span class="material-icons iconblue">
+                            <form method="POST">
+                            <td><button formaction="/accept_treaty/{{ treaty_id[0] }}"><span class="material-icons iconblue">
                                 check_circle_outline
-                                        </span></td>
+                                        </span></button></td>
+                            </form>
                         </tr>
                         {% endfor %}
                     </table>
