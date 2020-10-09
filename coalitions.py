@@ -39,13 +39,15 @@ def coalition(colId):
         leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]  # The id of the coalition leader
         leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
 
-        ### TREATIES
-        treaty_ids = db.execute("SELECT treaty_id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
+        ############## TREATIES ##################
+
+        #### INGOING ####
+        ingoing_ids = db.execute("SELECT treaty_id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
         coalition_ids = []
         coalition_names = []
         treaty_names = []
 
-        for treaty_idd in treaty_ids:
+        for treaty_idd in ingoing_ids:
 
             treaty_id = treaty_idd[0]
 
@@ -58,8 +60,43 @@ def coalition(colId):
             treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(?)", (treaty_id,)).fetchone()[0]
             treaty_names.append(treaty_name)
 
-        ingoing_treaties = zip(treaty_ids, coalition_ids, coalition_names, treaty_names)
-        ###
+        ingoing_treaties = zip(ingoing_ids, coalition_ids, coalition_names, treaty_names)
+        #################
+
+        #### ACTIVE ####
+
+        active_ids = db.execute(
+        """SELECT id FROM treaties WHERE col2_id=(?) OR col1_id=(?) AND status='Active' ORDER BY treaty_id ASC""",
+        (colId, colId)).fetchall()
+
+        coalitions_ids = []
+        coalition_names = []
+        treaty_names = []
+
+        for treaty_idd in active_ids:
+            offer_id = treaty_idd[0]
+
+            coalition_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+            if coalition_id != colId:
+                pass
+            else: 
+                coalition_id = db.execute("SELECT col2_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+
+            coalition_ids.append(coalition_id)
+            
+            coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (coalition_id,)).fetchone()[0]
+            coalition_names.append(coalition_name)
+
+            treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (offer_id,)).fetchone()[0]
+            treaty_names.append(treaty_name)
+
+        active_treaties = zip(coalition_ids, coalition_names, treaty_names)
+
+
+        ################
+
+
+        ############################################
 
         ### FLAG STUFF
         try:
@@ -120,7 +157,7 @@ def coalition(colId):
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
                                average_influence=average_influence, leaderName=leaderName, leader=leader,
-                               flag=flag, bankRequests=bankRequests)
+                               flag=flag, bankRequests=bankRequests, active_treaties=active_treaties)
 
 
 @login_required
