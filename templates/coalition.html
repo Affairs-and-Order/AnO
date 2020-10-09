@@ -542,9 +542,11 @@
                         <tr>
                             <td><a href="/coalition/{{ coalition_id }}">{{ coalition_name }}</a></td>
                             <td>{{ treaty_name }}</td>
-                            <td><span class="material-icons iconred">
+                            <form method="POST">
+                            <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
                                 remove_circle_outline
-                                </span></td>
+                                </span></button></td>
+                            </form>
                         </tr>
                         {% endfor %}
                     </table>

@@ -51,7 +51,7 @@ def coalition(colId):
 
             treaty_id = treaty_idd[0]
 
-            col_id = db.execute("SELECT col1_id FROM treaties WHERE treaty_id=(?)", (treaty_id,)).fetchone()[0]
+            col_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (treaty_id,)).fetchone()[0]
             col_ids.append(col_id)
 
             coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (col_id,)).fetchone()[0]
@@ -75,7 +75,10 @@ def coalition(colId):
         treaty_names = []
 
         for treaty_idd in active_ids:
+            print(treaty_idd)
             offer_id = treaty_idd[0]
+
+            print(offer_id)
 
             active_ids.append(offer_id)
 
@@ -95,6 +98,8 @@ def coalition(colId):
 
         active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
 
+        for i, j, k, l in active_treaties:
+            print(i, j, k, l)
 
         ################
 
@@ -749,6 +754,29 @@ def accept_treaty(offer_id):
         error(400, "You aren't the leader of your coalition.")
 
     db.execute("UPDATE treaties SET status='Active' WHERE id=(?)", (offer_id,))
+
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_coalition")
+
+@login_required
+@app.route("/break_treaty/<offer_id>", methods=["POST"])
+def break_treaty(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+
+    if str(cId) != coalition_leader:
+        error(400, "You aren't the leader of your coalition.")
+
+    db.execute("DELETE FROM treaties WHERE id=(?)", (offer_id,))
 
     connection.commit()
     connection.close()
