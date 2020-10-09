@@ -538,7 +538,7 @@
                             <th>Action</th>
                         </tr>
                         <!--for every ally make a row-->
-                        {% for coalition_id, coalition_name, treaty_name in active_treaties %}
+                        {% for coalition_id, coalition_name, treaty_name, id in active_treaties %}
                         <tr>
                             <td><a href="/coalition/{{ coalition_id }}">{{ coalition_name }}</a></td>
                             <td>{{ treaty_name }}</td>

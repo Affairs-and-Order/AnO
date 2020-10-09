@@ -43,24 +43,24 @@ def coalition(colId):
 
         #### INGOING ####
         ingoing_ids = db.execute("SELECT id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
-        coalition_ids = []
-        coalition_names = []
-        treaty_names = []
+        col_ids = []
+        col_names = []
+        trt_names = []
 
         for treaty_idd in ingoing_ids:
 
             treaty_id = treaty_idd[0]
 
             col_id = db.execute("SELECT col1_id FROM treaties WHERE treaty_id=(?)", (treaty_id,)).fetchone()[0]
-            coalition_ids.append(col_id)
+            col_ids.append(col_id)
 
             coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (col_id,)).fetchone()[0]
-            coalition_names.append(coalition_name)
+            col_names.append(coalition_name)
 
             treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (treaty_id,)).fetchone()[0]
-            treaty_names.append(treaty_name)
+            trt_names.append(treaty_name)
 
-        ingoing_treaties = zip(ingoing_ids, coalition_ids, coalition_names, treaty_names)
+        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
         #################
 
         #### ACTIVE ####
@@ -69,12 +69,15 @@ def coalition(colId):
         """SELECT id FROM treaties WHERE col2_id=(?) OR col1_id=(?) AND status='Active' ORDER BY treaty_id ASC""",
         (colId, colId)).fetchall()
 
-        coalitions_ids = []
+        active_ids = []
+        coalition_ids = []
         coalition_names = []
         treaty_names = []
 
         for treaty_idd in active_ids:
             offer_id = treaty_idd[0]
+
+            active_ids.append(offer_id)
 
             coalition_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
             if coalition_id != colId:
@@ -90,7 +93,7 @@ def coalition(colId):
             treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (offer_id,)).fetchone()[0]
             treaty_names.append(treaty_name)
 
-        active_treaties = zip(coalition_ids, coalition_names, treaty_names)
+        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
 
 
         ################
