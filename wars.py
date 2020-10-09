@@ -193,10 +193,10 @@ def wars():
 # TODO: put the Peace offers lable under "Internal Affairs" or "Other"
 # Peace offers show up here
 @app.route("/peace_offers", methods=["POST", "GET"])
-@login_required
+# @login_required
 def peace_offers():
-    cId = session["user_id"]
-    # cId = 11
+    # cId = session["user_id"]
+    cId = 11
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -208,15 +208,24 @@ def peace_offers():
     # try:
     if peace_offers:
 
+        incoming={}
+        outgoing={}
+
         for offer in peace_offers:
             offer_id = offer[0]
             if offer_id != None:
 
                 # Every offer has a different subset
-                offers[offer_id] = {}
+                # offers[offer_id] = {}
 
                 resources_fetch = db.execute("SELECT demanded_resources FROM peace WHERE id=(?)", (offer_id,)).fetchone()
                 author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
+                if author_id == cId:
+                    offer = outgoing
+                else:
+                    offer = incoming
+
+                offer[offer_id] = {}
 
                 if resources_fetch:
                     resources = resources_fetch[0]
@@ -224,27 +233,34 @@ def peace_offers():
                         amounts = db.execute("SELECT demanded_amount FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0].split(",")
                         resources = resources.split(",")
 
-                        offers[offer_id]["resource_count"] = len(resources)
-                        offers[offer_id]["resources"] = resources
-                        offers[offer_id]["amounts"] = amounts
+                        print(offer)
+                        offer[offer_id]["resource_count"] = len(resources)
+                        offer[offer_id]["resources"] = resources
+                        offer[offer_id]["amounts"] = amounts
 
                         if cId == author_id:
-                            offers[offer_id]["owned"] = 1
+                            offer[offer_id]["owned"] = 1
 
                     # TODO: make peace at post when clicked
                     # white peace
                     else:
-                        offers[offer_id]["peace_type"] = "white"
+                        offer[offer_id]["peace_type"] = "white"
 
                     # author_id = db.execute("SELECT author FROM peace WHERE id=(?)", (offer_id,)).fetchone()[0]
-                    offers[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
+                    offer[offer_id]["author"] = [author_id, db.execute("SELECT username FROM users WHERE id=(?)", (author_id,)).fetchone()[0]]
+
+                    ids=db.execute("SELECT attacker,defender FROM wars WHERE peace_offer_id=(?)", (offer_id,)).fetchone()
+                    if ids[0] == author_id:
+                        receiver_name = db.execute("SELECT username FROM users WHERE id=(?)", (ids[1],)).fetchone()[0]
+                    else:
+                        receiver_name = db.execute("SELECT username FROM users WHERE id=(?)", (ids[0],)).fetchone()[0]
+
+                    offer[offer_id]["receiver"] = receiver_name
 
     # except:
         # return "Something went wrong."
 
     if request.method == "POST":
-        # for i in request.form:
-        #     print(i, type(request.form[i]))
 
         offer_id = request.form.get("peace_offer", None)
 
@@ -300,7 +316,7 @@ def peace_offers():
         return redirect("/peace_offers")
 
     # TODO: put a button to revoke the peace offer made by the author
-    return render_template("peace/peace_offers.html", cId=cId, peace_offers=offers)
+    return render_template("peace/peace_offers.html", cId=cId, incoming_peace_offers=incoming, outgoing_peace_offers=outgoing)
 
 @app.route("/send_peace_offer/<int:war_id>", methods=["POST"])
 @login_required

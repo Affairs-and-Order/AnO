@@ -21,13 +21,17 @@
                     <th>Amount</th>
                     <th>Action</th>
                 </tr>
+                {% for key,value in outgoing_peace_offers.items() %}
                 <tr>
-                    <td>[[ countryName ]]</td>
+                    <!-- The target of the message -->
+                    <td>{{value["receiver"]}}</td>
                     <td>
                         <div class="center fit">
                             <div class="left fit">
                                 <!--duplicate this for every resource they offer-->
-                                [[ resource1 ]]<br />
+                                {% for index in range(0, value["resource_count"]) %}
+                                  <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
+                                {% endfor %}
                                 <!--until here-->
                             </div>
                         </div>
@@ -36,6 +40,7 @@
                       highlight_off
                       </span></td>
                 </tr>
+                {% endfor %}
             </table>
         </div>
 
@@ -51,21 +56,26 @@
                     <th>Amount</th>
                     <th>Action</th>
                 </tr>
+                {% for key,value in incoming_peace_offers.items() %}
                 <tr>
-                    <td>[[ countryName ]]</td>
+                    <!-- The target of the message -->
+                    <td>{{value["author"][1]}}</td>
                     <td>
                         <div class="center fit">
                             <div class="left fit">
                                 <!--duplicate this for every resource they offer-->
-                                [[ resource1 ]]<br />
+                                {% for index in range(0, value["resource_count"]) %}
+                                  <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
+                                {% endfor %}
                                 <!--until here-->
                             </div>
                         </div>
                     </td>
-                    <td><span class="material-icons iconblue">
-                      check_circle_outline
-                          </span></td>
+                    <td><span class="material-icons iconred">
+                      highlight_off
+                      </span></td>
                 </tr>
+                {% endfor %}
             </table>
         </div>
 
