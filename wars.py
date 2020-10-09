@@ -243,6 +243,9 @@ def peace_offers():
         # return "Something went wrong."
 
     if request.method == "POST":
+        # for i in request.form:
+        #     print(i, type(request.form[i]))
+
         offer_id = request.form.get("peace_offer", None)
 
         # Validate inputs
@@ -299,72 +302,94 @@ def peace_offers():
     # TODO: put a button to revoke the peace offer made by the author
     return render_template("peace/peace_offers.html", cId=cId, peace_offers=offers)
 
-@app.route("/send_peace_offer", methods=["GET", "POST"])
+@app.route("/send_peace_offer/<int:target>", methods=["GET", "POST"])
 @login_required
-def send_peace_offer():
+def send_peace_offer(target):
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
     cId = session["user_id"]
+    print("SEDN PEACE IS RUNNING")
+
     # cId = 11
 
-    if request.method == "GET":
-        wars = Nation.get_current_wars(cId)
-        enemy = []
+    # if request.method == "GET":
+    #     wars = Nation.get_current_wars(cId)
+    #     enemy = []
+    #
+    #     # determine wheter the user is the aggressor or the defender
+    #     for war_id in wars:
+    #         is_attacker = db.execute("SELECT 1 FROM wars WHERE id=(?) AND attacker=(?)", (war_id[0], cId)).fetchone()
+    #
+    #         if is_attacker:
+    #             enemy_ = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+    #         else:
+    #             enemy_ = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+    #
+    #         enemy.append(db.execute("SELECT username FROM users WHERE id=(?)", (enemy_,)).fetchone()[0])
+    #
+    #     return render_template("peace/send_peace_offer.html", enemy=enemy)
 
-        # determine wheter the user is the aggressor or the defender
-        for war_id in wars:
-            is_attacker = db.execute("SELECT 1 FROM wars WHERE id=(?) AND attacker=(?)", (war_id[0], cId)).fetchone()
+    if request.method == "POST":
 
-            if is_attacker:
-                enemy_ = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
-            else:
-                enemy_ = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id[0],)).fetchone()[0]
+        print("SHOULD RUN")
+        print(request.form)
+        # target = request.form.get("enemy")
+        resources = []
+        resources_amount = []
 
-            enemy.append(db.execute("SELECT username FROM users WHERE id=(?)", (enemy_,)).fetchone()[0])
+        try:
+            for resource in request.form:
+                amount = request.form.get(resource, None)
+                if amount:
+                    amo = int(amount)
+                    if amo:
+                        resources.append(resource)
+                        resources_amount.append(amo)
+        except:
+            return "Invalid offer!"
 
-        return render_template("peace/send_peace_offer.html", enemy=enemy)
 
-    elif request.method == "POST":
-
-        target = request.form.get("enemy")
-        resources = request.form.get("resources_send", None)
-        resources_amount = request.form.get("resources_amount_send", None)
+        # resources = request.form.get("resources_send", None)
+        # resources_amount = request.form.get("resources_amount_send", None)
 
         # Input validation
-        try:
-            if not target:
-                raise Exception("Target is invalid")
+        # try:
+        if not target:
+            raise Exception("Target is invalid")
 
-            if resources and resources_amount:
-                resources_amount = resources_amount[:-1]
-                resources = resources[:-1]
 
-                r = resources.split(",")
-                a = resources_amount.split(",")
+        resources_string = ""
+        amount_string = ""
 
-                for res, amo in zip(r, a):
-                    if res not in Economy.resources:
-                        raise Exception("Invalid resource")
+        print(resources)
+        print(resources_amount)
 
-                    int(amo)
+        if len(resources) and len(resources_amount):
+            for res, amo in zip(resources, resources_amount):
+                if res not in Economy.resources:
+                    raise Exception("Invalid resource")
 
-                db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((?),(?),(?))", (cId, resources, resources_amount))
+                resources_string+=res+","
+                amount_string+=str(resources_amount)+","
 
-                enemy_id = db.execute("SELECT id FROM users WHERE username=(?)", (target,)).fetchone()[0]
+            db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((?),(?),(?))", (cId, resources_string[:-1], amount_string[:-1]))
+            enemy_id = db.execute("SELECT id FROM users WHERE username=(?)", (target,)).fetchone()[0]
+            if enemy_id == None:
+                return "Selected target is invalid!"
 
-                war_id = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?)) AND peace_date IS NULL",
-                (cId, cId, enemy_id, enemy_id)).fetchone()[0]
+            war_id = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?)) AND peace_date IS NULL",
+            (cId, cId, enemy_id, enemy_id)).fetchone()[0]
 
-                db.execute("UPDATE wars SET peace_offer_id=(?) WHERE id=(?)", (db.lastrowid, war_id))
-                connection.commit()
+            db.execute("UPDATE wars SET peace_offer_id=(?) WHERE id=(?)", (db.lastrowid, war_id))
+            connection.commit()
 
-            else:
-                raise TypeError
-        except:
-            return "ERROR"
         else:
-            return redirect("/peace_offers")
+            raise TypeError
+        # except:
+            # return "ERROR"
+        # else:
+            # return redirect("/peace_offers")
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])
@@ -426,7 +451,7 @@ def war_with_id(war_id):
     else:
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
-    return render_template("war.html", defender=defender, attacker=attacker,
+    return render_template("war.html", defender=defender, attacker=attacker, war_id=war_id,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance)
 
