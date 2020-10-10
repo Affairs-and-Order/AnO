@@ -779,3 +779,26 @@ def break_treaty(offer_id):
     connection.close()
 
     return redirect("/my_coalition")
+
+@login_required
+@app.route("/decline_treaty/<offer_id>", methods=["POST"])
+def decline_treaty(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+
+    if str(cId) != coalition_leader:
+        error(400, "You aren't the leader of your coalition.")
+
+    db.execute("DELETE FROM treaties WHERE id=(?)", (offer_id,))
+
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_coalition")
