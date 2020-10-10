@@ -67,7 +67,7 @@ def coalition(colId):
 
         
         raw_active_ids = db.execute(
-        """SELECT id FROM treaties WHERE col2_id=(?) OR col1_id=(?) AND status='Active' ORDER BY treaty_id ASC""",
+        """SELECT id FROM treaties WHERE col2_id=(?) AND status='Active' OR col1_id=(?) ORDER BY treaty_id ASC""",
         (colId, colId)).fetchall()
 
         active_ids = []
