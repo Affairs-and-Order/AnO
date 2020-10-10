@@ -252,37 +252,33 @@
         </div>
         <!--JOIN-->
         <div class="join" id="join">
+            <!--if the coalition has created a message show it-->
+            <h2 class="templatecontentheadercenter">Message From {{ name }}</h2>
+
+            <p class="templatecontentpcenter">
+                [[ message ]]
+            </p>
+            <!--show until here-->
             <div class="infodiv">
-                <div class="templatedivflex2 menuflex">
-                    <div class="templatedivflex2left">
+                {% if colType == "Invite Only" %}
+                <p class="templatecontentpleft">
+                    You are
+                    <!--applying if invite only, joining if not-->applying for {{ name }} please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
+                </p>
+                <textarea name="message" class="templatetextarea" autocomplete="off" placeholder="Your message"></textarea> {% endif %}
+                <ul>
+                    {{ name }} is a [coalition type (economic, war, trade)] coalition.
+                </ul>
+                <!--if not at war don't show the warning below-->
+                <ul class="warning">
+                    {{ name }} is currently at war!
+                </ul>
 
-                        {% if colType == "Invite Only" %}
-                        <h3 class="unitcount">Applying for {{ name }}</h3>
-
-                        <p class="templatecontentpleft">
-                            You are
-                            <!--applying if invite only, joining if not-->applying for {{ name }} please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
-                        </p>
-                        <ul>
-                            {{ name }} is a [coalition type (economic, war, trade)] coalition.
-                        </ul>
-                        {% endif %}
-                        <!--if not at war don't show the warning below-->
-                        <ul class="warning">
-                            {{ name }} is currently at war!
-                        </ul>
-                    </div>
-                    <div class="templatedivflex2left">
-                        <!-- <form> temporarily commented out this form-->
-                        <textarea name="message" class="templatetextarea" autocomplete="off" placeholder="Your message"></textarea>
-                    </div>
-
-                </div>
                 {% if colType == "Invite Only" %}
                 <form action="/join/{{ colId }}" method="POST">
-                    <button type="submit" value="submit" class="templatedivbutton loginsignupbutton"><span class="material-icons-outlined">
+                    <button type="submit" value="submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     arrow_forward
-                    </span>Request to join</button>
+                    </span>Apply</button>
                 </form>
                 {% endif %}
 
@@ -295,7 +291,7 @@
 
                 {% if colType == "Open" %}
                 <form action="/join/{{ colId }}" method="POST">
-                    <button type="submit" class="templatedivbutton loginsignupbutton" value="submit"><span class="material-icons-outlined">
+                    <button type="submit" class="templatedivbutton templatecenteredbutton" value="submit"><span class="material-icons-outlined">
                     arrow_forward
                     </span>Join</button>
                 </form>
@@ -502,10 +498,10 @@
                                             check_circle_outline
                                         </span></button>
 
-                                    </div>
-                                    <div class="templatedivflex2left">
+                                        </div>
+                                        <div class="templatedivflex2left">
 
-                                        <button formaction="/remove_bank_request/{{ data[3] }}"><span class="material-icons iconred">
+                                            <button formaction="/remove_bank_request/{{ data[3] }}"><span class="material-icons iconred">
                                             remove_circle_outline
                                             </span></button>
 
@@ -543,7 +539,7 @@
                             <td><a href="/coalition/{{ coalition_id }}">{{ coalition_name }}</a></td>
                             <td>{{ treaty_name }}</td>
                             <form method="POST">
-                            <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
+                                <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
                                 remove_circle_outline
                                 </span></button></td>
                             </form>
@@ -553,11 +549,11 @@
                 </div>
 
                 <form action="/offer_treaty" method="POST">
-                <h2 class="templatecontentheadercenter">Add Ally</h2>
-                <div class="templatedivflex2 divflex2center menuflex">
-                    <div class="templatedivflex2left">
+                    <h2 class="templatecontentheadercenter">Add Ally</h2>
+                    <div class="templatedivflex2 divflex2center menuflex">
+                        <div class="templatedivflex2left">
 
-                        <select class="templateselect" name="treaty_name">
+                            <select class="templateselect" name="treaty_name">
                             <option class="templateoption" selected disabled>Choose Treaty</option>
                             <!--hovering over the options tags will tell the users what they do-->
                             <option value="MDOAP" class="templateoption">MDOAP</option>
@@ -566,14 +562,14 @@
                             <option value="ODP" class="templateoption">ODP</option>
                         </select>
 
-                    </div>
-                    <div class="templatedivflex2left">
+                        </div>
+                        <div class="templatedivflex2left">
 
-                        <input class="loginsignupinput" autocomplete="off" name="coalition_name" placeholder="Coalition name"/>
+                            <input class="loginsignupinput" autocomplete="off" name="coalition_name" placeholder="Coalition name" />
 
+                        </div>
                     </div>
-                </div>
-                <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
+                    <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     check
                     </span>Go</button>
                 </form>
@@ -591,7 +587,7 @@
                             <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
                             <td>{{ treaty_name }}</td>
                             <form method="POST">
-                            <td><button formaction="/accept_treaty/{{ treaty_id[0] }}"><span class="material-icons iconblue">
+                                <td><button formaction="/accept_treaty/{{ treaty_id[0] }}"><span class="material-icons iconblue">
                                 check_circle_outline
                                         </span></button></td>
                             </form>
