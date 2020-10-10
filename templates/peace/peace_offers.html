@@ -30,7 +30,7 @@
                             <div class="left fit">
                                 <!--duplicate this for every resource they offer-->
                                 {% for index in range(0, value["resource_count"]) %}
-                                  <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
+                                <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
                                 {% endfor %}
                                 <!--until here-->
                             </div>
@@ -65,14 +65,14 @@
                             <div class="left fit">
                                 <!--duplicate this for every resource they offer-->
                                 {% for index in range(0, value["resource_count"]) %}
-                                  <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
+                                <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
                                 {% endfor %}
                                 <!--until here-->
                             </div>
                         </div>
                     </td>
                     <td><span class="material-icons iconred">
-                      highlight_off
+                      check_circle_outline
                       </span></td>
                 </tr>
                 {% endfor %}
