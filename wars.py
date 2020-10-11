@@ -301,7 +301,7 @@ def peace_offers():
                 count = 0
                 for value in resource_dict.values():
                     if int(amounts[count]) > value:
-                        return "Can't accept peace offer because you don't have the required resources!"
+                        return error(400, "Can't accept peace offer because you don't have the required resources!")
 
                     eco.transfer_resources(resources[count], int(amounts[count]), author_id)
                     count += 1
@@ -312,7 +312,7 @@ def peace_offers():
                 return "No decision was made."
 
         else:
-            return "You can't accept your own offer."
+            return error(403, "You can't accept your own offer.")
 
         return redirect("/peace_offers")
 
@@ -392,7 +392,7 @@ def war_with_id(war_id):
     # Check if war_exist
     valid_war = db.execute("SELECT * FROM wars WHERE id=(?)",(war_id,)).fetchone()
     if not valid_war:
-        return "This war doesen't exist"
+        return error(404, "This war doesn't exist")
 
     # Check if peace already made
     peace_made = db.execute("SELECT peace_date FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
@@ -550,7 +550,7 @@ def warAmount():
                 try:
                     selected_units[units_name[number-1]] = int(unit_amount)
                 except:
-                    return "Unit amount entered was not a number" # add javascript checks for this in the front end
+                    return error(400, "Unit amount entered was not a number") # add javascript checks for this also in the front end
 
             # Check every time when user input comes in lest user bypass input validation
             # Error code if any else return None
@@ -696,6 +696,7 @@ def warResult():
             print("INVALID USER IDs")
 
         print(attack_effects, "AFTER WARTYPE")
+
         infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
         defender_result["infra_damage"] = infra_damage_effects
 
@@ -767,21 +768,21 @@ def declare_war():
         # defender = Nation(10)
 
         if attacker.id == defender.id:
-            return "Can't declare war on yourself"
+            return error(400, "Can't declare war on yourself")
 
         already_war_with = db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (attacker.id, attacker.id,)).fetchall()
 
         if (attacker.id, defender_id,) in already_war_with or (defender_id, attacker.id) in already_war_with:
-            return "You already fight against..."
+            return error(400, "You already fight against this country!")
 
         # Check province difference
         attacker_provinces = attacker.get_provinces()["provinces_number"]
         defender_provinces = defender.get_provinces()["provinces_number"]
 
         if (attacker_provinces - defender_provinces > 1):
-            return "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
+            return error(400, "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
         if (defender_provinces - attacker_provinces > 3):
-            return "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you."
+            return error(400, "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
 
         # Check if nation currently at peace with another nation
         current_peace = db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(?) OR defender=(?)) AND (attacker=(?) OR defender=(?))", (attacker.id, attacker.id, defender_id, defender_id)).fetchone()
@@ -789,7 +790,7 @@ def declare_war():
         # 259200 = 3 days
         if current_peace[0]:
             if (current_peace[0]+259200) > time.time():
-                return "You can't declare war because truce has not expired!"
+                return error(403, "You can't declare war because truce has not expired!")
 
     except Exception as e:
         print("RUNN")
@@ -862,7 +863,7 @@ def defense():
         if nation:
             for item in defense_units:
                 if item not in Military.allUnits:
-                    return "Invalid unit types!"
+                    return error(400, "Invalid unit types!")
             if len(defense_units) == 3:
                 # default_defense is stored in the db: "unit1,unit2,unit3"
                 defense_units = ",".join(defense_units)
@@ -870,9 +871,9 @@ def defense():
                     "UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
                 connection.commit()
             else:
-                return "Invalid number of units selected!"
+                return error(400, "Invalid number of units selected!")
         else:
-            return "Nation is not created!"
+            return error(404, "Nation is not created!")
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
         # next we need to insert the 3 defending units set as a value to the nation"s table property (one in each war): defense
