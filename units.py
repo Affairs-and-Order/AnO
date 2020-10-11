@@ -52,7 +52,7 @@ class SoldierUnit(BlueprintUnit):
             self.bonus += 3 * self.amount
         if defending_units == "apaches":
             self.bonus += 2 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(amount): pass
 
@@ -74,7 +74,7 @@ class TankUnit(BlueprintUnit):
             self.damage += 2
             self.bonus += 6 * self.amount
 
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(amount): pass
 
@@ -93,7 +93,7 @@ class ArtilleryUnit(BlueprintUnit):
         # One artillery beats 3 tanks
         if defending_units == "tanks":
             self.bonus += 2 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(): pass
 
@@ -122,7 +122,7 @@ class BomberUnit(BlueprintUnit):
             self.bonus += 2 * self.amount
         if defending_units == "submarines":
             self.bonus += 2 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(amount): pass
 
@@ -140,7 +140,7 @@ class FighterUnit(BlueprintUnit):
         if defending_units == "bombers":
             # self.damage += 55
             self.bonus += 4 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(amount): pass
 
@@ -163,7 +163,7 @@ class ApacheUnit(BlueprintUnit):
             self.bonus += 2 * self.amount
         if defending_units == "fighter":
             self.bonus += 2 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(): pass
 
@@ -180,14 +180,14 @@ class DestroyerUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "submarines":
             self.bonus += 1.6 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(amount): pass
 
 
 class CruiserUnit(BlueprintUnit):
 
-    unit_type = "soldiers"
+    unit_type = "cruisers"
     damage = 200
     supply_cost = 5
 
@@ -201,7 +201,7 @@ class CruiserUnit(BlueprintUnit):
             self.bonus += 0.1 * self.amount
         if defending_units == "apaches":
             self.bonus += 0.4 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(amount): pass
 
@@ -218,7 +218,7 @@ class SubmarineUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "cruisers":
             self.bonus += 0.2 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(): pass
 
@@ -236,7 +236,7 @@ class IcbmUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "submarines":
             self.bonus -= 5 * self.amount
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(): pass
 
@@ -255,7 +255,7 @@ class NukeUnit(BlueprintUnit):
             self.bonus -= 5 * self.amount
         else:
             pass
-        return [self.damage, self.bonus]
+        return [self.damage*self.amount, self.bonus]
 
     def buy(): pass
 
@@ -425,7 +425,11 @@ class Units(Military):
         db = connection.cursor()
 
         # Save supplies
-        war_id = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (self.user_id, self.user_id)).fetchall()[-1][0]
+        try:
+            war_id = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (self.user_id, self.user_id)).fetchall()[-1][0]
+        except:
+            return "War is already over!"
+
         if war_id != None:
             is_attacker = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
             if is_attacker == self.user_id:

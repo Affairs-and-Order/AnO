@@ -193,10 +193,10 @@ def wars():
 # TODO: put the Peace offers lable under "Internal Affairs" or "Other"
 # Peace offers show up here
 @app.route("/peace_offers", methods=["POST", "GET"])
-# @login_required
+@login_required
 def peace_offers():
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
@@ -205,11 +205,12 @@ def peace_offers():
     peace_offers = db.execute("SELECT peace_offer_id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (cId, cId)).fetchall()
     offers = {}
 
+    incoming={}
+    outgoing={}
+
     # try:
     if peace_offers:
 
-        incoming={}
-        outgoing={}
 
         for offer in peace_offers:
             offer_id = offer[0]
@@ -619,10 +620,10 @@ def warTarget():
 def warResult():
 
     # DEBUG DATA:
-    # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
-    # eId = 10
-    # session["enemy_id"] = eId
-    # session["user_id"] = 11
+    session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
+    eId = 10
+    session["enemy_id"] = eId
+    session["user_id"] = 11
 
     attacker = session["attack_units"]
     # grab defending enemy units from database
@@ -662,25 +663,46 @@ def warResult():
         prev_defender = dict(defender.selected_units)
         prev_attacker = dict(attacker.selected_units)
 
-        winner, win_condition, infra_damage_effects = Military.fight(attacker, defender)
+        # attack_effects = sum of 3 attack effect in fight() method
+        winner, win_condition, attack_effects = Military.fight(attacker, defender)
+
+        import random
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
+        random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
+
+        # Currently units only affect public works
+        public_works = Nation.get_public_works(random_province)
+
+        # TODO: enforce war type like raze,etc.
+        # example for the above line: if war_type is raze then attack_effects[0]*10
+
+        # WAR TYPES
+        # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
+        # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
+        # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
+        war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
+        print(attack_effects, "BEFORE WARTYPE")
+        if len(war_type) > 0:
+            if war_type == "raze":
+                # infrastructure damage
+                attack_effects[0] = attack_effects[0]*10
+
+            elif war_type == "sustained": pass
+            elif war_type == "loot": pass
+            else: print("INVALID WARTYPE")
+        else:
+            print("INVALID USER IDs")
+
+        print(attack_effects, "AFTER WARTYPE")
+        infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
         defender_result["infra_damage"] = infra_damage_effects
 
         if winner == defender.user_id:
             winner = defender_name
         else: winner = attacker_name
 
-            # WAR TYPES
-            # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
-            # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
-            # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-            # war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
-            # if len(war_type) > 0:
-            #     if war_type == "raze" : pass
-            #     elif war_type == "sustained": pass
-            #     elif war_type == "loot": pass
-            #     else: print("INVALID WARTYPE")
-            # else:
-            #     print("INVALID USER IDs")
 
         defender_loss = {}
         attacker_loss = {}

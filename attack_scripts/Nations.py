@@ -242,7 +242,7 @@ class Military(Nation):
                 for i in range(0, amount):
                     available_buildings.append(building)
 
-        # Damage logic (even include population damage)
+        # Damage logic (might include population damage)
         # health is the damage required to destroy a building
         health = 1500
 
@@ -422,7 +422,7 @@ class Military(Nation):
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
 
-        defender_infra_damage = 0
+        dealt_infra_damage = 0
 
         for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
 
@@ -436,7 +436,7 @@ class Military(Nation):
                 attacker_bonus += calculate_bonuses(attack_effects, defender, unit)
                 # used to be += attacker.attack(attacker_unit, unit, defender)[1]
 
-                defender_infra_damage += attack_effects[0]
+                dealt_infra_damage += attack_effects[0]
 
             # Compare defender against attacker
             for unit in attacker.selected_units_list:
@@ -483,28 +483,20 @@ class Military(Nation):
             loser.casualties(loser_unit, l_casualties)
 
         # infrastructure damage
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-        province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
-        random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
-
-        # Currently units only affect public works
-        public_works = Nation.get_public_works(random_province)
-
-        # TODO: enforce war type like raze,etc.
-        # example for the above line: if war_type is raze then attack_effects[0]*10
-        infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+        # connection = sqlite3.connect('affo/aao.db')
+        # db = connection.cursor()
+        # province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
+        # random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
+        #
+        # # Currently units only affect public works
+        # public_works = Nation.get_public_works(random_province)
+        #
+        # # TODO: enforce war type like raze,etc.
+        # # example for the above line: if war_type is raze then attack_effects[0]*10
+        # infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
 
         # return (winner.user_id, return_winner_cas, return_loser_cas)
-        return (winner.user_id, win_condition, infra_damage_effects)
-
-        # DEBUGGING:
-        # print("WINNER IS:", winner.user_id)
-        # print(winner_casulties, win_type)
-        # print(attacker_unit_amount_bonuses, defender_unit_amount_bonuses)
-        # print(attacker_roll, defender_roll)
-        # print(attacker_bonus, defender_bonus)
-        # print(attacker_chance, defender_chance)
+        return (winner.user_id, win_condition, [dealt_infra_damage, 0])
 
     # select only needed units instead of all
     # particular_units must be a list of string unit names
