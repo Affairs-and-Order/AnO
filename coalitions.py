@@ -33,91 +33,13 @@ def coalition(colId):
         members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
         total_influence = get_coalition_influence(colId)
         average_influence = total_influence // members
+        description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
 
         leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]  # The id of the coalition leader
         leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
-
-        ############## TREATIES ##################
-
-        #### INGOING ####
-        ingoing_ids = db.execute("SELECT id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
-        col_ids = []
-        col_names = []
-        trt_names = []
-
-        for treaty_idd in ingoing_ids:
-
-            treaty_id = treaty_idd[0]
-
-            col_id = db.execute("SELECT col1_id FROM treaties WHERE treaty_id=(?)", (treaty_id,)).fetchone()[0]
-            col_ids.append(col_id)
-
-            coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (col_id,)).fetchone()[0]
-            col_names.append(coalition_name)
-
-            treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (treaty_id,)).fetchone()[0]
-            trt_names.append(treaty_name)
-
-        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
-        #################
-
-        #### ACTIVE ####
-
-        active_ids = db.execute(
-        """SELECT id FROM treaties WHERE col2_id=(?) OR col1_id=(?) AND status='Active' ORDER BY treaty_id ASC""",
-        (colId, colId)).fetchall()
-
-        active_ids = []
-        coalition_ids = []
-        coalition_names = []
-        treaty_names = []
-
-        for treaty_idd in active_ids:
-            offer_id = treaty_idd[0]
-
-            active_ids.append(offer_id)
-
-            coalition_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
-            if coalition_id != colId:
-                pass
-            else: 
-                coalition_id = db.execute("SELECT col2_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
-
-            coalition_ids.append(coalition_id)
-            
-            coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (coalition_id,)).fetchone()[0]
-            coalition_names.append(coalition_name)
-
-            treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (offer_id,)).fetchone()[0]
-            treaty_names.append(treaty_name)
-
-        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
-
-
-        ################
-
-
-        ############################################
-
-        ### FLAG STUFF
-        try:
-            flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        except TypeError:
-            flag = None
-        ### 
-
-
-        requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
-        requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
-        requestNames = db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(?))", (colId,)).fetchall()
-
-        requests = zip(requestIds, requestNames, requestMessages)
-
-        description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-
-        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
 
         ### STUFF FOR JINJA
         try:
@@ -137,6 +59,87 @@ def coalition(colId):
         else:
             userLeader = False
         ###
+
+        ############## TREATIES ##################
+        if userLeader == True:
+            #### INGOING ####
+            ingoing_ids = db.execute("SELECT id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
+            col_ids = []
+            col_names = []
+            trt_names = []
+
+            for treaty_iddd in ingoing_ids:
+
+                treaty_id = treaty_iddd[0]
+
+                col_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (treaty_id,)).fetchone()[0]
+                col_ids.append(col_id)
+
+                coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (col_id,)).fetchone()[0]
+                col_names.append(coalition_name)
+
+                treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (treaty_id,)).fetchone()[0]
+                trt_names.append(treaty_name)
+
+            ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
+            #################
+
+            #### ACTIVE ####
+
+            
+            raw_active_ids = db.execute(
+            """SELECT id FROM treaties WHERE col2_id=(?) AND status='Active' OR col1_id=(?) ORDER BY treaty_id ASC""",
+            (colId, colId)).fetchall()
+
+            active_ids = []
+            coalition_ids = []
+            coalition_names = []
+            treaty_names = []
+
+
+            for i in raw_active_ids:
+
+                offer_id = i[0]
+
+                active_ids.append(offer_id)
+
+                coalition_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+                if coalition_id != colId:
+                    pass
+                else: 
+                    coalition_id = db.execute("SELECT col2_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+
+                coalition_ids.append(coalition_id)
+                
+                coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (coalition_id,)).fetchone()[0]
+                coalition_names.append(coalition_name)
+
+                treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (offer_id,)).fetchone()[0]
+                treaty_names.append(treaty_name)
+
+            active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
+        else:
+            ingoing_treaties = []
+            active_treaties = []
+            ################
+        ############################################
+
+        ### FLAG STUFF
+        try:
+            flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        except TypeError:
+            flag = None
+        ### 
+
+        if userLeader == True and colType != "Open":
+
+            requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
+            requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
+            requestNames = db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(?))", (colId,)).fetchall()
+
+            requests = zip(requestIds, requestNames, requestMessages)
+        else:
+            requests = None
 
         ### BANK STUFF
         if userLeader == True:
@@ -749,6 +752,52 @@ def accept_treaty(offer_id):
         error(400, "You aren't the leader of your coalition.")
 
     db.execute("UPDATE treaties SET status='Active' WHERE id=(?)", (offer_id,))
+
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_coalition")
+
+@login_required
+@app.route("/break_treaty/<offer_id>", methods=["POST"])
+def break_treaty(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+
+    if str(cId) != coalition_leader:
+        error(400, "You aren't the leader of your coalition.")
+
+    db.execute("DELETE FROM treaties WHERE id=(?)", (offer_id,))
+
+    connection.commit()
+    connection.close()
+
+    return redirect("/my_coalition")
+
+@login_required
+@app.route("/decline_treaty/<offer_id>", methods=["POST"])
+def decline_treaty(offer_id):
+
+    connection = sqlite3.connect('affo/aao.db')
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+
+    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+
+    if str(cId) != coalition_leader:
+        error(400, "You aren't the leader of your coalition.")
+
+    db.execute("DELETE FROM treaties WHERE id=(?)", (offer_id,))
 
     connection.commit()
     connection.close()
