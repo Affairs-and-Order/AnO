@@ -705,7 +705,6 @@
                                 </span>Choose Image
                                 <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground(event)">
                               </label>
-
                     </div>
                     <div class="templatedivflex2left">
 
@@ -713,26 +712,27 @@
                             <img id="imageBackground2" />
                         </div>
 
-                        <label for="bgimage2">Choose flag background</label>
+                        <label for="bgimage">Choose flag background</label>
 
                         <label class="imageinput fit center"><span class="material-icons-outlined">
-                        wallpaper
-                            </span>Choose Image
-                            <input type="file" name="bgimage2" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
-                          </label>
+                            wallpaper
+                                </span>Choose Image
+                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
+                              </label>
 
                     </div>
                 </div>
 
-                <label for="bgimage2">Application type</label>
+                <div class="templatedivflex2left">
+                    <label>Application type</label>
 
-                <select class="templateselect" name="treaty_name">
+                    <select class="templateselect center" name="treaty_name">
                     
                             <!--hovering over the options tags will tell the users what they do-->
                             <option value="apply" class="templateoption">Apply</option>
                             <option value="open" class="templateoption">Open</option>
                         </select>
-
+                </div>
 
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check

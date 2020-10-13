@@ -18,25 +18,7 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
         }
     });
     */
-//SCROLLBAR ANIMATION
-window.onscroll = function() { scrolltop() };
 
-function scrolltop() {
-
-    if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
-
-        document.getElementById("scrolldownparent").style.bottom = "0";
-        document.getElementById("scrolldownparent").style.opacity = "0";
-        document.getElementById("scrolldownparent").style.transition = "all .3s ease";
-
-    } else {
-
-        document.getElementById("scrolldownparent").style.bottom = "15px";
-        document.getElementById("scrolldownparent").style.opacity = "1";
-        document.getElementById("scrolldownparent").style.transition = "all .3s ease";
-
-    }
-}
 //navbar events
 function menubardrop() {
 
@@ -475,12 +457,6 @@ function coalitionjoin() {
     document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
     document.getElementById("general").classList.remove("generalclick");
 
-    document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
-    document.getElementById("leader").classList.remove("leaderclick");
-
-    document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
-    document.getElementById("member").classList.remove("memberclick");
-
 
 }
 //
@@ -494,12 +470,6 @@ function coalitionleader() {
     document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
     document.getElementById("general").classList.remove("generalclick");
 
-    document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
-    document.getElementById("join").classList.remove("joinclick");
-
-    document.getElementById("coalitionmember").classList.remove("coalitionmemberclick");
-    document.getElementById("member").classList.remove("memberclick");
-
 }
 
 function coalitionmember() {
@@ -511,12 +481,6 @@ function coalitionmember() {
 
     document.getElementById("coalitiongeneral").classList.remove("coalitiongeneralclick");
     document.getElementById("general").classList.remove("generalclick");
-
-    document.getElementById("coalitionjoin").classList.remove("coalitionjoinclick");
-    document.getElementById("join").classList.remove("joinclick");
-
-    document.getElementById("coalitionleader").classList.remove("coalitionleaderclick");
-    document.getElementById("leader").classList.remove("leaderclick");
 
 }
 //UPGRADES SLIDER
