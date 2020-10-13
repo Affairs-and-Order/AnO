@@ -252,7 +252,7 @@
         </div>
         <!--JOIN-->
         <div class="join" id="join">
-            
+
             <!--if the coalition has created a message show it-->
             <!--
             <h2 class="templatecontentheadercenter">Message From {{ name }}</h2>
@@ -520,18 +520,16 @@
                         </table>
                     </div>
                 </form>
-
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                    check
-                    </span>Update</button>
-
             </div>
 
             <h2 class="templatecontentheaderleft">Diplomacy</h2>
 
             <div class="infodiv">
-
+                <!--If no allies-->
+                <h2 class="templatecontentheadercenter">No Allies</h2>
+                <!--if allies-->
                 <h2 class="templatecontentheadercenter">Current Allies</h2>
+
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
@@ -579,7 +577,11 @@
                     check
                     </span>Go</button>
                 </form>
+                <!--if no requests-->
+                <h2 class="templatecontentheadercenter">No Treaty Requests</h2>
+                <!--if requests-->
                 <h2 class="templatecontentheadercenter">Treaty Requests</h2>
+
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
@@ -594,12 +596,12 @@
                             <td>{{ treaty_name }}</td>
                             <form method="POST">
                                 <td>
-                                <button formaction="/accept_treaty/{{ treaty_id[0] }}"><span class="material-icons iconblue">
+                                    <button formaction="/accept_treaty/{{ treaty_id[0] }}"><span class="material-icons iconblue">
                                 check_circle_outline
                                         </span></button>
-                                <button formaction="/decline_treaty/{{ treaty_id[0] }}"><span class="material-icons iconred">
+                                    <button formaction="/decline_treaty/{{ treaty_id[0] }}"><span class="material-icons iconred">
                                 remove_circle_outline
-                                        </span></button>      
+                                        </span></button>
                                 </td>
                             </form>
                         </tr>
@@ -721,6 +723,17 @@
 
                     </div>
                 </div>
+
+                <label for="bgimage2">Application type</label>
+
+                <select class="templateselect" name="treaty_name">
+                    
+                            <!--hovering over the options tags will tell the users what they do-->
+                            <option value="apply" class="templateoption">Apply</option>
+                            <option value="open" class="templateoption">Open</option>
+                        </select>
+
+
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
