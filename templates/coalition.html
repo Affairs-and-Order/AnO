@@ -738,13 +738,14 @@
                         var newTextarea = document.createElement("TEXTAREA");
                         newTextarea.placeholder = "Text";
                         newTextarea.className = "templatetextarea";
-                        document.body.appendChild(newTextarea);
+                        document.getElementById("descriptionChild").appendChild(newTextarea);
                     }
 
                     function newMenuflex() {
                         var newMenuflex = document.createElement("DIV");
                         newMenuflex.className = "templatedivflex2 divflex2center menuflex";
-                        document.body.appendChild(newMenuflex);
+                        newMenuflex.id = "descriptionChild";
+                        document.getElementById("description").appendChild(newMenuflex);
                     }
                 </script>
 
@@ -764,7 +765,7 @@
                     <textarea class="templatetextarea" name="description" placeholder="Coalition Description" maxlength="240">{{ description }}</textarea>
                 </div>
 
-                <div class="vanilla" id=""></div>
+                <div class="vanilla" id="description"></div>
 
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
