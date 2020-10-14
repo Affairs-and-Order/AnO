@@ -43,6 +43,7 @@
                 cursor: pointer;
                 transition: all 0.2s linear;
                 vertical-align: middle;
+                user-select: none;
             }
             
             .iconred {
@@ -51,6 +52,7 @@
                 cursor: pointer;
                 transition: all 0.2s linear;
                 vertical-align: middle;
+                user-select: none;
             }
             
             .iconblue:hover,
