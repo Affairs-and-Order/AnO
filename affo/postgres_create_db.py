@@ -10,7 +10,7 @@ db = connection.cursor()
 
 tables = [
     "coalitions", "colBanks", "colBanksRequests", "colNames",
-    "keys", "military", "nation", "offers", "proInfra", "provinces",
+    "keys", "military", "offers", "proInfra", "provinces",
     "requests", "resources", "spyinfo", "stats", "trades", "treaty_ids",
     "treaties", "users"
 ]
