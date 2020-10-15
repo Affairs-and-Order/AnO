@@ -3,12 +3,10 @@
 
 Affairs & order is a nation simulation game, where you can make your own nation, build a military and industry, and declare war.
 
-# Repo installation.
+## Repo installation.
 
 1. Install Git and add Git to PATH. https://stackoverflow.com/questions/26620312/installing-git-in-path-with-github-client-for-windows
 2. Type `git clone https://github.com/delivey/AnO.git` in the folder you want the repo to be cloned in.
-
-# Basic install
 
 ## Flask
 
@@ -27,7 +25,7 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 
 # No need for the ones below for development (atm)
 
-# RabbitMQ
+## RabbitMQ
 
 ### Arch
 
@@ -41,7 +39,7 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 2. Stop the rabbitmqctl service for naming usernames, vhosts, etc by typing: `sudo rabbitmqctl stop`
 3. Run the RabbitMQ broker by typing: `sudo rabbitmq-server`
 
-# Celery
+## Celery
 
 #### IMPORTANT NOTE: open all your terminals using `sudo -i`, this will give root access to celery.
 1. Navigate into the `AnO` folder.
