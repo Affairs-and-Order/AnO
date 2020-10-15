@@ -17,14 +17,15 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 3. Type `flask run` in this repo's folder on your own PC.
 4. Navigate to `http://127.0.0.1:5000/` or the url flask gave you in your browser. The website should run
 
-# More advanced (not necessary for development)
-
-# PostgresQL (no need for now)
+## PostgresQL
 
 ### Windows
-1. Get the `.exe` installer from here: https://www.enterprisedb.com/downloads/postgres-postgresql-downloads. Download version 12.3
-2. Run the installer, leave the default port and other default settings, set your password as `ano`
-3. Run the `postgres_setup.py` file in AnO/affo to create your database instance.
+1. Get the `.exe` installer from here: `https://www.enterprisedb.com/downloads/postgres-postgresql-downloads`. Download version 10.14
+2. Run the installer, remember your set settings.
+3. Set them in the .env file
+4. Run the `postgres_create_db.py` file in AnO/affo to create your database instance.
+
+# No need for the ones below for development (atm)
 
 # RabbitMQ
 
@@ -47,6 +48,7 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 2. Run the beat pool by running: `celery -A app.celery beat --loglevel=INFO` in the terminal.
 3. Run *1* worker by running: `celery -A app.celery worker --loglevel=INFO` in another terminal window.
 4. For `celery` to work, RabbitMQ must be running.
+
 
 Google doc version control below:
 
