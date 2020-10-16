@@ -21,6 +21,12 @@
 </head>
 
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
+        new Crate({
+            server: '708006319658893385', // Affairs & Order
+            channel: '709897623917822052' // #rules
+        })
+    </script>
     <div class="navbar">
 
         {% if session.get('user_id') != None %}
@@ -175,7 +181,8 @@
             <!--I WILL REPLACE THE TEXT WITH RESOURCE ICONS SOON - CARSON-->
             {% set resource_list = get_resource_amount() %}
             <p onmouseover="moneyon()" onmouseout="moneyoff()">
-                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" /> $
+                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
+                <span class="resourcetag">$</span>
                 <span id="resourcetag" class="resourcetag">{{ resource_list[0] }}</span>
             </p>
             <br />
@@ -228,14 +235,6 @@
         {% endfor %}
     </ul>
     {% endif %} {% endwith %}
-
-
-    <script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer>
-        new Crate({
-            server: '708006319658893385', // Affairs & Order
-            channel: '709897623917822052' // #rules
-        })
-    </script>
 
 
 
