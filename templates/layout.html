@@ -51,15 +51,17 @@
                         keyboard_arrow_down
                     </span></button>
                 <div class="dropdown-content">
-                    <a class="" href="/account"><span class="material-icons-outlined">
+                    <div class="dropdown-contentchild">
+                        <a class="" href="/account"><span class="material-icons-outlined">
                             perm_identity
                         </span>Account</a>
-                    <a class="" href="/tutorial"><span class="material-icons-outlined">
+                        <a class="" href="/tutorial"><span class="material-icons-outlined">
                             school
                         </span>Tutorial</a>
-                    <a class="" href="/statistics"><span class="material-icons-outlined">
+                        <a class="" href="/statistics"><span class="material-icons-outlined">
                             insert_chart_outlined
                         </span>Statistics</a>
+                    </div>
                 </div>
             </div>
             <div class="dropdown">
@@ -67,22 +69,24 @@
                         keyboard_arrow_down
                     </span></button>
                 <div class="dropdown-content">
-                    {% if session.get('user_id') != None %}
-                    <a class="" href="/my_coalition"><span class="material-icons-outlined">
+                    <div class="dropdown-contentchild">
+                        {% if session.get('user_id') != None %}
+                        <a class="" href="/my_coalition"><span class="material-icons-outlined">
                             group
                         </span>My Coalition</a> {% endif %}
-                    <a class="" href="/establish_coalition"><span class="material-icons-outlined">
+                        <a class="" href="/establish_coalition"><span class="material-icons-outlined">
                             group_add
                         </span>Establish a Coalition</a>
-                    <a class="" href="/coalitions"><span class="material-icons-outlined">
+                        <a class="" href="/coalitions"><span class="material-icons-outlined">
                             public
                         </span>Coalitions</a>
-                    <a class="" href="/countries"><span class="material-icons-outlined">
+                        <a class="" href="/countries"><span class="material-icons-outlined">
                         person_pin_circle
                         </span>Countries</a>
-                    <a class="" href="/assembly"><span class="material-icons-outlined">
+                        <a class="" href="/assembly"><span class="material-icons-outlined">
                             chat
                         </span>Assembly</a>
+                    </div>
                 </div>
             </div>
             <div class="dropdown">
@@ -90,21 +94,23 @@
                         keyboard_arrow_down
                     </span></button>
                 <div class="dropdown-content">
-                    <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
+                    <div class="dropdown-contentchild">
+                        <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                             outlined_flag
                         </span>Country</a>
-                    <a class="" href="/upgrades"><span class="material-icons-outlined">
+                        <a class="" href="/upgrades"><span class="material-icons-outlined">
                         engineering
                         </span>Upgrades</a>
-                    <a class="" href="/provinces"><span class="material-icons-outlined">
+                        <a class="" href="/provinces"><span class="material-icons-outlined">
                             account_balance
                         </span>Provinces</a>
-                    <a class="" href="/market"><span class="material-icons-outlined">
+                        <a class="" href="/market"><span class="material-icons-outlined">
                             local_grocery_store
                         </span>Market</a>
-                    <a class="" href="/wars"><span class="material-icons-outlined">
+                        <a class="" href="/wars"><span class="material-icons-outlined">
                             military_tech
                         </span>Wars</a>
+                    </div>
                 </div>
             </div>
         </div>
