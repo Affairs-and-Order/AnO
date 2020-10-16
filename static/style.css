@@ -610,8 +610,8 @@ hr {
     text-decoration: none;
     display: block;
     transition: all 0.2s;
-    padding: 10px 10px;
-    padding-bottom: 14px;
+    padding: 6px 10px;
+    padding-bottom: 9px;
     margin: 8px 6px;
     border-radius: 4px;
 }
@@ -627,7 +627,7 @@ hr {
 }
 
 .dropdown:hover .dropbtn {
-    opacity: 0.5;
+    opacity: 0.6;
     background: #00a7e1;
 }
 
