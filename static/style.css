@@ -729,7 +729,7 @@ hr {
 
 .resourcetag {
     position: relative;
-    top: -4px;
+    top: -5px;
 }
 
 .purchasediv {
@@ -1164,7 +1164,7 @@ hr {
     display: block;
     width: max-content;
     letter-spacing: 1px;
-    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px, inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
     border-radius: 100px;
     animation: templatedivcontentload 1.25s;
     position: relative;
