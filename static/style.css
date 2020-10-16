@@ -500,6 +500,7 @@ hr {
     width: calc(100% -8px);
     background: #42444e;
     border-radius: 4px;
+    box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
 }
 
 .menubara:hover {
