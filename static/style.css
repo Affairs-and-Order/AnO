@@ -495,6 +495,7 @@
                 transition: all 0.2s;
                 width: calc(100% -8px);
                 background: #42444e;
+                border-radius: 4px;
             }
             
             .menubara:hover {
@@ -574,7 +575,7 @@
                 opacity: 0;
                 pointer-events: none;
                 position: absolute;
-                background-color: #363945;
+                background: #42444e;
                 min-width: 160px;
                 width: max-content;
                 box-shadow: rgba(0, 0, 0, 0.1) 0 12px 22px 0;
@@ -582,14 +583,19 @@
                 right: -3px;
                 top: 60px;
                 transition: all 0.3s;
+                border-radius: 4px;
+                overflow: hidden;
             }
             
             .dropdown-content a {
                 color: white;
-                padding: 10px 16px;
                 text-decoration: none;
                 display: block;
                 transition: all 0.2s;
+                padding: 10px 10px;
+                padding-bottom: 14px;
+                margin: 8px 6px;
+                border-radius: 4px;
             }
             
             .dropdown-content a:hover {
@@ -686,6 +692,7 @@
                 width: calc(100% -8px);
                 background: #42444e;
                 box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
+                border-radius: 4px;
             }
             
             .resourcedivcontent p:hover {
