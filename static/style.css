@@ -2452,6 +2452,8 @@
                 margin: 8px;
                 line-height: 30px;
                 padding: 10px !important;
+                border-radius: 4px;
+                box-shadow: rgba(0, 0, 0, 0.075) 0 12px 22px 0;
             }
             
             .provinceimage {
