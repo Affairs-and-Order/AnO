@@ -545,7 +545,7 @@ hr {
     cursor: pointer;
     transition: all 0.2s;
     width: max-content;
-    box-shadow: rgba(0, 0, 0, 0.15) 0px 3.5px 2px -2px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 3.5px 2px -2px, inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
     border-radius: 4px;
     background: #515463;
 }
