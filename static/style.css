@@ -538,14 +538,15 @@
                 border: none;
                 cursor: pointer;
                 transition: all 0.2s;
-                background: none;
-                border-bottom: 2px solid #00a7e1;
                 width: max-content;
-                box-shadow: rgba(0, 0, 0, 0.75) 0px 3.5px 2px -2px;
+                box-shadow: rgba(0, 0, 0, 0.15) 0px 3.5px 2px -2px;
+                border-radius: 4px;
+                background: var(--background);
             }
             
             .dropbtn:hover {
-                opacity: 0.5;
+                opacity: 1 !important;
+                background: #00a7e1;
             }
             
             .dropbtn span {
@@ -560,7 +561,7 @@
                 position: relative;
                 float: right;
                 width: fit-content;
-                margin-top: 8px;
+                margin-top: 6px;
                 margin-right: 10px;
                 transition: all 0.2s;
                 text-decoration: none;
@@ -575,10 +576,10 @@
                 opacity: 0;
                 pointer-events: none;
                 position: absolute;
-                background: #42444e;
-                min-width: 160px;
+                background: var(--foreground);
+                min-width: 200px;
                 width: max-content;
-                box-shadow: rgba(0, 0, 0, 0.1) 0 12px 22px 0;
+                box-shadow: rgba(0, 0, 0, 0.3) 0 12px 22px 2px, rgba(0, 0, 0, 0.075) 0 12px 12px;
                 z-index: 1;
                 right: -3px;
                 top: 60px;
@@ -605,11 +606,12 @@
             .dropdown:hover .dropdown-content {
                 opacity: 1;
                 pointer-events: all;
-                top: 41.5px;
+                top: 40px;
             }
             
             .dropdown:hover .dropbtn {
                 opacity: 0.5;
+                background: #00a7e1;
             }
             
             .resourcediv {
