@@ -203,19 +203,19 @@ def update_info():
     db = connection.cursor()
     cId = session["user_id"]
 
+    # Description changing
     description = request.form.get("description")
 
     if len(description) > 1:  # currently checks if the description is more than 1 letter cuz i was too lazy to figure out the input, bad practice but it works for now
         db.execute("UPDATE users SET description=(?) WHERE id=(?)",
                    (description, cId))
-        connection.commit()
 
+    # Flag changing
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
 
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
         
-    #TODO: add some checking for malicious extensions n shit
     file = request.files["flag_input"]
     if file and allowed_file(file.filename):
 
@@ -234,6 +234,12 @@ def update_info():
             filename = f"flag_{cId}" + '.' + extension
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             db.execute("UPDATE users SET flag=(?) WHERE id=(?)", (filename, cId))
+
+    # Location changing
+    new_location = request.form.get("countryLocation")
+
+    if not new_location == "":
+        db.execute("UPDATE stats SET location=(?) WHERE id=(?)", (new_location, cId))
         
     connection.commit()  # Commits the data
     connection.close()  # Closes the connection
