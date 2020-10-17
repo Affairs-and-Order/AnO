@@ -618,6 +618,7 @@ hr {
 
 .dropdown-content a:hover {
     background-color: #515463;
+    box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
 }
 
 .dropdown:hover .dropdown-content {
