@@ -45,21 +45,21 @@
 
                             <ul>Upgrade Cost</ul>
                             <div class="purchasemilitarydiv">
-                                {% if not upgrades["betterengineering"] %}
+                                {% if upgrades["betterengineering"] == 0 %}
                                 <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
-                                        </span>Buy</button> {% endif %} {% if upgrades["betterengineering"] %}
+                                        </span>Buy</button>
+                                {% elif
+                                 upgrades["betterengineering"] == 1 %}
                                 <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
-                                        </span>Sell</button> {% endif %}
-
+                                        </span>Sell</button> 
+                                {% endif %}
                             </div>
                         </div>
                         <div class="templatedivflex2left">
-
-
 
                             <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/betterengineering.jpg') }}" />
                         </div>
@@ -80,11 +80,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["cheapermaterials"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/cheapermaterials">
                                 <span class="material-icons-outlined">
                                     add_circle_outline
                                 </span>Buy</button> {% endif %} {% if upgrades["cheapermaterials"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/cheapermaterials">
                                     <span class="material-icons-outlined">
                                     remove_circle_outline
                                 </span>Sell</button> {% endif %}
@@ -117,11 +117,12 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["onlineshopping"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/onlineshopping">
                                     <span class="material-icons-outlined">
                                         add_circle_outline
-                                    </span>Buy</button> {% endif %} {% if upgrades["onlineshopping"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                                    </span>Buy</button> {% endif %}
+                            {% if upgrades["onlineshopping"] %}
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/onlineshopping">
                                         <span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button> {% endif %}
@@ -154,11 +155,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["governmentregulation"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/governmentregulation">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["governmentregulation"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/governmentregulation">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -190,11 +191,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["nationalhealthinstitution"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/nationalhealthinstitution">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["nationalhealthinstitution"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/nationalhealthinstitution">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -226,11 +227,12 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["highspeedrail"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/highspeedrail">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
-                                        </span>Buy</button> {% endif %} {% if upgrades["highspeedrail"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                                        </span>Buy</button> {% endif %}
+                                         {% if upgrades["highspeedrail"] %}
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/highspeedrail">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -262,11 +264,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["advancedmachinery"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/advancedmachinery">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["advancedmachinery"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/advancedmachinery>
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -298,11 +300,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["strongerexplosives"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/strongerexplosives">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["strongerexplosives"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/strongerexplosives">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -334,11 +336,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["widespreadpropaganda"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/widespreadpropaganda>
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["widespreadpropaganda"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/widespreadpropaganda">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -370,11 +372,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["increasedfunding"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/increasedfunding">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["increasedfunding"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/increasedfunding">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -405,11 +407,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["automationintegration"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/automationintegration">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["automationintegration"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/automationintegration">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -440,11 +442,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["largerforges"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/largerforges">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["largerforges"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/largerforges">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -479,11 +481,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["lootingteams"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/lootingteams">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["lootingteams"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/lootingteams">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -513,11 +515,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["organizedsupplylines"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/organizedsupplylines">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["organizedsupplylines"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/organizedsupplylines">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -547,11 +549,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["largestorehouses"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/largestorehouses">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["largestorehouses"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/largestorehouses">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -581,11 +583,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["ballisticmissilesilo"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/ballisticmissilesilo">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["ballisticmissilesilo"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/ballisticmissilesilo">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -615,11 +617,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["ICBMsilo"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/ICBMsilo">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["ICBMsilo"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/ICBMsilo">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}
@@ -650,11 +652,11 @@
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
                             {% if not upgrades["nucleartestingfacility"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/nucleartestingfacility">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button> {% endif %} {% if upgrades["nucleartestingfacility"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/nucleartestingfacility">
                                             <span class="material-icons-outlined">
                                             remove_circle_outline
                                         </span>Sell</button> {% endif %}

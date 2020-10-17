@@ -42,6 +42,8 @@ def upgrades():
             'ICBMSilo': db.execute("SELECT ICBMSilo FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0],
             'nuclearTestingFacility': db.execute("SELECT nuclearTestingFacility FROM upgrades WHERE user_id=(?)", (cId,)).fetchone()[0]
         }
+
+        print(type(upgrades['betterEngineering']))
         # working examples based on whether user has the upgrade. Database stores 0 or 1.
         # upgrades['betterEngineering'] = 0
         # upgrades['cheaperMaterials'] = 1
