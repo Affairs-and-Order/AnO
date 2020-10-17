@@ -200,25 +200,11 @@ def update_info():
     cId = session["user_id"]
 
     description = request.form.get("description")
-    name = request.form.get("countryName")
 
     if len(description) > 1:  # currently checks if the description is more than 1 letter cuz i was too lazy to figure out the input, bad practice but it works for now
         db.execute("UPDATE users SET description=(?) WHERE id=(?)",
                    (description, cId))
         connection.commit()
-
-    if len(name) > 1:  # bad practice, but works for now, for more details check comment above
-
-        try:
-            duplicate = db.execute(
-                "SELECT id FROM users WHERE username=?", (name,)).fetchone()[0]
-            duplicate = True
-        except TypeError:
-            duplicate = False
-
-        if duplicate == False:  # Checks if username isn't a duplicate
-            # Updates the username to the new one
-            db.execute("UPDATE users SET username=? WHERE id=?", (name, cId))
 
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
 
