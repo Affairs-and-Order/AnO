@@ -65,13 +65,16 @@ def country(cId):
         status = False
 
     try:
-        colId = db.execute(
-            "SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
-        colName = db.execute(
-            "SELECT name FROM colNames WHERE id =?", (colId,)).fetchone()[0]
+        colId = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+        colName = db.execute("SELECT name FROM colNames WHERE id =?", (colId,)).fetchone()[0]
     except TypeError:
         colId = ""
         colName = ""
+
+    try:
+        colFlag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    except TypeError:
+        colFlag = None
 
     try:
         flag = db.execute("SELECT flag FROM users WHERE id=(?)", (cId,)).fetchone()[0]
@@ -93,7 +96,8 @@ def country(cId):
     return render_template("country.html", username=username, cId=cId, description=description,
                            happiness=happiness, population=population, location=location, gold=gold, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
-                           provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance)
+                           provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
+                           colFlag=colFlag)
 
 
 @login_required
