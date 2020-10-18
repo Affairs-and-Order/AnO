@@ -206,7 +206,7 @@ def update_info():
     # Description changing
     description = request.form.get("description")
 
-    if len(description) > 1:  # currently checks if the description is more than 1 letter cuz i was too lazy to figure out the input, bad practice but it works for now
+    if not description == "None":
         db.execute("UPDATE users SET description=(?) WHERE id=(?)",
                    (description, cId))
 
