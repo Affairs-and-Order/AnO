@@ -19,8 +19,8 @@ from werkzeug.utils import secure_filename
 UPLOAD_FOLDER = 'static/flags'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-@login_required
 @app.route("/country/id=<cId>")
+@login_required
 def country(cId):
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
@@ -100,8 +100,8 @@ def country(cId):
                            colFlag=colFlag)
 
 
-@login_required
 @app.route("/countries", methods=["GET"])
+@login_required
 def countries():  # TODO: fix shit ton of repeated code in function
 
     connection = sqlite3.connect('affo/aao.db')
@@ -195,8 +195,8 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
 
 
-@login_required
 @app.route("/update_country_info", methods=["POST"])
+@login_required
 def update_info():
 
     connection = sqlite3.connect('affo/aao.db')
@@ -246,8 +246,8 @@ def update_info():
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country
 
-@login_required
 @app.route("/delete_own_account", methods=["POST"])
+@login_required
 def delete_own_account():
 
     connection = sqlite3.connect('affo/aao.db')

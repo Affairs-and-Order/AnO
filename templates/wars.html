@@ -55,7 +55,6 @@
         </div>
 
         <h2 class="templatecontentheaderleft">Standing Military</h2>
-
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
@@ -85,7 +84,6 @@
             </table>
         </div>
 
-
         <!--if wars == False-->
         <h2 class="templatecontentheadercenter">You have {{ warsCount }} ongoing wars</h2>
         <!--if wars == True-->
@@ -107,110 +105,47 @@
         </div>
         {% endif %}
 
-        <!--FOR EVERY DEFENSIVE WAR MAKE A NEW DIV-->
-        {% for attackerId, attackerName, warId, defending_war_morales in defending %}
-        <!--LINK TO THE WAR-->
+        {% for war_id in war_info.keys() %}
         <div class="warflexparent templatedivflex2 menuflex">
-            <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
+            <a href="/war/{{ war_id }}" class="warflexlink"></a>
+
+            <!-- DEFENDER -->
+            {% set def = war_info[war_id]["def"]%}
             <div class="templatedivflex2left">
-
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
-
-                <!-- cId is the Flask value for your country's Id-->
-                <!-- defender nation flag-->
+                <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{def['id']}}">{{def["name"]}}</a></h2>
+                <h1>DEFENDER</h1>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
-
                 <div class="progressbarparent">
-                    <div class="progressbarchildtext">{{defending_war_morales[1]}} / 100 Morale</div>
-                    <div class="progressbarchild" style="width:50%">
-                    </div>
+                    <div class="progressbarchildtext">{{def["morale"]}} / 100 Morale</div>
+                    <div class="progressbarchild" style="width:50%"></div>
                 </div>
-
                 <div class="progressbarparent">
-                    <div class="progressbarchildtext">{{defender_supplies}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width:20%">
-                    </div>
+                    <div class="progressbarchildtext">{{def["supplies"]}} / 2000 Supplies</div>
+                    <div class="progressbarchild progressbargreen" style="width:20%"></div>
                 </div>
-
             </div>
+
             <div class="min templatedivflex2left">
-
                 <h2 class="templatecontentheadercenter">VS</h2>
-
             </div>
+
+            <!-- AGGRESSOR -->
+            {% set att = war_info[war_id]["att"] %}
             <div class="templatedivflex2left">
-
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ attackerId[0] }}">{{ attackerName[0] }}</a></h2>
-                <!--aggressor nation flag-->
+                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{att['id']}}">{{att["name"]}}</a></h2>
+                <h1>AGGRESSOR</h1>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
-
                 <div class="progressbarparent">
-                    <div class="progressbarchildtext">{{defending_war_morales[0]}} / 100 Morale</div>
-                    <div class="progressbarchild" style="width:50%">
-                    </div>
+                    <div class="progressbarchildtext">{{att["morale"]}} / 100 Morale</div>
+                    <div class="progressbarchild" style="width:50%"></div>
                 </div>
-
                 <div class="progressbarparent">
-                    <div class="progressbarchildtext">750 / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width:20%">
-                    </div>
+                    <div class="progressbarchildtext">{{att["supplies"]}} / 2000 Supplies</div>
+                    <div class="progressbarchild progressbargreen" style="width:20%"></div>
                 </div>
-
-            </div>
-        </div>
-        {% endfor %} {% for defenderId, defenderName, warId, defending_war_morales in attacking %}
-        <!--FOR EVERY AGGRESSOR WAR MAKE A NEW DIV-->
-
-        <!--LINK TO THE WAR-->
-        <div class="warflexparent templatedivflex2 menuflex">
-            <a href="/war/{{ warId[0] }}" class="warflexlink"></a>
-            <div class="templatedivflex2left">
-
-                <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ defenderId[0] }}">{{ defenderName[0] }}</a></h2>
-                <!--aggressor nation flag-->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
-
-                <div class="progressbarparent">
-                    <div class="progressbarchildtext">{{defending_war_morales[1]}} / 100 Morale</div>
-                    <div class="progressbarchild" style="width:50%">
-                    </div>
-                </div>
-
-                <div class="progressbarparent">
-                    <div class="progressbarchildtext">xx / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width:20%">
-                    </div>
-                </div>
-
-            </div>
-            <div class="min templatedivflex2left">
-
-                <h2 class="templatecontentheadercenter">VS</h2>
-
-            </div>
-            <div class="templatedivflex2left">
-
-                <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{ cId }}">{{ yourCountry }}</a></h2>
-                <!-- cId is the Flask value for your country's Id-->
-                <!--defender nation flag-->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
-
-                <div class="progressbarparent">
-                    <div class="progressbarchildtext">{{defending_war_morales[0]}} / 100 Morale</div>
-                    <div class="progressbarchild" style="width:50%">
-                    </div>
-                </div>
-
-                <div class="progressbarparent">
-                    <div class="progressbarchildtext">750 / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width:20%">
-                    </div>
-                </div>
-
             </div>
         </div>
         {% endfor %}
-
     </div>
 </div>
 {% endblock %}
