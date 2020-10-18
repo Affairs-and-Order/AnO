@@ -86,11 +86,11 @@ def country(cId):
     spyPrep = 1 # this is an integer from 1 to 5
     eSpyCount = 0 # this is an integer from 0 to 100
     eDefcon = 1 # this is an integer from 1 to 5
-    
+
     if eSpyCount == 0:
         successChance = 100
     else:
-        successChance = spyCount * spyPrep / eSpyCount / eDefcon 
+        successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
@@ -113,12 +113,12 @@ def countries():  # TODO: fix shit ton of repeated code in function
         search = None
 
     try:
-        lowerinf = int(request.values.get("lowerinf"))
+        lowerinf = float(request.values.get("lowerinf"))
     except TypeError:
         lowerinf = None
 
     try:
-        upperinf = int(request.values.get("upperinf"))
+        upperinf = float(request.values.get("upperinf"))
     except TypeError:
         upperinf = None
 
@@ -171,7 +171,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
         except TypeError:
             flag = None
 
-        flags.append(flag)    
+        flags.append(flag)
 
         try:
             coalition_id = db.execute(
@@ -215,7 +215,7 @@ def update_info():
 
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-        
+
     file = request.files["flag_input"]
     if file and allowed_file(file.filename):
 
@@ -240,7 +240,7 @@ def update_info():
 
     if not new_location == "":
         db.execute("UPDATE stats SET location=(?) WHERE id=(?)", (new_location, cId))
-        
+
     connection.commit()  # Commits the data
     connection.close()  # Closes the connection
 
@@ -275,7 +275,7 @@ def delete_own_account():
     connection.close()
 
     session.clear()
-    
+
     return redirect("/")
 
 @app.route("/username_available/<username>", methods=["GET"])

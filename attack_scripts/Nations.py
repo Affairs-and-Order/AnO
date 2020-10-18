@@ -216,6 +216,7 @@ class Nation:
                 count = db.execute(f"SELECT {upgrade} FROM upgrades WHERE user_id=(?)", (user_id,)).fetchone()[0]
                 upgrades[upgrade] = count
 
+        # returns the bonus given by the upgrade
         return upgrades
 
 class Military(Nation):
