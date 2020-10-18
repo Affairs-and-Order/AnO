@@ -129,23 +129,23 @@ def coalition(colId):
         if userInCurCol == True:
 
             bankRaw = {
-                'money': db.execute("SELECT money FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'rations': db.execute("SELECT rations FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'oil': db.execute("SELECT oil FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'coal': db.execute("SELECT coal FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'uranium': db.execute("SELECT uranium FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'bauxite': db.execute("SELECT bauxite FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'iron': db.execute("SELECT iron FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'lead': db.execute("SELECT lead FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'copper': db.execute("SELECT copper FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'lumber': db.execute("SELECT lumber FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'money': db.execute("SELECT money FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'rations': db.execute("SELECT rations FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'oil': db.execute("SELECT oil FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'coal': db.execute("SELECT coal FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'uranium': db.execute("SELECT uranium FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'bauxite': db.execute("SELECT bauxite FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'iron': db.execute("SELECT iron FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'lead': db.execute("SELECT lead FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'copper': db.execute("SELECT copper FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'lumber': db.execute("SELECT lumber FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
 
-                'components': db.execute("SELECT components FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'steel': db.execute("SELECT steel FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'consumer_goods': db.execute("SELECT consumer_goods FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'aluminium': db.execute("SELECT aluminium FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'gasoline': db.execute("SELECT gasoline FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
-                'ammunition': db.execute("SELECT ammunition FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0]
+                'components': db.execute("SELECT components FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'steel': db.execute("SELECT steel FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'consumer_goods': db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'aluminium': db.execute("SELECT aluminium FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'gasoline': db.execute("SELECT gasoline FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+                'ammunition': db.execute("SELECT ammunition FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0]
             }
 
         else: 
