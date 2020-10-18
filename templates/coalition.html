@@ -526,8 +526,10 @@
 
             <div class="infodiv">
                 <!--If no allies-->
+                {% if active_length == 0 %}
                 <h2 class="templatecontentheadercenter">No Allies</h2>
                 <!--if allies-->
+                {% elif active_length != 0 %}
                 <h2 class="templatecontentheadercenter">Current Allies</h2>
 
                 <div class="templateoutertablediv inverttable">
@@ -551,6 +553,7 @@
                         {% endfor %}
                     </table>
                 </div>
+                {% endif %}
 
                 <form action="/offer_treaty" method="POST">
                     <h2 class="templatecontentheadercenter">Add Ally</h2>
@@ -578,8 +581,10 @@
                     </span>Go</button>
                 </form>
                 <!--if no requests-->
+                {% if ingoing_length == 0 %}
                 <h2 class="templatecontentheadercenter">No Treaty Requests</h2>
                 <!--if requests-->
+                {% elif ingoing_length != 0 %}
                 <h2 class="templatecontentheadercenter">Treaty Requests</h2>
 
                 <div class="templateoutertablediv inverttable">
@@ -608,6 +613,7 @@
                         {% endfor %}
                     </table>
                 </div>
+                {% endif %}
 
                 <!--
                 <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
@@ -620,7 +626,7 @@
             {% if colType == "closed" %}
             <h2 class="templatecontentheaderleft">Applicants</h2>
             <!--show if coalition has 0 applicants-->
-            <h2 class="templatecontentheadercenter">You have {{ len(requests) }} applicants</h2>
+            <h2 class="templatecontentheadercenter">You have {{ requests|length }} applicants</h2>
             <!--hide is coalition has 0 applicants-->
             <div class="infodiv">
                 <div class="templatedivflex2 menuflex">

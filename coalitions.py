@@ -83,6 +83,7 @@ def coalition(colId):
                 trt_names.append(treaty_name)
 
             ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
+            ingoing_length = len(list(ingoing_treaties))
             #################
 
             #### ACTIVE ####
@@ -119,9 +120,12 @@ def coalition(colId):
                 treaty_names.append(treaty_name)
 
             active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
+            active_length = len(list(active_treaties))
         else:
             ingoing_treaties = []
             active_treaties = []
+            ingoing_length = None
+            active_length = None
             ################
         ############################################
 
@@ -192,7 +196,8 @@ def coalition(colId):
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
                                average_influence=average_influence, leaderName=leaderName, leader=leader,
-                               flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw)
+                               flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
+                               ingoing_length=ingoing_length, active_length=active_length)
 
 
 @login_required
