@@ -62,6 +62,7 @@ def coalition(colId):
 
         ############## TREATIES ##################
         if userLeader == True:
+
             #### INGOING ####
             ingoing_ids = db.execute("SELECT id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
             col_ids = []
@@ -124,6 +125,34 @@ def coalition(colId):
             ################
         ############################################
 
+        ### BANK STUFF ###
+        if userInCurCol == True:
+
+            bankRaw = {
+                'money': db.execute("SELECT money FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'rations': db.execute("SELECT rations FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'oil': db.execute("SELECT oil FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'coal': db.execute("SELECT coal FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'uranium': db.execute("SELECT uranium FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'bauxite': db.execute("SELECT bauxite FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'iron': db.execute("SELECT iron FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'lead': db.execute("SELECT lead FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'copper': db.execute("SELECT copper FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'lumber': db.execute("SELECT lumber FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+
+                'components': db.execute("SELECT components FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'steel': db.execute("SELECT steel FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'consumer_goods': db.execute("SELECT consumer_goods FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'aluminium': db.execute("SELECT aluminium FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'gasoline': db.execute("SELECT gasoline FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0],
+                'ammunition': db.execute("SELECT ammunition FROM colBanks WHERE id=(?)", (colId,)).fetchone()[0]
+            }
+
+        else: 
+            
+            bankRaw = {}
+        ###################
+
         ### FLAG STUFF
         try:
             flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
@@ -163,7 +192,7 @@ def coalition(colId):
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
                                average_influence=average_influence, leaderName=leaderName, leader=leader,
-                               flag=flag, bankRequests=bankRequests, active_treaties=active_treaties)
+                               flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw)
 
 
 @login_required
