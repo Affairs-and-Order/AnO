@@ -94,22 +94,24 @@ def wars():
                 defender_info = {}
 
                 att_name = db.execute("SELECT username FROM users WHERE id=(?)", (attacker,)).fetchone()[0]
-                attacker_info[attacker] = {"name":att_name}
+                attacker_info["name"] = att_name
+                attacker_info["id"] = attacker
                 att_morale_and_supplies = db.execute("SELECT attacker_morale,attacker_supplies FROM wars WHERE id=(?)", (war_id,)).fetchone()
-                attacker_info[attacker]["morale"] = att_morale_and_supplies[0]
-                attacker_info[attacker]["supplies"] = att_morale_and_supplies[1]
+                attacker_info["morale"] = att_morale_and_supplies[0]
+                attacker_info["supplies"] = att_morale_and_supplies[1]
 
                 def_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
-                defender_info[defender] = {"name":def_name}
+                defender_info["name"] = def_name
                 def_morale_and_supplies = db.execute("SELECT defender_morale,defender_supplies FROM wars WHERE id=(?)", (war_id,)).fetchone()
-                defender_info[defender]["morale"] = def_morale_and_supplies[0]
-                defender_info[defender]["supplies"] = def_morale_and_supplies[1]
+                defender_info["morale"] = def_morale_and_supplies[0]
+                defender_info["supplies"] = def_morale_and_supplies[1]
+                defender_info["id"] = defender
 
                 war_info[war_id] = {"att": attacker_info, "def": defender_info}
         except:
             return "SOMETHING WENT WRONG"
 
-        print(war_info)
+        # print(war_info.keys())
 
         warsCount = db.execute("SELECT COUNT(attacker) FROM wars WHERE (defender=(?) OR attacker=(?)) AND peace_date IS NULL", (cId, cId)).fetchone()[0]
         return render_template("wars.html", units=units, warsCount=warsCount, war_info=war_info)
