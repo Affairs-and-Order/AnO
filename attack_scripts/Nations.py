@@ -410,7 +410,9 @@ class Military(Nation):
     depth control: missile defenses go from 50% to 20% and nuke defenses go from  35% to 10%
     blockade: enemy can no longer trade
     air control: enemy bomber power reduced by 60%'''
+
     @staticmethod
+    # attacker, defender means the attacker and the defender user JUST in this particular fight not in the whole war
     def fight(attacker, defender): # Units, Units -> int
 
         attacker_roll = random.uniform(0, 2)
@@ -449,28 +451,34 @@ class Military(Nation):
         # Determine the winner
         if defender_chance >= attacker_chance:
             winner = defender
-
-            # morale column of the loser
-            morale_column = "attacker_morale"
-
             loser = attacker
             win_type = defender_chance/attacker_chance
             winner_casulties = attacker_chance/defender_chance
-
         else:
             winner = attacker
-
-            # morale column of the loser
-            morale_column = "defender_morale"
-
             loser = defender
             win_type = attacker_chance/defender_chance
             winner_casulties = defender_chance/attacker_chance
+
+
+        # Get the absolute side (absolute attacker and defender) in the war for determining the loser's morale column name to decrease
+        connection = sqlite3.connect('affo/aao.db')
+        db = connection.cursor()
+        abs_attacker = db.execute("SELECT attacker FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (winner.user_id,winner.user_id)).fetchone()[0]
+        if winner.user_id == abs_attacker:
+            # morale column of the loser
+            morale_column = "defender_morale"
+        else:
+            # morale column of the loser
+            morale_column = "attacker_morale"
 
         # Effects based on win_type (idk: destroy buildings or something)
         # loser_casulties = win_type so win_type also is the loser's casulties
 
         war_id, morale = Military.get_morale(morale_column, attacker, defender)
+
+        # print("MORALE COLUMN", morale_column, "WINNER FROM FIGHT MEHTOD", winner.user_id)
+        # print("ATTC", attacker.user_id, defender.user_id)
         win_condition = Military.morale_change(war_id, morale, morale_column, win_type)
         # win_condition = Military.morale_change(morale_column, win_type, attacker, defender)
 

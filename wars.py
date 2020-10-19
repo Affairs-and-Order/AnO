@@ -660,11 +660,12 @@ def warTarget():
 @login_required
 def warResult():
 
-    # DEBUG DATA:
+    # DEBUG DATA START:
     # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
     # eId = 10
     # session["enemy_id"] = eId
     # session["user_id"] = 11
+    # DEBUG DATA END!
 
     attacker = session["attack_units"]
 
@@ -681,6 +682,8 @@ def warResult():
 
     attacker_name = db.execute("SELECT username FROM users WHERE id=(?)", (session["user_id"],)).fetchone()[0]
     defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (session["enemy_id"],)).fetchone()[0]
+
+    # print(attacker_name, defender_name)
 
     attacker_result = {"nation_name": attacker_name}
     defender_result = {"nation_name": defender_name}
