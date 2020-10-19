@@ -1,10 +1,4 @@
-{% extends"layout.html"%}
-
-{% block title %}
-{{ username }} 
-{% endblock %} 
-
-{% block body %}
+{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -1349,35 +1343,35 @@
                 <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
             </form>
             <form action="/spyResult" method="post" ">
-            <h2 class="templatecontentheaderleft ">Reconnaissance</h2>
+                <h2 class="templatecontentheaderleft ">Reconnaissance</h2>
 
-            <div class="infodiv ">
-                <div class="templatedivflex2 menuflex ">
-                    <div class="templatedivflex2left ">
-
-                        <label for="warType ">Choose operation</label>
-                        <select class="templateselect " name="warType ">
-
-                                <option class="templateoption ">Spy on unit amounts</option>
-                                <option class="templateoption ">Spy on defensive units</option>
-                                <option class="templateoption ">Spy on resources</option>
-                                <option class="templateoption ">Assassinate spies</option>
-
-                        </select>
-
-                    </div>
-                    <div class="templatedivflex2left ">
-
-                        <label for="countryName ">Number of spies</label>
-                        <input class="loginsignupinput " name="countryName " value="{{spyCount}} " />
-
-                    </div>
-                </div> <label for="warType ">{{ successChance }}% chance of success</label>
-
-                <button class="templatedivbutton templatecenteredbutton " type="submit "><span class="material-icons-outlined ">
-                    check
-                    </span>Perform</button>
-            </div>
+                <div class="infodiv ">
+                    <div class="templatedivflex2 menuflex ">
+                        <div class="templatedivflex2left ">
+        
+                            <label for="warType ">Choose operation</label>
+                            <select class="templateselect " name="warType ">
+        
+                                    <option class="templateoption ">Spy on unit amounts</option>
+                                    <option class="templateoption ">Spy on defensive units</option>
+                                    <option class="templateoption ">Spy on resources</option>
+                                    <option class="templateoption ">Assasinate spies</option>
+        
+                            </select>
+        
+                        </div>
+                        <div class="templatedivflex2left ">
+        
+                            <label for="countryName ">Number of spies</label>
+                            <input class="loginsignupinput " name="countryName " placeholder="{{ spyCount }} " />
+        
+                        </div>
+                    </div> <label for="warType ">{{ successChance }}% success chance</label>
+        
+                    <button class="templatedivbutton templatecenteredbutton " type="submit "><span class="material-icons-outlined ">
+                        check
+                        </span>Perform</button>
+                </div>
             </form>
             <h2 class="templatecontentheaderleft ">Trade</h2>
 
