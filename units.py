@@ -407,7 +407,6 @@ class Units(Military):
         # Make sure this is and integer
         # TODO: optimize this by creating integer at the user side
         amount = int(amount)
-
         unit_amount = self.selected_units[unit_type]
 
         if amount > unit_amount:
@@ -416,7 +415,6 @@ class Units(Military):
         self.selected_units[unit_type] = unit_amount-amount
 
         # Save records to the database
-        # TODO: still save negative unit amount
         available_unit_amount = db.execute(f"SELECT {unit_type} FROM military WHERE id=(?)", (self.user_id,)).fetchone()[0]
         db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (available_unit_amount-amount, self.user_id))
         connection.commit()
@@ -462,11 +460,11 @@ class Units(Military):
 
             # If the user is the attacker (maybe optimize this to store the user role in the war)
             if attacker_id:
-                self.available_supplies = db.execute("SELECT attacker_supplies FROM wars WHERE attacker=(?)", (self.user_id,)).fetchone()[0]
+                self.available_supplies = db.execute("SELECT attacker_supplies FROM wars WHERE attacker=(?) AND peace_date IS NULL", (self.user_id,)).fetchone()[0]
 
             # the user is defender
             else:
-                self.available_supplies = db.execute("SELECT defender_supplies FROM wars WHERE defender=(?)", (self.user_id,)).fetchone()[0]
+                self.available_supplies = db.execute("SELECT defender_supplies FROM wars WHERE defender=(?) AND peace_date IS NULL", (self.user_id,)).fetchone()[0]
 
         if self.available_supplies < 200:
             return "The minimum supply amount is 200"

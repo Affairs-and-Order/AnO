@@ -657,16 +657,17 @@ def warTarget():
 # infra damage, building damage
 # giant loot, coalition loot, reparation tax set if morale reaches 0
 @app.route("/warResult", methods=["GET"])
-# @login_required
+@login_required
 def warResult():
 
     # DEBUG DATA:
-    session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
-    eId = 10
-    session["enemy_id"] = eId
-    session["user_id"] = 11
+    # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
+    # eId = 10
+    # session["enemy_id"] = eId
+    # session["user_id"] = 11
 
     attacker = session["attack_units"]
+
     # grab defending enemy units from database
     eId = session["enemy_id"]
 
