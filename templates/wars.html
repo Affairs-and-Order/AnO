@@ -113,7 +113,6 @@
             {% set def = war_info[war_id]["def"]%}
             <div class="templatedivflex2left">
                 <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{def['id']}}">{{def["name"]}}</a></h2>
-                <h1>DEFENDER</h1>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{def["morale"]}} / 100 Morale</div>
@@ -133,7 +132,6 @@
             {% set att = war_info[war_id]["att"] %}
             <div class="templatedivflex2left">
                 <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{att['id']}}">{{att["name"]}}</a></h2>
-                <h1>AGGRESSOR</h1>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{att["morale"]}} / 100 Morale</div>

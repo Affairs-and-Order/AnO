@@ -416,6 +416,7 @@ class Units(Military):
         self.selected_units[unit_type] = unit_amount-amount
 
         # Save records to the database
+        # TODO: still save negative unit amount
         available_unit_amount = db.execute(f"SELECT {unit_type} FROM military WHERE id=(?)", (self.user_id,)).fetchone()[0]
         db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (available_unit_amount-amount, self.user_id))
         connection.commit()

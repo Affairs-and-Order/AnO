@@ -70,13 +70,13 @@ def update_supply(war_id):
 
 # so this is page 0, war menu, choose a war
 @app.route("/wars", methods=["GET", "POST"])
-# @login_required
+@login_required
 def wars():
 
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
-    # cId = session["user_id"]
-    cId = 11
+    cId = session["user_id"]
+    # cId = 11
 
     if request.method == "GET":
         normal_units = Military.get_military(cId)
@@ -90,6 +90,9 @@ def wars():
             war_attacker_defender_ids = db.execute("SELECT id,defender,attacker FROM wars WHERE (attacker=(?) OR defender=(?))AND peace_date IS NULL", (cId, cId)).fetchall()
             war_info = {}
             for war_id,defender,attacker in war_attacker_defender_ids:
+
+                update_supply(war_id)
+
                 attacker_info = {}
                 defender_info = {}
 
