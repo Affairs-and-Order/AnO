@@ -501,11 +501,25 @@ hr {
     background: #42444e;
     border-radius: 4px;
     box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
+    position: relative;
 }
 
 .menubara:hover {
     color: rgb(255, 255, 255);
     background: #515463;
+}
+
+.menubaranotification {
+    position: absolute;
+    background: red;
+    color: white;
+    border-radius: 100%;
+    font-size: 12px;
+    width: 13px;
+    margin-top: 5px;
+    margin-left: 4px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
+    text-align: center;
 }
 
 @media all and (max-width: 755px) {
@@ -1978,6 +1992,7 @@ button {
     user-select: none;
     border-collapse: collapse;
     background: var(--foregroundFive);
+    position: relative;
 }
 
 .menuflex2 div h3 {
@@ -1990,6 +2005,21 @@ button {
 
 .menuflex2 div:hover {
     background: var(--foregroundFour);
+}
+
+.menuflex2notification {
+    position: absolute;
+    background: red;
+    color: white;
+    border-radius: 100%;
+    font-size: 12px;
+    width: 13px;
+    height: 13px !important;
+    line-height: 13px !important;
+    top: 7px;
+    margin-left: 4px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
+    text-align: center;
 }
 
 .warning {
