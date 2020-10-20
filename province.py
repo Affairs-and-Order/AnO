@@ -95,7 +95,7 @@ def province(pId):
 
         return render_template("province.html", pId=pId, population=population, name=name,
                                cityCount=cityCount, land=land, pollution=pollution, consumer_spending=consumer_spending,
-                               happiness=happiness, productivity=productivity location=location,
+                               happiness=happiness, productivity=productivity, location=location,
 
                                oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
                                gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
