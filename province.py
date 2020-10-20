@@ -51,7 +51,7 @@ def province(pId):
         cId = session["user_id"]
 
         province_user = db.execute("SELECT userId FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        location = db.execute("SELECT location FROM users WHERE id=(?)", (province_user,)).fetchone()[0]
+        location = db.execute("SELECT location FROM stats WHERE id=(?)", (province_user,)).fetchone()[0]
         
         if province_user == cId:
             ownProvince = True

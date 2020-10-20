@@ -942,7 +942,18 @@
                         </tr>
                         <tr>
                             <td>{{ aerodomes }} Aerodomes</td>
-                            <td>1 [[ raw #1]]</td>
+                            
+                            <!-- #1 Raw resource -->
+                            {% if location == "antarctica" or location == "africa"
+                            or location == "europe" or location == "southamerica"
+                            %}
+                            <td>1 Iron Mines</td>
+                            {% elif location == "australia" or location == "asia" 
+                            or location == "northamerica" %}
+                            <td>Coal mines</td>
+                            {% endif %}
+                            <!---->
+                            
                             <td>1 Steel Mills</td>
                         </tr>
                         <tr>
