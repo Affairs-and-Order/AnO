@@ -896,7 +896,7 @@ hr {
 .imageborder {
     background: var(--foregroundFive);
     padding: 2.5px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0 14px 54px 4px !important;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 14px 54px 4px, rgba(0, 0, 0, 0.075) 0 12px 12px !important;
 }
 
 .width100 {
