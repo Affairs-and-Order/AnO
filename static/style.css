@@ -894,8 +894,9 @@ hr {
 }
 
 .imageborder {
-    background: #e3e9f0;
-    padding: 1.5px;
+    background: var(--foregroundFive);
+    padding: 2.5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 14px 54px 4px !important;
 }
 
 .width100 {
