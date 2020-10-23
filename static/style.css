@@ -515,7 +515,7 @@ hr {
     color: white;
     border-radius: 100%;
     font-size: 12px;
-    width: 13px;
+    width: 16px;
     margin-top: 5px;
     margin-left: 4px;
     box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
@@ -2016,7 +2016,7 @@ button {
     color: white;
     border-radius: 100%;
     font-size: 12px;
-    width: 13px;
+    width: 16px;
     height: 13px !important;
     line-height: 13px !important;
     top: 7px;
