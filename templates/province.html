@@ -944,31 +944,39 @@
                             <td>{{ aerodomes }} Aerodomes</td>
                             
                             <!-- #1 Raw resource -->
-                            {% if location == "antarctica" or location == "africa"
-                            or location == "europe" or location == "southamerica"
-                            %}
-                            <td>1 Iron Mines</td>
-                            {% elif location == "australia" or location == "asia" 
-                            or location == "northamerica" %}
-                            <td>Coal mines</td>
+                            {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
+                            <td>{{ iron_mines }} Iron Mines</td>
+                            {% elif location in ["australia", "asia", "northamerica"] %}
+                            <td>{{ coal_mines }} Coal mines</td>
                             {% endif %}
                             <!---->
-                            
                             <td>1 Steel Mills</td>
                         </tr>
                         <tr>
                             <td>{{ harbours }} Harbours</td>
-                            <td>1 [[ raw #2]]</td>
+                            <!-- #2 Raw resource -->
+                            {% if location in ["antarctica", "australia", "asia", "southamerica"] %}
+                            <td>{{ copper_mines }} Copper mines</td>
+                            {% elif location in ["northamerica", "africa"] %}
+                            <td>{{ oil_pumps }} Oil pumps</td>
+                            {% elif location in ["asia"] %}
+                            <td>{{ uranium_mines }} Uranium mines</td>
+                            {% endif %}
+                            <!---->
                             <td>1 Ammunition Factories</td>
                         </tr>
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
+                            <!-- #3 Raw resource -->
                             <td>1 [[ raw #3]]</td>
+                            <!---->
                             <td>1 Aluminum Refineries</td>
                         </tr>
                         <tr>
                             <td>{{ silos }} Silos</td>
+                            <!-- 4 Raw resource -->
                             <td>1 [[ raw #4]]</td>
+                            <!---->
                             <td>1 Oil Refineries</td>
                         </tr>
                     </table>
