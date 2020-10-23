@@ -935,6 +935,7 @@
                             </div>
                         </tr>
                         <!--FOR CARSON - make these tds links in the future (using IDs)-->
+
                         <tr>
                             <td>{{ army_bases }} Army Bases</td>
                             <td>1 Farms</td>
@@ -959,8 +960,8 @@
                             <td>{{ copper_mines }} Copper mines</td>
                             {% elif location in ["northamerica", "africa"] %}
                             <td>{{ oil_pumps }} Oil pumps</td>
-                            {% elif location in ["asia"] %}
-                            <td>{{ uranium_mines }} Uranium mines</td>
+                            {% elif location in ["asia", "europe"] %}
+                            <td>{{ lumber_farms }} Tree farms</td>
                             {% endif %}
                             <!---->
                             <td>1 Ammunition Factories</td>
@@ -968,14 +969,30 @@
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
                             <!-- #3 Raw resource -->
-                            <td>1 [[ raw #3]]</td>
+                            {% if location in ["antarctica", "australia", "europe"] %}
+                            <td>{{ lead_mines }} Lead mines</td>
+                            {% elif location in ["africa", "southamerica", "northamerica"] %}
+                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            {% elif location in ["asia"] %}
+                            <td>{{ copper_mines }} Copper mines</td>
+                            {% endif %}
                             <!---->
                             <td>1 Aluminum Refineries</td>
                         </tr>
                         <tr>
                             <td>{{ silos }} Silos</td>
                             <!-- 4 Raw resource -->
-                            <td>1 [[ raw #4]]</td>
+                            {% if location in ["asia", "southamerica"] %}
+                            <td>{{ oil_jacks }} Oil jacks</td>
+                            {% elif location in ["northamerica"] %}
+                            <td>{{ lumber_farms }} Tree farms</td>
+                            {% elif location in ["africa", "antarctica"]%}
+                            <td>{{ uranium_mines }} Uranium mines </td>
+                            {% elif location in ["australia"] %}
+                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            {% elif location in ["europe"] %}
+                            <td>{{ coal_mines }} Coal mines</td>
+                            {% endif %}
                             <!---->
                             <td>1 Oil Refineries</td>
                         </tr>
