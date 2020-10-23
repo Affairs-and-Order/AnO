@@ -1432,8 +1432,8 @@ hr {
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 5px;
-    width: 5px;
+    height: 0px;
+    width: 0px;
     left: 0px;
     right: 0;
     transition: all 0.25s;
@@ -1442,6 +1442,7 @@ hr {
 
 .radioleft input[type=radio]:checked~.check {
     border: 3px solid #00a7e1;
+    box-shadow: #00a9e190 0 0 22px 0;
 }
 
 .radioleft input[type=radio]:checked~.check::before {
@@ -1590,6 +1591,7 @@ hr {
     border: 1.5px solid var(--border);
     padding: 8px;
     width: max-content;
+    max-width: 95%;
     margin: auto;
     box-shadow: rgba(0, 0, 0, 0.05) 0 16px 26px 0;
     border-radius: 4px;
