@@ -859,6 +859,10 @@ hr {
     opacity: 1;
 }
 
+.flexwrap {
+    flex-wrap: wrap;
+}
+
 .bold {
     font-weight: bold;
 }
