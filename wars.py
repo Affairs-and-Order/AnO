@@ -733,7 +733,7 @@ def warResult():
         # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
-        war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
+        war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
         print(attack_effects, "BEFORE WARTYPE")
         if len(war_type) > 0:
             if war_type == "raze":
@@ -801,6 +801,10 @@ def warResult():
 @app.route("/declare_war", methods=["POST"])
 @login_required
 def declare_war():
+
+    # CONSTANT VALUE
+    WAR_TYPES = ["Raid", "Sustained", "Loot"]
+
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
@@ -842,6 +846,9 @@ def declare_war():
         if current_peace[0]:
             if (current_peace[0]+259200) > time.time():
                 return error(403, "You can't declare war because truce has not expired!")
+
+        if war_type not in WAR_TYPES:
+            return error(400, "Invalid war type!")
 
     except Exception as e:
         print("RUNN")
