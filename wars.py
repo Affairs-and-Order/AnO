@@ -734,15 +734,25 @@ def warResult():
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
         war_type = db.execute("SELECT war_type FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1]
-        print(attack_effects, "BEFORE WARTYPE")
+
+        print(attack_effects, "BEFORE WARTYPE EFFECTS")
+
         if len(war_type) > 0:
-            if war_type == "raze":
+            if war_type == "Raze":
+
                 # infrastructure damage
                 attack_effects[0] = attack_effects[0]*10
 
-            elif war_type == "sustained": pass
-            elif war_type == "loot": pass
+            elif war_type == "Loot":
+
+                # infrastructure damage
+                attack_effects[0] = attack_effects[0]*0.2
+
+            elif war_type == "Sustained":
+                pass
+
             else: print("INVALID WARTYPE")
+
         else:
             print("INVALID USER IDs")
 

@@ -70,6 +70,7 @@ class Economy:
 
         connection.commit()
 
+    # IMPORTANT: the amount is not validated in this method, so you should provide a valid value
     def transfer_resources(self, resource, amount, destinationID):
         connection = sqlite3.connect(path)
         db = connection.cursor()
@@ -292,7 +293,7 @@ class Military(Nation):
 
     # Update the morale and give back the win type name
     @staticmethod
-    def morale_change(war_id, morale, column, win_type):
+    def morale_change(war_id, morale, column, win_type, winner, loser):
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
         # war_id = db.execute(f"SELECT id FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1][0]
@@ -320,7 +321,15 @@ class Military(Nation):
         if morale <= 0:
             # TODO: need a method for give the winner the pize for winning the war (this is not negotiation because the enemy completly lost the war since morale is 0)
             Nation.set_peace(db, connection, war_id)
-            # eco = Economy()
+            eco = Economy(winner.user_id)
+
+            for resource in Economy.resources:
+
+                resource_amount = db.execute(f'SELECT {resource} FROM resources WHERE id=(?)', (loser.user_id,)).fetchone()[0]
+
+                # transfer 20% of resource on hand
+                eco.transfer_resources(resource, resource_amount*(1/5), winner.user_id)
+
             print("THE WAR IS OVER")
 
         db.execute(f"UPDATE wars SET {column}=(?) WHERE id=(?)", (morale, war_id))
@@ -479,8 +488,9 @@ class Military(Nation):
 
         # print("MORALE COLUMN", morale_column, "WINNER FROM FIGHT MEHTOD", winner.user_id)
         # print("ATTC", attacker.user_id, defender.user_id)
-        win_condition = Military.morale_change(war_id, morale, morale_column, win_type)
-        # win_condition = Military.morale_change(morale_column, win_type, attacker, defender)
+
+        # win_condition = Military.morale_change(war_id, morale, morale_column, win_type)
+        win_condition = Military.morale_change(morale_column, win_type, winner, loser)
 
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
