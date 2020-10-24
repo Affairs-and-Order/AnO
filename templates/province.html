@@ -935,6 +935,7 @@
                             </div>
                         </tr>
                         <!--FOR CARSON - make these tds links in the future (using IDs)-->
+
                         <tr>
                             <td>{{ army_bases }} Army Bases</td>
                             <td>1 Farms</td>
@@ -944,31 +945,55 @@
                             <td>{{ aerodomes }} Aerodomes</td>
                             
                             <!-- #1 Raw resource -->
-                            {% if location == "antarctica" or location == "africa"
-                            or location == "europe" or location == "southamerica"
-                            %}
-                            <td>1 Iron Mines</td>
-                            {% elif location == "australia" or location == "asia" 
-                            or location == "northamerica" %}
-                            <td>Coal mines</td>
+                            {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
+                            <td>{{ iron_mines }} Iron Mines</td>
+                            {% elif location in ["australia", "asia", "northamerica"] %}
+                            <td>{{ coal_mines }} Coal mines</td>
                             {% endif %}
                             <!---->
-                            
                             <td>1 Steel Mills</td>
                         </tr>
                         <tr>
                             <td>{{ harbours }} Harbours</td>
-                            <td>1 [[ raw #2]]</td>
+                            <!-- #2 Raw resource -->
+                            {% if location in ["antarctica", "australia", "asia", "southamerica"] %}
+                            <td>{{ copper_mines }} Copper mines</td>
+                            {% elif location in ["northamerica", "africa"] %}
+                            <td>{{ pumpjacks }} Pumpjacks</td>
+                            {% elif location in ["asia", "europe"] %}
+                            <td>{{ lumber_farms }} Tree farms</td>
+                            {% endif %}
+                            <!---->
                             <td>1 Ammunition Factories</td>
                         </tr>
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
-                            <td>1 [[ raw #3]]</td>
+                            <!-- #3 Raw resource -->
+                            {% if location in ["antarctica", "australia", "europe"] %}
+                            <td>{{ lead_mines }} Lead mines</td>
+                            {% elif location in ["africa", "southamerica", "northamerica"] %}
+                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            {% elif location in ["asia"] %}
+                            <td>{{ copper_mines }} Copper mines</td>
+                            {% endif %}
+                            <!---->
                             <td>1 Aluminum Refineries</td>
                         </tr>
                         <tr>
                             <td>{{ silos }} Silos</td>
-                            <td>1 [[ raw #4]]</td>
+                            <!-- 4 Raw resource -->
+                            {% if location in ["asia", "southamerica"] %}
+                            <td>{{ pumpjacks }} Pumpjacks</td>
+                            {% elif location in ["northamerica"] %}
+                            <td>{{ lumber_farms }} Tree farms</td>
+                            {% elif location in ["africa", "antarctica"]%}
+                            <td>{{ uranium_mines }} Uranium mines </td>
+                            {% elif location in ["australia"] %}
+                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            {% elif location in ["europe"] %}
+                            <td>{{ coal_mines }} Coal mines</td>
+                            {% endif %}
+                            <!---->
                             <td>1 Oil Refineries</td>
                         </tr>
                     </table>

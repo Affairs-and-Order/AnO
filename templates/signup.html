@@ -18,34 +18,10 @@
 
     <div class="templatedivcontent">
 
-        <div class="coalitionimagepreview">
-            <img id="imageBackground" />
-        </div>
-
-        <!--
-        <div class="templatedivflex2 menuflex divflex2center strongpadding">
-            <div class="templatedivflex2left">
-
-                <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
-
-            </div>
-            <div class="templatedivflex2left">
-
-                <label for="bgimage">Choose country flag</label>
-
-                <label class="imageinput fit center"><span class="material-icons-outlined">
-        wallpaper
-            </span>Choose Image
-            <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground(event)">
-          </label>
-
-            </div>
-        </div>
-        -->
-
         {% if way != "discord" %}
-        <form action="/discord" method="POST">
-            <div class="templatedivflex2 menuflex divflex2center">
+
+        <div class="templatedivflex2 menuflex divflex2center flexwrap">
+            <form action="/discord" method="POST">
                 <div class="templatedivflex2left">
 
                     <div class="templatecontentheadercenter">Discord Sign Up</div>
@@ -62,47 +38,47 @@
                     </div>
 
                 </div>
-        </form>
-        {% endif %}
+            </form>
+            {% endif %}
 
 
-        <div class="templatedivflex2left warflexparentcolors">
+            <div class="templatedivflex2left warflexparentcolors">
 
-            <div class="templatecontentheadercenter">Default Sign Up</div>
+                <div class="templatecontentheadercenter">Default Sign Up</div>
 
-            {% if way != "discord" %}
-            <form id="signup-form" class="loginsignupform" action="/signup" method="POST">
-                {% elif way == "discord" %}
-                <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
-                    {% endif %}
-                    <div class="templatedivflex2 divflex2center signupdiv">
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
+                {% if way != "discord" %}
+                <form id="signup-form" class="loginsignupform" action="/signup" method="POST">
+                    {% elif way == "discord" %}
+                    <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
+                        {% endif %}
+                        <div class="templatedivflex2 divflex2center signupdiv">
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
+                            </div>
+                            {% if way != "discord" %}
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
+                            </div>
+                            {% endif %}
+
+                            <input id="continent" name="continent" type="hidden">
+
                         </div>
+
                         {% if way != "discord" %}
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
+                        <div class="templatedivflex2 divflex2center signupdiv">
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" type="password" name="password" placeholder="Password" required/>
+                            </div>
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" type="password" name="confirmation" placeholder="Confirm Password" required/>
+                            </div>
                         </div>
                         {% endif %}
 
-                        <input id="continent" name="continent" type="hidden">
 
-                    </div>
-
-                    {% if way != "discord" %}
-                    <div class="templatedivflex2 divflex2center signupdiv">
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" type="password" name="password" placeholder="Password" required/>
-                        </div>
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" type="password" name="confirmation" placeholder="Confirm Password" required/>
-                        </div>
-                    </div>
-                    {% endif %}
-
-
-                    <input class="loginsignupinput" autocomplete="off" name="key" placeholder="Special Key" required/>
-        </div>
+                        <input class="loginsignupinput" autocomplete="off" name="key" placeholder="Special Key" required/>
+            </div>
         </div>
 
         <h2 class="templatecontentheaderleft">Choose a location:</h2>

@@ -515,7 +515,7 @@ hr {
     color: white;
     border-radius: 100%;
     font-size: 12px;
-    width: 13px;
+    width: 16px;
     margin-top: 5px;
     margin-left: 4px;
     box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
@@ -859,6 +859,10 @@ hr {
     opacity: 1;
 }
 
+.flexwrap {
+    flex-wrap: wrap;
+}
+
 .bold {
     font-weight: bold;
 }
@@ -894,8 +898,9 @@ hr {
 }
 
 .imageborder {
-    background: #e3e9f0;
-    padding: 1.5px;
+    background: var(--foregroundFive);
+    padding: 2.5px;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 14px 54px 4px, rgba(0, 0, 0, 0.075) 0 12px 12px !important;
 }
 
 .width100 {
@@ -1431,8 +1436,8 @@ hr {
     top: 0;
     bottom: 0;
     margin: auto;
-    height: 5px;
-    width: 5px;
+    height: 0px;
+    width: 0px;
     left: 0px;
     right: 0;
     transition: all 0.25s;
@@ -1441,6 +1446,7 @@ hr {
 
 .radioleft input[type=radio]:checked~.check {
     border: 3px solid #00a7e1;
+    box-shadow: #00a9e190 0 0 22px 0;
 }
 
 .radioleft input[type=radio]:checked~.check::before {
@@ -1589,6 +1595,7 @@ hr {
     border: 1.5px solid var(--border);
     padding: 8px;
     width: max-content;
+    max-width: 95%;
     margin: auto;
     box-shadow: rgba(0, 0, 0, 0.05) 0 16px 26px 0;
     border-radius: 4px;
@@ -2013,7 +2020,7 @@ button {
     color: white;
     border-radius: 100%;
     font-size: 12px;
-    width: 13px;
+    width: 16px;
     height: 13px !important;
     line-height: 13px !important;
     top: 7px;

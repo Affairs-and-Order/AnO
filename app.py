@@ -1,6 +1,4 @@
 from flask import Flask, request, render_template, session, redirect, flash
-from flask_session import Session
-from tempfile import mkdtemp
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 import datetime
@@ -20,7 +18,6 @@ from attack_scripts import Military
 
 app = Flask(__name__)
 
-
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from testroutes import testfunc
 from wars import wars, find_targets
@@ -33,12 +30,6 @@ from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
 from intelligence import intelligence
 from upgrades import upgrades
-
-# basic cache configuration
-app.config["SESSION_FILE_DIR"] = mkdtemp()
-app.config["SESSION_PERMANENT"] = False
-app.config["SESSION_TYPE"] = "filesystem"
-Session(app)
 
 app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
 app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
