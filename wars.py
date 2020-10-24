@@ -427,6 +427,11 @@ def send_peace_offer(war_id):
 @app.route("/war/<int:war_id>", methods=["GET"])
 @login_required
 def war_with_id(war_id):
+
+    # DEBUG DTATA START:
+    # cId=11
+    # DEBUG DATAT END
+
     connection = sqlite3.connect("affo/aao.db")
     db = connection.cursor()
 
@@ -443,12 +448,13 @@ def war_with_id(war_id):
 
     update_supply(war_id)
 
-
     cId = session["user_id"]
 
     # defender meaning the one who got declared on
-    defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]  # this literally raises an error every single time it runs TypeError: 'NoneType' object is not subscriptable
+    defender = db.execute("SELECT defender FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     defender_name = db.execute("SELECT username FROM users WHERE id=(?)", (defender,)).fetchone()[0]
+    info = db.execute("SELECT defender_supplies,defender_morale FROM wars WHERE id=(?)",(war_id,)).fetchone()
+    defender_info={"morale": info[1], "supplies": info[0]}
 
     # # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
     attacker = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
@@ -483,7 +489,7 @@ def war_with_id(war_id):
     else:
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
-    return render_template("war.html", defender=defender, attacker=attacker, war_id=war_id,
+    return render_template("war.html", defender_info=defender_info, defender=defender, attacker=attacker, war_id=war_id,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance)
 
