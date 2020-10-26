@@ -906,11 +906,15 @@
                     </div>
 
                     <label for="description">Describe your coalition</label>
-                    <div class="center">
-                        <textarea class="templatetextarea" name="description" placeholder="Coalition Description" maxlength="240">{{ description }}</textarea>
-                    </div>
+
+                    <textarea class="templatetextarea" name="description" placeholder="Coalition Description" maxlength="240">{{ description }}</textarea>
+
 
                     <div class="vanilla" id="description"></div>
+
+                    <label for="description">War Alert</label>
+
+                    <textarea class="templatetextarea" name="description" maxlength="240">{{ warAlert }}</textarea>
 
                     <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
