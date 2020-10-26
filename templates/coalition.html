@@ -694,58 +694,70 @@
                     </span>Update</button>
             </div>
 
-            <h2 class="templatecontentheaderleft">Coalition War Range</h2>
+            <h2 class="templatecontentheaderleft">War Range Canons</h2>
 
             <div class="infodiv">
 
-
-                <div class="templatedivflex2 divflex2center menuflex">
+                <h2 class="templatecontentheadercenter">New Canon</h2>
+                <div class="templatedivflex2 divflex2center">
                     <div class="templatedivflex2left">
 
+                        <input class="loginsignupinput" name="canonName" placeholder="Canon Name" />
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <label class="vanilla mediumsmall">Members in canon may not</label>
                         <select class="templateselect" name="diplomacy">
-                            <option class="templateoption" selected disabled>Give Position</option>
-                            <option class="templateoption">Leader</option>
-                            <option class="templateoption">High Government</option>
-                            <option class="templateoption">Low Government</option>
+
+                            <option class="templateoption" selected disabled>Set Operator</option>
+                            <option class="templateoption">Attack influence</option>
+                            <option class="templateoption">Attack coalitions</option>
+                            <option class="templateoption">Attack provinces</option>
                         
                         </select>
 
                     </div>
+                </div>
+                <div class="templatedivflex2 divflex2center">
                     <div class="templatedivflex2left">
 
-                        <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Enter Username" />
+                        <input class="loginsignupinput" name="canonName" placeholder="From" />
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <input class="loginsignupinput" name="canonName" placeholder="To" />
 
                     </div>
                 </div>
                 <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
-                    check
-                    </span>Go</button>
+                    add_circle_outline
+                    </span>Create Canon</button>
 
                 <!--max lenth of 10-->
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
-                            <th>Role</th>
-                            <th>Countries</th>
+                            <th>Name</th>
+                            <th>Canon</th>
                         </tr>
                         <tr>
-                            <td>Leaders:</td>
-                            <td>[[ leaders ]]</td>
+                            <td>[[ canonName ]]:</td>
+                            <!--Example: "may not attack 1-20 provinces"-->
+                            <td>[[ canon ]]</td>
                         </tr>
                         <tr>
-                            <td>Members:</td>
-                            <td>[[ members ]]</td>
+                            <td>[[ canonName ]]:</td>
+                            <td>[[ canon ]]</td>
                         </tr>
                         <tr>
-                            <td>Members:</td>
-                            <td>[[ members ]]</td>
+                            <td>[[ canonName ]]:</td>
+                            <td>[[ canon ]]</td>
                         </tr>
                     </table>
                 </div>
 
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                    check
-                    </span>Update</button>
             </div>
 
             <!--HIDE ALL OF THIS infodiv and header if coalition type is "open"-->
@@ -894,11 +906,15 @@
                     </div>
 
                     <label for="description">Describe your coalition</label>
-                    <div class="center">
-                        <textarea class="templatetextarea" name="description" placeholder="Coalition Description" maxlength="240">{{ description }}</textarea>
-                    </div>
+
+                    <textarea class="templatetextarea" name="description" placeholder="Coalition Description" maxlength="240">{{ description }}</textarea>
+
 
                     <div class="vanilla" id="description"></div>
+
+                    <label for="description">War Alert</label>
+
+                    <textarea class="templatetextarea" name="description" maxlength="240">{{ warAlert }}</textarea>
 
                     <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
