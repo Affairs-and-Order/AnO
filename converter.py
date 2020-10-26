@@ -1,8 +1,26 @@
 file = 'tests.py'
 output = open('converted.py', "w")
 
-files = ["app1.py"]
+files = ["app.py", "coalitions.py", "countries.py", "formula.py",
+"helpers.py", "intelligence.py", "login.py", "market.py", "military.py",
+"province.py", "signup.py", "testing.py", "testroutes.py", "units.py",
+"upgrades.py", "wars.py"]
 
+new_files = []
+
+"""
+RENAMER
+for filename in files:
+    substr = ".py"
+    inserttxt = "1"
+
+    idx = filename.index(substr)
+    new_filename = filename[:idx] + inserttxt + filename[idx:]
+    new_files.append(new_filename)
+"""
+
+
+"""
 with open(file) as f:
     for line in f.readlines():
         if 'import sqlite3' in line:
@@ -10,25 +28,25 @@ with open(file) as f:
             output.write(new_line)
         elif "connection = sqlite3.connect('affo/aao.db')" in line:
             new_line = line.replace("connection = sqlite3.connect('affo/aao.db')",
-"""
+# add three " here
 connection = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
     user=os.getenv("PG_USER"),
     password=os.getenv("PG_PASSWORD"),
     host=os.getenv("PG_HOST"),
     port=os.getenv("PG_PORT"))
-""")
+# add three " here)
             output.write(new_line)
         elif 'connection = sqlite3.connect("affo/aao.db")' in line:
             new_line = line.replace('connection = sqlite3.connect("affo/aao.db")',
-"""
+# add three " here)
 connection = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
     user=os.getenv("PG_USER"),
     password=os.getenv("PG_PASSWORD"),
     host=os.getenv("PG_HOST"),
     port=os.getenv("PG_PORT"))
-""")
+# add three " here)
             output.write(new_line)
 
         elif '?' in line and 'db.execute' in line:
@@ -45,4 +63,5 @@ connection = psycopg2.connect(
             output.write(f'\n{full_cursor}')
         else:
             output.write(line)
+"""
         
