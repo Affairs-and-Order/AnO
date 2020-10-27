@@ -55,6 +55,7 @@ def discord():
     scope = request.args.get(
         'scope',
         'identify email')
+
     discord = make_session(scope=scope.split(' '))
     authorization_url, state = discord.authorization_url(AUTHORIZATION_BASE_URL)
     session['oauth2_state'] = state
@@ -205,8 +206,7 @@ def signup():
             # Hashes the inputted password
             hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
 
-            db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(
-                datetime.date.today())))  # creates a new user || added account creation date
+            db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 
             user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()[0]
 
