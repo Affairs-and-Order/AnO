@@ -22,8 +22,7 @@ def intelligence():
         # db.execute("DELETE FROM spyentries WHERE date<(?)",
         #            (floor(time.time())-86400*14,))
 
-        yourCountry = db.execute(
-            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+        yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
         emptyCountryDict = {'eName': 'placeholder'}
         for unittype in Military.allUnits:
@@ -31,11 +30,11 @@ def intelligence():
 
         resources = ["rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
                      "lumber", "components", "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"]
+
         for resource in resources:
             emptyCountryDict[resource] = "Unknown"
 
-        spyinfodb = db.execute(
-            "SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
+        spyinfodb = db.execute("SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
         spyEntries = []
         for i, tupleEntry in enumerate(spyinfodb, start=0):
 
@@ -43,16 +42,13 @@ def intelligence():
 
             try:
                 eId = tupleEntry[2]
-                spyEntries[i]['eName'] = db.execute(
-                    "SELECT username FROM users WHERE id=(?)", (eId,)).fetchone()[0]
+                spyEntries[i]['eName'] = db.execute("SELECT username FROM users WHERE id=(?)", (eId,)).fetchone()[0]
                 for j, unittype in enumerate(Military.allUnits):
                     if tupleEntry[j+2] == 'true':
-                        spyEntries[i][unittype] = db.execute(
-                            f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
+                        spyEntries[i][unittype] = db.execute(f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
                 for j, resource in enumerate(resources):
                     if tupleEntry[j+14] == 'true':
-                        spyEntries[i][resource] = db.execute(
-                            f"SELECT {resource} FROM resources WHERE id", (eId,)).fetchone()[0]
+                        spyEntries[i][resource] = db.execute(f"SELECT {resource} FROM resources WHERE id", (eId,)).fetchone()[0]
             except:
                 spyEntries[i]['eName'] = 'Enemy Nation Name'
                 # delete the spy entry if the spyee doesnt exist anymore
@@ -72,23 +68,22 @@ def spyAmount():
     db = connection.cursor()
     cId = session["user_id"]
     if request.method == "GET":
-        yourCountry = db.execute(
-            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+        yourCountry = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
         return render_template("spyAmount.html", yourCountry=yourCountry, spies=spies)
+
     # make the spy entry here
     if request.method == "POST":
         prep = request.form.get("prep")
         spies = request.form.get("amount")
         eId = request.form.get("enemy")
-        eDefcon = db.execute(
-            "SELECT defcon FROM users WHERE id=(?)", (eId,)).fetchone()[0]
-        eSpies = db.execute(
-            "SELECT spies FROM military WHERE id=(?)", (eId,)).fetchone()[0]
+        eDefcon = db.execute("SELECT defcon FROM users WHERE id=(?)", (eId,)).fetchone()[0]
+        eSpies = db.execute("SELECT spies FROM military WHERE id=(?)", (eId,)).fetchone()[0]
         # calculate what values have been revealed based on prep, amount, edefcon, espies
 
 
         resources = ["rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
                      "lumber", "components", "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"]
+                     
         revealChance = prep * spies / (eDefcon * eSpies)
         spyEntry = {}
         for unit in Military.allUnits:

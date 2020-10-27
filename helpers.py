@@ -1,3 +1,5 @@
+# FULLY MIGRATED
+
 import os
 import psycopg2
 from flask import redirect, render_template, request, session
@@ -194,7 +196,14 @@ def generate_province_revenue(): # Runs each turn
     'silos_money': 120000
     }
 
-    conn = sqlite3.connect('affo/aao.db') # connects to db
+    
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+        
     db = conn.cursor()
 
     columns = [
@@ -285,6 +294,3 @@ def generate_province_revenue(): # Runs each turn
         conn.commit()
 
     conn.close()
-
-if __name__ == "__main__":
-    get_influence(10)
