@@ -1,3 +1,5 @@
+# FULLY MIGRATED
+
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
@@ -327,8 +329,8 @@ def username_avalaible(username):
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
         port=os.getenv("PG_PORT"))
-        
-    db = conn.cursor()
+
+    db = connection.cursor()
 
     try:
         db.execute("SELECT username FROM users WHERE username=(%s)", (username,))

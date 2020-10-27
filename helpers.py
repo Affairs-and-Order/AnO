@@ -36,6 +36,7 @@ def error(code, message):
 
 @login_required
 def get_influence(country_id):
+
     connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
@@ -93,8 +94,7 @@ def get_coalition_influence(coalition_id):
 
     total_influence = 0
 
-    members = db.execute(
-        "SELECT userId FROM coalitions WHERE colId=(?)", (coalition_id,)).fetchall()
+    members = db.execute("SELECT userId FROM coalitions WHERE colId=(?)", (coalition_id,)).fetchall()
     for i in members:
         member_influence = get_influence(i[0])
         total_influence += member_influence
