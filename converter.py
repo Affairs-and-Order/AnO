@@ -1,5 +1,5 @@
-file = 'intelligence1.py'
-output = open('intelligence.py', "w")
+file = 'market1.py'
+output = open('market.py', "w")
 
 with open(file) as f:
     for line in f.readlines():
