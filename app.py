@@ -285,56 +285,62 @@ def inject_user():
         db = conn.cursor()
         session_id = session["user_id"]
 
-        db.execute("SELECT gold FROM stats WHERE id=%s", (session_id,))  # DONE
-        money = db.fetchone()[0]
+        try:
 
-        db.execute("SELECT rations FROM resources WHERE id=(%s)", (session_id,))
-        rations = db.fetchone()[0]
+            db.execute("SELECT gold FROM stats WHERE id=(%s)", (session_id,))  # DONE
+            money = db.fetchone()[0]
 
-        db.execute("SELECT oil FROM resources WHERE id=(%s)", (session_id,))
-        oil = db.fetchone()[0]  # DONE
+            db.execute("SELECT rations FROM resources WHERE id=(%s)", (session_id,))
+            rations = db.fetchone()[0]
 
-        db.execute("SELECT coal FROM resources WHERE id=(%s)", (session_id,))
-        coal = db.fetchone()[0]  # DONE
+            db.execute("SELECT oil FROM resources WHERE id=(%s)", (session_id,))
+            oil = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT uranium FROM resources WHERE id=(%s)", (session_id,))
-        uranium = db.fetchone()[0]  # DONE
+            db.execute("SELECT coal FROM resources WHERE id=(%s)", (session_id,))
+            coal = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT bauxite FROM resources WHERE id=(%s)", (session_id,))
-        bauxite = db.fetchone()[0]  # DONE
+            db.execute("SELECT uranium FROM resources WHERE id=(%s)", (session_id,))
+            uranium = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT iron FROM resources WHERE id=(%s)", (session_id,))
-        iron = db.fetchone()[0]  # DONE
+            db.execute("SELECT bauxite FROM resources WHERE id=(%s)", (session_id,))
+            bauxite = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT lead FROM resources WHERE id=(%s)", (session_id,))
-        lead = db.fetchone()[0]  # DONE
+            db.execute("SELECT iron FROM resources WHERE id=(%s)", (session_id,))
+            iron = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT copper FROM resources WHERE id=(%s)", (session_id,))
-        copper = db.fetchone()[0]  # DONE
+            db.execute("SELECT lead FROM resources WHERE id=(%s)", (session_id,))
+            lead = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT lumber FROM resources WHERE id=(%s)", (session_id,))
-        lumber = db.fetchone()[0]  # DONE
+            db.execute("SELECT copper FROM resources WHERE id=(%s)", (session_id,))
+            copper = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT components FROM resources WHERE id=(%s)", (session_id,))
-        components = db.fetchone()[0]
+            db.execute("SELECT lumber FROM resources WHERE id=(%s)", (session_id,))
+            lumber = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT steel FROM resources WHERE id=(%s)", (session_id,))
-        steel = db.fetchone()[0]
+            db.execute("SELECT components FROM resources WHERE id=(%s)", (session_id,))
+            components = db.fetchone()[0]
 
-        db.execute("SELECT consumer_goods FROM resources WHERE id=(%s)", (session_id,))
-        consumer_goods = db.fetchone()[0]  # DONE
+            db.execute("SELECT steel FROM resources WHERE id=(%s)", (session_id,))
+            steel = db.fetchone()[0]
 
-        db.execute("SELECT aluminium FROM resources WHERE id=(%s)", (session_id,))
-        aluminium = db.fetchone()[0]
+            db.execute("SELECT consumer_goods FROM resources WHERE id=(%s)", (session_id,))
+            consumer_goods = db.fetchone()[0]  # DONE
 
-        db.execute("SELECT gasoline FROM resources WHERE id=(%s)", (session_id,))
-        gasoline = db.fetchone()[0]
+            db.execute("SELECT aluminium FROM resources WHERE id=(%s)", (session_id,))
+            aluminium = db.fetchone()[0]
 
-        db.execute("SELECT ammunition FROM resources WHERE id=(%s)", (session_id,))
-        ammunition = db.fetchone()[0]
+            db.execute("SELECT gasoline FROM resources WHERE id=(%s)", (session_id,))
+            gasoline = db.fetchone()[0]
 
-        lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper,
-            components, steel, consumer_goods, lumber, aluminium, gasoline, ammunition]
+            db.execute("SELECT ammunition FROM resources WHERE id=(%s)", (session_id,))
+            ammunition = db.fetchone()[0]
+          
+            lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper,
+                components, steel, consumer_goods, lumber, aluminium, gasoline, ammunition]
+
+        except TypeError:
+            lst = []
+
         return lst
     return dict(get_resource_amount=get_resource_amount)
 
