@@ -28,33 +28,21 @@ def country(cId):
     username = db.execute("SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]  # gets country's name from db
     # runs the get_influence function of the player's id, which calculates his influence score
     influence = get_influence(cId)
-    description = db.execute(
-        "SELECT description FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+    description = db.execute("SELECT description FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-    population = db.execute(
-        "SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    happiness = db.execute(
-        "SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    provinceCount = db.execute(
-        "SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
+    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    happiness = db.execute("SELECT happiness FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    provinceCount = db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
 
-    location = db.execute(
-        "SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    gold = db.execute("SELECT gold FROM stats WHERE id=(?)",
-                      (cId,)).fetchone()[0]
-    dateCreated = db.execute(
-        "SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+    location = db.execute("SELECT location FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    dateCreated = db.execute("SELECT date FROM users WHERE id=(?)", (cId,)).fetchone()[0]
 
-    provinceNames = db.execute(
-        "SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provinceIds = db.execute(
-        "SELECT id FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provincePops = db.execute(
-        "SELECT population FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provinceCities = db.execute(
-        "SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
-    provinceLand = db.execute(
-        "SELECT land FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceNames = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceIds = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provincePops = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceCities = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
+    provinceLand = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id DESC", (cId,)).fetchall()
 
     provinces = zip(provinceNames, provinceIds, provincePops,
                     provinceCities, provinceLand)
@@ -81,8 +69,7 @@ def country(cId):
     except TypeError:
         flag = None
 
-    spyCount = db.execute(
-        "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    spyCount = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
     spyPrep = 1 # this is an integer from 1 to 5
     eSpyCount = 0 # this is an integer from 0 to 100
     eDefcon = 1 # this is an integer from 1 to 5
@@ -159,8 +146,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     for i in users:
 
-        date = db.execute(
-            "SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
+        date = db.execute("SELECT date FROM users WHERE id=(?)", (str(i[0]),)).fetchone()[0]
         dates.append(date)
 
         influence = get_influence(str(i[0]))
@@ -174,12 +160,10 @@ def countries():  # TODO: fix shit ton of repeated code in function
         flags.append(flag)
 
         try:
-            coalition_id = db.execute(
-                "SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
+            coalition_id = db.execute("SELECT colId FROM coalitions WHERE userId = (?)", (str(i[0]),)).fetchone()[0]
             coalition_ids.append(coalition_id)
 
-            coalition_name = db.execute(
-                "SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
+            coalition_name = db.execute("SELECT name FROM colNames WHERE id = (?)", (coalition_id,)).fetchone()[0]
             coalition_names.append(coalition_name)
         except:
             coalition_ids.append("No Coalition")
@@ -207,8 +191,7 @@ def update_info():
     description = request.form.get("description")
 
     if not description == "None":
-        db.execute("UPDATE users SET description=(?) WHERE id=(?)",
-                   (description, cId))
+        db.execute("UPDATE users SET description=(?) WHERE id=(?)", (description, cId))
 
     # Flag changing
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
