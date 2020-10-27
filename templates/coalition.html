@@ -645,46 +645,57 @@
             <div class="infodiv">
 
 
-                <div class="templatedivflex2 divflex2center menuflex">
+                <h2 class="templatecontentheadercenter">New Bracket</h2>
+                <div class="templatedivflex2 divflex2center">
                     <div class="templatedivflex2left">
 
+                        <input class="loginsignupinput" name="bracketName" placeholder="Bracket Name" />
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <label class="vanilla mediumsmall">Members in bracket include</label>
                         <select class="templateselect" name="diplomacy">
-                            <option class="templateoption" selected disabled>Give Position</option>
-                            <option class="templateoption">Leader</option>
-                            <option class="templateoption">High Government</option>
-                            <option class="templateoption">Low Government</option>
+
+                            <option class="templateoption" selected disabled>Set Operator</option>
+                            <option class="templateoption">influence amount</option>
+                            <option class="templateoption">provinces count</option>
                         
                         </select>
 
                     </div>
+                </div>
+                <div class="templatedivflex2 divflex2center">
                     <div class="templatedivflex2left">
 
-                        <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Enter Username" />
+                        <input class="loginsignupinput" placeholder="From" />
+
+                    </div>
+                    <div class="templatedivflex2right">
+
+                        <input class="loginsignupinput" placeholder="To" />
 
                     </div>
                 </div>
                 <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
-                    check
-                    </span>Go</button>
+                    add_circle_outline
+                    </span>Create Bracket</button>
 
                 <!--max lenth of 10-->
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
-                            <th>Role</th>
-                            <th>Countries</th>
+                            <th>Name</th>
+                            <th>Bracket</th>
+                            <th>Action</th>
                         </tr>
                         <tr>
-                            <td>Leaders:</td>
-                            <td>[[ leaders ]]</td>
-                        </tr>
-                        <tr>
-                            <td>Members:</td>
-                            <td>[[ members ]]</td>
-                        </tr>
-                        <tr>
-                            <td>Members:</td>
-                            <td>[[ members ]]</td>
+                            <td>[[ bracketName]]:</td>
+                            <!--Example: "includes 1-20 provinces"-->
+                            <td>[[ bracketInfo ]]</td>
+                            <td><button formaction=""><span class="material-icons iconred">
+                                remove_circle_outline
+                                        </span></button></td>
                         </tr>
                     </table>
                 </div>
@@ -694,7 +705,7 @@
                     </span>Update</button>
             </div>
 
-            <h2 class="templatecontentheaderleft">War Range Canons</h2>
+            <h2 class="templatecontentheaderleft">War Range</h2>
 
             <div class="infodiv">
 
@@ -741,19 +752,15 @@
                         <tr>
                             <th>Name</th>
                             <th>Canon</th>
+                            <th>Action</th>
                         </tr>
                         <tr>
                             <td>[[ canonName ]]:</td>
                             <!--Example: "may not attack 1-20 provinces"-->
                             <td>[[ canon ]]</td>
-                        </tr>
-                        <tr>
-                            <td>[[ canonName ]]:</td>
-                            <td>[[ canon ]]</td>
-                        </tr>
-                        <tr>
-                            <td>[[ canonName ]]:</td>
-                            <td>[[ canon ]]</td>
+                            <td><button formaction=""><span class="material-icons iconred">
+                                remove_circle_outline
+                                        </span></button></td>
                         </tr>
                     </table>
                 </div>
