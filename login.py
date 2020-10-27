@@ -36,8 +36,8 @@ def login():
             return error(400, "No Password or Username")
 
         # selects data about user, from users
-        user = db.execute(
-            "SELECT * FROM users WHERE username = (?)", (username,)).fetchone()
+        user = db.execute("SELECT * FROM users WHERE username = (?)", (username,)).fetchone()
+
         try:
             hashed_pw = user[4]
         except:
@@ -48,14 +48,10 @@ def login():
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
             try:
-                coalition = db.execute(
-                    "SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+                coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
             except TypeError:
                 coalition = error(404, "Page Not Found")
 
-            # print(f"coalition = {coalition}")
-
-            session["coalition"] = coalition
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
