@@ -60,9 +60,12 @@ connection = psycopg2.connect(
                     variable = line.partition("db.execute(")[0]
                     new_line = new_line.replace(variable, "")
 
-                full_cursor = variable + 'db' + fetching
+                try:
+                    full_cursor = variable + 'db' + fetching
+                except: 
+                    full_cursor = variable + 'db'
+
                 output.write(new_line)
                 output.write(f'\n{full_cursor}')
             else:
                 output.write(line)
-        
