@@ -25,12 +25,12 @@ def coalition(colId):
 
     if request.method == "GET":
         
-    connection = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
 
@@ -158,40 +158,59 @@ def coalition(colId):
         ### BANK STUFF ###
         if userInCurCol == True:
 
-            bankRaw = {
-                db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
-                'money': db.fetchone()[0],
-                db.execute("SELECT rations FROM colBanks WHERE colId=(%s)", (colId,))
-                'rations': db.fetchone()[0],
-                db.execute("SELECT oil FROM colBanks WHERE colId=(%s)", (colId,))
-                'oil': db.fetchone()[0],
-                db.execute("SELECT coal FROM colBanks WHERE colId=(%s)", (colId,))
-                'coal': db.fetchone()[0],
-                db.execute("SELECT uranium FROM colBanks WHERE colId=(%s)", (colId,))
-                'uranium': db.fetchone()[0],
-                db.execute("SELECT bauxite FROM colBanks WHERE colId=(%s)", (colId,))
-                'bauxite': db.fetchone()[0],
-                db.execute("SELECT iron FROM colBanks WHERE colId=(%s)", (colId,))
-                'iron': db.fetchone()[0],
-                db.execute("SELECT lead FROM colBanks WHERE colId=(%s)", (colId,))
-                'lead': db.fetchone()[0],
-                db.execute("SELECT copper FROM colBanks WHERE colId=(%s)", (colId,))
-                'copper': db.fetchone()[0],
-                db.execute("SELECT lumber FROM colBanks WHERE colId=(%s)", (colId,))
-                'lumber': db.fetchone()[0],
+            db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
+            money = db.fetchone()[0]
 
-                db.execute("SELECT components FROM colBanks WHERE colId=(%s)", (colId,))
-                'components': db.fetchone()[0],
-                db.execute("SELECT steel FROM colBanks WHERE colId=(%s)", (colId,))
-                'steel': db.fetchone()[0],
-                db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(%s)", (colId,))
-                'consumer_goods': db.fetchone()[0],
-                db.execute("SELECT aluminium FROM colBanks WHERE colId=(%s)", (colId,))
-                'aluminium': db.fetchone()[0],
-                db.execute("SELECT gasoline FROM colBanks WHERE colId=(%s)", (colId,))
-                'gasoline': db.fetchone()[0],
-                db.execute("SELECT ammunition FROM colBanks WHERE colId=(%s)", (colId,))
-                'ammunition': db.fetchone()[0]
+            db.execute("SELECT rations FROM colBanks WHERE colId=(%s)", (colId,))
+            rations =  db.fetchone()[0]
+            db.execute("SELECT oil FROM colBanks WHERE colId=(%s)", (colId,))
+            oil =  db.fetchone()[0]
+            db.execute("SELECT coal FROM colBanks WHERE colId=(%s)", (colId,))
+            coal =  db.fetchone()[0]
+            db.execute("SELECT uranium FROM colBanks WHERE colId=(%s)", (colId,))
+            uranium =  db.fetchone()[0]
+            db.execute("SELECT bauxite FROM colBanks WHERE colId=(%s)", (colId,))
+            bauxite = db.fetchone()[0]
+            db.execute("SELECT iron FROM colBanks WHERE colId=(%s)", (colId,))
+            iron = db.fetchone()[0]
+            db.execute("SELECT lead FROM colBanks WHERE colId=(%s)", (colId,))
+            lead =  db.fetchone()[0]
+            db.execute("SELECT copper FROM colBanks WHERE colId=(%s)", (colId,))
+            copper = db.fetchone()[0]
+            db.execute("SELECT lumber FROM colBanks WHERE colId=(%s)", (colId,))
+            lumber = db.fetchone()[0]
+
+            db.execute("SELECT components FROM colBanks WHERE colId=(%s)", (colId,))
+            components =  db.fetchone()[0]
+            db.execute("SELECT steel FROM colBanks WHERE colId=(%s)", (colId,))
+            steel =  db.fetchone()[0]
+            db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(%s)", (colId,))
+            consumer_goods = db.fetchone()[0]
+            db.execute("SELECT aluminium FROM colBanks WHERE colId=(%s)", (colId,))
+            aluminium = db.fetchone()[0]
+            db.execute("SELECT gasoline FROM colBanks WHERE colId=(%s)", (colId,))
+            gasoline = db.fetchone()[0]
+            db.execute("SELECT ammunition FROM colBanks WHERE colId=(%s)", (colId,))
+            ammunition = db.fetchone()[0]
+
+            bankRaw = {
+
+                'money': money,
+                'rations': rations,
+                'oil': oil,
+                'coal': coal,
+                'uranium': uranium,
+                'bauxite': bauxite,
+                'iron': lead,
+                'copper': copper,
+                'lumber': lumber,
+                'components': components,
+                'steel': steel,
+                'consumer_goods': consumer_goods,
+                'aluminium': aluminium,
+                'gasoline': gasoline,
+                'ammunition': ammunition
+
         }
 
         else: 
@@ -257,12 +276,12 @@ def coalition(colId):
 def establish_coalition():
     if request.method == "POST":
         
-    connection = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
 
@@ -301,14 +320,13 @@ def establish_coalition():
 @login_required
 @app.route("/coalitions", methods=["GET"])
 def coalitions():
-
     
-connection = psycopg2.connect(
-    database=os.getenv("PG_DATABASE"),
-    user=os.getenv("PG_USER"),
-    password=os.getenv("PG_PASSWORD"),
-    host=os.getenv("PG_HOST"),
-    port=os.getenv("PG_PORT"))
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
 
@@ -359,14 +377,13 @@ connection = psycopg2.connect(
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
 def join_col(colId):
-
     
-connection = psycopg2.connect(
-    database=os.getenv("PG_DATABASE"),
-    user=os.getenv("PG_USER"),
-    password=os.getenv("PG_PASSWORD"),
-    host=os.getenv("PG_HOST"),
-    port=os.getenv("PG_PORT"))
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
 
