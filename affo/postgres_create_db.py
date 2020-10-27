@@ -14,7 +14,7 @@ db = connection.cursor()
 
 tables = [
     "coalitions", "colBanks", "colBanksRequests", "colNames",
-    "keys", "military", "offers", "proInfra", "provinces",
+    "keys", "military", "offers", "proInfra", "provinces", "upgrades",
     "requests", "resources", "spyinfo", "stats", "trades", "treaty_ids",
     "treaties", "users"
 ]
