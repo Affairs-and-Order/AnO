@@ -1,4 +1,4 @@
-# ALL MIGRATED
+# FULLY MIGRATED
 
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session

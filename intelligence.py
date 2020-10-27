@@ -1,3 +1,5 @@
+# FULLY MIGRATED
+
 from app import app
 from flask import Flask, request, render_template, session, redirect, abort, flash, url_for
 from flask_session import Session
