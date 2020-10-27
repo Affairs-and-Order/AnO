@@ -70,8 +70,7 @@ def market():
 
         for i in offer_ids_list:
 
-            resource = db.execute(
-                "SELECT resource FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
 
             if filter_resource != None:
                 if filter_resource == resource:
@@ -81,27 +80,22 @@ def market():
 
             offer_ids.append(i[0])
 
-            user_id = db.execute(
-                "SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            user_id = db.execute("SELECT user_id FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             ids.append(user_id)
 
-            offer_type = db.execute(
-                "SELECT type FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            offer_type = db.execute("SELECT type FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             types.append(offer_type)
 
             name = db.execute("SELECT username FROM users WHERE id=(?)", (user_id,)).fetchone()[0]
             names.append(name)
 
-            resource = db.execute(
-                "SELECT resource FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            resource = db.execute("SELECT resource FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             resources.append(resource)
 
-            amount = db.execute(
-                "SELECT amount FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            amount = db.execute("SELECT amount FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             amounts.append(amount)
 
-            price = db.execute(
-                "SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
+            price = db.execute("SELECT price FROM offers WHERE offer_id=(?)", (i[0],)).fetchone()[0]
             prices.append(price)
 
             total_price = price * amount
@@ -126,8 +120,7 @@ def buy_market_offer(offer_id):
 
     amount_wanted = int(request.form.get(f"amount_{offer_id}"))
 
-    offer = db.execute(
-        "SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+    offer = db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
     resource = offer[0] # What resource will be bought
 
@@ -140,11 +133,11 @@ def buy_market_offer(offer_id):
     if amount_wanted > total_amount:
         return error(400, "Amount wanted cant be higher than total amount")
 
-    buyers_gold = int(db.execute(
-        "SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+    buyers_gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
 
     if (amount_wanted * price_for_one) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
         return error(400, "You don't have enough gold") # Returns error if true
+
     gold_sold = buyers_gold - (amount_wanted * price_for_one)
 
     db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (gold_sold, cId))
@@ -170,8 +163,7 @@ def buy_market_offer(offer_id):
     if new_offer_amount == 0:
         db.execute("DELETE FROM offers WHERE offer_id=(?)", (offer_id,))
     else:
-        db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)",
-                   (new_offer_amount, offer_id))
+        db.execute("UPDATE offers SET amount=(?) WHERE offer_id=(?)", (new_offer_amount, offer_id))
 
     # updates the offer with the new amount
 
@@ -194,8 +186,7 @@ def sell_market_offer(offer_id):
     if offer_id.isnumeric() == False:
         return error(400, "Values must be numeric")
 
-    offer = db.execute(
-        "SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
+    offer = db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(?)", (offer_id,)).fetchone()
 
     resource = offer[0] # What resource it is
 
@@ -313,15 +304,13 @@ def post_offer(offer_type):
             db.execute(upStatement, (newResourceAmount, cId))
 
             # Creates a new offer
-            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)",
-                    (cId, offer_type, resource, int(amount), int(price), ))
+            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)", (cId, offer_type, resource, int(amount), int(price), ))
 
             connection.commit()  # Commits the data to the database
 
         elif offer_type == "buy":
 
-            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)",
-            (cId, offer_type, resource, int(amount), int(price), ))
+            db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (?, ?, ?, ?, ?)", (cId, offer_type, resource, int(amount), int(price), ))
 
             money_to_take_away = int(amount) * int(price)
             current_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
@@ -518,15 +507,13 @@ def trade_offer(offer_type, offeree_id):
             db.execute(upStatement, (newResourceAmount, cId))
 
             # Creates a new offer
-            db.execute("INSERT INTO trades (offerer, type, resource, amount, price, offeree) VALUES (?, ?, ?, ?, ?, ?)",
-                    (cId, offer_type, resource, amount, price, offeree_id))
+            db.execute("INSERT INTO trades (offerer, type, resource, amount, price, offeree) VALUES (?, ?, ?, ?, ?, ?)", (cId, offer_type, resource, amount, price, offeree_id))
 
             connection.commit()  # Commits the data to the database
 
         elif offer_type == "buy":
 
-            db.execute("INSERT INTO trades (offerer, type, resource, amount, price, offeree) VALUES (?, ?, ?, ?, ?, ?)",
-            (cId, offer_type, resource, amount, price, offeree_id))
+            db.execute("INSERT INTO trades (offerer, type, resource, amount, price, offeree) VALUES (?, ?, ?, ?, ?, ?)", (cId, offer_type, resource, amount, price, offeree_id))
 
             money_to_take_away = amount * price
             current_money = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
