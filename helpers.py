@@ -1,5 +1,5 @@
 import os
-import sqlite3
+import psycopg2
 from flask import redirect, render_template, request, session
 from functools import wraps
 
@@ -36,36 +36,58 @@ def error(code, message):
 
 @login_required
 def get_influence(country_id):
+        
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
-    connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
     cId = session["user_id"]
     # re-calculate influence here
     # military score first
     # ground
-    tanks = db.execute("SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    soldiers = db.execute("SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    artillery = db.execute("SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT tanks FROM military WHERE id=(%s)", (cId,))
+    tanks = db.fetchone()[0]
+    db.execute("SELECT soldiers FROM military WHERE id=(%s)", (cId,))
+    soldiers = db.fetchone()[0]
+    db.execute("SELECT artillery FROM military WHERE id=(%s)", (cId,))
+    artillery = db.fetchone()[0]
     # air
-    bombers = db.execute("SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    fighters = db.execute("SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    apaches = db.execute("SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT bombers FROM military WHERE id=(%s)", (cId,))
+    bombers = db.fetchone()[0]
+    db.execute("SELECT fighters FROM military WHERE id=(%s)", (cId,))
+    fighters = db.fetchone()[0]
+    db.execute("SELECT apaches FROM military WHERE id=(%s)", (cId,))
+    apaches = db.fetchone()[0]
     # water
-    destroyers = db.execute("SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    cruisers = db.execute("SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    submarines = db.execute("SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT destroyers FROM military WHERE id=(%s)", (cId,))
+    destroyers = db.fetchone()[0]
+    db.execute("SELECT cruisers FROM military WHERE id=(%s)", (cId,))
+    cruisers = db.fetchone()[0]
+    db.execute("SELECT submarines FROM military WHERE id=(%s)", (cId,))
+    submarines = db.fetchone()[0]
     # special
-    spies = db.execute("SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    icbms = db.execute("SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
-    nukes = db.execute("SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
+    spies = db.fetchone()[0]
+    db.execute("SELECT ICBMs FROM military WHERE id=(%s)", (cId,))
+    icbms = db.fetchone()[0]
+    db.execute("SELECT nukes FROM military WHERE id=(%s)", (cId,))
+    nukes = db.fetchone()[0]
 
     militaryScore = tanks * 40 + soldiers * 1 + artillery * 80 + bombers * 100 + fighters * 100 + apaches * 100 + destroyers * 100 + cruisers * 200 + submarines * 100 + spies * 100 + icbms * 300 + nukes * 10000
 
     # civilian score second
-    gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
-    population = db.execute("SELECT population FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+    gold = db.fetchone()[0]
+    db.execute("SELECT population FROM stats WHERE id=(%s)", (cId,))
+    population = db.fetchone()[0]
 
-    cityCounts = db.execute("SELECT cityCount FROM provinces WHERE userId=(?)", (cId,)).fetchall()
+    db.execute("SELECT cityCount FROM provinces WHERE userId=(%s)", (cId,))
+    cityCounts = db.fetchall()
+
     cities = 0
     provinces = 0
     for tuple in cityCounts:
@@ -73,7 +95,10 @@ def get_influence(country_id):
         provinces += 1
     # all resources have a set score of 100 gold, which makes score min/maxing a strategy vs balancing your assets
     resources = 0
-    resourceList = db.execute("SELECT * FROM resources WHERE id=(?)", (cId,)).fetchall()
+
+    db.execute("SELECT * FROM resources WHERE id=(%s)", (cId,))
+    resourceList = db.fetchall()
+
     iterator = iter(resourceList)
     next(iterator) # skip id
     for tuple in iterator:
@@ -89,12 +114,20 @@ def get_influence(country_id):
 
 def get_coalition_influence(coalition_id):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     total_influence = 0
 
-    members = db.execute("SELECT userId FROM coalitions WHERE colId=(?)", (coalition_id,)).fetchall()
+    db.execute("SELECT userId FROM coalitions WHERE colId=(%s)", (coalition_id,))
+    members = db.fetchall()
     for i in members:
         member_influence = get_influence(i[0])
         total_influence += member_influence
@@ -204,9 +237,11 @@ def generate_province_revenue(): # Runs each turn
 
             province_id = province_id[0]
 
-            user_id = db.execute("SELECT userId FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
+            db.execute("SELECT userId FROM provinces WHERE id=(%s)", (province_id,))
+            user_id = db.fetchone()[0]
 
-            unit_amount = db.execute(f"SELECT {unit} FROM proInfra WHERE id=(?)", (province_id,)).fetchone()[0]
+            db.execute("SELECT %s FROM proInfra WHERE id=(%s)", (unit, province_id,))
+            unit_amount = db.fetchone()[0]
 
             if unit_amount == 0:
                 continue
@@ -220,22 +255,32 @@ def generate_province_revenue(): # Runs each turn
 
                 ### ADDING RESOURCES
                 if plus == True:
-                    current_plus_resource = db.execute(f"SELECT {plus_resource} FROM provinces WHERE id=(?)", (user_id,)).fetchone()[0]
+
+                    db.execute("SELECT %s FROM provinces WHERE id=(%s)", (plus_resource, user_id,))
+                    current_plus_resource = db.fetchone()[0]
+
                     new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
-                    db.execute(f"UPDATE provinces SET {plus_resource}=(?) WHERE id=(?)", (new_resource_number, user_id))
+                    db.execute("UPDATE provinces SET %s=(%s) WHERE id=(%s)", (plus_resource, new_resource_number, user_id))
+
                 ###
 
                 ### REMOVING MONEY
-                current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (user_id,)).fetchone()[0])
+                db.execute("SELECT gold FROM stats WHERE id=(%s)", (user_id,))
+                current_money = int(db.fetchone()[0])
+
                 if current_money < operating_costs:
                     continue
                 else:
                     new_money = current_money - operating_costs
-                    db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, user_id))
+                    db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
+
                     if pollution_amount != None:
-                        current_pollution = db.execute("SELECT pollution FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
+                        db.execute("SELECT pollution FROM provinces WHERE id=(%s)", (province_id,))
+                        current_pollution = db.fetchone()[0]
                         new_pollution = current_pollution + pollution_amount
-                        db.execute("UPDATE provinces SET pollution=(?) WHERE id=(?)", (new_pollution, province_id))
+                        db.execute("UPDATE provinces SET pollution=(%s) WHERE id=(%s)", (new_pollution, province_id))
+
+                        db.fetchone()[0]
 
         conn.commit()
 
