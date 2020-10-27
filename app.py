@@ -1,3 +1,5 @@
+# PRETTY MUCH MIGRATED
+
 from flask import Flask, request, render_template, session, redirect, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
@@ -6,7 +8,7 @@ import _pickle as pickle
 import random
 from celery import Celery
 from helpers import login_required, error
-import sqlite3
+import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
@@ -77,10 +79,19 @@ celery.conf.update(
 
 @celery.task()
 def populationGrowth():
-    conn = sqlite3.connect('affo/aao.db')  # connects to db
+
+    conn = psycopg2.connect(
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"))
+
     db = conn.cursor()
+
     # selects id, population from the stats table and gets all the results for it
-    pop = db.execute("SELECT population, id FROM stats").fetchall()
+    db.execute("SELECT population, id FROM stats")
+    pop = db.fetchall()
 
     for row in pop:  # iterates over every result in population
         # sets the user_id variable to the "id" result from the query
@@ -90,12 +101,11 @@ def populationGrowth():
         # gets the current population value and adds the same value / 10 to it
         newPop = curPop + (int(curPop/10))
         # updates the db with the new value for population
-        db.execute("UPDATE stats SET population=(?) WHERE id=(?)",
-                   (newPop, user_id,))
+        db.execute("UPDATE stats SET population=%s WHERE id=%s", (newPop, user_id,))
         conn.commit()  # commits everything new
     conn.close()
 
-
+"""
 @celery.task()
 def generate_province_revenue():  # Runs each turn
 
@@ -155,12 +165,10 @@ def generate_province_revenue():  # Runs each turn
         except KeyError:
             pollution_amount = None
 
-        """
         print(f"Unit: {unit}")
         print(f"Add {plus_amount} to {plus_resource}")
         print(f"Remove ${operating_costs} as operating costs")
         print(f"\n")
-        """
 
         for province_id in infra_ids:
 
@@ -208,10 +216,10 @@ def generate_province_revenue():  # Runs each turn
         conn.commit()
 
     conn.close()
-
-
 """
+
 # runs once a day
+"""
 @celery.task()
 def warPing():
     connection = sqlite3.connect("affo/aoo.db")
@@ -234,7 +242,9 @@ def warPing():
             cursor.execute(
                 f"INSERT INTO war (duration)  VALUES ({currentDuration + 1},)", ())
             connection.commit()
+"""
 
+"""
 # runs once every hour
 @celery.task()
 def increaseSupplies():
@@ -246,8 +256,10 @@ def increaseSupplies():
             cursor.execute(
                 f"INSERT INTO war (supplies) VALUES ({increasedSupplies} WHERE id={user[0]})")
             connection.commit()
+"""
 
 # runs once a day
+"""
 @celery.task()
 def eventCheck():
     rng = random.randint(1, 100)
@@ -262,57 +274,74 @@ def eventCheck():
 @app.context_processor
 def inject_user():
     def get_resource_amount():
-        conn = sqlite3.connect('affo/aao.db')  # connects to db
+        
+        conn = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
         db = conn.cursor()
         session_id = session["user_id"]
 
-        money = db.execute("SELECT gold FROM stats WHERE id=(?)",
-                           (session_id,)).fetchone()[0]  # DONE
+        db.execute("SELECT gold FROM stats WHERE id=%s", (session_id,))  # DONE
+        money = db.fetchone()[0]
 
-        rations = db.execute(
-            "SELECT rations FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        oil = db.execute("SELECT oil FROM resources WHERE id=(?)",
-                         (session_id,)).fetchone()[0]  # DONE
-        coal = db.execute("SELECT coal FROM resources WHERE id=(?)",
-                          (session_id,)).fetchone()[0]  # DONE
-        uranium = db.execute(
-            "SELECT uranium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]  # DONE
-        bauxite = db.execute(
-            "SELECT bauxite FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]  # DONE
-        iron = db.execute("SELECT iron FROM resources WHERE id=(?)",
-                          (session_id,)).fetchone()[0]  # DONE
-        lead = db.execute("SELECT lead FROM resources WHERE id=(?)",
-                          (session_id,)).fetchone()[0]  # DONE
-        copper = db.execute(
-            "SELECT copper FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]  # DONE
-        lumber = db.execute(
-            "SELECT lumber FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]  # DONE
+        db.execute("SELECT rations FROM resources WHERE id=(%s)", (session_id,))
+        rations = db.fetchone()[0]
 
-        components = db.execute(
-            "SELECT components FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        steel = db.execute(
-            "SELECT steel FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        consumer_goods = db.execute(
-            "SELECT consumer_goods FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]  # DONE
+        db.execute("SELECT oil FROM resources WHERE id=(%s)", (session_id,))
+        oil = db.fetchone()[0]  # DONE
 
-        aluminium = db.execute(
-            "SELECT aluminium FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        gasoline = db.execute(
-            "SELECT gasoline FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
-        ammunition = db.execute(
-            "SELECT ammunition FROM resources WHERE id=(?)", (session_id,)).fetchone()[0]
+        db.execute("SELECT coal FROM resources WHERE id=(%s)", (session_id,))
+        coal = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT uranium FROM resources WHERE id=(%s)", (session_id,))
+        uranium = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT bauxite FROM resources WHERE id=(%s)", (session_id,))
+        bauxite = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT iron FROM resources WHERE id=(%s)", (session_id,))
+        iron = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT lead FROM resources WHERE id=(%s)", (session_id,))
+        lead = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT copper FROM resources WHERE id=(%s)", (session_id,))
+        copper = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT lumber FROM resources WHERE id=(%s)", (session_id,))
+        lumber = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT components FROM resources WHERE id=(%s)", (session_id,))
+        components = db.fetchone()[0]
+
+        db.execute("SELECT steel FROM resources WHERE id=(%s)", (session_id,))
+        steel = db.fetchone()[0]
+
+        db.execute("SELECT consumer_goods FROM resources WHERE id=(%s)", (session_id,))
+        consumer_goods = db.fetchone()[0]  # DONE
+
+        db.execute("SELECT aluminium FROM resources WHERE id=(%s)", (session_id,))
+        aluminium = db.fetchone()[0]
+
+        db.execute("SELECT gasoline FROM resources WHERE id=(%s)", (session_id,))
+        gasoline = db.fetchone()[0]
+
+        db.execute("SELECT ammunition FROM resources WHERE id=(%s)", (session_id,))
+        ammunition = db.fetchone()[0]
 
         lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper,
             components, steel, consumer_goods, lumber, aluminium, gasoline, ammunition]
         return lst
     return dict(get_resource_amount=get_resource_amount)
 
-
 @app.route("/", methods=["GET"])
 def index():
     # renders index.html when "/" is accesed
     return render_template("index.html")
-
 
 @login_required
 @app.route("/account", methods=["GET", "POST"])
@@ -321,11 +350,17 @@ def account():
 
         cId = session["user_id"]
 
-        connection = sqlite3.connect('affo/aao.db')
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
         db = connection.cursor()
 
-        name = db.execute(
-            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+        db.execute("SELECT username FROM users WHERE id=%s", (cId,))
+        name = db.fetchone()[0]
 
         connection.close()
 

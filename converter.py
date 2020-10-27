@@ -1,7 +1,6 @@
 import os
 
 file = 'tests.py'
-output = open('converted.py', "w")
 
 files = ["app.py", "coalitions.py", "countries.py", "formula.py",
 "helpers.py", "intelligence.py", "login.py", "market.py", "military.py",
