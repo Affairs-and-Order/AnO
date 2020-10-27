@@ -1,4 +1,4 @@
-# PRETTY MUCH MIGRATED
+# ALL MIGRATED (EXCEPT CELERY TASKS)
 
 from flask import Flask, request, render_template, session, redirect, flash
 from werkzeug.security import generate_password_hash, check_password_hash
