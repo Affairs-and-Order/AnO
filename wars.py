@@ -461,13 +461,10 @@ def war_with_id(war_id):
 
     # # attacker meaning the one who intially declared war, nothing to do with the current user (who is obviously currently attacking)
     attacker = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-    attacker_name = db.execute(
-        "SELECT username FROM users WHERE id=(?)", (attacker,)).fetchone()[0]
+    attacker_name = db.execute("SELECT username FROM users WHERE id=(?)", (attacker,)).fetchone()[0]
 
-    war_type = db.execute(
-        "SELECT war_type FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-    agressor_message = db.execute(
-        "SELECT agressor_message FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    war_type = db.execute("SELECT war_type FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+    agressor_message = db.execute("SELECT agressor_message FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
     if cId == attacker:
         session["enemy_id"] = defender
     else:
@@ -639,8 +636,7 @@ def warTarget():
 
         connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
-        revealed_info = db.execute(
-            "SELECT * FROM spyinfo WHERE spyer=(?) AND spyee=(?)", (cId, eId,)).fetchall()
+        revealed_info = db.execute("SELECT * FROM spyinfo WHERE spyer=(?) AND spyee=(?)", (cId, eId,)).fetchall()
         needed_types = ["soldiers", "tanks", "artillery", "fighters",
                         "bombers", "apaches", "destroyers", "cruisers", "submarines"]
 
@@ -827,8 +823,7 @@ def declare_war():
     war_type = request.form.get("warType")
 
     try:
-        defender_id = db.execute(
-            "SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
+        defender_id = db.execute("SELECT id FROM users WHERE username=(?)", (defender,)).fetchone()[0]
 
         attacker = Nation(session["user_id"])
         defender = Nation(defender_id)
@@ -938,8 +933,7 @@ def defense():
             if len(defense_units) == 3:
                 # default_defense is stored in the db: "unit1,unit2,unit3"
                 defense_units = ",".join(defense_units)
-                db.execute(
-                    "UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
+                db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
                 connection.commit()
             else:
                 return error(400, "Invalid number of units selected!")
