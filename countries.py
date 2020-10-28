@@ -155,7 +155,8 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     # Unoptimize
     if search == None or search == "" and upperinf == None and lowerinf == None:
-        users = db.execute("SELECT id FROM users ORDER BY id").fetchall()
+        db.execute("SELECT id FROM users ORDER BY id")
+        users = db.fetchall()
     elif search != None and upperinf == None and lowerinf == None:
         db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
         users = db.fetchall()
