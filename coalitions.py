@@ -202,7 +202,7 @@ def coalition(colId):
                 'coal': coal,
                 'uranium': uranium,
                 'bauxite': bauxite,
-                'iron': lead,
+                'iron': iron,
                 'copper': copper,
                 'lumber': lumber,
                 'components': components,
@@ -223,7 +223,7 @@ def coalition(colId):
         try:
             db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
             flag = db.fetchone()[0]
-        except TypeError:
+        except:
             flag = None
         ### 
 
@@ -337,7 +337,10 @@ def coalitions():
         search = None
 
     if search == None or search == "":
-        coalitions = db.execute("SELECT id FROM colNames").fetchall()
+        try: 
+            coalitions = db.execute("SELECT id FROM colNames").fetchall()
+        except:
+            coalitions = []
     else:
         db.execute("SELECT id FROM colNames WHERE name=(%s)", (search,))
         coalitions = db.fetchall()
