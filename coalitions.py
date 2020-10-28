@@ -1,3 +1,5 @@
+# ALL CONVERTED
+
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
@@ -8,13 +10,14 @@ import _pickle as pickle
 import random
 from celery import Celery
 from helpers import login_required, error
-import sqlite3
+import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 
 # rawCol (for easy finding using CTRL + F)
 @login_required
@@ -22,34 +25,50 @@ import os
 def coalition(colId):
 
     if request.method == "GET":
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
 
-        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
         cId = session["user_id"]
 
-        name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        members = db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(?)", (colId,)).fetchone()[0]
+        db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
+        name = db.fetchone()[0]
+        db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
+        colType = db.fetchone()[0]
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
+        members = db.fetchone()[0]
         total_influence = get_coalition_influence(colId)
         average_influence = total_influence // members
-        description = db.execute("SELECT description FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        colType = db.execute("SELECT type FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+        db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
+        description = db.fetchone()[0]
+        db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
+        colType = db.fetchone()[0]
 
-        # names = db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(?))", (session["user_id"], )).fetchall()
+        db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(%s))", (session["user_id"], ))
+        # names = db.fetchall()
 
-        leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]  # The id of the coalition leader
-        leaderName = db.execute("SELECT username FROM users WHERE id=(?)", (leader,)).fetchone()[0]
+        db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
+        leader = db.fetchone()[0]  # The id of the coalition leader
+        db.execute("SELECT username FROM users WHERE id=(%s)", (leader,))
+        leaderName = db.fetchone()[0]
 
         ### STUFF FOR JINJA
         try:
-            userInCol = db.execute("SELECT userId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+            db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (cId,))
+            userInCol = db.fetchone()[0]
             userInCol = True
         except:
             userInCol = False
 
         try:
-            userInCurCol = db.execute("SELECT userId FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId)).fetchone()[0]
+            db.execute("SELECT userId FROM coalitions WHERE userId=(%s) AND colId=(%s)", (cId, colId))
+            userInCurCol = db.fetchone()[0]
             userInCurCol = True
         except:
             userInCurCol = False
@@ -64,7 +83,8 @@ def coalition(colId):
         if userLeader == True:
 
             #### INGOING ####
-            ingoing_ids = db.execute("SELECT id FROM treaties WHERE col2_id=(?) AND status='Pending' ORDER BY treaty_id ASC", (colId,)).fetchall()
+            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
+            ingoing_ids = db.fetchall()
             col_ids = []
             col_names = []
             trt_names = []
@@ -73,13 +93,16 @@ def coalition(colId):
 
                 treaty_id = treaty_iddd[0]
 
-                col_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (treaty_id,)).fetchone()[0]
+                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
+                col_id = db.fetchone()[0]
                 col_ids.append(col_id)
 
-                coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (col_id,)).fetchone()[0]
+                db.execute("SELECT name FROM colNames WHERE id=(%s)", (col_id,))
+                coalition_name = db.fetchone()[0]
                 col_names.append(coalition_name)
 
-                treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (treaty_id,)).fetchone()[0]
+                db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (treaty_id,))
+                treaty_name = db.fetchone()[0]
                 trt_names.append(treaty_name)
 
             ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
@@ -105,18 +128,22 @@ def coalition(colId):
 
                 active_ids.append(offer_id)
 
-                coalition_id = db.execute("SELECT col1_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
+                coalition_id = db.fetchone()[0]
                 if coalition_id != colId:
                     pass
                 else: 
-                    coalition_id = db.execute("SELECT col2_id FROM treaties WHERE id=(?)", (offer_id,)).fetchone()[0]
+                    db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
+                    coalition_id = db.fetchone()[0]
 
                 coalition_ids.append(coalition_id)
                 
-                coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (coalition_id,)).fetchone()[0]
+                db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
+                coalition_name = db.fetchone()[0]
                 coalition_names.append(coalition_name)
 
-                treaty_name = db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(?))", (offer_id,)).fetchone()[0]
+                db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (offer_id,))
+                treaty_name = db.fetchone()[0]
                 treaty_names.append(treaty_name)
 
             active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
@@ -132,25 +159,60 @@ def coalition(colId):
         ### BANK STUFF ###
         if userInCurCol == True:
 
-            bankRaw = {
-                'money': db.execute("SELECT money FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'rations': db.execute("SELECT rations FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'oil': db.execute("SELECT oil FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'coal': db.execute("SELECT coal FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'uranium': db.execute("SELECT uranium FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'bauxite': db.execute("SELECT bauxite FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'iron': db.execute("SELECT iron FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'lead': db.execute("SELECT lead FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'copper': db.execute("SELECT copper FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'lumber': db.execute("SELECT lumber FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
+            db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
+            money = db.fetchone()[0]
 
-                'components': db.execute("SELECT components FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'steel': db.execute("SELECT steel FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'consumer_goods': db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'aluminium': db.execute("SELECT aluminium FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'gasoline': db.execute("SELECT gasoline FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0],
-                'ammunition': db.execute("SELECT ammunition FROM colBanks WHERE colId=(?)", (colId,)).fetchone()[0]
-            }
+            db.execute("SELECT rations FROM colBanks WHERE colId=(%s)", (colId,))
+            rations =  db.fetchone()[0]
+            db.execute("SELECT oil FROM colBanks WHERE colId=(%s)", (colId,))
+            oil =  db.fetchone()[0]
+            db.execute("SELECT coal FROM colBanks WHERE colId=(%s)", (colId,))
+            coal =  db.fetchone()[0]
+            db.execute("SELECT uranium FROM colBanks WHERE colId=(%s)", (colId,))
+            uranium =  db.fetchone()[0]
+            db.execute("SELECT bauxite FROM colBanks WHERE colId=(%s)", (colId,))
+            bauxite = db.fetchone()[0]
+            db.execute("SELECT iron FROM colBanks WHERE colId=(%s)", (colId,))
+            iron = db.fetchone()[0]
+            db.execute("SELECT lead FROM colBanks WHERE colId=(%s)", (colId,))
+            lead =  db.fetchone()[0]
+            db.execute("SELECT copper FROM colBanks WHERE colId=(%s)", (colId,))
+            copper = db.fetchone()[0]
+            db.execute("SELECT lumber FROM colBanks WHERE colId=(%s)", (colId,))
+            lumber = db.fetchone()[0]
+
+            db.execute("SELECT components FROM colBanks WHERE colId=(%s)", (colId,))
+            components =  db.fetchone()[0]
+            db.execute("SELECT steel FROM colBanks WHERE colId=(%s)", (colId,))
+            steel =  db.fetchone()[0]
+            db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(%s)", (colId,))
+            consumer_goods = db.fetchone()[0]
+            db.execute("SELECT aluminium FROM colBanks WHERE colId=(%s)", (colId,))
+            aluminium = db.fetchone()[0]
+            db.execute("SELECT gasoline FROM colBanks WHERE colId=(%s)", (colId,))
+            gasoline = db.fetchone()[0]
+            db.execute("SELECT ammunition FROM colBanks WHERE colId=(%s)", (colId,))
+            ammunition = db.fetchone()[0]
+
+            bankRaw = {
+
+                'money': money,
+                'rations': rations,
+                'oil': oil,
+                'coal': coal,
+                'uranium': uranium,
+                'bauxite': bauxite,
+                'iron': iron,
+                'copper': copper,
+                'lumber': lumber,
+                'components': components,
+                'steel': steel,
+                'consumer_goods': consumer_goods,
+                'aluminium': aluminium,
+                'gasoline': gasoline,
+                'ammunition': ammunition
+
+        }
 
         else: 
             
@@ -159,16 +221,22 @@ def coalition(colId):
 
         ### FLAG STUFF
         try:
-            flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
-        except TypeError:
+            db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
+            flag = db.fetchone()[0]
+        except:
             flag = None
         ### 
 
         if userLeader == True and colType != "Open":
 
-            requestMessages = db.execute("SELECT message FROM requests WHERE colId=(?)", (colId,)).fetchall()
-            requestIds = db.execute("SELECT reqId FROM requests WHERE colId=(?)", (colId,)).fetchall()
-            requestNames = db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(?))", (colId,)).fetchall()
+            db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
+            requestMessages = db.fetchall()
+
+            db.execute("SELECT reqId FROM requests WHERE colId=(%s)", (colId,))
+            requestIds = db.fetchall()
+
+            db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(%s))", (colId,))
+            requestNames = db.fetchall()
 
             requests = zip(requestIds, requestNames, requestMessages)
         else:
@@ -177,11 +245,15 @@ def coalition(colId):
         ### BANK STUFF
         if userLeader == True:
 
-            bankRequests = db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(?)", (colId,)).fetchall()
+            db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
+            bankRequests = db.fetchall()
 
             banks = []
             for reqId, amount, resource, bankId in bankRequests:
-                username = db.execute("SELECT username FROM users WHERE id=(?)", (reqId,)).fetchone()[0]
+
+                db.execute("SELECT username FROM users WHERE id=(%s)", (reqId,))
+                username = db.fetchone()[0]
+
                 data_tuple = (reqId, amount, resource, bankId, username)
                 banks.append(data_tuple)
 
@@ -204,12 +276,20 @@ def coalition(colId):
 @app.route("/establish_coalition", methods=["GET", "POST"])
 def establish_coalition():
     if request.method == "POST":
-        connection = sqlite3.connect('affo/aao.db')
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
         db = connection.cursor()
 
         try:
-            db.execute("SELECT userId FROM coalitions WHERE userId=(?)",
-                       (session["user_id"],)).fetchone()[0]
+            db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (session["user_id"],))
+            userId = db.fetchone()[0]
+
             return error(403, "You are already in a coalition")
         except:
 
@@ -222,11 +302,14 @@ def establish_coalition():
                 # TODO add a better error message that renders inside the establish_coalition page
             else:
                 # TODO gives a key error, look into this
-                db.execute("INSERT INTO colNames (name, leader, type, description) VALUES (?, ?, ?, ?)",
-                           (name, session["user_id"], cType, desc))
-                colId = db.execute("SELECT id FROM colNames WHERE name = (?)", (name,)).fetchone()[0]
-                db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, session["user_id"],))
-                db.execute("INSERT INTO colBanks (colId) VALUES (?)", (colId,))
+                db.execute("INSERT INTO colNames (name, leader, type, description) VALUES (%s, %s, %s, %s)", (name, session["user_id"], cType, desc))
+
+                db.execute("SELECT id FROM colNames WHERE name = (%s)", (name,))
+                colId = db.fetchone()[0]
+
+                db.execute("INSERT INTO coalitions (colId, userId) VALUES (%s, %s)", (colId, session["user_id"],))
+
+                db.execute("INSERT INTO colBanks (colId) VALUES (%s)", (colId,))
 
                 connection.commit()
                 connection.close()
@@ -238,8 +321,14 @@ def establish_coalition():
 @login_required
 @app.route("/coalitions", methods=["GET"])
 def coalitions():
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
-    connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
     try:
@@ -248,9 +337,13 @@ def coalitions():
         search = None
 
     if search == None or search == "":
-        coalitions = db.execute("SELECT id FROM colNames").fetchall()
+        try: 
+            coalitions = db.execute("SELECT id FROM colNames").fetchall()
+        except:
+            coalitions = []
     else:
-        coalitions = db.execute("SELECT id FROM colNames WHERE name=(?)", (search,)).fetchall()
+        db.execute("SELECT id FROM colNames WHERE name=(%s)", (search,))
+        coalitions = db.fetchall()
 
     names = []
     ids = []
@@ -264,16 +357,16 @@ def coalitions():
 
         idd = str(i[0])
 
-        colType = db.execute(
-            "SELECT type FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+        db.execute("SELECT type FROM colNames WHERE id=%s", (idd,))
+        colType = db.fetchone()[0]
         types.append(colType)
 
-        colName = db.execute(
-            "SELECT name FROM colNames WHERE id=(?)", (idd,)).fetchone()[0]
+        db.execute("SELECT name FROM colNames WHERE id=%s", (idd,))
+        colName = db.fetchone()[0]
         names.append(colName)
 
-        colMembers = db.execute(
-            "SELECT count(userId) FROM coalitions WHERE colId=(?)", (idd,)).fetchone()[0]
+        db.execute("SELECT count(userId) FROM coalitions WHERE colId=%s", (idd,))
+        colMembers = db.fetchone()[0]
         members.append(colMembers)
 
         influence = get_coalition_influence(idd)
@@ -288,19 +381,24 @@ def coalitions():
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
 def join_col(colId):
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
-    connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    colType = db.execute(
-        "SELECT type FROM colNames WHERE id = (?)", (colId,)).fetchone()[0]
+    db.execute("SELECT type FROM colNames WHERE id=%s", (colId,))
+    colType = db.fetchone()[0]
 
     if colType == "Open":
 
-        db.execute(
-            "INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, cId))
+        db.execute("INSERT INTO coalitions (colId, userId) VALUES (%s, %s)", (colId, cId))
 
         connection.commit()
 
@@ -308,8 +406,7 @@ def join_col(colId):
 
         message = request.form.get("message")
 
-        db.execute(
-            "INSERT INTO requests (colId, reqId, message ) VALUES (?, ?, ?)", (colId, cId, message))
+        db.execute("INSERT INTO requests (colId, reqId, message ) VALUES (%s, %s, %s)", (colId, cId, message))
 
         connection.commit()
 
@@ -322,17 +419,24 @@ def join_col(colId):
 @app.route("/leave/<colId>", methods=["POST"])
 def leave_col(colId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
+    leader = db.fetchone()[0]
 
     if cId == leader:
         error(400, "Can't leave coalition, you're the leader")
 
-    db.execute("DELETE FROM coalitions WHERE userId=(?) AND colId=(?)", (cId, colId))
+    db.execute("DELETE FROM coalitions WHERE userId=(%s) AND colId=(%s)", (cId, colId))
 
     connection.commit()
     connection.close()
@@ -344,13 +448,19 @@ def leave_col(colId):
 @app.route("/my_coalition", methods=["GET"])
 def my_coalition():
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
     cId = session["user_id"]
 
     try:
-        coalition = db.execute(
-            "SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+        db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
+        coalition = db.fetchone()[0]
     except TypeError:
         coalition = None
 
@@ -365,24 +475,33 @@ def my_coalition():
 @login_required
 @app.route("/add/<uId>", methods=["POST"])
 def adding(uId):
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
-    connection = sqlite3.connect('affo/aao.db')
     db = connection.cursor()
 
     try:
-        colId = db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
+        db.execute("SELECT colId FROM requests WHERE reqId=(%s)", (uId,))
+        colId = db.fetchone()[0]
     except TypeError:
         return error(400, "User hasn't posted a request to join")
 
     cId = session["user_id"]
 
-    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
+    leader = db.fetchone()[0]
 
     if leader != cId:
         return error(400, "You are not the leader of the coalition")
 
-    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
-    db.execute("INSERT INTO coalitions (colId, userId) VALUES (?, ?)", (colId, uId))
+    db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
+
+    db.execute("INSERT INTO coalitions (colId, userId) VALUES (%s, %s)", (colId, uId))
 
     connection.commit()
     connection.close()
@@ -395,25 +514,31 @@ def adding(uId):
 @app.route("/remove/<uId>", methods=["POST"])
 def removing_requests(uId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     try:
-        colId = db.execute(
-            "SELECT colId FROM requests WHERE reqId=(?)", (uId,)).fetchone()[0]
+        db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,))
+        colId = db.fetchone()[0]
     except TypeError:
         return error(400, "User hasn't posted a request to join this coalition.")
 
     cId = session["user_id"]
 
-    leader = db.execute(
-        "SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=%s", (colId,))
+    leader = db.fetchone()[0]
 
     if leader != cId:
-
         return error(400, "You are not the leader of the coalition")
 
-    db.execute("DELETE FROM requests WHERE reqId=(?) AND colId=(?)", (uId, colId))
+    db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
+
     connection.commit()
 
     return redirect(f"/coalition/{ colId }")
@@ -422,21 +547,34 @@ def removing_requests(uId):
 @app.route("/delete_coalition/<colId>", methods=["POST"])
 def delete_coalition(colId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
+    leader = db.fetchone()[0]
 
     if leader != cId:
         return error(400, "You aren't the leader of this coalition")
 
-    coalition_name = db.execute("SELECT name FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
+    coalition_name = db.fetchone()[0]
 
-    db.execute("DELETE FROM colNames WHERE id=(?)", (colId,))
+    db.execute("DELETE FROM colNames WHERE id=(%s)", (colId,))
 
-    db.execute("DELETE FROM coalitions WHERE colId=(?)", (colId,))
+    db.fetchone()[0]
+
+    db.execute("DELETE FROM coalitions WHERE colId=(%s)", (colId,))
+
+    db.fetchone()[0]
     
     connection.commit()
     connection.close()
@@ -451,12 +589,20 @@ def delete_coalition(colId):
 @app.route("/update_col_info/<colId>", methods=["POST"])
 def update_col_info(colId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
+    leader = db.fetchone()[0]
 
     if leader != cId:
         return error(400, "You aren't the leader of this coalition")
@@ -471,11 +617,13 @@ def update_col_info(colId):
 
         # Check if the user already has a flag
         try:
-            current_flag = db.execute("SELECT flag FROM colNames WHERE id=(?)", (colId,)).fetchone()[0]
+            db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
+            current_flag = db.fetchone()[0]
 
             # If he does, delete the flag
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
-            db.execute("UPDATE colNames SET flag=null WHERE id=(?)", (colId,))
+            db.execute("UPDATE colNames SET flag=null WHERE id=(%s)", (colId,))
+
         except TypeError:
             pass
 
@@ -484,7 +632,7 @@ def update_col_info(colId):
         extension = current_filename.rsplit('.', 1)[1].lower()
         filename = f"col_flag_{colId}" + '.' + extension
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        db.execute("UPDATE colNames SET flag=(?) WHERE id=(?)", (filename, colId))
+        db.execute("UPDATE colNames SET flag=(%s) WHERE id=(%s)", (filename, colId))
 
     connection.commit()
     connection.close()
@@ -496,13 +644,21 @@ def update_col_info(colId):
 @app.route("/deposit_into_bank/<colId>", methods=["POST"])
 def deposit_into_bank(colId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
     try:
-        db.execute("SELECT userId FROM coalitions WHERE userId=(?) and colId=(?)", (cId, colId)).fetchone()[0]
+        db.execute("SELECT userId FROM coalitions WHERE userId=(%s) and colId=(%s)", (cId, colId))
+        db.fetchone()[0]
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
@@ -526,37 +682,41 @@ def deposit_into_bank(colId):
         # If the resource is money, removes the money from the seller
         if resource == "money":
 
-            current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+            db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+            current_money = int(db.fetchone()[0])
 
             if current_money < amount:
                 return error(400, "You don't have enough money")
 
             new_money = current_money - amount
 
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, cId))
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, cId))
 
         # If it isn't, removes the resource from the giver
         else:
 
-            current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-            current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
+            current_resource_statement = "SELECT %s FROM resources WHERE id=%s"
+
+            db.execute(current_resource_statement, (resource, cId,))
+            current_resource = int(db.fetchone()[0])
 
             if current_resource < amount:
                 return error(400, f"You don't have enough {resource}")
 
             new_resource = current_resource - amount
 
-            update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
-            db.execute(update_statement, (new_resource, cId))
+            update_statement = "UPDATE resources SET %s=%s WHERE id=%s"
+            db.execute(update_statement, (resource, new_resource, cId))
 
         # Gives the coalition the resource
-        current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
-        current_resource = int(db.execute(current_resource_statement, (colId,)).fetchone()[0])
+        current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
+        db.execute(current_resource_statement, (resource, colId,))
+        current_resource = int(db.fetchone()[0])
 
         new_resource = current_resource + amount
 
-        update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
-        db.execute(update_statement, (new_resource, colId))
+        update_statement = "UPDATE colBanks SET %s=%s WHERE colId=%s"
+        db.execute(update_statement, (resource, new_resource, colId))
 
     for resource in deposited_resources:
         name = resource[0]
@@ -570,42 +730,51 @@ def deposit_into_bank(colId):
 
 def withdraw(resource, amount, user_id, colId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     # Removes the resource from the coalition bank
 
-    current_resource_statement = f"SELECT {resource} FROM colBanks WHERE colId=(?)"
-    current_resource = int(db.execute(current_resource_statement, (colId,)).fetchone()[0])
+    current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
+    db.execute(current_resource_statement, (resource, colId,))
+    current_resource = int(db.fetchone()[0])
 
     if current_resource < amount:
         return error(400, f"Your coalition doesn't have enough {resource}")
 
     new_resource = current_resource - amount
 
-    update_statement = f"UPDATE colBanks SET {resource}=(?) WHERE colId=(?)"
-    db.execute(update_statement, (new_resource, colId))
+    update_statement = "UPDATE colBanks SET %s=%s WHERE colId=%s"
+    db.execute(update_statement, (resource, new_resource, colId))
 
     # Gives the leader his resource
     # If the resource is money, gives him money
     if resource == "money":
 
-        current_money = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (user_id,)).fetchone()[0])
+        db.execute("SELECT gold FROM stats WHERE id=(%s)", (user_id,))
+        current_money = int(db.fetchone()[0])
 
         new_money = current_money + amount
 
-        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_money, user_id))
+        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
 
     # If the resource is not money, gives him that resource
     else:
 
-        current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-        current_resource = int(db.execute(current_resource_statement, (user_id,)).fetchone()[0])
+        current_resource_statement = "SELECT %s FROM resources WHERE id=%s"
+        db.execute(current_resource_statement, (resource, user_id,))
+        current_resource = int(db.fetchone()[0])
 
         new_resource = current_resource + amount
 
-        update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
-        db.execute(update_statement, (new_resource, user_id))
+        update_statement = "UPDATE resources SET %s=%s WHERE id=%s"
+        db.execute(update_statement, (resource, new_resource, user_id))
 
     connection.commit()
     connection.close()
@@ -614,13 +783,21 @@ def withdraw(resource, amount, user_id, colId):
 @app.route("/withdraw_from_bank/<colId>", methods=["POST"])
 def withdraw_from_bank(colId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
     try:
-        db.execute("SELECT leader FROM colNames WHERE leader=(?) and id=(?)", (cId, colId))
+        db.execute("SELECT leader FROM colNames WHERE leader=(%s) and id=(%s)", (cId, colId))
+        db.fetchone()[0]
     except TypeError:
         return error(400, "You aren't the leader of this coalition")
 
@@ -652,13 +829,20 @@ def withdraw_from_bank(colId):
 @app.route("/request_from_bank/<colId>", methods=["POST"])
 def request_from_bank(colId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
     try:
-        db.execute("SELECT userId FROM coalitions WHERE userId=(?) and colId=(?)", (cId, colId)).fetchone()[0]
+        db.execute("SELECT userId FROM coalitions WHERE userId=(%s) and colId=(%s)", (cId, colId))
+        db.fetchone()[0]
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
@@ -681,8 +865,7 @@ def request_from_bank(colId):
 
     requested_resources = tuple(requested_resources[0])
 
-    db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (?, ?, ?, ?)", 
-    (cId, colId, requested_resources[1], requested_resources[0]))
+    db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (%s, %s, %s, %s)", (cId, colId, requested_resources[1], requested_resources[0]))
 
     connection.commit()
     connection.close()
@@ -693,19 +876,28 @@ def request_from_bank(colId):
 @app.route("/remove_bank_request/<bankId>", methods=["POST"])
 def remove_bank_request(bankId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    colId = db.execute("SELECT colId FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
+    db.execute("SELECT colId FROM colBanksRequests WHERE id=(%s)", (bankId,))
+    colId = db.fetchone()[0]
 
     try:
-        db.execute("SELECT leader FROM colNames WHERE leader=(?) and id=(?)", (cId, colId))
+        db.execute("SELECT leader FROM colNames WHERE leader=(%s) and id=(%s)", (cId, colId))
+        db.fetchone()[0]
     except TypeError:
         return error(400, "You aren't the leader of this coalition")
 
-    db.execute("DELETE FROM colBanksRequests WHERE id=(?)", (bankId,))
+    db.execute("DELETE FROM colBanksRequests WHERE id=(%s)", (bankId,))
 
     connection.commit()
     connection.close()
@@ -715,26 +907,38 @@ def remove_bank_request(bankId):
 @app.route("/accept_bank_request/<bankId>", methods=["POST"])
 def accept_bank_request(bankId):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    colId = db.execute("SELECT colId FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
+    db.execute("SELECT colId FROM colBanksRequests WHERE id=(%s)", (bankId,))
+    colId = db.fetchone()[0]
 
     try:
-        db.execute("SELECT leader FROM colNames WHERE leader=(?) and id=(?)", (cId, colId))
+        db.execute("SELECT leader FROM colNames WHERE leader=(%s) and id=(%s)", (cId, colId))
+        db.fetchone()[0]
     except TypeError:
         return error(400, "You aren't the leader of this coalition")
 
-    resource = db.execute("SELECT resource FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
-    amount = db.execute("SELECT amount FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
-    user_id = db.execute("SELECT reqId FROM colBanksRequests WHERE id=(?)", (bankId,)).fetchone()[0]
+    db.execute("SELECT resource FROM colBanksRequests WHERE id=(%s)", (bankId,))
+    resource = db.fetchone()[0]
+    db.execute("SELECT amount FROM colBanksRequests WHERE id=(%s)", (bankId,))
+    amount = db.fetchone()[0]
+    db.execute("SELECT reqId FROM colBanksRequests WHERE id=(%s)", (bankId,))
+    user_id = db.fetchone()[0]
 
     withdraw(resource, amount, user_id, colId)
 
-    db.execute("DELETE FROM colBanksRequests WHERE id=(?)", (bankId,))
-    
+    db.execute("DELETE FROM colBanksRequests WHERE id=(%s)", (bankId,))
+
     connection.commit()
     connection.close()
 
@@ -744,25 +948,38 @@ def accept_bank_request(bankId):
 @app.route("/offer_treaty", methods=["POST"])
 def offer_treaty():
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
     col2_name = request.form.get("coalition_name")
-    col2_id = db.execute("SELECT id FROM colNames WHERE name=(?)", (col2_name,)).fetchone()[0]
+    db.execute("SELECT id FROM colNames WHERE name=(%s)", (col2_name,))
+    col2_id = db.fetchone()[0]
 
-    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
+    user_coalition = db.fetchone()[0]
 
-    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
+    coalition_leader = db.fetchone()[0]
 
     if str(cId) != coalition_leader:
         error(400, "You aren't the leader of your coalition.")
 
     treaty_name = request.form.get("treaty_name")
-    treaty_id = db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(?)", (treaty_name,)).fetchone()[0]
+    db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(%s)", (treaty_name,))
+    treaty_id = db.fetchone()[0]
 
-    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id) VALUES (?, ?, ?)", (user_coalition, col2_id, treaty_id))
+    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id) VALUES (%s, %s, %s)", (user_coalition, col2_id, treaty_id))
+
+    treaty_id = db.fetchone()[0]
 
     connection.commit()
     connection.close()
@@ -773,19 +990,28 @@ def offer_treaty():
 @app.route("/accept_treaty/<offer_id>", methods=["POST"])
 def accept_treaty(offer_id):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
+    user_coalition = db.fetchone()[0]
 
-    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
+    coalition_leader = db.fetchone()[0]
 
     if str(cId) != coalition_leader:
         error(400, "You aren't the leader of your coalition.")
 
-    db.execute("UPDATE treaties SET status='Active' WHERE id=(?)", (offer_id,))
+    db.execute("UPDATE treaties SET status='Active' WHERE id=(%s)", (offer_id,))
 
     connection.commit()
     connection.close()
@@ -796,19 +1022,28 @@ def accept_treaty(offer_id):
 @app.route("/break_treaty/<offer_id>", methods=["POST"])
 def break_treaty(offer_id):
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
+    user_coalition = db.fetchone()[0]
 
-    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
+    coalition_leader = db.fetchone()[0]
 
     if str(cId) != coalition_leader:
         error(400, "You aren't the leader of your coalition.")
 
-    db.execute("DELETE FROM treaties WHERE id=(?)", (offer_id,))
+    db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))
 
     connection.commit()
     connection.close()
@@ -819,19 +1054,27 @@ def break_treaty(offer_id):
 @app.route("/decline_treaty/<offer_id>", methods=["POST"])
 def decline_treaty(offer_id):
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     cId = session["user_id"]
 
-    user_coalition = db.execute("SELECT colId FROM coalitions WHERE userId=(?)", (cId,)).fetchone()[0]
+    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
+    user_coalition = db.fetchone()[0]
 
-    coalition_leader = db.execute("SELECT leader FROM colNames WHERE id=(?)", (user_coalition,)).fetchone()[0]
+    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
+    coalition_leader = db.fetchone()[0]
 
     if str(cId) != coalition_leader:
         error(400, "You aren't the leader of your coalition.")
 
-    db.execute("DELETE FROM treaties WHERE id=(?)", (offer_id,))
+    db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))
 
     connection.commit()
     connection.close()

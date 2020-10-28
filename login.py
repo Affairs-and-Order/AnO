@@ -1,3 +1,5 @@
+# FULLY MIGRATED
+
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
@@ -8,7 +10,7 @@ import _pickle as pickle
 import random
 from celery import Celery
 from helpers import login_required, error
-import sqlite3
+import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
@@ -23,8 +25,14 @@ load_dotenv()
 def login():
 
     if request.method == "POST":
-
-        connection = sqlite3.connect('affo/aao.db')  # connects to db
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+        # connects to db
         db = connection.cursor()  # creates the cursor for db connection
 
         # gets the password input from the form
@@ -36,8 +44,9 @@ def login():
             return error(400, "No Password or Username")
 
         # selects data about user, from users
-        user = db.execute(
-            "SELECT * FROM users WHERE username = (?)", (username,)).fetchone()
+        db.execute("SELECT * FROM users WHERE username = (%s)", (username,))
+        user = db.fetchone()
+
         try:
             hashed_pw = user[4]
         except:
@@ -48,14 +57,11 @@ def login():
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
             try:
-                coalition = db.execute(
-                    "SELECT colId FROM coalitions WHERE userId=(?)", (session["user_id"], )).fetchone()[0]
+                db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (session["user_id"], ))
+                coalition = db.fetchone()[0]
             except TypeError:
                 coalition = error(404, "Page Not Found")
 
-            # print(f"coalition = {coalition}")
-
-            session["coalition"] = coalition
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
@@ -100,7 +106,13 @@ def make_session(token=None, state=None, scope=None):
 @app.route('/discord_login', methods=["GET"])
 def discord_login():
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     discord = make_session(token=session.get('oauth2_token'))
@@ -108,7 +120,8 @@ def discord_login():
 
     discord_auth = f"discord:{discord_user_id}"
 
-    user_id = db.execute("SELECT id FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+    db.execute("SELECT id FROM users WHERE hash=(%s)", (discord_auth,))
+    user_id = db.fetchone()[0]
 
     connection.close()
 

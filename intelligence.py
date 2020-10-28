@@ -1,20 +1,30 @@
+# FULLY MIGRATED
+
 from app import app
 from flask import Flask, request, render_template, session, redirect, abort, flash, url_for
 from flask_session import Session
-import sqlite3
 from helpers import login_required, error
 from attack_scripts import Nation, Military
 from units import Units
 import time
 from math import floor
 from random import random
-
+import psycopg2
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 @login_required
 @app.route("/intelligence", methods=["GET"])
 def intelligence():
     if request.method == "GET":
-        connection = sqlite3.connect("affo/aao.db")
+
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
         db = connection.cursor()
         cId = session["user_id"]
 
@@ -22,8 +32,8 @@ def intelligence():
         # db.execute("DELETE FROM spyentries WHERE date<(?)",
         #            (floor(time.time())-86400*14,))
 
-        yourCountry = db.execute(
-            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+        db.execute("SELECT username FROM users WHERE id=%s", (cId,))
+        yourCountry = db.fetchone()[0]
 
         emptyCountryDict = {'eName': 'placeholder'}
         for unittype in Military.allUnits:
@@ -31,11 +41,13 @@ def intelligence():
 
         resources = ["rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
                      "lumber", "components", "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"]
+
         for resource in resources:
             emptyCountryDict[resource] = "Unknown"
 
-        spyinfodb = db.execute(
-            "SELECT * FROM spyinfo WHERE spyer=(?)", (cId,)).fetchall()
+        db.execute("SELECT * FROM spyinfo WHERE spyer=%s", (cId,))
+        spyinfodb = db.fetchall()
+
         spyEntries = []
         for i, tupleEntry in enumerate(spyinfodb, start=0):
 
@@ -43,16 +55,21 @@ def intelligence():
 
             try:
                 eId = tupleEntry[2]
-                spyEntries[i]['eName'] = db.execute(
-                    "SELECT username FROM users WHERE id=(?)", (eId,)).fetchone()[0]
+
+                db.execute("SELECT username FROM users WHERE id=%s", (eId,))
+                spyEntries[i]['eName'] = db.fetchone()[0]
+
                 for j, unittype in enumerate(Military.allUnits):
                     if tupleEntry[j+2] == 'true':
-                        spyEntries[i][unittype] = db.execute(
-                            f"SELECT {unittype} FROM military WHERE id=(?)", (eId,)).fetchone()[0]
+
+                        db.execute("SELECT %s FROM military WHERE id=%s", (unittype, eId,))
+                        spyEntries[i][unittype] = db.fetchone()[0]
+                        
                 for j, resource in enumerate(resources):
                     if tupleEntry[j+14] == 'true':
-                        spyEntries[i][resource] = db.execute(
-                            f"SELECT {resource} FROM resources WHERE id", (eId,)).fetchone()[0]
+
+                        db.execute("SELECT %s FROM resources WHERE id=%s", (resource, eId,))
+                        spyEntries[i][resource] = db.fetchone()[0]
             except:
                 spyEntries[i]['eName'] = 'Enemy Nation Name'
                 # delete the spy entry if the spyee doesnt exist anymore
@@ -68,27 +85,38 @@ def intelligence():
 @login_required
 @app.route("/spyAmount", methods=["GET", "POST"])
 def spyAmount():
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
     cId = session["user_id"]
     if request.method == "GET":
-        yourCountry = db.execute(
-            "SELECT username FROM users WHERE id=(?)", (cId,)).fetchone()[0]
+        db.execute("SELECT username FROM users WHERE id=%s", (cId,))
+        yourCountry = db.fetchone()[0]
         return render_template("spyAmount.html", yourCountry=yourCountry, spies=spies)
+
     # make the spy entry here
     if request.method == "POST":
         prep = request.form.get("prep")
         spies = request.form.get("amount")
         eId = request.form.get("enemy")
-        eDefcon = db.execute(
-            "SELECT defcon FROM users WHERE id=(?)", (eId,)).fetchone()[0]
-        eSpies = db.execute(
-            "SELECT spies FROM military WHERE id=(?)", (eId,)).fetchone()[0]
+
+        db.execute("SELECT defcon FROM users WHERE id=%s", (eId,))
+        eDefcon = db.fetchone()[0]
+
+        db.execute("SELECT spies FROM military WHERE id=%s", (eId,))
+        eSpies = db.fetchone()[0]
+
         # calculate what values have been revealed based on prep, amount, edefcon, espies
 
 
         resources = ["rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
                      "lumber", "components", "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"]
+                     
         revealChance = prep * spies / (eDefcon * eSpies)
         spyEntry = {}
         for unit in Military.allUnits:
@@ -120,5 +148,4 @@ def spyAmount():
 def spyResult():
     spyEntry = session["spyEntry"]
     # You've conducted a spy operation on {{enemyNation}} and revealed the following information {{spyEntry}}.
-
     return render_template("spyResult.html", enemyNation=enemyNation, spyEntry=spyEntry)
