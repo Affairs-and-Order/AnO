@@ -338,7 +338,7 @@
                 </div>
                 <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     check
-                    </span>Go</button>
+                    </span>Give Position</button>
 
                 <!--max lenth of 10-->
                 <div class="templateoutertablediv inverttable">
@@ -596,8 +596,8 @@
                         </div>
                     </div>
                     <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
-                    check
-                    </span>Go</button>
+                    arrow_forward
+                    </span>Send Offer</button>
                 </form>
                 <!--if no requests-->
                 {% if ingoing_length == 0 %}
@@ -693,9 +693,9 @@
                             <td>[[ bracketName]]:</td>
                             <!--Example: "includes 1-20 provinces"-->
                             <td>[[ bracketInfo ]]</td>
-                            <td><button formaction=""><span class="material-icons iconred">
+                            <td><span class="material-icons iconred">
                                 remove_circle_outline
-                                        </span></button></td>
+                                        </span></td>
                         </tr>
                     </table>
                 </div>
@@ -758,9 +758,9 @@
                             <td>[[ canonName ]]:</td>
                             <!--Example: "may not attack 1-20 provinces"-->
                             <td>[[ canon ]]</td>
-                            <td><button formaction=""><span class="material-icons iconred">
+                            <td><span class="material-icons iconred">
                                 remove_circle_outline
-                                        </span></button></td>
+                                        </span></td>
                         </tr>
                     </table>
                 </div>
@@ -830,11 +830,6 @@
                         {% endfor %}
                     </table>
                 </div>
-
-
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                    check
-                    </span>Update</button>
             </div>
             {% endif %}
 
@@ -885,39 +880,8 @@
                             <option value="open" class="templateoption">Open</option>
                         </select>
                     </div>
-                    <script>
-                        function newTextarea() {
-                            var newTextarea = document.createElement("TEXTAREA");
-                            newTextarea.placeholder = "Text";
-                            newTextarea.className = "templatetextarea";
-                            document.getElementById("descriptionChild").appendChild(newTextarea);
-                        }
-
-                        function newMenuflex() {
-                            var newMenuflex = document.createElement("DIV");
-                            newMenuflex.className = "templatedivflex2 divflex2center menuflex";
-                            newMenuflex.id = "descriptionChild";
-                            document.getElementById("description").appendChild(newMenuflex);
-                        }
-                    </script>
-
-                    <div class="templatedivflex2left center">
-                        <span onclick="newTextarea()" class="material-icons iconblue iconlarge">
-                    check_circle_outline
-                </span>
-                    </div>
-                    <div class="templatedivflex2left center">
-                        <span onclick="newMenuflex()" class="material-icons iconblue iconlarge">
-                    check_circle_outline
-                </span>
-                    </div>
-
-                    <label for="description">Describe your coalition</label>
-
-                    <textarea class="templatetextarea" name="description" placeholder="Coalition Description" maxlength="240">{{ description }}</textarea>
 
 
-                    <div class="vanilla" id="description"></div>
 
                     <label for="description">War Alert</label>
 
