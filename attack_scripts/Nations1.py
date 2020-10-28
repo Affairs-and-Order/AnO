@@ -1,8 +1,9 @@
 import random
-import psycopg2
+import sqlite3
 import os, time
-from dotenv import load_dotenv
-load_dotenv()
+
+# path = "C:\\Users\\elefant\\Affairs-and-Order\\affo\\aao.db"
+path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
 
 def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -> int
     # Calculate the percentage of total units will be affected
@@ -37,35 +38,21 @@ class Economy:
         self.nationID = nationID
 
     def get_economy(self):
-
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+        connection = sqlite3.connect(path)
         db = connection.cursor()
 
         # TODO fix this when the databases changes and update to include all resources
-        db.execute("SELECT gold FROM stats WHERE id=(%s)", (self.nationID,))
-        self.gold = db.fetchone()[0]
+        self.gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (self.nationID,)).fetchone()[0]
 
     def get_particular_resources(self, resources):
-
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+        connection = sqlite3.connect(path)
         db = connection.cursor()
 
         resource_dict = {}
 
         try:
             for resource in resources:
-                db.execute(f"SELECT {resource} FROM resources WHERE id=(%s)", (self.nationID,))
-                resource_dict[resource] = db.fetchone()[0]
+                resource_dict[resource] = db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0]
         except:
 
             # TODO ERROR HANDLER OR RETURN THE ERROR AS A VAlUE
@@ -76,47 +63,32 @@ class Economy:
 
     def grant_resources(self, resource, amount):
         # TODO find a way to get the database to work on relative directories
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+        connection = sqlite3.connect(path)
         db = connection.cursor()
-
-        db.execute("UPDATE stats SET (%s) = (%s) WHERE id(%s)", (resource, amount, self.nationID))
+        db.execute("UPDATE stats SET (?) = (?) WHERE id(?)",
+                   (resource, amount, self.nationID))
 
         connection.commit()
 
     # IMPORTANT: the amount is not validated in this method, so you should provide a valid value
     def transfer_resources(self, resource, amount, destinationID):
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+        connection = sqlite3.connect(path)
         db = connection.cursor()
 
         if resource not in self.resources:
             return "Invalid resource"
 
         # get amount of resource
-
-        resource_sel_stat = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-
-        db.execute(resource_sel_stat, (self.nationID,))
-        originalUser = int(db.fetchone()[0])
-        db.execute(resource_sel_stat, (destinationID,))
-        destinationUser = int(db.fetchone()[0])
+        originalUser = int(db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (self.nationID,)).fetchone()[0])
+        destinationUser = int(db.execute(f"SELECT {resource} FROM resources WHERE id=(?)", (destinationID,)).fetchone()[0])
 
         # subtracts the resource from one nation to another
         originalUser -= amount
         destinationUser += amount
 
         # writes changes in db
-        db.execute(f"UPDATE resources SET {resource}=(%s) WHERE id=(%s)", (originalUser, self.nationID))
-        db.execute(f"UPDATE resources SET {resource}=(%s) WHERE id=(%s)", (destinationUser, destinationID))
+        db.execute(f"UPDATE resources SET {resource}=(?) WHERE id=(?)", (originalUser, self.nationID))
+        db.execute(f"UPDATE resources SET {resource}=(?) WHERE id=(?)", (destinationUser, destinationID))
 
         connection.commit()
 
@@ -145,12 +117,7 @@ class Nation:
     # Database management
     # TODO: find a more effective way to handle database stuff
     # path = ''.join([os.path.abspath('').split("AnO")[0], 'AnO/affo/aao.db'])
-    connection = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
+    connection = sqlite3.connect(path)
     db = connection.cursor()
 
     def __init__(self, nationID, military=None, economy=None, provinces=None, current_wars=None):
@@ -168,24 +135,17 @@ class Nation:
         pass
 
     def get_provinces(self):
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         if self.provinces == None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
-            db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=%s", (self.id,))
-            provinces_number = db.fetchone()[0]
+            provinces_number = db.execute(
+                "SELECT COUNT(provinceName) FROM provinces WHERE userId=(?)", (self.id,)).fetchone()[0]
             self.provinces["provinces_number"] = provinces_number
 
             if provinces_number > 0:
-                db.execute("SELECT * FROM provinces WHERE userId=(?)", (self.id,))
-                provinces = db.fetchall()
+                provinces = db.execute(
+                    "SELECT * FROM provinces WHERE userId=(?)", (self.id,)).fetchall()
                 for province in provinces:
                     self.provinces["province_stats"][province[1]] = {
                         "userId": province[0],
@@ -201,23 +161,14 @@ class Nation:
 
     @staticmethod
     def get_current_wars(id):
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (id, id,))
-        id_list = db.fetchall()
+        id_list = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (id, id,)).fetchall()
 
         # # determine wheter the user is the aggressor or the defender
         # current_wars_result = []
         # for war_id in id_list:
-        # db.execute("SELECT 1 FROM wars WHERE id=(%s) AND attacker=(%s)", (war_id[0], id))
-        #     is_attacker = db.fetchone()
+        #     is_attacker = db.execute("SELECT 1 FROM wars WHERE id=(?) AND attacker=(?)", (war_id[0], id)).fetchone()
         #
         #     if is_attacker:
         #         war_id.append("attacker")
@@ -233,20 +184,10 @@ class Nation:
     # Get everything from proInfra table which is in the "public works" category
     @classmethod
     def get_public_works(self, province_id):
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         public_works_string = ",".join(self.public_works)
-
-        infra_sel_stat = F"SELECT {public_works_string} FROM proInfra " + "WHERE id=%s" 
-        db.execute(infra_sel_stat, (province_id,))
-        fetch_public = db.fetchone()
+        fetch_public = db.execute(f"SELECT {public_works_string} FROM proInfra WHERE id=(?)", (province_id,)).fetchone()
         public_works_dict = {}
 
         for public in range(0, len(self.public_works)):
@@ -257,37 +198,23 @@ class Nation:
     # set the peace_date in wars table for a particular war
     @staticmethod
     def set_peace(db, connection, war_id=None, options=None):
-
         if war_id != None:
-            db.execute("UPDATE wars SET peace_date=(%s) WHERE id=(%s)", (time.time(), war_id))
-
+            db.execute("UPDATE wars SET peace_date=(?) WHERE id=(?)", (time.time(), war_id))
         else:
             option = options["option"]
-            db.execute(f"UPDATE wars SET peace_date=(%s) WHERE {option}=(%s)", (time.time(), options["value"]))
-
+            db.execute(f"UPDATE wars SET peace_date=(?) WHERE {option}=(?)", (time.time(), options["value"]))
         connection.commit()
 
     # Get the list of owned upgrades like supply amount increaser from 200 to 210, etc.
     @classmethod
     def get_upgrades(cls, upgrade_type, user_id):
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         upgrades = {}
 
         if upgrade_type == "supplies":
             for upgrade in cls.supply_related_upgrades.keys():
-
-                upgrade_sel_stat = f"SELECT {upgrade} FROM upgrades " + "WHERE user_id=%s" 
-                db.execute(upgrade_sel_stat, (user_id,))
-
-                count = db.fetchone()[0]
+                count = db.execute(f"SELECT {upgrade} FROM upgrades WHERE user_id=(?)", (user_id,)).fetchone()[0]
                 upgrades[upgrade] = count
 
         # returns the bonus given by the upgrade
@@ -306,13 +233,7 @@ class Military(Nation):
     def infrastructure_damage(damage, particular_infra, province_id):
         available_buildings = []
 
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
 
         for building in particular_infra.keys():
@@ -342,9 +263,7 @@ class Military(Nation):
             if (damage-health) >= 0:
                 particular_infra[target] -= 1
 
-                infra_update_stat = f"UPDATE proInfra SET {target}" + "=%s WHERE id=(%s)"
-                db.execute(infra_update_stat, (particular_infra[target], province_id))
-
+                db.execute(f"UPDATE proInfra SET {target}=(?) WHERE id=(?)", (particular_infra[target], province_id))
                 connection.commit()
 
                 available_buildings.pop(random_building)
@@ -366,40 +285,19 @@ class Military(Nation):
     # Returns the morale either for the attacker or the defender, and with the war_id
     @staticmethod
     def get_morale(column, attacker, defender):
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
-        db.execute(f"SELECT id FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
-        war_id = db.fetchall()[-1][0]
-        db.execute(f"SELECT {column} FROM wars WHERE id=(%s)", (war_id,))
-        morale = db.fetchone()[0]
+        war_id = db.execute(f"SELECT id FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1][0]
+        morale = db.execute(f"SELECT {column} FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
         return (war_id, morale)
 
     # Update the morale and give back the win type name
     @staticmethod
     def morale_change(war_id, morale, column, win_type, winner, loser):
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect("affo/aao.db")
         db = connection.cursor()
-
-        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
-        war_id = db.fetchall()[-1][0]
-
-        war_column_stat = f"SELECT {column} FROM wars " + "WHERE id=(%s)"
-        db.execute(war_column_stat, (war_id,))
-        morale = db.fetchone()[0]
+        # war_id = db.execute(f"SELECT id FROM wars WHERE (attacker=(?) OR attacker=(?)) AND (defender=(?) OR defender=(?))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id)).fetchall()[-1][0]
+        # morale = db.execute(f"SELECT {column} FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
 
         # annihilation
         # 50 morale change
@@ -427,17 +325,14 @@ class Military(Nation):
 
             for resource in Economy.resources:
 
-                resource_sel_stat = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-                db.execute(resource_sel_stat, (loser.user_id,))
-                resource_amount = db.fetchone()[0]
+                resource_amount = db.execute(f'SELECT {resource} FROM resources WHERE id=(?)', (loser.user_id,)).fetchone()[0]
 
                 # transfer 20% of resource on hand
                 eco.transfer_resources(resource, resource_amount*(1/5), winner.user_id)
 
             print("THE WAR IS OVER")
 
-            db.execute(f"UPDATE wars SET {column}=(%s) WHERE id=(%s)", (morale, war_id))
-
+        db.execute(f"UPDATE wars SET {column}=(?) WHERE id=(?)", (morale, war_id))
         connection.commit()
         connection.close()
 
@@ -466,29 +361,16 @@ class Military(Nation):
 
 
             # infrastructure damage
-            
-            connection = psycopg2.connect(
-                database=os.getenv("PG_DATABASE"),
-                user=os.getenv("PG_USER"),
-                password=os.getenv("PG_PASSWORD"),
-                host=os.getenv("PG_HOST"),
-                port=os.getenv("PG_PORT"))
-
+            connection = sqlite3.connect('affo/aao.db')
             db = connection.cursor()
-
-            db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
-            province_id_fetch = db.fetchall()
-
+            province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
             random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
 
             # decrease special unit amount after attack
             # TODO: check if too much special_unit amount is selected
             # TODO: decreate only the selected amount when attacker (ex. db 100 soldiers, attack with 20, don't decreate from 100)
-            db.execute(f"SELECT {special_unit} FROM military WHERE id=(%s)", (attacker.user_id,))
-            special_unit_fetch = db.fetchone()[0]
-
-            db.execute(f"UPDATE military SET {special_unit}=(%s) WHERE id=(%s)", (special_unit_fetch-attacker.selected_units[special_unit], attacker.user_id))
-
+            special_unit_fetch = db.execute(f"SELECT {special_unit} FROM military WHERE id=(?)", (attacker.user_id,)).fetchone()[0]
+            db.execute(f"UPDATE military SET {special_unit}=(?) WHERE id=(?)", (special_unit_fetch-attacker.selected_units[special_unit], attacker.user_id))
             connection.commit()
 
             # If nuke damage public_works
@@ -589,19 +471,9 @@ class Military(Nation):
 
 
         # Get the absolute side (absolute attacker and defender) in the war for determining the loser's morale column name to decrease
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-
-        db.execute("SELECT attacker FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (winner.user_id,winner.user_id))
-        abs_attacker = db.fetchone()[0]
-
+        abs_attacker = db.execute("SELECT attacker FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (winner.user_id,winner.user_id)).fetchone()[0]
         if winner.user_id == abs_attacker:
             # morale column of the loser
             morale_column = "defender_morale"
@@ -630,17 +502,9 @@ class Military(Nation):
             loser.casualties(loser_unit, l_casualties)
 
         # infrastructure damage
-                # 
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        # connection = sqlite3.connect('affo/aao.db')
         # db = connection.cursor()
-        # db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
-        # province_id_fetch = db.fetchall()
+        # province_id_fetch = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (defender.user_id,)).fetchall()
         # random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
         #
         # # Currently units only affect public works
@@ -657,25 +521,18 @@ class Military(Nation):
     # particular_units must be a list of string unit names
     @staticmethod
     def get_particular_units_list(cId, particular_units): # int, list -> list
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
         # for unit in particular_units:
 
-        #     # TODO: IMPORTANT: This is SQL injectable change this when move to production
-        # db.execute(f"SELECT {unit} FROM military WHERE id=(%s)", (cId,))
-        #     units[unit] = db.fetchone()[0]
+        #     # IMPORTANT: This is SQL injectable change this when move to production
+        #     units[unit] = db.execute(f"SELECT {unit} FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         # non sql injectable workaround to above commented code:
 
         # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
-        allAmounts = db.execute("SELECT * FROM military WHERE id=%s", (cId,)).fetchall()
+        allAmounts = db.execute(
+            "SELECT * FROM military WHERE id=(?)", (cId,)).fetchall()
         # get the unit amounts based on the selected_units
         unit_to_amount_dict = {}
         cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','ICBMs','nukes','destroyer','cruisers','submarines']
@@ -692,41 +549,26 @@ class Military(Nation):
 
     @staticmethod
     def get_military(cId): # int -> dict
-                
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-        db.execute("SELECT tanks FROM military WHERE id=%s", (cId,))
-        tanks = db.fetchone()[0]
-
-        db.execute("SELECT soldiers FROM military WHERE id=%s", (cId,))
-        soldiers = db.fetchone()[0]
-
-        db.execute("SELECT artillery FROM military WHERE id=%s", (cId,))
-        artillery = db.fetchone()[0]
-
-        db.execute("SELECT bombers FROM military WHERE id=%s", (cId,))
-        bombers = db.fetchone()[0]
-
-        db.execute("SELECT fighters FROM military WHERE id=%s", (cId,))
-        fighters = db.fetchone()[0]
-
-        db.execute("SELECT apaches FROM military WHERE id=%s", (cId,))
-        apaches = db.fetchone()[0]
-        
-        db.execute("SELECT destroyers FROM military WHERE id=%s", (cId,))
-        destroyers = db.fetchone()[0]
-
-        db.execute("SELECT cruisers FROM military WHERE id=%s", (cId,))
-        cruisers = db.fetchone()[0]
-
-        db.execute("SELECT submarines FROM military WHERE id=%s", (cId,))
-        submarines = db.fetchone()[0]
+        tanks = db.execute(
+            "SELECT tanks FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        soldiers = db.execute(
+            "SELECT soldiers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        artillery = db.execute(
+            "SELECT artillery FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        bombers = db.execute(
+            "SELECT bombers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        fighters = db.execute(
+            "SELECT fighters FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        apaches = db.execute(
+            "SELECT apaches FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        destroyers = db.execute(
+            "SELECT destroyers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        cruisers = db.execute(
+            "SELECT cruisers FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        submarines = db.execute(
+            "SELECT submarines FROM military WHERE id=(?)", (cId,)).fetchone()[0]
 
         connection.close()
 
@@ -744,24 +586,14 @@ class Military(Nation):
 
     @staticmethod
     def get_special(cId): # int -> dict
-                
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
-
-        db.execute("SELECT spies FROM military WHERE id=%s", (cId,))
-        spies = db.fetchone()[0]
-
-        db.execute("SELECT ICBMs FROM military WHERE id=%s", (cId,))
-        icbms = db.fetchone()[0]
-
-        db.execute("SELECT nukes FROM military WHERE id=%s", (cId,))
-        nukes = db.fetchone()[0]
+        spies = db.execute(
+            "SELECT spies FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        icbms = db.execute(
+            "SELECT ICBMs FROM military WHERE id=(?)", (cId,)).fetchone()[0]
+        nukes = db.execute(
+            "SELECT nukes FROM military WHERE id=(?)", (cId,)).fetchone()[0]
         connection.close()
 
         return {
@@ -772,14 +604,7 @@ class Military(Nation):
 
     # Check and set default_defense in nation table
     def set_defense(self, defense_string): # str -> None
-        
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
+        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
         defense_list = defense_string.split(",")
         if len(defense_units) == 3:
@@ -787,8 +612,7 @@ class Military(Nation):
             # default_defense is stored in the db: 'unit1,unit2,unit3'
             defense_units = ",".join(defense_units)
 
-            db.execute("UPDATE nation SET default_defense=(%s) WHERE nation_id=(%s)", (defense_units, nation[1]))
-
+            db.execute("UPDATE nation SET default_defense=(?) WHERE nation_id=(?)", (defense_units, nation[1]))
             connection.commit()
         else:
             # user should never reach here, msg for beta testers
