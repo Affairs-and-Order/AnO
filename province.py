@@ -8,31 +8,45 @@ import _pickle as pickle
 import random
 from celery import Celery
 from helpers import login_required, error
-import sqlite3
+import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 from dotenv import load_dotenv
+import os
 load_dotenv()
 
 @login_required
 @app.route("/provinces", methods=["GET", "POST"])
 def provinces():
     if request.method == "GET":
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
 
-        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
         cId = session["user_id"]
 
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        population = db.execute("SELECT population FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        name = db.execute("SELECT provinceName FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        pId = db.execute("SELECT id FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        land = db.execute("SELECT land FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        happiness = db.execute("SELECT happiness FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
-        productivity = db.execute("SELECT productivity FROM provinces WHERE userId=(?) ORDER BY id ASC", (cId,)).fetchall()
+        db.execute("SELECT cityCount FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
+        cityCount = db.fetchall()
+        db.execute("SELECT population FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
+        population = db.fetchall()
+        db.execute("SELECT provinceName FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
+        name = db.fetchall()
+        db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
+        pId = db.fetchall()
+        db.execute("SELECT land FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
+        land = db.fetchall()
+        db.execute("SELECT happiness FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
+        happiness = db.fetchall()
+        db.execute("SELECT productivity FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
+        productivity = db.fetchall()
 
         connection.close()
 
@@ -43,69 +57,103 @@ def provinces():
 
 
 @login_required
-@app.route("/province/<pId>", methods=["GET", "POST"])
+@app.route("/province/<pId>", methods=["GET"])
 def province(pId):
-    if request.method == "GET":
 
-        connection = sqlite3.connect('affo/aao.db')
-        db = connection.cursor()
-        cId = session["user_id"]
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
-        province_user = db.execute("SELECT userId FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        location = db.execute("SELECT location FROM stats WHERE id=(?)", (province_user,)).fetchone()[0]
-        
-        if province_user == cId:
-            ownProvince = True
-        else:
-            ownProvince = False
+    db = connection.cursor()
+    cId = session["user_id"]
 
-        name = db.execute("SELECT provinceName FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        population = db.execute("SELECT population FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        pollution = db.execute("SELECT pollution FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        happiness = db.execute("SELECT happiness FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        productivity = db.execute("SELECT productivity FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        consumer_spending = db.execute("SELECT happiness FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT userId FROM provinces WHERE id=(%s)", (pId,))
+    province_user = db.fetchone()[0]
+    db.execute("SELECT location FROM stats WHERE id=(%s)", (province_user,))
+    location = db.fetchone()[0]
+    
+    if province_user == cId:
+        ownProvince = True
+    else:
+        ownProvince = False
 
-        cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
-        land = db.execute("SELECT land FROM provinces WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT provinceName FROM provinces WHERE id=(%s)", (pId,))
+    name = db.fetchone()[0]
+    db.execute("SELECT population FROM provinces WHERE id=(%s)", (pId,))
+    population = db.fetchone()[0]
+    db.execute("SELECT pollution FROM provinces WHERE id=(%s)", (pId,))
+    pollution = db.fetchone()[0]
+    db.execute("SELECT happiness FROM provinces WHERE id=(%s)", (pId,))
+    happiness = db.fetchone()[0]
+    db.execute("SELECT productivity FROM provinces WHERE id=(%s)", (pId,))
+    productivity = db.fetchone()[0]
+    db.execute("SELECT happiness FROM provinces WHERE id=(%s)", (pId,))
+    consumer_spending = db.fetchone()[0]
 
-        oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (pId,))
+    cityCount = db.fetchone()[0]
+    db.execute("SELECT land FROM provinces WHERE id=(%s)", (pId,))
+    land = db.fetchone()[0]
 
-        gas_stations = db.execute("SELECT gas_stations FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        general_stores = db.execute("SELECT general_stores FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        farmers_markets = db.execute("SELECT farmers_markets FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        malls = db.execute("SELECT malls FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        banks = db.execute("SELECT banks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT oil_burners FROM proInfra WHERE id=(%s)", (pId,))
+    oil_burners = db.fetchone()[0]
+    db.execute("SELECT hydro_dams FROM proInfra WHERE id=(%s)", (pId,))
+    hydro_dams = db.fetchone()[0]
+    db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(%s)", (pId,))
+    nuclear_reactors = db.fetchone()[0]
+    db.execute("SELECT solar_fields FROM proInfra WHERE id=(%s)", (pId,))
+    solar_fields = db.fetchone()[0]
 
-        city_parks = db.execute("SELECT city_parks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        hospitals = db.execute("SELECT hospitals FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        libraries = db.execute("SELECT libraries FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        universities = db.execute("SELECT universities FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        monorails = db.execute("SELECT monorails FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT gas_stations FROM proInfra WHERE id=(%s)", (pId,))
+    gas_stations = db.fetchone()[0]
+    db.execute("SELECT general_stores FROM proInfra WHERE id=(%s)", (pId,))
+    general_stores = db.fetchone()[0]
+    db.execute("SELECT farmers_markets FROM proInfra WHERE id=(%s)", (pId,))
+    farmers_markets = db.fetchone()[0]
+    db.execute("SELECT malls FROM proInfra WHERE id=(%s)", (pId,))
+    malls = db.fetchone()[0]
+    db.execute("SELECT banks FROM proInfra WHERE id=(%s)", (pId,))
+    banks = db.fetchone()[0]
 
-        army_bases = db.execute("SELECT army_bases FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        harbours = db.execute("SELECT harbours FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        aerodomes = db.execute("SELECT aerodomes FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        admin_buildings = db.execute("SELECT admin_buildings FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-        silos = db.execute("SELECT silos FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT city_parks FROM proInfra WHERE id=(%s)", (pId,))
+    city_parks = db.fetchone()[0]
+    db.execute("SELECT hospitals FROM proInfra WHERE id=(%s)", (pId,))
+    hospitals = db.fetchone()[0]
+    db.execute("SELECT libraries FROM proInfra WHERE id=(%s)", (pId,))
+    libraries = db.fetchone()[0]
+    db.execute("SELECT universities FROM proInfra WHERE id=(%s)", (pId,))
+    universities = db.fetchone()[0]
+    db.execute("SELECT monorails FROM proInfra WHERE id=(%s)", (pId,))
+    monorails = db.fetchone()[0]
 
-        connection.close()
+    db.execute("SELECT army_bases FROM proInfra WHERE id=(%s)", (pId,))
+    army_bases = db.fetchone()[0]
+    db.execute("SELECT harbours FROM proInfra WHERE id=(%s)", (pId,))
+    harbours = db.fetchone()[0]
+    db.execute("SELECT aerodomes FROM proInfra WHERE id=(%s)", (pId,))
+    aerodomes = db.fetchone()[0]
+    db.execute("SELECT admin_buildings FROM proInfra WHERE id=(%s)", (pId,))
+    admin_buildings = db.fetchone()[0]
+    db.execute("SELECT silos FROM proInfra WHERE id=(%s)", (pId,))
+    silos = db.fetchone()[0]
 
-        return render_template("province.html", pId=pId, population=population, name=name,
-                               cityCount=cityCount, land=land, pollution=pollution, consumer_spending=consumer_spending,
-                               happiness=happiness, productivity=productivity, location=location,
+    connection.close()
 
-                               oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
-                               gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
-                               banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
-                               monorails=monorails,
-                               
-                               army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings,
-                               silos=silos, ownProvince=ownProvince
-                               )
+    return render_template("province.html", pId=pId, population=population, name=name,
+                            cityCount=cityCount, land=land, pollution=pollution, consumer_spending=consumer_spending,
+                            happiness=happiness, productivity=productivity, location=location,
+
+                            oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
+                            gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
+                            banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
+                            monorails=monorails,
+                            
+                            army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings,
+                            silos=silos, ownProvince=ownProvince
+                            )
 
 
 @login_required
@@ -113,20 +161,32 @@ def province(pId):
 def createprovince():
 
     cId = session["user_id"]
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     if request.method == "POST":
 
         pName = request.form.get("name")
 
-        db.execute("INSERT INTO provinces (userId, provinceName) VALUES (?, ?)", (cId, pName))
-        province_id = db.execute("SELECT id FROM provinces WHERE userId=(?) AND provinceName=(?)", (cId, pName)).fetchone()[0]
-        db.execute("INSERT INTO proInfra (id) VALUES (?)", (province_id,))
-        current_user_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        db.execute("INSERT INTO provinces (userId, provinceName) VALUES (%s, %s)", (cId, pName))
+
+        db.execute("SELECT id FROM provinces WHERE userId=(%s) AND provinceName=(%s)", (cId, pName))
+        province_id = db.fetchone()[0]
+
+        db.execute("INSERT INTO proInfra (id) VALUES (%s)", (province_id,))
+
+        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        current_user_gold = db.fetchone()[0]
         province_price = 50000 # Provinces cost 50k
         new_user_gold = current_user_gold - province_price
-        db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", (new_user_gold, cId))
+        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_user_gold, cId))
 
         connection.commit()
         connection.close()
@@ -134,32 +194,54 @@ def createprovince():
         return redirect("/provinces")
     else:
 
-        current_province_amount = db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(?)", (cId,)).fetchone()[0]
+        db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (cId,))
+        current_province_amount = db.fetchone()[0]
+
         multiplier = 1 + (0.25 * current_province_amount)
         price = int(50000 * multiplier)
         return render_template("createprovince.html", price=price)
 
 def get_used_slots(pId): # pId = province id
 
-    connection = sqlite3.connect('affo/aao.db')
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
-    oil_burners = db.execute("SELECT oil_burners FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    hydro_dams = db.execute("SELECT hydro_dams FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    nuclear_reactors = db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    solar_fields = db.execute("SELECT solar_fields FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT oil_burners FROM proInfra WHERE id=(%s)", (pId,))
+    oil_burners = db.fetchone()[0]
+    db.execute("SELECT hydro_dams FROM proInfra WHERE id=(%s)", (pId,))
+    hydro_dams = db.fetchone()[0]
+    db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(%s)", (pId,))
+    nuclear_reactors = db.fetchone()[0]
+    db.execute("SELECT solar_fields FROM proInfra WHERE id=(%s)", (pId,))
+    solar_fields = db.fetchone()[0]
 
-    gas_stations = db.execute("SELECT gas_stations FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    general_stores = db.execute("SELECT general_stores FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    farmers_markets = db.execute("SELECT farmers_markets FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    malls = db.execute("SELECT malls FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    banks = db.execute("SELECT banks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT gas_stations FROM proInfra WHERE id=(%s)", (pId,))
+    gas_stations = db.fetchone()[0]
+    db.execute("SELECT general_stores FROM proInfra WHERE id=(%s)", (pId,))
+    general_stores = db.fetchone()[0]
+    db.execute("SELECT farmers_markets FROM proInfra WHERE id=(%s)", (pId,))
+    farmers_markets = db.fetchone()[0]
+    db.execute("SELECT malls FROM proInfra WHERE id=(%s)", (pId,))
+    malls = db.fetchone()[0]
+    db.execute("SELECT banks FROM proInfra WHERE id=(%s)", (pId,))
+    banks = db.fetchone()[0]
 
-    city_parks = db.execute("SELECT city_parks FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    hospitals = db.execute("SELECT hospitals FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    libraries = db.execute("SELECT libraries FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    universities = db.execute("SELECT universities FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
-    monorails = db.execute("SELECT monorails FROM proInfra WHERE id=(?)", (pId,)).fetchone()[0]
+    db.execute("SELECT city_parks FROM proInfra WHERE id=(%s)", (pId,))
+    city_parks = db.fetchone()[0]
+    db.execute("SELECT hospitals FROM proInfra WHERE id=(%s)", (pId,))
+    hospitals = db.fetchone()[0]
+    db.execute("SELECT libraries FROM proInfra WHERE id=(%s)", (pId,))
+    libraries = db.fetchone()[0]
+    db.execute("SELECT universities FROM proInfra WHERE id=(%s)", (pId,))
+    universities = db.fetchone()[0]
+    db.execute("SELECT monorails FROM proInfra WHERE id=(%s)", (pId,))
+    monorails = db.fetchone()[0]
 
     infra_list = [oil_burners, hydro_dams, nuclear_reactors, solar_fields,
     gas_stations, general_stores, farmers_markets, malls, banks,
@@ -177,12 +259,18 @@ def province_sell_buy(way, units, province_id):
 
         cId = session["user_id"]
 
-        connection = sqlite3.connect('affo/aao.db')
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
         db = connection.cursor()
 
         try:
-            ownProvince = db.execute(
-                "SELECT id FROM provinces WHERE id=(?) AND userId=(?)", (province_id, cId,)).fetchone()[0]
+            db.execute("SELECT id FROM provinces WHERE id=%s AND userId=%s", (province_id, cId,))
+            ownProvince = db.fetchone()[0]
             ownProvince = True
         except TypeError:
             ownProvince = False
@@ -204,11 +292,16 @@ def province_sell_buy(way, units, province_id):
             "banks", "city_parks", "hospitals"
         ]    
 
-        gold = int(db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0])
+        b.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        gold = int(db.fetchone()[0])
+
         wantedUnits = int(request.form.get(units))
 
         if units == "cityCount":
-            current_cityCount = db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0]
+
+            db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
+            current_cityCount = db.fetchone()[0]
+
             multiplier = 1 + ((0.10 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
             cityCount_price = int(1000 * multiplier) # Each city costs 1000 without the multiplier
         else:
@@ -251,11 +344,15 @@ def province_sell_buy(way, units, province_id):
             table = "proInfra"
 
         price = unit_prices[f"{units}"]
-        curUnStat = f'SELECT {units} FROM {table} WHERE id=?'
         totalPrice = int(wantedUnits * price)
-        currentUnits = int(db.execute(curUnStat, (province_id,)).fetchone()[0])
 
-        total_infra_slots = int(db.execute("SELECT cityCount FROM provinces WHERE id=(?)", (province_id,)).fetchone()[0])
+        curUnStat = f"SELECT {units} FROM {table} " +  "WHERE id=%s"
+        db.execute(curUnStat, (province_id,))
+        currentUnits = int(db.fetchone()[0])
+
+        db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
+        total_infra_slots = int(db.fetchone()[0])
+
         used_slots = int(get_used_slots(province_id))
         free_infra_slots = total_infra_slots - used_slots
 
@@ -264,9 +361,10 @@ def province_sell_buy(way, units, province_id):
             if wantedUnits > currentUnits:  # checks if unit is legit
                 return error("You don't have enough units", 400)
 
-            unitUpd = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            unitUpd = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
             db.execute(unitUpd, ((currentUnits - wantedUnits), province_id))
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((gold + wantedUnits * price), cId))
+
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((gold + wantedUnits * price), cId))
 
         elif way == "buy":
 
@@ -276,14 +374,12 @@ def province_sell_buy(way, units, province_id):
             if units in max_4 and currentUnits + wantedUnits >= 4:
                 return error(400, "You can't have more than 4 of this unit")
 
-
             if free_infra_slots < wantedUnits:
                 return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
 
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)",
-                       (int(gold)-int(totalPrice), cId,))
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE {table} SET {units}=(?) WHERE id=(?)"
+            updStat = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
             db.execute(updStat, ((currentUnits + wantedUnits), province_id))
 
         else:

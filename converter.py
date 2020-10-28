@@ -1,5 +1,5 @@
-file = 'military1.py'
-output = open('military.py', "w")
+file = 'province1.py'
+output = open('province.py', "w")
 
 with open(file) as f:
     for line in f.readlines():
