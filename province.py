@@ -294,7 +294,7 @@ def province_sell_buy(way, units, province_id):
             "banks", "city_parks", "hospitals"
         ]    
 
-        b.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         gold = int(db.fetchone()[0])
 
         wantedUnits = int(request.form.get(units))
