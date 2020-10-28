@@ -1,10 +1,13 @@
+# FULLY MIGRATED
+
 from abc import ABC, abstractmethod
 from attack_scripts import Military
 from random import randint
 from typing import Union
-import sqlite3
+import psycopg2
 from dotenv import load_dotenv
 load_dotenv()
+import os
 
 # Blueprint for units
 class BlueprintUnit(ABC):
@@ -380,30 +383,49 @@ class Units(Military):
         else:
             return "Units are not attached!"
 
-    # def save(self):
-    #     connection = sqlite3.connect('affo/aao.db')
-    #     db = connection.cursor()
-    #
-    #     for save_type in self.save_for:
-    #
-    #         # Save casualties
-    #         if save_type == "casualties":
-    #             # The casualties method sets a suffered_casualties
-    #             for unit_type, amount in self.suffered_casualties.items():
-    #                 available_unit_amount = db.execute(f"SELECT {unit_type} FROM military WHERE id=(?)", (self.user_id,)).fetchone()[0]
-    #                 db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (available_unit_amount-amount, self.user_id))
-    #
-    #         # Save supplies
-    #         elif save_type == "supplies":
-    #             pass
-    #
-    #     connection.commit()
+    def save(self):
+            
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
+        db = connection.cursor()
+    
+        for save_type in self.save_for:    
+            # Save casualties
+            if save_type == "casualties":
+                # The casualties method sets a suffered_casualties
+                for unit_type, amount in self.suffered_casualties.items():
+
+                    mil_statement = f"SELECT {unit_type} FROM military " + " WHERE id=(%s)"
+                    db.execute(mil_statement, (self.user_id,))
+                    available_unit_amount = db.fetchone()[0]
+
+                    mil_update = f"UPDATE military SET {unit_type}" + "=(%s) WHERE id=(%s)"
+                    db.execute(mil_update, (available_unit_amount-amount, self.user_id))
+
+    
+            # Save supplies
+            elif save_type == "supplies":
+                pass
+    
+        connection.commit()
 
     # Save casualties to the db and check for casualty validity
     # NOTE: to save the data to the db later on put it to the save method
     # unit_type -> name of the unit type, amount -> used to decreate by it
     def casualties(self, unit_type: str, amount: int) -> None:
-        connection = sqlite3.connect('affo/aao.db')
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
         db = connection.cursor()
 
         # Make sure this is and integer
@@ -417,29 +439,48 @@ class Units(Military):
         self.selected_units[unit_type] = unit_amount-amount
 
         # Save records to the database
-        available_unit_amount = db.execute(f"SELECT {unit_type} FROM military WHERE id=(?)", (self.user_id,)).fetchone()[0]
-        db.execute(f"UPDATE military SET {unit_type}=(?) WHERE id=(?)", (available_unit_amount-amount, self.user_id))
+        mil_statement = f"SELECT {unit_type} FROM military " + " WHERE id=(%s)"
+        db.execute(mil_statement, (self.user_id,))
+        available_unit_amount = db.fetchone()[0]
+
+        mil_update = f"UPDATE military SET {unit_type}" + "=(%s) WHERE id=(%s)"
+        db.execute(mil_update, (available_unit_amount-amount, self.user_id))
         connection.commit()
 
     def save(self):
-        connection = sqlite3.connect('affo/aao.db')
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
         db = connection.cursor()
 
         # Save supplies
         try:
-            war_id = db.execute("SELECT id FROM wars WHERE (attacker=(?) OR defender=(?)) AND peace_date IS NULL", (self.user_id, self.user_id)).fetchall()[-1][0]
+            db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (self.user_id, self.user_id))
+            war_id = db.fetchall()[-1][0]
         except:
             return "War is already over!"
 
         if war_id != None:
-            is_attacker = db.execute("SELECT attacker FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
+            db.execute("SELECT attacker FROM wars WHERE id=(%s)", (war_id,))
+            is_attacker = db.fetchone()[0]
+
             if is_attacker == self.user_id:
                 sign = "attacker_supplies"
             else:
                 sign = "defender_supplies"
 
-            current_supplies = db.execute(f"SELECT {sign} FROM wars WHERE id=(?)", (war_id,)).fetchone()[0]
-            db.execute(f"UPDATE wars SET {sign}=(?) WHERE id=(?)", (current_supplies-self.supply_costs, war_id))
+            sign_select = f"SELECT {sign} FROM wars " + " WHERE id=(%s)"
+            db.execute(sign_select, (war_id,))
+            current_supplies = db.fetchone()[0]
+
+            sign_update = f"UPDATE wars SET {sign}" + "=(%s) WHERE id=(%s)"
+            db.execute(sign_update, (current_supplies-self.supply_costs, war_id))
+
             connection.commit()
         else:
             print("ERROR DURING SAVE")
@@ -454,19 +495,29 @@ class Units(Military):
         print("COST", cost)
 
         if self.available_supplies == None:
-            connection = sqlite3.connect('affo/aao.db')
+            
+            connection = psycopg2.connect(
+                database=os.getenv("PG_DATABASE"),
+                user=os.getenv("PG_USER"),
+                password=os.getenv("PG_PASSWORD"),
+                host=os.getenv("PG_HOST"),
+                port=os.getenv("PG_PORT"))
+
             db = connection.cursor()
 
             print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
-            attacker_id = db.execute("SELECT attacker FROM wars WHERE attacker=(?) AND peace_date IS NULL", (self.user_id,)).fetchone()
+            db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
+            attacker_id = db.fetchone()
 
             # If the user is the attacker (maybe optimize this to store the user role in the war)
             if attacker_id:
-                self.available_supplies = db.execute("SELECT attacker_supplies FROM wars WHERE attacker=(?) AND peace_date IS NULL", (self.user_id,)).fetchone()[0]
+                db.execute("SELECT attacker_supplies FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
+                self.available_supplies = db.fetchone()[0]
 
             # the user is defender
             else:
-                self.available_supplies = db.execute("SELECT defender_supplies FROM wars WHERE defender=(?) AND peace_date IS NULL", (self.user_id,)).fetchone()[0]
+                db.execute("SELECT defender_supplies FROM wars WHERE defender=(%s) AND peace_date IS NULL", (self.user_id,))
+                self.available_supplies = db.fetchone()[0]
 
         if self.available_supplies < 200:
             return "The minimum supply amount is 200"
@@ -518,7 +569,7 @@ if __name__ == "__main__":
     # print(defender.selected_units)
 
     # CASE 2
-    # import sqlite3
+    # import psycopg2
     # from random import uniform
     #
     # defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
