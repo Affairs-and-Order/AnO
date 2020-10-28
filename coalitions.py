@@ -16,7 +16,8 @@ from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
-
+from dotenv import load_dotenv
+load_dotenv()
 
 # rawCol (for easy finding using CTRL + F)
 @login_required

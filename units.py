@@ -3,6 +3,8 @@ from attack_scripts import Military
 from random import randint
 from typing import Union
 import sqlite3
+from dotenv import load_dotenv
+load_dotenv()
 
 # Blueprint for units
 class BlueprintUnit(ABC):

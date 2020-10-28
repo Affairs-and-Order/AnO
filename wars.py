@@ -7,6 +7,9 @@ from attack_scripts import Nation, Military, Economy
 from units import Units
 import time
 from helpers import get_influence, check_required
+from dotenv import load_dotenv
+load_dotenv()
+
 
 """
 war page: choose a war

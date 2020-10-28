@@ -7,6 +7,9 @@ from helpers import login_required, error
 import psycopg2
 from flask import Flask, request, render_template, session, redirect, flash
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])

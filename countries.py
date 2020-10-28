@@ -17,6 +17,8 @@ from helpers import get_influence, get_coalition_influence
 from app import app
 import os
 from werkzeug.utils import secure_filename
+from dotenv import load_dotenv
+load_dotenv()
 
 UPLOAD_FOLDER = 'static/flags'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

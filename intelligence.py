@@ -11,6 +11,8 @@ from math import floor
 from random import random
 import psycopg2
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 @login_required
 @app.route("/intelligence", methods=["GET"])

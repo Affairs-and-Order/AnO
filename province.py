@@ -13,7 +13,8 @@ import sqlite3
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
-
+from dotenv import load_dotenv
+load_dotenv()
 
 @login_required
 @app.route("/provinces", methods=["GET", "POST"])
