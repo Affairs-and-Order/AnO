@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-
 connection = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
     user=os.getenv("PG_USER"),
@@ -16,5 +15,8 @@ db = connection.cursor()
 resource = "oil"
 cId = 1
 
-db.execute("SELECT oil FROM resources WHERE id=%s", (cId,))
+statement = str("SELECT %s " % resource + "FROM resources WHERE id=%s")
+db.execute(statement, (cId,))
 buyerResource = db.fetchone()[0]  # executes the statement
+
+print(buyerResource)
