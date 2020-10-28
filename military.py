@@ -8,7 +8,7 @@ import _pickle as pickle
 import random
 from celery import Celery
 from helpers import login_required, error
-import sqlite3
+import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
@@ -16,11 +16,19 @@ from app import app
 from attack_scripts import Military
 from dotenv import load_dotenv
 load_dotenv()
+import os
 
 @login_required
 @app.route("/military", methods=["GET", "POST"])
 def military():
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
     cId = session["user_id"]
 
@@ -40,7 +48,14 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         cId = session["user_id"]
 
-        connection = sqlite3.connect('affo/aao.db')
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
         db = connection.cursor()
 
         allUnits = ["soldiers", "tanks", "artillery",
@@ -132,6 +147,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             iterable_resources.append(2)
 
             resource_dict.update({'resource_2': {'resource': resource2, 'amount': resource2_amount}})
+
         except KeyError:
             pass
 
@@ -148,21 +164,25 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         except KeyError:
             pass
 
-        gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,)).fetchone()[0]
+        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        gold = db.fetchone()[0]
+
         wantedUnits = request.form.get(units)
-        curUnStat = f'SELECT {units} FROM military WHERE id=?'
         totalPrice = int(wantedUnits) * price
-        currentUnits = db.execute(curUnStat, (cId,)).fetchone()[0]
+
+        curUnStat = str(f"SELECT {units} FROM military " + "WHERE id=%s")
+        db.execute(curUnStat, (cId,))
+        currentUnits = db.fetchone()[0]
 
         if way == "sell":
 
             if int(wantedUnits) > int(currentUnits):  # checks if unit is legits
                 return redirect("/too_much_to_sell")  # seems to work
 
-            unitUpd = f"UPDATE military SET {units}=(?) WHERE id=(?)"
+            unitUpd = str(f"UPDATE military SET {units}=" + "%s WHERE id=%s")
             db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), cId))
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)", ((
-                int(gold) + int(wantedUnits) * int(price)), cId,))  # clean
+
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((int(gold) + int(wantedUnits) * int(price)), cId,))  # clean
             flash(f"You sold {wantedUnits} {units}")
 
             def update_resource_plus(x):
@@ -170,12 +190,13 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 resource = resource_dict[f'resource_{x}']['resource']
                 resource_amount = resource_dict[f'resource_{x}']['amount']
                 
-                current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-                current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
+                current_resource_statement = str(f"SELECT {resource} " + "FROM resources WHERE id=%s")
+                db.execute(current_resource_statement, (cId,))
+                current_resource = int(db.fetchone()[0])
 
                 new_resource = current_resource + resource_amount
 
-                resource_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+                resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                 db.execute(resource_update_statement, (new_resource, cId,))
 
             for resource_number in range(1, (len(iterable_resources) + 1)):
@@ -184,12 +205,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         elif way == "buy":
 
             if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
-                return redirect("/too_many_units")
+                return redirect("/error")
 
-            db.execute("UPDATE stats SET gold=(?) WHERE id=(?)",
-                       (int(gold)-int(totalPrice), cId,))
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE military SET {units}=(?) WHERE id=(?)"
+            updStat = f"UPDATE military SET {units}" + "=%s WHERE id=%s"
             # fix weird table
             db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))
             flash(f"You bought {wantedUnits} {units}")
@@ -198,15 +218,16 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 resource = resource_dict[f'resource_{x}']['resource']
                 resource_amount = resource_dict[f'resource_{x}']['amount']
                 
-                current_resource_statement = f"SELECT {resource} FROM resources WHERE id=(?)"
-                current_resource = int(db.execute(current_resource_statement, (cId,)).fetchone()[0])
+                current_resource_statement = f"SELECT {resource} " + "FROM resources WHERE id=%s"
+                db.execute(current_resource_statement, (cId,))
+                current_resource = int(db.fetchone()[0])
 
                 if current_resource < resource_amount:
                     return error(400, "You don't have enough resources")
 
                 new_resource = current_resource - resource_amount
 
-                resource_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+                resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                 db.execute(resource_update_statement, (new_resource, cId,))
 
             for resource_number in range(1, (len(iterable_resources) + 1)):

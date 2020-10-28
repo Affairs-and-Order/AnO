@@ -15,7 +15,7 @@ db = connection.cursor()
 resource = "oil"
 cId = 1
 
-statement = str(f"SELECT {resource} " + "FROM resources WHERE id=%s")
+statement = f"SELECT {resource} " + "FROM resources WHERE id=%s"
 db.execute(statement, (cId,))
 buyerResource = db.fetchone()[0]  # executes the statement
 
