@@ -83,22 +83,23 @@ def country(cId):
         colId = db.fetchone()[0]
         db.execute("SELECT name FROM colNames WHERE id =%s", (colId,))
         colName = db.fetchone()[0]
-    except TypeError:
+    except:
         colId = ""
         colName = ""
 
     try:
-        db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
+        db.execute("SELECT flag FROM colNames WHERE id=%s", (colId,))
         colFlag = db.fetchone()[0]
-    except TypeError:
+    except:
         colFlag = None
 
     try:
         db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
         flag = db.fetchone()[0]
-    except TypeError:
+    except:
         flag = None
 
+    """
     db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
     spyCount = db.fetchone()[0]
     spyPrep = 1 # this is an integer from 1 to 5
@@ -109,6 +110,11 @@ def country(cId):
         successChance = 100
     else:
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
+    """
+
+    spyCount = 0
+    successChance = 0
+
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
