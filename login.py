@@ -50,10 +50,10 @@ def login():
         try:
             hashed_pw = user[4]
         except:
-            return error(403, "Wrong password")
+            return error(403, "Wrong password or user doesn't exist")
 
         # checks if user exists and if the password is correct
-        if user is not None and bcrypt.checkpw(password, hashed_pw):
+        if bcrypt.checkpw(password, hashed_pw):
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
 
@@ -61,7 +61,6 @@ def login():
             connection.commit()
             connection.close()
             return redirect("/")  # redirects user to homepage
-        return error(403, "Wrong password")
 
     else:
         # renders login.html when "/login" is acessed via get
