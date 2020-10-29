@@ -153,7 +153,7 @@ def upgrade_sell_buy(ttype, thing):
         
         price = prices[thing]
 
-        current_gold = db.execute("SELECT gold FROM stats WHERE id=(?)", (cId,))
+        current_gold = db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         current_gold = int(db.fetchone()[0])
 
         if current_gold > price:
