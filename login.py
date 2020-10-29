@@ -56,11 +56,6 @@ def login():
         if user is not None and bcrypt.checkpw(password, hashed_pw):
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
-            try:
-                db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (session["user_id"], ))
-                coalition = db.fetchone()[0]
-            except TypeError:
-                coalition = error(404, "Page Not Found")
 
             print('User has succesfully logged in.')
             connection.commit()
