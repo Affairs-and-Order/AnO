@@ -44,25 +44,21 @@
                             </p>
 
                             <ul>Upgrade Cost</ul>
-
-                            {% if not upgrades['betterEngineering'] %}
                             <div class="purchasemilitarydiv">
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
-                                        <span class="material-icons-outlined">
-                                            add_circle_outline
-                                        </span>Buy</button>
-                            </div>
-                            {% endif %}
-
-                            {% if upgrades['betterEngineering'] %}
-                            <div class="purchasemilitarydiv">
-                                <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                                {% if not upgrades['betterEngineering'] %}
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
                                             <span class="material-icons-outlined">
-                                            remove_circle_outline
-                                        </span>Sell</button> 
-                            </div>
-                            {% endif %}
+                                                add_circle_outline
+                                            </span>Buy</button>
+                                {% endif %}
 
+                                {% if upgrades['betterEngineering'] %}
+                                    <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
+                                                <span class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button> 
+                                {% endif %}
+                            </div>
                         </div>
                         <div class="templatedivflex2left">
 
@@ -70,7 +66,6 @@
                         </div>
                     </div>
                 </div>
-            </form>
 
             <div class="menudiv">
 
@@ -84,23 +79,25 @@
 
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
-                            {% if not upgrades["cheapermaterials"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/cheapermaterials">
-                                <span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button> {% endif %} {% if upgrades["cheapermaterials"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/cheapermaterials">
-                                    <span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button> {% endif %}
 
+                            {% if upgrades["cheaperMaterials"] %}
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/cheaperMaterials">
+                                        <span class="material-icons-outlined">
+                                        remove_circle_outline
+                                    </span>Sell</button>
+                            {% endif %}
+
+                            {% if not upgrades["cheaperMaterials"] %}
+                                <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/cheaperMaterials">
+                                    <span class="material-icons-outlined">
+                                        add_circle_outline
+                                    </span>Buy</button>
+                            {% endif %}
+                            
                         </div>
-                        </form>
 
                     </div>
                     <div class="templatedivflex2left">
-
-
 
                         <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/cheapermaterials.jpg') }}" />
                     </div>
@@ -121,19 +118,22 @@
 
                         <ul>Upgrade Cost</ul>
                         <div class="purchasemilitarydiv">
-                            {% if not upgrades["onlineshopping"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/onlineshopping">
+
+                            {% if not upgrades["onlineShopping"] %}
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/onlineShopping">
                                     <span class="material-icons-outlined">
                                         add_circle_outline
-                                    </span>Buy</button> {% endif %}
-                            {% if upgrades["onlineshopping"] %}
-                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/onlineshopping">
+                                    </span>Buy</button>
+                            {% endif %}
+
+                            {% if upgrades["onlineShopping"] %}
+                            <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/onlineShopping">
                                         <span class="material-icons-outlined">
                                         remove_circle_outline
-                                    </span>Sell</button> {% endif %}
+                                    </span>Sell</button>
+                            {% endif %}
 
                         </div>
-                        </form>
 
                     </div>
                     <div class="templatedivflex2left">
@@ -172,7 +172,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -208,7 +207,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -245,7 +243,7 @@
                         </div>
 
                     </div>
-                    </form>
+
                     <div class="templatedivflex2left">
 
 
@@ -281,7 +279,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -317,7 +314,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -353,7 +349,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -389,7 +384,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -424,7 +418,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -459,7 +452,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -498,7 +490,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -532,7 +523,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -566,7 +556,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -600,7 +589,7 @@
                         </div>
 
                     </div>
-                    </form>
+
                     <div class="templatedivflex2left">
 
 
@@ -634,7 +623,6 @@
                         </div>
 
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
 
 
@@ -668,7 +656,6 @@
 
                         </div>
                     </div>
-                    </form>
                     <div class="templatedivflex2left">
                         <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nucleartestingfacility.jpg') }}" />
                     </div>

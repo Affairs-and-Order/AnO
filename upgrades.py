@@ -130,24 +130,24 @@ def upgrade_sell_buy(ttype, thing):
     cId = session["user_id"]
 
     prices = {
-        'betterEngineering': 50000,
-        'cheaperMaterials': 50000,
-        'onlineShopping': 50000,
-        'governmentRegulation': 50000,
-        'nationalHealthInstitution': 50000,
-        'highSpeedRail': 50000,
-        'advancedMachinery': 50000,
-        'strongerExplosives': 50000,
-        'widespreadPropaganda': 50000,
-        'increasedFunding': 50000,
-        'automationIntegration': 50000,
-        'largerForges': 50000,
-        'lootingTeams': 50000,
-        'organizedSupplyLines': 50000,
-        'largeStorehouses': 50000,
-        'ballisticMissileSilo': 50000,
-        'ICBMSilo': 50000,
-        'nuclearTestingFacility': 50000,
+        'betterEngineering': 500,
+        'cheaperMaterials': 500,
+        'onlineShopping': 500,
+        'governmentRegulation': 500,
+        'nationalHealthInstitution': 500,
+        'highSpeedRail': 500,
+        'advancedMachinery': 500,
+        'strongerExplosives': 500,
+        'widespreadPropaganda': 500,
+        'increasedFunding': 500,
+        'automationIntegration': 500,
+        'largerForges': 500,
+        'lootingTeams': 500,
+        'organizedSupplyLines': 500,
+        'largeStorehouses': 500,
+        'ballisticMissileSilo': 500,
+        'ICBMSilo': 500,
+        'nuclearTestingFacility': 500
     }       
     if ttype == "buy":
         
@@ -156,7 +156,7 @@ def upgrade_sell_buy(ttype, thing):
         current_gold = db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         current_gold = int(db.fetchone()[0])
 
-        if current_gold > price:
+        if current_gold < price:
             return error(400, "You don't have enough gold")
         
         new_gold = current_gold - price
@@ -173,7 +173,6 @@ def upgrade_sell_buy(ttype, thing):
 
         current_gold = db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         current_gold = int(db.fetchone()[0])
-
 
         new_gold = current_gold + price
 
