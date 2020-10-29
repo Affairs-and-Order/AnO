@@ -44,14 +44,17 @@
                             </p>
 
                             <ul>Upgrade Cost</ul>
-                            {% if not upgrades['betterengineering'] %}
+
+                            {% if not upgrades['betterEngineering'] %}
                             <div class="purchasemilitarydiv">
                                 <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/buy/betterEngineering">
                                         <span class="material-icons-outlined">
                                             add_circle_outline
                                         </span>Buy</button>
                             </div>
-                            {% elif upgrades['betterEngineering'] %}
+                            {% endif %}
+
+                            {% if upgrades['betterEngineering'] %}
                             <div class="purchasemilitarydiv">
                                 <button class="templatedivbutton templatecenteredbutton" formaction="/upgrades_sb/sell/betterEngineering">
                                             <span class="material-icons-outlined">
@@ -59,6 +62,7 @@
                                         </span>Sell</button> 
                             </div>
                             {% endif %}
+
                         </div>
                         <div class="templatedivflex2left">
 
