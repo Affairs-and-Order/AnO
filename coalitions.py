@@ -112,9 +112,8 @@ def coalition(colId):
             #### ACTIVE ####
 
             
-            raw_active_ids = db.execute(
-            """SELECT id FROM treaties WHERE col2_id=(?) AND status='Active' OR col1_id=(?) ORDER BY treaty_id ASC""",
-            (colId, colId)).fetchall()
+            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY treaty_id ASC", (colId, colId))
+            raw_active_ids = db.fetchall()
 
             active_ids = []
             coalition_ids = []
@@ -524,7 +523,7 @@ def removing_requests(uId):
     db = connection.cursor()
 
     try:
-        db.execute("SELECT colId FROM requests WHERE reqId=(?)", (uId,))
+        db.execute("SELECT colId FROM requests WHERE reqId=%s", (uId,))
         colId = db.fetchone()[0]
     except TypeError:
         return error(400, "User hasn't posted a request to join this coalition.")
