@@ -103,9 +103,9 @@ def upgrades():
         'largerForges': largerForges,
         'lootingTeams': lootingTeams,
         'organizedSupplyLines': organizedSupplyLines,
-        'largeStorehouses' : largeStorehouses,
+        'largeStoreHouses' : largeStorehouses,
         'ballisticMissileSilo': ballisticMissileSilo,
-        'ICBMSilo': ICBMSilo,
+        'ICBMsilo': ICBMSilo,
         'nuclearTestingFacility': nuclearTestingFacility
     }
 
@@ -144,9 +144,9 @@ def upgrade_sell_buy(ttype, thing):
         'largerForges': 500,
         'lootingTeams': 500,
         'organizedSupplyLines': 500,
-        'largeStorehouses': 500,
+        'largeStoreHouses': 500,
         'ballisticMissileSilo': 500,
-        'ICBMSilo': 500,
+        'ICBMsilo': 500,
         'nuclearTestingFacility': 500
     }       
     if ttype == "buy":
