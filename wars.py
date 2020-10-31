@@ -730,6 +730,7 @@ def warResult():
         # example for the above line: if war_type is raze then attack_effects[0]*10
 
         # WAR TYPES
+        # The war_type which the attacker choose hit back if lose the war
         # "raze" --> no loot, no reparation tax, destroy 10x more buildings, destroys money/res
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
