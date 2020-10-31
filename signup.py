@@ -1,3 +1,5 @@
+# FULLY MIGRATED
+
 from flask import Flask, request, render_template, session, redirect, flash
 from flask_session import Session
 from tempfile import mkdtemp
@@ -8,7 +10,7 @@ import _pickle as pickle
 import random
 from celery import Celery
 from helpers import login_required, error
-import sqlite3
+import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
@@ -55,6 +57,7 @@ def discord():
     scope = request.args.get(
         'scope',
         'identify email')
+
     discord = make_session(scope=scope.split(' '))
     authorization_url, state = discord.authorization_url(AUTHORIZATION_BASE_URL)
     session['oauth2_state'] = state
@@ -64,7 +67,14 @@ def discord():
 @app.route('/callback')
 def callback():
 
-    connection = sqlite3.connect('affo/aao.db')
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
     db = connection.cursor()
 
     if request.values.get('error'):
@@ -83,7 +93,8 @@ def callback():
     discord_auth = f"discord:{discord_user_id}"
 
     try:
-        duplicate = db.execute("SELECT * FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+        db.execute("SELECT * FROM users WHERE hash=(%s)", (discord_auth,))
+        duplicate = db.fetchone()[0]
         duplicate = True
     except TypeError:
         duplicate = False
@@ -100,8 +111,14 @@ def discord_register():
         return render_template('signup.html', way="discord")
 
     elif request.method == "POST":
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
 
-        connection = sqlite3.connect('affo/aao.db')
         db = connection.cursor()
 
         discord = make_session(token=session.get('oauth2_token'))
@@ -111,7 +128,8 @@ def discord_register():
         key = request.form.get("key")
 
         try:
-            correct_key = db.execute("SELECT key FROM keys WHERE key=(?)", (key,)).fetchone()[0]
+            db.execute("SELECT key FROM keys WHERE key=(%s)", (key,))
+            correct_key = db.fetchone()[0]
             correct_key = True
         except TypeError:
             correct_key = False
@@ -127,7 +145,8 @@ def discord_register():
             discord_auth = f"discord:{discord_user_id}"
 
             try:
-                duplicate_name = db.execute("SELECT username FROM users WHERE username=(?)", (username,)).fetchone()[0]
+                db.execute("SELECT username FROM users WHERE username=(%s)", (username,))
+                duplicate_name = db.fetchone()[0]
                 duplicate_name = True
             except TypeError:
                 duplicate_name = False
@@ -137,20 +156,21 @@ def discord_register():
 
             date = str(datetime.date.today())
 
-            db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, discord_auth, date))
+            db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, discord_auth, date))
 
-            db.execute("DELETE FROM keys WHERE key=(?)", (key,))  # deletes the used key
+            db.execute("DELETE FROM keys WHERE key=(%s)", (key,))  # deletes the used key
 
-            user_id = db.execute("SELECT id FROM users WHERE hash=(?)", (discord_auth,)).fetchone()[0]
+            db.execute("SELECT id FROM users WHERE hash=(%s)", (discord_auth,))
+            user_id = db.fetchone()[0]
 
             session["user_id"] = user_id
 
             user = user_id
             
-            db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", (user, continent))  # TODO  change the default location
-            db.execute("INSERT INTO military (id) VALUES (?)", (user,))
-            db.execute("INSERT INTO resources (id) VALUES (?)", (user,))
-            db.execute("INSERT INTO upgrades (user_id) VALUES (?)", (user,))
+            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))  # TODO  change the default location
+            db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
+            db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
+            db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
 
             # clears session variables from oauth
             try:
@@ -169,7 +189,14 @@ def signup():
     if request.method == "POST":
 
         # connects the db to the signup function
-        connection = sqlite3.connect('affo/aao.db')  # connects to db
+        
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+  # connects to db
         db = connection.cursor()
 
         # gets corresponding form inputs
@@ -184,13 +211,15 @@ def signup():
         key = request.form.get("key")
 
         try:
-            correct_key = db.execute("SELECT key FROM keys WHERE key=(?)", (key)).fetchone()[0]
+            db.execute("SELECT key FROM keys WHERE key=(%s)", (key))
+            correct_key = db.fetchone()[0]
         except TypeError:
             correct_key = None
             return error(400, "Key not found")
 
         try:
-            duplicate_name = db.execute("SELECT username FROM users WHERE username=(?)", (username,)).fetchone()[0]
+            db.execute("SELECT username FROM users WHERE username=(%s)", (username,))
+            duplicate_name = db.fetchone()[0]
             duplicate_name = True
         except TypeError:
             duplicate_name = False
@@ -205,21 +234,23 @@ def signup():
             # Hashes the inputted password
             hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
 
-            db.execute("INSERT INTO users (username, email, hash, date) VALUES (?, ?, ?, ?)", (username, email, hashed, str(
-                datetime.date.today())))  # creates a new user || added account creation date
+            db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 
-            user = db.execute("SELECT id FROM users WHERE username = (?)", (username,)).fetchone()[0]
+            duplicate_name = db.fetchone()[0]
+
+            db.execute("SELECT id FROM users WHERE username = (%s)", (username,))
+            user = db.fetchone()[0]
 
             # set's the user's "id" column to the sessions variable "user_id"
             session["user_id"] = user
 
-            db.execute("INSERT INTO stats (id, location) VALUES (?, ?)", (user, continent)) 
-            db.execute("INSERT INTO military (id) VALUES (?)", (user,))
-            db.execute("INSERT INTO resources (id) VALUES (?)", (user,))
+            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent)) 
+            db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
+            db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
+            db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
 
-            db.execute("INSERT INTO upgrades (user_id) VALUES (?)", (user,))
+            db.execute("DELETE FROM keys WHERE key=(%s)", (key,))  # deletes the used key
 
-            db.execute("DELETE FROM keys WHERE key=(?)", (key,))  # deletes the used key
             connection.commit()
             connection.close()
             return redirect("/")

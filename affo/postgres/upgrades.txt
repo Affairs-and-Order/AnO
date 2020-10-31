@@ -1,0 +1,23 @@
+CREATE TABLE upgrades (
+	user_id	INTEGER DEFAULT 0,
+	betterEngineering INTEGER DEFAULT 0,
+	cheaperMaterials INTEGER DEFAULT 0,
+	onlineShopping	INTEGER DEFAULT 0,
+	governmentRegulation INTEGER DEFAULT 0,
+	nationalHealthInstitution INTEGER DEFAULT 0,
+	highSpeedRail INTEGER DEFAULT 0,
+	advancedMachinery INTEGER DEFAULT 0,
+	strongerExplosives INTEGER DEFAULT 0,
+	widespreadPropaganda INTEGER DEFAULT 0,
+	increasedFunding INTEGER DEFAULT 0,
+	automationIntegration INTEGER DEFAULT 0,
+	largerForges INTEGER DEFAULT 0,
+	lootingTeams INTEGER DEFAULT 0,
+	organizedSupplyLines INTEGER DEFAULT 0,
+	largeStorehouses INTEGER DEFAULT 0,
+	ballisticMissileSilo INTEGER DEFAULT 0,
+	ICBMSilo INTEGER DEFAULT 0,
+	nuclearTestingFacility	INTEGER DEFAULT 0,
+
+	PRIMARY KEY("user_id")
+);
