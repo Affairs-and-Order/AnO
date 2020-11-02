@@ -21,7 +21,7 @@ from requests_oauthlib import OAuth2Session
 from dotenv import load_dotenv
 load_dotenv()
 
-@app.route("/login", methods=["GET", "POST"])
+@app.route("/login/", methods=["GET", "POST"])
 def login():
 
     if request.method == "POST":
