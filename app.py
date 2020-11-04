@@ -394,7 +394,7 @@ def assembly():
         return render_template("assembly.html")
 
 
-@app.route("/logout")
+@app.route("/logout/")
 def logout():
     if session.get('user_id') is not None:
         session.clear()

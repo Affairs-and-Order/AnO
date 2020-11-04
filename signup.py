@@ -211,17 +211,17 @@ def signup():
         key = request.form.get("key")
 
         try:
-            db.execute("SELECT key FROM keys WHERE key=(%s)", (key))
+            db.execute("SELECT key FROM keys WHERE key=%s", (key))
             correct_key = db.fetchone()[0]
-        except TypeError:
+        except:
             correct_key = None
             return error(400, "Key not found")
 
+        db.execute("SELECT username FROM users WHERE username=%s", (username,))
         try:
-            db.execute("SELECT username FROM users WHERE username=(%s)", (username,))
             duplicate_name = db.fetchone()[0]
             duplicate_name = True
-        except TypeError:
+        except:
             duplicate_name = False
 
         if duplicate_name == True:
@@ -232,11 +232,9 @@ def signup():
 
         if correct_key != None and duplicate_name != True:
             # Hashes the inputted password
-            hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
+            hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
 
             db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
-
-            duplicate_name = db.fetchone()[0]
 
             db.execute("SELECT id FROM users WHERE username = (%s)", (username,))
             user = db.fetchone()[0]

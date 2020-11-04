@@ -6,4 +6,4 @@ Werkzeug==0.16.0
 celery==4.4.6
 Flask==1.1.2
 python-dotenv==0.14.0
-python_bcrypt==0.3.2
+bcrypt

@@ -24,4 +24,16 @@ for i in tables:
         db.execute(f"DROP TABLE IF EXISTS {i}")
         db.execute(file.read())
         print(f"Recreated table {i}")
+<<<<<<< HEAD
     connection.commit()
+=======
+    
+
+db.execute("INSERT INTO keys (key) VALUES ('a')")
+db.execute("INSERT INTO keys (key) VALUES ('b')")
+db.execute("INSERT INTO keys (key) VALUES ('c')")
+
+print("Inserted keys: a, b, c")
+
+connection.commit()
+>>>>>>> ef985a61564cad768e03ed6debe09be47fce334d
