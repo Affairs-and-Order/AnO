@@ -232,7 +232,7 @@ def signup():
 
         if correct_key != None and duplicate_name != True:
             # Hashes the inputted password
-            hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
+            hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
 
             db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 
