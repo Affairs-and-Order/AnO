@@ -157,6 +157,7 @@ def generate_province_revenue(): # Runs each hour
             db.execute(unit_amount_stat, (province_id,))
             unit_amount = db.fetchone()[0]
 
+            # If that user doesn't have any units of this type, skip
             if unit_amount == 0:
                 continue
             else:
@@ -167,25 +168,8 @@ def generate_province_revenue(): # Runs each hour
                 print(f"Remove ${operating_costs} as operating costs")
                 print(f"\n")
                 """
-                ### REMOVING RESOURCE
 
-                plus_amount *= unit_amount
-                operating_costs *= unit_amount
-                if effect_amount != None:
-                    effect_amount *= unit_amount
-
-                ### ADDING RESOURCES
-                if plus == True:
-
-                    db.execute("SELECT %s FROM provinces WHERE id=(%s)", (plus_resource, user_id,))
-                    current_plus_resource = db.fetchone()[0]
-
-                    new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
-                    db.execute("UPDATE provinces SET %s=(%s) WHERE id=(%s)", (plus_resource, new_resource_number, user_id))
-
-                ###
-
-                ### REMOVING MONEY
+                # Removing money operating costs (if user has the money)
                 db.execute("SELECT gold FROM stats WHERE id=(%s)", (user_id,))
                 current_money = int(db.fetchone()[0])
 
@@ -195,17 +179,36 @@ def generate_province_revenue(): # Runs each hour
                     new_money = current_money - operating_costs
                     db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
 
-                    if effect != None:
 
-                        effect_select = f"SELECT {effect} FROM provinces " + "WHERE id=%s"
-                        db.execute(effect_select, (province_id,))
-                        current_effect = db.fetchone()[0]
+                plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
+                operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
 
-                        new_effect = current_effect + effect_amount
-                        db.execute(f"UPDATE provinces SET {effect}" + "=%s WHERE id=%s", (new_effect, province_id))
+                if effect_amount != None:
+                    effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
 
-        conn.commit()
 
-    conn.close()
+                # Function for _plus
+                if plus == True:
+
+                    db.execute("SELECT %s FROM provinces WHERE id=(%s)", (plus_resource, user_id,))
+                    current_plus_resource = db.fetchone()[0]
+
+                    # Adding resource
+                    new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+                    db.execute("UPDATE provinces SET %s=(%s) WHERE id=(%s)", (plus_resource, new_resource_number, user_id))
+
+                # Function for _effect
+                if effect != None:
+
+                    effect_select = f"SELECT {effect} FROM provinces " + "WHERE id=%s"
+                    db.execute(effect_select, (province_id,))
+                    current_effect = int(db.fetchone()[0])
+
+                    new_effect = current_effect + effect_amount
+                    db.execute(f"UPDATE provinces SET {effect}" + "=%s WHERE id=%s", (new_effect, province_id))
+
+        conn.commit() # Commits the changes
+
+    conn.close() # Closes the connection
 
 generate_province_revenue()
