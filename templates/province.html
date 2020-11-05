@@ -938,8 +938,8 @@
 
                         <tr>
                             <td>{{ army_bases }} Army Bases</td>
-                            <td>1 Farms</td>
-                            <td>1 Component Factories</td>
+                            <td>{{ farms }} Farms</td>
+                            <td>{{ component_factories }} Component Factories</td>
                         </tr>
                         <tr>
                             <td>{{ aerodomes }} Aerodomes</td>
@@ -948,36 +948,36 @@
                             {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
                             <td>{{ iron_mines }} Iron Mines</td>
                             {% elif location in ["australia", "asia", "northamerica"] %}
-                            <td>{{ coal_mines }} Coal mines</td>
+                            <td>{{ coal_mines }} Coal Mines</td>
                             {% endif %}
                             <!---->
-                            <td>1 Steel Mills</td>
+                            <td>{{ steel_mills }} Steel Mills</td>
                         </tr>
                         <tr>
                             <td>{{ harbours }} Harbours</td>
                             <!-- #2 Raw resource -->
                             {% if location in ["antarctica", "australia", "asia", "southamerica"] %}
-                            <td>{{ copper_mines }} Copper mines</td>
+                            <td>{{ copper_mines }} Copper Mines</td>
                             {% elif location in ["northamerica", "africa"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
                             {% elif location in ["asia", "europe"] %}
-                            <td>{{ lumber_farms }} Tree farms</td>
+                            <td>{{ lumber_farms }} Tree Farms</td>
                             {% endif %}
                             <!---->
-                            <td>1 Ammunition Factories</td>
+                            <td>{{ ammunition_factories }} Ammunition Factories</td>
                         </tr>
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
                             <!-- #3 Raw resource -->
                             {% if location in ["antarctica", "australia", "europe"] %}
-                            <td>{{ lead_mines }} Lead mines</td>
+                            <td>{{ lead_mines }} Lead Mines</td>
                             {% elif location in ["africa", "southamerica", "northamerica"] %}
-                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            <td>{{ bauxite_mines }} Bauxite Mines</td>
                             {% elif location in ["asia"] %}
-                            <td>{{ copper_mines }} Copper mines</td>
+                            <td>{{ copper_mines }} Copper Mines</td>
                             {% endif %}
                             <!---->
-                            <td>1 Aluminum Refineries</td>
+                            <td>{{ aluminium_refineries }} Aluminium Refineries</td>
                         </tr>
                         <tr>
                             <td>{{ silos }} Silos</td>
@@ -985,16 +985,16 @@
                             {% if location in ["asia", "southamerica"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
                             {% elif location in ["northamerica"] %}
-                            <td>{{ lumber_farms }} Tree farms</td>
+                            <td>{{ lumber_farms }} Tree Farms</td>
                             {% elif location in ["africa", "antarctica"]%}
-                            <td>{{ uranium_mines }} Uranium mines </td>
+                            <td>{{ uranium_mines }} Uranium Mines </td>
                             {% elif location in ["australia"] %}
-                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            <td>{{ bauxite_mines }} Bauxite Mines</td>
                             {% elif location in ["europe"] %}
                             <td>{{ coal_mines }} Coal mines</td>
                             {% endif %}
                             <!---->
-                            <td>1 Oil Refineries</td>
+                            <td>{{ oil_refineries }} Oil Refineries</td>
                         </tr>
                     </table>
                 </div>

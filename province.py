@@ -142,9 +142,51 @@ def province(pId):
     db.execute("SELECT silos FROM proInfra WHERE id=(%s)", (pId,))
     silos = db.fetchone()[0]
 
+    try:
+        db.execute("SELECT pumpjacks FROM proInfra WHERE id=(%s)", (pId,))
+        pumpjacks = db.fetchone()[0]
+    except:
+        pumpjacks = None
+
+    try:
+        db.execute("SELECT coal_mines FROM proInfra WHERE id=(%s)", (pId,))
+        coal_mines = db.fetchone()[0]
+    except:
+        coal_mines = None
+
+    try:
+        db.execute("SELECT bauxite_mines FROM proInfra WHERE id=(%s)", (pId,))
+        bauxite_mines = db.fetchone()[0]
+    except:
+        bauxite_mines = None
+
+    try:
+        db.execute("SELECT copper_mines FROM proInfra WHERE id=(%s)", (pId,))
+        copper_mines = db.fetchone()[0]
+    except:
+        copper_mines = None
+
+    try:
+        db.execute("SELECT uranium_mines FROM proInfra WHERE id=(%s)", (pId,))
+        uranium_mines = db.fetchone()[0]
+    except:
+        uranium_mines = None
+
+    try:
+        db.execute("SELECT lead_mines FROM proInfra WHERE id=(%s)", (pId,))
+        lead_mines = db.fetchone()[0]
+    except:
+        lead_mines = None
+
+    try:
+        db.execute("SELECT iron_mines FROM proInfra WHERE id=(%s)", (pId,))
+        iron_mines = db.fetchone()[0]
+    except:
+        iron_mines = None
+
     connection.close()
 
-    return render_template("province.html", pId=pId, population=population, name=name,
+    return render_template("province.html", pId=pId, population=population, name=name, ownProvince=ownProvince,
                             cityCount=cityCount, land=land, pollution=pollution, consumer_spending=consumer_spending,
                             happiness=happiness, productivity=productivity, location=location,
 
@@ -153,8 +195,10 @@ def province(pId):
                             banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
                             monorails=monorails,
                             
-                            army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings,
-                            silos=silos, ownProvince=ownProvince
+                            army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings, silos=silos,
+                            
+                            pumpjacks=pumpjacks, coal_mines=coal_mines, bauxite_mines=bauxite_mines, copper_mines=copper_mines,
+                            uranium_mines=uranium_mines, lead_mines=lead_mines, iron_mines=iron_mines
                             )
 
 
