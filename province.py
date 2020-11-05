@@ -239,18 +239,23 @@ def createprovince():
 
         pName = request.form.get("name")
 
+        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        current_user_money = int(db.fetchone()[0])
+        province_price = 50000
+
+        if province_price > current_user_money:
+            return error(400, "You don't have enough money")
+
         db.execute("INSERT INTO provinces (userId, provinceName) VALUES (%s, %s)", (cId, pName))
 
         db.execute("SELECT id FROM provinces WHERE userId=(%s) AND provinceName=(%s)", (cId, pName))
         province_id = db.fetchone()[0]
 
         db.execute("INSERT INTO proInfra (id) VALUES (%s)", (province_id,))
-
-        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-        current_user_gold = db.fetchone()[0]
-        province_price = 50000 # Provinces cost 50k
-        new_user_gold = current_user_gold - province_price
-        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_user_gold, cId))
+        
+         # Provinces cost 50k
+        new_user_money = current_user_money - province_price
+        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_user_money, cId))
 
         connection.commit()
         connection.close()
