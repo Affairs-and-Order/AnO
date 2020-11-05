@@ -386,12 +386,13 @@ def businesses():
     if request.method == "GET":
         return render_template("businesses.html")
 
-
+"""
 @login_required
 @app.route("/assembly", methods=["GET", "POST"])
 def assembly():
     if request.method == "GET":
         return render_template("assembly.html")
+"""
 
 
 @app.route("/logout/")
@@ -407,11 +408,11 @@ def logout():
 def tutorial():
     return render_template("tutorial.html")
 
-
+"""
 @app.route("/statistics", methods=["GET"])
 def statistics():
     return render_template("statistics.html")
-
+"""
 
 @app.route("/my_offers", methods=["GET"])
 def myoffers():
