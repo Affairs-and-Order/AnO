@@ -142,47 +142,62 @@ def province(pId):
     db.execute("SELECT silos FROM proInfra WHERE id=(%s)", (pId,))
     silos = db.fetchone()[0]
 
+
+
+    ### Industry ###
+    db.execute("SELECT farms FROM proInfra WHERE id=(%s)", (pId,))
+    farms = db.fetchone()[0]
     try:
         db.execute("SELECT pumpjacks FROM proInfra WHERE id=(%s)", (pId,))
         pumpjacks = db.fetchone()[0]
     except:
         pumpjacks = None
-
     try:
         db.execute("SELECT coal_mines FROM proInfra WHERE id=(%s)", (pId,))
         coal_mines = db.fetchone()[0]
     except:
         coal_mines = None
-
     try:
         db.execute("SELECT bauxite_mines FROM proInfra WHERE id=(%s)", (pId,))
         bauxite_mines = db.fetchone()[0]
     except:
         bauxite_mines = None
-
     try:
         db.execute("SELECT copper_mines FROM proInfra WHERE id=(%s)", (pId,))
         copper_mines = db.fetchone()[0]
     except:
         copper_mines = None
-
     try:
         db.execute("SELECT uranium_mines FROM proInfra WHERE id=(%s)", (pId,))
         uranium_mines = db.fetchone()[0]
     except:
         uranium_mines = None
-
     try:
         db.execute("SELECT lead_mines FROM proInfra WHERE id=(%s)", (pId,))
         lead_mines = db.fetchone()[0]
     except:
         lead_mines = None
-
     try:
         db.execute("SELECT iron_mines FROM proInfra WHERE id=(%s)", (pId,))
         iron_mines = db.fetchone()[0]
     except:
         iron_mines = None
+    #############
+
+    ### Processing ###
+    
+    db.execute("SELECT component_factories FROM proInfra WHERE id=(%s)", (pId,))
+    component_factories = db.fetchone()[0]
+    db.execute("SELECT steel_mills FROM proInfra WHERE id=(%s)", (pId,))
+    steel_mills  = db.fetchone()[0]
+    db.execute("SELECT ammunition_factories FROM proInfra WHERE id=(%s)", (pId,))
+    ammunition_factories = db.fetchone()[0]
+    db.execute("SELECT aluminium_refineries FROM proInfra WHERE id=(%s)", (pId,))
+    aluminium_refineries = db.fetchone()[0]
+    db.execute("SELECT oil_refineries FROM proInfra WHERE id=(%s)", (pId,))
+    oil_refineries = db.fetchone()[0]
+
+    #################
 
     connection.close()
 
@@ -197,8 +212,11 @@ def province(pId):
                             
                             army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings, silos=silos,
                             
-                            pumpjacks=pumpjacks, coal_mines=coal_mines, bauxite_mines=bauxite_mines, copper_mines=copper_mines,
-                            uranium_mines=uranium_mines, lead_mines=lead_mines, iron_mines=iron_mines
+                            farms=farms, pumpjacks=pumpjacks, coal_mines=coal_mines, bauxite_mines=bauxite_mines,
+                            copper_mines=copper_mines, uranium_mines=uranium_mines, lead_mines=lead_mines, iron_mines=iron_mines,
+
+                            component_factories=component_factories, steel_mills=steel_mills, ammunition_factories=ammunition_factories,
+                            aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries
                             )
 
 
