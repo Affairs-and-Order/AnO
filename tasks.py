@@ -86,10 +86,19 @@ def generate_province_revenue(): # Runs each hour
 
     ################
 
+    ### Processing ###
+    'component_factories': 220000, # Costs $220k
+
+    'steel_mills': 180000,
+
+    'ammunition_factories': 140000,
+
+    'aluminium_refineries': 150000,
+
+    'oil_refineries': 160000
 
     }
 
-    
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
