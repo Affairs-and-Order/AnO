@@ -9,6 +9,7 @@ def generate_province_revenue(): # Runs each hour
 
     ### Electricity ###
     'oil_burners_plus': {'energy': 3},
+    'oil_burners_minus': {'coal': 56},
     'oil_burners_money': 60000,
     'oil_burners_pollution': 25,
 
@@ -16,6 +17,7 @@ def generate_province_revenue(): # Runs each hour
     'hydro_dams_money': 250000,
 
     'nuclear_reactors_plus': {'energy': 12}, #  Generates 12 energy to the province
+    'nuclear_reactors_minus': {'uranium': 32},
     'nuclear_reactors_money': 1200000, # Costs $1.2 million to operate nuclear reactor for each turn
 
     'solar_fields_plus': {'energy': 3},
@@ -32,11 +34,12 @@ def generate_province_revenue(): # Runs each hour
     'farmers_markets_plus': {'consumer_goods': 15}, # Generates 15 consumer goods
     'farmers_markets_money': 110000, # Costs $110k
 
-    'malls_pls': {'consumer_goods': 22},
-    'malls_money': 300000, # Costs $300k
-
-    'banks_plus': {'consumer_goods': 30},
+    'banks_plus': {'consumer_goods': 25},
     'banks_money': 800000, # Costs $800k
+    
+    'malls_plus': {'consumer_goods': 22},
+    'malls_effect': {'pollution': 10},
+    'malls_money': 300000, # Costs $300k
     ##############
 
     ### Public Works ###
@@ -137,9 +140,11 @@ def generate_province_revenue(): # Runs each hour
         operating_costs = int(infra[f'{unit}_money'])
 
         try:
-            pollution_amount = int(infra[f'{unit}_pollution'])
+            effect = infra[f'{unit}_effect'][1]
+            effect_amount = int(infra[f'{unit}_effect'][0])
         except KeyError:
-            pollution_amount = None
+            effect = None
+            effect_amount = None
 
         for province_id in infra_ids:
 
@@ -166,8 +171,8 @@ def generate_province_revenue(): # Runs each hour
 
                 plus_amount *= unit_amount
                 operating_costs *= unit_amount
-                if pollution_amount != None:
-                    pollution_amount *= unit_amount
+                if effect_amount != None:
+                    effect_amount *= unit_amount
 
                 ### ADDING RESOURCES
                 if plus == True:
@@ -190,13 +195,14 @@ def generate_province_revenue(): # Runs each hour
                     new_money = current_money - operating_costs
                     db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
 
-                    if pollution_amount != None:
-                        db.execute("SELECT pollution FROM provinces WHERE id=(%s)", (province_id,))
-                        current_pollution = db.fetchone()[0]
-                        new_pollution = current_pollution + pollution_amount
-                        db.execute("UPDATE provinces SET pollution=(%s) WHERE id=(%s)", (new_pollution, province_id))
+                    if effect != None:
 
-                        db.fetchone()[0]
+                        effect_select = f"SELECT {effect} FROM provinces " + "WHERE id=%s"
+                        db.execute(effect_select, (province_id,))
+                        current_effect = db.fetchone()[0]
+
+                        new_effect = current_effect + effect_amount
+                        db.execute(f"UPDATE provinces SET {effect}" + "=%s WHERE id=%s", (new_effect, province_id))
 
         conn.commit()
 
