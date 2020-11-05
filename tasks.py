@@ -6,7 +6,8 @@ load_dotenv()
 def generate_province_revenue(): # Runs each hour
 
     infra = {
-    ## ELECTRICITY
+
+    ### Electricity ###
     'oil_burners_plus': {'energy': 3},
     'oil_burners_money': 60000,
     'oil_burners_pollution': 25,
@@ -19,8 +20,9 @@ def generate_province_revenue(): # Runs each hour
 
     'solar_fields_plus': {'energy': 3},
     'solar_fields_money': 150000, # Costs $1.5 million
+    ####################
 
-    ## RETAIL (requires city slots)
+    ### Retail ###
     'gas_stations_plus': {'consumer_goods': 4},
     'gas_stations_money': 20000, # Costs $20k
 
@@ -35,7 +37,9 @@ def generate_province_revenue(): # Runs each hour
 
     'banks_plus': {'consumer_goods': 30},
     'banks_money': 800000, # Costs $800k
+    ##############
 
+    ### Public Works ###
     'city_parks': {'happiness': 3},
     'city_parks_money': 20000, # Costs $20k
 
@@ -44,14 +48,15 @@ def generate_province_revenue(): # Runs each hour
 
     'libraries': {'happiness': 5},
     'libraries_money': 90000,
-    # Add productivity too
 
     'universities': {'productivity': 12},
     'universities_money': 150000,
 
     'monorails': {'productivity': 15},
     'monorails_money': 210000,
+    ###################
 
+    ### Military ###
     'army_bases_money': 25000, # Costs $25k
 
     'harbours_money': 35000,
@@ -60,7 +65,28 @@ def generate_province_revenue(): # Runs each hour
 
     'admin_buildings_money': 60000,
 
-    'silos_money': 120000
+    'silos_money': 120000,
+    #################
+
+    ### Industry ###
+
+    'pumpjacks_money': 10000, # Costs $10k
+
+    'coal_mines_money': 10000, # Costs $10k
+
+    'bauxite_mines_money': 8000, # Costs $8k
+
+    'copper_mines_money': 8000, # Costs $8k
+
+    'uranium_mines_money': 18000, # Costs $18k
+
+    'lead_mines_money': 12000,
+
+    'iron_mines_money': 18000,
+
+    ################
+
+
     }
 
     
