@@ -35,4 +35,9 @@ uranium_mines INTEGER NOT NULL DEFAULT 0,
 lead_mines INTEGER NOT NULL DEFAULT 0,
 iron_mines INTEGER NOT NULL DEFAULT 0,
 
+component_factories INTEGER NOT NULL DEFAULT 0,
+steel_mills INTEGER NOT NULL DEFAULT 0,
+ammunition_factories INTEGER NOT NULL DEFAULT 0,
+aluminium_refineries INTEGER NOT NULL DEFAULT 0,
+oil_refineries INTEGER NOT NULL DEFAULT 0
 );
