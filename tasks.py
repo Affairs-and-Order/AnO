@@ -7,7 +7,7 @@ def generate_province_revenue(): # Runs each hour
 
     infra = {
 
-    ### Electricity ###
+    ### Electricity ### (missing coal burners)
     'oil_burners_plus': {'energy': 3},
     'oil_burners_minus': {'coal': 56},
     'oil_burners_money': 60000,
@@ -25,7 +25,7 @@ def generate_province_revenue(): # Runs each hour
     ####################
 
     ### Retail ###
-    'gas_stations_plus': {'consumer_goods': 4},
+    'gas_stations_plus': {'consumer_goods': 12},
     'gas_stations_money': 20000, # Costs $20k
 
     'general_stores_plus': {'consumer_goods': 9},
@@ -59,17 +59,7 @@ def generate_province_revenue(): # Runs each hour
     'monorails_money': 210000,
     ###################
 
-    ### Military ###
-    'army_bases_money': 25000, # Costs $25k
-
-    'harbours_money': 35000,
-
-    'aerodomes_money': 55000,
-
-    'admin_buildings_money': 60000,
-
-    'silos_money': 120000,
-    #################
+    # (Military is not here because it doesn't directly generate revenue)
 
     ### Industry ###
 
@@ -90,15 +80,15 @@ def generate_province_revenue(): # Runs each hour
     ################
 
     ### Processing ###
-    'component_factories': 220000, # Costs $220k
+    'component_factories_money': 220000, # Costs $220k
 
-    'steel_mills': 180000,
+    'steel_mills_money': 180000,
 
-    'ammunition_factories': 140000,
+    'ammunition_factories_money': 140000,
 
-    'aluminium_refineries': 150000,
+    'aluminium_refineries_money': 150000,
 
-    'oil_refineries': 160000
+    'oil_refineries_money': 160000
 
     }
 
@@ -116,7 +106,11 @@ def generate_province_revenue(): # Runs each hour
     'gas_stations', 'general_stores', 'farmers_markets', 'malls',
     'banks', 'city_parks', 'hospitals', 'libraries', 'universities', 'monorails',
 
-    'army_bases', 'harbours', 'aerodomes', 'admin_buildings', 'silos'
+    "pumpjacks", "coal_mines", "bauxite_mines", "copper_mines", "uranium_mines",
+    "lead_mines", "iron_mines",
+
+    "component_factories", "steel_mills", "ammunition_factories", "aluminium_refineries",
+    "oil_refineries"
     ]
 
     try:
