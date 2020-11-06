@@ -24,38 +24,41 @@ def generate_province_revenue(): # Runs each hour
     'solar_fields_money': 150000, # Costs $1.5 million
     ####################
 
-    ### Retail ###
+    ### Retail ### (done)
     'gas_stations_plus': {'consumer_goods': 12},
+    'gas_stations_effect': {'pollution': 4},
     'gas_stations_money': 20000, # Costs $20k
 
     'general_stores_plus': {'consumer_goods': 9},
+    'general_stores_pollution': {'pollution': 1},
     'general_stores_money': 35000, # Costs $35k
 
-    'farmers_markets_plus': {'consumer_goods': 15}, # Generates 15 consumer goods
+    'farmers_markets_plus': {'consumer_goods': 16}, # Generates 15 consumer goods,
+    'farmers_markets_effect': {'pollution': 6},
     'farmers_markets_money': 110000, # Costs $110k
 
     'banks_plus': {'consumer_goods': 25},
-    'banks_money': 800000, # Costs $800k
+    'banks_money': 320000, # Costs $320k
     
-    'malls_plus': {'consumer_goods': 22},
+    'malls_plus': {'consumer_goods': 34},
     'malls_effect': {'pollution': 10},
-    'malls_money': 300000, # Costs $300k
+    'malls_money': 750000, # Costs $750k
     ##############
 
     ### Public Works ###
-    'city_parks': {'happiness': 3},
+    'city_parks_effect': {'happiness': 3},
     'city_parks_money': 20000, # Costs $20k
 
-    'hospitals': {'happiness': 8},
+    'hospitals_effect': {'happiness': 8},
     'hospitals_money': 60000,
 
-    'libraries': {'happiness': 5},
+    'libraries_effect': {'happiness': 5},
     'libraries_money': 90000,
 
-    'universities': {'productivity': 12},
+    'universities_effect': {'productivity': 12},
     'universities_money': 150000,
 
-    'monorails': {'productivity': 15},
+    'monorails_effect': {'productivity': 15},
     'monorails_money': 210000,
     ###################
 
