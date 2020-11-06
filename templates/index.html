@@ -2,37 +2,34 @@
 
 <div class="templatediv landingpagediv">
 
-    <div class="landingpagetopper noboxshadowtopper">
+    <div class="landingtopper">
+        <div class="landingparent">
+            <div class="landingchild landingchildleft">
+                <h1 class="landingheader">Lead Your Country</h1>
 
-        <div class="templatedivflex2 landingpagetopperdivparent">
-            <div class="templatedivflex2left landingpagetopperdivchild">
-                <div class="landingpageinfoleft">
+                <p class="landingcontent">We provide everyone with things to protect themselves. These things vary wildy in cost and effectiveness. It goes without saying that these tools will allow you to fly.</p>
 
-                    <h1>Lead a Country!</h1>
-                    <p class="templatecontentpleft">
-                        In Affairs and Order you can lead a country, developing its economy, fighting in epic battles against other players, and joining a coalition with your friends to trade and conquer.
-                    </p>
-
+                <div class="landingchildcontainerparent">
+                    <div class="landingchildcontainerchild">
+                        {% if session.get('user_id') != None %}
+                        <a class="templatedivbutton landingbutton" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined landingicon">
+                            outlined_flag
+                            </span>Country</a> {% endif %} {% if session.get('user_id') == None %}
+                        <a class="templatedivbutton landingbutton" href="/signup"><span class="material-icons-outlined landingicon">
+                            person_add_alt_1
+                            </span>Sign up</a> {% endif %}
+                    </div>
+                    <div class="landingchildcontainerchild">
+                        {% if session.get('user_id') == None %}
+                        <a class="templatedivbutton landingbutton" href="/login"><span class="material-icons-outlined landingicon">
+                            login
+                            </span>Login</a> {% endif %}
+                    </div>
                 </div>
             </div>
-            <div class="templatedivflex2left landingpagetopperdivchild">
-
-                <div class="landingpageinforight">
-
-                    <label class="full medium">Go to your country</label> {% if session.get('user_id') == None %}
-                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/login"><span class="material-icons-outlined">
-                            login
-                            </span>LOGIN</a>
-                    <label class="full medium">Or create one!</label>
-                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/signup"><span class="material-icons-outlined">
-                            add_circle_outline
-                            </span>SIGN UP</a> {% elif session.get('user_id') != None %}
-                    <a class="loginsignuplink templatedivbutton landingpagebutton" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
-                            outlined_flag
-                            </span>COUNTRY</a> {% endif %}
+            <div class="landingchild landingchildright">
 
 
-                </div>
 
             </div>
         </div>
