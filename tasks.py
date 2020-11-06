@@ -7,7 +7,7 @@ def generate_province_revenue(): # Runs each hour
 
     infra = {
 
-    ### Electricity ### (missing coal burners)
+    ### Electricity ### (missing coal burners, but done)
     'oil_burners_plus': {'energy': 3},
     'oil_burners_minus': {'coal': 56},
     'oil_burners_money': 60000,
@@ -68,7 +68,7 @@ def generate_province_revenue(): # Runs each hour
 
     # (Military is not here because it doesn't directly generate revenue)
 
-    ### Industry ###
+    ### Industry ### (missing lumber farms)
 
     'pumpjacks_money': 10000, # Costs $10k
 
