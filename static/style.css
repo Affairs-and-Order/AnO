@@ -2119,7 +2119,7 @@ button {
     background: var(--background);
     height: max-content;
     box-shadow: rgba(0, 0, 0, 0.2) 0 12px 48px;
-    margin-top: 10vh;
+    margin-top: 7.5vh;
 }
 
 @media all and (max-width: 800px) {
@@ -2238,6 +2238,12 @@ button {
     box-shadow: rgba(0, 0, 0, 0.15) 0 0px 40px 3px;
     animation: scrolldownparentload 1.2s;
     transition: all 0.3 ease;
+}
+
+@media all and (max-width: 800px) {
+    .scrolldownparent {
+        display: none;
+    }
 }
 
 .scrolldownchild {
