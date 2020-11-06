@@ -2114,6 +2114,7 @@ button {
     padding: 55px 0;
     align-items: center;
     background: var(--background);
+    animation: templatedivcontentload 1.25s;
 }
 
 .landingparent {
@@ -2139,7 +2140,6 @@ button {
     width: 90%;
     padding: 0px 5%;
     margin: 0;
-    animation: contentload 0.75s;
 }
 
 @media all and (max-width: 800px) {
@@ -2166,7 +2166,7 @@ button {
     font-size: 48px;
     color: white;
     margin: auto;
-    text-shadow: rgb(214, 214, 214) 3px 3px 1px, rgb(214, 214, 214) 1px 1px 1px, rgb(214, 214, 214) 2px 2px 1px, rgba(0, 0, 0, 0.8) 0px 3px 8px;
+    text-shadow: rgb(205, 205, 205) 3px 3px 1px, rgb(205, 205, 205) 1px 1px 1px, rgb(205, 205, 205) 2px 2px 1px, rgba(0, 0, 0, 0.8) 0px 3px 8px;
     margin: 30px 0;
 }
 
