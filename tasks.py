@@ -24,7 +24,7 @@ def generate_province_revenue(): # Runs each hour
     'solar_fields_money': 150000, # Costs $1.5 million
     ####################
 
-    ### Retail ### (done)
+    ### Retail ### (Done)
     'gas_stations_plus': {'consumer_goods': 12},
     'gas_stations_effect': {'pollution': 4},
     'gas_stations_money': 20000, # Costs $20k
@@ -45,12 +45,13 @@ def generate_province_revenue(): # Runs each hour
     'malls_money': 750000, # Costs $750k
     ##############
 
-    ### Public Works ### 
+    ### Public Works ### (Done)
     'libraries_effect': {'happiness': 2},
     'libraries_effect_2': {'productivity': 2},
     'libraries_money': 90000,
 
     'city_parks_effect': {'happiness': 3},
+    'city_parks_effect_minus': {'pollution': 6},
     'city_parks_money': 20000, # Costs $20k
 
     'hospitals_effect': {'population': 8},
@@ -61,6 +62,7 @@ def generate_province_revenue(): # Runs each hour
     'universities_money': 150000,
 
     'monorails_effect': {'productivity': 12},
+    'monorails_effect_minus': {'pollution', 10}, # Removes 10 pollution
     'monorails_money': 210000,
     ###################
 
@@ -152,6 +154,13 @@ def generate_province_revenue(): # Runs each hour
             effect_2 = None
             effect_2_amount = None
 
+        try:
+            effect_minus = infra[f'{unit}_effect_minus'][1]
+            effect_minus_amount = int(infra[f'{unit}_effect_minus'][0])
+        except KeyError:
+            effect_minus = None
+            effect_minus_amount = None
+
         for province_id in infra_ids:
 
             province_id = province_id[0]
@@ -196,6 +205,9 @@ def generate_province_revenue(): # Runs each hour
                 if effect_2 != None:
                     effect_2_amount *= unit_amount
 
+                if effect_minus != None:
+                    effect_minus_amount *= unit_amount
+
                 # Function for _plus
                 if plus == True:
 
@@ -206,7 +218,7 @@ def generate_province_revenue(): # Runs each hour
                     new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
                     db.execute("UPDATE provinces SET %s=(%s) WHERE id=(%s)", (plus_resource, new_resource_number, user_id))
 
-                # Function for _effect
+                # Function for completing an effect (adding pollution, etc)
                 def do_effect(eff, eff_amount, sign):
 
                     effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
@@ -225,6 +237,8 @@ def generate_province_revenue(): # Runs each hour
                     do_effect(effect, effect_amount, "+") # Default settings basically
                 if effect_2 != None:
                     do_effect(effect_2, effect_2_amount, "+")
+                if effect_minus != None:
+                    do_effect(effect_minus, effect_minus_amount, "-")
 
 
         conn.commit() # Commits the changes
