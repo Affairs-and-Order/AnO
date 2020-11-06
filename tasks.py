@@ -45,20 +45,22 @@ def generate_province_revenue(): # Runs each hour
     'malls_money': 750000, # Costs $750k
     ##############
 
-    ### Public Works ###
+    ### Public Works ### 
+    'libraries_effect': {'happiness': 2},
+    'libraries_effect_2': {'productivity': 2},
+    'libraries_money': 90000,
+
     'city_parks_effect': {'happiness': 3},
     'city_parks_money': 20000, # Costs $20k
 
-    'hospitals_effect': {'happiness': 8},
+    'hospitals_effect': {'population': 8},
     'hospitals_money': 60000,
 
-    'libraries_effect': {'happiness': 5},
-    'libraries_money': 90000,
-
-    'universities_effect': {'productivity': 12},
+    'universities_effect': {'productivity': 6},
+    'universities_effect_2': {'happiness': 6},
     'universities_money': 150000,
 
-    'monorails_effect': {'productivity': 15},
+    'monorails_effect': {'productivity': 12},
     'monorails_money': 210000,
     ###################
 
@@ -143,6 +145,13 @@ def generate_province_revenue(): # Runs each hour
             effect = None
             effect_amount = None
 
+        try:
+            effect_2 = infra[f'{unit}_effect_2'][1]
+            effect_2_amount = int(infra[f'{unit}_effect_2'][0])
+        except KeyError:
+            effect_2 = None
+            effect_2_amount = None
+
         for province_id in infra_ids:
 
             province_id = province_id[0]
@@ -180,9 +189,12 @@ def generate_province_revenue(): # Runs each hour
                 plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
                 operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
 
-                if effect_amount != None:
+                # Effect stuff
+                if effect != None:
                     effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
 
+                if effect_2 != None:
+                    effect_2_amount *= unit_amount
 
                 # Function for _plus
                 if plus == True:
@@ -195,14 +207,25 @@ def generate_province_revenue(): # Runs each hour
                     db.execute("UPDATE provinces SET %s=(%s) WHERE id=(%s)", (plus_resource, new_resource_number, user_id))
 
                 # Function for _effect
-                if effect != None:
+                def do_effect(eff, eff_amount, sign):
 
-                    effect_select = f"SELECT {effect} FROM provinces " + "WHERE id=%s"
+                    effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
                     db.execute(effect_select, (province_id,))
                     current_effect = int(db.fetchone()[0])
 
-                    new_effect = current_effect + effect_amount
-                    db.execute(f"UPDATE provinces SET {effect}" + "=%s WHERE id=%s", (new_effect, province_id))
+                    if sign == "+":
+                        new_effect = current_effect + eff_amount
+                    elif sign == "-":
+                        new_effect = current_effect - eff_amount
+
+                    db.execute(f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s", (new_effect, province_id))
+
+                if effect != None:
+                    # Does the effect for "_effect" 
+                    do_effect(effect, effect_amount, "+") # Default settings basically
+                if effect_2 != None:
+                    do_effect(effect_2, effect_2_amount, "+")
+
 
         conn.commit() # Commits the changes
 
