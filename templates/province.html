@@ -171,7 +171,8 @@
             </div>
         </div>
         </form>
-        {% endif %} {% if ownProvince == True %}
+        {% endif %}
+        {% if ownProvince == True %}
         <h2 class="templatecontentheaderleft">Infrastructure</h2>
 
         <div class="templatedivflex2 menuflex2">
@@ -219,7 +220,7 @@
                             </div>
                         </tr>
                         <tr>
-                            <td>0 Coal Burners</td>
+                            <td>{{ coal_burners }} Coal Burners</td>
                             <td>{{ gas_stations }} Gas Stations</td>
                             <td>{{ city_parks }} City Park</td>
                         </tr>
@@ -247,6 +248,53 @@
                 </div>
                 <!--Electricity-->
                 <div id="electricity" class="electricity">
+
+                    <div class="menudiv">
+
+                        <h2 class="templatecontentheaderleft">Coal Burners</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ coal_burners }} Coal Burners</h3>
+
+                                <p class="templatecontentpleft">Coal burners convert coal stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+
+                                <ul>Coal burners cost <b>500</b> Each</ul>
+                                <ul>Coal burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="coal_burners" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_burners/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_burners/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                    <ul>[ buyCoalBurner ] Coal burners will cost you $[ buyCoalBurnerPrice ]</ul>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/oilburner.jpg') }}" />
+                            </div>
+                        </div>
+
+                    </div>
 
                     <div class="menudiv">
 

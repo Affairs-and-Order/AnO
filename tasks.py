@@ -62,7 +62,7 @@ def generate_province_revenue(): # Runs each hour
     'universities_money': 150000,
 
     'monorails_effect': {'productivity': 12},
-    'monorails_effect_minus': {'pollution', 10}, # Removes 10 pollution
+    'monorails_effect_minus': {'pollution': 10}, # Removes 10 pollution
     'monorails_money': 210000,
     ###################
 
@@ -140,33 +140,28 @@ def generate_province_revenue(): # Runs each hour
             plus_resource = plus_data[0]
             plus_amount = plus_data[1]
 
-            plus = True
         except KeyError:
             plus = False
 
         operating_costs = int(infra[f'{unit}_money'])
 
         try:
-            effect_data = next(iter(infra[f'{unit}_plus'].items()))
-
-            effect = effect_data[0]
-            effect_amount = effect_data[1]
+            effect = infra[f'{unit}_effect'][0]
+            effect_amount = int(infra[f'{unit}_effect_2'][1])
         except KeyError:
             effect = None
             effect_amount = None
 
         try:
-
-            
-            effect_2 = infra[f'{unit}_effect_2'][1]
-            effect_2_amount = int(infra[f'{unit}_effect_2'][0])
+            effect_2 = infra[f'{unit}_effect_2'][0]
+            effect_2_amount = int(infra[f'{unit}_effect_2'][1])
         except KeyError:
             effect_2 = None
             effect_2_amount = None
 
         try:
-            effect_minus = infra[f'{unit}_effect_minus'][1]
-            effect_minus_amount = int(infra[f'{unit}_effect_minus'][0])
+            effect_minus = infra[f'{unit}_effect_minus'][0]
+            effect_minus_amount = int(infra[f'{unit}_effect_minus'][1])
         except KeyError:
             effect_minus = None
             effect_minus_amount = None
@@ -219,7 +214,7 @@ def generate_province_revenue(): # Runs each hour
                     effect_minus_amount *= unit_amount
 
                 # Function for _plus
-                if plus == True:
+                if plus != False:
 
                     db.execute("SELECT %s FROM provinces WHERE id=(%s)", (plus_resource, user_id,))
                     current_plus_resource = db.fetchone()[0]

@@ -100,6 +100,8 @@ def province(pId):
     db.execute("SELECT land FROM provinces WHERE id=(%s)", (pId,))
     land = db.fetchone()[0]
 
+    db.execute("SELECT coal_burners FROM proInfra WHERE id=(%s)", (pId,))
+    coal_burners = db.fetchone()[0]
     db.execute("SELECT oil_burners FROM proInfra WHERE id=(%s)", (pId,))
     oil_burners = db.fetchone()[0]
     db.execute("SELECT hydro_dams FROM proInfra WHERE id=(%s)", (pId,))
@@ -205,7 +207,7 @@ def province(pId):
                             cityCount=cityCount, land=land, pollution=pollution, consumer_spending=consumer_spending,
                             happiness=happiness, productivity=productivity, location=location,
 
-                            oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
+                            coal_burners=coal_burners, oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
                             gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
                             banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
                             monorails=monorails,
@@ -281,6 +283,8 @@ def get_used_slots(pId): # pId = province id
 
     db = connection.cursor()
 
+    db.execute("SELECT coal_burners FROM proInfra WHERE id=(%s)", (pId,))
+    coal_burners = db.fetchone()[0]
     db.execute("SELECT oil_burners FROM proInfra WHERE id=(%s)", (pId,))
     oil_burners = db.fetchone()[0]
     db.execute("SELECT hydro_dams FROM proInfra WHERE id=(%s)", (pId,))
@@ -312,7 +316,7 @@ def get_used_slots(pId): # pId = province id
     db.execute("SELECT monorails FROM proInfra WHERE id=(%s)", (pId,))
     monorails = db.fetchone()[0]
 
-    infra_list = [oil_burners, hydro_dams, nuclear_reactors, solar_fields,
+    infra_list = [coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields,
     gas_stations, general_stores, farmers_markets, malls, banks,
     city_parks, hospitals, libraries, universities, monorails]
 
@@ -349,7 +353,8 @@ def province_sell_buy(way, units, province_id):
 
         allUnits = [
             "land", "cityCount",
-            "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
+            
+            "coal_burners", "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
             "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
             "city_parks", "hospitals", "libraries", "universities", "monorails",
 
@@ -380,9 +385,10 @@ def province_sell_buy(way, units, province_id):
             "land": 100,
             "cityCount": cityCount_price,
 
-            "oil_burners": 350,
-            "hydro_dams": 450,
-            "nuclear_reactors": 700,
+            "coal_burners": 500,
+            "oil_burners": 500,
+            "hydro_dams": 500,
+            "nuclear_reactors": 500,
             "solar_fields": 550,
 
             "gas_stations": 500,
