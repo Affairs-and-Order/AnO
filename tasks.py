@@ -66,7 +66,13 @@ def generate_province_revenue(): # Runs each hour
     'monorails_money': 210000,
     ###################
 
-    # (Military is not here because it doesn't directly generate revenue)
+    ### Military ###
+    'army_bases_money': 25000, # Costs $25k
+    'harbours_money': 35000,
+    'aerodomes_money': 55000,
+    'admin_buildings_money': 60000,
+    'silos_money': 120000,
+    ################
 
     ### Industry ### (missing lumber farms)
 
@@ -141,13 +147,17 @@ def generate_province_revenue(): # Runs each hour
         operating_costs = int(infra[f'{unit}_money'])
 
         try:
-            effect = infra[f'{unit}_effect'][1]
-            effect_amount = int(infra[f'{unit}_effect'][0])
+            effect_data = next(iter(infra[f'{unit}_plus'].items()))
+
+            effect = effect_data[0]
+            effect_amount = effect_data[1]
         except KeyError:
             effect = None
             effect_amount = None
 
         try:
+
+            
             effect_2 = infra[f'{unit}_effect_2'][1]
             effect_2_amount = int(infra[f'{unit}_effect_2'][0])
         except KeyError:
