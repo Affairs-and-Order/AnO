@@ -144,8 +144,6 @@ def province(pId):
     db.execute("SELECT silos FROM proInfra WHERE id=(%s)", (pId,))
     silos = db.fetchone()[0]
 
-
-
     ### Industry ###
     db.execute("SELECT farms FROM proInfra WHERE id=(%s)", (pId,))
     farms = db.fetchone()[0]
@@ -221,6 +219,7 @@ def province(pId):
                             
                             farms=farms, pumpjacks=pumpjacks, coal_mines=coal_mines, bauxite_mines=bauxite_mines,
                             copper_mines=copper_mines, uranium_mines=uranium_mines, lead_mines=lead_mines, iron_mines=iron_mines,
+                            lumber_mills=lumber_mills,
 
                             component_factories=component_factories, steel_mills=steel_mills, ammunition_factories=ammunition_factories,
                             aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries
@@ -288,44 +287,33 @@ def get_used_slots(pId): # pId = province id
 
     db = connection.cursor()
 
-    db.execute("SELECT coal_burners FROM proInfra WHERE id=(%s)", (pId,))
-    coal_burners = db.fetchone()[0]
-    db.execute("SELECT oil_burners FROM proInfra WHERE id=(%s)", (pId,))
-    oil_burners = db.fetchone()[0]
-    db.execute("SELECT hydro_dams FROM proInfra WHERE id=(%s)", (pId,))
-    hydro_dams = db.fetchone()[0]
-    db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(%s)", (pId,))
-    nuclear_reactors = db.fetchone()[0]
-    db.execute("SELECT solar_fields FROM proInfra WHERE id=(%s)", (pId,))
-    solar_fields = db.fetchone()[0]
+    total_slots = 0
 
-    db.execute("SELECT gas_stations FROM proInfra WHERE id=(%s)", (pId,))
-    gas_stations = db.fetchone()[0]
-    db.execute("SELECT general_stores FROM proInfra WHERE id=(%s)", (pId,))
-    general_stores = db.fetchone()[0]
-    db.execute("SELECT farmers_markets FROM proInfra WHERE id=(%s)", (pId,))
-    farmers_markets = db.fetchone()[0]
-    db.execute("SELECT malls FROM proInfra WHERE id=(%s)", (pId,))
-    malls = db.fetchone()[0]
-    db.execute("SELECT banks FROM proInfra WHERE id=(%s)", (pId,))
-    banks = db.fetchone()[0]
+    allUnits = [
+        "coal_burners", "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
+        "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
+        "city_parks", "hospitals", "libraries", "universities", "monorails",
 
-    db.execute("SELECT city_parks FROM proInfra WHERE id=(%s)", (pId,))
-    city_parks = db.fetchone()[0]
-    db.execute("SELECT hospitals FROM proInfra WHERE id=(%s)", (pId,))
-    hospitals = db.fetchone()[0]
-    db.execute("SELECT libraries FROM proInfra WHERE id=(%s)", (pId,))
-    libraries = db.fetchone()[0]
-    db.execute("SELECT universities FROM proInfra WHERE id=(%s)", (pId,))
-    universities = db.fetchone()[0]
-    db.execute("SELECT monorails FROM proInfra WHERE id=(%s)", (pId,))
-    monorails = db.fetchone()[0]
+        "army_bases", "harbours", "aerodomes", "admin_buildings", "silos",
 
-    infra_list = [coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields,
-    gas_stations, general_stores, farmers_markets, malls, banks,
-    city_parks, hospitals, libraries, universities, monorails]
+        "farms", "pumpjacks", "coal_mines", "bauxite_mines", 
+        "copper_mines", "uranium_mines", "lead_mines", "iron_mines",
+        "lumber_mills",
 
-    total_slots = sum(infra_list)
+        "component_factories", "steel_mills", "ammunition_factories",
+        "aluminium_refineries", "oil_refineries"
+    ]
+    
+    for unit in allUnits:
+        try:
+            select_statement = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
+            db.execute(select_statement, (pId))
+
+            amount = int(db.fetchone()[0])
+            total_slots += amount
+
+        except:
+            total_slots += 0
 
     return total_slots
 
@@ -363,7 +351,14 @@ def province_sell_buy(way, units, province_id):
             "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
             "city_parks", "hospitals", "libraries", "universities", "monorails",
 
-            "army_bases", "harbours", "aerodomes", "admin_buildings", "silos"
+            "army_bases", "harbours", "aerodomes", "admin_buildings", "silos",
+
+            "farms", "pumpjacks", "coal_mines", "bauxite_mines", 
+            "copper_mines", "uranium_mines", "lead_mines", "iron_mines",
+            "lumber_mills",
+
+            "component_factories", "steel_mills", "ammunition_factories",
+            "aluminium_refineries", "oil_refineries"
         ]
 
         max_4 = [
@@ -412,7 +407,23 @@ def province_sell_buy(way, units, province_id):
             "harbours": 500,
             "aerodomes": 500,
             "admin_buildings": 500,
-            "silos": 500
+            "silos": 500,
+
+            "farms": 500,
+            "pumpjacks": 500,
+            "coal_mines": 500,
+            "bauxite_mines": 500,
+            "copper_mines": 500,
+            "uranium_mines": 500,
+            "lead_mines": 500,
+            "iron_mines": 500,
+            "lumber_mills": 500,
+
+            "component_factories": 500,
+            "steel_mills": 500, 
+            "ammunition_factories": 500,
+            "aluminium_refineries": 500,
+            "oil_refineries": 500
         }
 
         if units not in allUnits:
