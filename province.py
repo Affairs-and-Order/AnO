@@ -184,6 +184,11 @@ def province(pId):
         iron_mines = db.fetchone()[0]
     except:
         iron_mines = None
+    try:
+        db.execute("SELECT lumber_mills FROM proInfra WHERE id=(%s)", (pId,))
+        lumber_mills = db.fetchone()[0]
+    except:
+        lumber_mills = None
     #############
 
     ### Processing ###

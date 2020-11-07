@@ -77,18 +77,13 @@ def generate_province_revenue(): # Runs each hour
     ### Industry ### (missing lumber farms)
 
     'pumpjacks_money': 10000, # Costs $10k
-
     'coal_mines_money': 10000, # Costs $10k
-
     'bauxite_mines_money': 8000, # Costs $8k
-
     'copper_mines_money': 8000, # Costs $8k
-
     'uranium_mines_money': 18000, # Costs $18k
-
     'lead_mines_money': 12000,
-
     'iron_mines_money': 18000,
+    'lumber_mills_money': 7500,
 
     ################
 
