@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS wars
+(id SERIAL PRIMARY KEY NOT NULL,
+winner INT NOT NULL,
+loser INT NOT NULL,
+percentage INT NOT NULL,
+until REAL NOT NULL
+);
+
+
+
+--FOREIGN KEY(peace_offer_id) REFERENCES peace(id));

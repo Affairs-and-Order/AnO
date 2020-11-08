@@ -2,7 +2,7 @@
 
 CREATE TABLE peace
 (
-id INTEGER NOT NULL PRIMARY KEY,
+id SERIAL NOT NULL PRIMARY KEY,
 author INTEGER NOT NULL,
 
 -- If this field is null the it will be white peace (means no one give anything)

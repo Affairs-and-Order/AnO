@@ -40,7 +40,7 @@ Whoever lost fewer value in units is the winner. Based on the degree, morale cha
 # Update supplies amount only when user visit page where supplies interaction neccessary
 # Call this from every function which displays or works with the supplies
 def update_supply(war_id):
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -156,7 +156,7 @@ def wars():
             warsCount = db.fetchone()[0]
         except:
             warsCount = 0
-            
+
         return render_template("wars.html", units=units, warsCount=warsCount, war_info=war_info)
 
         # SAMPLE
@@ -244,7 +244,7 @@ def wars():
         # attacker_morale = db.fetchone()[0]
         # db.execute("SELECT defender_morale FROM wars WHERE id=(%s)", (war_id[0],))
         # defender_morale = db.fetchone()[0]
-        #  
+        #
         #
         # for war_id in defendingIds:
         #     defending_war_morales.append([
@@ -285,7 +285,7 @@ def wars():
 def peace_offers():
     cId = session["user_id"]
     # cId = 11
-        
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -425,7 +425,7 @@ def peace_offers():
 @app.route("/send_peace_offer/<int:war_id>", methods=["POST"])
 @login_required
 def send_peace_offer(war_id):
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -502,7 +502,7 @@ def war_with_id(war_id):
     # DEBUG DTATA START:
     # cId=11
     # DEBUG DATAT END
-        
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -639,7 +639,7 @@ def warAmount():
     # cId = 11
 
     if request.method == "GET":
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -726,7 +726,7 @@ def warTarget():
     # session["attack_units"] = Units(cId, {"nukes": 1}, selected_units_list=["nukes"])
 
     if request.method == "GET":
-          
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -782,7 +782,7 @@ def warResult():
     # print(eId, "| eId") # 10 | eId
     # print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
 
-        
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -827,7 +827,7 @@ def warResult():
         winner, win_condition, attack_effects = Military.fight(attacker, defender)
 
         import random
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -934,7 +934,7 @@ def declare_war():
     # CONSTANT VALUE
     WAR_TYPES = ["Raid", "Sustained", "Loot"]
 
-        
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -996,10 +996,9 @@ def declare_war():
         return error(400, "No such country")
 
     start_dates = time.time()
-    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (%s, %s, %s, %s, %s, %s)",
+    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (%s, %s, %s, %s, %s, %s)",(attacker.id, defender_id, war_type, war_message, start_dates, start_dates))
+    # current_peace = db.fetchone()
 
-        current_peace = db.fetchone()
-               (attacker.id, defender_id, war_type, war_message, start_dates, start_dates))
     connection.commit()
     connection.close()
 
@@ -1010,7 +1009,7 @@ def declare_war():
 @login_required
 def find_targets():
     if request.method == "GET":
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -1030,7 +1029,7 @@ def find_targets():
     #     return render_template("find_targets.html")
     # else:
     #     # TODO: maybe delete the sql fetch and create a centralized way to fetch it
-    #     
+    #
 
     #     defender = request.form.get("defender")
     #     db.execute("SELECT id FROM users WHERE username=(%s)", (defender,))
@@ -1054,7 +1053,7 @@ def defense():
         return render_template("defense.html", units=units)
 
     elif request.method == "POST":
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
