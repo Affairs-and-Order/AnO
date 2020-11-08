@@ -67,7 +67,7 @@ def discord():
 @app.route('/callback')
 def callback():
 
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -111,7 +111,7 @@ def discord_register():
         return render_template('signup.html', way="discord")
 
     elif request.method == "POST":
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -122,7 +122,7 @@ def discord_register():
         db = connection.cursor()
 
         discord = make_session(token=session.get('oauth2_token'))
-        
+
         username = request.form.get("username")
         continent = request.form.get("continent")
         key = request.form.get("key")
@@ -150,7 +150,7 @@ def discord_register():
                 duplicate_name = True
             except TypeError:
                 duplicate_name = False
-            
+
             if duplicate_name == True:
                 return error(400, "Duplicate name, choose another one")
 
@@ -166,7 +166,7 @@ def discord_register():
             session["user_id"] = user_id
 
             user = user_id
-            
+
             db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))  # TODO  change the default location
             db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
             db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
@@ -177,7 +177,7 @@ def discord_register():
                 session.pop('oauth2_state')
             except KeyError:
                 pass
-            
+
             session.pop('oauth2_token')
 
             connection.commit()
@@ -189,7 +189,7 @@ def signup():
     if request.method == "POST":
 
         # connects the db to the signup function
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -211,7 +211,8 @@ def signup():
         key = request.form.get("key")
 
         try:
-            db.execute("SELECT key FROM keys WHERE key=%s", (key))
+            fet = db.execute("SELECT key FROM keys WHERE key=%s", (key,))
+            print("KEY HERE", key, fet, os.getenv("PG_DATABASE"))
             db.fetchone()[0]
         except:
             correct_key = None
@@ -227,8 +228,15 @@ def signup():
         if password != confirmation:  # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
 
+        # DEBUG:
+        print(password)
+        password=str(password)
+        # DEBUG END;
+
         # Hashes the inputted password
-        hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
+        # hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
+        # print("HASH ", hashed)
 
         db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 
@@ -238,7 +246,7 @@ def signup():
         # set's the user's "id" column to the sessions variable "user_id"
         session["user_id"] = user
 
-        db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent)) 
+        db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))
         db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
         db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
         db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
