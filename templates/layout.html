@@ -64,9 +64,11 @@
                         <a class="" href="/tutorial"><span class="material-icons-outlined">
                             school
                         </span>Tutorial</a>
+                        <!--
                         <a class="" href="/statistics"><span class="material-icons-outlined">
                             insert_chart_outlined
                         </span>Statistics</a>
+                    -->
                     </div>
                 </div>
             </div>
@@ -89,9 +91,11 @@
                         <a class="" href="/countries"><span class="material-icons-outlined">
                         person_pin_circle
                         </span>Countries</a>
+                        <!--
                         <a class="" href="/assembly"><span class="material-icons-outlined">
                             chat
                         </span>Assembly</a>
+                        -->
                     </div>
                 </div>
             </div>
@@ -104,9 +108,11 @@
                         <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                             outlined_flag
                         </span>Country<span class="menubaranotification">1</span></a>
+                        <!--
                         <a class="" href="/upgrades"><span class="material-icons-outlined">
                         engineering
                         </span>Upgrades</a>
+                    -->
                         <a class="" href="/provinces"><span class="material-icons-outlined">
                             account_balance
                         </span>Provinces</a>
@@ -130,9 +136,11 @@
         <a class="menubara" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                 outlined_flag
             </span>Country<span class="menuflex2notification">1</span></a>
+        <!--
         <a class="menubara" href="/upgrades"><span class="material-icons-outlined">
             engineering
             </span>Upgrades</a>
+        -->
         <a class="menubara" href="/provinces"><span class="material-icons-outlined">
                 account_balance
             </span>Provinces</a>
@@ -156,10 +164,11 @@
         <a class="menubara" href="/countries"><span class="material-icons-outlined">
             person_pin_circle
             </span>Countries</a>
+        <!--
         <a class="menubara" href="/assembly"><span class="material-icons-outlined">
                 chat
             </span>Assembly</a>
-
+        -->
         <h3>Other</h3>
         <a class="menubara" href="/account"><span class="material-icons-outlined">
                 perm_identity
@@ -167,9 +176,12 @@
         <a class="menubara" href="/tutorial"><span class="material-icons-outlined">
                 school
             </span>Tutorial</a>
+
+        <!--
         <a class="menubara" href="/statistics"><span class="material-icons-outlined">
                 insert_chart_outlined
             </span>Statistics</a>
+        -->
 
         <div class="resourcediv" id="resourcediv">
             <a> <span class="material-icons-outlined resourceicon" onclick="resourcedivcontentshow()">
@@ -191,18 +203,18 @@
             <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[3] }}</span></p>
             <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[4] }}</span></p>
             <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[5] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[6] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[6] }}</span></p>
             <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[7] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[8] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[9] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[8] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescomponents.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[9] }}</span></p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[10] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[11] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[12] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/ressteel.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[10] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resconsumer_goods.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[11] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[12] }}</span></p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[13] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[14] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><span id="resourcetag" class="resourcetag">{{ resource_list[15] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resaluminium.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[13] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resgasoline.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[14] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resammunition.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[15] }}</span></p>
         </div>
     </div>
     {% endif %}

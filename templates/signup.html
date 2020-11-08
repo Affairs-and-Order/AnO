@@ -8,9 +8,9 @@
 </script>
 <img class="background" id="background" />
 
-<div class="templatediv loginsignupdiv noboxshadowtopper">
+<div class="templatediv noboxshadowtopper loginsignupdiv">
 
-    <div class="templatedivtopper">
+    <div class="templatedivtopper svgtopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
             add_circle_outline
             </span>Signup</h1>
@@ -18,9 +18,10 @@
 
     <div class="templatedivcontent">
 
-        {% if way != "discord" %}
+
 
         <div class="templatedivflex2 menuflex divflex2center flexwrap">
+            {% if way != "discord" %}
             <form action="/discord" method="POST">
                 <div class="templatedivflex2left">
 

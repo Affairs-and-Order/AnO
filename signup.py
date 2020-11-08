@@ -212,45 +212,41 @@ def signup():
 
         try:
             db.execute("SELECT key FROM keys WHERE key=%s", (key))
-            correct_key = db.fetchone()[0]
+            db.fetchone()[0]
         except:
             correct_key = None
             return error(400, "Key not found")
 
-        db.execute("SELECT username FROM users WHERE username=%s", (username,))
         try:
-            duplicate_name = db.fetchone()[0]
-            duplicate_name = True
+            db.execute("SELECT username FROM users WHERE username=%s", (username,))
+            db.fetchone()[0]
+            return error(400, "Duplicate name, choose another one")
         except:
             duplicate_name = False
-
-        if duplicate_name == True:
-                return error(400, "Duplicate name, choose another one")
 
         if password != confirmation:  # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
 
-        if correct_key != None and duplicate_name != True:
-            # Hashes the inputted password
-            hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
+        # Hashes the inputted password
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
 
-            db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
+        db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 
-            db.execute("SELECT id FROM users WHERE username = (%s)", (username,))
-            user = db.fetchone()[0]
+        db.execute("SELECT id FROM users WHERE username = (%s)", (username,))
+        user = db.fetchone()[0]
 
-            # set's the user's "id" column to the sessions variable "user_id"
-            session["user_id"] = user
+        # set's the user's "id" column to the sessions variable "user_id"
+        session["user_id"] = user
 
-            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent)) 
-            db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
-            db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
-            db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
+        db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent)) 
+        db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
+        db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
+        db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
 
-            db.execute("DELETE FROM keys WHERE key=(%s)", (key,))  # deletes the used key
+        db.execute("DELETE FROM keys WHERE key=(%s)", (key,))  # deletes the used key
 
-            connection.commit()
-            connection.close()
-            return redirect("/")
+        connection.commit()
+        connection.close()
+        return redirect("/")
     else:
         return render_template("signup.html")

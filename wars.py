@@ -111,7 +111,7 @@ def wars():
         db.execute("SELECT username FROM users WHERE id=(%s)", (cId,))
         yourCountry = db.fetchone()[0]
         try:
-            db.execute("SELECT id,defender,attacker FROM wars WHERE (attacker=(%s) OR defender=(%s))AND peace_date IS NULL", (cId, cId))
+            db.execute("SELECT id, defender, attacker FROM wars WHERE attacker=%s OR defender=%s AND peace_date IS NULL", (cId, cId))
             war_attacker_defender_ids = db.fetchall()
             war_info = {}
             for war_id,defender,attacker in war_attacker_defender_ids:
@@ -121,32 +121,42 @@ def wars():
                 attacker_info = {}
                 defender_info = {}
 
-                db.execute("SELECT username FROM users WHERE id=(%s)", (attacker,))
+                db.execute("SELECT username FROM users WHERE id=%s", (attacker,))
                 att_name = db.fetchone()[0]
                 attacker_info["name"] = att_name
                 attacker_info["id"] = attacker
-                db.execute("SELECT attacker_morale,attacker_supplies FROM wars WHERE id=(%s)", (war_id,))
+
+                db.execute("SELECT attacker_morale, attacker_supplies FROM wars WHERE id=%s", (war_id,))
                 att_morale_and_supplies = db.fetchone()
+
                 attacker_info["morale"] = att_morale_and_supplies[0]
                 attacker_info["supplies"] = att_morale_and_supplies[1]
 
-                db.execute("SELECT username FROM users WHERE id=(%s)", (defender,))
+                db.execute("SELECT username FROM users WHERE id=%s", (defender,))
                 def_name = db.fetchone()[0]
                 defender_info["name"] = def_name
-                db.execute("SELECT defender_morale,defender_supplies FROM wars WHERE id=(%s)", (war_id,))
+
+                db.execute("SELECT defender_morale,defender_supplies FROM wars WHERE id=%s", (war_id,))
                 def_morale_and_supplies = db.fetchone()
+
                 defender_info["morale"] = def_morale_and_supplies[0]
                 defender_info["supplies"] = def_morale_and_supplies[1]
+
                 defender_info["id"] = defender
 
                 war_info[war_id] = {"att": attacker_info, "def": defender_info}
         except:
-            return "SOMETHING WENT WRONG"
+            war_attacker_defender_ids = []
+            war_info = {}
+
 
         # print(war_info.keys())
-
-        db.execute("SELECT COUNT(attacker) FROM wars WHERE (defender=(%s) OR attacker=(%s)) AND peace_date IS NULL", (cId, cId))
-        warsCount = db.fetchone()[0]
+        try:
+            db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=%s OR attacker=%s AND peace_date IS NULL", (cId, cId))
+            warsCount = db.fetchone()[0]
+        except:
+            warsCount = 0
+            
         return render_template("wars.html", units=units, warsCount=warsCount, war_info=war_info)
 
         # SAMPLE

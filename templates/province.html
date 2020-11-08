@@ -171,7 +171,8 @@
             </div>
         </div>
         </form>
-        {% endif %} {% if ownProvince == True %}
+        {% endif %}
+        {% if ownProvince == True %}
         <h2 class="templatecontentheaderleft">Infrastructure</h2>
 
         <div class="templatedivflex2 menuflex2">
@@ -219,7 +220,7 @@
                             </div>
                         </tr>
                         <tr>
-                            <td>0 Coal Burners</td>
+                            <td>{{ coal_burners }} Coal Burners</td>
                             <td>{{ gas_stations }} Gas Stations</td>
                             <td>{{ city_parks }} City Park</td>
                         </tr>
@@ -247,6 +248,53 @@
                 </div>
                 <!--Electricity-->
                 <div id="electricity" class="electricity">
+
+                    <div class="menudiv">
+
+                        <h2 class="templatecontentheaderleft">Coal Burners</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ coal_burners }} Coal Burners</h3>
+
+                                <p class="templatecontentpleft">Coal burners convert coal stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+
+                                <ul>Coal burners cost <b>500</b> Each</ul>
+                                <ul>Coal burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="coal_burners" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_burners/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_burners/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                    <ul>[ buyCoalBurner ] Coal burners will cost you $[ buyCoalBurnerPrice ]</ul>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/oilburner.jpg') }}" />
+                            </div>
+                        </div>
+
+                    </div>
 
                     <div class="menudiv">
 
@@ -602,7 +650,7 @@
                                 <ul>Malls produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
@@ -938,8 +986,8 @@
 
                         <tr>
                             <td>{{ army_bases }} Army Bases</td>
-                            <td>1 Farms</td>
-                            <td>1 Component Factories</td>
+                            <td>{{ farms }} Farms</td>
+                            <td>{{ component_factories }} Component Factories</td>
                         </tr>
                         <tr>
                             <td>{{ aerodomes }} Aerodomes</td>
@@ -948,36 +996,36 @@
                             {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
                             <td>{{ iron_mines }} Iron Mines</td>
                             {% elif location in ["australia", "asia", "northamerica"] %}
-                            <td>{{ coal_mines }} Coal mines</td>
+                            <td>{{ coal_mines }} Coal Mines</td>
                             {% endif %}
                             <!---->
-                            <td>1 Steel Mills</td>
+                            <td>{{ steel_mills }} Steel Mills</td>
                         </tr>
                         <tr>
                             <td>{{ harbours }} Harbours</td>
                             <!-- #2 Raw resource -->
                             {% if location in ["antarctica", "australia", "asia", "southamerica"] %}
-                            <td>{{ copper_mines }} Copper mines</td>
+                            <td>{{ copper_mines }} Copper Mines</td>
                             {% elif location in ["northamerica", "africa"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
                             {% elif location in ["asia", "europe"] %}
-                            <td>{{ lumber_farms }} Tree farms</td>
+                            <td>{{ lumber_mills }} Lumber Mills</td>
                             {% endif %}
                             <!---->
-                            <td>1 Ammunition Factories</td>
+                            <td>{{ ammunition_factories }} Ammunition Factories</td>
                         </tr>
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
                             <!-- #3 Raw resource -->
                             {% if location in ["antarctica", "australia", "europe"] %}
-                            <td>{{ lead_mines }} Lead mines</td>
+                            <td>{{ lead_mines }} Lead Mines</td>
                             {% elif location in ["africa", "southamerica", "northamerica"] %}
-                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            <td>{{ bauxite_mines }} Bauxite Mines</td>
                             {% elif location in ["asia"] %}
-                            <td>{{ copper_mines }} Copper mines</td>
+                            <td>{{ copper_mines }} Copper Mines</td>
                             {% endif %}
                             <!---->
-                            <td>1 Aluminum Refineries</td>
+                            <td>{{ aluminium_refineries }} Aluminium Refineries</td>
                         </tr>
                         <tr>
                             <td>{{ silos }} Silos</td>
@@ -985,16 +1033,16 @@
                             {% if location in ["asia", "southamerica"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
                             {% elif location in ["northamerica"] %}
-                            <td>{{ lumber_farms }} Tree farms</td>
+                            <td>{{ lumber_mills }} Lumber Mills</td>
                             {% elif location in ["africa", "antarctica"]%}
-                            <td>{{ uranium_mines }} Uranium mines </td>
+                            <td>{{ uranium_mines }} Uranium Mines </td>
                             {% elif location in ["australia"] %}
-                            <td>{{ bauxite_mines }} Bauxite mines</td>
+                            <td>{{ bauxite_mines }} Bauxite Mines</td>
                             {% elif location in ["europe"] %}
                             <td>{{ coal_mines }} Coal mines</td>
                             {% endif %}
                             <!---->
-                            <td>1 Oil Refineries</td>
+                            <td>{{ oil_refineries }} Oil Refineries</td>
                         </tr>
                     </table>
                 </div>
@@ -1241,6 +1289,7 @@
                     </div>
                 </div>
                 <!--Industry-->
+                <!-- Farms -->
                 <div id="industry" class="industry">
 
                     <div class="menudiv">
@@ -1250,7 +1299,7 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Farms</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ farms }} Farms</h3>
 
                                 <p class="templatecontentpleft">Farms</p>
 
@@ -1258,12 +1307,12 @@
                                 <ul>Farms produce 8 rations/day for every 250K of land</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="farms" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/farms/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1271,7 +1320,7 @@
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/farms/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -1291,388 +1340,629 @@
                         </div>
 
                     </div>
-                    <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Bauxite Mines</h2>
+                    <!-- CONTINENT SPECIFIC RESOURCES -->
+                        <!-- #1 Raw resource -->
+                        {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
+                            <!-- Iron mines -->
+                            <div class="menudiv">
 
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Bauxite Mines</h3>
-
-                                <p class="templatecontentpleft">Farms</p>
-
-                                <ul>Bauxite mines [ farmCost ] Each</ul>
-                                <ul>Bauxite mines produce 6 bauxite /day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                        class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
-
+                                <h2 class="templatecontentheaderleft">Iron Mines</h2>
+        
+                                <div class="templatedivflex2 menuflex warflexparentcolors">
+                                    <div class="templatedivflex2left">
+        
+                                        <h3 class="templatecontentheadercenter">You have {{ iron_mines }} Iron Mines</h3>
+        
+                                        <p class="templatecontentpleft">Iron Mines</p>
+        
+                                        <ul>Iron mines [ farmCost ] Each</ul>
+                                        <ul>Iron mines 4 uranium/day</ul>
+        
+                                        <div class="purchasemilitarydiv">
+                                            <input class="loginsignupinput" autocomplete="off" name="iron_mines" type="number" placeholder="Amount" />
+        
+                                            <div class="templatedivflex2 divflex2center">
+                                                <div class="templatedivflex2left flexchildvanilla">
+        
+                                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/iron_mines/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
+        
+                                                </div>
+                                                <div class="templatedivflex2left flexchildvanilla">
+        
+                                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/iron_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
+        
+                                                </div>
+                                            </div>
+                                            <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
                                         </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
-
-                                        </div>
+        
                                     </div>
-                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
-                                </div>
-
-                            </div>
-
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/bauxitemine.jpg') }}" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="menudiv">
-
-                        <h2 class="templatecontentheaderleft">Uranium Mines</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Uranium Mines</h3>
-
-                                <p class="templatecontentpleft">Farms</p>
-
-                                <ul>Uranium mines [ farmCost ] Each</ul>
-                                <ul>Uranium mines 4 uranium/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                        class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
-                                </div>
-
-                            </div>
-
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/uraniummine.jpg') }}" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="menudiv">
-
-                        <h2 class="templatecontentheaderleft">Iron Mines</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Iron Mines</h3>
-
-                                <p class="templatecontentpleft">Farms</p>
-
-                                <ul>Iron mines [ farmCost ] Each</ul>
-                                <ul>Iron mines 4 uranium/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                        class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
-                                </div>
-
-                            </div>
-
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/ironmine.jpg') }}" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="menudiv">
-
-                        <h2 class="templatecontentheaderleft">Coal Mines</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Coal Mines</h3>
-
-                                <p class="templatecontentpleft">Farms</p>
-
-                                <ul>Coal mines [ farmCost ] Each</ul>
-                                <ul>Coal mines 4 uranium/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                        class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
-                                </div>
-
-                            </div>
-
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="menudiv">
-
-                        <h2 class="templatecontentheaderleft">Pumpjacks</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Pumpjacks</h3>
-
-                                <p class="templatecontentpleft">Farms</p>
-
-                                <ul>Pumpjacks [ farmCost ] Each</ul>
-                                <ul>Pumpjacks 4 uranium/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                        class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
-                                </div>
-
-                            </div>
-
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/pumpjack.jpg') }}" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="menudiv">
-
-                        <h2 class="templatecontentheaderleft">Lead Mines</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Lead Mines</h3>
-
-                                <p class="templatecontentpleft">Farms</p>
-
-                                <ul>Lead mines [ farmCost ] Each</ul>
-                                <ul>Lead mines 4 uranium/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                        class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
-                                </div>
-
-                            </div>
-
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/leadmine.jpg') }}" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="menudiv">
-
-                        <h2 class="templatecontentheaderleft">Copper Mines</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Copper Mines</h3>
-
-                                <p class="templatecontentpleft">Farms</p>
-
-                                <ul>Copper mines [ farmCost ] Each</ul>
-                                <ul>Copper mines 4 uranium/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                        class="material-icons-outlined">
-                                        add_circle_outline
-                                    </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                    </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
-                                </div>
-
-                            </div>
-
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
-                            </div>
-                        </div>
-
-                    </div>
-                    <h2 class="templatecontentheaderleft">Lumber Mills</h2>
-
-                    <div class="templatedivflex2 menuflex warflexparentcolors">
-                        <div class="templatedivflex2left">
-
-                            <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Farms</h3>
-
-                            <p class="templatecontentpleft">Farms</p>
-
-                            <ul>Farms cost [ farmCost ] Each</ul>
-                            <ul>Farms produce 8 rations/day for every 250K of land</ul>
-
-                            <div class="purchasemilitarydiv">
-                                <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
-
-                                <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
-                                    class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
-
-                                    </div>
-                                    <div class="templatedivflex2left flexchildvanilla">
-
-                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span
-                                    class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
-
+        
+                                    <div class="templatedivflex2left">
+        
+        
+        
+                                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/ironmine.jpg') }}" />
                                     </div>
                                 </div>
-                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+        
                             </div>
+                        {% elif location in ["australia", "asia", "northamerica"] %}
+                        <!-- Coal mines -->
+                            <div class="menudiv">
 
-                        </div>
-                        <div class="templatedivflex2left">
+                                <h2 class="templatecontentheaderleft">Coal Mines</h2>
+        
+                                <div class="templatedivflex2 menuflex warflexparentcolors">
+                                    <div class="templatedivflex2left">
+        
+                                        <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
+        
+                                        <p class="templatecontentpleft">Coal mines</p>
+        
+                                        <ul>Coal mines [ farmCost ] Each</ul>
+                                        <ul>Coal mines 4 uranium/day</ul>
+        
+                                        <div class="purchasemilitarydiv">
+                                            <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
+        
+                                            <div class="templatedivflex2 divflex2center">
+                                                <div class="templatedivflex2left flexchildvanilla">
+        
+                                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
+        
+                                                </div>
+                                                <div class="templatedivflex2left flexchildvanilla">
+        
+                                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
+        
+                                                </div>
+                                            </div>
+                                            <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                        </div>
+        
+                                    </div>
+        
+                                    <div class="templatedivflex2left">
+                                        <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
+                                    </div>
+                                </div>
+        
+                            </div>
+                        {% endif %}
 
+                        <!-- #2 Raw resource -->
+                            {% if location in ["antarctica", "australia", "asia", "southamerica"] %}
+                            <!-- Copper mines -->
+                                <div class="menudiv">
 
+                                    <h2 class="templatecontentheaderleft">Copper Mines</h2>
+            
+                                    <div class="templatedivflex2 menuflex warflexparentcolors">
+                                        <div class="templatedivflex2left">
+            
+                                            <h3 class="templatecontentheadercenter">You have {{ copper_mines }} Copper Mines</h3>
+            
+                                            <p class="templatecontentpleft">Copper mines</p>
+            
+                                            <ul>Copper mines [ farmCost ] Each</ul>
+                                            <ul>Copper mines 4 uranium/day</ul>
+            
+                                            <div class="purchasemilitarydiv">
+                                                <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
+            
+                                                <div class="templatedivflex2 divflex2center">
+                                                    <div class="templatedivflex2left flexchildvanilla">
+            
+                                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/copper_mines/{{ pId }}"><span
+                                                    class="material-icons-outlined">
+                                                    add_circle_outline
+                                                </span>Buy</button>
+            
+                                                    </div>
+                                                    <div class="templatedivflex2left flexchildvanilla">
+            
+                                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/copper_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                    remove_circle_outline
+                                                </span>Sell</button>
+            
+                                                    </div>
+                                                </div>
+                                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                            </div>
+            
+                                        </div>
+            
+                                        <div class="templatedivflex2left">
+                                            <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                                        </div>
+                                    </div>
+            
+                                </div>
+                            {% elif location in ["northamerica", "africa"] %}
+                            <!-- Pumpjacks -->
+                                <div class="menudiv">
 
-                            <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/lumbermill.jpg') }}" />
-                        </div>
-                    </div>
+                                    <h2 class="templatecontentheaderleft">Pumpjacks</h2>
+            
+                                    <div class="templatedivflex2 menuflex warflexparentcolors">
+                                        <div class="templatedivflex2left">
+            
+                                            <h3 class="templatecontentheadercenter">You have {{ pumpjacks }} Pumpjacks</h3>
+            
+                                            <p class="templatecontentpleft">Pumpjacks</p>
+            
+                                            <ul>Pumpjacks [ farmCost ] Each</ul>
+                                            <ul>Pumpjacks 4 uranium/day</ul>
+            
+                                            <div class="purchasemilitarydiv">
+                                                <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
+            
+                                                <div class="templatedivflex2 divflex2center">
+                                                    <div class="templatedivflex2left flexchildvanilla">
+            
+                                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/pumpjacks/{{ pId }}"><span
+                                                    class="material-icons-outlined">
+                                                    add_circle_outline
+                                                </span>Buy</button>
+            
+                                                    </div>
+                                                    <div class="templatedivflex2left flexchildvanilla">
+            
+                                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/pumpjacks/{{ pId }}"><span class="material-icons-outlined">
+                                                    remove_circle_outline
+                                                </span>Sell</button>
+            
+                                                    </div>
+                                                </div>
+                                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                            </div>
+            
+                                        </div>
+            
+                                        <div class="templatedivflex2left">
+                                            <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/pumpjack.jpg') }}" />
+                                        </div>
+                                    </div>
+            
+                                </div>
+                            {% elif location in ["asia", "europe"] %}
+                            <!-- Lumber mills -->
+                                <div class="menudiv">
+                                    <h2 class="templatecontentheaderleft">Lumber Mills</h2>
 
-                </div>
+                                    <div class="templatedivflex2 menuflex warflexparentcolors">
+                                        <div class="templatedivflex2left">
+
+                                        <h3 class="templatecontentheadercenter">You have {{ lumber_mills }} Lumber Mills</h3>
+
+                                        <p class="templatecontentpleft">Lumber Mills</p>
+
+                                        <ul>Farms cost [ farmCost ] Each</ul>
+                                        <ul>Farms produce 8 rations/day for every 250K of land</ul>
+
+                                        <div class="purchasemilitarydiv">
+                                            <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
+
+                                            <div class="templatedivflex2 divflex2center">
+                                                <div class="templatedivflex2left flexchildvanilla">
+
+                                                    <button class="templatedivbutton templatecenteredbutton" formaction="/buy/lumber_mills/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
+
+                                                </div>
+                                                <div class="templatedivflex2left flexchildvanilla">
+
+                                                    <button class="templatedivbutton templatecenteredbutton" formaction="/sell/lumber_mills/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
+
+                                                </div>
+                                            </div>
+                                                <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                            </div>
+                                        </div>
+                                            <div class="templatedivflex2left">
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/lumbermill.jpg') }}" />
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                            {% endif %}
+
+                            <!-- #3 Raw resource -->
+                                {% if location in ["antarctica", "australia", "europe"] %}
+                                <!-- Lead mines -->
+                                    <div class="menudiv">
+
+                                        <h2 class="templatecontentheaderleft">Lead Mines</h2>
+                
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+                
+                                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Lead Mines</h3>
+                
+                                                <p class="templatecontentpleft">Lead mines</p>
+                
+                                                <ul>Lead mines [ farmCost ] Each</ul>
+                                                <ul>Lead mines 4 uranium/day</ul>
+                
+                                                <div class="purchasemilitarydiv">
+                                                    <input class="loginsignupinput" autocomplete="off" name="lead_mines" type="number" placeholder="Amount" />
+                
+                                                    <div class="templatedivflex2 divflex2center">
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/lead_mines/{{ pId }}"><span
+                                                        class="material-icons-outlined">
+                                                        add_circle_outline
+                                                    </span>Buy</button>
+                
+                                                        </div>
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/lead_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                        remove_circle_outline
+                                                    </span>Sell</button>
+                
+                                                        </div>
+                                                    </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+                
+                                            </div>
+                
+                                            <div class="templatedivflex2left">
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/leadmine.jpg') }}" />
+                                            </div>
+                                        </div>
+                
+                                    </div>
+                                {% elif location in ["africa", "southamerica", "northamerica"] %}
+                                <!-- Bauxite mines -->
+                                    <div class="menudiv">
+
+                                        <h2 class="templatecontentheaderleft">Bauxite Mines</h2>
+            
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+            
+                                                <h3 class="templatecontentheadercenter">You have {{ bauxite_mines}} Bauxite Mines</h3>
+            
+                                                <p class="templatecontentpleft">Bauxite mines</p>
+            
+                                                <ul>Bauxite mines [ farmCost ] Each</ul>
+                                                <ul>Bauxite mines produce 6 bauxite /day</ul>
+            
+                                                <div class="purchasemilitarydiv">
+                                                    <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
+            
+                                                    <div class="templatedivflex2 divflex2center">
+                                                        <div class="templatedivflex2left flexchildvanilla">
+            
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bauxite_mines/{{ pId }}"><span
+                                                        class="material-icons-outlined">
+                                                        add_circle_outline
+                                                    </span>Buy</button>
+            
+                                                        </div>
+                                                        <div class="templatedivflex2left flexchildvanilla">
+            
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bauxite_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                        remove_circle_outline
+                                                    </span>Sell</button>
+            
+                                                        </div>
+                                                    </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+            
+                                            </div>
+            
+                                            <div class="templatedivflex2left">
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/bauxitemine.jpg') }}" />
+                                            </div>
+                                        </div>
+            
+                                </div>
+                                {% elif location in ["asia"] %}
+                                    <!-- Copper mines -->
+                                    <div class="menudiv">
+
+                                        <h2 class="templatecontentheaderleft">Copper Mines</h2>
+                
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+                
+                                                <h3 class="templatecontentheadercenter">You have {{ copper_mines }} Copper Mines</h3>
+                
+                                                <p class="templatecontentpleft">Copper Mines</p>
+                
+                                                <ul>Copper mines [ farmCost ] Each</ul>
+                                                <ul>Copper mines 4 uranium/day</ul>
+                
+                                                <div class="purchasemilitarydiv">
+                                                    <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
+                
+                                                    <div class="templatedivflex2 divflex2center">
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/copper_mines/{{ pId }}"><span
+                                                        class="material-icons-outlined">
+                                                        add_circle_outline
+                                                    </span>Buy</button>
+                
+                                                        </div>
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/copper_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                        remove_circle_outline
+                                                    </span>Sell</button>
+                
+                                                        </div>
+                                                    </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+                
+                                            </div>
+                
+                                            <div class="templatedivflex2left">
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                                            </div>
+                                        </div>
+                
+                                    </div>
+                                {% endif %}
+
+                                <!-- #4 Raw resource -->
+                                {% if location in ["asia", "southamerica"] %}
+                                    <!-- Pumpjacks -->
+                                    <div class="menudiv">
+
+                                        <h2 class="templatecontentheaderleft">Pumpjacks</h2>
+                
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+                
+                                                <h3 class="templatecontentheadercenter">You have {{ pumpjacks }} Pumpjacks</h3>
+                
+                                                <p class="templatecontentpleft">Pumpjacks</p>
+                
+                                                <ul>Pumpjacks [ farmCost ] Each</ul>
+                                                <ul>Pumpjacks 4 uranium/day</ul>
+                
+                                                <div class="purchasemilitarydiv">
+                                                    <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
+                
+                                                    <div class="templatedivflex2 divflex2center">
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/pumpjacks/{{ pId }}"><span
+                                                        class="material-icons-outlined">
+                                                        add_circle_outline
+                                                    </span>Buy</button>
+                
+                                                        </div>
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/pumpjacks/{{ pId }}"><span class="material-icons-outlined">
+                                                        remove_circle_outline
+                                                    </span>Sell</button>
+                
+                                                        </div>
+                                                    </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+                
+                                            </div>
+                
+                                            <div class="templatedivflex2left">
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/pumpjack.jpg') }}" />
+                                            </div>
+                                        </div>
+                
+                                    </div>
+                                {% elif location in ["northamerica"] %}
+                                    <!-- Lumber mills -->
+                                    <div class="menudiv">
+                                        <h2 class="templatecontentheaderleft">Lumber Mills</h2>
+
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+
+                                            <h3 class="templatecontentheadercenter">You have {{ lumber_mills }} Lumber Mills</h3>
+
+                                            <p class="templatecontentpleft">Lumber Mills</p>
+
+                                            <ul>Farms cost [ farmCost ] Each</ul>
+                                            <ul>Farms produce 8 rations/day for every 250K of land</ul>
+
+                                            <div class="purchasemilitarydiv">
+                                                <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
+
+                                                <div class="templatedivflex2 divflex2center">
+                                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                                        <button class="templatedivbutton templatecenteredbutton" formaction="/buy/lumber_mills/{{ pId }}"><span
+                                                    class="material-icons-outlined">
+                                                    add_circle_outline
+                                                </span>Buy</button>
+
+                                                    </div>
+                                                    <div class="templatedivflex2left flexchildvanilla">
+
+                                                        <button class="templatedivbutton templatecenteredbutton" formaction="/sell/lumber_mills/{{ pId }}"><span
+                                                    class="material-icons-outlined">
+                                                    remove_circle_outline
+                                                </span>Sell</button>
+
+                                                    </div>
+                                                </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+                                            </div>
+                                                <div class="templatedivflex2left">
+                                                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/lumbermill.jpg') }}" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif location in ["africa", "antarctica"]%}
+                                    <!-- Uranium Mines-->
+                                    <div class="menudiv">
+
+                                        <h2 class="templatecontentheaderleft">Uranium Mines</h2>
+                
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+                
+                                                <h3 class="templatecontentheadercenter">You have {{ uranium_mines }} Uranium Mines</h3>
+                
+                                                <p class="templatecontentpleft">Uranium Mines</p>
+                
+                                                <ul>Uranium mines [ farmCost ] Each</ul>
+                                                <ul>Uranium mines 4 uranium/day</ul>
+                
+                                                <div class="purchasemilitarydiv">
+                                                    <input class="loginsignupinput" autocomplete="off" name="uranium_mines" type="number" placeholder="Amount" />
+                
+                                                    <div class="templatedivflex2 divflex2center">
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/uranium_mines/{{ pId }}"><span
+                                                        class="material-icons-outlined">
+                                                        add_circle_outline
+                                                    </span>Buy</button>
+                
+                                                        </div>
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/uranium_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                        remove_circle_outline
+                                                    </span>Sell</button>
+                
+                                                        </div>
+                                                    </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+                
+                                            </div>
+                
+                                            <div class="templatedivflex2left">
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/uraniummine.jpg') }}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif location in ["australia"] %}
+                                    <!-- Bauxite mines -->
+                                    <div class="menudiv">
+
+                                        <h2 class="templatecontentheaderleft">Bauxite Mines</h2>
+            
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+            
+                                                <h3 class="templatecontentheadercenter">You have {{ bauxite_mines }} Bauxite Mines</h3>
+            
+                                                <p class="templatecontentpleft">Bauxite Mines</p>
+            
+                                                <ul>Bauxite mines [ farmCost ] Each</ul>
+                                                <ul>Bauxite mines produce 6 bauxite /day</ul>
+            
+                                                <div class="purchasemilitarydiv">
+                                                    <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
+            
+                                                    <div class="templatedivflex2 divflex2center">
+                                                        <div class="templatedivflex2left flexchildvanilla">
+            
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bauxite_mines/{{ pId }}"><span
+                                                        class="material-icons-outlined">
+                                                        add_circle_outline
+                                                    </span>Buy</button>
+            
+                                                        </div>
+                                                        <div class="templatedivflex2left flexchildvanilla">
+            
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bauxite_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                        remove_circle_outline
+                                                    </span>Sell</button>
+            
+                                                        </div>
+                                                    </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+            
+                                            </div>
+            
+                                            <div class="templatedivflex2left">
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/bauxitemine.jpg') }}" />
+                                            </div>
+                                        </div>
+            
+                                </div>
+                                {% elif location in ["europe"] %}
+                                    <!-- Coal mines -->
+                                    <div class="menudiv">
+
+                                        <h2 class="templatecontentheaderleft">Coal Mines</h2>
+                
+                                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                                            <div class="templatedivflex2left">
+                
+                                                <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
+                
+                                                <p class="templatecontentpleft">Coal Mines</p>
+                
+                                                <ul>Coal mines [ farmCost ] Each</ul>
+                                                <ul>Coal mines 4 uranium/day</ul>
+                
+                                                <div class="purchasemilitarydiv">
+                                                    <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
+                
+                                                    <div class="templatedivflex2 divflex2center">
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines//{{ pId }}"><span
+                                                        class="material-icons-outlined">
+                                                        add_circle_outline
+                                                    </span>Buy</button>
+                
+                                                        </div>
+                                                        <div class="templatedivflex2left flexchildvanilla">
+                
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                        remove_circle_outline
+                                                    </span>Sell</button>
+                
+                                                        </div>
+                                                    </div>
+                                                    <ul>[ buyFarm ] farms will cost you $[ buyFarmPrice ]</ul>
+                                                </div>
+                
+                                            </div>
+                
+                                            <div class="templatedivflex2left">    
+                                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
+                                            </div>
+                                        </div>
+                
+                                    </div>
+                                {% endif %}
+                                
                 <!--Processing-->
                 <div id="processing" class="processing">
 
@@ -1683,7 +1973,7 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ oil_plant }} Oil Plants</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ component_factories }} Component factories</h3>
 
                                 <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
 
@@ -1691,12 +1981,12 @@
                                 <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="component_factories" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/component_factories/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1704,7 +1994,7 @@
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/component_factories/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
