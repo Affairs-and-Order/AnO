@@ -387,8 +387,27 @@ class Military(Nation):
         # losers: [id1,id2...idn]
     @staticmethod
     # CURRENTLY ONLY ONE WINER/LOSER is supported
-    def raparation_tax(winners, losers):
-        pass
+    def reparation_tax(winners, losers):
+
+        # get remaining morale for winner (only one supported current_wars)
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+        db = connection.cursor()
+
+        # db.execute(
+        # "SELECT IF attacker_morale==0 THEN defender_morale ELSE attacker_morale FROM (SELECT defender_morale,attacker_morale FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)) L",
+        # (winners[0], winners[0], losers[0], losers[0]))
+
+        db.execute(
+        "SELECT CASE WHEN attacker_morale=0 THEN defender_morale\n ELSE attacker_morale\n END\n FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)",
+        (winners[0], winners[0], losers[0], losers[0]))
+        winner_remaining_morale=db.fetchone()[0]
+
+        print(winner_remaining_morale)
 
     # Update the morale and give back the win type name
     @staticmethod
@@ -805,6 +824,9 @@ class Military(Nation):
 
 # DEBUGGING:
 if __name__ == "__main__":
-    p = Nation.get_public_works(14)
-    Military.infrastructure_damage(20, p)
-    print(p)
+    # p = Nation.get_public_works(14)
+    # Military.infrastructure_damage(20, p)
+    # print(p)
+
+    m = Military(2)
+    m.reparation_tax([2], [1])
