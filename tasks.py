@@ -7,7 +7,12 @@ def generate_province_revenue(): # Runs each hour
 
     infra = {
 
-    ### Electricity ### (missing coal burners, but done)
+    ### Electricity (done) ### 
+    'coal_burners_plus': {'energy': 4},
+    'coal_burners_minus': {'coal': 48},
+    'coal_burners_money': 45000,
+    'coal_burners_pollution': 30,
+
     'oil_burners_plus': {'energy': 3},
     'oil_burners_minus': {'coal': 56},
     'oil_burners_money': 60000,
@@ -66,7 +71,7 @@ def generate_province_revenue(): # Runs each hour
     'monorails_money': 210000,
     ###################
 
-    ### Military ###
+    ### Military (done) ###
     'army_bases_money': 25000, # Costs $25k
     'harbours_money': 35000,
     'aerodomes_money': 55000,
@@ -74,16 +79,37 @@ def generate_province_revenue(): # Runs each hour
     'silos_money': 120000,
     ################
 
-    ### Industry ### (missing lumber farms)
+    ### Industry  ###
+
+    # Requires land slots
+    # 4 Producable resources per nation
+
+    'farms_money': 3000, # Costs $3k
+    'farms_plus': {'rations': 30},
 
     'pumpjacks_money': 10000, # Costs $10k
+    'pumpjacks_plus': {'oil': 23},
+
     'coal_mines_money': 10000, # Costs $10k
+    'coal_mines_plus': {'coal': 26},
+
     'bauxite_mines_money': 8000, # Costs $8k
+    'bauxite_mines_plus': {'bauxite': 20},
+
     'copper_mines_money': 8000, # Costs $8k
+    'copper_mines_plus': {'copper': 32},
+
     'uranium_mines_money': 18000, # Costs $18k
+    'uranium_mines_plus': {'uranium': 12},
+
     'lead_mines_money': 12000,
+    'lead_mines_plus': {'lead': 18},
+
     'iron_mines_money': 18000,
+    'iron_mines_plus': {'iron': 25},
+
     'lumber_mills_money': 7500,
+    'lumber_mills_plus': {'lumber': 32},
 
     ################
 
