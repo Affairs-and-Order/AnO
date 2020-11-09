@@ -115,14 +115,19 @@ def generate_province_revenue(): # Runs each hour
 
     ### Processing ###
     'component_factories_money': 220000, # Costs $220k
+    'component_factories_convert_plus': {'components': 5},
 
     'steel_mills_money': 180000,
+    'steel_mills_convert_plus': {'steel': 15},
 
     'ammunition_factories_money': 140000,
+    'ammunition_factories_convert_plus': {'ammunition': 10},
 
     'aluminium_refineries_money': 150000,
+    'aluminium_refineries_convert_plus': {'aluminium': 12},
 
-    'oil_refineries_money': 160000
+    'oil_refineries_money': 160000,
+    'oil_refineries_convert_plus': {'gas': 8}
 
     }
 
