@@ -49,7 +49,6 @@ class Economy:
         # TODO fix this when the databases changes and update to include all resources
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (self.nationID,))
         self.gold = db.fetchone()[0]
-
     def get_particular_resources(self, resources):
 
         connection = psycopg2.connect(
@@ -73,6 +72,7 @@ class Economy:
             return "Invalid resource"
 
         return resource_dict
+
 
     def grant_resources(self, resource, amount):
         # TODO find a way to get the database to work on relative directories
@@ -168,7 +168,7 @@ class Nation:
         pass
 
     def get_provinces(self):
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -201,7 +201,7 @@ class Nation:
 
     @staticmethod
     def get_current_wars(id):
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -233,7 +233,7 @@ class Nation:
     # Get everything from proInfra table which is in the "public works" category
     @classmethod
     def get_public_works(self, province_id):
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -244,7 +244,7 @@ class Nation:
         db = connection.cursor()
         public_works_string = ",".join(self.public_works)
 
-        infra_sel_stat = F"SELECT {public_works_string} FROM proInfra " + "WHERE id=%s" 
+        infra_sel_stat = F"SELECT {public_works_string} FROM proInfra " + "WHERE id=%s"
         db.execute(infra_sel_stat, (province_id,))
         fetch_public = db.fetchone()
         public_works_dict = {}
@@ -270,7 +270,7 @@ class Nation:
     # Get the list of owned upgrades like supply amount increaser from 200 to 210, etc.
     @classmethod
     def get_upgrades(cls, upgrade_type, user_id):
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -284,7 +284,7 @@ class Nation:
         if upgrade_type == "supplies":
             for upgrade in cls.supply_related_upgrades.keys():
 
-                upgrade_sel_stat = f"SELECT {upgrade} FROM upgrades " + "WHERE user_id=%s" 
+                upgrade_sel_stat = f"SELECT {upgrade} FROM upgrades " + "WHERE user_id=%s"
                 db.execute(upgrade_sel_stat, (user_id,))
 
                 count = db.fetchone()[0]
@@ -366,7 +366,7 @@ class Military(Nation):
     # Returns the morale either for the attacker or the defender, and with the war_id
     @staticmethod
     def get_morale(column, attacker, defender):
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -381,10 +381,50 @@ class Military(Nation):
         morale = db.fetchone()[0]
         return (war_id, morale)
 
+    # Reparation tax
+    # parameter description:
+        # winners: [id1,id2...idn]
+        # losers: [id1,id2...idn]
+    @staticmethod
+
+    # NOTE: currently only one winner is supported winners = [id]
+    def reparation_tax(winners, losers):
+    # def reparation_tax(winner_side, loser_side):
+
+        # get remaining morale for winner (only one supported current_wars)
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+        db = connection.cursor()
+
+        # db.execute(
+        # "SELECT IF attacker_morale==0 THEN defender_morale ELSE attacker_morale FROM (SELECT defender_morale,attacker_morale FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)) L",
+        # (winners[0], winners[0], losers[0], losers[0]))
+
+        db.execute(
+        "SELECT CASE WHEN attacker_morale=0 THEN defender_morale\n ELSE attacker_morale\n END\n FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)",
+        (winners[0], winners[0], losers[0], losers[0]))
+        winner_remaining_morale=db.fetchone()[0]
+
+        # Calculate reparation tax based on remaining morale
+        # if winner_remaining_morale_effect
+        tax_rate = 0.2*winner_remaining_morale
+
+        print(
+        db.execute("INSERT INTO reparation_tax (winner,loser,percentage,until) VALUES (%s,%s,%s,%s)", (winners[0], losers[0], tax_rate, time.time()+5000))
+        )
+        print(winner_remaining_morale, tax_rate)
+
+        connection.commit()
+        connection.close()
+
     # Update the morale and give back the win type name
     @staticmethod
     def morale_change(war_id, morale, column, win_type, winner, loser):
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -431,7 +471,7 @@ class Military(Nation):
                 db.execute(resource_sel_stat, (loser.user_id,))
                 resource_amount = db.fetchone()[0]
 
-                # transfer 20% of resource on hand
+                # transfer 20% of resource on hand (TODO: implement if and alliance won how to give it)
                 eco.transfer_resources(resource, resource_amount*(1/5), winner.user_id)
 
             print("THE WAR IS OVER")
@@ -466,7 +506,7 @@ class Military(Nation):
 
 
             # infrastructure damage
-            
+
             connection = psycopg2.connect(
                 database=os.getenv("PG_DATABASE"),
                 user=os.getenv("PG_USER"),
@@ -589,7 +629,7 @@ class Military(Nation):
 
 
         # Get the absolute side (absolute attacker and defender) in the war for determining the loser's morale column name to decrease
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -630,7 +670,7 @@ class Military(Nation):
             loser.casualties(loser_unit, l_casualties)
 
         # infrastructure damage
-                # 
+                #
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -657,7 +697,7 @@ class Military(Nation):
     # particular_units must be a list of string unit names
     @staticmethod
     def get_particular_units_list(cId, particular_units): # int, list -> list
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -692,7 +732,7 @@ class Military(Nation):
 
     @staticmethod
     def get_military(cId): # int -> dict
-                
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -718,7 +758,7 @@ class Military(Nation):
 
         db.execute("SELECT apaches FROM military WHERE id=%s", (cId,))
         apaches = db.fetchone()[0]
-        
+
         db.execute("SELECT destroyers FROM military WHERE id=%s", (cId,))
         destroyers = db.fetchone()[0]
 
@@ -744,7 +784,7 @@ class Military(Nation):
 
     @staticmethod
     def get_special(cId): # int -> dict
-                
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -772,7 +812,7 @@ class Military(Nation):
 
     # Check and set default_defense in nation table
     def set_defense(self, defense_string): # str -> None
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -796,6 +836,9 @@ class Military(Nation):
 
 # DEBUGGING:
 if __name__ == "__main__":
-    p = Nation.get_public_works(14)
-    Military.infrastructure_damage(20, p)
-    print(p)
+    # p = Nation.get_public_works(14)
+    # Military.infrastructure_damage(20, p)
+    # print(p)
+
+    m = Military(2)
+    m.reparation_tax([2], [1])
