@@ -16,7 +16,7 @@ tables = [
     "coalitions", "colBanks", "colBanksRequests", "colNames",
     "keys", "military", "offers", "proInfra", "provinces", "upgrades",
     "requests", "resources", "spyinfo", "stats", "trades", "treaty_ids",
-    "treaties", "users", "peace", "wars"
+    "treaties", "users", "peace", "wars", "reparation_tax"
 ]
 
 for i in tables:

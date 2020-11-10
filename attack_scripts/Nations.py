@@ -49,7 +49,6 @@ class Economy:
         # TODO fix this when the databases changes and update to include all resources
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (self.nationID,))
         self.gold = db.fetchone()[0]
-
     def get_particular_resources(self, resources):
 
         connection = psycopg2.connect(
@@ -73,6 +72,7 @@ class Economy:
             return "Invalid resource"
 
         return resource_dict
+
 
     def grant_resources(self, resource, amount):
         # TODO find a way to get the database to work on relative directories
@@ -386,8 +386,10 @@ class Military(Nation):
         # winners: [id1,id2...idn]
         # losers: [id1,id2...idn]
     @staticmethod
-    # CURRENTLY ONLY ONE WINER/LOSER is supported
+
+    # NOTE: currently only one winner is supported winners = [id]
     def reparation_tax(winners, losers):
+    # def reparation_tax(winner_side, loser_side):
 
         # get remaining morale for winner (only one supported current_wars)
         connection = psycopg2.connect(
@@ -407,6 +409,7 @@ class Military(Nation):
         (winners[0], winners[0], losers[0], losers[0]))
         winner_remaining_morale=db.fetchone()[0]
 
+        # db.execute("INSERT INTO ")
         print(winner_remaining_morale)
 
     # Update the morale and give back the win type name

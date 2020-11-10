@@ -1,7 +1,9 @@
-CREATE TABLE IF NOT EXISTS wars
+CREATE TABLE IF NOT EXISTS reparation_tax
 (id SERIAL PRIMARY KEY NOT NULL,
 winner INT NOT NULL,
 loser INT NOT NULL,
+
+-- will get x% of everything
 percentage INT NOT NULL,
 until REAL NOT NULL
 );
