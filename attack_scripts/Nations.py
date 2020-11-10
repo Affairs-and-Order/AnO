@@ -409,8 +409,17 @@ class Military(Nation):
         (winners[0], winners[0], losers[0], losers[0]))
         winner_remaining_morale=db.fetchone()[0]
 
-        # db.execute("INSERT INTO ")
-        print(winner_remaining_morale)
+        # Calculate reparation tax based on remaining morale
+        # if winner_remaining_morale_effect
+        tax_rate = 0.2*winner_remaining_morale
+
+        print(
+        db.execute("INSERT INTO reparation_tax (winner,loser,percentage,until) VALUES (%s,%s,%s,%s)", (winners[0], losers[0], tax_rate, time.time()+5000))
+        )
+        print(winner_remaining_morale, tax_rate)
+
+        connection.commit()
+        connection.close()
 
     # Update the morale and give back the win type name
     @staticmethod
