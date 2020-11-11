@@ -856,6 +856,7 @@ def warResult():
 
         print(attack_effects, "BEFORE WARTYPE EFFECTS")
 
+        # PERSONAL NOTES: abstraction can be created for exchaning war_type's and other's feects (this way will be optimized)
         if len(war_type) > 0:
             if war_type == "Raze":
 

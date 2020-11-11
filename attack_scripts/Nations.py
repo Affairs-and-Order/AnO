@@ -36,6 +36,51 @@ class Economy:
     def __init__(self, nationID):
         self.nationID = nationID
 
+    # Reparation tax
+    # parameter description:
+        # winners: [id1,id2...idn]
+        # losers: [id1,id2...idn]
+    @staticmethod
+
+    # NOTE: currently only one winner is supported winners = [id]
+    def reparation_tax(winners, losers):
+    # def reparation_tax(winner_side, loser_side):
+
+        # get remaining morale for winner (only one supported current_wars)
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+        db = connection.cursor()
+
+        # db.execute(
+        # "SELECT IF attacker_morale==0 THEN defender_morale ELSE attacker_morale FROM (SELECT defender_morale,attacker_morale FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)) L",
+        # (winners[0], winners[0], losers[0], losers[0]))
+
+        db.execute(
+        "SELECT CASE WHEN attacker_morale=0 THEN defender_morale\n ELSE attacker_morale\n END\n FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)",
+        (winners[0], winners[0], losers[0], losers[0]))
+        winner_remaining_morale=db.fetchone()[0]
+
+        db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s))", (winners[0], losers[0], winners[0], losers[0]))
+        war_type = db.fetchall()[-1]
+
+        # Calculate reparation tax based on remaining morale
+        tax_rate = 0.2*winner_remaining_morale
+        # if winner_remaining_morale_effect
+
+        if war_type == "Raze":
+            tax_rate=0
+
+        db.execute("INSERT INTO reparation_tax (winner,loser,percentage,until) VALUES (%s,%s,%s,%s)", (winners[0], losers[0], tax_rate, time.time()+5000))
+
+        # print(winner_remaining_morale, tax_rate)
+
+        connection.commit()
+        connection.close()
+
     def get_economy(self):
 
         connection = psycopg2.connect(
@@ -381,46 +426,6 @@ class Military(Nation):
         morale = db.fetchone()[0]
         return (war_id, morale)
 
-    # Reparation tax
-    # parameter description:
-        # winners: [id1,id2...idn]
-        # losers: [id1,id2...idn]
-    @staticmethod
-
-    # NOTE: currently only one winner is supported winners = [id]
-    def reparation_tax(winners, losers):
-    # def reparation_tax(winner_side, loser_side):
-
-        # get remaining morale for winner (only one supported current_wars)
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-        db = connection.cursor()
-
-        # db.execute(
-        # "SELECT IF attacker_morale==0 THEN defender_morale ELSE attacker_morale FROM (SELECT defender_morale,attacker_morale FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)) L",
-        # (winners[0], winners[0], losers[0], losers[0]))
-
-        db.execute(
-        "SELECT CASE WHEN attacker_morale=0 THEN defender_morale\n ELSE attacker_morale\n END\n FROM wars WHERE (attacker=%s OR defender=%s) AND (attacker=%s OR defender=%s)",
-        (winners[0], winners[0], losers[0], losers[0]))
-        winner_remaining_morale=db.fetchone()[0]
-
-        # Calculate reparation tax based on remaining morale
-        # if winner_remaining_morale_effect
-        tax_rate = 0.2*winner_remaining_morale
-
-        print(
-        db.execute("INSERT INTO reparation_tax (winner,loser,percentage,until) VALUES (%s,%s,%s,%s)", (winners[0], losers[0], tax_rate, time.time()+5000))
-        )
-        print(winner_remaining_morale, tax_rate)
-
-        connection.commit()
-        connection.close()
-
     # Update the morale and give back the win type name
     @staticmethod
     def morale_change(war_id, morale, column, win_type, winner, loser):
@@ -473,6 +478,7 @@ class Military(Nation):
 
                 # transfer 20% of resource on hand (TODO: implement if and alliance won how to give it)
                 eco.transfer_resources(resource, resource_amount*(1/5), winner.user_id)
+                eco.reparation_tax(winner.user_id,loser.user_id)
 
             print("THE WAR IS OVER")
 
@@ -840,5 +846,5 @@ if __name__ == "__main__":
     # Military.infrastructure_damage(20, p)
     # print(p)
 
-    m = Military(2)
+    m = Economy(2)
     m.reparation_tax([2], [1])
