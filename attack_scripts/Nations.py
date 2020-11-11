@@ -338,11 +338,49 @@ class Nation:
         # returns the bonus given by the upgrade
         return upgrades
 
+
 class Military(Nation):
     allUnits = ["soldiers", "tanks", "artillery",
                 "bombers", "fighters", "apaches",
                 "destroyers", "cruisers", "submarines",
                 "spies", "icbms", "nukes"]
+
+    # Add properties to objects like effect of war policies and war types, etc.
+    # the property's name "outer_effects"
+    @staticmethod
+    def outer_war_effects(affected_object):
+
+        # War type
+        db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
+        war_type = db.fetchall()[-1]
+
+        if not affected_object.get("outer_effects", None):
+            affected_object["outer_effects"] = {}
+
+        if war_type == "Raze":
+
+            # infrastructure damage
+            infra_damage = 10
+            loot_amount = 0
+            tax_amount = 0
+
+        elif war_type == "Loot":
+
+            # infrastructure damage
+            infra_damage = 0.2
+            loot_amount = 2
+            tax_amount = 1
+
+        elif war_type == "Sustained":
+            infra_damage = 1
+            loot_amount = 1
+            tax_amount = 1
+
+        # War policies
+        
+
+        affected_object["outer_effects"]["infra_damage"] = infra_damage
+
 
     # description of the function: deal damage to random buildings based on particular_infra
     # particular_infra parameter example: for public_works -> {"libraries": 3, "hospitals": x, etc.}
