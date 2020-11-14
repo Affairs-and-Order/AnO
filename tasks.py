@@ -192,6 +192,13 @@ def generate_province_revenue(): # Runs each hour
             effect_minus = None
             effect_minus_amount = None
 
+        try:
+            convert_plus = infra[f'{unit}_convert_plus'][0]
+            convert_plus_amount = int(infra[f'{unit}_convert_plus'][1])
+        except KeyError:
+            convert_plus = None
+            convert_plus_amount = None
+
         for province_id in infra_ids:
 
             province_id = province_id[0]
@@ -270,6 +277,17 @@ def generate_province_revenue(): # Runs each hour
                     do_effect(effect_2, effect_2_amount, "+")
                 if effect_minus != None:
                     do_effect(effect_minus, effect_minus_amount, "-")
+
+                if convert_plus != None:
+
+                    resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
+                    db.execute(resource_s_statement, (user_id))
+                    current_resource = int(db.fetchone()[0])
+
+                    new_resource = current_resource + convert_plus_amount
+
+                    resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
+                    db.execute(resource_u_statement, (new_resource, user_id))
 
 
         conn.commit() # Commits the changes
