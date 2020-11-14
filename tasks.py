@@ -113,22 +113,30 @@ def generate_province_revenue(): # Runs each hour
 
     ################
 
-    ### Processing ###
+    ### Processing (done) ###
     'component_factories_money': 220000, # Costs $220k
+    'component_factories_convert_minus': {'copper': 20},
+    'component_factories_convert_minus': {'steel': 10},
+    'component_factories_convert_minus': {'aluminium': 15},
     'component_factories_convert_plus': {'components': 5},
 
     'steel_mills_money': 180000,
+    'steel_mills_convert_minus': {'coal': 35},
+    'steel_mills_convert_minus_2': {'iron': 35},
     'steel_mills_convert_plus': {'steel': 15},
 
     'ammunition_factories_money': 140000,
+    'ammunition_factories_convert_minus': {'copper': 10},
+    'ammunition_factories_convert_minus_2': {'lead': 20},
     'ammunition_factories_convert_plus': {'ammunition': 10},
 
     'aluminium_refineries_money': 150000,
+    'aluminium_refineries_convert_minus': {'bauxite': 15},
     'aluminium_refineries_convert_plus': {'aluminium': 12},
 
     'oil_refineries_money': 160000,
+    'oil_refineries_convert_minus': {'oil': 20},
     'oil_refineries_convert_plus': {'gas': 8}
-
     }
 
     conn = psycopg2.connect(
@@ -191,6 +199,13 @@ def generate_province_revenue(): # Runs each hour
         except KeyError:
             effect_minus = None
             effect_minus_amount = None
+
+        try:
+            convert_plus = infra[f'{unit}_convert_plus'][0]
+            convert_plus_amount = int(infra[f'{unit}_convert_plus'][1])
+        except KeyError:
+            convert_plus = None
+            convert_plus_amount = None
 
         for province_id in infra_ids:
 
@@ -270,6 +285,17 @@ def generate_province_revenue(): # Runs each hour
                     do_effect(effect_2, effect_2_amount, "+")
                 if effect_minus != None:
                     do_effect(effect_minus, effect_minus_amount, "-")
+
+                if convert_plus != None:
+
+                    resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
+                    db.execute(resource_s_statement, (user_id))
+                    current_resource = int(db.fetchone()[0])
+
+                    new_resource = current_resource + convert_plus_amount
+
+                    resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
+                    db.execute(resource_u_statement, (new_resource, user_id))
 
 
         conn.commit() # Commits the changes
