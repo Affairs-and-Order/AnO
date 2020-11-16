@@ -149,12 +149,12 @@ def generate_province_revenue(): # Runs each hour
     db = conn.cursor()
 
     columns = [
-    'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
+    'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
     'gas_stations', 'general_stores', 'farmers_markets', 'malls',
     'banks', 'city_parks', 'hospitals', 'libraries', 'universities', 'monorails',
 
     "pumpjacks", "coal_mines", "bauxite_mines", "copper_mines", "uranium_mines",
-    "lead_mines", "iron_mines",
+    "lead_mines", "iron_mines", 'lumber_mills',
 
     "component_factories", "steel_mills", "ammunition_factories", "aluminium_refineries",
     "oil_refineries"
@@ -175,37 +175,41 @@ def generate_province_revenue(): # Runs each hour
             plus_amount = plus_data[1]
 
         except KeyError:
-            plus = False
+            plus = None
 
         operating_costs = int(infra[f'{unit}_money'])
 
         try:
-            effect = infra[f'{unit}_effect'][0]
-            effect_amount = int(infra[f'{unit}_effect_2'][1])
+            effect_data = next(iter(infra[f'{unit}_effect'].items()))
+
+            effect = effect_data[0]
+            effect_amount = effect_data[1]
         except KeyError:
             effect = None
-            effect_amount = None
 
         try:
-            effect_2 = infra[f'{unit}_effect_2'][0]
-            effect_2_amount = int(infra[f'{unit}_effect_2'][1])
+            effect_2_data = next(iter(infra[f'{unit}_effect_2'].items()))
+            
+            effect_2 = effect_2_data[0]
+            effect_2_amount = effect_2_data[1]
         except KeyError:
             effect_2 = None
-            effect_2_amount = None
 
         try:
-            effect_minus = infra[f'{unit}_effect_minus'][0]
-            effect_minus_amount = int(infra[f'{unit}_effect_minus'][1])
+            effect_minus_data = next(iter(infra[f'{unit}_effect_minus'].items()))
+
+            effect_minus = effect_minus_data[0]
+            effect_minus_amount = effect_minus_data[1]
         except KeyError:
             effect_minus = None
-            effect_minus_amount = None
 
         try:
-            convert_plus = infra[f'{unit}_convert_plus'][0]
-            convert_plus_amount = int(infra[f'{unit}_convert_plus'][1])
+            convert_plus_data = next(iter(infra[f'{unit}_convert_plus'].items()))
+
+            convert_plus = convert_plus_data[0]
+            convert_plus_amount = convert_plus_data[1]
         except KeyError:
             convert_plus = None
-            convert_plus_amount = None
 
         for province_id in infra_ids:
 
@@ -255,7 +259,7 @@ def generate_province_revenue(): # Runs each hour
                     effect_minus_amount *= unit_amount
 
                 # Function for _plus
-                if plus != False:
+                if plus != None:
 
                     db.execute("SELECT %s FROM provinces WHERE id=(%s)", (plus_resource, user_id,))
                     current_plus_resource = db.fetchone()[0]
