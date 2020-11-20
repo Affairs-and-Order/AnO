@@ -6,7 +6,6 @@ __pycache__/
 # Environments
 .venv
 env/
-.env
 venv/
 ENV/
 env.bak/
@@ -20,4 +19,5 @@ venv.bak/
 .idea/AnO2.iml
 
 # Local config files
+.env
 .env.postgresql
