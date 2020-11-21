@@ -116,8 +116,8 @@ def generate_province_revenue(): # Runs each hour
     ### Processing (done) ###
     'component_factories_money': 220000, # Costs $220k
     'component_factories_convert_minus': {'copper': 20},
-    'component_factories_convert_minus': {'steel': 10},
-    'component_factories_convert_minus': {'aluminium': 15},
+    'component_factories_convert_minus_2': {'steel': 10},
+    'component_factories_convert_minus_3': {'aluminium': 15},
     'component_factories_convert_plus': {'components': 5},
 
     'steel_mills_money': 180000,
@@ -203,6 +203,8 @@ def generate_province_revenue(): # Runs each hour
         except KeyError:
             effect_minus = None
 
+        # Converting stuff
+            # Plus stuff
         try:
             convert_plus_data = next(iter(infra[f'{unit}_convert_plus'].items()))
 
@@ -210,6 +212,30 @@ def generate_province_revenue(): # Runs each hour
             convert_plus_amount = convert_plus_data[1]
         except KeyError:
             convert_plus = None
+            # Minus stuff
+        try:
+            convert_minus_data = next(iter(infra[f'{unit}_convert_minus'].items()))
+
+            convert_minus = convert_minus_data[0]
+            convert_minus_amount = convert_minus_data[1]
+        except KeyError:
+            convert_minus = None
+
+        try:
+            convert_minus_2_data = next(iter(infra[f'{unit}_convert_minus_2'].items()))
+
+            convert_minus_2 = convert_minus_2_data[0]
+            convert_minus_2_amount = convert_minus_2_data[1]
+        except KeyError:
+            convert_minus_2 = None
+
+        try:
+            convert_minus_3_data = next(iter(infra[f'{unit}_convert_minus_3'].items()))
+
+            convert_minus_3 = convert_minus_3_data[0]
+            convert_minus_3_amount = convert_minus_3_data[1]
+        except KeyError:
+            convert_minus_3 = None
 
         for province_id in infra_ids:
 
