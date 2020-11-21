@@ -316,6 +316,7 @@ def generate_province_revenue(): # Runs each hour
                 if effect_minus != None:
                     do_effect(effect_minus, effect_minus_amount, "-")
 
+                ## Convert plus
                 if convert_plus != None:
 
                     resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
@@ -326,7 +327,26 @@ def generate_province_revenue(): # Runs each hour
 
                     resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
                     db.execute(resource_u_statement, (new_resource, user_id))
+                ## 
 
+                ## Convert minus
+                def minus_convert(name, amount): 
+                    
+                    resource_statement = f"SELECT {name} FROM resources " + "WHERE id=%s"
+                    db.execute(resource_statement, (user_id))
+                    current_resource = int(db.fetchone()[0])
+
+                    new_resource = current_resource - amount
+
+                    resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
+                    db.execute(resource_u_statement, (new_resource, user_id))
+
+                if convert_minus != None:
+                    minus_convert(convert_minus, convert_minus_amount)
+                if convert_minus_2 != None:
+                    minus_convert(convert_minus_2, convert_minus_2_amount)
+                if convert_minus_3 != None:
+                    minus_convert(convert_minus_3, convert_minus_3_amount)
 
         conn.commit() # Commits the changes
 
