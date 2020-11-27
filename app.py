@@ -46,7 +46,7 @@ celery_beat_schedule = {
     "province_infrastructure": {
         "task": "app.generate_province_revenue",
         # Run every 10 seconds
-        "schedule": 10.0
+        "schedule": 10.0,
     }
 }
 
@@ -76,41 +76,6 @@ celery.conf.update(
     result_serializer="json",
     beat_schedule=celery_beat_schedule,
 )
-
-
-@celery.task()
-def populationGrowth():
-
-    conn = psycopg2.connect(
-    database=os.getenv("PG_DATABASE"),
-    user=os.getenv("PG_USER"),
-    password=os.getenv("PG_PASSWORD"),
-    host=os.getenv("PG_HOST"),
-    port=os.getenv("PG_PORT"))
-
-    db = conn.cursor()
-
-    # selects id, population from the stats table and gets all the results for it
-    db.execute("SELECT population, id FROM stats")
-    pop = db.fetchall()
-
-    for row in pop:  # iterates over every result in population
-        # sets the user_id variable to the "id" result from the query
-        user_id = row[1]
-        # sets the current population variable to the "population" result from the query
-        curPop = row[0]
-        # gets the current population value and adds the same value / 10 to it
-        newPop = curPop + (int(curPop/10))
-        # updates the db with the new value for population
-        db.execute("UPDATE stats SET population=%s WHERE id=%s", (newPop, user_id,))
-        conn.commit()  # commits everything new
-    conn.close()
-
-"""
-@celery.task()
-def gen_province_revenue():
-    generate_province_revenue
-"""
 
 # runs once a day
 """

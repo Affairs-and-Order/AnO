@@ -3,6 +3,30 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+def populationGrowth():
+
+    conn = psycopg2.connect(
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT population, id FROM stats")
+    pop = db.fetchall()
+
+    for row in pop: 
+        user_id = row[1]
+        curPop = row[0]
+
+        newPop = curPop + (int(curPop/100)) # 1% of population
+        db.execute("UPDATE stats SET population=%s WHERE id=%s", (newPop, user_id,))
+        conn.commit()
+
+    conn.close()
+
 def generate_province_revenue(): # Runs each hour
 
     infra = {
