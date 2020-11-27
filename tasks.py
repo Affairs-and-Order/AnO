@@ -14,14 +14,27 @@ def populationGrowth():
 
     db = conn.cursor()
 
-    db.execute("SELECT population, id FROM stats")
+    db.execute("SELECT id, population FROM stats")
     pop = db.fetchall()
 
-    for row in pop: 
-        user_id = row[1]
-        curPop = row[0]
+    rations_per_100k = 10
 
-        newPop = curPop + (int(curPop/100)) # 1% of population
+    for row in pop: 
+        user_id = row[0]
+        curPop = int(row[1])
+
+        db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
+        rations = int(db.fetchone()[0])
+
+        hundred_k = round((curPop / 100000) + 0.5) - 1
+        new_rations = rations - (hundred_k * rations_per_100k)
+
+        if new_rations < 1:
+            newPop = curPop + curPop/100 # 1% of population
+        else:
+            db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
+            newPop = curPop + curPop/50 # 2% of population
+
         db.execute("UPDATE stats SET population=%s WHERE id=%s", (newPop, user_id,))
         conn.commit()
 
@@ -375,5 +388,3 @@ def generate_province_revenue(): # Runs each hour
         conn.commit() # Commits the changes
 
     conn.close() # Closes the connection
-
-generate_province_revenue()
