@@ -3,7 +3,34 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-def populationGrowth():
+def income(): # Function for giving money to players
+
+    conn = psycopg2.connect(
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT id FROM users")
+    users = db.fetchall()
+
+    for user_id in users:
+
+        db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
+        money = int(db.fetchone()[0])
+
+        new_money = money + money//100
+
+        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_money, user_id,))
+
+        conn.commit()
+
+    conn.close()
+
+def populationGrowth(): # Function for growing population
 
     conn = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
@@ -26,11 +53,11 @@ def populationGrowth():
         db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
         rations = int(db.fetchone()[0])
 
-        hundred_k = round((curPop / 100000) + 0.5) - 1
+        hundred_k = round((curPop // 100000) + 0.5) - 1
         new_rations = rations - (hundred_k * rations_per_100k)
 
         if new_rations < 1:
-            newPop = curPop + curPop/100 # 1% of population
+            newPop = curPop + curPop//100 # 1% of population
         else:
             db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
             newPop = curPop + curPop/50 # 2% of population

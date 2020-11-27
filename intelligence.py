@@ -2,7 +2,6 @@
 
 from app import app
 from flask import Flask, request, render_template, session, redirect, abort, flash, url_for
-from flask_session import Session
 from helpers import login_required, error
 from attack_scripts import Nation, Military
 from units import Units
