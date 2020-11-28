@@ -292,6 +292,5 @@ def warresult():
 def mass_purchase():
     return render_template("mass_purchase.html")
 
-# available to run if double click the file
 if __name__ == "__main__":
-    app.run(debug=True) # Runs the app with debug mode on
+    app.run(host='0.0.0.0')
