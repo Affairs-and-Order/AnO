@@ -67,7 +67,16 @@ def login():
 
 OAUTH2_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
 OAUTH2_CLIENT_SECRET = os.getenv("DISCORD_CLIENT_SECRET")
-OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'
+
+try:
+    environment = os.getenv("ENVIRONMENT")
+except:
+    environment = "DEV"
+
+if environment == "PROD":
+    OAUTH2_REDIRECT_URI = 'https://www.affairsandorder.com/callback'
+else:
+    OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'
 
 API_BASE_URL = os.environ.get('API_BASE_URL', 'https://discordapp.com/api')
 AUTHORIZATION_BASE_URL = API_BASE_URL + '/oauth2/authorize'
