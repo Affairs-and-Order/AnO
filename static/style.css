@@ -2123,7 +2123,7 @@ button {
     margin: auto;
     background: var(--foregroundSeven);
     height: max-content;
-    box-shadow: rgba(0, 0, 0, 0.2) 0 12px 48px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0 12px 48px, var(--border) 0 0 0 0.75px;
     margin-top: 7.5vh;
     min-height: 70vh;
 }
