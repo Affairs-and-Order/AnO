@@ -7,7 +7,7 @@
             <div class="landingchild landingchildleft">
                 <h1 class="landingheader">Lead Your Country</h1>
 
-                <p class="landingcontent">We provide everyone with things to protect themselves. These things vary wildy in cost and effectiveness. It goes without saying that these tools will allow you to fly.</p>
+                <p class="landingcontent">Affairs & Order is a browser-based nation simulator, where you can manage your nation, trade with others, join coalitions with like-minded nations and wage war.</p>
 
                 <div class="landingchildcontainerparent">
                     <div class="landingchildcontainerchild">
@@ -37,13 +37,41 @@
     </div>
     {% if session.get('user_id') == None %}
     <div class="templatedivcontent">
+        <div class="templatedivflex2 menuflex whiteblue">
+            <div class="templatedivflex2left">
 
-        <h2 class="templatecontentheaderleft">Run an Economy</h2>
+                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/administrativebuilding.jpg') }}" />
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <!---->
+                <h2 class="templatecontentheadercenter">Establish your Country</h2>
+                <p class="templatecontentpleft">Build your nation from the ground up. Collect taxes from your citizens, declare war on enemies, and establish and economy, selling and buying resources on a global market. Compete with real people to become the best.
+                </p>
+
+            </div>
+        </div>
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
+
+                <h2 class="templatecontentheadercenter">Join a Coalition</h2>
+                <p class="templatecontentpleft">Work with friends to build dominant factions. Engage in politics with allies; trade and establish treaties to rise to the top. Raid countries together, share resources, and fight in vigorous battles agianst other coalitions.
+                </p>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/coalition.jpg') }}" />
+
+            </div>
+        </div>
+        <h2 class="templatecontentheaderleft">Customize your Economy</h2>
 
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left cardparent">
 
-                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
 
                 <div class="cardcontent">
 
@@ -61,7 +89,7 @@
             </div>
             <div class="templatedivflex2left cardparent">
 
-                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/bank.jpg') }}" />
 
                 <div class="cardcontent">
 
@@ -79,7 +107,7 @@
             </div>
             <div class="templatedivflex2left cardparent">
 
-                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
                 <div class="cardcontent">
 
@@ -96,58 +124,11 @@
 
             </div>
         </div>
-        <div class="templatedivflex2 menuflex whiteblue">
-            <div class="templatedivflex2left">
-
-                <h2 class="templatecontentheadercenter">Join a Coalition</h2>
-                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
-                </p>
-
-            </div>
-            <div class="templatedivflex2left">
-
-                <!---->
-                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
-
-            </div>
-        </div>
-        <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left">
-
-                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
-
-            </div>
-            <div class="templatedivflex2left">
-
-                <!---->
-                <h2 class="templatecontentheadercenter">Join a Coalition</h2>
-                <p class="templatecontentpleft">Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
-                </p>
-
-            </div>
-        </div>
-
-        <div class="templatedivflex2 menuflex whiteblue">
-            <div class="templatedivflex2left">
-
-                <h2 class="templatecontentheadercenter">Fight in Global Wars</h2>
-                <p class="templatecontentpleft">Raid other players for profit, and defend your country in brutal warfare. Create the strongest army and work with your friends to become the strongest coalition
-                    <br /><br />
-                </p>
-
-            </div>
-            <div class="templatedivflex2left">
-
-                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/indexwar.png') }}" />
-
-            </div>
-        </div>
-
         <div class="landingcontactdiv warflexparentcolors">
 
             <h2 class="templatecontentheadercenter">Join our Community</h2>
 
-            <p class="templatecontentpleft">
+            <p class="templatecontentpleft landingcontactdivp">
                 Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
             </p>
 

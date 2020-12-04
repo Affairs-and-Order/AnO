@@ -985,10 +985,8 @@ hr {
     box-shadow: none;
     padding-bottom: 2.5rem;
     padding-top: 1.5rem;
-}
-
-.svgtopper {
-    background: var(--foregroundSeven);
+    color: var(--colorOne);
+    text-shadow: none;
 }
 
 .provincestopper {
@@ -1203,7 +1201,7 @@ hr {
     display: block;
     width: max-content;
     letter-spacing: 1px;
-    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(0, 0, 0, 0.15) 0 2px 6px 0;
+    box-shadow: inset rgba(39, 41, 59, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0.15) 0 2px 6px 0;
     border-radius: 100px;
     animation: templatedivcontentload 1.25s;
     position: relative;
@@ -2165,7 +2163,6 @@ button {
 .landingheader {
     font-size: 48px;
     color: var(--colorOne);
-    text-shadow: var(--colorOne) 3px 3px 1px, var(--colorOne) 1px 1px 1px, var(--colorOne) 2px 2px 1px, rgba(0, 0, 0, 0.8) 0px 3px 8px;
     margin-bottom: 40px;
 }
 
@@ -2174,7 +2171,6 @@ button {
     margin: 30px auto;
     font-size: 20px;
     line-height: 25px;
-    text-shadow: rgba(0, 0, 0, 0.3) 2px 3px 3px;
     opacity: 0.85;
 }
 
@@ -2197,7 +2193,7 @@ button {
     padding: 10px 40px;
     padding-bottom: 12px;
     font-size: 20px;
-    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px, inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
 }
 
 .discordlink {
@@ -2255,6 +2251,10 @@ button {
     padding: 20px;
     width: fit-content;
     border-radius: 4px;
+}
+
+.landingcontactdivp {
+    width: 70%;
 }
 
 .twitter-timeline {
