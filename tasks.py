@@ -22,7 +22,7 @@ def income(): # Function for giving money to players
         db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
         money = int(db.fetchone()[0])
 
-        new_money = money + money//100
+        new_money = money + money // 100
 
         db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_money, user_id,))
 
@@ -44,23 +44,48 @@ def populationGrowth(): # Function for growing population
     db.execute("SELECT id, population FROM stats")
     pop = db.fetchall()
 
-    rations_per_100k = 10
+    rations_per_100k = 4
 
-    for row in pop: 
-        user_id = row[0]
+    for row in pop: # Iterates over the list of players
+
+        user_id = row[0] # Gets the user id
         curPop = int(row[1])
+
+        maxPop = 1000000 # Base max population: 1 million
+
+        try:
+            db.execute("SELECT sum(cityCount) FROM provinces WHERE userid=%s", (user_id,))
+            cities = int(db.fetchone()[0])
+        except TypeError:
+            cities = 0
+
+        if cities > 0:
+            maxPop += cities * 2000000 # Each city adds 2m population
+
+        try:
+            db.execute("SELECT AVG(happiness) FROM provinces WHERE userid=%s", (user_id,))
+            happiness = int(db.fetchone()[0])
+        except TypeError:
+            happiness = 0
+
+    
+        try:
+            db.execute("SELECT AVG(pollution) FROM provinces WHERE userid=%s", (user_id,))
+            pollution = int(db.fetchone()[0])
+        except TypeError:
+            pollution = 0
 
         db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
         rations = int(db.fetchone()[0])
 
-        hundred_k = round((curPop // 100000) + 0.5) - 1
+        hundred_k = curPop // 100000
         new_rations = rations - (hundred_k * rations_per_100k)
 
-        if new_rations < 1:
-            newPop = curPop + curPop//100 # 1% of population
-        else:
+        if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
+            newPop = maxPop + maxPop // 100 # 1% of population
+        else: # If there are enough rations for everyone, increase population by 2%
             db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
-            newPop = curPop + curPop/50 # 2% of population
+            newPop = maxPop + maxPop // 50 # 2% of population
 
         db.execute("UPDATE stats SET population=%s WHERE id=%s", (newPop, user_id,))
         conn.commit()
