@@ -20,8 +20,8 @@ tables = [
 ]
 
 for i in tables:
-    with open(f"affo/postgres/{i}.txt") as file:
-        db.execute(f"DROP TABLE IF EXISTS {i}")
+    with open(f"postgres/{i}.txt") as file:
+        # db.execute(f"DROP TABLE IF EXISTS {i}")
         db.execute(file.read())
         print(f"Recreated table {i}")
     connection.commit()
