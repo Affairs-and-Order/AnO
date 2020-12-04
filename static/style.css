@@ -1203,18 +1203,18 @@ hr {
     display: block;
     width: max-content;
     letter-spacing: 1px;
-    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(0, 0, 0, 0.15) 0 2px 6px 0;
     border-radius: 100px;
     animation: templatedivcontentload 1.25s;
     position: relative;
 }
 
 .templatedivbutton:hover {
-    box-shadow: inset rgba(39, 41, 59, 0.3) 0px 0px 150px 2px, rgba(39, 41, 59, 0.15) 0px 4px 6px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.3) 0px 0px 150px 2px, rgba(0, 0, 0, 0.15) 0 4px 10px 0;
 }
 
 .templatedivbutton:focus {
-    box-shadow: inset rgba(39, 41, 59, 0.5) 0px 0px 150px 2px, rgba(39, 41, 59, 0.15) 0px 4px 6px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.5) 0px 0px 150px 2px, rgba(0, 0, 0, 0.15) 0 8px 16px 0;
 }
 
 .templatedivbutton span {
