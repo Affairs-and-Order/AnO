@@ -20,7 +20,7 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 ### Windows
 1. Get the `.exe` installer from here: `https://www.enterprisedb.com/downloads/postgres-postgresql-downloads`. Download version 10.14
 2. Run the installer, remember your set settings.
-3. Set them in the .env file
+3. Set them in the .env file (if you haven't already rename .env.example to .env)
 4. Run the `postgres_create_db.py` file in AnO/affo to create your database instance.
 
 # No need for the ones below for development (atm)
