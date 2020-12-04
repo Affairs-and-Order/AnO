@@ -54,7 +54,7 @@ def populationGrowth(): # Function for growing population
         maxPop = 1000000 # Base max population: 1 million
 
         try:
-            db.execute("SELECT sum(cityCount) FROM provinces WHERE userid=%s", (user_id,))
+            db.execute("SELECT SUM(cityCount) FROM provinces WHERE userid=%s", (user_id,))
             cities = int(db.fetchone()[0])
         except TypeError:
             cities = 0
@@ -68,12 +68,23 @@ def populationGrowth(): # Function for growing population
         except TypeError:
             happiness = 0
 
-    
         try:
             db.execute("SELECT AVG(pollution) FROM provinces WHERE userid=%s", (user_id,))
             pollution = int(db.fetchone()[0])
         except TypeError:
             pollution = 0
+
+        # Each % increases / decreases max population by 0.2
+        happiness = (happiness - 50) * 0.2 # The more you have the better 
+
+        # Each % increases / decreases max population by 0.1
+        pollution = (pollution - 50) * -0.1 # The less you have the better
+
+        maxPop += maxPop * happiness
+        maxPop += maxPop * pollution
+
+        if maxPop < 1000000: # If max population is less than 1M
+            maxPop = 1000000 # Make it 1M
 
         db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
         rations = int(db.fetchone()[0])
@@ -82,10 +93,10 @@ def populationGrowth(): # Function for growing population
         new_rations = rations - (hundred_k * rations_per_100k)
 
         if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
-            newPop = maxPop + maxPop // 100 # 1% of population
+            newPop = curPop + maxPop // 100 # 1% of population
         else: # If there are enough rations for everyone, increase population by 2%
             db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
-            newPop = maxPop + maxPop // 50 # 2% of population
+            newPop = curPop + + maxPop // 50 # 2% of population
 
         db.execute("UPDATE stats SET population=%s WHERE id=%s", (newPop, user_id,))
         conn.commit()
