@@ -74,14 +74,22 @@ def populationGrowth(): # Function for growing population
         except TypeError:
             pollution = 0
 
-        # Each % increases / decreases max population by 0.2
-        happiness = (happiness - 50) * 0.2 # The more you have the better 
+        try:
+            db.execute("SELECT AVG(productivity) FROM provinces WHERE userid=%s", (user_id,))
+            productivity = int(db.fetchone()[0])
+        except TypeError:
+            productivity = 0
 
-        # Each % increases / decreases max population by 0.1
-        pollution = (pollution - 50) * -0.1 # The less you have the better
+        # Each % increases / decreases max population by 0.55
+        happiness = (happiness - 50) * 0.55 # The more you have the better 
 
-        maxPop += maxPop * happiness
-        maxPop += maxPop * pollution
+        # Each % increases / decreases max population by 0.3
+        pollution = (pollution - 50) * -0.3 # The less you have the better
+
+        # Each % increases / decreases max population by 0.45
+        productivity = (productivity - 50) * 0.45 # The less you have the better
+
+        maxPop += maxPop * happiness + maxPop * pollution + maxPop * productivity
 
         if maxPop < 1000000: # If max population is less than 1M
             maxPop = 1000000 # Make it 1M
