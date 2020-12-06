@@ -915,7 +915,6 @@ hr {
 .imageborder {
     background: var(--foregroundFive);
     padding: 2.5px;
-    box-shadow: rgba(0, 0, 0, 0.15) 0 14px 54px 4px, rgba(0, 0, 0, 0.075) 0 12px 12px !important;
 }
 
 .width100 {
@@ -2243,7 +2242,8 @@ button {
 }
 
 .cardimage {
-    width: 100%;
+    width: 100% !important;
+    box-shadow: none;
 }
 
 .cardcontent {
