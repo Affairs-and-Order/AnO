@@ -1166,9 +1166,12 @@ hr {
     opacity: 0.7;
     font-weight: normal;
     text-align: justify;
+    text-justify: inter-word;
 }
 
 .templatecontentpcenter {
+    text-align: justify;
+    text-justify: inter-word;
     padding: 8px;
     font-size: 17px;
     color: var(--colorOne);
