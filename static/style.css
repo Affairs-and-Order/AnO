@@ -2223,7 +2223,7 @@ button {
 }
 
 .cardcontainer {
-    align-items: flex-start;
+    align-items: none !important;
 }
 
 .cardparent {
