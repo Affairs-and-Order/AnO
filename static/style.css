@@ -2257,6 +2257,10 @@ button {
     border-radius: 4px;
 }
 
+.cardimage:hover {
+    filter: brightness(75%);
+}
+
 .cardimage:focus {
     animation: unitimage 0.6s;
     position: fixed;
@@ -2618,6 +2622,10 @@ button {
     outline: none;
     cursor: pointer;
     border-radius: 4px;
+}
+
+.unitimage:hover {
+    filter: brightness(75%);
 }
 
 .unitimage:focus {
