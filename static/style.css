@@ -966,7 +966,7 @@ hr {
     box-shadow: inset 0px 0px 50px 3px rgba(0, 0, 0, 0.10);
     margin-bottom: 10px;
     position: relative;
-    background: #00a7e1;
+    background: var(--background);
 }
 
 .templatedivtopper img {
@@ -979,6 +979,10 @@ hr {
     height: 100%;
     z-index: 0;
     object-fit: cover;
+}
+
+.noboxshadowtopper {
+    box-shadow: none;
 }
 
 .noboxshadowtopper h1 {
