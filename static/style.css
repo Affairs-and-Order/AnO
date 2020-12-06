@@ -1149,6 +1149,7 @@ hr {
     padding: 8px 12px;
     color: var(--colorOne);
     border-radius: 4px;
+    font-weight: normal;
 }
 
 .templatecontentheadercenter {
