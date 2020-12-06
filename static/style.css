@@ -1161,7 +1161,6 @@ hr {
 }
 
 .templatecontentpleft {
-    text-indent: 25px;
     padding: 8px;
     color: var(--colorOne);
     opacity: 0.7;
@@ -1170,7 +1169,6 @@ hr {
 }
 
 .templatecontentpcenter {
-    text-indent: 25px;
     padding: 8px;
     font-size: 17px;
     color: var(--colorOne);
@@ -2220,10 +2218,6 @@ button {
     .discordlink {
         width: 85%;
     }
-}
-
-.cardcontainer {
-    align-items: none !important;
 }
 
 .cardparent {
