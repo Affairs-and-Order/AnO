@@ -14,10 +14,13 @@ def income(): # Function for giving money to players
 
     db = conn.cursor()
 
-    db.execute("SELECT id FROM users")
+    db.execute("SELECT id, population FROM users")
     users = db.fetchall()
 
-    for user_id in users:
+    for row in users:
+
+        user_id = row[0]
+        population = int(row[1])
 
         db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
         money = int(db.fetchone()[0])

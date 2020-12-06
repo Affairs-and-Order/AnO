@@ -44,7 +44,7 @@ def country(cId):
     db.execute("SELECT description FROM users WHERE id=(%s)", (cId,))
     description = db.fetchone()[0]
 
-    db.execute("SELECT population FROM stats WHERE id=(%s)", (cId,))
+    db.execute("SELECT SUM(population) FROM provinces WHERE userId=(%s)", (cId,))
     population = db.fetchone()[0]
     db.execute("SELECT happiness FROM stats WHERE id=(%s)", (cId,))
     happiness = db.fetchone()[0]
@@ -178,13 +178,10 @@ def countries():  # TODO: fix shit ton of repeated code in function
             if user_influence > upperinf or user_influence < lowerinf:
                 users.remove(user)
 
-
-    db.execute("SELECT population FROM stats ORDER BY id")
-    population = db.fetchall()
-
     db.execute("SELECT username FROM users ORDER BY id")
     names = db.fetchall()
 
+    populations = []
     coalition_ids = []
     coalition_names = []
     dates = []
@@ -196,6 +193,10 @@ def countries():  # TODO: fix shit ton of repeated code in function
         db.execute("SELECT date FROM users WHERE id=(%s)", (str(i[0]),))
         date = db.fetchone()[0]
         dates.append(date)
+
+        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (str([i[0]]),))
+        population = db.fetchone()[0]
+        populations.append(population)
 
         influence = get_influence(str(i[0]))
         influences.append(influence)
@@ -223,7 +224,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
     connection.commit()
     connection.close()
 
-    resultAll = zip(population, users, names, coalition_ids,
+    resultAll = zip(populations, users, names, coalition_ids,
                     coalition_names, dates, influences, flags)
 
     return render_template("countries.html", resultAll=resultAll)
