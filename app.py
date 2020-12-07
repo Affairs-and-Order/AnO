@@ -146,66 +146,47 @@ def inject_user():
 
         try:
 
+
             db.execute("SELECT gold FROM stats WHERE id=(%s)", (session_id,))  # DONE
             money = db.fetchone()[0]
 
-            db.execute("SELECT rations FROM resources WHERE id=(%s)", (session_id,))
-            rations = db.fetchone()[0]
+            db.execute("""
+            SELECT rations, oil, coal, uranium, bauxite, iron, lead, copper, lumber,
+            components, steel, consumer_goods, aluminium, gasoline, ammunition FROM resources
+            WHERE id=%s
+            """, (session_id,))
+            resource = db.fetchall()
+            resource = list(resource[0])
 
-            db.execute("SELECT oil FROM resources WHERE id=(%s)", (session_id,))
-            oil = db.fetchone()[0]  # DONE
+            resources = {
+                "money": money,
+                "rations": resource[0],
+                "oil": resource[1],
+                "coal": resource[2],
+                "uranium": resource[3],
+                "bauxite": resource[4],
+                "iron": resource[5],
+                "lead": resource[6],
+                "copper": resource[7],
+                "lumber": resource[8],
+                "components": resource[9],
+                "steel": resource[10],
+                "consumer_goods": resource[11],
+                "aluminium": resource[12],
+                "gasoline": resource[13],
+                "ammunition": resource[14],
+            }
 
-            db.execute("SELECT coal FROM resources WHERE id=(%s)", (session_id,))
-            coal = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT uranium FROM resources WHERE id=(%s)", (session_id,))
-            uranium = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT bauxite FROM resources WHERE id=(%s)", (session_id,))
-            bauxite = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT iron FROM resources WHERE id=(%s)", (session_id,))
-            iron = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT lead FROM resources WHERE id=(%s)", (session_id,))
-            lead = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT copper FROM resources WHERE id=(%s)", (session_id,))
-            copper = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT lumber FROM resources WHERE id=(%s)", (session_id,))
-            lumber = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT components FROM resources WHERE id=(%s)", (session_id,))
-            components = db.fetchone()[0]
-
-            db.execute("SELECT steel FROM resources WHERE id=(%s)", (session_id,))
-            steel = db.fetchone()[0]
-
-            db.execute("SELECT consumer_goods FROM resources WHERE id=(%s)", (session_id,))
-            consumer_goods = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT aluminium FROM resources WHERE id=(%s)", (session_id,))
-            aluminium = db.fetchone()[0]
-
-            db.execute("SELECT gasoline FROM resources WHERE id=(%s)", (session_id,))
-            gasoline = db.fetchone()[0]
-
-            db.execute("SELECT ammunition FROM resources WHERE id=(%s)", (session_id,))
-            ammunition = db.fetchone()[0]
-          
-            lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper,
-                components, steel, consumer_goods, lumber, aluminium, gasoline, ammunition]
+            return resources
 
         except TypeError:
-            lst = []
+            resources = {}
 
         return lst
     return dict(get_resource_amount=get_resource_amount)
 
 @app.route("/", methods=["GET"])
 def index():
-    # renders index.html when "/" is accesed
     return render_template("index.html")
 
 @login_required

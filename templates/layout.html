@@ -192,30 +192,30 @@
 
         <div class="resourcedivcontent" id="resourcedivcontent">
             <!--I WILL REPLACE THE TEXT WITH RESOURCE ICONS SOON - CARSON-->
-            {% set resource_list = get_resource_amount() %}
+            {% set resources = get_resource_amount() %}
             <p onmouseover="moneyon()" onmouseout="moneyoff()">
                 <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
                 <span class="resourcetag">$</span>
-                <span id="resourcetag" class="resourcetag">{{ resource_list[0] }}</span>
+                <span id="resourcetag" class="resourcetag">{{ resources["money"] }}</span>
             </p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[1] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[2] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[3] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[4] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[5] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[6] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[7] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[8] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescomponents.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[9] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["rations"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["oil"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["coal"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["uranium"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["bauxite"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["iron"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["lead"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["copper"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/rescomponents.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["components"] }}</span></p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/ressteel.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[10] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resconsumer_goods.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[11] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[12] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/ressteel.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["steel"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resconsumer_goods.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["consumer_goods"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["lumber"] }}</span></p>
             <br />
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resaluminium.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[13] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resgasoline.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[14] }}</span></p>
-            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resammunition.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resource_list[15] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resaluminium.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["aluminium"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resgasoline.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["gasoline"] }}</span></p>
+            <p onmouseover="moneyon() " onmouseout="moneyoff() " class="resourcetag "><img src="{{ url_for( 'static', filename='images/resammunition.png' ) }}" class="resource" /><span id="resourcetag" class="resourcetag">{{ resources["ammunition"] }}</span></p>
         </div>
     </div>
     {% endif %}
