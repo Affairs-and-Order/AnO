@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-def income(): # Function for giving money to players
+def tax_income(): # Function for giving money to players
 
     conn = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
@@ -14,20 +14,22 @@ def income(): # Function for giving money to players
 
     db = conn.cursor()
 
-    db.execute("SELECT id, population FROM users")
+    db.execute("SELECT id FROM users")
     users = db.fetchall()
 
-    for row in users:
+    for user in users:
 
-        user_id = row[0]
-        population = int(row[1])
+        user_id = user[0]
+
+        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
+        population = int(db.fetchone()[0])
 
         db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
         money = int(db.fetchone()[0])
 
-        new_money = money + money // 100
+        new_income = money + population * 0.01
 
-        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_money, user_id,))
+        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_income, user_id,))
 
         conn.commit()
 
