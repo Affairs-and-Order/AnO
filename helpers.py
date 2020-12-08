@@ -87,7 +87,7 @@ def get_influence(country_id):
     # civilian score second
     db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
     gold = db.fetchone()[0]
-    db.execute("SELECT population FROM stats WHERE id=(%s)", (cId,))
+    db.execute("SELECT SUM(population) FROM provinces WHERE userId=(%s)", (cId,))
     population = db.fetchone()[0]
 
     db.execute("SELECT cityCount FROM provinces WHERE userId=(%s)", (cId,))
