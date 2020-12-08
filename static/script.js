@@ -18,7 +18,6 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
         }
     });
     */
-
 //navbar events
 function menubardrop() {
 
