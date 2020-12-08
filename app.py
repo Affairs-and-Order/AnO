@@ -38,18 +38,6 @@ from tasks import generate_province_revenue
 app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
 app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 
-@celery.task()
-def task_population_growth():
-    population_growth()
-
-@celery.task()
-def task_tax_income():
-    tax_income()
-
-@celery.task()
-def task_generate_province_revenue():
-    generate_province_revenue()
-
 celery_beat_schedule = {
     "population_growth": {
         "task": "app.task_population_growth",
@@ -67,6 +55,29 @@ celery_beat_schedule = {
         "schedule": 10.0,
     }
 }
+
+celery = Celery(app.name)
+celery.conf.update(
+    result_backend=app.config["CELERY_RESULT_BACKEND"],
+    broker_url=app.config["CELERY_BROKER_URL"],
+    timezone="UTC",
+    task_serializer="json",
+    accept_content=["json"],
+    result_serializer="json",
+    beat_schedule=celery_beat_schedule,
+)
+
+@celery.task()
+def task_population_growth():
+    population_growth()
+
+@celery.task()
+def task_tax_income():
+    tax_income()
+
+@celery.task()
+def task_generate_province_revenue():
+    generate_province_revenue()
 
 """
     "check_war": {
