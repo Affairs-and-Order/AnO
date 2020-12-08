@@ -21,6 +21,10 @@ Affairs & order is a nation simulation game, where you can make your own nation,
 2. Run the installer, remember your set settings.
 3. Set them in the .env file (if you haven't already rename .env.example to .env)
 4. Run the `create_db.py` file in AnO/affo to create your database instance.
+### Debian
+1. Follow [this guide](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-18-04) to setup Postgres
+2. Set Postgres variables in the .env file (if you haven't already rename .env.example to .env)
+3. Run the `create_db.py` file in AnO/affo to create your database instance.
 
 # No need for the ones below FOR DEVELOPMENT
 
