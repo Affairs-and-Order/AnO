@@ -15,6 +15,7 @@ from helpers import get_influence, get_coalition_influence
 from dotenv import load_dotenv
 load_dotenv()
 import os
+from tasks import tax_income, population_growth, generate_province_revenue
 
 from attack_scripts import Military
 
@@ -37,14 +38,31 @@ from tasks import generate_province_revenue
 app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
 app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 
+@celery.task()
+def task_population_growth():
+    population_growth()
+
+@celery.task()
+def task_tax_income():
+    tax_income()
+
+@celery.task()
+def task_generate_province_revenue():
+    generate_province_revenue()
+
 celery_beat_schedule = {
     "population_growth": {
-        "task": "app.populationGrowth",
+        "task": "app.task_population_growth",
         # Run every 15 seconds
-        "schedule": 15.0,
+        "schedule": 10.0,
     },
-    "province_infrastructure": {
-        "task": "app.generate_province_revenue",
+    "generate_province_revenue": {
+        "task": "app.task_generate_province_revenue",
+        # Run every 10 seconds
+        "schedule": 10.0,
+    },
+    "tax_income": {
+        "task": "app.task_tax_income",
         # Run every 10 seconds
         "schedule": 10.0,
     }

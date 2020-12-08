@@ -47,7 +47,7 @@ def tax_income(): # Function for giving money to players
 
     conn.close()
 
-def populationGrowth(): # Function for growing population
+def population_growth(): # Function for growing population
 
     conn = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
