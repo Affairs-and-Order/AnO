@@ -216,7 +216,6 @@ def inject_user():
         except TypeError:
             resources = {}
 
-        return lst
     return dict(get_resource_amount=get_resource_amount)
 
 @app.route("/", methods=["GET"])

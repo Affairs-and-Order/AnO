@@ -87,17 +87,25 @@ def get_influence(country_id):
     # civilian score second
     db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
     gold = db.fetchone()[0]
-    db.execute("SELECT SUM(population) FROM provinces WHERE userId=(%s)", (cId,))
-    population = db.fetchone()[0]
 
-    db.execute("SELECT cityCount FROM provinces WHERE userId=(%s)", (cId,))
-    cityCounts = db.fetchall()
+    try:
+        db.execute("SELECT SUM(population) FROM provinces WHERE userId=(%s)", (cId,))
+        population = int(db.fetchone()[0])
+    except:
+        population = 0
 
-    cities = 0
-    provinces = 0
-    for tuple in cityCounts:
-        cities += tuple[0]
-        provinces += 1
+    try:
+        db.execute("SELECT SUM(cityCount) FROM provinces WHERE userId=(%s)", (cId,))
+        cities = int(db.fetchone()[0])
+    except:
+        cities = 0
+
+    try:
+        db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (cId,))
+        provinces = int(db.fetchone()[0])
+    except:
+        provinces = 0
+
     # all resources have a set score of 100 gold, which makes score min/maxing a strategy vs balancing your assets
     resources = 0
 
@@ -108,6 +116,7 @@ def get_influence(country_id):
     next(iterator) # skip id
     for tuple in iterator:
         resources += tuple[0]
+
     civilianScore = gold * 0.01 + population * 0.1 + cities * 100000 + provinces * 1000000 + resources * 1
 
     # user may want military and civilian scores in a score breakdown later in a stats page

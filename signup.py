@@ -134,6 +134,8 @@ def discord_register():
         username = request.form.get("username")
         continent = request.form.get("continent")
         key = request.form.get("key")
+        captcha_token = request.form.get("g-recaptcha-response")
+        print("token:", captcha_token)
 
         try:
             db.execute("SELECT key FROM keys WHERE key=(%s)", (key,))
@@ -192,11 +194,12 @@ def discord_register():
             connection.close()
             return redirect("/")
 
+def verify_captcha(token):
+    return token["success"]
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-
-        # connects the db to the signup function
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -204,7 +207,8 @@ def signup():
             password=os.getenv("PG_PASSWORD"),
             host=os.getenv("PG_HOST"),
             port=os.getenv("PG_PORT"))
-  # connects to db
+
+        # Creates a cursor to the database
         db = connection.cursor()
 
         # gets corresponding form inputs
@@ -217,13 +221,10 @@ def signup():
         continent = request.form.get("continent")
 
         key = request.form.get("key")
-
         try:
-            fet = db.execute("SELECT key FROM keys WHERE key=%s", (key,))
-            print("KEY HERE", key, fet, os.getenv("PG_DATABASE"))
+            db.execute("SELECT key FROM keys WHERE key=%s", (key,))
             db.fetchone()[0]
         except:
-            correct_key = None
             return error(400, "Key not found")
 
         try:
@@ -231,15 +232,10 @@ def signup():
             db.fetchone()[0]
             return error(400, "Duplicate name, choose another one")
         except:
-            duplicate_name = False
-
+            pass
+        
         if password != confirmation:  # checks if password is = to confirmation password
             return error(400, "Passwords must match.")
-
-        # DEBUG:
-        print(password)
-        password=str(password)
-        # DEBUG END;
 
         # Hashes the inputted password
         # hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
