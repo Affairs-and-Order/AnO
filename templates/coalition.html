@@ -111,7 +111,11 @@
                             <td>Leaders:</td>
                             <td>
                             {% for leader_id in leaders %}
-                                <a href="/country/id={{ leader_id }}">{{ leaderName[leaders.index(leader_id)] }}</a>
+                                {% if leader_id == leaders[-1] %}
+                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}</a>
+                                {% else %}
+                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}, </a>
+                                {% endif %}
                             {% endfor %}
                             </td>
                             {% endif %}

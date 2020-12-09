@@ -49,9 +49,6 @@ def coalition(colId):
         db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
         colType = db.fetchone()[0]
 
-        db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(%s))", (session["user_id"], ))
-        # names = db.fetchall()
-
         db.execute("SELECT userId FROM coalitions WHERE role=(%s) AND colId=(%s)", ("leader", colId,))
         leaders = db.fetchall() # All coalition leaders ids
         leaders = [item for t in leaders for item in t]
@@ -59,7 +56,7 @@ def coalition(colId):
         leader_names = []
 
         for leader_id in leaders:
-            db.execute("SELECT username FROM users WHERE id=%s", (leaders[0],))
+            db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
             leader_name = db.fetchone()[0]
             leader_names.append(leader_name)
 
