@@ -18,6 +18,7 @@ import bcrypt
 import os
 from requests_oauthlib import OAuth2Session
 from dotenv import load_dotenv
+from signup import verify_captcha
 load_dotenv()
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -33,6 +34,9 @@ def login():
             port=os.getenv("PG_PORT"))
         # connects to db
         db = connection.cursor()  # creates the cursor for db connection
+
+        captcha_token = request.form.get("g-recaptcha-response")
+        verify_captcha(captcha_token)
 
         # gets the password input from the form
         password = request.form.get("password").encode("utf-8")
@@ -105,7 +109,7 @@ def make_session(token=None, state=None, scope=None):
 
         token_updater=token_updater)
 
-@app.route('/discord_login', methods=["GET"])
+@app.route('/discord_login/', methods=["GET"])
 def discord_login():
 
     connection = psycopg2.connect(

@@ -18,6 +18,7 @@ import bcrypt
 from requests_oauthlib import OAuth2Session
 import os
 from dotenv import load_dotenv
+import requests
 load_dotenv()
 
 OAUTH2_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
@@ -197,8 +198,20 @@ def discord_register():
             return redirect("/")
 
 # Function for verifying that the captcha token is correct
-def verify_captcha(token):
-    return token["success"]
+def verify_captcha(response):
+
+    form_data = {
+        "secret": os.getenv("RECAPTCHA_SECRET"),
+        "response": response,
+    }
+    r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=form_data)
+    r = r.json()
+
+    if r["success"]:
+        return True
+    else:
+        return error(400, "wait till the api comes out lmao")
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():

@@ -1097,7 +1097,7 @@ def break_treaty(offer_id):
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
     leaders = db.fetchall() # All coalition leaders ids
     leaders = [item for t in leaders for item in t]
 
