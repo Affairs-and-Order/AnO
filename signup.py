@@ -207,11 +207,7 @@ def verify_captcha(response):
     r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=form_data)
     r = r.json()
 
-    if r["success"]:
-        return True
-    else:
-        return error(400, "wait till the api comes out lmao")
-
+    return r["success"]
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():

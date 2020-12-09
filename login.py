@@ -35,8 +35,11 @@ def login():
         # connects to db
         db = connection.cursor()  # creates the cursor for db connection
 
-        captcha_token = request.form.get("g-recaptcha-response")
-        verify_captcha(captcha_token)
+        captcha_response = request.form.get("g-recaptcha-response")
+        captcha_success = verify_captcha(captcha_response)
+
+        if not captcha_success:
+            return error(400, "Wait for the API to come out ;)")
 
         # gets the password input from the form
         password = request.form.get("password").encode("utf-8")
