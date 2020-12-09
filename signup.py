@@ -31,7 +31,7 @@ except:
 if environment == "PROD":
     OAUTH2_REDIRECT_URI = 'https://www.affairsandorder.com/callback'
 else:
-    OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'
+    OAUTH2_REDIRECT_URI = 'http://127.0.0.1:5000/callback'
 
 API_BASE_URL = os.environ.get('API_BASE_URL', 'https://discordapp.com/api')
 AUTHORIZATION_BASE_URL = API_BASE_URL + '/oauth2/authorize'
@@ -177,12 +177,12 @@ def discord_register():
 
             user = user_id
 
-            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))  # TODO  change the default location
+            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))  # TODO Change the default location
             db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
             db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
             db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
 
-            # clears session variables from oauth
+            # Clears session variables from oauth
             try:
                 session.pop('oauth2_state')
             except KeyError:
@@ -194,6 +194,7 @@ def discord_register():
             connection.close()
             return redirect("/")
 
+# Function for verifying that the captcha token is correct
 def verify_captcha(token):
     return token["success"]
 
@@ -211,7 +212,7 @@ def signup():
         # Creates a cursor to the database
         db = connection.cursor()
 
-        # gets corresponding form inputs
+        # Gets user's form inputs
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password").encode('utf-8')
@@ -234,29 +235,33 @@ def signup():
         except:
             pass
         
-        if password != confirmation:  # checks if password is = to confirmation password
+        # Checks if password is equal to the confirmation password
+        if password != confirmation:  
             return error(400, "Passwords must match.")
 
         # Hashes the inputted password
         hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
 
+        # Inserts the user and his data to the main table for users
         db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 
+        # Selects the id of the user that was just registered. (Because id is AUTOINCREMENT'ed)
         db.execute("SELECT id FROM users WHERE username = (%s)", (username,))
-        user = db.fetchone()[0]
+        user_id = db.fetchone()[0]
 
-        # set's the user's "id" column to the sessions variable "user_id"
-        session["user_id"] = user
+        # Stores the user's 
+        session["user_id"] = user_id
 
-        db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))
-        db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
-        db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
-        db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
+        # Inserts the user's id into the needed database tables
+        db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user_id, continent))
+        db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
+        db.execute("INSERT INTO resources (id) VALUES (%s)", (user_id,))
+        db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user_id,))
 
-        db.execute("DELETE FROM keys WHERE key=(%s)", (key,))  # deletes the used key
+        db.execute("DELETE FROM keys WHERE key=(%s)", (key,)) # Deletes the key used for signup
 
         connection.commit()
         connection.close()
         return redirect("/")
-    else:
-        return render_template("signup.html")
+    elif request.method == "GET":
+        return render_template("signup.html", way="normal")

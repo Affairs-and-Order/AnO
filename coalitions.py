@@ -54,10 +54,14 @@ def coalition(colId):
 
         db.execute("SELECT userId FROM coalitions WHERE role=(%s) AND colId=(%s)", ("leader", colId,))
         leaders = db.fetchall() # All coalition leaders ids
-        leaders = [item for t in leaders for item in t] 
+        leaders = [item for t in leaders for item in t]
 
-        db.execute("SELECT username FROM users WHERE id=%s", (leaders[0],))
-        leaderName = db.fetchone()[0]
+        leader_names = []
+
+        for leader_id in leaders:
+            db.execute("SELECT username FROM users WHERE id=%s", (leaders[0],))
+            leader_name = db.fetchone()[0]
+            leader_names.append(leader_name)
 
         ### STUFF FOR JINJA
         try:
@@ -264,7 +268,7 @@ def coalition(colId):
         return render_template("coalition.html", name=name, colId=colId, members=members,
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
-                               average_influence=average_influence, leaderName=leaderName, leader=leaders[0],
+                               average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                                flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
                                ingoing_length=ingoing_length, active_length=active_length)
 

@@ -102,8 +102,17 @@
                                 </span>General</th>
                         </tr>
                         <tr>
+                            {% if leaders|length < 2%}
                             <td>Leader:</td>
-                            <td><a href="/country/id={{ leader }}">{{ leaderName }}</a></td>
+                            <td><a href="/country/id={{ leaders[0] }}">{{ leaderNames[0] }}</a></td>
+                            {% else %}
+                            <td>Leaders:</td>
+                            <td>
+                            {% for leader_id in leaders %}
+                                <a href="/country/id={{ leader_id }}">{{ leaderName[leaders.index(leader_id)] }}</a>
+                            {% endfor %}
+                            </td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td>High Government:</td>

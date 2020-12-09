@@ -17,18 +17,16 @@
     <div class="templatedivcontent">
 
         <div class="templatedivflex2 menuflex divflex2center flexwrap">
+
             {% if way != "discord" %}
-            <form action="/discord" method="POST">
+            <form action="/discord" method="GET">
                 <div class="templatedivflex2left">
-
                     <div class="templatecontentheadercenter">Discord Sign Up</div>
-
                     <div class="templatedivflex2">
                         <div class="templatedivflex2left">
-
                             <button class="templatedivbutton discordbutton">
-            <span class="material-icons-outlined">
-                add_circle_outline
+                        <span class="material-icons-outlined">
+                            add_circle_outline
                         </span>Discord Sign Up</button>
 
                         </div>
@@ -37,7 +35,6 @@
                 </div>
             </form>
             {% endif %}
-
 
             <div class="templatedivflex2left warflexparentcolors">
 
@@ -53,13 +50,14 @@
                         <div class="templatedivflex2left">
                             <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
                         </div>
+
                         {% if way != "discord" %}
                         <div class="templatedivflex2left">
                             <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
                         </div>
                         {% endif %}
 
-                        <input id="continent" name="continent" type="hidden">
+                        <!-- <input id="continent" name="continent" type="hidden"> -->
 
                         </div>
 
@@ -84,7 +82,6 @@
             document.getElementById("signup-form").submit();
         }
         </script>
-        
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
