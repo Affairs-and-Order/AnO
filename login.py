@@ -35,7 +35,7 @@ def login():
         db = connection.cursor()  # creates the cursor for db connection
 
         # gets the password input from the form
-        password = request.form.get("password")
+        password = request.form.get("password").encode("utf-8")
         # gets the username input from the forms
         username = request.form.get("username")
 
@@ -47,12 +47,12 @@ def login():
         user = db.fetchone()
 
         try:
-            hashed_pw = user[4]
+            hashed_pw = user[4].encode("utf-8")
         except:
             return error(403, "Wrong password or user doesn't exist")
 
         # checks if user exists and if the password is correct
-        if bcrypt.checkpw(password.encode("utf-8"), hashed_pw.encode("utf-8")):
+        if bcrypt.checkpw(password, hashed_pw):
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
 

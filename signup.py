@@ -238,9 +238,7 @@ def signup():
             return error(400, "Passwords must match.")
 
         # Hashes the inputted password
-        # hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
-        hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
-        # print("HASH ", hashed)
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
 
         db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 

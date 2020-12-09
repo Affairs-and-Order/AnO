@@ -258,7 +258,6 @@ def coalition(colId):
             bankRequests = banks
         else:
             bankRequests = []
-        ### 
 
         connection.close()
 
