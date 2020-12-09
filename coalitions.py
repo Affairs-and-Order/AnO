@@ -472,6 +472,58 @@ def my_coalition():
     else:
         return redirect(f"/coalition/{coalition}")
 
+@login_required
+@app.route("/give_position", methods=["POST"])
+def give_position():
+    
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+    cId = session["user_id"]
+
+    try:
+        db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
+        colId = db.fetchone()[0]
+    except:
+        return error(400, "You are not a part of any coalition")
+
+    db.execute("SELECT userId FROM coalitions WHERE role=(%s) AND colId=(%s)", ("leader", colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
+
+    if cId not in leaders:
+        return error(400, "You're not a leader")
+
+    roles = ["leader", "banker", "tax_collector", "foreign_ambassador", "general", "domestic_minister"]
+
+    role = request.form.get("role")
+
+    if role not in roles:
+        return error(400, "No such role exists")
+
+    username = request.form.get("username")
+
+    # The user id for the person being given the role
+    db.execute("SELECT id FROM users WHERE username=%s", (username,))
+    roleer = db.fetchone()[0]
+    
+    try:
+        db.execute("SELECT colId FROM coalitions WHERE colId=%s AND userId=%s", (colId, roleer))
+        db.fetchone()[0]
+    except:
+        return error(400, "There is no such user in the coalition")
+
+    db.execute("UPDATE coalitions SET role=%s WHERE userId=%s", (role, roleer))
+
+    conn.commit()
+    conn.close()
+    return redirect("/my_coalition")
+
 
 @login_required
 @app.route("/add/<uId>", methods=["POST"])

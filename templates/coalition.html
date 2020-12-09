@@ -65,7 +65,9 @@
 
                 });
             </script>
-            {% endif %} {% if userInCurCol == True and userLeader == False %}
+            {% endif %} 
+            
+            {% if userInCurCol and not userLeader %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
@@ -326,29 +328,29 @@
 
             <div class="infodiv">
 
-
+                <form action="/give_position" method="POST">
                 <div class="templatedivflex2 divflex2center menuflex">
                     <div class="templatedivflex2left">
 
-                        <select class="templateselect" name="diplomacy">
+                        <select class="templateselect" name="role" required>
                             <option class="templateoption" selected disabled>Give Position</option>
-                            <option class="templateoption">Leader</option>
-                            <option class="templateoption">High Government</option>
-                            <option class="templateoption">Low Government</option>
-                        
+                            <option value="leader" class="templateoption">Leader</option>
+                            <option value="banker" class="templateoption">Banker</option>
+                            <option value="tax_collector" class="templateoption">Tax Collector</option>
+                            <option value="foreign_ambassador" class="templateoption">Foreign Ambassadors</option>
+                            <option value="general" class="templateoption">General</option>
+                            <option value="domestic_minister" class="templateoption">Domestic Minister</option>
                         </select>
 
                     </div>
                     <div class="templatedivflex2left">
-
-                        <input class="loginsignupinput" autocomplete="off" name="apllicantsearch" placeholder="Enter Username" />
-
+                        <input class="loginsignupinput" autocomplete="off" name="username" placeholder="Enter Username" />
                     </div>
                 </div>
                 <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     check
                     </span>Give Position</button>
-
+                </form>
                 <!--max lenth of 10-->
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
@@ -373,7 +375,7 @@
                             <td>[[ roleAmount ]]</td>
                         </tr>
                         <tr>
-                            <td>Foriegn Ambassadors:</td>
+                            <td>Foreign Ambassadors:</td>
                             <td>Power to add and remove treaties</td>
                             <td>[[ roleAmount ]]</td>
                         </tr>
@@ -384,7 +386,7 @@
                         </tr>
                         <tr>
                             <td>Domestic Ministers:</td>
-                            <td>Permission to add and remove members, and change roles of people below them</td>
+                            <td>Permission to add and remove members below them</td>
                             <td>[[ roleAmount ]]</td>
                         </tr>
                     </table>
@@ -851,6 +853,7 @@
             </div>
             {% endif %}
 
+            {% if userLeader %}
             <h2 class="templatecontentheaderleft">General</h2>
 
             <form method="POST">
@@ -910,12 +913,13 @@
                     </span>Update</button>
                 </div>
                 </form>
-
+                
                 <h2 class="templatecontentheaderleft">Danger Zone</h2>
 
                 <form method="POST">
                     <div class="infodiv">
                         <div class="templatedivflex2 divflex2center menuflex">
+                            {% if userLeader %}
                             <div class="templatedivflex2left">
 
                                 <button type="submit" formaction="/delete_coalition/{{ colId }}" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
@@ -923,6 +927,8 @@
                                 </span>Delete Coalition</button>
 
                             </div>
+                            {% endif %}
+                            {% if userInCurCol and not userLeader %}
                             <div class="templatedivflex2left">
 
                                 <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
@@ -930,9 +936,11 @@
                                 </span>Leave Coalition</button>
 
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </form>
+                {% endif %}
         </div>
         <!--MEMBER-->
         <div class="member" id="member">
