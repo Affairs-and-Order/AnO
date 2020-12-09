@@ -223,6 +223,12 @@ def signup():
         # Creates a cursor to the database
         db = connection.cursor()
 
+        captcha_response = request.form.get("g-recaptcha-response")
+        captcha_success = verify_captcha(captcha_response)
+
+        if not captcha_success:
+            return error(400, "Wait for the API to come out ;)")
+
         # Gets user's form inputs
         username = request.form.get("username")
         email = request.form.get("email")
