@@ -458,8 +458,8 @@ def send_peace_offer(war_id):
             resources_string = ""
             amount_string = ""
 
-            print(resources)
-            print(resources_amount)
+            print("resources", resources)
+            print("amount", resources_amount)
 
             if len(resources) and len(resources_amount):
                 for res, amo in zip(resources, resources_amount):
@@ -486,6 +486,7 @@ def send_peace_offer(war_id):
 
                 connection.commit()
 
+            # Send white peace (won't lose or gain anything)
             else:
                 raise TypeError
         except:
@@ -543,6 +544,12 @@ def war_with_id(war_id):
     db.execute("SELECT username FROM users WHERE id=(%s)", (attacker,))
     attacker_name = db.fetchone()[0]
 
+    # The current enemy from our perspective (not neccessarily the one who declared war)
+    if attacker==cId:
+        enemy_id=attacker
+    else:
+        enemy_id=defender
+
     db.execute("SELECT war_type FROM wars WHERE id=(%s)", (war_id,))
     war_type = db.fetchone()[0]
     db.execute("SELECT agressor_message FROM wars WHERE id=(%s)", (war_id,))
@@ -573,9 +580,10 @@ def war_with_id(war_id):
     else:
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
+
     return render_template("war.html", defender_info=defender_info, defender=defender, attacker=attacker, war_id=war_id,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
-                           agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance)
+                           agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance, peace_to_send=enemy_id)
 
 
 # the flask route that activates when you click attack on a nation in your wars page.

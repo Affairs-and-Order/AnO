@@ -46,7 +46,7 @@ def country(cId):
 
     db.execute("SELECT SUM(population) FROM provinces WHERE userId=(%s)", (cId,))
     population = db.fetchone()[0]
-    db.execute("SELECT happiness FROM stats WHERE id=(%s)", (cId,))
+    db.execute("SELECT SUM(happiness) FROM provinces WHERE userId=(%s)", (cId,))
     happiness = db.fetchone()[0]
     db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(%s)", (cId,))
     provinceCount = db.fetchone()[0]

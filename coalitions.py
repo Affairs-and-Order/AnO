@@ -49,13 +49,16 @@ def coalition(colId):
         db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
         colType = db.fetchone()[0]
 
-        db.execute("SELECT username FROM users WHERE id = (SELECT userId FROM coalitions WHERE colId=(%s))", (session["user_id"], ))
-        # names = db.fetchall()
+        db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+        leaders = db.fetchall() # All coalition leaders ids
+        leaders = [item for t in leaders for item in t]
 
-        db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
-        leader = db.fetchone()[0]  # The id of the coalition leader
-        db.execute("SELECT username FROM users WHERE id=(%s)", (leader,))
-        leaderName = db.fetchone()[0]
+        leader_names = []
+
+        for leader_id in leaders:
+            db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
+            leader_name = db.fetchone()[0]
+            leader_names.append(leader_name)
 
         ### STUFF FOR JINJA
         try:
@@ -72,7 +75,7 @@ def coalition(colId):
         except:
             userInCurCol = False
 
-        if leader == cId:
+        if cId in leaders:
             userLeader = True
         else:
             userLeader = False
@@ -193,7 +196,6 @@ def coalition(colId):
             ammunition = db.fetchone()[0]
 
             bankRaw = {
-
                 'money': money,
                 'rations': rations,
                 'oil': oil,
@@ -202,6 +204,7 @@ def coalition(colId):
                 'bauxite': bauxite,
                 'iron': iron,
                 'copper': copper,
+                'lead': lead,
                 'lumber': lumber,
                 'components': components,
                 'steel': steel,
@@ -209,8 +212,7 @@ def coalition(colId):
                 'aluminium': aluminium,
                 'gasoline': gasoline,
                 'ammunition': ammunition
-
-        }
+            }
 
         else: 
             
@@ -258,14 +260,13 @@ def coalition(colId):
             bankRequests = banks
         else:
             bankRequests = []
-        ### 
 
         connection.close()
 
         return render_template("coalition.html", name=name, colId=colId, members=members,
                                description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                                requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
-                               average_influence=average_influence, leaderName=leaderName, leader=leader,
+                               average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                                flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
                                ingoing_length=ingoing_length, active_length=active_length)
 
@@ -286,7 +287,7 @@ def establish_coalition():
 
         try:
             db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (session["user_id"],))
-            userId = db.fetchone()[0]
+            db.fetchone()[0]
 
             return error(403, "You are already in a coalition")
         except:
@@ -295,22 +296,21 @@ def establish_coalition():
             name = request.form.get("name")
             desc = request.form.get("description")
 
-            if len(str(name)) > 15:
-                return error(500, "name too long! the coalition name needs to be under 15 characters")
-                # TODO add a better error message that renders inside the establish_coalition page
+            if len(str(name)) > 40:
+                return error(500, "name too long! the coalition name needs to be under 40 characters")
             else:
-                # TODO gives a key error, look into this
-                db.execute("INSERT INTO colNames (name, leader, type, description) VALUES (%s, %s, %s, %s)", (name, session["user_id"], cType, desc))
+                db.execute("INSERT INTO colNames (name, type, description) VALUES (%s, %s, %s)", (name, cType, desc))
 
                 db.execute("SELECT id FROM colNames WHERE name = (%s)", (name,))
-                colId = db.fetchone()[0]
+                colId = db.fetchone()[0] # Gets the coalition id of the just inserted coalition 
 
-                db.execute("INSERT INTO coalitions (colId, userId) VALUES (%s, %s)", (colId, session["user_id"],))
+                # Inserts the user as the leader of the coalition
+                db.execute("INSERT INTO coalitions (colId, userId, role) VALUES (%s, %s, %s)", (colId, session["user_id"], "leader"))
 
-                db.execute("INSERT INTO colBanks (colId) VALUES (%s)", (colId,))
+                db.execute("INSERT INTO colBanks (colId) VALUES (%s)", (colId,)) # Inserts the coalition into the table for coalition banks
 
-                connection.commit()
-                connection.close()
+                connection.commit() # Commits the new data
+                connection.close() # Closes the connection
                 return redirect(f"/coalition/{colId}")
     else:
         return render_template("establish_coalition.html")
@@ -336,7 +336,8 @@ def coalitions():
 
     if search == None or search == "":
         try: 
-            coalitions = db.execute("SELECT id FROM colNames").fetchall()
+            db.execute("SELECT id FROM colNames")
+            coalitions = db.fetchall()
         except:
             coalitions = []
     else:
@@ -428,10 +429,10 @@ def leave_col(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
-    leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall()
 
-    if cId == leader:
+    if cId not in leaders:
         error(400, "Can't leave coalition, you're the leader")
 
     db.execute("DELETE FROM coalitions WHERE userId=(%s) AND colId=(%s)", (cId, colId))
@@ -469,6 +470,58 @@ def my_coalition():
     else:
         return redirect(f"/coalition/{coalition}")
 
+@login_required
+@app.route("/give_position", methods=["POST"])
+def give_position():
+    
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+    cId = session["user_id"]
+
+    try:
+        db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
+        colId = db.fetchone()[0]
+    except:
+        return error(400, "You are not a part of any coalition")
+
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
+
+    if cId not in leaders:
+        return error(400, "You're not a leader")
+
+    roles = ["leader", "banker", "tax_collector", "foreign_ambassador", "general", "domestic_minister"]
+
+    role = request.form.get("role")
+
+    if role not in roles:
+        return error(400, "No such role exists")
+
+    username = request.form.get("username")
+
+    # The user id for the person being given the role
+    db.execute("SELECT id FROM users WHERE username=%s", (username,))
+    roleer = db.fetchone()[0]
+    
+    try:
+        db.execute("SELECT colId FROM coalitions WHERE colId=%s AND userId=%s", (colId, roleer))
+        db.fetchone()[0]
+    except:
+        return error(400, "There is no such user in the coalition")
+
+    db.execute("UPDATE coalitions SET role=%s WHERE userId=%s", (role, roleer))
+
+    conn.commit()
+    conn.close()
+    return redirect("/my_coalition")
+
 
 @login_required
 @app.route("/add/<uId>", methods=["POST"])
@@ -491,10 +544,11 @@ def adding(uId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
-    leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
 
-    if leader != cId:
+    if cId not in leaders:
         return error(400, "You are not the leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
@@ -529,10 +583,11 @@ def removing_requests(uId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT leader FROM colNames WHERE id=%s", (colId,))
-    leader = db.fetchone()[0]
-
-    if leader != cId:
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
+    
+    if cId not in leaders:
         return error(400, "You are not the leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
@@ -557,10 +612,11 @@ def delete_coalition(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
-    leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
 
-    if leader != cId:
+    if cId not in leaders:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
@@ -599,10 +655,11 @@ def update_col_info(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (colId,))
-    leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
 
-    if leader != cId:
+    if cId not in leaders:
         return error(400, "You aren't the leader of this coalition")
 
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
@@ -793,10 +850,11 @@ def withdraw_from_bank(colId):
 
     cId = session["user_id"]
 
-    try:
-        db.execute("SELECT leader FROM colNames WHERE leader=(%s) and id=(%s)", (cId, colId))
-        db.fetchone()[0]
-    except TypeError:
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
+
+    if cId not in leaders:
         return error(400, "You aren't the leader of this coalition")
 
     resources = [
@@ -889,10 +947,11 @@ def remove_bank_request(bankId):
     db.execute("SELECT colId FROM colBanksRequests WHERE id=(%s)", (bankId,))
     colId = db.fetchone()[0]
 
-    try:
-        db.execute("SELECT leader FROM colNames WHERE leader=(%s) and id=(%s)", (cId, colId))
-        db.fetchone()[0]
-    except TypeError:
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
+
+    if cId not in leaders:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM colBanksRequests WHERE id=(%s)", (bankId,))
@@ -920,10 +979,11 @@ def accept_bank_request(bankId):
     db.execute("SELECT colId FROM colBanksRequests WHERE id=(%s)", (bankId,))
     colId = db.fetchone()[0]
 
-    try:
-        db.execute("SELECT leader FROM colNames WHERE leader=(%s) and id=(%s)", (cId, colId))
-        db.fetchone()[0]
-    except TypeError:
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
+
+    if cId not in leaders:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("SELECT resource FROM colBanksRequests WHERE id=(%s)", (bankId,))
@@ -965,11 +1025,12 @@ def offer_treaty():
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
-    coalition_leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
 
-    if str(cId) != coalition_leader:
-        error(400, "You aren't the leader of your coalition.")
+    if cId not in leaders:
+        return error(400, "You aren't the leader of this coalition")
 
     treaty_name = request.form.get("treaty_name")
     db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(%s)", (treaty_name,))
@@ -1003,11 +1064,12 @@ def accept_treaty(offer_id):
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
-    coalition_leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
 
-    if str(cId) != coalition_leader:
-        error(400, "You aren't the leader of your coalition.")
+    if cId not in leaders:
+        return error(400, "You aren't the leader of this coalition")
 
     db.execute("UPDATE treaties SET status='Active' WHERE id=(%s)", (offer_id,))
 
@@ -1035,11 +1097,12 @@ def break_treaty(offer_id):
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
-    coalition_leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
 
-    if str(cId) != coalition_leader:
-        error(400, "You aren't the leader of your coalition.")
+    if cId not in leaders:
+        return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))
 
@@ -1066,11 +1129,12 @@ def decline_treaty(offer_id):
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
-    db.execute("SELECT leader FROM colNames WHERE id=(%s)", (user_coalition,))
-    coalition_leader = db.fetchone()[0]
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
 
-    if str(cId) != coalition_leader:
-        error(400, "You aren't the leader of your coalition.")
+    if cId not in leaders:
+        return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))
 

@@ -15,10 +15,16 @@ from helpers import get_influence, get_coalition_influence
 from dotenv import load_dotenv
 load_dotenv()
 import os
+from tasks import tax_income, population_growth, generate_province_revenue
 
 from attack_scripts import Military
 
 app = Flask(__name__)
+
+try:
+    app.secret_key = os.getenv("SECRET_KEY")
+except:
+    app.secret_key = "DEVELOPMENT_SECRET_KEY"
 
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from testroutes import testfunc
@@ -39,16 +45,44 @@ app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 
 celery_beat_schedule = {
     "population_growth": {
-        "task": "app.populationGrowth",
+        "task": "app.task_population_growth",
         # Run every 15 seconds
-        "schedule": 15.0,
+        "schedule": 10.0,
     },
-    "province_infrastructure": {
-        "task": "app.generate_province_revenue",
+    "generate_province_revenue": {
+        "task": "app.task_generate_province_revenue",
+        # Run every 10 seconds
+        "schedule": 10.0,
+    },
+    "tax_income": {
+        "task": "app.task_tax_income",
         # Run every 10 seconds
         "schedule": 10.0,
     }
 }
+
+celery = Celery(app.name)
+celery.conf.update(
+    result_backend=app.config["CELERY_RESULT_BACKEND"],
+    broker_url=app.config["CELERY_BROKER_URL"],
+    timezone="UTC",
+    task_serializer="json",
+    accept_content=["json"],
+    result_serializer="json",
+    beat_schedule=celery_beat_schedule,
+)
+
+@celery.task()
+def task_population_growth():
+    population_growth()
+
+@celery.task()
+def task_tax_income():
+    tax_income()
+
+@celery.task()
+def task_generate_province_revenue():
+    generate_province_revenue()
 
 """
     "check_war": {
@@ -146,66 +180,46 @@ def inject_user():
 
         try:
 
+
             db.execute("SELECT gold FROM stats WHERE id=(%s)", (session_id,))  # DONE
             money = db.fetchone()[0]
 
-            db.execute("SELECT rations FROM resources WHERE id=(%s)", (session_id,))
-            rations = db.fetchone()[0]
+            db.execute("""
+            SELECT rations, oil, coal, uranium, bauxite, iron, lead, copper, lumber,
+            components, steel, consumer_goods, aluminium, gasoline, ammunition FROM resources
+            WHERE id=%s
+            """, (session_id,))
+            resource = db.fetchall()
+            resource = list(resource[0])
 
-            db.execute("SELECT oil FROM resources WHERE id=(%s)", (session_id,))
-            oil = db.fetchone()[0]  # DONE
+            resources = {
+                "money": money,
+                "rations": resource[0],
+                "oil": resource[1],
+                "coal": resource[2],
+                "uranium": resource[3],
+                "bauxite": resource[4],
+                "iron": resource[5],
+                "lead": resource[6],
+                "copper": resource[7],
+                "lumber": resource[8],
+                "components": resource[9],
+                "steel": resource[10],
+                "consumer_goods": resource[11],
+                "aluminium": resource[12],
+                "gasoline": resource[13],
+                "ammunition": resource[14],
+            }
 
-            db.execute("SELECT coal FROM resources WHERE id=(%s)", (session_id,))
-            coal = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT uranium FROM resources WHERE id=(%s)", (session_id,))
-            uranium = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT bauxite FROM resources WHERE id=(%s)", (session_id,))
-            bauxite = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT iron FROM resources WHERE id=(%s)", (session_id,))
-            iron = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT lead FROM resources WHERE id=(%s)", (session_id,))
-            lead = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT copper FROM resources WHERE id=(%s)", (session_id,))
-            copper = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT lumber FROM resources WHERE id=(%s)", (session_id,))
-            lumber = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT components FROM resources WHERE id=(%s)", (session_id,))
-            components = db.fetchone()[0]
-
-            db.execute("SELECT steel FROM resources WHERE id=(%s)", (session_id,))
-            steel = db.fetchone()[0]
-
-            db.execute("SELECT consumer_goods FROM resources WHERE id=(%s)", (session_id,))
-            consumer_goods = db.fetchone()[0]  # DONE
-
-            db.execute("SELECT aluminium FROM resources WHERE id=(%s)", (session_id,))
-            aluminium = db.fetchone()[0]
-
-            db.execute("SELECT gasoline FROM resources WHERE id=(%s)", (session_id,))
-            gasoline = db.fetchone()[0]
-
-            db.execute("SELECT ammunition FROM resources WHERE id=(%s)", (session_id,))
-            ammunition = db.fetchone()[0]
-          
-            lst = [money, rations, oil, coal, uranium, bauxite, iron, lead, copper,
-                components, steel, consumer_goods, lumber, aluminium, gasoline, ammunition]
+            return resources
 
         except TypeError:
-            lst = []
+            resources = {}
 
-        return lst
     return dict(get_resource_amount=get_resource_amount)
 
 @app.route("/", methods=["GET"])
 def index():
-    # renders index.html when "/" is accesed
     return render_template("index.html")
 
 @login_required

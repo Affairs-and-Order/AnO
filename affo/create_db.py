@@ -21,9 +21,12 @@ tables = [
 
 for i in tables:
     with open(f"postgres/{i}.txt") as file:
-        # db.execute(f"DROP TABLE IF EXISTS {i}")
-        db.execute(file.read())
-        print(f"Recreated table {i}")
+        try:
+            db.execute(f"DROP TABLE IF EXISTS {i}")            
+            db.execute(file.read())
+            print(f"Recreated table {i}")
+        except:
+            print(f"Failed to recreate table {i}")
     connection.commit()
 
 db.execute("INSERT INTO keys (key) VALUES ('a')")

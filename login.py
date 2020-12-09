@@ -18,6 +18,7 @@ import bcrypt
 import os
 from requests_oauthlib import OAuth2Session
 from dotenv import load_dotenv
+from signup import verify_captcha
 load_dotenv()
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -34,8 +35,14 @@ def login():
         # connects to db
         db = connection.cursor()  # creates the cursor for db connection
 
+        captcha_response = request.form.get("g-recaptcha-response")
+        captcha_success = verify_captcha(captcha_response)
+
+        if not captcha_success:
+            return error(400, "Wait for the API to come out ;)")
+
         # gets the password input from the form
-        password = request.form.get("password")
+        password = request.form.get("password").encode("utf-8")
         # gets the username input from the forms
         username = request.form.get("username")
 
@@ -47,12 +54,12 @@ def login():
         user = db.fetchone()
 
         try:
-            hashed_pw = user[4]
+            hashed_pw = user[4].encode("utf-8")
         except:
             return error(403, "Wrong password or user doesn't exist")
 
         # checks if user exists and if the password is correct
-        if bcrypt.checkpw(password.encode("utf-8"), hashed_pw.encode("utf-8")):
+        if bcrypt.checkpw(password, hashed_pw):
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
 
@@ -105,7 +112,7 @@ def make_session(token=None, state=None, scope=None):
 
         token_updater=token_updater)
 
-@app.route('/discord_login', methods=["GET"])
+@app.route('/discord_login/', methods=["GET"])
 def discord_login():
 
     connection = psycopg2.connect(

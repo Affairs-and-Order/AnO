@@ -18,6 +18,7 @@ import bcrypt
 from requests_oauthlib import OAuth2Session
 import os
 from dotenv import load_dotenv
+import requests
 load_dotenv()
 
 OAUTH2_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")
@@ -31,7 +32,7 @@ except:
 if environment == "PROD":
     OAUTH2_REDIRECT_URI = 'https://www.affairsandorder.com/callback'
 else:
-    OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'
+    OAUTH2_REDIRECT_URI = 'http://127.0.0.1:5000/callback'
 
 API_BASE_URL = os.environ.get('API_BASE_URL', 'https://discordapp.com/api')
 AUTHORIZATION_BASE_URL = API_BASE_URL + '/oauth2/authorize'
@@ -134,6 +135,8 @@ def discord_register():
         username = request.form.get("username")
         continent = request.form.get("continent")
         key = request.form.get("key")
+        captcha_token = request.form.get("g-recaptcha-response")
+        print("token:", captcha_token)
 
         try:
             db.execute("SELECT key FROM keys WHERE key=(%s)", (key,))
@@ -175,12 +178,14 @@ def discord_register():
 
             user = user_id
 
-            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))  # TODO  change the default location
-            db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
-            db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
-            db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
+            continent = "europe"
 
-            # clears session variables from oauth
+            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user_id, continent))  # TODO Change the default location
+            db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
+            db.execute("INSERT INTO resources (id) VALUES (%s)", (user_id,))
+            db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user_id,))
+
+            # Clears session variables from oauth
             try:
                 session.pop('oauth2_state')
             except KeyError:
@@ -192,11 +197,21 @@ def discord_register():
             connection.close()
             return redirect("/")
 
+# Function for verifying that the captcha token is correct
+def verify_captcha(response):
+
+    form_data = {
+        "secret": os.getenv("RECAPTCHA_SECRET"),
+        "response": response,
+    }
+    r = requests.post("https://www.google.com/recaptcha/api/siteverify", data=form_data)
+    r = r.json()
+
+    return r["success"]
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-
-        # connects the db to the signup function
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -204,10 +219,17 @@ def signup():
             password=os.getenv("PG_PASSWORD"),
             host=os.getenv("PG_HOST"),
             port=os.getenv("PG_PORT"))
-  # connects to db
+
+        # Creates a cursor to the database
         db = connection.cursor()
 
-        # gets corresponding form inputs
+        captcha_response = request.form.get("g-recaptcha-response")
+        captcha_success = verify_captcha(captcha_response)
+
+        if not captcha_success:
+            return error(400, "Wait for the API to come out ;)")
+
+        # Gets user's form inputs
         username = request.form.get("username")
         email = request.form.get("email")
         password = request.form.get("password").encode('utf-8')
@@ -217,13 +239,10 @@ def signup():
         continent = request.form.get("continent")
 
         key = request.form.get("key")
-
         try:
-            fet = db.execute("SELECT key FROM keys WHERE key=%s", (key,))
-            print("KEY HERE", key, fet, os.getenv("PG_DATABASE"))
+            db.execute("SELECT key FROM keys WHERE key=%s", (key,))
             db.fetchone()[0]
         except:
-            correct_key = None
             return error(400, "Key not found")
 
         try:
@@ -231,38 +250,35 @@ def signup():
             db.fetchone()[0]
             return error(400, "Duplicate name, choose another one")
         except:
-            duplicate_name = False
-
-        if password != confirmation:  # checks if password is = to confirmation password
+            pass
+        
+        # Checks if password is equal to the confirmation password
+        if password != confirmation:  
             return error(400, "Passwords must match.")
 
-        # DEBUG:
-        print(password)
-        password=str(password)
-        # DEBUG END;
-
         # Hashes the inputted password
-        # hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
-        hashed = bcrypt.hashpw(password, bcrypt.gensalt(14))
-        # print("HASH ", hashed)
+        hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
 
+        # Inserts the user and his data to the main table for users
         db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
 
+        # Selects the id of the user that was just registered. (Because id is AUTOINCREMENT'ed)
         db.execute("SELECT id FROM users WHERE username = (%s)", (username,))
-        user = db.fetchone()[0]
+        user_id = db.fetchone()[0]
 
-        # set's the user's "id" column to the sessions variable "user_id"
-        session["user_id"] = user
+        # Stores the user's 
+        session["user_id"] = user_id
 
-        db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))
-        db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
-        db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
-        db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
+        # Inserts the user's id into the needed database tables
+        db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user_id, continent))
+        db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
+        db.execute("INSERT INTO resources (id) VALUES (%s)", (user_id,))
+        db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user_id,))
 
-        db.execute("DELETE FROM keys WHERE key=(%s)", (key,))  # deletes the used key
+        db.execute("DELETE FROM keys WHERE key=(%s)", (key,)) # Deletes the key used for signup
 
         connection.commit()
         connection.close()
         return redirect("/")
-    else:
-        return render_template("signup.html")
+    elif request.method == "GET":
+        return render_template("signup.html", way="normal")
