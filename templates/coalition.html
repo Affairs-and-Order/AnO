@@ -390,9 +390,11 @@
                     </table>
                 </div>
 
+                <!--
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
+                -->
             </div>
 
             <h2 class="templatecontentheaderleft">Bank</h2>
@@ -649,6 +651,9 @@
                     </span>Update</button>
                 -->
             </div>
+
+            <!-- Temporarily disabled, because taxes will be added after beta-->
+            <!--
             <h2 class="templatecontentheaderleft">Taxes</h2>
 
             <div class="infodiv">
@@ -689,6 +694,7 @@
                 <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     add_circle_outline
                     </span>Create Bracket</button>
+                -->
 
                 <!--max lenth of 10-->
                 <div class="templateoutertablediv inverttable">
@@ -714,6 +720,8 @@
                     </span>Update</button>
             </div>
 
+            <!-- Temporarily disabled because the backend is not done-->
+            <!--
             <h2 class="templatecontentheaderleft">War Range</h2>
 
             <div class="infodiv">
@@ -755,7 +763,7 @@
                     add_circle_outline
                     </span>Create Canon</button>
 
-                <!--max lenth of 10-->
+                <!- max lenth of 10 ->
                 <div class="templateoutertablediv inverttable">
                     <table class="templatetable templatetable2">
                         <tr>
@@ -765,7 +773,7 @@
                         </tr>
                         <tr>
                             <td>[[ canonName ]]:</td>
-                            <!--Example: "may not attack 1-20 provinces"-->
+                            <!- Example: "may not attack 1-20 provinces" ->
                             <td>[[ canon ]]</td>
                             <td><span class="material-icons iconred">
                                 remove_circle_outline
@@ -775,6 +783,7 @@
                 </div>
 
             </div>
+            ->
 
             <!--HIDE ALL OF THIS infodiv and header if coalition type is "open"-->
             {% if colType == "closed" %}

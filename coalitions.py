@@ -207,6 +207,7 @@ def coalition(colId):
                 'bauxite': bauxite,
                 'iron': iron,
                 'copper': copper,
+                'lead': lead,
                 'lumber': lumber,
                 'components': components,
                 'steel': steel,

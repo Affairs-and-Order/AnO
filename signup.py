@@ -177,10 +177,12 @@ def discord_register():
 
             user = user_id
 
-            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user, continent))  # TODO Change the default location
-            db.execute("INSERT INTO military (id) VALUES (%s)", (user,))
-            db.execute("INSERT INTO resources (id) VALUES (%s)", (user,))
-            db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user,))
+            continent = "europe"
+
+            db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user_id, continent))  # TODO Change the default location
+            db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
+            db.execute("INSERT INTO resources (id) VALUES (%s)", (user_id,))
+            db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user_id,))
 
             # Clears session variables from oauth
             try:
