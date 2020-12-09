@@ -21,13 +21,25 @@ def tax_income(): # Function for giving money to players
 
         user_id = user[0]
 
-        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
-        population = int(db.fetchone()[0])
+        try:
+            db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
+            population = int(db.fetchone()[0])
+        except:
+            population = 0
+
+        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
+        consumer_goods = int(db.fetchone()[0])
+        consumer_goods_needed = round(population * 0.00005)
+        new_consumer_goods = consumer_goods - consumer_goods_needed
 
         db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
         money = int(db.fetchone()[0])
 
         new_income = money + population * 0.01
+
+        if new_consumer_goods >= 0:
+            new_income *= 1.5
+            db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (new_consumer_goods, user_id))
 
         db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_income, user_id,))
 
@@ -35,7 +47,7 @@ def tax_income(): # Function for giving money to players
 
     conn.close()
 
-def populationGrowth(): # Function for growing population
+def population_growth(): # Function for growing population
 
     conn = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),

@@ -15,10 +15,16 @@ from helpers import get_influence, get_coalition_influence
 from dotenv import load_dotenv
 load_dotenv()
 import os
+from tasks import tax_income, population_growth, generate_province_revenue
 
 from attack_scripts import Military
 
 app = Flask(__name__)
+
+try:
+    app.secret_key = os.getenv("SECRET_KEY")
+except:
+    app.secret_key = "DEVELOPMENT_SECRET_KEY"
 
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from testroutes import testfunc
@@ -39,16 +45,44 @@ app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 
 celery_beat_schedule = {
     "population_growth": {
-        "task": "app.populationGrowth",
+        "task": "app.task_population_growth",
         # Run every 15 seconds
-        "schedule": 15.0,
+        "schedule": 10.0,
     },
-    "province_infrastructure": {
-        "task": "app.generate_province_revenue",
+    "generate_province_revenue": {
+        "task": "app.task_generate_province_revenue",
+        # Run every 10 seconds
+        "schedule": 10.0,
+    },
+    "tax_income": {
+        "task": "app.task_tax_income",
         # Run every 10 seconds
         "schedule": 10.0,
     }
 }
+
+celery = Celery(app.name)
+celery.conf.update(
+    result_backend=app.config["CELERY_RESULT_BACKEND"],
+    broker_url=app.config["CELERY_BROKER_URL"],
+    timezone="UTC",
+    task_serializer="json",
+    accept_content=["json"],
+    result_serializer="json",
+    beat_schedule=celery_beat_schedule,
+)
+
+@celery.task()
+def task_population_growth():
+    population_growth()
+
+@celery.task()
+def task_tax_income():
+    tax_income()
+
+@celery.task()
+def task_generate_province_revenue():
+    generate_province_revenue()
 
 """
     "check_war": {
@@ -182,7 +216,6 @@ def inject_user():
         except TypeError:
             resources = {}
 
-        return lst
     return dict(get_resource_amount=get_resource_amount)
 
 @app.route("/", methods=["GET"])
