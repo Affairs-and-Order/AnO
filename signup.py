@@ -135,8 +135,6 @@ def discord_register():
         username = request.form.get("username")
         continent = request.form.get("continent")
         key = request.form.get("key")
-        captcha_token = request.form.get("g-recaptcha-response")
-        print("token:", captcha_token)
 
         try:
             db.execute("SELECT key FROM keys WHERE key=(%s)", (key,))
@@ -176,9 +174,8 @@ def discord_register():
 
             session["user_id"] = user_id
 
-            user = user_id
-
-            continent = "europe"
+            if continent == None:
+                continent = "europe"
 
             db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user_id, continent))  # TODO Change the default location
             db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
