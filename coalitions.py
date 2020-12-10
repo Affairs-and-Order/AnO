@@ -18,262 +18,286 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-# rawCol (for easy finding using CTRL + F)
+
+# Function for getting the coalition role of a user
+def get_user_role(user_id):
+
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = connection.cursor()
+    
+    db.execute("SELECT role FROM coalitions WHERE userId=%s", (user_id,))
+    role = db.fetchone()[0]
+
+    return role
+
+# Route for viewing a coalition's page
 @login_required
 @app.route("/coalition/<colId>", methods=["GET"])
 def coalition(colId):
 
-    if request.method == "GET":
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = connection.cursor()
+
+    cId = session["user_id"]
+
+    db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
+    name = db.fetchone()[0]
+
+    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
+    colType = db.fetchone()[0]
+
+    db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
+    members = db.fetchone()[0]
+
+    total_influence = get_coalition_influence(colId)
+
+    average_influence = total_influence // members
+
+    db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
+    description = db.fetchone()[0]
+
+    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
+    colType = db.fetchone()[0]
+
+    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+    leaders = db.fetchall() # All coalition leaders ids
+    leaders = [item for t in leaders for item in t]
+
+    leader_names = []
+
+    for leader_id in leaders:
+        db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
+        leader_name = db.fetchone()[0]
+        leader_names.append(leader_name)
+
+    ### STUFF FOR JINJA
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (cId,))
+        userInCol = db.fetchone()[0]
+        userInCol = True
+    except:
+        userInCol = False
+
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE userId=(%s) AND colId=(%s)", (cId, colId))
+        userInCurCol = db.fetchone()[0]
+        userInCurCol = True
+    except:
+        userInCurCol = False
+
+    if cId in leaders:
+        userLeader = True
+    else:
+        userLeader = False
+    ###
+
+    ############## TREATIES ##################
+    if userLeader == True:
+
+        #### INGOING ####
+        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
+        ingoing_ids = db.fetchall()
+        col_ids = []
+        col_names = []
+        trt_names = []
+
+        for treaty_iddd in ingoing_ids:
+
+            treaty_id = treaty_iddd[0]
+
+            db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
+            col_id = db.fetchone()[0]
+            col_ids.append(col_id)
+
+            db.execute("SELECT name FROM colNames WHERE id=(%s)", (col_id,))
+            coalition_name = db.fetchone()[0]
+            col_names.append(coalition_name)
+
+            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (treaty_id,))
+            treaty_name = db.fetchone()[0]
+            trt_names.append(treaty_name)
+
+        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
+        ingoing_length = len(list(ingoing_treaties))
+        #################
+
+        #### ACTIVE ####
+
         
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY treaty_id ASC", (colId, colId))
+        raw_active_ids = db.fetchall()
 
-        db = connection.cursor()
-
-        cId = session["user_id"]
-
-        db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
-        name = db.fetchone()[0]
-        db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-        colType = db.fetchone()[0]
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
-        members = db.fetchone()[0]
-        total_influence = get_coalition_influence(colId)
-        average_influence = total_influence // members
-        db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
-        description = db.fetchone()[0]
-        db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-        colType = db.fetchone()[0]
-
-        db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-        leaders = db.fetchall() # All coalition leaders ids
-        leaders = [item for t in leaders for item in t]
-
-        leader_names = []
-
-        for leader_id in leaders:
-            db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
-            leader_name = db.fetchone()[0]
-            leader_names.append(leader_name)
-
-        ### STUFF FOR JINJA
-        try:
-            db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (cId,))
-            userInCol = db.fetchone()[0]
-            userInCol = True
-        except:
-            userInCol = False
-
-        try:
-            db.execute("SELECT userId FROM coalitions WHERE userId=(%s) AND colId=(%s)", (cId, colId))
-            userInCurCol = db.fetchone()[0]
-            userInCurCol = True
-        except:
-            userInCurCol = False
-
-        if cId in leaders:
-            userLeader = True
-        else:
-            userLeader = False
-        ###
-
-        ############## TREATIES ##################
-        if userLeader == True:
-
-            #### INGOING ####
-            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
-            ingoing_ids = db.fetchall()
-            col_ids = []
-            col_names = []
-            trt_names = []
-
-            for treaty_iddd in ingoing_ids:
-
-                treaty_id = treaty_iddd[0]
-
-                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
-                col_id = db.fetchone()[0]
-                col_ids.append(col_id)
-
-                db.execute("SELECT name FROM colNames WHERE id=(%s)", (col_id,))
-                coalition_name = db.fetchone()[0]
-                col_names.append(coalition_name)
-
-                db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (treaty_id,))
-                treaty_name = db.fetchone()[0]
-                trt_names.append(treaty_name)
-
-            ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
-            ingoing_length = len(list(ingoing_treaties))
-            #################
-
-            #### ACTIVE ####
-
-            
-            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY treaty_id ASC", (colId, colId))
-            raw_active_ids = db.fetchall()
-
-            active_ids = []
-            coalition_ids = []
-            coalition_names = []
-            treaty_names = []
+        active_ids = []
+        coalition_ids = []
+        coalition_names = []
+        treaty_names = []
 
 
-            for i in raw_active_ids:
+        for i in raw_active_ids:
 
-                offer_id = i[0]
+            offer_id = i[0]
 
-                active_ids.append(offer_id)
+            active_ids.append(offer_id)
 
-                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
+            db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
+            coalition_id = db.fetchone()[0]
+            if coalition_id != colId:
+                pass
+            else: 
+                db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
                 coalition_id = db.fetchone()[0]
-                if coalition_id != colId:
-                    pass
-                else: 
-                    db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
-                    coalition_id = db.fetchone()[0]
 
-                coalition_ids.append(coalition_id)
-                
-                db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
-                coalition_name = db.fetchone()[0]
-                coalition_names.append(coalition_name)
-
-                db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (offer_id,))
-                treaty_name = db.fetchone()[0]
-                treaty_names.append(treaty_name)
-
-            active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
-            active_length = len(list(active_treaties))
-        else:
-            ingoing_treaties = []
-            active_treaties = []
-            ingoing_length = None
-            active_length = None
-            ################
-        ############################################
-
-        ### BANK STUFF ###
-        if userInCurCol == True:
-
-            db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
-            money = db.fetchone()[0]
-
-            db.execute("SELECT rations FROM colBanks WHERE colId=(%s)", (colId,))
-            rations =  db.fetchone()[0]
-            db.execute("SELECT oil FROM colBanks WHERE colId=(%s)", (colId,))
-            oil =  db.fetchone()[0]
-            db.execute("SELECT coal FROM colBanks WHERE colId=(%s)", (colId,))
-            coal =  db.fetchone()[0]
-            db.execute("SELECT uranium FROM colBanks WHERE colId=(%s)", (colId,))
-            uranium =  db.fetchone()[0]
-            db.execute("SELECT bauxite FROM colBanks WHERE colId=(%s)", (colId,))
-            bauxite = db.fetchone()[0]
-            db.execute("SELECT iron FROM colBanks WHERE colId=(%s)", (colId,))
-            iron = db.fetchone()[0]
-            db.execute("SELECT lead FROM colBanks WHERE colId=(%s)", (colId,))
-            lead =  db.fetchone()[0]
-            db.execute("SELECT copper FROM colBanks WHERE colId=(%s)", (colId,))
-            copper = db.fetchone()[0]
-            db.execute("SELECT lumber FROM colBanks WHERE colId=(%s)", (colId,))
-            lumber = db.fetchone()[0]
-
-            db.execute("SELECT components FROM colBanks WHERE colId=(%s)", (colId,))
-            components =  db.fetchone()[0]
-            db.execute("SELECT steel FROM colBanks WHERE colId=(%s)", (colId,))
-            steel =  db.fetchone()[0]
-            db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(%s)", (colId,))
-            consumer_goods = db.fetchone()[0]
-            db.execute("SELECT aluminium FROM colBanks WHERE colId=(%s)", (colId,))
-            aluminium = db.fetchone()[0]
-            db.execute("SELECT gasoline FROM colBanks WHERE colId=(%s)", (colId,))
-            gasoline = db.fetchone()[0]
-            db.execute("SELECT ammunition FROM colBanks WHERE colId=(%s)", (colId,))
-            ammunition = db.fetchone()[0]
-
-            bankRaw = {
-                'money': money,
-                'rations': rations,
-                'oil': oil,
-                'coal': coal,
-                'uranium': uranium,
-                'bauxite': bauxite,
-                'iron': iron,
-                'copper': copper,
-                'lead': lead,
-                'lumber': lumber,
-                'components': components,
-                'steel': steel,
-                'consumer_goods': consumer_goods,
-                'aluminium': aluminium,
-                'gasoline': gasoline,
-                'ammunition': ammunition
-            }
-
-        else: 
+            coalition_ids.append(coalition_id)
             
-            bankRaw = {}
-        ###################
+            db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
+            coalition_name = db.fetchone()[0]
+            coalition_names.append(coalition_name)
 
-        ### FLAG STUFF
-        try:
-            db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
-            flag = db.fetchone()[0]
-        except:
-            flag = None
-        ### 
+            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (offer_id,))
+            treaty_name = db.fetchone()[0]
+            treaty_names.append(treaty_name)
 
-        if userLeader == True and colType != "Open":
+        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
+        active_length = len(list(active_treaties))
+    else:
+        ingoing_treaties = []
+        active_treaties = []
+        ingoing_length = None
+        active_length = None
+        ################
+    ############################################
 
-            db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
-            requestMessages = db.fetchall()
+    ### BANK STUFF ###
+    if userInCurCol == True:
 
-            db.execute("SELECT reqId FROM requests WHERE colId=(%s)", (colId,))
-            requestIds = db.fetchall()
+        db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
+        money = db.fetchone()[0]
 
-            db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(%s))", (colId,))
-            requestNames = db.fetchall()
+        db.execute("SELECT rations FROM colBanks WHERE colId=(%s)", (colId,))
+        rations =  db.fetchone()[0]
+        db.execute("SELECT oil FROM colBanks WHERE colId=(%s)", (colId,))
+        oil =  db.fetchone()[0]
+        db.execute("SELECT coal FROM colBanks WHERE colId=(%s)", (colId,))
+        coal =  db.fetchone()[0]
+        db.execute("SELECT uranium FROM colBanks WHERE colId=(%s)", (colId,))
+        uranium =  db.fetchone()[0]
+        db.execute("SELECT bauxite FROM colBanks WHERE colId=(%s)", (colId,))
+        bauxite = db.fetchone()[0]
+        db.execute("SELECT iron FROM colBanks WHERE colId=(%s)", (colId,))
+        iron = db.fetchone()[0]
+        db.execute("SELECT lead FROM colBanks WHERE colId=(%s)", (colId,))
+        lead =  db.fetchone()[0]
+        db.execute("SELECT copper FROM colBanks WHERE colId=(%s)", (colId,))
+        copper = db.fetchone()[0]
+        db.execute("SELECT lumber FROM colBanks WHERE colId=(%s)", (colId,))
+        lumber = db.fetchone()[0]
 
-            requests = zip(requestIds, requestNames, requestMessages)
-        else:
-            requests = None
+        db.execute("SELECT components FROM colBanks WHERE colId=(%s)", (colId,))
+        components =  db.fetchone()[0]
+        db.execute("SELECT steel FROM colBanks WHERE colId=(%s)", (colId,))
+        steel =  db.fetchone()[0]
+        db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(%s)", (colId,))
+        consumer_goods = db.fetchone()[0]
+        db.execute("SELECT aluminium FROM colBanks WHERE colId=(%s)", (colId,))
+        aluminium = db.fetchone()[0]
+        db.execute("SELECT gasoline FROM colBanks WHERE colId=(%s)", (colId,))
+        gasoline = db.fetchone()[0]
+        db.execute("SELECT ammunition FROM colBanks WHERE colId=(%s)", (colId,))
+        ammunition = db.fetchone()[0]
 
-        ### BANK STUFF
-        if userLeader == True:
+        bankRaw = {
+            'money': money,
+            'rations': rations,
+            'oil': oil,
+            'coal': coal,
+            'uranium': uranium,
+            'bauxite': bauxite,
+            'iron': iron,
+            'copper': copper,
+            'lead': lead,
+            'lumber': lumber,
+            'components': components,
+            'steel': steel,
+            'consumer_goods': consumer_goods,
+            'aluminium': aluminium,
+            'gasoline': gasoline,
+            'ammunition': ammunition
+        }
 
-            db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
-            bankRequests = db.fetchall()
+    else: 
+        
+        bankRaw = {}
+    ###################
 
-            banks = []
-            for reqId, amount, resource, bankId in bankRequests:
+    ### FLAG STUFF
+    try:
+        db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
+        flag = db.fetchone()[0]
+    except:
+        flag = None
+    ### 
 
-                db.execute("SELECT username FROM users WHERE id=(%s)", (reqId,))
-                username = db.fetchone()[0]
+    if userLeader == True and colType != "Open":
 
-                data_tuple = (reqId, amount, resource, bankId, username)
-                banks.append(data_tuple)
+        db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
+        requestMessages = db.fetchall()
 
-            bankRequests = banks
-        else:
-            bankRequests = []
+        db.execute("SELECT reqId FROM requests WHERE colId=(%s)", (colId,))
+        requestIds = db.fetchall()
 
-        connection.close()
+        db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(%s))", (colId,))
+        requestNames = db.fetchall()
 
-        return render_template("coalition.html", name=name, colId=colId, members=members,
-                               description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
-                               requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
-                               average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
-                               flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
-                               ingoing_length=ingoing_length, active_length=active_length)
+        requests = zip(requestIds, requestNames, requestMessages)
+    else:
+        requests = None
+
+    ### BANK STUFF
+    if userLeader == True:
+
+        db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
+        bankRequests = db.fetchall()
+
+        banks = []
+        for reqId, amount, resource, bankId in bankRequests:
+
+            db.execute("SELECT username FROM users WHERE id=(%s)", (reqId,))
+            username = db.fetchone()[0]
+
+            data_tuple = (reqId, amount, resource, bankId, username)
+            banks.append(data_tuple)
+
+        bankRequests = banks
+    else:
+        bankRequests = []
+
+    connection.close()
+
+    return render_template("coalition.html", name=name, colId=colId, members=members,
+                            description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
+                            requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
+                            average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
+                            flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
+                            ingoing_length=ingoing_length, active_length=active_length)
 
 
+# Route for establishing a coalition
 @login_required
 @app.route("/establish_coalition", methods=["GET", "POST"])
 def establish_coalition():
+
     if request.method == "POST":
         
         connection = psycopg2.connect(
@@ -285,37 +309,40 @@ def establish_coalition():
 
         db = connection.cursor()
 
+        # Checks if a user is already in a coalition
         try:
             db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (session["user_id"],))
             db.fetchone()[0]
 
             return error(403, "You are already in a coalition")
         except:
+            pass
 
-            cType = request.form.get("type")
-            name = request.form.get("name")
-            desc = request.form.get("description")
+        cType = request.form.get("type")
+        name = request.form.get("name")
+        desc = request.form.get("description")
 
-            if len(str(name)) > 40:
-                return error(500, "name too long! the coalition name needs to be under 40 characters")
-            else:
-                db.execute("INSERT INTO colNames (name, type, description) VALUES (%s, %s, %s)", (name, cType, desc))
+        if len(str(name)) > 40:
+            return error(400, "name too long! the coalition name needs to be under 40 characters")
+        else:
+            db.execute("INSERT INTO colNames (name, type, description) VALUES (%s, %s, %s)", (name, cType, desc))
 
-                db.execute("SELECT id FROM colNames WHERE name = (%s)", (name,))
-                colId = db.fetchone()[0] # Gets the coalition id of the just inserted coalition 
+            db.execute("SELECT id FROM colNames WHERE name = (%s)", (name,))
+            colId = db.fetchone()[0] # Gets the coalition id of the just inserted coalition 
 
-                # Inserts the user as the leader of the coalition
-                db.execute("INSERT INTO coalitions (colId, userId, role) VALUES (%s, %s, %s)", (colId, session["user_id"], "leader"))
+            # Inserts the user as the leader of the coalition
+            db.execute("INSERT INTO coalitions (colId, userId, role) VALUES (%s, %s, %s)", (colId, session["user_id"], "leader"))
 
-                db.execute("INSERT INTO colBanks (colId) VALUES (%s)", (colId,)) # Inserts the coalition into the table for coalition banks
+            # Inserts the coalition into the table for coalition banks
+            db.execute("INSERT INTO colBanks (colId) VALUES (%s)", (colId,)) 
 
-                connection.commit() # Commits the new data
-                connection.close() # Closes the connection
-                return redirect(f"/coalition/{colId}")
+            connection.commit() # Commits the new data
+            connection.close() # Closes the connection
+            return redirect(f"/coalition/{colId}") # Redirects to the new coalition's page
     else:
         return render_template("establish_coalition.html")
 
-        
+# Route for viewing all existing coalitions
 @login_required
 @app.route("/coalitions", methods=["GET"])
 def coalitions():
@@ -377,6 +404,7 @@ def coalitions():
 
     return render_template("coalitions.html", resultAll=resultAll)
 
+# Route for joining a coalition
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
 def join_col(colId):
@@ -405,15 +433,15 @@ def join_col(colId):
 
         message = request.form.get("message")
 
-        db.execute("INSERT INTO requests (colId, reqId, message ) VALUES (%s, %s, %s)", (colId, cId, message))
+        db.execute("INSERT INTO requests (colId, reqId, message) VALUES (%s, %s, %s)", (colId, cId, message))
 
         connection.commit()
 
     connection.close()
 
-    return redirect(f"/coalition/{colId}")
+    return redirect(f"/coalition/{colId}") # Redirects to the joined coalitions page
 
-
+# Route for leaving a coalition
 @login_required
 @app.route("/leave/<colId>", methods=["POST"])
 def leave_col(colId):
@@ -429,11 +457,10 @@ def leave_col(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall()
+    role = get_user_role(cId)
 
-    if cId not in leaders:
-        error(400, "Can't leave coalition, you're the leader")
+    if role != "leader":
+        return error(400, "Can't leave coalition, you're the leader")
 
     db.execute("DELETE FROM coalitions WHERE userId=(%s) AND colId=(%s)", (cId, colId))
 
@@ -442,7 +469,7 @@ def leave_col(colId):
 
     return redirect("/coalitions")
 
-
+# Route for redirecting to the user's coalition
 @login_required
 @app.route("/my_coalition", methods=["GET"])
 def my_coalition():
@@ -460,15 +487,12 @@ def my_coalition():
     try:
         db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
         coalition = db.fetchone()[0]
+
+        connection.close()
     except TypeError:
-        coalition = None
-
-    connection.close()
-
-    if coalition == None:
         return redirect("/")  # Redirects to home page instead of an error
-    else:
-        return redirect(f"/coalition/{coalition}")
+
+    return redirect(f"/coalition/{coalition}")
 
 @login_required
 @app.route("/give_position", methods=["POST"])
