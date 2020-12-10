@@ -494,6 +494,7 @@ def my_coalition():
 
     return redirect(f"/coalition/{coalition}")
 
+# Route for giving someone a role in your coalition
 @login_required
 @app.route("/give_position", methods=["POST"])
 def give_position():
@@ -514,14 +515,12 @@ def give_position():
     except:
         return error(400, "You are not a part of any coalition")
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You're not a leader")
 
-    roles = ["leader", "banker", "tax_collector", "foreign_ambassador", "general", "domestic_minister"]
+    roles = ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general", "domestic_minister"]
 
     role = request.form.get("role")
 
@@ -568,12 +567,10 @@ def adding(uId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
-        return error(400, "You are not the leader of the coalition")
+    if user_role != "leader":
+        return error(400, "You are not a leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
 
@@ -585,8 +582,8 @@ def adding(uId):
     return redirect(f"/coalition/{colId}")
 
 
+# Route for removing a join request
 @login_required
-# removes a request for coalition joining
 @app.route("/remove/<uId>", methods=["POST"])
 def removing_requests(uId):
 
@@ -607,11 +604,9 @@ def removing_requests(uId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
     
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You are not the leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
@@ -620,11 +615,11 @@ def removing_requests(uId):
 
     return redirect(f"/coalition/{ colId }")
 
+# Route for deleting a coalition
 @login_required
 @app.route("/delete_coalition/<colId>", methods=["POST"])
 def delete_coalition(colId):
 
-    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -636,23 +631,17 @@ def delete_coalition(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
     coalition_name = db.fetchone()[0]
 
     db.execute("DELETE FROM colNames WHERE id=(%s)", (colId,))
-
-    db.fetchone()[0]
-
     db.execute("DELETE FROM coalitions WHERE colId=(%s)", (colId,))
 
-    db.fetchone()[0]
     
     connection.commit()
     connection.close()
@@ -661,8 +650,7 @@ def delete_coalition(colId):
 
     return redirect("/")
 
-
-
+# Route for updating name, description, flag of coalition
 @login_required
 @app.route("/update_col_info/<colId>", methods=["POST"])
 def update_col_info(colId):
@@ -679,11 +667,9 @@ def update_col_info(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
@@ -719,6 +705,8 @@ def update_col_info(colId):
     return redirect(f"/coalition/{colId}")
 
 ### COALITION BANK STUFF ###
+
+# Route for depositing resources into the bank
 @login_required
 @app.route("/deposit_into_bank/<colId>", methods=["POST"])
 def deposit_into_bank(colId):
@@ -741,10 +729,9 @@ def deposit_into_bank(colId):
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
-    resources = [
-                "money", "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-                "lumber", "components", "steel", "consumer_goods", "aluminium",
-                "gasoline", "ammunition"]
+    resources = ["money", "rations", "oil", "coal", "uranium", "bauxite",
+    "lead", "copper", "iron", "lumber", "components", "steel", "consumer_goods",
+    "aluminium", "gasoline", "ammunition"]
 
     deposited_resources = []
 
@@ -807,6 +794,7 @@ def deposit_into_bank(colId):
 
     return redirect(f"/coalition/{colId}")
 
+# Function for withdrawing a resource from the bank
 def withdraw(resource, amount, user_id, colId):
 
     connection = psycopg2.connect(
@@ -858,27 +846,16 @@ def withdraw(resource, amount, user_id, colId):
     connection.commit()
     connection.close()
 
+# Route from withdrawing from the bank 
 @login_required
 @app.route("/withdraw_from_bank/<colId>", methods=["POST"])
 def withdraw_from_bank(colId):
 
-    
-    connection = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
-
-    db = connection.cursor()
-
     cId = session["user_id"]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     resources = [
@@ -900,11 +877,9 @@ def withdraw_from_bank(colId):
         amount = resource[1]
         withdraw(name, amount, cId, colId)
 
-    connection.commit()
-    connection.close()
-
     return redirect(f"/coalition/{colId}")
 
+# Route for requesting a resource from the coalition bank
 @login_required
 @app.route("/request_from_bank/<colId>", methods=["POST"])
 def request_from_bank(colId):
@@ -952,11 +927,11 @@ def request_from_bank(colId):
 
     return redirect(f"/coalition/{colId}")
 
+# Route for removing a request for a resource from the coalition bank
 @login_required
 @app.route("/remove_bank_request/<bankId>", methods=["POST"])
 def remove_bank_request(bankId):
 
-    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -968,14 +943,9 @@ def remove_bank_request(bankId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT colId FROM colBanksRequests WHERE id=(%s)", (bankId,))
-    colId = db.fetchone()[0]
+    user_role = get_user_role(cId)
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
-
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM colBanksRequests WHERE id=(%s)", (bankId,))
@@ -984,6 +954,8 @@ def remove_bank_request(bankId):
     connection.close()
     return redirect("/my_coalition")
 
+
+# Route for accepting a bank request from the coalition bank
 @login_required
 @app.route("/accept_bank_request/<bankId>", methods=["POST"])
 def accept_bank_request(bankId):
@@ -1003,11 +975,9 @@ def accept_bank_request(bankId):
     db.execute("SELECT colId FROM colBanksRequests WHERE id=(%s)", (bankId,))
     colId = db.fetchone()[0]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("SELECT resource FROM colBanksRequests WHERE id=(%s)", (bankId,))
@@ -1018,7 +988,6 @@ def accept_bank_request(bankId):
     user_id = db.fetchone()[0]
 
     withdraw(resource, amount, user_id, colId)
-
     db.execute("DELETE FROM colBanksRequests WHERE id=(%s)", (bankId,))
 
     connection.commit()
@@ -1026,10 +995,10 @@ def accept_bank_request(bankId):
 
     return redirect("/my_coalition")
 
+# Route for offering another coalition a treaty
 @login_required
 @app.route("/offer_treaty", methods=["POST"])
 def offer_treaty():
-
     
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -1049,11 +1018,9 @@ def offer_treaty():
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     treaty_name = request.form.get("treaty_name")
@@ -1069,11 +1036,11 @@ def offer_treaty():
 
     return redirect("/my_coalition")
 
+# Route for accepting a treaty offer from another coalition
 @login_required
 @app.route("/accept_treaty/<offer_id>", methods=["POST"])
 def accept_treaty(offer_id):
 
-    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -1088,11 +1055,9 @@ def accept_treaty(offer_id):
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+    user_role = get_user_role(cId)
 
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("UPDATE treaties SET status='Active' WHERE id=(%s)", (offer_id,))
@@ -1102,10 +1067,10 @@ def accept_treaty(offer_id):
 
     return redirect("/my_coalition")
 
+# Route for breaking a treaty with another coalition
 @login_required
 @app.route("/break_treaty/<offer_id>", methods=["POST"])
 def break_treaty(offer_id):
-
     
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -1118,14 +1083,9 @@ def break_treaty(offer_id):
 
     cId = session["user_id"]
 
-    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
-    user_coalition = db.fetchone()[0]
+    user_role = get_user_role(cId)
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
-
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))
@@ -1150,14 +1110,9 @@ def decline_treaty(offer_id):
 
     cId = session["user_id"]
 
-    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
-    user_coalition = db.fetchone()[0]
+    user_role = get_user_role(cId)
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (user_coalition,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
-
-    if cId not in leaders:
+    if user_role != "leader":
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))
