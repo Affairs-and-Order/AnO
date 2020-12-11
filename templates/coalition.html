@@ -39,7 +39,7 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
 
-            {% if user_role != "leader" %}
+            {% if user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] %}
             <script>
                 $(document).ready(function() {
 
@@ -322,6 +322,7 @@
         <div class="leader" id="leader">
             <!-- fix not being able to go here from /coalition even if user is leader-->
 
+            {% if user_role in ["leader", "deputy_leader", "domestic_minister"] %}
             <h2 class="templatecontentheaderleft">Government</h2>
 
             <div class="infodiv">
@@ -401,7 +402,9 @@
                     </span>Update</button>
                 -->
             </div>
+            {% endif %}
 
+            {% if user_role in ["leader", "deputy_leader", "banker"] %}
             <h2 class="templatecontentheaderleft">Bank</h2>
 
             <div class="infodiv">
@@ -556,7 +559,9 @@
                     </div>
                 </form>
             </div>
+            {% endif %}
 
+            {% if user_role in ["leader", "deputy_leader", "foreign_ambassador"] %}
             <h2 class="templatecontentheaderleft">Diplomacy</h2>
 
             <div class="infodiv">
@@ -724,6 +729,7 @@
                     check
                     </span>Update</button>
         </div>
+        {% endif %}
 
         <!-- Temporarily disabled because the backend is not done-->
         <!--
@@ -791,7 +797,7 @@
             ->
 
             <!--HIDE ALL OF THIS infodiv and header if coalition type is "open"-->
-        {% if colType == "closed" %}
+        {% if colType == "closed" and user_role in ["leader", "deputy_leader", "domestic_minister"] %}
         <h2 class="templatecontentheaderleft">Applicants</h2>
         <!--show if coalition has 0 applicants-->
         <h2 class="templatecontentheadercenter">You have {{ requests|length }} applicants</h2>
@@ -855,6 +861,7 @@
             </div>
         </div>
         {% endif %}
+
         {% if user_role == "leader" %}
         <h2 class="templatecontentheaderleft">General</h2>
 
@@ -942,7 +949,7 @@
                     </div>
                 </div>
             </form>
-            {% endif %}
+    {% endif %}
     </div>
     <!--MEMBER-->
     <div class="member" id="member">
