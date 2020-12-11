@@ -97,6 +97,8 @@ def coalition(colId):
     except:
         userInCurCol = False
 
+    user_role = get_user_role(cId)
+
     if cId in leaders:
         userLeader = True
     else:
@@ -104,7 +106,7 @@ def coalition(colId):
     ###
 
     ############## TREATIES ##################
-    if userLeader == True:
+    if userLeader:
 
         #### INGOING ####
         db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
@@ -180,7 +182,7 @@ def coalition(colId):
     ############################################
 
     ### BANK STUFF ###
-    if userInCurCol == True:
+    if userInCurCol:
 
         db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
         money = db.fetchone()[0]
@@ -249,7 +251,7 @@ def coalition(colId):
         flag = None
     ### 
 
-    if userLeader == True and colType != "Open":
+    if userLeader and colType != "Open":
 
         db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
         requestMessages = db.fetchall()
@@ -265,7 +267,7 @@ def coalition(colId):
         requests = None
 
     ### BANK STUFF
-    if userLeader == True:
+    if userLeader:
 
         db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
         bankRequests = db.fetchall()
@@ -285,7 +287,7 @@ def coalition(colId):
 
     connection.close()
 
-    return render_template("coalition.html", name=name, colId=colId, members=members,
+    return render_template("coalition.html", name=name, colId=colId, members=members, user_role=user_role,
                             description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
                             requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,

@@ -108,7 +108,7 @@ def callback():
     except TypeError:
         duplicate = False
 
-    if duplicate == True:
+    if duplicate:
         return redirect("/discord_login")
     else:
         return redirect("/discord_signup")
@@ -160,7 +160,7 @@ def discord_register():
             except TypeError:
                 duplicate_name = False
 
-            if duplicate_name == True:
+            if duplicate_name:
                 return error(400, "Duplicate name, choose another one")
 
             date = str(datetime.date.today())

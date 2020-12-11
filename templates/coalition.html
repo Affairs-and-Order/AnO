@@ -17,14 +17,13 @@
 
         </div> -->
 
-
         <div class="templatedivflex2 menuflex2">
             <div class="templatedivflex2left" id="coalitiongeneral" onclick="coalitiongeneral()">
 
                 <h3 class="smallheader">General</h3>
 
             </div>
-            {% if userInCol == True %}
+            {% if userInCol %}
             <!-- if user isnt in coalition, maybe this is wrong ?-->
             <script>
                 $(document).ready(function() {
@@ -40,7 +39,7 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
 
-            {% if userLeader == False %}
+            {% if user_role != "leader" %}
             <script>
                 $(document).ready(function() {
 
@@ -56,7 +55,7 @@
                 <!-- somewhy doesnt work, no idea why -->
             </div>
 
-            {% if userInCol == False %}
+            {% if not userInCol %}
             <!--TODO: fix this lul-->
             <script>
                 $(document).ready(function() {
@@ -65,7 +64,8 @@
 
                 });
             </script>
-            {% endif %} {% if userInCurCol and not userLeader %}
+            {% endif %}
+            {% if userInCurCol and user_role != "leader" %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
@@ -854,7 +854,8 @@
                 </table>
             </div>
         </div>
-        {% endif %} {% if userLeader %}
+        {% endif %}
+        {% if user_role == "leader" %}
         <h2 class="templatecontentheaderleft">General</h2>
 
         <form method="POST">
@@ -920,7 +921,7 @@
             <form method="POST">
                 <div class="infodiv">
                     <div class="templatedivflex2 divflex2center menuflex">
-                        {% if userLeader %}
+                        {% if user_role == "leader" %}
                         <div class="templatedivflex2left">
 
                             <button type="submit" formaction="/delete_coalition/{{ colId }}" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
@@ -928,7 +929,8 @@
                                 </span>Delete Coalition</button>
 
                         </div>
-                        {% endif %} {% if userInCurCol and not userLeader %}
+                        {% endif %}
+                        {% if userInCurCol and user_role != "leader" %}
                         <div class="templatedivflex2left">
 
                             <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
