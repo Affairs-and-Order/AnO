@@ -298,72 +298,71 @@ def peace_offers():
     db.execute("SELECT peace_offer_id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (cId, cId))
     peace_offers = db.fetchall()
     offers = {}
+    incoming_counter=0
+    outgoing_counter=0
 
     incoming={}
     outgoing={}
 
-    # try:
-    print(peace_offers)
-    if peace_offers:
+    try:
+        if peace_offers:
 
-        for offer in peace_offers:
-            offer_id = offer[0]
-            if offer_id != None:
+            for offer in peace_offers:
+                offer_id = offer[0]
+                if offer_id != None:
 
-                # Every offer has a different subset
-                # offers[offer_id] = {}
+                    # Every offer has a different subset
+                    # offers[offer_id] = {}
 
-                db.execute("SELECT demanded_resources FROM peace WHERE id=(%s)", (offer_id,))
-                resources_fetch = db.fetchone()
-                db.execute("SELECT author FROM peace WHERE id=(%s)", (offer_id,))
-                author_id = db.fetchone()[0]
-                if author_id == cId:
-                    offer = outgoing
-                else:
-                    offer = incoming
-
-                print(offer)
-
-                offer[offer_id] = {}
-
-                if resources_fetch:
-                    resources = resources_fetch[0]
-                    if resources:
-                        db.execute("SELECT demanded_amount FROM peace WHERE id=(%s)", (offer_id,))
-                        amounts = db.fetchone()[0].split(",")
-                        resources = resources.split(",")
-
-                        print(offer)
-                        offer[offer_id]["resource_count"] = len(resources)
-                        offer[offer_id]["resources"] = resources
-                        offer[offer_id]["amounts"] = amounts
-
-                        if cId == author_id:
-                            offer[offer_id]["owned"] = 1
-
-                    # TODO: make peace at post when clicked
-                    # white peace
-                    else:
-                        offer[offer_id]["peace_type"] = "white"
-
+                    db.execute("SELECT demanded_resources FROM peace WHERE id=(%s)", (offer_id,))
+                    resources_fetch = db.fetchone()
                     db.execute("SELECT author FROM peace WHERE id=(%s)", (offer_id,))
-                    # author_id = db.fetchone()[0]
-                    db.execute("SELECT username FROM users WHERE id=(%s)", (author_id,))
-                    offer[offer_id]["author"] = [author_id, db.fetchone()[0]]
-
-                    db.execute("SELECT attacker,defender FROM wars WHERE peace_offer_id=(%s)", (offer_id,))
-                    ids=db.fetchone()
-                    if ids[0] == author_id:
-                        db.execute("SELECT username FROM users WHERE id=(%s)", (ids[1],))
-                        receiver_name = db.fetchone()[0]
+                    author_id = db.fetchone()[0]
+                    if author_id == cId:
+                        offer = outgoing
+                        outgoing_counter+=1
                     else:
-                        db.execute("SELECT username FROM users WHERE id=(%s)", (ids[0],))
-                        receiver_name = db.fetchone()[0]
+                        offer = incoming
+                        incoming_counter+=1
 
-                    offer[offer_id]["receiver"] = receiver_name
+                    offer[offer_id] = {}
 
-    # except:
-        # return "Something went wrong."
+                    if resources_fetch:
+                        resources = resources_fetch[0]
+                        if resources:
+                            db.execute("SELECT demanded_amount FROM peace WHERE id=(%s)", (offer_id,))
+                            amounts = db.fetchone()[0].split(",")
+                            resources = resources.split(",")
+
+                            offer[offer_id]["resource_count"] = len(resources)
+                            offer[offer_id]["resources"] = resources
+                            offer[offer_id]["amounts"] = amounts
+
+                            if cId == author_id:
+                                offer[offer_id]["owned"] = 1
+
+                        # TODO: make peace at post when clicked
+                        # white peace
+                        else:
+                            offer[offer_id]["peace_type"] = "white"
+
+                        db.execute("SELECT author FROM peace WHERE id=(%s)", (offer_id,))
+                        # author_id = db.fetchone()[0]
+                        db.execute("SELECT username FROM users WHERE id=(%s)", (author_id,))
+                        offer[offer_id]["author"] = [author_id, db.fetchone()[0]]
+
+                        db.execute("SELECT attacker,defender FROM wars WHERE peace_offer_id=(%s)", (offer_id,))
+                        ids=db.fetchone()
+                        if ids[0] == author_id:
+                            db.execute("SELECT username FROM users WHERE id=(%s)", (ids[1],))
+                            receiver_name = db.fetchone()[0]
+                        else:
+                            db.execute("SELECT username FROM users WHERE id=(%s)", (ids[0],))
+                            receiver_name = db.fetchone()[0]
+
+                        offer[offer_id]["receiver"] = receiver_name
+    except:
+        return "Something went wrong."
 
     if request.method == "POST":
 
@@ -422,7 +421,10 @@ def peace_offers():
         return redirect("/peace_offers")
 
     # TODO: put a button to revoke the peace offer made by the author
-    return render_template("peace/peace_offers.html", cId=cId, incoming_peace_offers=incoming, outgoing_peace_offers=outgoing)
+    return render_template(
+    "peace/peace_offers.html", cId=cId,
+    incoming_peace_offers=incoming, outgoing_peace_offers=outgoing,
+    incoming_counter=incoming_counter, outgoing_counter=outgoing_counter)
 
 @app.route("/send_peace_offer/<int:war_id>/<int:enemy_id>", methods=["POST"])
 @login_required
@@ -461,9 +463,6 @@ def send_peace_offer(war_id, enemy_id):
         resources_string = ""
         amount_string = ""
 
-        print("resources", resources)
-        print("amount", resources_amount)
-
         if len(resources) and len(resources_amount):
             for res, amo in zip(resources, resources_amount):
                 if res not in Economy.resources:
@@ -473,15 +472,13 @@ def send_peace_offer(war_id, enemy_id):
                 amount_string+=str(amo)+","
 
             # TODO: Made peace offer where can offer to give resources and not just demand
-            # Delete other offer if new is sent
             # if enemy_id == None:
             #     return "Selected target is invalid!"
 
             db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
             peace_offer_id = db.fetchone()[0]
 
-            # MIERT DELETELJUK, inkabb siman updateld es akkor a lastrowid sem kell
-            print("peace_offer_id", peace_offer_id, "war id", war_id)
+            # Only one peace offer could be attached to one war
             if not peace_offer_id:
                 db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((%s),(%s),(%s))", (cId, resources_string[:-1], amount_string[:-1]))
                 db.execute("SELECT CURRVAL('peace_id_seq')")
@@ -489,6 +486,7 @@ def send_peace_offer(war_id, enemy_id):
                 print("lastrow", lastrowid)
                 db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (lastrowid, war_id))
 
+            # If peace offer is already associated with war then just update it
             else:
                 db.execute("UPDATE peace SET author=(%s),demanded_resources=(%s),demanded_amount=(%s)", (cId, resources_string[:-1], amount_string[:-1]))
 
