@@ -65,7 +65,7 @@
                 });
             </script>
             {% endif %}
-            {% if userInCurCol and user_role != "leader" %}
+            {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
@@ -79,8 +79,10 @@
 
                 <!--coalition flag-->
                 {% if flag != None %}
-                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}"> {% else %}
-                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
+                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}"> 
+                {% else %}
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> 
+                {% endif %}
                 <!--Coalition Leader's flag-->
                 <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
@@ -89,7 +91,6 @@
             <h2 class="templatecontentheaderleft">About</h2>
 
             <div class="strongpadding">{{ description }}</div>
-
             {% endif %}
 
             <div class="templatedivflex2">
@@ -339,6 +340,7 @@
                             <option value="foreign_ambassador" class="templateoption">Foreign Ambassadors</option>
                             <option value="general" class="templateoption">General</option>
                             <option value="domestic_minister" class="templateoption">Domestic Minister</option>
+                            <option value="member" class="templateoption">Member</option>
                         </select>
 
                         </div>
@@ -361,37 +363,42 @@
                         <tr>
                             <td>Leaders:</td>
                             <td>Power over all aspects of the coalition.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["leader"] }}</td>
                         </tr>
                         <tr>
                             <td>Deputy Leader:</td>
                             <td>Power over all aspects of the coalition, excluding coalition name and flag.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["deputy_leader"] }}</td>
                         </tr>
                         <tr>
                             <td>Domestic Ministers:</td>
                             <td>Permission to add and remove members, and change roles of people below them.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["domestic_minister"] }}</td>
                         </tr>
                         <tr>
                             <td>Bankers:</td>
                             <td>Able to accept widthdraw requests, edit automatic deposits, and withdraw resources.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["banker"] }}</td>
                         </tr>
                         <tr>
                             <td>Tax Collectors:</td>
                             <td>Permission to edit tax brackets, and change who are in brackets.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["tax_collector"] }}</td>
                         </tr>
                         <tr>
-                            <td>Foriegn Ambassadors:</td>
+                            <td>Foreign Ambassadors:</td>
                             <td>Power to add and remove treaties.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["foreign_ambassador"] }}</td>
                         </tr>
                         <tr>
                             <td>Generals:</td>
                             <td>Ability to declare coalition wars, edit war message, and edit war range.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["general"] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Members:</td>
+                            <td>Can deposit into the bank, and make requests to withdraw from it.</td>
+                            <td>{{ member_roles["member"] }}</td>
                         </tr>
                     </table>
                 </div>
