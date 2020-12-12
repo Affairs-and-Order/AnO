@@ -931,6 +931,7 @@ hr {
 
 .grecaptcha-badge {
     bottom: 90px;
+    box-shadow: none;
 }
 
 .warflexparentcolors {
