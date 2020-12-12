@@ -340,7 +340,7 @@ def province_sell_buy(way, units, province_id):
         except TypeError:
             ownProvince = False
 
-        if ownProvince == False:
+        if not ownProvince:
             return error(400, "You don't own this province")
 
         allUnits = [

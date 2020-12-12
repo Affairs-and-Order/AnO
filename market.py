@@ -220,7 +220,7 @@ def sell_market_offer(offer_id):
 
     amount_wanted = int(request.form.get(f"amount_{offer_id}"))
 
-    if offer_id.isnumeric() == False:
+    if not offer_id.isnumeric():
         return error(400, "Values must be numeric")
 
     db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(%s)", (offer_id,))
@@ -563,7 +563,7 @@ def trade_offer(offer_type, offeree_id):
         amount = int(request.form.get("amount"))
         price = int(request.form.get("price"))
 
-        if offeree_id.isnumeric() == False:
+        if not offeree_id.isnumeric():
             return error(400, "Offeree id must be numeric")
 
         offer_types = ["buy", "sell"]
@@ -629,7 +629,7 @@ def trade_offer(offer_type, offeree_id):
 @app.route("/decline_trade/<trade_id>", methods=["POST"])
 def decline_trade(trade_id):
 
-    if trade_id.isnumeric() == False:
+    if not trade_id.isnumeric():
             return error(400, "Trade id must be numeric")
 
     cId = session["user_id"]

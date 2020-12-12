@@ -929,6 +929,11 @@ hr {
     display: block;
 }
 
+.grecaptcha-badge {
+    bottom: 90px;
+    box-shadow: none;
+}
+
 .warflexparentcolors {
     background: var(--foregroundTwo);
     border: 1.5px solid var(--border);

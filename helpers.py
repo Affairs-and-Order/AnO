@@ -275,7 +275,7 @@ def generate_province_revenue(): # Runs each turn
                     pollution_amount *= unit_amount
 
                 ### ADDING RESOURCES
-                if plus == True:
+                if plus:
 
                     db.execute("SELECT %s FROM provinces WHERE id=(%s)", (plus_resource, user_id,))
                     current_plus_resource = db.fetchone()[0]

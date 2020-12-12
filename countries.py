@@ -348,7 +348,7 @@ def username_avalaible(username):
     except TypeError:
         username_exists = False
 
-    if username_exists == True:
+    if username_exists:
         return "No"
     else:
         return "Yes"
