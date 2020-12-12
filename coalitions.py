@@ -7,7 +7,6 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 import datetime
 import _pickle as pickle
 import random
-from celery import Celery
 from helpers import login_required, error
 import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
@@ -17,7 +16,6 @@ from app import app
 import os
 from dotenv import load_dotenv
 load_dotenv()
-
 
 # Function for getting the coalition role of a user
 def get_user_role(user_id):
@@ -97,14 +95,50 @@ def coalition(colId):
     except:
         userInCurCol = False
 
-    if cId in leaders:
-        userLeader = True
+    user_role = get_user_role(cId)
+
+    if user_role in ["leader", "deputy_leader", "domestic_minister"]:
+
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='leader' AND colId=%s", (colId,))
+        leader_count = db.fetchone()[0]
+
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='deputy_leader' AND colId=%s", (colId,))
+        deputy_leader_count = db.fetchone()[0]
+
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='domestic_minister' AND colId=%s", (colId,))
+        domestic_minister_count = db.fetchone()[0]
+
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='banker' AND colId=%s", (colId,))
+        banker_count = db.fetchone()[0]
+
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='tax_collector' AND colId=%s", (colId,))
+        tax_collector_count = db.fetchone()[0]
+
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='foreign_ambassador' AND colId=%s", (colId,))
+        foreign_ambassador_count = db.fetchone()[0]
+        
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='general' AND colId=%s", (colId,))
+        general_count = db.fetchone()[0]
+        
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='member' AND colId=%s", (colId,))
+        member_count = db.fetchone()[0]
+
+
+        member_roles = {
+            "leader": leader_count,
+            "deputy_leader": deputy_leader_count,
+            "domestic_minister": domestic_minister_count,
+            "banker": banker_count,
+            "tax_collector": tax_collector_count,
+            "foreign_ambassador": foreign_ambassador_count,
+            "general": general_count,
+            "member": member_count
+        }
     else:
-        userLeader = False
-    ###
+        member_roles = {}
 
     ############## TREATIES ##################
-    if userLeader == True:
+    if user_role == "leader":
 
         #### INGOING ####
         db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
@@ -180,7 +214,7 @@ def coalition(colId):
     ############################################
 
     ### BANK STUFF ###
-    if userInCurCol == True:
+    if userInCurCol:
 
         db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
         money = db.fetchone()[0]
@@ -249,7 +283,7 @@ def coalition(colId):
         flag = None
     ### 
 
-    if userLeader == True and colType != "Open":
+    if user_role == "leader" and colType != "Open":
 
         db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
         requestMessages = db.fetchall()
@@ -265,7 +299,7 @@ def coalition(colId):
         requests = None
 
     ### BANK STUFF
-    if userLeader == True:
+    if user_role == "leader":
 
         db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
         bankRequests = db.fetchall()
@@ -285,12 +319,12 @@ def coalition(colId):
 
     connection.close()
 
-    return render_template("coalition.html", name=name, colId=colId, members=members,
-                            description=description, colType=colType, userInCol=userInCol, userLeader=userLeader,
+    return render_template("coalition.html", name=name, colId=colId, members=members, user_role=user_role,
+                            description=description, colType=colType, userInCol=userInCol,
                             requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                             flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
-                            ingoing_length=ingoing_length, active_length=active_length)
+                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles)
 
 
 # Route for establishing a coalition
@@ -419,6 +453,14 @@ def join_col(colId):
     db = connection.cursor()
 
     cId = session["user_id"]
+    
+    try:
+        db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
+        db.fetchone()[0]
+
+        return error(400, "You're already in a coalition")
+    except:
+        pass
 
     db.execute("SELECT type FROM colNames WHERE id=%s", (colId,))
     colType = db.fetchone()[0]
@@ -517,15 +559,18 @@ def give_position():
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "domestic_minister"]:
         return error(400, "You're not a leader")
 
-    roles = ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general", "domestic_minister"]
+    roles = ["leader", "deputy_leader", "domestic_minister", "banker", "tax_collector", "foreign_ambassador", "general", "member"]
 
     role = request.form.get("role")
 
     if role not in roles:
         return error(400, "No such role exists")
+
+    if roles.index(role) >= roles.index(user_role): #
+        return error(400, "Can't edit role for a person the same rank as you")
 
     username = request.form.get("username")
 
@@ -545,7 +590,7 @@ def give_position():
     conn.close()
     return redirect("/my_coalition")
 
-
+# Route for accepting a coalition join request
 @login_required
 @app.route("/add/<uId>", methods=["POST"])
 def adding(uId):
@@ -569,7 +614,7 @@ def adding(uId):
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "domestic_minister"]:
         return error(400, "You are not a leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
@@ -606,7 +651,7 @@ def removing_requests(uId):
 
     user_role = get_user_role(cId)
     
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "domestic_minister"]:
         return error(400, "You are not the leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
@@ -655,7 +700,6 @@ def delete_coalition(colId):
 @app.route("/update_col_info/<colId>", methods=["POST"])
 def update_col_info(colId):
 
-    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -711,7 +755,6 @@ def update_col_info(colId):
 @app.route("/deposit_into_bank/<colId>", methods=["POST"])
 def deposit_into_bank(colId):
 
-    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -855,7 +898,7 @@ def withdraw_from_bank(colId):
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "banker"]:
         return error(400, "You aren't the leader of this coalition")
 
     resources = [
@@ -945,7 +988,7 @@ def remove_bank_request(bankId):
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "banker"]:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM colBanksRequests WHERE id=(%s)", (bankId,))
@@ -960,7 +1003,6 @@ def remove_bank_request(bankId):
 @app.route("/accept_bank_request/<bankId>", methods=["POST"])
 def accept_bank_request(bankId):
 
-    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -977,7 +1019,7 @@ def accept_bank_request(bankId):
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in  ["leader", "deputy_leader", "banker"]:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("SELECT resource FROM colBanksRequests WHERE id=(%s)", (bankId,))
@@ -1020,7 +1062,7 @@ def offer_treaty():
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in  ["leader", "deputy_leader", "foreign_ambassador"]:
         return error(400, "You aren't the leader of this coalition")
 
     treaty_name = request.form.get("treaty_name")
@@ -1057,7 +1099,7 @@ def accept_treaty(offer_id):
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "foreign_ambassador"]:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("UPDATE treaties SET status='Active' WHERE id=(%s)", (offer_id,))
@@ -1085,7 +1127,7 @@ def break_treaty(offer_id):
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "foreign_ambassador"]:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))
@@ -1112,7 +1154,7 @@ def decline_treaty(offer_id):
 
     user_role = get_user_role(cId)
 
-    if user_role != "leader":
+    if user_role not in ["leader", "deputy_leader", "foreign_ambassador"]:
         return error(400, "You aren't the leader of this coalition")
 
     db.execute("DELETE FROM treaties WHERE id=(%s)", (offer_id,))

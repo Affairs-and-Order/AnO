@@ -17,14 +17,13 @@
 
         </div> -->
 
-
         <div class="templatedivflex2 menuflex2">
             <div class="templatedivflex2left" id="coalitiongeneral" onclick="coalitiongeneral()">
 
                 <h3 class="smallheader">General</h3>
 
             </div>
-            {% if userInCol == True %}
+            {% if userInCol %}
             <!-- if user isnt in coalition, maybe this is wrong ?-->
             <script>
                 $(document).ready(function() {
@@ -40,7 +39,7 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
 
-            {% if userLeader == False %}
+            {% if user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] %}
             <script>
                 $(document).ready(function() {
 
@@ -56,7 +55,7 @@
                 <!-- somewhy doesnt work, no idea why -->
             </div>
 
-            {% if userInCol == False %}
+            {% if not userInCol %}
             <!--TODO: fix this lul-->
             <script>
                 $(document).ready(function() {
@@ -65,7 +64,8 @@
 
                 });
             </script>
-            {% endif %} {% if userInCurCol and not userLeader %}
+            {% endif %}
+            {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
@@ -79,8 +79,10 @@
 
                 <!--coalition flag-->
                 {% if flag != None %}
-                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}"> {% else %}
-                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
+                <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}"> 
+                {% else %}
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> 
+                {% endif %}
                 <!--Coalition Leader's flag-->
                 <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
@@ -89,7 +91,6 @@
             <h2 class="templatecontentheaderleft">About</h2>
 
             <div class="strongpadding">{{ description }}</div>
-
             {% endif %}
 
             <div class="templatedivflex2">
@@ -322,6 +323,7 @@
         <div class="leader" id="leader">
             <!-- fix not being able to go here from /coalition even if user is leader-->
 
+            {% if user_role in ["leader", "deputy_leader", "domestic_minister"] %}
             <h2 class="templatecontentheaderleft">Government</h2>
 
             <div class="infodiv">
@@ -338,6 +340,7 @@
                             <option value="foreign_ambassador" class="templateoption">Foreign Ambassadors</option>
                             <option value="general" class="templateoption">General</option>
                             <option value="domestic_minister" class="templateoption">Domestic Minister</option>
+                            <option value="member" class="templateoption">Member</option>
                         </select>
 
                         </div>
@@ -360,37 +363,42 @@
                         <tr>
                             <td>Leaders:</td>
                             <td>Power over all aspects of the coalition.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["leader"] }}</td>
                         </tr>
                         <tr>
                             <td>Deputy Leader:</td>
                             <td>Power over all aspects of the coalition, excluding coalition name and flag.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["deputy_leader"] }}</td>
                         </tr>
                         <tr>
                             <td>Domestic Ministers:</td>
                             <td>Permission to add and remove members, and change roles of people below them.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["domestic_minister"] }}</td>
                         </tr>
                         <tr>
                             <td>Bankers:</td>
                             <td>Able to accept widthdraw requests, edit automatic deposits, and withdraw resources.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["banker"] }}</td>
                         </tr>
                         <tr>
                             <td>Tax Collectors:</td>
                             <td>Permission to edit tax brackets, and change who are in brackets.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["tax_collector"] }}</td>
                         </tr>
                         <tr>
-                            <td>Foriegn Ambassadors:</td>
+                            <td>Foreign Ambassadors:</td>
                             <td>Power to add and remove treaties.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["foreign_ambassador"] }}</td>
                         </tr>
                         <tr>
                             <td>Generals:</td>
                             <td>Ability to declare coalition wars, edit war message, and edit war range.</td>
-                            <td>[[ roleAmount ]]</td>
+                            <td>{{ member_roles["general"] }}</td>
+                        </tr>
+                        <tr>
+                            <td>Members:</td>
+                            <td>Can deposit into the bank, and make requests to withdraw from it.</td>
+                            <td>{{ member_roles["member"] }}</td>
                         </tr>
                     </table>
                 </div>
@@ -401,7 +409,9 @@
                     </span>Update</button>
                 -->
             </div>
+            {% endif %}
 
+            {% if user_role in ["leader", "deputy_leader", "banker"] %}
             <h2 class="templatecontentheaderleft">Bank</h2>
 
             <div class="infodiv">
@@ -556,7 +566,9 @@
                     </div>
                 </form>
             </div>
+            {% endif %}
 
+            {% if user_role in ["leader", "deputy_leader", "foreign_ambassador"] %}
             <h2 class="templatecontentheaderleft">Diplomacy</h2>
 
             <div class="infodiv">
@@ -724,6 +736,7 @@
                     check
                     </span>Update</button>
         </div>
+        {% endif %}
 
         <!-- Temporarily disabled because the backend is not done-->
         <!--
@@ -791,7 +804,7 @@
             ->
 
             <!--HIDE ALL OF THIS infodiv and header if coalition type is "open"-->
-        {% if colType == "closed" %}
+        {% if colType == "closed" and user_role in ["leader", "deputy_leader", "domestic_minister"] %}
         <h2 class="templatecontentheaderleft">Applicants</h2>
         <!--show if coalition has 0 applicants-->
         <h2 class="templatecontentheadercenter">You have {{ requests|length }} applicants</h2>
@@ -854,7 +867,9 @@
                 </table>
             </div>
         </div>
-        {% endif %} {% if userLeader %}
+        {% endif %}
+
+        {% if user_role == "leader" %}
         <h2 class="templatecontentheaderleft">General</h2>
 
         <form method="POST">
@@ -920,7 +935,7 @@
             <form method="POST">
                 <div class="infodiv">
                     <div class="templatedivflex2 divflex2center menuflex">
-                        {% if userLeader %}
+                        {% if user_role == "leader" %}
                         <div class="templatedivflex2left">
 
                             <button type="submit" formaction="/delete_coalition/{{ colId }}" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
@@ -928,7 +943,8 @@
                                 </span>Delete Coalition</button>
 
                         </div>
-                        {% endif %} {% if userInCurCol and not userLeader %}
+                        {% endif %}
+                        {% if userInCurCol and user_role != "leader" %}
                         <div class="templatedivflex2left">
 
                             <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
@@ -940,7 +956,7 @@
                     </div>
                 </div>
             </form>
-            {% endif %}
+    {% endif %}
     </div>
     <!--MEMBER-->
     <div class="member" id="member">

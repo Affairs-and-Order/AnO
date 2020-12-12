@@ -303,6 +303,7 @@ def peace_offers():
     outgoing={}
 
     # try:
+    print(peace_offers)
     if peace_offers:
 
         for offer in peace_offers:
@@ -320,6 +321,8 @@ def peace_offers():
                     offer = outgoing
                 else:
                     offer = incoming
+
+                print(offer)
 
                 offer[offer_id] = {}
 
@@ -421,9 +424,9 @@ def peace_offers():
     # TODO: put a button to revoke the peace offer made by the author
     return render_template("peace/peace_offers.html", cId=cId, incoming_peace_offers=incoming, outgoing_peace_offers=outgoing)
 
-@app.route("/send_peace_offer/<int:war_id>", methods=["POST"])
+@app.route("/send_peace_offer/<int:war_id>/<int:enemy_id>", methods=["POST"])
 @login_required
-def send_peace_offer(war_id):
+def send_peace_offer(war_id, enemy_id):
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -451,48 +454,53 @@ def send_peace_offer(war_id):
             return "Invalid offer!"
 
         # Input validation
-        try:
-            if not war_id:
-                raise Exception("War id is invalid")
+        # try:
+        if not war_id:
+            raise Exception("War id is invalid")
 
-            resources_string = ""
-            amount_string = ""
+        resources_string = ""
+        amount_string = ""
 
-            print("resources", resources)
-            print("amount", resources_amount)
+        print("resources", resources)
+        print("amount", resources_amount)
 
-            if len(resources) and len(resources_amount):
-                for res, amo in zip(resources, resources_amount):
-                    if res not in Economy.resources:
-                        raise Exception("Invalid resource")
+        if len(resources) and len(resources_amount):
+            for res, amo in zip(resources, resources_amount):
+                if res not in Economy.resources:
+                    raise Exception("Invalid resource")
 
-                    resources_string+=res+","
-                    amount_string+=str(amo)+","
+                resources_string+=res+","
+                amount_string+=str(amo)+","
 
-                # TODO: Made peace offer where can offer to give resources and not just demand
+            # TODO: Made peace offer where can offer to give resources and not just demand
+            # Delete other offer if new is sent
+            # if enemy_id == None:
+            #     return "Selected target is invalid!"
+
+            db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
+            peace_offer_id = db.fetchone()[0]
+
+            # MIERT DELETELJUK, inkabb siman updateld es akkor a lastrowid sem kell
+            print("peace_offer_id", peace_offer_id, "war id", war_id)
+            if not peace_offer_id:
                 db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((%s),(%s),(%s))", (cId, resources_string[:-1], amount_string[:-1]))
+                db.execute("SELECT CURRVAL('peace_id_seq')")
+                lastrowid = db.fetchone()[0]
+                print("lastrow", lastrowid)
+                db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (lastrowid, war_id))
 
-                enemy_id = session.get("enemy_id", None)
-                if enemy_id == None:
-                    return "Selected target is invalid!"
-
-                # Delete other offer is new is sent
-                db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
-                peace_offer_id = db.fetchone()
-                print(peace_offer_id)
-                if peace_offer_id:
-                    db.execute("DELETE FROM peace WHERE id=(%s)", (peace_offer_id[0],))
-                    db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (db.lastrowid, war_id))
-
-                connection.commit()
-
-            # Send white peace (won't lose or gain anything)
             else:
-                raise TypeError
-        except:
-            return "ERROR"
+                db.execute("UPDATE peace SET author=(%s),demanded_resources=(%s),demanded_amount=(%s)", (cId, resources_string[:-1], amount_string[:-1]))
+
+            connection.commit()
+
+        # Send white peace (won't lose or gain anything)
         else:
-            return redirect("/peace_offers")
+            raise TypeError
+        # except:
+        #     return "ERROR"
+
+        return redirect("/peace_offers")
 
 # page 0, kind of a pseudo page where you can click attack vs special
 @app.route("/war/<int:war_id>", methods=["GET"])
@@ -546,9 +554,9 @@ def war_with_id(war_id):
 
     # The current enemy from our perspective (not neccessarily the one who declared war)
     if attacker==cId:
-        enemy_id=attacker
-    else:
         enemy_id=defender
+    else:
+        enemy_id=attacker
 
     db.execute("SELECT war_type FROM wars WHERE id=(%s)", (war_id,))
     war_type = db.fetchone()[0]

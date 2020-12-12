@@ -19,7 +19,7 @@
 
             </div>
 
-            {% if status == False %}
+            {% if not status %}
             <script>
                 $(document).ready(function() {
 
@@ -62,7 +62,7 @@
                 <!--Hide when vising other nations-->
 
             </div>
-            {% if status == True %}
+            {% if status %}
             <script>
                 $(document).ready(function() {
 
