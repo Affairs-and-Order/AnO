@@ -385,8 +385,8 @@ def peace_offers():
 
         # Offer rejected or revoked
         if decision == "0":
-            db.execute("DELETE FROM peace WHERE id=(%s)", (offer_id,))
             db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(%s)", (offer_id,))
+            db.execute("DELETE FROM peace WHERE id=(%s)", (offer_id,))
             connection.commit()
 
         elif author_id != cId:
