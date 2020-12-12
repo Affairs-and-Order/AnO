@@ -36,9 +36,11 @@
                             </div>
                         </div>
                     </td>
-                    <td><span class="material-icons iconred">
-                      highlight_off
-                      </span></td>
+                    <td>
+                      <form class="material-icons iconred" method="post" class="material-icons iconred" onclick="event.target.submit();">highlight_off
+                        <input type="hidden" name="peace_offer" value="{{key}}">
+                      </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
@@ -71,9 +73,12 @@
                             </div>
                         </div>
                     </td>
-                    <td><span class="material-icons iconred">
-                      check_circle_outline
-                      </span></td>
+                    <td>
+                      <form method="post" class="material-icons iconred" onclick="event.target.submit();">check_circle_outline
+                        <input type="hidden" name="peace_offer" value="{{key}}">
+                        <input type="hidden" name="decision" value="1">
+                      </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>

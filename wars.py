@@ -369,18 +369,17 @@ def peace_offers():
         offer_id = request.form.get("peace_offer", None)
 
         # Validate inputs
+        # try:
+        offer_id = int(offer_id)
+
+        # Make sure that others can't accept,delete,etc. the peace offer other than the participants
+        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_offer_id=(%s) AND peace_date IS NULL", (cId, cId, offer_id))
+        check_validity = db.fetchone()[0]
+
         try:
-            offer_id = int(offer_id)
-
-            # Make sure that others can't accept,delete,etc. the peace offer other than the participants
-            db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_offer_id=(%s) AND peace_date IS NULL", (cId, cId, offer_id))
-            check_validity = db.fetchone()[0]
-
-            if len(check_validity) != 1:
-                raise TypeError
-
+            int(check_validity)
         except:
-            return "Peace offer is invalid!"
+            raise TypeError
 
         decision = request.form.get("decision", None)
 
