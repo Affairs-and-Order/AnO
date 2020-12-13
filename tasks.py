@@ -500,3 +500,5 @@ def generate_province_revenue(): # Runs each hour
         conn.commit() # Commits the changes
 
     conn.close() # Closes the connection
+
+generate_province_revenue()

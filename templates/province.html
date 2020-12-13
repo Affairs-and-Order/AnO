@@ -1262,7 +1262,7 @@
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/silo/{{ pId }}"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/silos/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1282,8 +1282,6 @@
                             </div>
 
                             <div class="templatedivflex2left">
-
-
 
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/silo.jpg') }}" />
                             </div>
@@ -1938,7 +1936,7 @@
                                                     <div class="templatedivflex2 divflex2center">
                                                         <div class="templatedivflex2left flexchildvanilla">
                 
-                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines//{{ pId }}"><span
+                                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines/{{ pId }}"><span
                                                         class="material-icons-outlined">
                                                         add_circle_outline
                                                     </span>Buy</button>
@@ -2009,8 +2007,6 @@
 
                             <div class="templatedivflex2left">
 
-
-
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/componentfactory.jpg') }}" />
                             </div>
                         </div>
@@ -2023,7 +2019,7 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ oil_plant }} Oil Plants</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ steel_mills }} Steel Mills</h3>
 
                                 <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
 
@@ -2036,7 +2032,7 @@
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/steel_mills/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -2044,7 +2040,7 @@
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/steel_mills/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -2071,7 +2067,7 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ hydro_dam }} Hydro Dam</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ ammunition_factories }} Ammunition Factories</h3>
 
                                 <p class="templatecontentpleft"></p>
 
@@ -2084,7 +2080,7 @@
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/ammunition_factories/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -2092,7 +2088,7 @@
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/ammunition_factories/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -2119,7 +2115,7 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ aluminium_refineries }} Aluminum Refineries</h3>
 
                                 <p class="templatecontentpleft"></p>
 
@@ -2132,7 +2128,7 @@
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/aluminium_refineries/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -2140,7 +2136,7 @@
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/aluminium_refineries/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -2153,8 +2149,6 @@
 
                             <div class="templatedivflex2left">
 
-
-
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/aluminiumrefinery.jpg') }}" />
                             </div>
                         </div>
@@ -2166,7 +2160,7 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ nuclear_reactor }} Nuclear Reactors</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ oil_refineries }} Oil Refineries</h3>
 
                                 <p class="templatecontentpleft"></p>
 
@@ -2179,7 +2173,7 @@
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/bombers"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/oil_refineries/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -2187,7 +2181,7 @@
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/bombers"><span class="material-icons-outlined">
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/oil_refineries/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
