@@ -464,7 +464,7 @@ def province_sell_buy(way, units, province_id):
             if units in max_4 and currentUnits + wantedUnits >= 4:
                 return error(400, "You can't have more than 4 of this unit")
 
-            if free_infra_slots < wantedUnits:
+            if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
                 return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))

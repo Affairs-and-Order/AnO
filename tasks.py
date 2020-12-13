@@ -307,7 +307,7 @@ def generate_province_revenue(): # Runs each hour
             plus_amount = plus_data[1]
 
         except KeyError:
-            plus = None
+            plus_data = None
 
         operating_costs = int(infra[f'{unit}_money'])
 
@@ -417,10 +417,10 @@ def generate_province_revenue(): # Runs each hour
                     effect_minus_amount *= unit_amount
 
                 # Function for _plus
-                if plus != None:
+                if plus_data != None:
 
                     db.execute("SELECT %s FROM provinces WHERE id=(%s)", (plus_resource, user_id,))
-                    current_plus_resource = db.fetchone()[0]
+                    current_plus_resource = int(db.fetchone()[0])
 
                     # Adding resource
                     new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
