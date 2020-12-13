@@ -415,14 +415,33 @@ def generate_province_revenue(): # Runs each hour
                 # Function for _plus
                 if plus_data != None:
 
-                    cpr_statement = f"SELECT {plus_resource} FROM provinces" + " WHERE id=(%s)"
-                    db.execute(cpr_statement, (user_id,))
-                    current_plus_resource = int(db.fetchone()[0])
+                    province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
+                    user_resources = [
+                        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+                        "lumber", "components", "steel", "consumer_goods", "aluminium",
+                        "gasoline", "ammunition"
+                    ]
 
-                    # Adding resource
-                    new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
-                    upd_prov_statement = f"UPDATE provinces SET {plus_resource}" + "=(%s) WHERE id=(%s)"
-                    db.execute(upd_prov_statement, (new_resource_number, user_id))
+                    if plus_resource in province_resources:
+                        cpr_statement = f"SELECT {plus_resource} FROM provinces" + " WHERE id=(%s)"
+                        db.execute(cpr_statement, (province_id,))
+                        current_plus_resource = int(db.fetchone()[0])
+
+                        # Adding resource
+                        new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+                        upd_prov_statement = f"UPDATE provinces SET {plus_resource}" + "=(%s) WHERE id=(%s)"
+                        db.execute(upd_prov_statement, (new_resource_number, province_id))
+                    elif plus_resource in user_resources:
+                        cpr_statement = f"SELECT {plus_resource} FROM resources" + " WHERE id=(%s)"
+                        db.execute(cpr_statement, (user_id,))
+                        current_plus_resource = int(db.fetchone()[0])
+
+                        # Adding resource
+                        new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+                        upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=(%s) WHERE id=(%s)"
+                        db.execute(upd_res_statement, (new_resource_number, province_id))
+                    else:
+                        print(f"unknown plus data: {plus_resource}")
 
                 # Function for completing an effect (adding pollution, etc)
                 def do_effect(eff, eff_amount, sign):
