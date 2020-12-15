@@ -419,7 +419,7 @@ def generate_province_revenue(): # Runs each hour
                     user_resources = [
                         "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
                         "lumber", "components", "steel", "consumer_goods", "aluminium",
-                        "gasoline", "ammunition"
+                        "gasoline", "ammunition", "iron"
                     ]
 
                     if plus_resource in province_resources:
@@ -469,26 +469,26 @@ def generate_province_revenue(): # Runs each hour
                 if convert_plus != None:
 
                     resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
-                    db.execute(resource_s_statement, (user_id))
+                    db.execute(resource_s_statement, (user_id,))
                     current_resource = int(db.fetchone()[0])
 
                     new_resource = current_resource + convert_plus_amount
 
                     resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
-                    db.execute(resource_u_statement, (new_resource, user_id))
+                    db.execute(resource_u_statement, (new_resource, user_id,))
                 ## 
 
                 ## Convert minus
                 def minus_convert(name, amount): 
                     
                     resource_statement = f"SELECT {name} FROM resources " + "WHERE id=%s"
-                    db.execute(resource_statement, (user_id))
+                    db.execute(resource_statement, (user_id,))
                     current_resource = int(db.fetchone()[0])
 
                     new_resource = current_resource - amount
 
                     resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
-                    db.execute(resource_u_statement, (new_resource, user_id))
+                    db.execute(resource_u_statement, (new_resource, user_id,))
 
                 if convert_minus != None:
                     minus_convert(convert_minus, convert_minus_amount)

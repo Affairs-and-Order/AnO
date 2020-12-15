@@ -324,7 +324,7 @@ def post_offer(offer_type):
         resources = [
             "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
             "lumber", "components", "steel", "consumer_goods", "aluminium",
-            "gasoline", "ammunition"
+            "gasoline", "ammunition", "iron"
         ]
 
         offer_types = ["buy", "sell"]
@@ -574,7 +574,7 @@ def trade_offer(offer_type, offeree_id):
         resources = [
             "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
             "lumber", "components", "steel", "consumer_goods", "aluminium",
-            "gasoline", "ammunition"
+            "gasoline", "ammunition", "iron"
         ]
 
         if resource not in resources:  # Checks if the resource the user selected actually exists
@@ -696,7 +696,7 @@ def accept_trade(trade_id):
     resources = [
         "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
         "lumber", "components", "steel", "consumer_goods", "aluminium",
-        "gasoline", "ammunition"
+        "gasoline", "ammunition", "iron"
     ]
 
     if resource not in resources:  # Checks if the resource the user selected actually exists
@@ -813,7 +813,7 @@ def transfer(transferee):
     resources = [
             "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
             "lumber", "components", "steel", "consumer_goods", "aluminium",
-            "gasoline", "ammunition"
+            "gasoline", "ammunition", "iron"
         ]
 
     if resource not in resources and resource != "gold":  # Checks if the resource the user selected actually exists
