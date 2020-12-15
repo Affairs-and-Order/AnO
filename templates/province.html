@@ -1594,7 +1594,7 @@
                                         <div class="templatedivflex2 menuflex warflexparentcolors">
                                             <div class="templatedivflex2left">
                 
-                                                <h3 class="templatecontentheadercenter">You have {{ farmAmount }} Lead Mines</h3>
+                                                <h3 class="templatecontentheadercenter">You have {{ lead_mines }} Lead Mines</h3>
                 
                                                 <p class="templatecontentpleft">Lead mines</p>
                 
@@ -2027,7 +2027,7 @@
                                 <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="steel_mills" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
@@ -2075,7 +2075,7 @@
                                 <ul>Hydro dams produce 12(electricity icon)/day</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="ammunition_factories" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
@@ -2101,8 +2101,6 @@
 
                             <div class="templatedivflex2left">
 
-
-
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/ammunitionfactory.jpg') }}" />
                             </div>
                         </div>
@@ -2123,7 +2121,7 @@
                                 <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="aluminium_refineries" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
@@ -2168,7 +2166,7 @@
                                 <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="bombers" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="oil_refineries" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
@@ -2189,12 +2187,9 @@
                                     </div>
                                     <ul>[ buyNuclearReactor ] nuclear reactors will cost you $[ buyNuclearReactorPrice ]</ul>
                                 </div>
-
                             </div>
 
                             <div class="templatedivflex2left">
-
-
 
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/oilrefinery.jpg') }}" />
                             </div>
