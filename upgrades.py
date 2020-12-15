@@ -29,84 +29,31 @@ def upgrades():
         port=os.getenv("PG_PORT"))
     db = conn.cursor()
     cId = session["user_id"]
-    
-    db.execute("SELECT betterEngineering FROM upgrades WHERE user_id=%s", (cId,))
-    betterEngineering = db.fetchone()[0]
-
-    db.execute("SELECT cheaperMaterials FROM upgrades WHERE user_id=%s", (cId,))
-    cheaperMaterials = db.fetchone()[0]
-
-    db.execute("SELECT onlineShopping FROM upgrades WHERE user_id=%s", (cId,))
-    onlineShopping = db.fetchone()[0]
-
-    db.execute("SELECT governmentRegulation FROM upgrades WHERE user_id=%s", (cId,))
-    governmentRegulation = db.fetchone()[0]
-
-    db.execute("SELECT nationalHealthInstitution FROM upgrades WHERE user_id=%s", (cId,))
-    nationalHealthInstitution = db.fetchone()[0]
-
-    db.execute("SELECT highSpeedRail FROM upgrades WHERE user_id=%s", (cId,))
-    highSpeedRail = db.fetchone()[0]
-
-    db.execute("SELECT advancedMachinery FROM upgrades WHERE user_id=%s", (cId,))
-    advancedMachinery = db.fetchone()[0]
-
-    db.execute("SELECT strongerExplosives FROM upgrades WHERE user_id=%s", (cId,))
-    strongerExplosives = db.fetchone()[0]
-
-    db.execute("SELECT widespreadPropaganda FROM upgrades WHERE user_id=%s", (cId,))
-    widespreadPropaganda = db.fetchone()[0]
-
-    db.execute("SELECT increasedFunding FROM upgrades WHERE user_id=%s", (cId,))
-    increasedFunding = db.fetchone()[0]
-
-    db.execute("SELECT automationIntegration FROM upgrades WHERE user_id=%s", (cId,))
-    automationIntegration = db.fetchone()[0]
-
-    db.execute("SELECT largerForges FROM upgrades WHERE user_id=%s", (cId,))
-    largerForges = db.fetchone()[0]
-
-    db.execute("SELECT lootingTeams FROM upgrades WHERE user_id=%s", (cId,))
-    lootingTeams = db.fetchone()[0]
-
-    db.execute("SELECT increasedFunding FROM upgrades WHERE user_id=%s", (cId,))
-    increasedFunding = db.fetchone()[0]
-
-    db.execute("SELECT organizedSupplyLines FROM upgrades WHERE user_id=%s", (cId,))
-    organizedSupplyLines = db.fetchone()[0]
-
-    db.execute("SELECT largeStorehouses FROM upgrades WHERE user_id=%s", (cId,))
-    largeStorehouses = db.fetchone()[0]
-
-    db.execute("SELECT ballisticMissileSilo FROM upgrades WHERE user_id=%s", (cId,))
-    ballisticMissileSilo = db.fetchone()[0]
-
-    db.execute("SELECT ICBMSilo FROM upgrades WHERE user_id=%s", (cId,))
-    ICBMSilo = db.fetchone()[0]
-
-    db.execute("SELECT nuclearTestingFacility FROM upgrades WHERE user_id=%s", (cId,))
-    nuclearTestingFacility = db.fetchone()[0]
 
     upgrades = {
-        'betterEngineering': betterEngineering,
-        'cheaperMaterials': cheaperMaterials,
-        'onlineShopping': onlineShopping,
-        'governmentRegulation': governmentRegulation,
-        'nationalHealthInstitution': nationalHealthInstitution,
-        'highSpeedRail': highSpeedRail,
-        'advancedMachinery': advancedMachinery,
-        'strongerExplosives': strongerExplosives,
-        'widespreadPropaganda': widespreadPropaganda,
-        'increasedFunding': increasedFunding,
-        'automationIntegration': automationIntegration,
-        'largerForges': largerForges,
-        'lootingTeams': lootingTeams,
-        'organizedSupplyLines': organizedSupplyLines,
-        'largeStoreHouses' : largeStorehouses,
-        'ballisticMissileSilo': ballisticMissileSilo,
-        'ICBMsilo': ICBMSilo,
-        'nuclearTestingFacility': nuclearTestingFacility
+        'betterEngineering': None,
+        'cheaperMaterials': None,
+        'onlineShopping': None,
+        'governmentRegulation': None,
+        'nationalHealthInstitution': None,
+        'highSpeedRail': None,
+        'advancedMachinery': None,
+        'strongerExplosives': None,
+        'widespreadPropaganda': None,
+        'increasedFunding': None,
+        'automationIntegration': None,
+        'largerForges': None,
+        'lootingTeams': None,
+        'organizedSupplyLines': None,
+        'largeStoreHouses' : None,
+        'ballisticMissileSilo': None,
+        'ICBMsilo': None,
+        'nuclearTestingFacility': None
     }
+
+    for upgrade in upgrades:
+        db.execute("SELECT " + upgrade + " FROM upgrades WHERE user_id=%s", (cId,))
+        upgrades[upgrade] = db.fetchone()[0] 
 
     # working examples based on whether user has the upgrade. Database stores 0 or 1.
     # upgrades['betterEngineering'] = 0

@@ -162,11 +162,11 @@ class ApacheUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "soldiers":
             self.bonus += 1 * self.amount
-        if defending_units == "tanks":
+        elif defending_units == "tanks":
             self.bonus += 1 * self.amount
-        if defending_units == "bombers":
+        elif defending_units == "bombers":
             self.bonus += 2 * self.amount
-        if defending_units == "fighter":
+        elif defending_units == "fighter":
             self.bonus += 2 * self.amount
         return [self.damage*self.amount, self.bonus]
 
@@ -202,9 +202,9 @@ class CruiserUnit(BlueprintUnit):
     def attack(self, defending_units):
         if defending_units == "destroyers":
             self.bonus += 0.3 * self.amount
-        if defending_units == "fighters":
+        elif defending_units == "fighters":
             self.bonus += 0.1 * self.amount
-        if defending_units == "apaches":
+        elif defending_units == "apaches":
             self.bonus += 0.4 * self.amount
         return [self.damage*self.amount, self.bonus]
 
