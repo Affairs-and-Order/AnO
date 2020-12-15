@@ -76,10 +76,7 @@ def province(pId):
     db.execute("SELECT location FROM stats WHERE id=(%s)", (province_user,))
     location = db.fetchone()[0]
     
-    if province_user == cId:
-        ownProvince = True
-    else:
-        ownProvince = False
+    ownProvince = province_user == cId
 
     db.execute("SELECT provinceName FROM provinces WHERE id=(%s)", (pId,))
     name = db.fetchone()[0]
