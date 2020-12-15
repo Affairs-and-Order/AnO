@@ -265,7 +265,7 @@ def generate_province_revenue(): # Runs each hour
 
     'oil_refineries_money': 160000,
     'oil_refineries_convert_minus': {'oil': 20},
-    'oil_refineries_convert_plus': {'gas': 8}
+    'oil_refineries_convert_plus': {'gasoline': 8}
     }
 
     conn = psycopg2.connect(
@@ -500,5 +500,4 @@ def generate_province_revenue(): # Runs each hour
         conn.commit() # Commits the changes
 
     conn.close() # Closes the connection
-
-generate_province_revenue()
+    
