@@ -1,14 +1,10 @@
-{% extends "layout.html" %}
-
-{% block title %} Signup {% endblock %}
-
-{% block body%}
+{% extends "layout.html" %} {% block title %} Signup {% endblock %} {% block body%}
 <!-- START------------------------------------------------------------------------->
 <img class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
 
 <div class="templatediv noboxshadowtopper loginsignupdiv">
 
-    <div class="templatedivtopper noboxshadowtopper svgtopper">
+    <div class="templatedivtopper noboxshadowtopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
             add_circle_outline
             </span>Signup</h1>
@@ -42,22 +38,22 @@
 
                 {% if way != "discord" %}
                 <form id="signup-form" class="loginsignupform" action="/signup" method="POST">
-                {% elif way == "discord" %}
-                <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
-                {% endif %}
-
-                    <div class="templatedivflex2 divflex2center signupdiv">
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
-                        </div>
-
-                        {% if way != "discord" %}
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
-                        </div>
+                    {% elif way == "discord" %}
+                    <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
                         {% endif %}
 
-                        <input id="continent" name="continent" type="hidden">
+                        <div class="templatedivflex2 divflex2center signupdiv">
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
+                            </div>
+
+                            {% if way != "discord" %}
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
+                            </div>
+                            {% endif %}
+
+                            <input id="continent" name="continent" type="hidden">
 
                         </div>
 
@@ -78,18 +74,15 @@
 
         <!-- Function for ReCAPTCHA, not sure why it doesn't work-->
         <script>
-        function onSubmit(token) {
-            document.getElementById("signup-form").submit();
-        }
+            function onSubmit(token) {
+                document.getElementById("signup-form").submit();
+            }
         </script>
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
 
-                <button class="g-recaptcha templatedivbutton center"
-                data-sitekey="6LdIi_4ZAAAAAL479XXAbPpVAK1rUHmw7iTMdtIC"
-                data-callback='onSubmit'
-                data-action='submit'>
+                <button class="g-recaptcha templatedivbutton center" data-sitekey="6LdIi_4ZAAAAAL479XXAbPpVAK1rUHmw7iTMdtIC" data-callback='onSubmit' data-action='submit'>
                 <span class="material-icons-outlined">
                     add_circle_outline
                 </span>Signup</button>

@@ -99,41 +99,21 @@ def coalition(colId):
 
     if user_role in ["leader", "deputy_leader", "domestic_minister"]:
 
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='leader' AND colId=%s", (colId,))
-        leader_count = db.fetchone()[0]
-
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='deputy_leader' AND colId=%s", (colId,))
-        deputy_leader_count = db.fetchone()[0]
-
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='domestic_minister' AND colId=%s", (colId,))
-        domestic_minister_count = db.fetchone()[0]
-
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='banker' AND colId=%s", (colId,))
-        banker_count = db.fetchone()[0]
-
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='tax_collector' AND colId=%s", (colId,))
-        tax_collector_count = db.fetchone()[0]
-
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='foreign_ambassador' AND colId=%s", (colId,))
-        foreign_ambassador_count = db.fetchone()[0]
-        
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='general' AND colId=%s", (colId,))
-        general_count = db.fetchone()[0]
-        
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='member' AND colId=%s", (colId,))
-        member_count = db.fetchone()[0]
-
-
         member_roles = {
-            "leader": leader_count,
-            "deputy_leader": deputy_leader_count,
-            "domestic_minister": domestic_minister_count,
-            "banker": banker_count,
-            "tax_collector": tax_collector_count,
-            "foreign_ambassador": foreign_ambassador_count,
-            "general": general_count,
-            "member": member_count
+            "leader": None,
+            "deputy_leader": None,
+            "domestic_minister": None,
+            "banker": None,
+            "tax_collector": None,
+            "foreign_ambassador": None,
+            "general": None,
+            "member": None
         }
+
+        for role in member_roles:
+            db.execute("SELECT COUNT(userId) FROM coalitions WHERE role=" + "'" + role  + "'" + " AND colId=%s", (colId,))
+            member_roles[role] = db.fetchone()[0]
+
     else:
         member_roles = {}
 
@@ -215,61 +195,28 @@ def coalition(colId):
 
     ### BANK STUFF ###
     if userInCurCol:
-
-        db.execute("SELECT money FROM colBanks WHERE colId=(%s)", (colId,))
-        money = db.fetchone()[0]
-
-        db.execute("SELECT rations FROM colBanks WHERE colId=(%s)", (colId,))
-        rations =  db.fetchone()[0]
-        db.execute("SELECT oil FROM colBanks WHERE colId=(%s)", (colId,))
-        oil =  db.fetchone()[0]
-        db.execute("SELECT coal FROM colBanks WHERE colId=(%s)", (colId,))
-        coal =  db.fetchone()[0]
-        db.execute("SELECT uranium FROM colBanks WHERE colId=(%s)", (colId,))
-        uranium =  db.fetchone()[0]
-        db.execute("SELECT bauxite FROM colBanks WHERE colId=(%s)", (colId,))
-        bauxite = db.fetchone()[0]
-        db.execute("SELECT iron FROM colBanks WHERE colId=(%s)", (colId,))
-        iron = db.fetchone()[0]
-        db.execute("SELECT lead FROM colBanks WHERE colId=(%s)", (colId,))
-        lead =  db.fetchone()[0]
-        db.execute("SELECT copper FROM colBanks WHERE colId=(%s)", (colId,))
-        copper = db.fetchone()[0]
-        db.execute("SELECT lumber FROM colBanks WHERE colId=(%s)", (colId,))
-        lumber = db.fetchone()[0]
-
-        db.execute("SELECT components FROM colBanks WHERE colId=(%s)", (colId,))
-        components =  db.fetchone()[0]
-        db.execute("SELECT steel FROM colBanks WHERE colId=(%s)", (colId,))
-        steel =  db.fetchone()[0]
-        db.execute("SELECT consumer_goods FROM colBanks WHERE colId=(%s)", (colId,))
-        consumer_goods = db.fetchone()[0]
-        db.execute("SELECT aluminium FROM colBanks WHERE colId=(%s)", (colId,))
-        aluminium = db.fetchone()[0]
-        db.execute("SELECT gasoline FROM colBanks WHERE colId=(%s)", (colId,))
-        gasoline = db.fetchone()[0]
-        db.execute("SELECT ammunition FROM colBanks WHERE colId=(%s)", (colId,))
-        ammunition = db.fetchone()[0]
-
         bankRaw = {
-            'money': money,
-            'rations': rations,
-            'oil': oil,
-            'coal': coal,
-            'uranium': uranium,
-            'bauxite': bauxite,
-            'iron': iron,
-            'copper': copper,
-            'lead': lead,
-            'lumber': lumber,
-            'components': components,
-            'steel': steel,
-            'consumer_goods': consumer_goods,
-            'aluminium': aluminium,
-            'gasoline': gasoline,
-            'ammunition': ammunition
+            'money': None,
+            'rations': None,
+            'oil': None,
+            'coal': None,
+            'uranium': None,
+            'bauxite': None,
+            'iron': None,
+            'copper': None,
+            'lead': None,
+            'lumber': None,
+            'components': None,
+            'steel': None,
+            'consumer_goods': None,
+            'aluminium': None, 
+            'gasoline': None,
+            'ammunition': None       
         }
 
+        for raw in bankRaw:
+            db.execute("SELECT" + raw  + " FROM colBanks WHERE colId=(%s)", (colId,))
+            bankRaw[raw] = db.fetchone()[0]
     else: 
         
         bankRaw = {}
