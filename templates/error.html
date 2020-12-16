@@ -1,15 +1,26 @@
 {% extends "layout.html" %} {% block title %} {{ code }} {% endblock %} {% block body %}
 <div class="templatediv">
 
-    <div class="templatedivtopper">
+    <div class="templatedivtopper noboxshadowtopper">
         <h1 class="templatedivtitle"><span class="material-icons iconlarge">
             highlight_off
             </span>Error</h1>
     </div>
 
     <div class="templatedivcontent">
-        <p class="center"><b>{{ code }}</b></p> <!-- need to make it bigger -- t0dd -->
-        <p class="center">{{ message }}</p> <!-- maybe also bigger? idk -->
-    </div> 
+
+        <p class="landingcontent center">{{ code }}</p>
+        <br /><br />
+        <p class="landingcontent center">{{ message }}</p>
+
+        {% if session.get('user_id') != None %}
+        <a class="templatedivbutton landingbutton" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined landingicon">
+            outlined_flag
+            </span>Country</a> {% endif %} {% if session.get('user_id') == None %}
+        <a class="templatedivbutton landingbutton" href="/index"><span class="material-icons-outlined landingicon">
+            person_add_alt_1
+            </span>Home</a> {% endif %}
+
+    </div>
 </div>
 {% endblock %}
