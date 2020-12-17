@@ -1,7 +1,29 @@
 {% extends "layout.html" %} {% block title %} Sign up {% endblock %} {% block body%}
 <!-- START------------------------------------------------------------------------->
 <img class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
+<script>
+    //Code for image slider in signup page
+    var slideIndex = 1;
 
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("slideparent");
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[slideIndex - 1].style.display = "block";
+    }
+</script>
 <div class="templatediv noboxshadowtopper loginsignupdiv">
 
     <div class="templatedivtopper noboxshadowtopper">
