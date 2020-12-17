@@ -967,7 +967,7 @@ hr {
     box-shadow: 0 2rem 3rem 0 rgba(58, 59, 69, .15);
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 750px) {
     .templatediv {
         width: 90%;
     }
@@ -2261,6 +2261,7 @@ button {
 @media all and (max-width: 600px) {
     .cardparent {
         width: 90%;
+        margin: 50px auto;
     }
 }
 
@@ -2315,7 +2316,8 @@ button {
 
 @media all and (max-width: 600px) {
     .landingcontactdiv {
-        width: 90%;
+        width: calc(90% - 40px);
+        margin: 50px auto;
     }
 }
 
@@ -2339,7 +2341,7 @@ button {
     box-shadow: inset 0 0 100000px 0 rgba(0, 0, 0, 0.0), 0px 6px 12px 4px #0f638030;
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 750px) {
     .loginsignupdiv {
         width: 90%;
     }
