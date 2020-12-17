@@ -652,7 +652,6 @@ function war_target() {
 //Code for image slider in signup page
 var slideIndex = 1;
 
-// Next/previous controls
 function plusSlides(n) {
     showSlides(slideIndex += n);
 }
