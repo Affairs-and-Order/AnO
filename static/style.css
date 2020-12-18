@@ -373,6 +373,8 @@
         z-index: 1000;
         top: 0;
         animation: navbarload 0.5s;
+        padding: 0 5%;
+        width: 90%;
     }
     
     .navbartitle {
@@ -575,21 +577,20 @@
     
     .dropbtn {
         color: white;
-        padding: 8px 12px;
-        padding-top: 3px;
+        height: 55px;
+        padding: 0 12px;
         font-size: 20px;
         border: none;
         cursor: pointer;
         transition: all 0.2s;
         width: max-content;
-        box-shadow: rgba(0, 0, 0, 0.15) 0px 3.5px 2px -2px, inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
-        border-radius: 4px;
-        background: #515463;
+        background: #363945;
     }
     
     .dropbtn:hover {
         opacity: 1 !important;
-        background: #00a7e1;
+        box-shadow: inset rgba(255, 255, 255, 0.103) 0 0 10000px 0;
+        background: #363945;
     }
     
     .dropbtn span {
@@ -604,15 +605,12 @@
         position: relative;
         float: right;
         width: fit-content;
-        margin-top: 6px;
-        margin-right: 10px;
         transition: all 0.2s;
         text-decoration: none;
         font-size: 16px;
         color: white;
         user-select: none;
         cursor: pointer;
-        border-radius: 4px;
     }
     
     .dropdown-content {
@@ -621,7 +619,7 @@
         position: absolute;
         z-index: 1;
         right: -15px;
-        top: 60px;
+        top: 80px;
         background: transparent;
         padding: 12px;
         transition: all 0.3s;
@@ -660,12 +658,11 @@
     .dropdown:hover .dropdown-content {
         opacity: 1;
         pointer-events: all;
-        top: 40px;
+        top: 50px;
     }
     
     .dropdown:hover .dropbtn {
         opacity: 0.6;
-        background: #00a7e1;
     }
     
     .resourcediv {
@@ -2489,21 +2486,22 @@
         background-position-y: 50%;
         box-shadow: 0 0.2rem 1rem 0.2rem rgba(58, 59, 69, 0.3);
         user-select: none;
+        border-radius: 4px;
     }
     
     .countryimage {
         width: 40vw;
         height: 22.5vw;
         float: left;
-        box-shadow: 0 0.5rem 2rem 0.2rem rgba(58, 59, 69, 0.3);
+        box-shadow: rgba(0, 0, 0, 0.2) 0 3px 4px 1px, rgba(0, 0, 0, 0.4) 0 12px 32px 0;
         text-align: center;
         background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         object-fit: cover;
         background-position-y: 50%;
-        border: 6px solid #36394590;
         position: relative;
+        border-radius: 4px;
     }
     
     .countrycoalitionimage {
