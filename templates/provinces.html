@@ -2,77 +2,77 @@
 <div class="templatediv">
 
     <div class="templatedivtopper provincestopper">
-        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
+        <h1 class="templatedivtitle "><span class="material-icons-outlined iconlarge ">
             account_balance
             </span>Provinces</h1>
-        <div class="templatedivad"></div>
+        <div class="templatedivad "></div>
     </div>
 
 
 
-    <div class="templatedivcontent">
+    <div class="templatedivcontent ">
 
-        <div class="templatedivflex2 divflex2full">
-            <div class="templatedivflex2left">
+        <div class="templatedivflex2 divflex2full ">
+            <div class="templatedivflex2left ">
 
-                <a href="/createprovince" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                <a href="/createprovince " class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
                     add_circle_outline
                     </span>Create Province</a>
             </div>
-            <div class="templatedivflex2right">
+            <div class="templatedivflex2right ">
 
-                <a href="/mass_purchase" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                <a href="/mass_purchase " class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
                     payments
                     </span>Mass Purchase</a>
             </div>
         </div>
 
         {% for cityCount, population, name, pId, land, happiness, productivity in pAll %}
-        <a href="/province/{{ pId[0] }}">
-            <div class="warflexparent templatedivflex2 menuflex">
-                <div class="templatedivflex2left">
+        <a href="/province/{{ pId[0] }} ">
+            <div class="warflexparent templatedivflex2 menuflex ">
+                <div class="templatedivflex2left ">
 
-                    <table class="templatetable inverttable">
+                    <table class="templatetable inverttable ">
                         <tr>
-                            <th><span class="material-icons-outlined">
+                            <th><span class="material-icons-outlined ">
                                 account_balance
                                         </span>{{ name[0] }}</th>
                         </tr>
                         <tr>
-                            <td><span class="material-icons-outlined">
+                            <td><span class="material-icons-outlined ">
                                         people_alt
                                         </span>Population:</td>
                             <td>{{ population[0] }}</td>
                         </tr>
                         <tr>
-                            <td><span class="material-icons-outlined">
+                            <td><span class="material-icons-outlined ">
                                         sentiment_satisfied
                                         </span>Happiness:</td>
                             <td>{{ happiness[0] }}%</td>
                         </tr>
                         <tr>
-                            <td><span class="material-icons-outlined">
+                            <td><span class="material-icons-outlined ">
                                         arrow_circle_up
                                         </span>Productivity:</td>
                             <td>{{ productivity[0] }}%</td>
                         </tr>
                         <tr>
-                            <td><span class="material-icons-outlined">
+                            <td><span class="material-icons-outlined ">
                                         business
                                         </span>Cities:</td>
                             <td>{{ cityCount[0] }}</td>
                         </tr>
                         <tr>
-                            <td><span class="material-icons-outlined">
+                            <td><span class="material-icons-outlined ">
                                         landscape
                                         </span>Land:</td>
                             <td>{{ land[0] }}km²</td>
                         </tr>
                     </table>
                 </div>
-                <div class="templatedivflex2left">
+                <div class="templatedivflex2left ">
 
-                    <img tabindex="0" class="unitimage" src="static/images/province.jpg" />
+                    <img tabindex="0 " class="unitimage " src="static/images/province.jpg " />
 
                 </div>
             </div>
