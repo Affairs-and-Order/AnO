@@ -2872,6 +2872,7 @@
         user-select: none;
         transition: width 0.3s, opacity 0s, padding 0s;
         pointer-events: none;
+        border-radius: 4px;
     }
     
     .unitcard input[type=checkbox]:checked~.unitcardcheck {

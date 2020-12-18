@@ -75,7 +75,7 @@
                             </div>
                             {% endif %}
 
-                        <input id="continent" name="continent" type="hidden">
+                            <input id="continent" name="continent" type="hidden">
 
                         </div>
 
@@ -118,7 +118,7 @@
                         Tundra is a cold, nearly lifeless plane. While rich in valuable natural resources, it lacks necessary resources like lumber.
                     </p>
 
-                    <label class="medium">Available Resources</label>
+                    <ul class="medium">Available Resources</ul>
 
                     <div class="listcontainer">
                         <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
@@ -149,7 +149,7 @@
                     <p class="templatecontentpleft landingpagecontent">
                         Savannas consist of miles of open grassland with the occasional tree. It has lots of space for farming, with rich mineral deposits below.
                     </p>
-                    <label class="medium">Available Resources</label>
+                    <ul class="medium">Available Resources</ul>
 
                     <div class="listcontainer">
                         <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
@@ -180,7 +180,7 @@
                     <p class="templatecontentpleft landingpagecontent">
                         Deserts are barren and hostile. Farming is possible, but only at rivers and oases. This is compensated for by rare resources ripe for the taking.
                     </p>
-                    <label class="medium">Available Resources</label>
+                    <ul class="medium">Available Resources</ul>
 
                     <div class="listcontainer">
                         <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
@@ -211,7 +211,7 @@
                     <p class="templatecontentpleft landingpagecontent">
                         Jungles are dense forest, with deadly animals and often warm climates. This is not an ideal place to settle. Nonetheless, people still do so, as jungles are rich with wood and oil.
                     </p>
-                    <label class="medium">Available Resources</label>
+                    <ul class="medium">Available Resources</ul>
 
                     <div class="listcontainer">
                         <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
@@ -242,7 +242,7 @@
                     <p class="templatecontentpleft landingpagecontent">
                         Boreal Forests are densely packed forests that can get quite cold in the winter. They're a fine place to find valuable minerals to extract.
                     </p>
-                    <label class="medium">Available Resources</label>
+                    <ul class="medium">Available Resources</ul>
 
                     <div class="listcontainer">
                         <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
@@ -273,7 +273,7 @@
                     <p class="templatecontentpleft landingpagecontent">
                         Grasslands are full of many unique plants, and they're a perfect place for farming. They also contain coal, iron, and other useful minerals.
                     </p>
-                    <label class="medium">Available Resources</label>
+                    <ul class="medium">Available Resources</ul>
 
                     <div class="listcontainer">
                         <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
@@ -304,7 +304,7 @@
                     <p class="templatecontentpleft landingpagecontent">
                         Mountain Ranges are terribly cold with lots of rain. They aren't pretty to settle, but they provide marketworthy minerals to sell.
                     </p>
-                    <label class="medium">Available Resources</label>
+                    <ul class="medium">Available Resources</ul>
 
                     <div class="listcontainer">
                         <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
@@ -328,10 +328,7 @@
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
 
-                <button class="g-recaptcha templatedivbutton center"
-                data-sitekey="6LdIi_4ZAAAAAL479XXAbPpVAK1rUHmw7iTMdtIC"
-                data-callback='onSubmit'
-                data-action='submit'>
+                <button class="g-recaptcha templatedivbutton center" data-sitekey="6LdIi_4ZAAAAAL479XXAbPpVAK1rUHmw7iTMdtIC" data-callback='onSubmit' data-action='submit'>
                 <span class="material-icons-outlined">
                     add_circle_outline
                 </span>Sign up</button>
