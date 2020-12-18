@@ -2268,23 +2268,6 @@
         border-top-right-radius: 4px;
     }
     
-    .cardimage:hover {
-        filter: brightness(75%);
-    }
-    
-    .cardimage:focus {
-        animation: unitimage 0.6s;
-        position: fixed;
-        left: 50px;
-        right: 50px;
-        bottom: -50px;
-        margin: auto;
-        z-index: 1;
-        width: 40%;
-        height: auto;
-        box-shadow: rgba(0, 0, 0, 0.7) 0 0 0 10000px;
-    }
-    
     .cardcontent {
         padding: 30px 15px;
     }
@@ -2706,23 +2689,6 @@
         outline: none;
         cursor: pointer;
         border-radius: 4px;
-    }
-    
-    .unitimage:hover {
-        filter: brightness(75%);
-    }
-    
-    .unitimage:focus {
-        animation: unitimage 0.6s;
-        position: fixed;
-        left: 50px;
-        right: 50px;
-        bottom: -50px;
-        margin: auto;
-        z-index: 1;
-        width: 40%;
-        height: auto;
-        box-shadow: rgba(0, 0, 0, 0.7) 0 0 0 10000px;
     }
     
     .purchasemilitarydiv {
