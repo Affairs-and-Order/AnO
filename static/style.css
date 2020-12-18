@@ -412,7 +412,7 @@
         float: left;
     }
     
-    @media all and (min-width: 756px) {
+    @media all and (min-width: 815px) {
         .menubar {
             display: none;
         }
@@ -472,7 +472,7 @@
         font-size: 19px;
     }
     
-    @media all and (max-width: 600px) {
+    @media all and (max-width: 815px) {
         .menubardiv {
             width: 100%;
             margin-left: -100%;
@@ -519,14 +519,10 @@
         transition: all 0.2s ease;
         line-height: 40px;
         text-align: left;
-        padding: 0px 10px;
-        margin: 8px 6px;
+        padding: 0px 20px;
         cursor: pointer;
         transition: all 0.2s;
-        width: calc(100% -8px);
-        background: #42444e;
-        border-radius: 4px;
-        box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
+        width: 100%;
         position: relative;
     }
     
@@ -611,6 +607,12 @@
         color: white;
         user-select: none;
         cursor: pointer;
+    }
+    
+    @media all and (max-width: 814px) {
+        .dropdown {
+            display: none;
+        }
     }
     
     .dropdown-content {
