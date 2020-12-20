@@ -629,14 +629,23 @@ def warChoose():
             unit_amount = 3
 
         attack_units = Units(cId)
+        print("TESTING HERE ATTCK UNITS")
+        print(attack_units)
 
         # Output error if any
         error = attack_units.attach_units(selected_units, unit_amount)
         if error:
             return error
 
+        # BEFORE DEBUG:
         # cache Unit object reference in session
-        session["attack_units"] = attack_units
+        # session["attack_units"] = attack_units
+        # return redirect("/waramount")
+
+        # DURING DEBUG:
+        session["attack_units"] = attack_units.__dict__
+        print("DICT", attack_units.__dict__)
+        # return redirect("/warchoose")
         return redirect("/waramount")
 
 # page 2 choose how many of each of your units to send
@@ -645,6 +654,8 @@ def warChoose():
 @check_required
 def warAmount():
     cId = session["user_id"]
+
+    attack_units = Units.rebuild_from_dict(session["attack_units"])
 
     if request.method == "GET":
 
@@ -656,7 +667,6 @@ def warAmount():
             port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
-        attack_units = session["attack_units"]
 
         # grab supplies amount
         # if the user is the attacker in the war
@@ -665,7 +675,8 @@ def warAmount():
         # supplies = db.fetchone()[0]
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-
+        print(attack_units.selected_units_list)
+        print("CID", cId)
         unitamounts = Military.get_particular_units_list(cId, attack_units.selected_units_list)
         # turn this dictionary into a list of its values
         connection.commit()
@@ -679,7 +690,6 @@ def warAmount():
     elif request.method == "POST":
 
         # Separate object's units list from new units list
-        attack_units = session["attack_units"]
         selected_units = attack_units.selected_units_list
 
         # this is in the form of a dictionary
