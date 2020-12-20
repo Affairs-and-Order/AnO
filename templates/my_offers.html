@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block title %} My Offers {% endblock %} {% block body %}
 <div class="templatediv">
 
-    <div class="templatedivtopper">
+    <div class="templatedivtopper marketoffertopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
             payments
             </span>My Offers</h1>
@@ -11,7 +11,7 @@
     <div class="templatedivcontent">
         <!--if no offers-->
         {% if outgoing_offer_amount == 0 %}
-        <h2 class="templatecontentheadercenter">You have 0 outgoing offers</h2>
+        <h2 class="templatecontentheadercenter">You have no outgoing offers</h2>
         {% elif outgoing_offer_amount > 0 %}
         <!--if there are offers-->
         <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
@@ -68,11 +68,9 @@
                 {% endfor %}
             </table>
         </div>
-        {% endif %}
-
-        {% if incoming_amount == 0 %}
+        {% endif %} {% if incoming_amount == 0 %}
         <!--if no offers-->
-        <h2 class="templatecontentheadercenter">You have 0 incoming offers</h2>
+        <h2 class="templatecontentheadercenter">You have no incoming offers</h2>
         <!--if there are offers-->
         {% elif incoming_amount > 0 %}
         <h2 class="templatecontentheaderleft">Incoming Offers</h2>

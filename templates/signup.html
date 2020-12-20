@@ -1,17 +1,35 @@
-{% extends "layout.html" %}
-
-{% block title %} Signup {% endblock %}
-
-{% block body%}
+{% extends "layout.html" %} {% block title %} Sign up {% endblock %} {% block body%}
 <!-- START------------------------------------------------------------------------->
 <img class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
+<script>
+    //Code for image slider in signup page
+    var slideIndex = 1;
 
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function showSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("slideparent");
+        if (n > slides.length) {
+            slideIndex = 1
+        }
+        if (n < 1) {
+            slideIndex = slides.length
+        }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[slideIndex - 1].style.display = "block";
+    }
+</script>
 <div class="templatediv noboxshadowtopper loginsignupdiv">
 
-    <div class="templatedivtopper noboxshadowtopper svgtopper">
+    <div class="templatedivtopper noboxshadowtopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
             add_circle_outline
-            </span>Signup</h1>
+            </span>Sign up</h1>
     </div>
 
     <div class="templatedivcontent">
@@ -42,22 +60,22 @@
 
                 {% if way != "discord" %}
                 <form id="signup-form" class="loginsignupform" action="/signup" method="POST">
-                {% elif way == "discord" %}
-                <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
-                {% endif %}
-
-                    <div class="templatedivflex2 divflex2center signupdiv">
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
-                        </div>
-
-                        {% if way != "discord" %}
-                        <div class="templatedivflex2left">
-                            <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
-                        </div>
+                    {% elif way == "discord" %}
+                    <form id="signup-form" class="loginsignupform" action="/discord_signup" method="POST">
                         {% endif %}
 
-                        <input id="continent" name="continent" type="hidden">
+                        <div class="templatedivflex2 divflex2center signupdiv">
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" name="username" type="text" placeholder="Country Name" required/>
+                            </div>
+
+                            {% if way != "discord" %}
+                            <div class="templatedivflex2left">
+                                <input class="loginsignupinput" autocomplete="off" name="email" type="email" placeholder="Email" required />
+                            </div>
+                            {% endif %}
+
+                            <input id="continent" name="continent" type="hidden">
 
                         </div>
 
@@ -76,23 +94,244 @@
             </div>
         </div>
 
+        <h2 class="templatecontentheaderleft">Choose a Biome</h2>
+
+        <div class="slidecontainer">
+            <div class="slide1 slideparent fade">
+                <div class="slidechild slidetop">
+
+                    <img class="slideimage" src="{{ url_for( 'static', filename='images/tundra.jpg' ) }}">
+
+                    <div class="arrowparent arrowleft" onclick="plusSlides(-1)">
+                        <span class="arrowchild">&#10094;</span>
+                    </div>
+                    <div class="arrowparent arrowright" onclick="plusSlides(1)">
+                        <span class="arrowchild">&#10095;</span>
+
+                    </div>
+                </div>
+                <div class="slidechild slidebottom">
+
+                    <h2 class="templatecontentheadercenter">Tundra</h2>
+
+                    <p class="templatecontentpleft landingpagecontent">
+                        Tundra is a cold, nearly lifeless plane. While rich in valuable natural resources, it lacks necessary resources like lumber.
+                    </p>
+
+                    <ul class="medium">Available Resources</ul>
+
+                    <div class="listcontainer">
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource resourcesmall" />Iron</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource resourcesmall" />Copper</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" />Uranium</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" />Lead</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slideparent fade">
+                <div class="slidechild slidetop">
+
+                    <img class="slideimage" src="{{ url_for( 'static', filename='images/savanna.jpg' ) }}">
+
+                    <div class="arrowparent arrowleft" onclick="plusSlides(-1)">
+                        <span class="arrowchild">&#10094;</span>
+                    </div>
+                    <div class="arrowparent arrowright" onclick="plusSlides(1)">
+                        <span class="arrowchild">&#10095;</span>
+
+                    </div>
+                </div>
+                <div class="slidechild slidebottom">
+
+                    <h2 class="templatecontentheadercenter">Savanna</h2>
+
+                    <p class="templatecontentpleft landingpagecontent">
+                        Savannas consist of miles of open grassland with the occasional tree. It has lots of space for farming, with rich mineral deposits below.
+                    </p>
+                    <ul class="medium">Available Resources</ul>
+
+                    <div class="listcontainer">
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" />Bauxite</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" />Coal</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource resourcesmall" />Copper</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" />Lead</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slideparent fade">
+                <div class="slidechild slidetop">
+
+                    <img class="slideimage" src="{{ url_for( 'static', filename='images/desert.jpg' ) }}">
+
+                    <div class="arrowparent arrowleft" onclick="plusSlides(-1)">
+                        <span class="arrowchild">&#10094;</span>
+                    </div>
+                    <div class="arrowparent arrowright" onclick="plusSlides(1)">
+                        <span class="arrowchild">&#10095;</span>
+
+                    </div>
+                </div>
+                <div class="slidechild slidebottom">
+
+                    <h2 class="templatecontentheadercenter">Desert</h2>
+
+                    <p class="templatecontentpleft landingpagecontent">
+                        Deserts are barren and hostile. Farming is possible, but only at rivers and oases. This is compensated for by rare resources ripe for the taking.
+                    </p>
+                    <ul class="medium">Available Resources</ul>
+
+                    <div class="listcontainer">
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" />Oil</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource resourcesmall" />Iron</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" />Uranium</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" />Bauxite</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slideparent fade">
+                <div class="slidechild slidetop">
+
+                    <img class="slideimage" src="{{ url_for( 'static', filename='images/jungle.jpg' ) }}">
+
+                    <div class="arrowparent arrowleft" onclick="plusSlides(-1)">
+                        <span class="arrowchild">&#10094;</span>
+                    </div>
+                    <div class="arrowparent arrowright" onclick="plusSlides(1)">
+                        <span class="arrowchild">&#10095;</span>
+
+                    </div>
+                </div>
+                <div class="slidechild slidebottom">
+
+                    <h2 class="templatecontentheadercenter">Jungle</h2>
+
+                    <p class="templatecontentpleft landingpagecontent">
+                        Jungles are dense forest, with deadly animals and often warm climates. This is not an ideal place to settle. Nonetheless, people still do so, as jungles are rich with wood and oil.
+                    </p>
+                    <ul class="medium">Available Resources</ul>
+
+                    <div class="listcontainer">
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource resourcesmall" />Lumber</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" />Oil</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" />Coal</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource resourcesmall" />Copper</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slideparent fade">
+                <div class="slidechild slidetop">
+
+                    <img class="slideimage" src="{{ url_for( 'static', filename='images/borealforest.jpg' ) }}">
+
+                    <div class="arrowparent arrowleft" onclick="plusSlides(-1)">
+                        <span class="arrowchild">&#10094;</span>
+                    </div>
+                    <div class="arrowparent arrowright" onclick="plusSlides(1)">
+                        <span class="arrowchild">&#10095;</span>
+
+                    </div>
+                </div>
+                <div class="slidechild slidebottom">
+
+                    <h2 class="templatecontentheadercenter">Boreal Forest</h2>
+
+                    <p class="templatecontentpleft landingpagecontent">
+                        Boreal Forests are densely packed forests that can get quite cold in the winter. They're a fine place to find valuable minerals to extract.
+                    </p>
+                    <ul class="medium">Available Resources</ul>
+
+                    <div class="listcontainer">
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource resourcesmall" />Lumber</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" />Coal</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" />Lead</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource resourcesmall" />Iron</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slideparent fade">
+                <div class="slidechild slidetop">
+
+                    <img class="slideimage" src="{{ url_for( 'static', filename='images/grassland.jpg' ) }}">
+
+                    <div class="arrowparent arrowleft" onclick="plusSlides(-1)">
+                        <span class="arrowchild">&#10094;</span>
+                    </div>
+                    <div class="arrowparent arrowright" onclick="plusSlides(1)">
+                        <span class="arrowchild">&#10095;</span>
+
+                    </div>
+                </div>
+                <div class="slidechild slidebottom">
+
+                    <h2 class="templatecontentheadercenter">Grassland</h2>
+
+                    <p class="templatecontentpleft landingpagecontent">
+                        Grasslands are full of many unique plants, and they're a perfect place for farming. They also contain coal, iron, and other useful minerals.
+                    </p>
+                    <ul class="medium">Available Resources</ul>
+
+                    <div class="listcontainer">
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource resourcesmall" />iron</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource resourcesmall" />Copper</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" />Oil</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" />Bauxite</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slideparent fade">
+                <div class="slidechild slidetop">
+
+                    <img class="slideimage" src="{{ url_for( 'static', filename='images/mountainrange.jpg' ) }}">
+
+                    <div class="arrowparent arrowleft" onclick="plusSlides(-1)">
+                        <span class="arrowchild">&#10094;</span>
+                    </div>
+                    <div class="arrowparent arrowright" onclick="plusSlides(1)">
+                        <span class="arrowchild">&#10095;</span>
+
+                    </div>
+                </div>
+                <div class="slidechild slidebottom">
+
+                    <h2 class="templatecontentheadercenter">Mountain Range</h2>
+
+                    <p class="templatecontentpleft landingpagecontent">
+                        Mountain Ranges are terribly cold with lots of rain. They aren't pretty to settle, but they provide marketworthy minerals to sell.
+                    </p>
+                    <ul class="medium">Available Resources</ul>
+
+                    <div class="listcontainer">
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />Rations</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource resourcesmall" />Lumber</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" />Coal</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" />Bauxite</p>
+                        <p class="slidelist"><img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" />Oil</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Function for ReCAPTCHA, not sure why it doesn't work-->
         <script>
-        function onSubmit(token) {
-            document.getElementById("signup-form").submit();
-        }
+            function onSubmit(token) {
+                document.getElementById("signup-form").submit();
+            }
         </script>
+
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
 
-                <button class="g-recaptcha templatedivbutton center"
-                data-sitekey="6LdIi_4ZAAAAAL479XXAbPpVAK1rUHmw7iTMdtIC"
-                data-callback='onSubmit'
-                data-action='submit'>
+                <button class="g-recaptcha templatedivbutton center" data-sitekey="6LdIi_4ZAAAAAL479XXAbPpVAK1rUHmw7iTMdtIC" data-callback='onSubmit' data-action='submit'>
                 <span class="material-icons-outlined">
                     add_circle_outline
-                </span>Signup</button>
+                </span>Sign up</button>
 
             </div>
         </div>

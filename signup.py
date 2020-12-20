@@ -221,6 +221,7 @@ def signup():
         db = connection.cursor()
 
         captcha_response = request.form.get("g-recaptcha-response")
+        print(captcha_response)
         captcha_success = verify_captcha(captcha_response)
 
         if not captcha_success:

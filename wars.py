@@ -941,7 +941,6 @@ def declare_war():
     # CONSTANT VALUE
     WAR_TYPES = ["Raid", "Sustained", "Loot"]
 
-
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),

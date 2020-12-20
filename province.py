@@ -76,10 +76,7 @@ def province(pId):
     db.execute("SELECT location FROM stats WHERE id=(%s)", (province_user,))
     location = db.fetchone()[0]
     
-    if province_user == cId:
-        ownProvince = True
-    else:
-        ownProvince = False
+    ownProvince = province_user == cId
 
     db.execute("SELECT provinceName FROM provinces WHERE id=(%s)", (pId,))
     name = db.fetchone()[0]
@@ -381,48 +378,48 @@ def province_sell_buy(way, units, province_id):
             cityCount_price = 0
 
         unit_prices = {
-            "land": 100,
-            "cityCount": cityCount_price,
+            "land_price": 1000,
+            "cityCount_price": cityCount_price,
 
-            "coal_burners": 500,
-            "oil_burners": 500,
-            "hydro_dams": 500,
-            "nuclear_reactors": 500,
-            "solar_fields": 550,
+            "coal_burners_price": 1300000,
+            "oil_burners_price": 1600000,
+            "hydro_dams_price": 5800000,
+            "nuclear_reactors_price": 9500000,
+            "solar_fields_price": 2300000,
 
-            "gas_stations": 500,
-            "general_stores": 500,
-            "farmers_markets": 500,
-            "malls": 500,
-            "banks": 500,
+            "gas_stations_price": 2900000,
+            "general_stores_price": 3500000,
+            "farmers_markets_price": 4200000,
+            "malls_price": 6700000,
+            "banks_price": 8500000,
 
-            "city_parks": 500,
-            "hospitals": 500,
-            "libraries": 500,
-            "universities": 500,
-            "monorails": 500,
+            "city_parks_price": 4900000,
+            "hospitals_price": 5300000,
+            "libraries_price": 3600000,
+            "universities_price": 6000000,
+            "monorails_price": 6800000,
 
-            "army_bases": 500,
-            "harbours": 500,
-            "aerodomes": 500,
-            "admin_buildings": 500,
-            "silos": 500,
+            "army_bases_price": 1800000,
+            "harbours_price": 2100000,
+            "aerodomes_price": 2600000,
+            "admin_buildings_price": 3200000,
+            "silos_price": 1000000,
 
-            "farms": 500,
-            "pumpjacks": 500,
-            "coal_mines": 500,
-            "bauxite_mines": 500,
-            "copper_mines": 500,
-            "uranium_mines": 500,
-            "lead_mines": 500,
-            "iron_mines": 500,
-            "lumber_mills": 500,
+            "farms_price": 220000,
+            "pumpjacks_price": 450000,
+            "coal_mines_price": 590000,
+            "bauxite_mines_price": 460000,
+            "copper_mines_price": 435000,
+            "uranium_mines_price": 690000,
+            "lead_mines_price": 420000,
+            "iron_mines_price": 640000,
+            "lumber_mills_price": 480000,
 
-            "component_factories": 500,
-            "steel_mills": 500, 
-            "ammunition_factories": 500,
-            "aluminium_refineries": 500,
-            "oil_refineries": 500
+            "component_factories_price": 2200000,
+            "steel_mills_price": 1900000, 
+            "ammunition_factories_price": 1600000,
+            "aluminium_refineries_price": 1750000,
+            "oil_refineries_price": 1500000
         }
 
         if units not in allUnits:
@@ -433,7 +430,7 @@ def province_sell_buy(way, units, province_id):
         else:
             table = "proInfra"
 
-        price = unit_prices[f"{units}"]
+        price = unit_prices[f"{units}_price"]
         totalPrice = int(wantedUnits * price)
 
         curUnStat = f"SELECT {units} FROM {table} " +  "WHERE id=%s"
@@ -464,7 +461,7 @@ def province_sell_buy(way, units, province_id):
             if units in max_4 and currentUnits + wantedUnits >= 4:
                 return error(400, "You can't have more than 4 of this unit")
 
-            if free_infra_slots < wantedUnits:
+            if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
                 return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
@@ -473,7 +470,7 @@ def province_sell_buy(way, units, province_id):
             db.execute(updStat, ((currentUnits + wantedUnits), province_id))
 
         else:
-            error(404, "Page not found")
+            return error(404, "Page not found")
 
         connection.commit()
         connection.close()
