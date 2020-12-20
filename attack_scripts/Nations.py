@@ -167,6 +167,10 @@ class Nation:
     def declare_war(self, target_nation):
         pass
 
+    # Function for sending posts to nation's news page
+    def news_signal(message):
+        pass
+
     def get_provinces(self):
 
         connection = psycopg2.connect(

@@ -283,7 +283,6 @@ def wars():
 @login_required
 def peace_offers():
     cId = session["user_id"]
-    # cId = 11
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -590,7 +589,6 @@ def war_with_id(war_id):
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance, peace_to_send=enemy_id)
 
-
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
 # page 1: where you can select what units to attack with
@@ -599,7 +597,6 @@ def war_with_id(war_id):
 @check_required
 def warChoose():
     cId = session["user_id"]
-    # cId = 11
 
     if request.method == "GET":
 
@@ -648,7 +645,6 @@ def warChoose():
 @check_required
 def warAmount():
     cId = session["user_id"]
-    # cId = 11
 
     if request.method == "GET":
 
@@ -723,7 +719,6 @@ def warAmount():
 
         else:  # lets just leave this here if something dumb happens, then we can fix it!
             return ("everything just broke")
-
 
 # This route is only for ICMB or nuke attacks
 @app.route("/wartarget", methods=["GET", "POST"])

@@ -24,7 +24,7 @@ def login_required(f):
 
     return decorated_function
 
-# Check for neccessary values without them user can't access a pace
+# Check for neccessary values without them user can't access a page
 # example: can't access /warchoose or /waramount without enemy_id
 def check_required(func):
 
@@ -41,7 +41,7 @@ def error(code, message):
 
 @login_required
 def get_influence(country_id):
-        
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -128,7 +128,7 @@ def get_influence(country_id):
 
 def get_coalition_influence(coalition_id):
 
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -208,14 +208,14 @@ def generate_province_revenue(): # Runs each turn
     'silos_money': 120000
     }
 
-    
+
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
         port=os.getenv("PG_PORT"))
-        
+
     db = conn.cursor()
 
     columns = [
