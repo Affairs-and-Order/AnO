@@ -12,7 +12,7 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
     enemy_units_total_amount = sum(enemy_object.selected_units.values())
 
     # the affected percentage from sum of units
-    unit_of_army = (defending_unit_amount*100)/enemy_units_total_amount
+    unit_of_army = (defending_unit_amount*100)/(enemy_units_total_amount+1)
 
     # the bonus calculated based on affected percentage
     affected_bonus = attack_effects[1]*(unit_of_army/100)
@@ -427,7 +427,8 @@ class Military(Nation):
 
     # Update the morale and give back the win type name
     @staticmethod
-    def morale_change(war_id, morale, column, win_type, winner, loser):
+    def morale_change(column, win_type, winner, loser):
+    # def morale_change(war_id, morale, column, win_type, winner, loser):
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -438,7 +439,7 @@ class Military(Nation):
 
         db = connection.cursor()
 
-        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
+        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s))", (winner.user_id, loser.user_id, winner.user_id, loser.user_id))
         war_id = db.fetchall()[-1][0]
 
         war_column_stat = f"SELECT {column} FROM wars " + "WHERE id=(%s)"

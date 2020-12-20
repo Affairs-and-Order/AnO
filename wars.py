@@ -694,27 +694,27 @@ def warAmount():
         selected_units = attack_units.selected_units_list
 
         # this is in the form of a dictionary
-        # selected_units = attack_units.selected_units.copy()
+        selected_units = attack_units.selected_units.copy()
 
         # 3 units list
         units_name = list(selected_units.keys())
+        incoming_unit = list(request.form)
 
         # check if its 3 regular units or 1 special unit (missile or nuke)
-        if len(units_name) == 3:  # this should happen if 3 regular units
-            for number in range(1, 4):
-                unit_amount = request.form.get(f"u{number}_amount")
-                print("UNIT AMOUNT", unit_amount)
-                if not unit_amount:
-                    flash("Invalid name argument coming in")
+        if len(units_name) == 3 and len(incoming_unit) == 3:  # this should happen if 3 regular units
+            for unit in incoming_unit:
+                if unit not in Military.allUnits:
+                    return "Invalid unit!"
+
+                unit_amount = request.form[unit]
+
                 try:
-                    selected_units[units_name[number-1]] = int(unit_amount)
+                    selected_units[unit] = int(unit_amount)
                 except:
-                    return error(400, "Unit amount entered was not a number") # add javascript checks for this also in the front end
+                    return error(400, "Unit amount entered was not a number") # maybe add javascript checks for this also in the front end
 
             # Check every time when user input comes in lest user bypass input validation
             # Error code if any else return None
-            # HERE: TOTO
-            print(selected_units, "SELECTED UNITS")
             error = attack_units.attach_units(selected_units, 3)
             if error:
                 return error
@@ -787,8 +787,6 @@ def warTarget():
 @login_required
 def warResult():
 
-    print(session["attack_units"], "AEEEEE")
-
     # DEBUG DATA START:
     # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
     # eId = 10
@@ -839,10 +837,12 @@ def warResult():
         defenseunits = {}
 
         for unit in defenselst:
-            defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
+            db.execute(f"SELECT {unit} FROM military WHERE id=(%s)", (eId,))
+            defenseunits[unit] = db.fetchone()[0]
 
+        print("DEFENSE UNITS", defenseunits)
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
-        attacker = session["attack_units"]
+        # attacker = session["attack_units"]
 
         # Save the stats before the fight which used to calculate the lost amount from unit
         prev_defender = dict(defender.selected_units)
