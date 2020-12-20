@@ -313,8 +313,10 @@ class Units(Military):
         sort_out = ["supply_costs", "available_supplies"]
         store_sort_values = []
         for it in sort_out:
-            store_sort_values.append(dict[it])
-            dict.pop(it)
+            temp = dict.get(it, None)
+            if temp != None:
+                store_sort_values.append(dict[it])
+                dict.pop(it)
 
         try:
             reb = cls(**dict)

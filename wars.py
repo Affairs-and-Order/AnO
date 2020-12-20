@@ -645,6 +645,7 @@ def warChoose():
         # DURING DEBUG:
         session["attack_units"] = attack_units.__dict__
         print("DICT", attack_units.__dict__)
+
         # return redirect("/warchoose")
         return redirect("/waramount")
 
@@ -675,9 +676,8 @@ def warAmount():
         # supplies = db.fetchone()[0]
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-        print(attack_units.selected_units_list)
-        print("CID", cId)
         unitamounts = Military.get_particular_units_list(cId, attack_units.selected_units_list)
+
         # turn this dictionary into a list of its values
         connection.commit()
         db.close()
@@ -685,6 +685,7 @@ def warAmount():
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
 
+        print(attack_units.selected_units_list, unitamounts, "LABEL")
         return render_template("waramount.html", selected_units=attack_units.selected_units_list, unitamounts=unitamounts)
 
     elif request.method == "POST":
@@ -693,7 +694,7 @@ def warAmount():
         selected_units = attack_units.selected_units_list
 
         # this is in the form of a dictionary
-        selected_units = session["attack_units"].selected_units.copy()
+        # selected_units = attack_units.selected_units.copy()
 
         # 3 units list
         units_name = list(selected_units.keys())
@@ -702,7 +703,7 @@ def warAmount():
         if len(units_name) == 3:  # this should happen if 3 regular units
             for number in range(1, 4):
                 unit_amount = request.form.get(f"u{number}_amount")
-                print(unit_amount)
+                print("UNIT AMOUNT", unit_amount)
                 if not unit_amount:
                     flash("Invalid name argument coming in")
                 try:
@@ -712,7 +713,9 @@ def warAmount():
 
             # Check every time when user input comes in lest user bypass input validation
             # Error code if any else return None
-            error = session["attack_units"].attach_units(selected_units, 3)
+            # HERE: TOTO
+            print(selected_units, "SELECTED UNITS")
+            error = attack_units.attach_units(selected_units, 3)
             if error:
                 return error
 
@@ -721,7 +724,7 @@ def warAmount():
 
         elif len(units_name) == 1:  # this should happen if special
             selected_units[units_name[0]] = int(request.form.get("u1_amount"))
-            error = session["attack_units"].attach_units(selected_units, 1)
+            error = attack_units.attach_units(selected_units, 1)
             if error:
                 return error
 
@@ -771,7 +774,9 @@ def warTarget():
         # Skip attach_units because no need for validation for target_amount since the data coming directly from the db without user affection
         # only validate is targeted_unit is valid
         defender = Units(eId, {target: target_amount[0]}, selected_units_list=[target])
-        session["from_wartarget"] = Military.special_fight(session["attack_units"], defender, defender.selected_units_list[0])
+        attack_units = Units.rebuild_from_dict(session["attack_units"])
+        # session["from_wartarget"] = Military.special_fight(session["attack_units"], defender, defender.selected_units_list[0])
+        session["from_wartarget"] = Military.special_fight(attack_units, defender, defender.selected_units_list[0])
 
         return redirect("warResult")
 
@@ -782,6 +787,8 @@ def warTarget():
 @login_required
 def warResult():
 
+    print(session["attack_units"], "AEEEEE")
+
     # DEBUG DATA START:
     # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
     # eId = 10
@@ -789,7 +796,8 @@ def warResult():
     # session["user_id"] = 11
     # DEBUG DATA END!
 
-    attacker = session["attack_units"]
+    # attacker = session["attack_units"]
+    attacker = Units.rebuild_from_dict(session["attack_units"])
 
     # grab defending enemy units from database
     eId = session["enemy_id"]

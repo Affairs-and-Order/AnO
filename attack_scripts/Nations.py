@@ -523,8 +523,6 @@ class Military(Nation):
             db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
             province_id_fetch = db.fetchall()
 
-            random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
-
             # decrease special unit amount after attack
             # TODO: check if too much special_unit amount is selected
             # TODO: decreate only the selected amount when attacker (ex. db 100 soldiers, attack with 20, don't decreate from 100)
@@ -535,9 +533,15 @@ class Military(Nation):
 
             connection.commit()
 
-            # If nuke damage public_works
-            public_works = Nation.get_public_works(random_province)
-            infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            # TODO: NEED PROPER ERROR HANDLING FOR THIS INFRA DAMAGE ex. when user doesn't have province the can't damage it (it throws error)
+            if len(province_id_fetch) > 0:
+                random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
+
+                # If nuke damage public_works
+                public_works = Nation.get_public_works(random_province)
+                infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            else:
+                infra_damage_effects = 0
 
             # {target: losed_amount} <- the target and the destroyed amount
             return ({target: before_casulaties-list(dict(defender.selected_units).values())[0]}, infra_damage_effects)
@@ -719,7 +723,9 @@ class Military(Nation):
         # non sql injectable workaround to above commented code:
 
         # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
-        allAmounts = db.execute("SELECT * FROM military WHERE id=%s", (cId,)).fetchall()
+        db.execute("SELECT * FROM military WHERE id=%s", (cId,))
+        allAmounts = db.fetchall()
+
         # get the unit amounts based on the selected_units
         unit_to_amount_dict = {}
         cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','ICBMs','nukes','destroyer','cruisers','submarines']
