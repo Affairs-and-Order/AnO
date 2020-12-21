@@ -1069,10 +1069,6 @@ def find_targets():
     #     else:
     #         return error(400, "No such country")
 
-
-# if everything went through, remove the cost of supplies from the amount of supplies the country has.
-
-
 @app.route("/defense", methods=["GET", "POST"])
 @login_required
 def defense():
@@ -1092,35 +1088,23 @@ def defense():
             port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
-        db.execute("SELECT * FROM nation WHERE nation_id=(%s)", (cId,))
-        nation = db.fetchone()
+        defense_units = list(request.form.values())
+        # defense_units = ["soldier", "tank", "apache"]
 
-        # Defense units came from POST request (TODO: attach it to the frontend)
-        defense_units = ["soldier", "tank", "apache"]
-        # defense_units = [request.form.get(u1), request.form.get(u2), request.form.get(u3)]
-        # Default defense
-        # nation_id = nation[1]
-        # default_defense = nation[2]
+        for item in defense_units:
+            if item not in Military.allUnits:
+                return error(400, "Invalid unit types!")
 
-        if nation:
-            for item in defense_units:
-                if item not in Military.allUnits:
-                    return error(400, "Invalid unit types!")
-            if len(defense_units) == 3:
-                # default_defense is stored in the db: "unit1,unit2,unit3"
-                defense_units = ",".join(defense_units)
-                db.execute("UPDATE nation SET default_defense=(%s) WHERE nation_id=(%s)", (defense_units, nation[1]))
+        if len(defense_units) == 3:
+            # default_defense is stored in the db: "unit1,unit2,unit3"
+            defense_units = ",".join(defense_units)
+            db.execute("UPDATE military SET default_defense=(%s) WHERE id=(%s)", (defense_units, cId))
 
-                connection.commit()
-            else:
-                return error(400, "Invalid number of units selected!")
+            connection.commit()
         else:
-            return error(404, "Nation is not created!")
+            return error(400, "Invalid number of units selected!")
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
-        # next we need to insert the 3 defending units set as a value to the nation"s table property (one in each war): defense
-        # db.execute("INSERT INTO wars (attacker, defender) VALUES (%s, %s)", (cId, defender_id))
-
         connection.close()
 
         return render_template("defense.html", units=units)

@@ -148,11 +148,15 @@
         </script>
 
         <!--sends user back to /wars-->
-        <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span
-                class="material-icons-outlined">
-                check
-            </span>Update</button>
-
+        <form id="next_button" action="/defense" method="post">
+            <!-- TODO: disable next button if checkNum < 3 -->
+            <input type="hidden" name="u1">
+            <input type="hidden" name="u2">
+            <input type="hidden" name="u3">
+            <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
+                        <span class="material-icons-outlined">arrow_forward</span>Next
+                    </button>
+        </form>
     </div>
 </div>
 {% endblock %}
