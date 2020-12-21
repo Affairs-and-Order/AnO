@@ -530,6 +530,7 @@ class Units(Military):
             print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
             db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
             attacker_id = db.fetchone()
+            print(attacker_id)
 
             # If the user is the attacker (maybe optimize this to store the user role in the war)
             if attacker_id:

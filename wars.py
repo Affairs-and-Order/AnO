@@ -716,6 +716,7 @@ def warAmount():
             # Check every time when user input comes in lest user bypass input validation
             # Error code if any else return None
             error = attack_units.attach_units(selected_units, 3)
+            session["attack_units"] = attack_units.__dict__
             if error:
                 return error
 
@@ -725,6 +726,7 @@ def warAmount():
         elif len(units_name) == 1:  # this should happen if special
             selected_units[units_name[0]] = int(request.form.get("u1_amount"))
             error = attack_units.attach_units(selected_units, 1)
+            session["attack_units"] = attack_units.__dict__
             if error:
                 return error
 
@@ -860,13 +862,8 @@ def warResult():
             host=os.getenv("PG_HOST"),
             port=os.getenv("PG_PORT"))
 
+        # TODO: error because there isn't even one province make error handler
         db = connection.cursor()
-        db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
-        province_id_fetch = db.fetchall()
-        random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
-
-        # Currently units only affect public works
-        public_works = Nation.get_public_works(random_province)
 
         # TODO: enforce war type like raze,etc.
         # example for the above line: if war_type is raze then attack_effects[0]*10
@@ -877,9 +874,10 @@ def warResult():
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
         db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
-        war_type = db.fetchall()[-1]
+        war_type = db.fetchall()[-1][0]
 
         print(attack_effects, "BEFORE WARTYPE EFFECTS")
+        print(war_type)
 
         if len(war_type) > 0:
             if war_type == "Raze":
@@ -900,15 +898,22 @@ def warResult():
         else:
             print("INVALID USER IDs")
 
-        print(attack_effects, "AFTER WARTYPE")
+        db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
+        province_id_fetch = db.fetchall()
+        if len(province_id_fetch) > 0:
+            random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
 
-        infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            # Currently units only affect public works
+            public_works = Nation.get_public_works(random_province)
+            infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+        else:
+            infra_damage_effects = {}
+
         defender_result["infra_damage"] = infra_damage_effects
 
         if winner == defender.user_id:
             winner = defender_name
         else: winner = attacker_name
-
 
         defender_loss = {}
         attacker_loss = {}
@@ -937,6 +942,7 @@ def warResult():
 
     # save method only function for the attacker now, and maybe we won't change that
     # saves the decreased supply amount
+    print(attacker.__dict__, "DEBUG")
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
