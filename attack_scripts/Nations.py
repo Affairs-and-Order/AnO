@@ -427,8 +427,8 @@ class Military(Nation):
 
     # Update the morale and give back the win type name
     @staticmethod
-    def morale_change(column, win_type, winner, loser):
     # def morale_change(war_id, morale, column, win_type, winner, loser):
+    def morale_change(column, win_type, winner, loser):
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -481,7 +481,7 @@ class Military(Nation):
 
             print("THE WAR IS OVER")
 
-            db.execute(f"UPDATE wars SET {column}=(%s) WHERE id=(%s)", (morale, war_id))
+        db.execute(f"UPDATE wars SET {column}=(%s) WHERE id=(%s)", (morale, war_id))
 
         connection.commit()
         connection.close()
@@ -623,6 +623,9 @@ class Military(Nation):
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
+
+        print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
+        print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
