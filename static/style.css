@@ -673,13 +673,10 @@
         position: fixed;
         background-color: #363945;
         width: 50px;
-        padding-bottom: 10px;
         z-index: 1000;
-        height: 40px;
+        height: 50px;
         transition: all 0.4s ease-in-out;
-        transition-delay: 0s;
         box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
-        text-align: right;
         z-index: 1000;
         border-radius: 100%;
     }
@@ -691,33 +688,59 @@
     .resourcedivshow {
         box-shadow: rgba(58, 59, 69, 0.4) 0px 6px -6px 0px, inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
         background-color: #515463;
-        padding-left: 145px;
-        transition-delay: 0.3s;
         border-radius: 0;
-        padding-right: 5px;
         right: 0px;
+        padding: 0;
+        padding-left: 10px;
+        width: 190px;
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .resourcedivchild {
+        display: flex;
+        flex-direction: row;
+        transition: all 0.3s;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .resourcedivchild:hover {
+        opacity: 0.6;
+        cursor: pointer;
+    }
+    
+    .resourcedivshow .resourcedivchild {
+        width: 190px;
     }
     
     .resourceicon {
         font-size: 40px !important;
+        margin-left: 10px;
         cursor: pointer;
         transition: all 0.2s;
         user-select: none;
         color: white;
     }
     
-    .resourceicon:hover {
-        color: rgba(255, 255, 255, 0.5);
+    .resourceicontext {
+        opacity: 0;
+        pointer-events: none;
+        display: none;
+        color: white;
+        font-size: 20px;
+        font-weight: normal;
+        line-height: 50px;
+        height: 0;
+        margin: 0;
     }
     
-    .resourcedivcontent::-webkit-scrollbar {
-        width: 0px;
-        background: #e3e9f0;
-    }
-    
-    .resourcedivcontent::-webkit-scrollbar-thumb {
-        background: #36394550;
-        width: 100%;
+    .resourcedivshow .resourceicontext {
+        opacity: 1;
+        pointer-events: all;
+        transition: all 0.3s;
+        color: white;
+        display: block;
     }
     
     .resourcedivcontent {
@@ -738,6 +761,10 @@
     .resourcedivcontentshow {
         margin: 0;
         box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
+    }
+    
+    .resourcedivcontent::-webkit-scrollbar {
+        width: 0px;
     }
     
     .resourcetagparent {
