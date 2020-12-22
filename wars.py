@@ -685,9 +685,9 @@ def warAmount():
         connection.close()
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
-
         print(attack_units.selected_units_list, unitamounts, "LABEL")
-        return render_template("waramount.html", selected_units=attack_units.selected_units_list, unitamounts=unitamounts)
+        print("IMPORT", attack_units.__dict__)
+        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, unit_range=len(unitamounts), unitamounts=unitamounts)
 
     elif request.method == "POST":
 
@@ -724,6 +724,7 @@ def warAmount():
             # same note as before as to how to use this request.form.get to get the unit amounts.
 
             return redirect("/warResult")  # warTarget route is skipped
+
         elif len(units_name) == 1:  # this should happen if special
             selected_units[units_name[0]] = int(request.form.get("u1_amount"))
             error = attack_units.attach_units(selected_units, 1)

@@ -1,5 +1,4 @@
 {% extends "layout.html"%} {% block title %} Attack Amount {% endblock %} {% block body %}
-<!-- -->
 <div class="templatediv">
 
     <div class="templatedivtopper wartopper">
@@ -15,59 +14,27 @@
         <p class="templatecontentpleft">Select how many of each unit you want to attack with.</p>
 
         <div class="templatedivflex2 menuflex">
-            <!--FIRST UNIT-->
+
+            {% for r in range(unit_range) %}
             <div class="templatedivflex2left unitcard nopointer">
-                <!--
-                <ul class="bold medium">{{ selected_units[0] }}</ul>
-                <ul>{{ unitamounts[0] }}</ul>
-
-                -->
-
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/submarine.jpg') }}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" value="{{selected_units[0] | capitalize}}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[0]}}" value="{{unitamounts[0]}}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/'+selected_units[r][:-1]+'.jpg') }}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" value="{{selected_units[r] | capitalize}}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[0]}}" />
             </div>
-            <!--SECOND UNIT-->
-            <div class="templatedivflex2left unitcard nopointer">
-                <!--
-                <ul class="bold medium">{{ selected_units[1] }}</ul>
-                <ul>{{ unitamounts[1] }}</ul>
-
-                -->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
-
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" value="{{selected_units[1] | capitalize}}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[1]}}" value="{{unitamounts[1]}}" />
-
-
-            </div>
-            <!--THIRD UNIT-->
-            <div class="templatedivflex2left unitcard nopointer">
-                <!--
-
-                <ul class="bold medium">{{ selected_units[2] }}</ul>
-                <ul>{{ unitamounts[2] }}</ul>
-
-                -->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/destroyer.jpg') }}" />
-
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" value="{{selected_units[2] | capitalize}}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[2]}}" value="{{unitamounts[2]}}" />
-
-            </div>
+            {% endfor %}
         </div>
 
         <div class="progressbarparent progressbarparentlight">
-            <div id="supplycosttext" class="progressbarchildtext">0 / 2000 Supplies</div>
+            <div id="supplycosttext" class="progressbarchildtext">{{available_supplies}} / 2000 Supplies</div>
             <div class="progressbarchild progressbargreen" style="width:20%">
             </div>
         </div>
         <!-- change the progress bar child text based on how much supplies it would cost to send the attack based on the number of units in each thingy-->
 
-        <script>
+        <!-- <script>
             let s = document.querySelector("#supplycosttext");
             s.innerHTML = "8/ 2000"
-        </script>
+        </script> -->
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
