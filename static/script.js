@@ -626,7 +626,7 @@ function submit_special(e) {
     if (document.getElementById(11).checked) {
         special_unit.value = "nukes";
     } else if (document.getElementById(10).checked) {
-        special_unit.value = "icmbs"
+        special_unit.value = "icbms"
     }
 }
 

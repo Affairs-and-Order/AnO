@@ -631,6 +631,7 @@ def warChoose():
         attack_units = Units(cId)
         print("TESTING HERE ATTCK UNITS")
         print(attack_units)
+        print(selected_units)
 
         # Output error if any
         error = attack_units.attach_units(selected_units, unit_amount)
@@ -721,8 +722,8 @@ def warAmount():
                 return error
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
-            return redirect("/warResult")  # warTarget route is skipped
 
+            return redirect("/warResult")  # warTarget route is skipped
         elif len(units_name) == 1:  # this should happen if special
             selected_units[units_name[0]] = int(request.form.get("u1_amount"))
             error = attack_units.attach_units(selected_units, 1)
@@ -1073,9 +1074,9 @@ def find_targets():
 @login_required
 def defense():
     cId = session["user_id"]
-    units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
 
     if request.method == "GET":
+        units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
         return render_template("defense.html", units=units)
 
     elif request.method == "POST":

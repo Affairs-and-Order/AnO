@@ -719,23 +719,18 @@ class Military(Nation):
 
         db = connection.cursor()
 
-        # for unit in particular_units:
-
-        #     # TODO: IMPORTANT: This is SQL injectable change this when move to production
-        # db.execute(f"SELECT {unit} FROM military WHERE id=(%s)", (cId,))
-        #     units[unit] = db.fetchone()[0]
-        # non sql injectable workaround to above commented code:
-
-        # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
+        # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, icbms, nukes, destroyer, cruisers, submarines)]
         db.execute("SELECT * FROM military WHERE id=%s", (cId,))
         allAmounts = db.fetchall()
 
         # get the unit amounts based on the selected_units
         unit_to_amount_dict = {}
-        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','ICBMs','nukes','destroyer','cruisers','submarines']
+
+        # TODO: maybe use the self.allUnits because it looks like repetative code
+        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','icbms','nukes','destroyer','cruisers','submarines']
         for count, item in enumerate(cidunits):
             unit_to_amount_dict[item] = allAmounts[0][count]
-        print(unit_to_amount_dict)
+
         # make a dictionary with 3 keys, listed in the particular_units list
         unit_lst = []
         for unit in particular_units:
