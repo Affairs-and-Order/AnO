@@ -294,41 +294,33 @@
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
                 {% for provinceName, provinceId, population, cities, land in provinces %}
-                <tr>
-                    <div class="templatedivflex2 menuflex">
-                        <div class="templatedivflex2left">
-
-                            <td>
-                                <table class="templatetable inverttable">
-                                    <tr>
-                                        <th><span class="material-icons-outlined">
+                <a href="">
+                    <tr>
+                        <td>
+                            <table class="templatetable inverttable">
+                                <tr>
+                                    <th><span class="material-icons-outlined">
                                             account_balance
                                             </span>{{ provinceName[0] }}</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Population:</td>
-                                        <td>{{ population[0] }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cities:</td>
-                                        <td>{{ cities[0] }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Land:</td>
-                                        <td>{{ land[0] }}</td>
-                                    </tr>
-                                </table>
-                            </td>
+                                </tr>
+                                <tr>
+                                    <td>Population:</td>
+                                    <td>{{ population[0] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Cities:</td>
+                                    <td>{{ cities[0] }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Land:</td>
+                                    <td>{{ land[0] }}</td>
+                                </tr>
+                            </table>
+                        </td>
 
-                        </div>
-                        <div class="templatedivflex2left">
-                            <td class="smallimage"><img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
-                        </div>
-                    </div>
-                </tr>
-                {% endfor %}
-
-            </table>
+                        <td class="smallimage"><img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                    </tr>
+                </a> {% endfor %} </table>
         </div>
         <!--Revenue-->
         <div class="revenue" id="revenue">
@@ -1512,13 +1504,13 @@
             </div>
             </div>
             <form method="POST " action="/transfer/{{ cId }} ">
-            <h2 class="templatecontentheaderleft ">Transfer</h2>
+                <h2 class="templatecontentheaderleft ">Transfer</h2>
 
-            <div class="infodiv ">
-                <div class="templatedivflex2 divflex2center ">
-                    <div class="templatedivflex2left flexchildvanilla ">
+                <div class="infodiv ">
+                    <div class="templatedivflex2 divflex2center ">
+                        <div class="templatedivflex2left flexchildvanilla ">
 
-                        <select name="resource " class="templateselect ">
+                            <select name="resource " class="templateselect ">
 
                         <option disabled="true " selected="selected ">Choose one</option>
 
@@ -1544,19 +1536,19 @@
                         </select>
 
 
+                        </div>
+                        <div class="templatedivflex2left flexchildvanilla ">
+
+                            <input class="loginsignupinput " autocomplete="off " name="amount " placeholder="Amount " required/>
+
+                        </div>
                     </div>
-                    <div class="templatedivflex2left flexchildvanilla ">
 
-                        <input class="loginsignupinput " autocomplete="off " name="amount " placeholder="Amount " required/>
-
-                    </div>
-                </div>
-
-                <button class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
+                    <button class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
                             check
                             </span>Confirm</button>
 
-            </div>
+                </div>
             </form>
         </div>
     </div>
