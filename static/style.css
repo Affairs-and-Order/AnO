@@ -731,13 +731,8 @@
         transition: all 0.4s ease;
         padding-top: 60px;
         padding-bottom: 20px;
-        overflow-y: hidden;
-        overflow-x: hidden;
         color: white;
-    }
-    
-    .resourcedivcontent:hover {
-        overflow-y: auto;
+        overflow-y: scroll;
     }
     
     .resourcedivcontentshow {
@@ -745,7 +740,7 @@
         box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
     }
     
-    .resourcedivcontent p {
+    .resourcetagparent {
         text-align: left;
         padding: 0px 10px;
         margin: 8px 6px;
@@ -756,16 +751,35 @@
         background: #42444e;
         box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
         border-radius: 4px;
-        line-height: 30px;
+        position: relative;
+        height: 40px;
+        line-height: 40px;
+        display: flex;
+        flex-direction: row;
     }
     
-    .resourcedivcontent p:hover {
+    .resourcetagparent:hover {
         background: #515463;
     }
     
     .resourcetag {
-        position: relative;
-        top: -5px;
+        width: fit-content;
+        line-height: 100%;
+    }
+    
+    .resourceinfo {
+        background: #42444e;
+        position: absolute;
+        padding: 5px;
+        left: -210px;
+        float: right;
+        transition: all 0.2s;
+        width: 200px;
+        opacity: 0;
+    }
+    
+    .resourcetagparent:hover .resourceinfo {
+        opacity: 1;
     }
     
     .purchasediv {
