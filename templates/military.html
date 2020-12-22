@@ -45,10 +45,9 @@
 
                         <h3 class="templatecontentheadercenter">You have {{ units["soldiers"] }} Soldiers</h3>
 
-                        <p class="templatecontentpleft">Soldiers are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units</p>
+                        <p class="templatecontentpleft">Soldiers are cheap and expendable. They require munitions to fight at 100% effectiveness, but will go into battle without, at 10% effectiveness. They counter artillery, apaches, and can obtain resource control.</p>
 
-                        <ul>Soldiers cost 50 gold to recruit
-                            <br />
+                        <ul>Soldiers $200 and 2 rations each
                         </ul>
 
                         <form action="/soldiers" method="POST">
@@ -93,10 +92,10 @@
                 <div class="templatedivflex2 menuflex warflexparentcolors">
                     <div class="templatedivflex2left">
 
-                        <h3 class="templatecontentheadercenter">You have {{ units["artillery"] }} Artillery</h3>
+                        <p class="templatecontentpleft">Artillery are expensive, but make it up with their incredible effectiveness against tanks. They can also obtain field control.</p>
 
-                        <p class="templatecontentpleft">Artillery are strong defensive units good at defending your land. They are completely ineffective against all air and water, but and very powerful against other land units (1 artillery / 300 gold)</p>
-
+                        <ul>Artillery 16,000, 12 steel, 3 components
+                        </ul>
                         <form action="/artillery" method="POST">
                             <div class="purchasemilitarydiv">
                                 <input class="loginsignupinput" autocomplete="off" name="artillery" type="number" placeholder="Amount" required />

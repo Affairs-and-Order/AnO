@@ -10,9 +10,8 @@
     </div>
 
     <div class="templatedivcontent">
-
-        <!--duplicate for every country you've spied on in the last 14 days-->
-        <h2 class="templatecontentheaderleft">[[ enemyCountry ]]</h2>
+        <!--If you have no intelligence-->
+        <h2 class="templatecontentheadercenter">No up-to-date intilligence</h2>
 
         {% for dictEntry in spyEntries %}
         <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Military</h2>

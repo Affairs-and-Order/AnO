@@ -1148,6 +1148,7 @@
         color: black;
         animation: templatedivcontentload 0.85s;
         position: relative;
+        font-size: 17px;
     }
     
     .templatecontentheaderleft {
