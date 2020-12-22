@@ -117,7 +117,7 @@ def get_influence(country_id):
     for tuple in iterator:
         resources += tuple[0]
 
-    civilianScore = gold * 0.01 + population * 0.1 + cities * 100000 + provinces * 1000000 + resources * 1
+    civilianScore = gold * 0.01 + population * 0.1 + cities * 100 + provinces * 1000 + resources * 1
 
     # user may want military and civilian scores in a score breakdown later in a stats page
     influence = militaryScore + civilianScore
