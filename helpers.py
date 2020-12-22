@@ -82,7 +82,7 @@ def get_influence(country_id):
     db.execute("SELECT nukes FROM military WHERE id=(%s)", (cId,))
     nukes = db.fetchone()[0]
 
-    militaryScore = tanks * 40 + soldiers * 1 + artillery * 80 + bombers * 100 + fighters * 100 + apaches * 100 + destroyers * 100 + cruisers * 200 + submarines * 100 + spies * 100 + icbms * 300 + nukes * 10000
+    militaryScore = tanks * 0.4 + soldiers * 0.01 + artillery * 0.8 + bombers * 1 + fighters * 1 + apaches * 1 + destroyers * 1 + cruisers * 2 + submarines * 1 + spies * 1 + icbms * 3 + nukes * 10
 
     # civilian score second
     db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
@@ -117,7 +117,7 @@ def get_influence(country_id):
     for tuple in iterator:
         resources += tuple[0]
 
-    civilianScore = gold * 0.01 + population * 0.1 + cities * 100 + provinces * 1000 + resources * 1
+    civilianScore = gold * 0.0001 + population * 0.001 + cities * 10 + provinces * 100 + resources * 0.001
 
     # user may want military and civilian scores in a score breakdown later in a stats page
     influence = militaryScore + civilianScore
