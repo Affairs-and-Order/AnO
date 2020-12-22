@@ -746,20 +746,27 @@
         margin: 8px 6px;
         font-size: 11pt;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.3s;
         width: calc(100% -8px);
         background: #42444e;
         box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
         border-radius: 4px;
         position: relative;
         height: 40px;
-        line-height: 40px;
         display: flex;
         flex-direction: row;
+        transition: all 0.3s;
+        flex-wrap: wrap;
     }
     
     .resourcetagparent:hover {
         background: #515463;
+    }
+    
+    .resourcetagparent:focus {
+        background: #515463;
+        height: auto;
+        outline: none;
     }
     
     .resourcetag {
@@ -768,18 +775,22 @@
     }
     
     .resourceinfo {
-        background: #42444e;
-        position: absolute;
-        padding: 5px;
-        left: -210px;
-        float: right;
-        transition: all 0.2s;
-        width: 200px;
+        transition: all 0s;
+        width: 100%;
+        pointer-events: none;
+        line-height: 30px;
+        text-justify: inter-word;
         opacity: 0;
+        position: relative;
+        top: -10px;
+        padding: 6px;
     }
     
-    .resourcetagparent:hover .resourceinfo {
+    .resourcetagparent:focus .resourceinfo {
+        pointer-events: all;
         opacity: 1;
+        transition: all 0.3s;
+        top: 0;
     }
     
     .purchasediv {

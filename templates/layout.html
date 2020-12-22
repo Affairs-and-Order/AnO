@@ -193,86 +193,100 @@
         <div class="resourcedivcontent" id="resourcedivcontent">
             <!--I WILL REPLACE THE TEXT WITH RESOURCE ICONS SOON - CARSON-->
             {% set resources = get_resource_amount() %}
-            <div class="resourcetagparent">
-                <div class="resourceinfo">This is stuff about money</div>
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
-                <p class="resourcetag">$</p>
                 <p class="resourcetag">{{ resources["money"] }}</p>
+                <div class="resourceinfo">Money is the primary facilitator of trade in Terra.</div>
             </div>
             <br />
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["rations"] }}</p>
+                <div class="resourceinfo">Rations keep your citizens alive, and allows them to reproduce faster.</div>
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["oil"] }}</p>
+                <div class="resourceinfo">Oil can be used to make power, and can be refined into gasoline for fuel.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["coal"] }}</p>
+                <div class="resourceinfo">Coal is a cheap but pollution intensive fuel.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["uranium"] }}</p>
+                <div class="resourceinfo">Uranium (235) is toxic chemical, capable of fueling large nuclear power plants.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["bauxite"] }}</p>
+                <div class="resourceinfo">Bauxite is a valuable mineral when manufactured into aluminium</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["iron"] }}</p>
+                <div class="resourceinfo">Iron is incredibly useful when refined with coke into steel.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["lead"] }}</p>
+                <div class="resourceinfo">Lead is useful for war, as it can be refined into ammunition.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["copper"] }}</p>
+                <div class="resourceinfo">copper can be refined into consumer goods</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["lumber"] }}</p>
+                <div class="resourceinfo">Lumber is a common bulding material.</div>
 
             </div>
             <br />
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/rescomponents.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["components"] }}</p>
+                <div class="resourceinfo">Components are necessary for advanced war machines and country upgrades.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/ressteel.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["steel"] }}</p>
+                <div class="resourceinfo">Steel is invaluable for building infrastructure, military machines, and upgrades.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resconsumer_goods.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["consumer_goods"] }}</p>
+                <div class="resourceinfo">Consumer goods are advanced manufactured goods that can drastically increase tax income.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resaluminium.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["aluminium"] }}</p>
+                <div class="resourceinfo">Aluminium is a useful material for infrastructure, military, and upgrades.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resgasoline.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["gasoline"] }}</p>
+                <div class="resourceinfo">Gasoline is necessary to mantian a functioning military in war, fueling all types of vehicles.</div>
 
             </div>
-            <div class="resourcetagparent">
+            <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resammunition.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["ammunition"] }}</p>
+                <div class="resourceinfo">Ammunition allows for both your soldiers be be more effective, and for your military machines to fight in war.</div>
 
             </div>
         </div>

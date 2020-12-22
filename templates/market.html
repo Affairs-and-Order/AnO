@@ -96,8 +96,7 @@
                     <th>Purchase</th>
                 </tr>
 
-                {% for id, type, name, resource, amount, price, offer_id, total_price in offers %}
-                {% if id != cId %}
+                {% for id, type, name, resource, amount, price, offer_id, total_price in offers %} {% if id != cId %}
                 <tr>
                     <td><a href="/country/id={{ id }}">{{ name }}</a></td>
                     <!--Buying or Selling-->
@@ -120,7 +119,7 @@
                     <td>
                         <div class="center fit">
                             <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
-                                />${{ total_price }} Total</div>
+                                />{{ total_price }} Total</div>
                         </div>
                     </td>
                     <td>
@@ -143,8 +142,7 @@
                     </td>
                     <!-- add button here -->
                 </tr>
-                {% endif %}
-                {% endfor %}
+                {% endif %} {% endfor %}
             </table>
         </div>
     </div>
