@@ -148,10 +148,8 @@ def wars():
             war_attacker_defender_ids = []
             war_info = {}
 
-
-        # print(war_info.keys())
         try:
-            db.execute("SELECT COUNT(attacker) FROM wars WHERE defender=%s OR attacker=%s AND peace_date IS NULL", (cId, cId))
+            db.execute("SELECT COUNT(attacker) FROM wars WHERE (defender=%s OR attacker=%s) AND peace_date IS NULL", (cId, cId))
             warsCount = db.fetchone()[0]
         except:
             warsCount = 0
