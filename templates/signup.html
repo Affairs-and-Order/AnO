@@ -3,10 +3,12 @@
 <img class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
 <script>
     //Code for image slider in signup page
+
     var slideIndex = 1;
 
     function plusSlides(n) {
         showSlides(slideIndex += n);
+        document.getElementById("imagesliderresult").value = slideIndex;
     }
 
     function showSlides(n) {
@@ -316,6 +318,9 @@
                 </div>
             </div>
         </div>
+
+        <!--output for what biome user selects (goes from 1-7)-->
+        <input class="loginsignupinput" id="imagesliderresult" value="1" />
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
