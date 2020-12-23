@@ -680,9 +680,6 @@ def warAmount():
         connection.close()
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
-        print(attack_units.selected_units_list, unitamounts, "LABEL")
-        print("IMPORT", attack_units.__dict__)
-
         # TODO: rename *.jpg file related to units because not load in (or create a list of image name with the corresponding unit)
         return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, unit_range=len(unitamounts), unitamounts=unitamounts)
 
@@ -711,23 +708,31 @@ def warAmount():
                 except:
                     return error(400, "Unit amount entered was not a number") # maybe add javascript checks for this also in the front end
 
-            # Check every time when user input comes in lest user bypass input validation
+            # Check if user send at least 1 amount from a specific unit type
+            if not sum(selected_units.values()):
+                return error(400, "Can't attack because you haven't sent any unit")
+
+            # Check every time when user input comes in, lest the user bypass input validation
             # Error code if any else return None
-            error = attack_units.attach_units(selected_units, 3)
+            err_valid = attack_units.attach_units(selected_units, 3)
             session["attack_units"] = attack_units.__dict__
-            if error:
-                return error
+            if err_valid:
+                return err_valid
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
 
             return redirect("/warResult")  # warTarget route is skipped
 
         elif len(units_name) == 1:  # this should happen if special
-            selected_units[units_name[0]] = int(request.form.get("u1_amount"))
-            error = attack_units.attach_units(selected_units, 1)
+            amount = int(request.form.get(units_name[0]))
+            if not amount:
+                return error(400, "Can't attack because you haven't sent any unit")
+
+            selected_units[units_name[0]] = amount
+            err_valid = attack_units.attach_units(selected_units, 1)
             session["attack_units"] = attack_units.__dict__
-            if error:
-                return error
+            if err_valid:
+                return err_valid
 
             return redirect("/wartarget")
 
