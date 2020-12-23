@@ -12,7 +12,7 @@ def calculate_bonuses(attack_effects, enemy_object, target): # int, Units, str -
     enemy_units_total_amount = sum(enemy_object.selected_units.values())
 
     # the affected percentage from sum of units
-    unit_of_army = (defending_unit_amount*100)/enemy_units_total_amount
+    unit_of_army = (defending_unit_amount*100)/(enemy_units_total_amount+1)
 
     # the bonus calculated based on affected percentage
     affected_bonus = attack_effects[1]*(unit_of_army/100)
@@ -165,6 +165,10 @@ class Nation:
         self.losses = 0
 
     def declare_war(self, target_nation):
+        pass
+
+    # Function for sending posts to nation's news page
+    def news_signal(message):
         pass
 
     def get_provinces(self):
@@ -423,7 +427,8 @@ class Military(Nation):
 
     # Update the morale and give back the win type name
     @staticmethod
-    def morale_change(war_id, morale, column, win_type, winner, loser):
+    # def morale_change(war_id, morale, column, win_type, winner, loser):
+    def morale_change(column, win_type, winner, loser):
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -434,7 +439,7 @@ class Military(Nation):
 
         db = connection.cursor()
 
-        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s))", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
+        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s))", (winner.user_id, loser.user_id, winner.user_id, loser.user_id))
         war_id = db.fetchall()[-1][0]
 
         war_column_stat = f"SELECT {column} FROM wars " + "WHERE id=(%s)"
@@ -476,7 +481,7 @@ class Military(Nation):
 
             print("THE WAR IS OVER")
 
-            db.execute(f"UPDATE wars SET {column}=(%s) WHERE id=(%s)", (morale, war_id))
+        db.execute(f"UPDATE wars SET {column}=(%s) WHERE id=(%s)", (morale, war_id))
 
         connection.commit()
         connection.close()
@@ -519,8 +524,6 @@ class Military(Nation):
             db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
             province_id_fetch = db.fetchall()
 
-            random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
-
             # decrease special unit amount after attack
             # TODO: check if too much special_unit amount is selected
             # TODO: decreate only the selected amount when attacker (ex. db 100 soldiers, attack with 20, don't decreate from 100)
@@ -531,9 +534,15 @@ class Military(Nation):
 
             connection.commit()
 
-            # If nuke damage public_works
-            public_works = Nation.get_public_works(random_province)
-            infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            # TODO: NEED PROPER ERROR HANDLING FOR THIS INFRA DAMAGE ex. when user doesn't have province the can't damage it (it throws error)
+            if len(province_id_fetch) > 0:
+                random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
+
+                # If nuke damage public_works
+                public_works = Nation.get_public_works(random_province)
+                infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            else:
+                infra_damage_effects = 0
 
             # {target: losed_amount} <- the target and the destroyed amount
             return ({target: before_casulaties-list(dict(defender.selected_units).values())[0]}, infra_damage_effects)
@@ -614,6 +623,9 @@ class Military(Nation):
 
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
+
+        print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
+        print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
@@ -707,21 +719,18 @@ class Military(Nation):
 
         db = connection.cursor()
 
-        # for unit in particular_units:
+        # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, icbms, nukes, destroyer, cruisers, submarines)]
+        db.execute("SELECT * FROM military WHERE id=%s", (cId,))
+        allAmounts = db.fetchall()
 
-        #     # TODO: IMPORTANT: This is SQL injectable change this when move to production
-        # db.execute(f"SELECT {unit} FROM military WHERE id=(%s)", (cId,))
-        #     units[unit] = db.fetchone()[0]
-        # non sql injectable workaround to above commented code:
-
-        # this data come in the format [(cId, soldiers, artillery, tanks, bombers, fighters, apaches, spies, ICBMs, nukes, destroyer, cruisers, submarines)]
-        allAmounts = db.execute("SELECT * FROM military WHERE id=%s", (cId,)).fetchall()
         # get the unit amounts based on the selected_units
         unit_to_amount_dict = {}
-        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','ICBMs','nukes','destroyer','cruisers','submarines']
+
+        # TODO: maybe use the self.allUnits because it looks like repetative code
+        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','icbms','nukes','destroyer','cruisers','submarines']
         for count, item in enumerate(cidunits):
             unit_to_amount_dict[item] = allAmounts[0][count]
-        print(unit_to_amount_dict)
+
         # make a dictionary with 3 keys, listed in the particular_units list
         unit_lst = []
         for unit in particular_units:

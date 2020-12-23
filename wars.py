@@ -283,7 +283,6 @@ def wars():
 @login_required
 def peace_offers():
     cId = session["user_id"]
-    # cId = 11
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -298,97 +297,95 @@ def peace_offers():
     db.execute("SELECT peace_offer_id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (cId, cId))
     peace_offers = db.fetchall()
     offers = {}
+    incoming_counter=0
+    outgoing_counter=0
 
     incoming={}
     outgoing={}
 
-    # try:
-    print(peace_offers)
-    if peace_offers:
+    try:
+        if peace_offers:
 
-        for offer in peace_offers:
-            offer_id = offer[0]
-            if offer_id != None:
+            for offer in peace_offers:
+                offer_id = offer[0]
+                if offer_id != None:
 
-                # Every offer has a different subset
-                # offers[offer_id] = {}
+                    # Every offer has a different subset
+                    # offers[offer_id] = {}
 
-                db.execute("SELECT demanded_resources FROM peace WHERE id=(%s)", (offer_id,))
-                resources_fetch = db.fetchone()
-                db.execute("SELECT author FROM peace WHERE id=(%s)", (offer_id,))
-                author_id = db.fetchone()[0]
-                if author_id == cId:
-                    offer = outgoing
-                else:
-                    offer = incoming
-
-                print(offer)
-
-                offer[offer_id] = {}
-
-                if resources_fetch:
-                    resources = resources_fetch[0]
-                    if resources:
-                        db.execute("SELECT demanded_amount FROM peace WHERE id=(%s)", (offer_id,))
-                        amounts = db.fetchone()[0].split(",")
-                        resources = resources.split(",")
-
-                        print(offer)
-                        offer[offer_id]["resource_count"] = len(resources)
-                        offer[offer_id]["resources"] = resources
-                        offer[offer_id]["amounts"] = amounts
-
-                        if cId == author_id:
-                            offer[offer_id]["owned"] = 1
-
-                    # TODO: make peace at post when clicked
-                    # white peace
-                    else:
-                        offer[offer_id]["peace_type"] = "white"
-
+                    db.execute("SELECT demanded_resources FROM peace WHERE id=(%s)", (offer_id,))
+                    resources_fetch = db.fetchone()
                     db.execute("SELECT author FROM peace WHERE id=(%s)", (offer_id,))
-                    # author_id = db.fetchone()[0]
-                    db.execute("SELECT username FROM users WHERE id=(%s)", (author_id,))
-                    offer[offer_id]["author"] = [author_id, db.fetchone()[0]]
-
-                    db.execute("SELECT attacker,defender FROM wars WHERE peace_offer_id=(%s)", (offer_id,))
-                    ids=db.fetchone()
-                    if ids[0] == author_id:
-                        db.execute("SELECT username FROM users WHERE id=(%s)", (ids[1],))
-                        receiver_name = db.fetchone()[0]
+                    author_id = db.fetchone()[0]
+                    if author_id == cId:
+                        offer = outgoing
+                        outgoing_counter+=1
                     else:
-                        db.execute("SELECT username FROM users WHERE id=(%s)", (ids[0],))
-                        receiver_name = db.fetchone()[0]
+                        offer = incoming
+                        incoming_counter+=1
 
-                    offer[offer_id]["receiver"] = receiver_name
+                    offer[offer_id] = {}
 
-    # except:
-        # return "Something went wrong."
+                    if resources_fetch:
+                        resources = resources_fetch[0]
+                        if resources:
+                            db.execute("SELECT demanded_amount FROM peace WHERE id=(%s)", (offer_id,))
+                            amounts = db.fetchone()[0].split(",")
+                            resources = resources.split(",")
+
+                            offer[offer_id]["resource_count"] = len(resources)
+                            offer[offer_id]["resources"] = resources
+                            offer[offer_id]["amounts"] = amounts
+
+                            if cId == author_id:
+                                offer[offer_id]["owned"] = 1
+
+                        # TODO: make peace at post when clicked
+                        # white peace
+                        else:
+                            offer[offer_id]["peace_type"] = "white"
+
+                        db.execute("SELECT author FROM peace WHERE id=(%s)", (offer_id,))
+                        # author_id = db.fetchone()[0]
+                        db.execute("SELECT username FROM users WHERE id=(%s)", (author_id,))
+                        offer[offer_id]["author"] = [author_id, db.fetchone()[0]]
+
+                        db.execute("SELECT attacker,defender FROM wars WHERE peace_offer_id=(%s)", (offer_id,))
+                        ids=db.fetchone()
+                        if ids[0] == author_id:
+                            db.execute("SELECT username FROM users WHERE id=(%s)", (ids[1],))
+                            receiver_name = db.fetchone()[0]
+                        else:
+                            db.execute("SELECT username FROM users WHERE id=(%s)", (ids[0],))
+                            receiver_name = db.fetchone()[0]
+
+                        offer[offer_id]["receiver"] = receiver_name
+    except:
+        return "Something went wrong."
 
     if request.method == "POST":
 
         offer_id = request.form.get("peace_offer", None)
 
         # Validate inputs
+        # try:
+        offer_id = int(offer_id)
+
+        # Make sure that others can't accept,delete,etc. the peace offer other than the participants
+        db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_offer_id=(%s) AND peace_date IS NULL", (cId, cId, offer_id))
+        check_validity = db.fetchone()[0]
+
         try:
-            offer_id = int(offer_id)
-
-            # Make sure that others can't accept,delete,etc. the peace offer other than the participants
-            db.execute("SELECT id FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_offer_id=(%s) AND peace_date IS NULL", (cId, cId, offer_id))
-            check_validity = db.fetchone()[0]
-
-            if len(check_validity) != 1:
-                raise TypeError
-
+            int(check_validity)
         except:
-            return "Peace offer is invalid!"
+            raise TypeError
 
         decision = request.form.get("decision", None)
 
         # Offer rejected or revoked
         if decision == "0":
-            db.execute("DELETE FROM peace WHERE id=(%s)", (offer_id,))
             db.execute("UPDATE wars SET peace_offer_id=NULL WHERE peace_offer_id=(%s)", (offer_id,))
+            db.execute("DELETE FROM peace WHERE id=(%s)", (offer_id,))
             connection.commit()
 
         elif author_id != cId:
@@ -422,7 +419,10 @@ def peace_offers():
         return redirect("/peace_offers")
 
     # TODO: put a button to revoke the peace offer made by the author
-    return render_template("peace/peace_offers.html", cId=cId, incoming_peace_offers=incoming, outgoing_peace_offers=outgoing)
+    return render_template(
+    "peace/peace_offers.html", cId=cId,
+    incoming_peace_offers=incoming, outgoing_peace_offers=outgoing,
+    incoming_counter=incoming_counter, outgoing_counter=outgoing_counter)
 
 @app.route("/send_peace_offer/<int:war_id>/<int:enemy_id>", methods=["POST"])
 @login_required
@@ -461,9 +461,6 @@ def send_peace_offer(war_id, enemy_id):
         resources_string = ""
         amount_string = ""
 
-        print("resources", resources)
-        print("amount", resources_amount)
-
         if len(resources) and len(resources_amount):
             for res, amo in zip(resources, resources_amount):
                 if res not in Economy.resources:
@@ -473,15 +470,13 @@ def send_peace_offer(war_id, enemy_id):
                 amount_string+=str(amo)+","
 
             # TODO: Made peace offer where can offer to give resources and not just demand
-            # Delete other offer if new is sent
             # if enemy_id == None:
             #     return "Selected target is invalid!"
 
             db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
             peace_offer_id = db.fetchone()[0]
 
-            # MIERT DELETELJUK, inkabb siman updateld es akkor a lastrowid sem kell
-            print("peace_offer_id", peace_offer_id, "war id", war_id)
+            # Only one peace offer could be attached to one war
             if not peace_offer_id:
                 db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((%s),(%s),(%s))", (cId, resources_string[:-1], amount_string[:-1]))
                 db.execute("SELECT CURRVAL('peace_id_seq')")
@@ -489,6 +484,7 @@ def send_peace_offer(war_id, enemy_id):
                 print("lastrow", lastrowid)
                 db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (lastrowid, war_id))
 
+            # If peace offer is already associated with war then just update it
             else:
                 db.execute("UPDATE peace SET author=(%s),demanded_resources=(%s),demanded_amount=(%s)", (cId, resources_string[:-1], amount_string[:-1]))
 
@@ -593,7 +589,6 @@ def war_with_id(war_id):
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance, peace_to_send=enemy_id)
 
-
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
 # page 1: where you can select what units to attack with
@@ -602,7 +597,6 @@ def war_with_id(war_id):
 @check_required
 def warChoose():
     cId = session["user_id"]
-    # cId = 11
 
     if request.method == "GET":
 
@@ -635,14 +629,25 @@ def warChoose():
             unit_amount = 3
 
         attack_units = Units(cId)
+        print("TESTING HERE ATTCK UNITS")
+        print(attack_units)
+        print(selected_units)
 
         # Output error if any
         error = attack_units.attach_units(selected_units, unit_amount)
         if error:
             return error
 
+        # BEFORE DEBUG:
         # cache Unit object reference in session
-        session["attack_units"] = attack_units
+        # session["attack_units"] = attack_units
+        # return redirect("/waramount")
+
+        # DURING DEBUG:
+        session["attack_units"] = attack_units.__dict__
+        print("DICT", attack_units.__dict__)
+
+        # return redirect("/warchoose")
         return redirect("/waramount")
 
 # page 2 choose how many of each of your units to send
@@ -651,7 +656,8 @@ def warChoose():
 @check_required
 def warAmount():
     cId = session["user_id"]
-    # cId = 11
+
+    attack_units = Units.rebuild_from_dict(session["attack_units"])
 
     if request.method == "GET":
 
@@ -663,7 +669,6 @@ def warAmount():
             port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
-        attack_units = session["attack_units"]
 
         # grab supplies amount
         # if the user is the attacker in the war
@@ -672,53 +677,60 @@ def warAmount():
         # supplies = db.fetchone()[0]
 
         # find the max amount of units of each of those 3 the user can attack with to send to the waramount page on first load
-
         unitamounts = Military.get_particular_units_list(cId, attack_units.selected_units_list)
+
         # turn this dictionary into a list of its values
         connection.commit()
         db.close()
         connection.close()
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
+        print(attack_units.selected_units_list, unitamounts, "LABEL")
+        print("IMPORT", attack_units.__dict__)
 
-        return render_template("waramount.html", selected_units=attack_units.selected_units_list, unitamounts=unitamounts)
+        # TODO: rename *.jpg file related to units because not load in (or create a list of image name with the corresponding unit)
+        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, unit_range=len(unitamounts), unitamounts=unitamounts)
 
     elif request.method == "POST":
 
         # Separate object's units list from new units list
-        attack_units = session["attack_units"]
         selected_units = attack_units.selected_units_list
 
         # this is in the form of a dictionary
-        selected_units = session["attack_units"].selected_units.copy()
+        selected_units = attack_units.selected_units.copy()
 
         # 3 units list
         units_name = list(selected_units.keys())
+        incoming_unit = list(request.form)
 
         # check if its 3 regular units or 1 special unit (missile or nuke)
-        if len(units_name) == 3:  # this should happen if 3 regular units
-            for number in range(1, 4):
-                unit_amount = request.form.get(f"u{number}_amount")
-                print(unit_amount)
-                if not unit_amount:
-                    flash("Invalid name argument coming in")
+        if len(units_name) == 3 and len(incoming_unit) == 3:  # this should happen if 3 regular units
+            for unit in incoming_unit:
+                if unit not in Military.allUnits:
+                    return "Invalid unit!"
+
+                unit_amount = request.form[unit]
+
                 try:
-                    selected_units[units_name[number-1]] = int(unit_amount)
+                    selected_units[unit] = int(unit_amount)
                 except:
-                    return error(400, "Unit amount entered was not a number") # add javascript checks for this also in the front end
+                    return error(400, "Unit amount entered was not a number") # maybe add javascript checks for this also in the front end
 
             # Check every time when user input comes in lest user bypass input validation
             # Error code if any else return None
-            error = session["attack_units"].attach_units(selected_units, 3)
+            error = attack_units.attach_units(selected_units, 3)
+            session["attack_units"] = attack_units.__dict__
             if error:
                 return error
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
+
             return redirect("/warResult")  # warTarget route is skipped
 
         elif len(units_name) == 1:  # this should happen if special
             selected_units[units_name[0]] = int(request.form.get("u1_amount"))
-            error = session["attack_units"].attach_units(selected_units, 1)
+            error = attack_units.attach_units(selected_units, 1)
+            session["attack_units"] = attack_units.__dict__
             if error:
                 return error
 
@@ -726,7 +738,6 @@ def warAmount():
 
         else:  # lets just leave this here if something dumb happens, then we can fix it!
             return ("everything just broke")
-
 
 # This route is only for ICMB or nuke attacks
 @app.route("/wartarget", methods=["GET", "POST"])
@@ -769,7 +780,9 @@ def warTarget():
         # Skip attach_units because no need for validation for target_amount since the data coming directly from the db without user affection
         # only validate is targeted_unit is valid
         defender = Units(eId, {target: target_amount[0]}, selected_units_list=[target])
-        session["from_wartarget"] = Military.special_fight(session["attack_units"], defender, defender.selected_units_list[0])
+        attack_units = Units.rebuild_from_dict(session["attack_units"])
+        # session["from_wartarget"] = Military.special_fight(session["attack_units"], defender, defender.selected_units_list[0])
+        session["from_wartarget"] = Military.special_fight(attack_units, defender, defender.selected_units_list[0])
 
         return redirect("warResult")
 
@@ -787,7 +800,8 @@ def warResult():
     # session["user_id"] = 11
     # DEBUG DATA END!
 
-    attacker = session["attack_units"]
+    # attacker = session["attack_units"]
+    attacker = Units.rebuild_from_dict(session["attack_units"])
 
     # grab defending enemy units from database
     eId = session["enemy_id"]
@@ -829,10 +843,12 @@ def warResult():
         defenseunits = {}
 
         for unit in defenselst:
-            defenseunits[unit] = db.execute(f"SELECT {unit} FROM military WHERE id={eId}").fetchone()[0]
+            db.execute(f"SELECT {unit} FROM military WHERE id=(%s)", (eId,))
+            defenseunits[unit] = db.fetchone()[0]
 
+        print("DEFENSE UNITS", defenseunits)
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
-        attacker = session["attack_units"]
+        # attacker = session["attack_units"]
 
         # Save the stats before the fight which used to calculate the lost amount from unit
         prev_defender = dict(defender.selected_units)
@@ -850,13 +866,8 @@ def warResult():
             host=os.getenv("PG_HOST"),
             port=os.getenv("PG_PORT"))
 
+        # TODO: error because there isn't even one province make error handler
         db = connection.cursor()
-        db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
-        province_id_fetch = db.fetchall()
-        random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
-
-        # Currently units only affect public works
-        public_works = Nation.get_public_works(random_province)
 
         # TODO: enforce war type like raze,etc.
         # example for the above line: if war_type is raze then attack_effects[0]*10
@@ -867,9 +878,10 @@ def warResult():
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
         db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
-        war_type = db.fetchall()[-1]
+        war_type = db.fetchall()[-1][0]
 
         print(attack_effects, "BEFORE WARTYPE EFFECTS")
+        print(war_type)
 
         if len(war_type) > 0:
             if war_type == "Raze":
@@ -890,15 +902,22 @@ def warResult():
         else:
             print("INVALID USER IDs")
 
-        print(attack_effects, "AFTER WARTYPE")
+        db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
+        province_id_fetch = db.fetchall()
+        if len(province_id_fetch) > 0:
+            random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
 
-        infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+            # Currently units only affect public works
+            public_works = Nation.get_public_works(random_province)
+            infra_damage_effects = Military.infrastructure_damage(attack_effects[0], public_works, random_province)
+        else:
+            infra_damage_effects = {}
+
         defender_result["infra_damage"] = infra_damage_effects
 
         if winner == defender.user_id:
             winner = defender_name
         else: winner = attacker_name
-
 
         defender_loss = {}
         attacker_loss = {}
@@ -927,6 +946,7 @@ def warResult():
 
     # save method only function for the attacker now, and maybe we won't change that
     # saves the decreased supply amount
+    print(attacker.__dict__, "DEBUG")
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
@@ -1053,17 +1073,13 @@ def find_targets():
     #     else:
     #         return error(400, "No such country")
 
-
-# if everything went through, remove the cost of supplies from the amount of supplies the country has.
-
-
 @app.route("/defense", methods=["GET", "POST"])
 @login_required
 def defense():
     cId = session["user_id"]
-    units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
 
     if request.method == "GET":
+        units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
         return render_template("defense.html", units=units)
 
     elif request.method == "POST":
@@ -1076,35 +1092,23 @@ def defense():
             port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
-        db.execute("SELECT * FROM nation WHERE nation_id=(%s)", (cId,))
-        nation = db.fetchone()
+        defense_units = list(request.form.values())
+        # defense_units = ["soldier", "tank", "apache"]
 
-        # Defense units came from POST request (TODO: attach it to the frontend)
-        defense_units = ["soldier", "tank", "apache"]
-        # defense_units = [request.form.get(u1), request.form.get(u2), request.form.get(u3)]
-        # Default defense
-        # nation_id = nation[1]
-        # default_defense = nation[2]
+        for item in defense_units:
+            if item not in Military.allUnits:
+                return error(400, "Invalid unit types!")
 
-        if nation:
-            for item in defense_units:
-                if item not in Military.allUnits:
-                    return error(400, "Invalid unit types!")
-            if len(defense_units) == 3:
-                # default_defense is stored in the db: "unit1,unit2,unit3"
-                defense_units = ",".join(defense_units)
-                db.execute("UPDATE nation SET default_defense=(%s) WHERE nation_id=(%s)", (defense_units, nation[1]))
+        if len(defense_units) == 3:
+            # default_defense is stored in the db: "unit1,unit2,unit3"
+            defense_units = ",".join(defense_units)
+            db.execute("UPDATE military SET default_defense=(%s) WHERE id=(%s)", (defense_units, cId))
 
-                connection.commit()
-            else:
-                return error(400, "Invalid number of units selected!")
+            connection.commit()
         else:
-            return error(404, "Nation is not created!")
+            return error(400, "Invalid number of units selected!")
 
         # should be a back button on this page to go back to wars so dw about some infinite loop
-        # next we need to insert the 3 defending units set as a value to the nation"s table property (one in each war): defense
-        # db.execute("INSERT INTO wars (attacker, defender) VALUES (%s, %s)", (cId, defender_id))
-
         connection.close()
 
         return render_template("defense.html", units=units)

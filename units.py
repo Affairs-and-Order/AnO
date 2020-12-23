@@ -231,7 +231,7 @@ class SubmarineUnit(BlueprintUnit):
 # Special units attack method handeled differently (not using the fight method)
 class IcbmUnit(BlueprintUnit):
 
-    unit_type = "icbm"
+    unit_type = "icbms"
     damage = 1000
     supply_cost = 400
 
@@ -307,12 +307,34 @@ class Units(Military):
         # a list of selected_units keys
         self.selected_units_list = selected_units_list
 
+    # this is needed because we can't store object in server side cache :(
+    @classmethod
+    def rebuild_from_dict(cls, dict):
+        sort_out = ["supply_costs", "available_supplies"]
+        store_sort_values = []
+        for it in sort_out:
+            temp = dict.get(it, None)
+            if temp != None:
+                store_sort_values.append(dict[it])
+                dict.pop(it)
+
+        try:
+            reb = cls(**dict)
+        except:
+            print("ERROR BECAUSE REB CAN't be created")
+            raise TypeError
+
+        for sort, value in zip(sort_out, store_sort_values):
+            setattr(reb, sort, value)
+
+        return reb
+
     # Validate then attach units
     # Function parameter description:
     #    - selected_units read the Units class document above
     #    - units_count how many selected_units should be given (will be validated)
     #        example: units_count = 3 when 3 different unit_type should be selected (like from warchoose)
-    #        example: units_count = 1 when 1 unit_type sould be selected (like a special unit: nuke, icmb)
+    #        example: units_count = 1 when 1 unit_type sould be selected (like a special unit: nukes, icbms)
     def attach_units(self, selected_units: dict, units_count: int) -> Union[str, None]:
         unit_types = list(selected_units.keys())
         normal_units = self.get_military(self.user_id)
@@ -384,7 +406,7 @@ class Units(Military):
             return "Units are not attached!"
 
     def save(self):
-            
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -393,8 +415,8 @@ class Units(Military):
             port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
-    
-        for save_type in self.save_for:    
+
+        for save_type in self.save_for:
             # Save casualties
             if save_type == "casualties":
                 # The casualties method sets a suffered_casualties
@@ -407,18 +429,18 @@ class Units(Military):
                     mil_update = f"UPDATE military SET {unit_type}" + "=(%s) WHERE id=(%s)"
                     db.execute(mil_update, (available_unit_amount-amount, self.user_id))
 
-    
+
             # Save supplies
             elif save_type == "supplies":
                 pass
-    
+
         connection.commit()
 
     # Save casualties to the db and check for casualty validity
     # NOTE: to save the data to the db later on put it to the save method
     # unit_type -> name of the unit type, amount -> used to decreate by it
     def casualties(self, unit_type: str, amount: int) -> None:
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -448,7 +470,7 @@ class Units(Military):
         connection.commit()
 
     def save(self):
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -495,7 +517,7 @@ class Units(Military):
         print("COST", cost)
 
         if self.available_supplies == None:
-            
+
             connection = psycopg2.connect(
                 database=os.getenv("PG_DATABASE"),
                 user=os.getenv("PG_USER"),
@@ -508,6 +530,7 @@ class Units(Military):
             print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
             db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
             attacker_id = db.fetchone()
+            print(attacker_id)
 
             # If the user is the attacker (maybe optimize this to store the user role in the war)
             if attacker_id:

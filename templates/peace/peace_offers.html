@@ -10,7 +10,7 @@
 
     <div class="templatedivcontent">
         <!--if no offers-->
-        <h2 class="templatecontentheadercenter">You have 0 outgoing offers</h2>
+        <h2 class="templatecontentheadercenter">You have {{outgoing_counter}} outgoing offers</h2>
         <!--if there are offers-->
         <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
 
@@ -36,16 +36,19 @@
                             </div>
                         </div>
                     </td>
-                    <td><span class="material-icons iconred">
-                      highlight_off
-                      </span></td>
+                    <td>
+                      <form class="material-icons iconred" method="post" class="material-icons iconred" onclick="event.target.submit();">highlight_off
+                        <input type="hidden" name="peace_offer" value="{{key}}">
+                        <input type="hidden" name="decision" value="0">
+                      </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
 
         <!--if no offers-->
-        <h2 class="templatecontentheadercenter">You have 0 incoming offers</h2>
+        <h2 class="templatecontentheadercenter">You have {{incoming_counter}} incoming offers</h2>
         <!--if there are offers-->
         <h2 class="templatecontentheaderleft">Incoming Offers</h2>
 
@@ -71,9 +74,12 @@
                             </div>
                         </div>
                     </td>
-                    <td><span class="material-icons iconred">
-                      check_circle_outline
-                      </span></td>
+                    <td>
+                      <form method="post" class="material-icons iconred" onclick="event.target.submit();">check_circle_outline
+                        <input type="hidden" name="peace_offer" value="{{key}}">
+                        <input type="hidden" name="decision" value="1">
+                      </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </table>
