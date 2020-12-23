@@ -174,9 +174,6 @@ def discord_register():
 
             session["user_id"] = user_id
 
-            if continent == None:
-                continent = "europe"
-
             db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user_id, continent))  # TODO Change the default location
             db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
             db.execute("INSERT INTO resources (id) VALUES (%s)", (user_id,))
@@ -219,13 +216,6 @@ def signup():
 
         # Creates a cursor to the database
         db = connection.cursor()
-
-        captcha_response = request.form.get("g-recaptcha-response")
-        print(captcha_response)
-        captcha_success = verify_captcha(captcha_response)
-
-        if not captcha_success:
-            return error(400, "Wait for the API to come out ;)")
 
         # Gets user's form inputs
         username = request.form.get("username")
