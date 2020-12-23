@@ -587,16 +587,19 @@ class Military(Nation):
     blockade: enemy can no longer trade
     air control: enemy bomber power reduced by 60%'''
 
+
     @staticmethod
     # attacker, defender means the attacker and the defender user JUST in this particular fight not in the whole war
     def fight(attacker, defender): # Units, Units -> int
 
-        attacker_roll = random.uniform(0, 1)
+        # IMPORTANT: Here you can change the values for the fight chances, bonuses and even can controll casualties (in this whole funciton)
+        # If you want to change the bonuses given by a particular unit then go to `units.py` and you can find those in the classes
+        attacker_roll = random.uniform(1, 2)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
         attacker_bonus = 0
 
-        defender_roll = random.uniform(0,1)
+        defender_roll = random.uniform(1, 2)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
@@ -628,9 +631,9 @@ class Military(Nation):
 
         # If there are not attackers or defenders
         if defender_unit_amount_bonuses == 0:
-            defender_chance = 0
+            defender_chance = 0.001
         elif attacker_unit_amount_bonuses == 0:
-            attacker_chance = 0
+            attacker_chance = 0.001
 
         print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
         print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
