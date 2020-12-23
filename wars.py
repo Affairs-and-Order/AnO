@@ -411,13 +411,14 @@ def peace_offers():
                 Nation.set_peace(db, connection, None, {"option": "peace_offer_id", "value": offer_id})
 
             else:
-                return "No decision was made."
+                return error(400, "No decision was made.")
 
         else:
             return error(403, "You can't accept your own offer.")
 
         return redirect("/peace_offers")
 
+    print(outgoing)
     # TODO: put a button to revoke the peace offer made by the author
     return render_template(
     "peace/peace_offers.html", cId=cId,
@@ -469,32 +470,28 @@ def send_peace_offer(war_id, enemy_id):
                 resources_string+=res+","
                 amount_string+=str(amo)+","
 
-            # TODO: Made peace offer where can offer to give resources and not just demand
-            # if enemy_id == None:
-            #     return "Selected target is invalid!"
+        # TODO: Made peace offer where can offer to give resources and not just demand
+        # if enemy_id == None:
+        #     return "Selected target is invalid!"
 
-            db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
-            peace_offer_id = db.fetchone()[0]
+        db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
+        peace_offer_id = db.fetchone()[0]
 
-            # Only one peace offer could be attached to one war
-            if not peace_offer_id:
-                db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((%s),(%s),(%s))", (cId, resources_string[:-1], amount_string[:-1]))
-                db.execute("SELECT CURRVAL('peace_id_seq')")
-                lastrowid = db.fetchone()[0]
-                print("lastrow", lastrowid)
-                db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (lastrowid, war_id))
+        # Only one peace offer could be attached to one war
+        if not peace_offer_id:
+            db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((%s),(%s),(%s))", (cId, resources_string[:-1], amount_string[:-1]))
+            db.execute("SELECT CURRVAL('peace_id_seq')")
+            lastrowid = db.fetchone()[0]
+            print("lastrow", lastrowid)
+            db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (lastrowid, war_id))
 
-            # If peace offer is already associated with war then just update it
-            else:
-                db.execute("UPDATE peace SET author=(%s),demanded_resources=(%s),demanded_amount=(%s)", (cId, resources_string[:-1], amount_string[:-1]))
+        # If peace offer is already associated with war then just update it
+        else:
+            db.execute("UPDATE peace SET author=(%s),demanded_resources=(%s),demanded_amount=(%s)", (cId, resources_string[:-1], amount_string[:-1]))
 
-            connection.commit()
+        connection.commit()
 
         # Send white peace (won't lose or gain anything)
-        else:
-            raise TypeError
-        # except:
-        #     return "ERROR"
 
         return redirect("/peace_offers")
 

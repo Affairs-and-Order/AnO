@@ -28,11 +28,15 @@
                     <td>
                         <div class="center fit">
                             <div class="left fit">
+                                {% if value["peace_type"] == "white" %}
+                                <p>White peace</p>
+                                {% else %}
                                 <!--duplicate this for every resource they offer-->
                                 {% for index in range(0, value["resource_count"]) %}
                                 <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
                                 {% endfor %}
                                 <!--until here-->
+                                {% endif %}
                             </div>
                         </div>
                     </td>
@@ -66,11 +70,15 @@
                     <td>
                         <div class="center fit">
                             <div class="left fit">
-                                <!--duplicate this for every resource they offer-->
-                                {% for index in range(0, value["resource_count"]) %}
-                                <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
-                                {% endfor %}
-                                <!--until here-->
+                              {% if value["peace_type"] == "white" %}
+                              <p>White peace</p>
+                              {% else %}
+                              <!--duplicate this for every resource they offer-->
+                              {% for index in range(0, value["resource_count"]) %}
+                              <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
+                              {% endfor %}
+                              <!--until here-->
+                              {% endif %}
                             </div>
                         </div>
                     </td>
