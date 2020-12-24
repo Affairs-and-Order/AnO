@@ -120,26 +120,7 @@
                             <td><span class="material-icons-outlined">
                                 room
                                 </span>Country location:</td>
-                            <!--
-                            TODO: optimize this later on by checking if location
-                            consists of one word, and if its does, just capitalize the first letter
-                            -->
-                            {% if location == "northamerica" %}
-                            <td>North America</td>
-                            {% elif location == "southamerica" %}
-                            <td>South America</td>
-                            {% elif location == "europe" %}
-                            <td>Europe</td>
-                            {% elif location == "asia" %}
-                            <td>Asia</td>
-                            {% elif location == "africa" %}
-                            <td>Africa
-                                <td>
-                                    {% elif location == "australia" %}
-                                    <td>Australia</td>
-                                    {% elif location == "antarctica" %}
-                                    <td>Antarctica</td>
-                                    {% endif%}
+                        <td>{{ location }}</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
