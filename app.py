@@ -15,7 +15,7 @@ from helpers import get_influence, get_coalition_influence
 from dotenv import load_dotenv
 load_dotenv()
 import os
-from tasks import tax_income, population_growth, generate_province_revenue
+from celery.schedules import crontab
 
 from attack_scripts import Military
 
@@ -36,7 +36,7 @@ from military import military, military_sell_buy
 from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
 from intelligence import intelligence
-from tasks import generate_province_revenue
+from tasks import tax_income, population_growth, generate_province_revenue
 # from upgrades import upgrades
 
 app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
@@ -46,7 +46,7 @@ celery_beat_schedule = {
     "population_growth": {
         "task": "app.task_population_growth",
         # Run every 15 seconds
-        "schedule": 10.0,
+        "schedule": crontab(minute='*/1'),
     },
     "generate_province_revenue": {
         "task": "app.task_generate_province_revenue",

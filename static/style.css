@@ -532,16 +532,16 @@
     }
     
     .menubaranotification {
-        position: absolute;
+        position: relative;
         background: red;
         color: white;
         border-radius: 100%;
-        font-size: 12px;
-        width: 16px;
-        margin-top: 5px;
+        font-size: 11px;
+        top: -10px;
         margin-left: 4px;
         box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
         text-align: center;
+        padding: 4px 7px;
     }
     
     @media all and (max-width: 600px) {
@@ -2090,18 +2090,16 @@
     }
     
     .menuflex2notification {
-        position: absolute;
+        position: relative;
         background: red;
         color: white;
         border-radius: 100%;
-        font-size: 12px;
-        width: 16px;
-        height: 13px !important;
-        line-height: 13px !important;
-        top: 7px;
-        margin-left: 4px;
+        font-size: 11px;
+        top: -10px;
+        margin-left: 0px;
         box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
         text-align: center;
+        padding: 4px 7px;
     }
     
     .warning {

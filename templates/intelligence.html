@@ -10,115 +10,118 @@
     </div>
 
     <div class="templatedivcontent">
-        <!--If you have no intelligence-->
-        <h2 class="templatecontentheadercenter">No up-to-date intilligence</h2>
+        <!-- if you have up-to-date intelligence -->
+        {% if spyEntries|length %}
+            {% for dictEntry in spyEntries %}
+            <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Military</h2>
 
-        {% for dictEntry in spyEntries %}
-        <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Military</h2>
+            <div class="templateoutertablediv">
+                <table class="templatetable templatetable2">
+                    <tr>
+                        <th>Army</th>
+                        <th>Air Force</th>
+                        <th>Navy</th>
+                        <th>Special</th>
+                    </tr>
+                    <tr>
+                        <td>[[ spyentries["soldiers"]] Soldiers</td>
+                        <td>[[ spyentries["fighters"]] Fighter Jets</td>
+                        <td>[[ spyentries["submarines"]] Submarines</td>
+                        <td>[[ spyentries["spies"]] Spies</td>
+                    </tr>
+                    <tr>
+                        <td>[[ spyentries["artillery"]] Artillery</td>
+                        <td>[[ spyentries["bombers"]] Bombers</td>
+                        <td>[[ spyentries["cruisers"]] Cruisers</td>
+                        <td>[[ spyentries["icbms"]] ICBMs</td>
+                    </tr>
+                    <tr>
+                        <td>[[ spyentries["tanks"]] Tanks</td>
+                        <td>[[ spyentries["apaches"]] Apaches</td>
+                        <td>[[ spyentries["destroyers"]] Destroyers</td>
+                        <td>[[ spyentries["nukes"]] Nukes</td>
+                    </tr>
+                </table>
+            </div>
 
-        <div class="templateoutertablediv">
-            <table class="templatetable templatetable2">
+            <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Resources</h2>
+
+            <table class="templatetable">
                 <tr>
-                    <th>Army</th>
-                    <th>Air Force</th>
-                    <th>Navy</th>
-                    <th>Special</th>
+                    <th><span class="material-icons-outlined">
+                        article
+                        </span>Resources</th>
                 </tr>
                 <tr>
-                    <td>[[ spyentries["soldiers"]] Soldiers</td>
-                    <td>[[ spyentries["fighters"]] Fighter Jets</td>
-                    <td>[[ spyentries["submarines"]] Submarines</td>
-                    <td>[[ spyentries["spies"]] Spies</td>
+                    <td>Money:</td>
+                    <td>{{ gross }}%</td>
                 </tr>
                 <tr>
-                    <td>[[ spyentries["artillery"]] Artillery</td>
-                    <td>[[ spyentries["bombers"]] Bombers</td>
-                    <td>[[ spyentries["cruisers"]] Cruisers</td>
-                    <td>[[ spyentries["icbms"]] ICBMs</td>
+                    <td>Rations:</td>
+                    <td>{{ rationsGross }}%</td>
                 </tr>
                 <tr>
-                    <td>[[ spyentries["tanks"]] Tanks</td>
-                    <td>[[ spyentries["apaches"]] Apaches</td>
-                    <td>[[ spyentries["destroyers"]] Destroyers</td>
-                    <td>[[ spyentries["nukes"]] Nukes</td>
+                    <td>Oil:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Coal:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Uranium:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Iron:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Lead:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Bauxite:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Copper:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Lumber:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Components:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Steel:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Consumer goods:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Aluminum:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Gasoline:</td>
+                    <td>{{ rationsGross }}%</td>
+                </tr>
+                <tr>
+                    <td>Ammunition:</td>
+                    <td>{{ rationsGross }}%</td>
                 </tr>
             </table>
-        </div>
-
-        <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Resources</h2>
-
-        <table class="templatetable">
-            <tr>
-                <th><span class="material-icons-outlined">
-                    article
-                    </span>Resources</th>
-            </tr>
-            <tr>
-                <td>Money:</td>
-                <td>{{ gross }}%</td>
-            </tr>
-            <tr>
-                <td>Rations:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Oil:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Coal:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Uranium:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Iron:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Lead:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Bauxite:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Copper:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Lumber:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Components:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Steel:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Consumer goods:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Aluminum:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Gasoline:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-            <tr>
-                <td>Ammunition:</td>
-                <td>{{ rationsGross }}%</td>
-            </tr>
-        </table>
-        {% endfor %}
+            {% endfor %}
+        <!--If you have no up-to-date intelligence-->
+        {% else %}
+            <h2 class="templatecontentheadercenter">No up-to-date intelligence</h2>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
