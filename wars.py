@@ -717,7 +717,7 @@ def warAmount():
             err_valid = attack_units.attach_units(selected_units, 3)
             session["attack_units"] = attack_units.__dict__
             if err_valid:
-                return err_valid
+                return error(400, err_valid)
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
 
@@ -732,7 +732,7 @@ def warAmount():
             err_valid = attack_units.attach_units(selected_units, 1)
             session["attack_units"] = attack_units.__dict__
             if err_valid:
-                return err_valid
+                return error(400, err_valid)
 
             return redirect("/wartarget")
 
