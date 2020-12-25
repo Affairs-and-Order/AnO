@@ -314,9 +314,12 @@ class Units(Military):
         store_sort_values = []
         for it in sort_out:
             temp = dict.get(it, None)
-            if temp != None:
-                store_sort_values.append(dict[it])
-                dict.pop(it)
+            if not temp:
+                print("ERROR because either supply_cost == 0 or available_supplies == None")
+                return "Error"
+
+            store_sort_values.append(dict[it])
+            dict.pop(it)
 
         try:
             reb = cls(**dict)

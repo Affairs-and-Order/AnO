@@ -794,23 +794,22 @@ def warTarget():
 def warResult():
 
     # DEBUG DATA START:
-    # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
-    # eId = 10
-    # session["enemy_id"] = eId
-    # session["user_id"] = 11
+    session["attack_units"] = Units(3, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"]).__dict__
+    session["attack_units"]["supply_costs"] = 5
+    session["attack_units"]["available_supplies"] = 10
+
+    eId = 2
+    session["enemy_id"] = eId
+    session["user_id"] = 3
     # DEBUG DATA END!
 
-    # attacker = session["attack_units"]
     attacker = Units.rebuild_from_dict(session["attack_units"])
-
-    # grab defending enemy units from database
     eId = session["enemy_id"]
 
     # dev: making sure these values are correct
     # print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
     # print(eId, "| eId") # 10 | eId
     # print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
-
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -839,7 +838,7 @@ def warResult():
         db.execute("SELECT default_defense FROM military WHERE id=(%s)", (eId,))
         defensestring = db.fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
-        defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
+        defenselst = defensestring.split(",")  # will give something like: [soldiers, tanks, artillery]
         defenseunits = {}
 
         for unit in defenselst:
@@ -848,16 +847,11 @@ def warResult():
 
         print("DEFENSE UNITS", defenseunits)
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
-        # attacker = session["attack_units"]
 
         # Save the stats before the fight which used to calculate the lost amount from unit
         prev_defender = dict(defender.selected_units)
         prev_attacker = dict(attacker.selected_units)
 
-        # attack_effects = sum of 3 attack effect in fight() method
-        winner, win_condition, attack_effects = Military.fight(attacker, defender)
-
-        import random
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -879,6 +873,9 @@ def warResult():
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
         db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
         war_type = db.fetchall()[-1][0]
+
+        # attack_effects = sum of 3 attack effect in fight() method
+        winner, win_condition, attack_effects = Military.fight(attacker, defender)
 
         print(attack_effects, "BEFORE WARTYPE EFFECTS")
         print(war_type)
