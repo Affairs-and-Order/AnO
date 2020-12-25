@@ -200,13 +200,13 @@
     
     @keyframes borderpulse {
         20% {
-            border-color: #e3e9f0;
+            border-color: var(--foregroundThree);
         }
         50% {
             border-color: #00a7e1;
         }
         80% {
-            border-color: #e3e9f0;
+            border-color: var(--foregroundThree);
         }
     }
     
@@ -341,13 +341,6 @@
         opacity: 0.7;
         font-size: 14px;
         color: var(--colorOne);
-    }
-    
-    hr {
-        background: #f7f7f7;
-        border: 0;
-        height: 3px;
-        width: 90%;
     }
     
     .body {
@@ -811,6 +804,7 @@
         position: relative;
         top: -10px;
         padding: 6px;
+        font-size: 14px;
     }
     
     .resourcetagparent:focus .resourceinfo {
@@ -1240,10 +1234,6 @@
         color: var(--colorOne);
         font-weight: normal;
         text-align: center;
-    }
-    
-    .templatehr {
-        border: 2px solid #e3e9f0;
     }
     
     .templatedivbutton {
@@ -1726,7 +1716,7 @@
     }
     
     .divflex2full {
-        border-bottom: solid 3px #e3e9f0;
+        border-bottom: solid 3px var(--foregroundThree);
         align-items: center;
         width: 98%;
         margin: auto;
