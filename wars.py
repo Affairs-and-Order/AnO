@@ -98,7 +98,6 @@ def wars():
 
     db = connection.cursor()
     cId = session["user_id"]
-    # cId = 11
 
     if request.method == "GET":
         normal_units = Military.get_military(cId)
@@ -109,8 +108,9 @@ def wars():
         # obtain the user's country from sql table
         db.execute("SELECT username FROM users WHERE id=(%s)", (cId,))
         yourCountry = db.fetchone()[0]
+
         try:
-            db.execute("SELECT id, defender, attacker FROM wars WHERE attacker=%s OR defender=%s AND peace_date IS NULL", (cId, cId))
+            db.execute("SELECT id, defender, attacker FROM wars WHERE (attacker=%s OR defender=%s) AND peace_date IS NULL", (cId, cId))
             war_attacker_defender_ids = db.fetchall()
             war_info = {}
             for war_id,defender,attacker in war_attacker_defender_ids:
@@ -120,6 +120,7 @@ def wars():
                 attacker_info = {}
                 defender_info = {}
 
+                # fetch attacker wars
                 db.execute("SELECT username FROM users WHERE id=%s", (attacker,))
                 att_name = db.fetchone()[0]
                 attacker_info["name"] = att_name
@@ -131,6 +132,7 @@ def wars():
                 attacker_info["morale"] = att_morale_and_supplies[0]
                 attacker_info["supplies"] = att_morale_and_supplies[1]
 
+                # fetch defender wars
                 db.execute("SELECT username FROM users WHERE id=%s", (defender,))
                 def_name = db.fetchone()[0]
                 defender_info["name"] = def_name
@@ -155,125 +157,6 @@ def wars():
             warsCount = 0
 
         return render_template("wars.html", units=units, warsCount=warsCount, war_info=war_info)
-
-        # SAMPLE
-        # return render_template(
-        # "wars.html", units=units, cId=cId,
-        # yourCountry=yourCountry, warsCount=warsCount,
-        # defending=defending, attacking=attacking,
-        # defender_stats={"supply": 0, "morale": 0},
-        # attacker_stats={"supply": 0, "morale": 0})
-
-
-
-        # this creates an array called attacking which stores tuples in the format [(defendingCountryName1, defendingCountryUsername1), (defendingCountryName2, defendingCountryUsername2), ...].
-        # try:
-        #     # selecting all current defenders of cId
-        #     attackingWars = db.execute(
-        #         "SELECT defender FROM wars WHERE attacker=(?) AND peace_date IS NULL ORDER BY defender", (cId,)).fetchall()
-        #     # selecting all usernames of current defenders of cId
-        #     attackingNames = db.execute(
-        #         "SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
-        #     # generates list of tuples. The first element of each tuple is the country being attacked, the second element is the username of the countries being attacked.
-        #     attackingIds = db.execute(
-        #         "SELECT id FROM wars WHERE attacker=(?) AND peace_date IS NULL", (cId,)).fetchall()
-        #     # attacking = zip(attackingWars, attackingNames, attackingIds)
-        # except TypeError:
-        #     attacking = 0
-        #
-        # # gets a defending tuple
-        # try:
-        #     defendingWars = db.execute(
-        #         "SELECT attacker FROM wars WHERE defender=(?) AND peace_date IS NULL ORDER BY defender ", (cId,)).fetchall()
-        #     defendingNames = db.execute(
-        #         "SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
-        #     defendingIds = db.execute(
-        #         "SELECT id FROM wars WHERE defender=(?)", (cId,)).fetchall()
-        #     # defending = zip(defendingWars, defendingNames, defendingIds)
-        # except TypeError:
-        #     defending = 0
-        #
-        # # the next two for loops delete wars if the war involves a deleted nation.
-        # # if wars can be removed when someone deletes their nation or we ban a nation instead of every time anyone opens their war page, that would be faster
-        # listOfUserIdTuples = db.execute("SELECT id FROM users").fetchall()
-        # userIdsLst = []
-        # for tuple in listOfUserIdTuples:
-        #     for item in tuple:
-        #         userIdsLst.append(item)
-        # defendingIdsLst = []
-        # for tuple in defendingIds:
-        #     for item in tuple:
-        #         defendingIdsLst.append(item)
-        # attackingIdsLst = []
-        # for tuple in attackingIds:
-        #     for item in tuple:
-        #         attackingIdsLst.append(item)
-        #
-        # print(userIdsLst, 'user')
-        # print(defendingIdsLst, "def")
-        # print(attackingIdsLst, "att")
-        #
-        # # if an id inside the defender's list is not in the user list
-        # for id in defendingIdsLst:
-        #     if id not in userIdsLst:
-        #         # delete the war with the the nonexistent user inside
-        #         db.execute(
-        #             "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
-        # for id in attackingIdsLst:
-        #     if id not in userIdsLst:
-        #         db.execute(
-        #             "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
-        # connection.commit()
-        #
-        # db.execute("SELECT COUNT(attacker) FROM wars WHERE (defender=(%s) OR attacker=(%s)) AND peace_date IS NULL", (cId, cId))
-        # warsCount = db.fetchone()[0]
-        #
-        # # NOTE: at defender_stats and attacker_stats later maybe use the  Military.get_morale("defender_morale", attacker, defender) for morale check
-        # # because the code below is redundant but the get_morale function works only for Units instances currently
-        #
-        # # *_war_morales = [our_morale, enemy_morale]
-        # attacking_war_morales = []
-        # defending_war_morales = []
-        #
-        # for war_id in attackingIds:
-        #     attacking_war_morales.append([
-        # db.execute("SELECT attacker_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        # attacker_morale = db.fetchone()[0]
-        # db.execute("SELECT defender_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        # defender_morale = db.fetchone()[0]
-        #
-        #
-        # for war_id in defendingIds:
-        #     defending_war_morales.append([
-        # db.execute("SELECT attacker_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        #     db.fetchone()[0],
-        # db.execute("SELECT defender_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        #     db.fetchone()[0]
-        #     ])
-        #
-        # # complete_war_ids = attackingIdsLst+defendingIdsLst
-        # # attacking_morale = []
-        # # defending_morale = []
-        # #
-        # # for war_id in complete_war_ids:
-        # db.execute("SELECT defender_morale FROM wars WHERE id=(%s)", (war_id,))
-        # #     attacking_morale.append(db.fetchone()[0])
-        # db.execute("SELECT attacker_morale FROM wars WHERE id=(%s)", (war_id,))
-        # #     defending_morale.append(db.fetchone()[0])
-        #
-        # # defending_morale and attacking_morale include to wars.html
-        # defending = zip(defendingWars, defendingNames, defendingIds, defending_war_morales)
-        #
-        # attacking = zip(attackingWars, attackingNames, attackingIds, attacking_war_morales)
-        # db.close()
-        # connection.close()
-        #
-        # return render_template(
-        # "wars.html", units=units, cId=cId,
-        # yourCountry=yourCountry, warsCount=warsCount,
-        # defending=defending, attacking=attacking,
-        # defender_stats={"supply": 0, "morale": 0},
-        # attacker_stats={"supply": 0, "morale": 0})
 
 # TODO: put the Peace offers lable under "Internal Affairs" or "Other"
 # Peace offers show up here
@@ -416,7 +299,6 @@ def peace_offers():
 
         return redirect("/peace_offers")
 
-    print(outgoing)
     # TODO: put a button to revoke the peace offer made by the author
     return render_template(
     "peace/peace_offers.html", cId=cId,
@@ -480,7 +362,6 @@ def send_peace_offer(war_id, enemy_id):
             db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((%s),(%s),(%s))", (cId, resources_string[:-1], amount_string[:-1]))
             db.execute("SELECT CURRVAL('peace_id_seq')")
             lastrowid = db.fetchone()[0]
-            print("lastrow", lastrowid)
             db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (lastrowid, war_id))
 
         # If peace offer is already associated with war then just update it
@@ -497,11 +378,6 @@ def send_peace_offer(war_id, enemy_id):
 @app.route("/war/<int:war_id>", methods=["GET"])
 @login_required
 def war_with_id(war_id):
-
-    # DEBUG DTATA START:
-    # cId=11
-    # DEBUG DATAT END
-
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -520,7 +396,6 @@ def war_with_id(war_id):
     # Check if peace already made
     db.execute("SELECT peace_date FROM wars WHERE id=(%s)", (war_id,))
     peace_made = db.fetchone()[0]
-    print(peace_made, "THE PEACE MADE")
     if peace_made:
         return "This war already ended"
 
@@ -542,6 +417,9 @@ def war_with_id(war_id):
     attacker = db.fetchone()[0]
     db.execute("SELECT username FROM users WHERE id=(%s)", (attacker,))
     attacker_name = db.fetchone()[0]
+    db.execute("SELECT attacker_supplies,attacker_morale FROM wars WHERE id=(%s)",(war_id,))
+    info = db.fetchone()
+    attacker_info={"morale": info[1], "supplies": info[0]}
 
     # The current enemy from our perspective (not neccessarily the one who declared war)
     if attacker==cId:
@@ -580,7 +458,7 @@ def war_with_id(war_id):
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
 
-    return render_template("war.html", defender_info=defender_info, defender=defender, attacker=attacker, war_id=war_id,
+    return render_template("war.html", defender_info=defender_info, defender=defender, attacker_info=attacker_info, attacker=attacker, war_id=war_id,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance, peace_to_send=enemy_id)
 
@@ -624,9 +502,6 @@ def warChoose():
             unit_amount = 3
 
         attack_units = Units(cId)
-        print("TESTING HERE ATTCK UNITS")
-        print(attack_units)
-        print(selected_units)
 
         # Output error if any
         error = attack_units.attach_units(selected_units, unit_amount)
@@ -640,7 +515,6 @@ def warChoose():
 
         # DURING DEBUG:
         session["attack_units"] = attack_units.__dict__
-        print("DICT", attack_units.__dict__)
 
         # return redirect("/warchoose")
         return redirect("/waramount")
@@ -651,7 +525,6 @@ def warChoose():
 @check_required
 def warAmount():
     cId = session["user_id"]
-
     attack_units = Units.rebuild_from_dict(session["attack_units"])
 
     if request.method == "GET":
@@ -680,9 +553,6 @@ def warAmount():
         connection.close()
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
-        print(attack_units.selected_units_list, unitamounts, "LABEL")
-        print("IMPORT", attack_units.__dict__)
-
         # TODO: rename *.jpg file related to units because not load in (or create a list of image name with the corresponding unit)
         return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, unit_range=len(unitamounts), unitamounts=unitamounts)
 
@@ -711,23 +581,31 @@ def warAmount():
                 except:
                     return error(400, "Unit amount entered was not a number") # maybe add javascript checks for this also in the front end
 
-            # Check every time when user input comes in lest user bypass input validation
+            # Check if user send at least 1 amount from a specific unit type
+            if not sum(selected_units.values()):
+                return error(400, "Can't attack because you haven't sent any unit")
+
+            # Check every time when user input comes in, lest the user bypass input validation
             # Error code if any else return None
-            error = attack_units.attach_units(selected_units, 3)
+            err_valid = attack_units.attach_units(selected_units, 3)
             session["attack_units"] = attack_units.__dict__
-            if error:
-                return error
+            if err_valid:
+                return error(400, err_valid)
 
             # same note as before as to how to use this request.form.get to get the unit amounts.
 
             return redirect("/warResult")  # warTarget route is skipped
 
         elif len(units_name) == 1:  # this should happen if special
-            selected_units[units_name[0]] = int(request.form.get("u1_amount"))
-            error = attack_units.attach_units(selected_units, 1)
+            amount = int(request.form.get(units_name[0]))
+            if not amount:
+                return error(400, "Can't attack because you haven't sent any unit")
+
+            selected_units[units_name[0]] = amount
+            err_valid = attack_units.attach_units(selected_units, 1)
             session["attack_units"] = attack_units.__dict__
-            if error:
-                return error
+            if err_valid:
+                return error(400, err_valid)
 
             return redirect("/wartarget")
 
@@ -789,23 +667,22 @@ def warTarget():
 def warResult():
 
     # DEBUG DATA START:
-    # session["attack_units"] = Units(11, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"])
-    # eId = 10
+    # session["attack_units"] = Units(3, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"]).__dict__
+    # session["attack_units"]["supply_costs"] = 5
+    # session["attack_units"]["available_supplies"] = 10
+    #
+    # eId = 2
     # session["enemy_id"] = eId
-    # session["user_id"] = 11
+    # session["user_id"] = 3
     # DEBUG DATA END!
 
-    # attacker = session["attack_units"]
     attacker = Units.rebuild_from_dict(session["attack_units"])
-
-    # grab defending enemy units from database
     eId = session["enemy_id"]
 
     # dev: making sure these values are correct
     # print(attacker.selected_units, "| attack units") # {'soldiers': 0, 'tanks': 0, 'artillery': 0} | attack units
     # print(eId, "| eId") # 10 | eId
     # print(defensestring, "| defense units")  # soldiers,tanks,artillery | defense units
-
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -821,8 +698,6 @@ def warResult():
     db.execute("SELECT username FROM users WHERE id=(%s)", (session["enemy_id"],))
     defender_name = db.fetchone()[0]
 
-    # print(attacker_name, defender_name)
-
     attacker_result = {"nation_name": attacker_name}
     defender_result = {"nation_name": defender_name}
 
@@ -834,25 +709,18 @@ def warResult():
         db.execute("SELECT default_defense FROM military WHERE id=(%s)", (eId,))
         defensestring = db.fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
-        defenselst = defensestring.split(",")  # [soldiers, tanks, artillery]
+        defenselst = defensestring.split(",")  # will give something like: [soldiers, tanks, artillery]
         defenseunits = {}
 
         for unit in defenselst:
             db.execute(f"SELECT {unit} FROM military WHERE id=(%s)", (eId,))
             defenseunits[unit] = db.fetchone()[0]
 
-        print("DEFENSE UNITS", defenseunits)
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
-        # attacker = session["attack_units"]
 
         # Save the stats before the fight which used to calculate the lost amount from unit
         prev_defender = dict(defender.selected_units)
         prev_attacker = dict(attacker.selected_units)
-
-        # attack_effects = sum of 3 attack effect in fight() method
-        winner, win_condition, attack_effects = Military.fight(attacker, defender)
-
-        import random
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -875,8 +743,8 @@ def warResult():
         db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
         war_type = db.fetchall()[-1][0]
 
-        print(attack_effects, "BEFORE WARTYPE EFFECTS")
-        print(war_type)
+        # attack_effects = sum of 3 attack effect in fight() method
+        winner, win_condition, attack_effects = Military.fight(attacker, defender)
 
         if len(war_type) > 0:
             if war_type == "Raze":
@@ -889,13 +757,18 @@ def warResult():
                 # infrastructure damage
                 attack_effects[0] = attack_effects[0]*0.2
 
+                # resource loot amount
+
+
             elif war_type == "Sustained":
                 pass
 
-            else: print("INVALID WARTYPE")
+            # Invalid war type
+            else: return error(400, "Something went wrong")
 
         else:
-            print("INVALID USER IDs")
+            # it could mean invalid user id
+            return error(500, "Something went wrong")
 
         db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
         province_id_fetch = db.fetchall()
@@ -941,7 +814,6 @@ def warResult():
 
     # save method only function for the attacker now, and maybe we won't change that
     # saves the decreased supply amount
-    print(attacker.__dict__, "DEBUG")
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
@@ -951,6 +823,7 @@ def warResult():
     return render_template(
         "warResult.html",
         winner=winner,
+        win_condition=win_condition,
         defender_result=defender_result,
         attacker_result=attacker_result,
         attackResult="attackResult",
@@ -1017,9 +890,8 @@ def declare_war():
         if war_type not in WAR_TYPES:
             return error(400, "Invalid war type!")
 
-    except Exception as e:
-        print("RUNN")
-        print(e)
+    except:
+        return error(500, "Something went wrong")
 
         # Redirects the user to an error page
         return error(400, "No such country")

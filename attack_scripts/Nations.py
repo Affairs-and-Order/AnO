@@ -587,16 +587,19 @@ class Military(Nation):
     blockade: enemy can no longer trade
     air control: enemy bomber power reduced by 60%'''
 
+
     @staticmethod
     # attacker, defender means the attacker and the defender user JUST in this particular fight not in the whole war
     def fight(attacker, defender): # Units, Units -> int
 
-        attacker_roll = random.uniform(0, 2)
+        # IMPORTANT: Here you can change the values for the fight chances, bonuses and even can controll casualties (in this whole funciton)
+        # If you want to change the bonuses given by a particular unit then go to `units.py` and you can find those in the classes
+        attacker_roll = random.uniform(1, 2)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
         attacker_bonus = 0
 
-        defender_roll = random.uniform(0,2)
+        defender_roll = random.uniform(1, 2)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
@@ -621,8 +624,16 @@ class Military(Nation):
             for unit in attacker.selected_units_list:
                 defender_bonus += calculate_bonuses(defender.attack(defender_unit, unit), attacker, unit)
 
+        # used to be: attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
+        #             defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
+
+        # If there are not attackers or defenders
+        if defender_unit_amount_bonuses == 0:
+            defender_chance = 0.001
+        elif attacker_unit_amount_bonuses == 0:
+            attacker_chance = 0.001
 
         print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
         print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
@@ -682,7 +693,6 @@ class Military(Nation):
             loser.casualties(loser_unit, l_casualties)
 
         # infrastructure damage
-                #
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -727,7 +737,7 @@ class Military(Nation):
         unit_to_amount_dict = {}
 
         # TODO: maybe use the self.allUnits because it looks like repetative code
-        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','icbms','nukes','destroyer','cruisers','submarines']
+        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','icbms','nukes','destroyers','cruisers','submarines']
         for count, item in enumerate(cidunits):
             unit_to_amount_dict[item] = allAmounts[0][count]
 

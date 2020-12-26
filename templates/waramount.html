@@ -19,7 +19,7 @@
             <div class="templatedivflex2left unitcard nopointer">
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/'+selected_units[r][:-1]+'.jpg') }}" />
                 <input class="loginsignupinput templateflexfullinput" autocomplete="off" value="{{selected_units[r] | capitalize}}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[0]}}" />
+                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[r]}}" />
             </div>
             {% endfor %}
         </div>
