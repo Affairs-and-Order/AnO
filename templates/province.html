@@ -235,12 +235,12 @@
                         </tr>
                         <tr>
                             <td>{{ hydro_dams }} Hydro Dams</td>
-                            <td>{{ malls }} Malls</td>
+                            <td>{{ banks }} Banks</td>
                             <td>{{ universities }} Universities</td>
                         </tr>
                         <tr>
                             <td>{{ nuclear_reactors }} Nuclear Reactors</td>
-                            <td>{{ banks }} Banks</td>
+                            <td>{{ malls }} Malls</td>
                             <td>{{ monorails }} Skytrains</td>
                         </tr>
                     </table>
@@ -556,10 +556,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ general_stores }} General stores</h3>
 
-                                <p class="templatecontentpleft">General stores allow your citizens to pick up </p>
+                                <p class="templatecontentpleft">General stores allow your citizens to pick up everyday items necessary for your economy to function.</p>
 
-                                <ul>Gas stations cost -20,000 per hour and contribute +12 consumer goods per hour</ul>
-                                <ul>Gas stations cost 2.9M, 50 steel, 35 aluminium each</ul>
+                                <ul>General stores cost -35,000 per hour and contribute +9 consumer goods per hour</ul>
+                                <ul>General stores cost 3.5M, 60 steel, 70 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="general_stores" type="number" placeholder="Amount" />
@@ -601,10 +601,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ farmers_markets }} Farmers Markets</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Farmers markets provide fresh and healthy food to your population without any middle man. They are perfect for producing consumer goods with little pollution.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Farmers markets cost -110,000 per hour and contribute +16 consumer goods per hour</ul>
+                                <ul>Farmers markets cost 4.2M, 75 steel, 80 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="farmers_markets" type="number" placeholder="Amount" />
@@ -638,50 +638,6 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Malls</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ malls }} Malls</h3>
-
-                                <p class="templatecontentpleft"></p>
-
-                                <ul>Malls cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Malls produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/malls/{{ pId }}"><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/malls/{{ pId }}"><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/mall.jpg') }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menudiv">
-
                         <h2 class="templatecontentheaderleft">Banks</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -689,10 +645,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ banks }} Banks</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Banks help produce a thriving debt-based economy that drastically increases production of consumer goods. Banks produce no pollution.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Banks cost -320,000 per hour and contribute +25 consumer goods per hour</ul>
+                                <ul>Banks cost 7.7M, 225 steel, 110 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="banks" type="number" placeholder="Amount" />
@@ -721,6 +677,50 @@
 
 
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/bank.jpg') }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menudiv">
+
+                        <h2 class="templatecontentheaderleft">Malls</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ malls }} Malls</h3>
+
+                                <p class="templatecontentpleft">Malls are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. Malls produce lots of pollution.</p>
+
+                                <ul>Malls cost -750,000 per hour and contribute +36 consumer goods</ul>
+                                <ul>Malls cost 12.5M, 360 steel, 240 aluminium each</ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/malls/{{ pId }}"><span class="material-icons-outlined">
+                                    add_circle_outline
+                                </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/malls/{{ pId }}"><span class="material-icons-outlined">
+                                    remove_circle_outline
+                                </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/mall.jpg') }}" />
                             </div>
                         </div>
                     </div>
