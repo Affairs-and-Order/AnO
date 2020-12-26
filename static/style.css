@@ -661,8 +661,8 @@
     }
     
     .resourcediv {
-        top: 60px;
-        right: 5px;
+        top: 75px;
+        right: 20px;
         position: fixed;
         background-color: #363945;
         width: 50px;
@@ -672,6 +672,13 @@
         box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
         z-index: 1000;
         border-radius: 100%;
+    }
+    
+    @media all and (max-width: 500px) {
+        .resourcediv {
+            top: 60px;
+            right: 5px;
+        }
     }
     
     .resourcediv:hover {
@@ -738,7 +745,7 @@
     
     .resourcedivcontent {
         position: fixed;
-        top: 60px;
+        top: 75px;
         right: 0px;
         bottom: 0px;
         background-color: #363945;
@@ -749,6 +756,12 @@
         padding-bottom: 20px;
         color: white;
         overflow-y: scroll;
+    }
+    
+    @media all and (max-width: 500px) {
+        .resourcedivcontent {
+            top: 60px;
+        }
     }
     
     .resourcedivcontentshow {
