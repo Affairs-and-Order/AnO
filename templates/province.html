@@ -226,12 +226,12 @@
                         <tr>
                             <td>{{ oil_burners }} Oil Burners</td>
                             <td>{{ general_stores }} General Stores</td>
-                            <td>{{ hospitals }} Hospitals</td>
+                            <td>{{ libraries }} Libraries</td>
                         </tr>
                         <tr>
                             <td>{{ solar_fields }} Solar Fields</td>
                             <td>{{ farmers_markets }} Farmers Markets</td>
-                            <td>{{ libraries }} Libraries</td>
+                            <td>{{ hospitals }} Hospitals</td>
                         </tr>
                         <tr>
                             <td>{{ hydro_dams }} Hydro Dams</td>
@@ -737,10 +737,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ city_parks }} City Parks</h3>
 
-                                <p class="templatecontentpleft">City parks convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">City parks are perfect establishments to increase happiness of your population, and to absorb some pollution.</p>
 
-                                <ul>City parks cost [ oilPlantCost ] Each</ul>
-                                <ul>City parks produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>City parks cost -20,000 per hour and contribute +3% happiness and -6% pollution</ul>
+                                <ul>City parks cost 5.1M, 75 steel, 60 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="city_parks" type="number" placeholder="Amount" />
@@ -775,6 +775,50 @@
                     </div>
                     <div class="menudiv">
 
+                        <h2 class="templatecontentheaderleft">Libraries</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ libraries }} Libraries</h3>
+
+                                <p class="templatecontentpleft">Libaries are places for your citizens to enjoy a book and learn from them to become more productive.</p>
+
+                                <ul>Libraries cost -90,000 per hour and contribute +2% happiness and +2% productivity</ul>
+                                <ul>Libraries cost 5.2M, 55 steel, 40 aluminium each</ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="libraries" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/libraries/{{ pId }}"><span class="material-icons-outlined">
+                                    add_circle_outline
+                                </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/libraries/{{ pId }}"><span class="material-icons-outlined">
+                                    remove_circle_outline
+                                </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/library.jpg') }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menudiv">
+
                         <h2 class="templatecontentheaderleft">Hospitals</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -782,10 +826,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ hospitals }} Hospitals</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Hospitals are equiped with advanced medical equipment and staff, allowing for the drastic increase in people who survive childbirth and deadly illnesses. People live longer and such are happier.</p>
 
-                                <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                <ul>Hospitals cost -60,000 per hour and contribute +6% population and +5% happiness</ul>
+                                <ul>Hospitals cost 8M, 140 steel, 85 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="hospitals" type="number" placeholder="Amount" />
@@ -820,50 +864,6 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Libraries</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ libraries }} Libraries</h3>
-
-                                <p class="templatecontentpleft"></p>
-
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="libraries" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/libraries/{{ pId }}"><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/libraries/{{ pId }}"><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/library.jpg') }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menudiv">
-
                         <h2 class="templatecontentheaderleft">Universities</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -871,10 +871,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ universities }} Universities</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Universities help educate your population, making them far more productive. University gives their students some great memories.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Universities cost -150K per hour and contribute +8% productivity and +4% happiness</ul>
+                                <ul>Universities cost 12.5M, 210 steel, 105 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="universities" type="number" placeholder="Amount" />
@@ -915,10 +915,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ monorails }} Monorails</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Monorails astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Monorails cost -510,000 per hour and contribute + 17 productivty and +10% pollution</ul>
+                                <ul>Monorails cost 19.8M, 390 steel, 195 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="monorails" type="number" placeholder="Amount" />
