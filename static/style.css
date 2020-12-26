@@ -665,9 +665,9 @@
         right: 20px;
         position: fixed;
         background-color: #363945;
-        width: 50px;
+        width: 56px;
         z-index: 1000;
-        height: 50px;
+        height: 56px;
         transition: all 0.4s ease-in-out;
         box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
         z-index: 1000;
@@ -701,8 +701,8 @@
         display: flex;
         flex-direction: row;
         transition: all 0.3s;
-        width: 50px;
-        height: 50px;
+        width: 56px;
+        height: 56px;
     }
     
     .resourcedivchild:hover {
@@ -715,7 +715,7 @@
     }
     
     .resourceicon {
-        font-size: 40px !important;
+        font-size: 46px !important;
         margin-left: 10px;
         cursor: pointer;
         transition: all 0.2s;
@@ -730,7 +730,7 @@
         color: white;
         font-size: 20px;
         font-weight: normal;
-        line-height: 50px;
+        line-height: 56px;
         height: 0;
         margin: 0;
     }
@@ -2624,12 +2624,24 @@
     }
     
     .notificationchild {
-        background: var(--background);
         margin: 8px;
         line-height: 30px;
-        padding: 10px !important;
+    }
+    
+    .notificationchildleft,
+    .notificationchildright {
+        padding: 6px 20px !important;
         border-radius: 4px;
-        box-shadow: rgba(0, 0, 0, 0.05) 0 2px 4px 0px, rgba(0, 0, 0, 0.1) 0 12px 32px 0;
+        color: white !important;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    }
+    
+    .notificationchildleft {
+        background-color: #00a7e1;
+    }
+    
+    .notificationchildright {
+        background-color: red;
     }
     
     .provinceimage {
