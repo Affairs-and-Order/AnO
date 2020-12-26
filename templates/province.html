@@ -257,10 +257,12 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ coal_burners }} Coal Burners</h3>
 
-                                <p class="templatecontentpleft">Coal burners convert coal stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Coal burners are a cheap way to produce power for a developing nation. While they cost less to build and opperate, the contribute lots of pollution.</p>
 
-                                <ul>Coal burners cost <b>500</b> Each</ul>
-                                <ul>Coal burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Coal burners cost 45,000 per hour and produce +4 energy
+                                </ul>
+                                <ul>Coal burners cost 1.3M, 45 aluminium each
+                                </ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_burners" type="number" placeholder="Amount" />
@@ -288,7 +290,7 @@
                             </div>
                             <div class="templatedivflex2left">
 
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/oilburner.jpg') }}" />
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalburner.jpg') }}" />
                             </div>
                         </div>
 
@@ -303,10 +305,12 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ oil_burners }} Oil Burners</h3>
 
-                                <p class="templatecontentpleft">Oil burners convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Oil burners cost more to opperate and build than coal burners, but produce less pollution.</p>
 
-                                <ul>Oil burners cost <b>350</b> Each</ul>
-                                <ul>Oil burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Oil burners cost 60,000 per hour and contribute +3 energy
+                                </ul>
+                                <ul>Oil Burners cost 1.6M, 50 aluminium each
+                                </ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="oil_burners" type="number" placeholder="Amount" />
@@ -343,6 +347,50 @@
                     </div>
                     <div class="menudiv">
 
+                        <h2 class="templatecontentheaderleft">Solar Fields</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ solar_fields }} Solar Fields</h3>
+
+                                <p class="templatecontentpleft">Solar fields are a hefty investment, but in return produce no pollution. They are ideal for developed nations.</p>
+
+                                <ul>Solar cost 150,000 per hour and contribute +3 energy
+                                </ul>
+                                <ul>Solar fields cost 2.3M, 55 steel each
+                                </ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="solar_fields" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}"><span class="material-icons-outlined">
+                                add_circle_outline
+                            </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}"><span class="material-icons-outlined">
+                                remove_circle_outline
+                            </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menudiv">
+
                         <h2 class="templatecontentheaderleft">Hydroelectric Dams</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -350,10 +398,12 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ hydro_dams }} Hydro Dams</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Hydro dams are expensive to build and upkeep, but provide lots of power with absolutely no production of pollution.</p>
 
-                                <ul>Hydro dams cost <b>450</b> Each</ul>
-                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                <ul>Hydro dams cost -250K per hour and contribute +6 energy
+                                </ul>
+                                <ul>Hydro damns cost 5.8M, 120 steel, 60 aluminium each
+                                </ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="hydro_dams" type="number" placeholder="Amount" />
@@ -388,48 +438,6 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Solar Fields</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ solar_fields }} Solar Fields</h3>
-
-                                <p class="templatecontentpleft"></p>
-
-                                <ul>Solar fields cost <b>550</b> Each</ul>
-                                <ul>Solar fields produce 30(electricity icon)/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="solar_fields" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}"><span class="material-icons-outlined">
-                                add_circle_outline
-                            </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}"><span class="material-icons-outlined">
-                                remove_circle_outline
-                            </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="templatedivflex2left">
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menudiv">
-
                         <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -437,10 +445,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ nuclear_reactors }} Nuclear Reactors</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Nuclear reactors are a sign of a world power. While they are costly to build and even more to mantain, it is fully compensated for by the massive amount of energy it contributes to your province.</p>
 
-                                <ul>Nuclear reactors cost <b>700</b>Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Nuclear reactors cost -1.2M, -32 uranium per hour and contribute +12 energy</ul>
+                                <ul>Nuclear reactors cost 9.5M, 250 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount" />

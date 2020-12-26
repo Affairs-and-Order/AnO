@@ -2616,7 +2616,7 @@
         line-height: 30px;
         padding: 10px !important;
         border-radius: 4px;
-        box-shadow: rgba(0, 0, 0, 0.075) 0 12px 22px 0;
+        box-shadow: rgba(0, 0, 0, 0.05) 0 2px 4px 0px, rgba(0, 0, 0, 0.1) 0 12px 32px 0;
     }
     
     .provinceimage {
