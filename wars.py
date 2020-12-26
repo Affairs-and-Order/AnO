@@ -98,7 +98,6 @@ def wars():
 
     db = connection.cursor()
     cId = session["user_id"]
-    # cId = 11
 
     if request.method == "GET":
         normal_units = Military.get_military(cId)
@@ -109,8 +108,9 @@ def wars():
         # obtain the user's country from sql table
         db.execute("SELECT username FROM users WHERE id=(%s)", (cId,))
         yourCountry = db.fetchone()[0]
+
         try:
-            db.execute("SELECT id, defender, attacker FROM wars WHERE attacker=%s OR defender=%s AND peace_date IS NULL", (cId, cId))
+            db.execute("SELECT id, defender, attacker FROM wars WHERE (attacker=%s OR defender=%s) AND peace_date IS NULL", (cId, cId))
             war_attacker_defender_ids = db.fetchall()
             war_info = {}
             for war_id,defender,attacker in war_attacker_defender_ids:
@@ -120,6 +120,7 @@ def wars():
                 attacker_info = {}
                 defender_info = {}
 
+                # fetch attacker wars
                 db.execute("SELECT username FROM users WHERE id=%s", (attacker,))
                 att_name = db.fetchone()[0]
                 attacker_info["name"] = att_name
@@ -131,6 +132,7 @@ def wars():
                 attacker_info["morale"] = att_morale_and_supplies[0]
                 attacker_info["supplies"] = att_morale_and_supplies[1]
 
+                # fetch defender wars
                 db.execute("SELECT username FROM users WHERE id=%s", (defender,))
                 def_name = db.fetchone()[0]
                 defender_info["name"] = def_name
@@ -155,125 +157,6 @@ def wars():
             warsCount = 0
 
         return render_template("wars.html", units=units, warsCount=warsCount, war_info=war_info)
-
-        # SAMPLE
-        # return render_template(
-        # "wars.html", units=units, cId=cId,
-        # yourCountry=yourCountry, warsCount=warsCount,
-        # defending=defending, attacking=attacking,
-        # defender_stats={"supply": 0, "morale": 0},
-        # attacker_stats={"supply": 0, "morale": 0})
-
-
-
-        # this creates an array called attacking which stores tuples in the format [(defendingCountryName1, defendingCountryUsername1), (defendingCountryName2, defendingCountryUsername2), ...].
-        # try:
-        #     # selecting all current defenders of cId
-        #     attackingWars = db.execute(
-        #         "SELECT defender FROM wars WHERE attacker=(?) AND peace_date IS NULL ORDER BY defender", (cId,)).fetchall()
-        #     # selecting all usernames of current defenders of cId
-        #     attackingNames = db.execute(
-        #         "SELECT username FROM users WHERE id=(SELECT defender FROM wars WHERE attacker=(?) ORDER BY defender)", (cId,)).fetchall()
-        #     # generates list of tuples. The first element of each tuple is the country being attacked, the second element is the username of the countries being attacked.
-        #     attackingIds = db.execute(
-        #         "SELECT id FROM wars WHERE attacker=(?) AND peace_date IS NULL", (cId,)).fetchall()
-        #     # attacking = zip(attackingWars, attackingNames, attackingIds)
-        # except TypeError:
-        #     attacking = 0
-        #
-        # # gets a defending tuple
-        # try:
-        #     defendingWars = db.execute(
-        #         "SELECT attacker FROM wars WHERE defender=(?) AND peace_date IS NULL ORDER BY defender ", (cId,)).fetchall()
-        #     defendingNames = db.execute(
-        #         "SELECT username FROM users WHERE id=(SELECT attacker FROM wars WHERE defender=(?) ORDER BY defender)", (cId,)).fetchall()
-        #     defendingIds = db.execute(
-        #         "SELECT id FROM wars WHERE defender=(?)", (cId,)).fetchall()
-        #     # defending = zip(defendingWars, defendingNames, defendingIds)
-        # except TypeError:
-        #     defending = 0
-        #
-        # # the next two for loops delete wars if the war involves a deleted nation.
-        # # if wars can be removed when someone deletes their nation or we ban a nation instead of every time anyone opens their war page, that would be faster
-        # listOfUserIdTuples = db.execute("SELECT id FROM users").fetchall()
-        # userIdsLst = []
-        # for tuple in listOfUserIdTuples:
-        #     for item in tuple:
-        #         userIdsLst.append(item)
-        # defendingIdsLst = []
-        # for tuple in defendingIds:
-        #     for item in tuple:
-        #         defendingIdsLst.append(item)
-        # attackingIdsLst = []
-        # for tuple in attackingIds:
-        #     for item in tuple:
-        #         attackingIdsLst.append(item)
-        #
-        # print(userIdsLst, 'user')
-        # print(defendingIdsLst, "def")
-        # print(attackingIdsLst, "att")
-        #
-        # # if an id inside the defender's list is not in the user list
-        # for id in defendingIdsLst:
-        #     if id not in userIdsLst:
-        #         # delete the war with the the nonexistent user inside
-        #         db.execute(
-        #             "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
-        # for id in attackingIdsLst:
-        #     if id not in userIdsLst:
-        #         db.execute(
-        #             "DELETE FROM wars WHERE defender=(?) OR attacker=(?)", (id, id))
-        # connection.commit()
-        #
-        # db.execute("SELECT COUNT(attacker) FROM wars WHERE (defender=(%s) OR attacker=(%s)) AND peace_date IS NULL", (cId, cId))
-        # warsCount = db.fetchone()[0]
-        #
-        # # NOTE: at defender_stats and attacker_stats later maybe use the  Military.get_morale("defender_morale", attacker, defender) for morale check
-        # # because the code below is redundant but the get_morale function works only for Units instances currently
-        #
-        # # *_war_morales = [our_morale, enemy_morale]
-        # attacking_war_morales = []
-        # defending_war_morales = []
-        #
-        # for war_id in attackingIds:
-        #     attacking_war_morales.append([
-        # db.execute("SELECT attacker_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        # attacker_morale = db.fetchone()[0]
-        # db.execute("SELECT defender_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        # defender_morale = db.fetchone()[0]
-        #
-        #
-        # for war_id in defendingIds:
-        #     defending_war_morales.append([
-        # db.execute("SELECT attacker_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        #     db.fetchone()[0],
-        # db.execute("SELECT defender_morale FROM wars WHERE id=(%s)", (war_id[0],))
-        #     db.fetchone()[0]
-        #     ])
-        #
-        # # complete_war_ids = attackingIdsLst+defendingIdsLst
-        # # attacking_morale = []
-        # # defending_morale = []
-        # #
-        # # for war_id in complete_war_ids:
-        # db.execute("SELECT defender_morale FROM wars WHERE id=(%s)", (war_id,))
-        # #     attacking_morale.append(db.fetchone()[0])
-        # db.execute("SELECT attacker_morale FROM wars WHERE id=(%s)", (war_id,))
-        # #     defending_morale.append(db.fetchone()[0])
-        #
-        # # defending_morale and attacking_morale include to wars.html
-        # defending = zip(defendingWars, defendingNames, defendingIds, defending_war_morales)
-        #
-        # attacking = zip(attackingWars, attackingNames, attackingIds, attacking_war_morales)
-        # db.close()
-        # connection.close()
-        #
-        # return render_template(
-        # "wars.html", units=units, cId=cId,
-        # yourCountry=yourCountry, warsCount=warsCount,
-        # defending=defending, attacking=attacking,
-        # defender_stats={"supply": 0, "morale": 0},
-        # attacker_stats={"supply": 0, "morale": 0})
 
 # TODO: put the Peace offers lable under "Internal Affairs" or "Other"
 # Peace offers show up here
@@ -653,6 +536,7 @@ def warAmount():
     cId = session["user_id"]
 
     attack_units = Units.rebuild_from_dict(session["attack_units"])
+    print(attack_units)
 
     if request.method == "GET":
 
@@ -794,14 +678,15 @@ def warTarget():
 def warResult():
 
     # DEBUG DATA START:
-    session["attack_units"] = Units(3, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"]).__dict__
-    session["attack_units"]["supply_costs"] = 5
-    session["attack_units"]["available_supplies"] = 10
-
-    eId = 2
-    session["enemy_id"] = eId
-    session["user_id"] = 3
+    # session["attack_units"] = Units(3, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"]).__dict__
+    # session["attack_units"]["supply_costs"] = 5
+    # session["attack_units"]["available_supplies"] = 10
+    #
+    # eId = 2
+    # session["enemy_id"] = eId
+    # session["user_id"] = 3
     # DEBUG DATA END!
+
 
     attacker = Units.rebuild_from_dict(session["attack_units"])
     eId = session["enemy_id"]
@@ -891,10 +776,14 @@ def warResult():
                 # infrastructure damage
                 attack_effects[0] = attack_effects[0]*0.2
 
+                # resource loot amount
+
+
             elif war_type == "Sustained":
                 pass
 
-            else: print("INVALID WARTYPE")
+            # Invalid war type
+            else: return error(400, "Something went wrong")
 
         else:
             print("INVALID USER IDs")
@@ -953,6 +842,7 @@ def warResult():
     return render_template(
         "warResult.html",
         winner=winner,
+        win_condition=win_condition,
         defender_result=defender_result,
         attacker_result=attacker_result,
         attackResult="attackResult",

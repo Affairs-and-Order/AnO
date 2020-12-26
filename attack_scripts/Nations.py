@@ -737,7 +737,7 @@ class Military(Nation):
         unit_to_amount_dict = {}
 
         # TODO: maybe use the self.allUnits because it looks like repetative code
-        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','icbms','nukes','destroyer','cruisers','submarines']
+        cidunits = ['cId','soldiers', 'artillery', 'tanks','bombers','fighters','apaches', 'spies','icbms','nukes','destroyers','cruisers','submarines']
         for count, item in enumerate(cidunits):
             unit_to_amount_dict[item] = allAmounts[0][count]
 
