@@ -777,11 +777,10 @@
         text-align: left;
         padding: 0px 10px;
         margin: 8px 6px;
-        font-size: 11pt;
+        font-size: 12pt;
         cursor: pointer;
         transition: all 0.3s;
         width: calc(100% -8px);
-        background: #42444e;
         box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
         border-radius: 4px;
         position: relative;
