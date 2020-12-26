@@ -312,11 +312,15 @@ class Units(Military):
     def rebuild_from_dict(cls, dict):
         sort_out = ["supply_costs", "available_supplies"]
         store_sort_values = []
+        print("DICTT", dict)
         for it in sort_out:
             temp = dict.get(it, None)
-            if temp != None:
-                store_sort_values.append(dict[it])
-                dict.pop(it)
+            if temp == None:
+                print("ERROR because either supply_cost == 0 or available_supplies == None")
+                return "Error"
+
+            store_sort_values.append(dict[it])
+            dict.pop(it)
 
         try:
             reb = cls(**dict)
