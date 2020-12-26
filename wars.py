@@ -299,7 +299,6 @@ def peace_offers():
 
         return redirect("/peace_offers")
 
-    print(outgoing)
     # TODO: put a button to revoke the peace offer made by the author
     return render_template(
     "peace/peace_offers.html", cId=cId,
@@ -363,7 +362,6 @@ def send_peace_offer(war_id, enemy_id):
             db.execute("INSERT INTO peace (author,demanded_resources,demanded_amount) VALUES ((%s),(%s),(%s))", (cId, resources_string[:-1], amount_string[:-1]))
             db.execute("SELECT CURRVAL('peace_id_seq')")
             lastrowid = db.fetchone()[0]
-            print("lastrow", lastrowid)
             db.execute("UPDATE wars SET peace_offer_id=(%s) WHERE id=(%s)", (lastrowid, war_id))
 
         # If peace offer is already associated with war then just update it
@@ -380,11 +378,6 @@ def send_peace_offer(war_id, enemy_id):
 @app.route("/war/<int:war_id>", methods=["GET"])
 @login_required
 def war_with_id(war_id):
-
-    # DEBUG DTATA START:
-    # cId=11
-    # DEBUG DATAT END
-
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -403,7 +396,6 @@ def war_with_id(war_id):
     # Check if peace already made
     db.execute("SELECT peace_date FROM wars WHERE id=(%s)", (war_id,))
     peace_made = db.fetchone()[0]
-    print(peace_made, "THE PEACE MADE")
     if peace_made:
         return "This war already ended"
 
@@ -425,6 +417,9 @@ def war_with_id(war_id):
     attacker = db.fetchone()[0]
     db.execute("SELECT username FROM users WHERE id=(%s)", (attacker,))
     attacker_name = db.fetchone()[0]
+    db.execute("SELECT attacker_supplies,attacker_morale FROM wars WHERE id=(%s)",(war_id,))
+    info = db.fetchone()
+    attacker_info={"morale": info[1], "supplies": info[0]}
 
     # The current enemy from our perspective (not neccessarily the one who declared war)
     if attacker==cId:
@@ -463,7 +458,7 @@ def war_with_id(war_id):
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
 
-    return render_template("war.html", defender_info=defender_info, defender=defender, attacker=attacker, war_id=war_id,
+    return render_template("war.html", defender_info=defender_info, defender=defender, attacker_info=attacker_info, attacker=attacker, war_id=war_id,
                            attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
                            agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance, peace_to_send=enemy_id)
 
@@ -507,9 +502,6 @@ def warChoose():
             unit_amount = 3
 
         attack_units = Units(cId)
-        print("TESTING HERE ATTCK UNITS")
-        print(attack_units)
-        print(selected_units)
 
         # Output error if any
         error = attack_units.attach_units(selected_units, unit_amount)
@@ -523,7 +515,6 @@ def warChoose():
 
         # DURING DEBUG:
         session["attack_units"] = attack_units.__dict__
-        print("DICT", attack_units.__dict__)
 
         # return redirect("/warchoose")
         return redirect("/waramount")
@@ -534,9 +525,7 @@ def warChoose():
 @check_required
 def warAmount():
     cId = session["user_id"]
-
     attack_units = Units.rebuild_from_dict(session["attack_units"])
-    print(attack_units)
 
     if request.method == "GET":
 
@@ -687,7 +676,6 @@ def warResult():
     # session["user_id"] = 3
     # DEBUG DATA END!
 
-
     attacker = Units.rebuild_from_dict(session["attack_units"])
     eId = session["enemy_id"]
 
@@ -710,8 +698,6 @@ def warResult():
     db.execute("SELECT username FROM users WHERE id=(%s)", (session["enemy_id"],))
     defender_name = db.fetchone()[0]
 
-    # print(attacker_name, defender_name)
-
     attacker_result = {"nation_name": attacker_name}
     defender_result = {"nation_name": defender_name}
 
@@ -730,13 +716,11 @@ def warResult():
             db.execute(f"SELECT {unit} FROM military WHERE id=(%s)", (eId,))
             defenseunits[unit] = db.fetchone()[0]
 
-        print("DEFENSE UNITS", defenseunits)
         defender = Units(eId, defenseunits, selected_units_list=defenselst)
 
         # Save the stats before the fight which used to calculate the lost amount from unit
         prev_defender = dict(defender.selected_units)
         prev_attacker = dict(attacker.selected_units)
-
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -762,9 +746,6 @@ def warResult():
         # attack_effects = sum of 3 attack effect in fight() method
         winner, win_condition, attack_effects = Military.fight(attacker, defender)
 
-        print(attack_effects, "BEFORE WARTYPE EFFECTS")
-        print(war_type)
-
         if len(war_type) > 0:
             if war_type == "Raze":
 
@@ -786,7 +767,8 @@ def warResult():
             else: return error(400, "Something went wrong")
 
         else:
-            print("INVALID USER IDs")
+            # it could mean invalid user id
+            return error(500, "Something went wrong")
 
         db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (defender.user_id,))
         province_id_fetch = db.fetchall()
@@ -832,7 +814,6 @@ def warResult():
 
     # save method only function for the attacker now, and maybe we won't change that
     # saves the decreased supply amount
-    print(attacker.__dict__, "DEBUG")
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
@@ -909,9 +890,8 @@ def declare_war():
         if war_type not in WAR_TYPES:
             return error(400, "Invalid war type!")
 
-    except Exception as e:
-        print("RUNN")
-        print(e)
+    except:
+        return error(500, "Something went wrong")
 
         # Redirects the user to an error page
         return error(400, "No such country")
