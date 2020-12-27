@@ -1099,6 +1099,16 @@
         background-position-y: 50%;
     }
     
+    .establishcoalitiontopper {
+        overflow: hidden;
+        text-align: center;
+        background-image: url("images/establishcoalition.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        object-fit: cover;
+        background-position-y: 30%;
+    }
+    
     .coalitionstopper {
         overflow: hidden;
         text-align: center;
