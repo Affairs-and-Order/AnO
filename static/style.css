@@ -733,6 +733,7 @@
         line-height: 56px;
         height: 0;
         margin: 0;
+        user-select: none;
     }
     
     .resourcedivshow .resourceicontext {

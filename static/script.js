@@ -36,16 +36,27 @@ function menubardrop() {
     document.body.classList.toggle("body");
 }
 //
-
-
-
-//
 function resourcedivcontentshow() {
 
     document.getElementById("resourcediv").classList.toggle("resourcedivshow");
     document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
 
 }
+//resourcediv stay open
+/*
+var clicked = false
+
+function resourcedivcontentshow() {
+    clicked = true
+}​
+function resourcedivcontentshow() {
+    if (clicked = true) {
+        alert('Test is true');
+        document.getElementById("resourcediv").classList.add("resourcedivshow");
+    } else {
+        alert('Test is false');
+    }
+} */
 //COUNTRY SLIDER
 $(document).ready(function() {
 
