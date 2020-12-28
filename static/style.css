@@ -1026,8 +1026,7 @@
     }
     
     .templatedivtopper {
-        padding: 0.75vh;
-        padding-top: 2.5vh;
+        padding: 15px 0;
         transition: all 0.2s;
         background-size: 400% 400%;
         margin-bottom: 10px;
@@ -1047,16 +1046,8 @@
         object-fit: cover;
     }
     
-    .noboxshadowtopper {
-        box-shadow: none;
-    }
-    
     .noboxshadowtopper h1 {
-        box-shadow: none;
-        padding-bottom: 2.5rem;
-        padding-top: 1.5rem;
-        color: var(--colorOne);
-        text-shadow: none;
+        box-shadow: rgba(0, 0, 0, 0.06) 0 3px 4px 1px, rgba(0, 0, 0, 0.1) 0 12px 32px 0;
     }
     
     .provincestopper {
@@ -1210,7 +1201,7 @@
     .templatedivad {
         width: 80%;
         height: 20vh;
-        margin: 20px auto;
+        margin: 15px auto;
         background: black;
     }
     
