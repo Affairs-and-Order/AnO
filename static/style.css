@@ -1097,7 +1097,7 @@
         background-repeat: no-repeat;
         background-size: cover;
         object-fit: cover;
-        background-position-y: 30%;
+        background-position-y: 50%;
     }
     
     .coalitionstopper {
@@ -1220,6 +1220,7 @@
         color: var(--colorOne);
         border-radius: 4px;
         font-weight: normal;
+        text-transform: capitalize;
     }
     
     .templatecontentheadercenter {
@@ -1230,6 +1231,7 @@
         margin: 0;
         color: var(--colorOne);
         font-weight: normal;
+        text-transform: capitalize;
     }
     
     .templatecontentpleft {

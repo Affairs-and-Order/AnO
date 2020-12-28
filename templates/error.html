@@ -1,8 +1,9 @@
 {% extends "layout.html" %} {% block title %} {{ code }} {% endblock %} {% block body %}
-<div class="templatediv">
+<img class="background" id="background" src="{{ url_for('static', filename='images/error.jpg') }}" />
+<div class="templatediv noboxshadowtopper loginsignupdiv">
 
     <div class="templatedivtopper noboxshadowtopper">
-        <h1 class="templatedivtitle"><span class="material-icons iconlarge">
+        <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
             highlight_off
             </span>Error</h1>
     </div>
