@@ -215,7 +215,7 @@ def coalition(colId):
         }
 
         for raw in bankRaw:
-            db.execute("SELECT" + raw  + " FROM colBanks WHERE colId=(%s)", (colId,))
+            db.execute("SELECT " + raw  + " FROM colBanks WHERE colId=(%s)", (colId,))
             bankRaw[raw] = db.fetchone()[0]
     else: 
         
