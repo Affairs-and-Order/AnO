@@ -1373,7 +1373,7 @@
         background: transparent;
         border: transparent;
         outline: none;
-        font-size: 16px;
+        font-size: inherit;
     }
     
     .templatelink:hover {
