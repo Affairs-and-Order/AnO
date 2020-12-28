@@ -1343,7 +1343,7 @@
                                 <p class="templatecontentpleft">Iron mines produce iron which is necessary to produce steel.</p>
 
                                 <ul>Iron mines cost 12,000 per hour and produce 25 iron per hour</ul>
-                                <ul>Iron mines cost 640,000 each</ul>
+                                <ul>Iron mines cost 640,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="iron_mines" type="number" placeholder="Amount" />
@@ -1392,7 +1392,7 @@
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
                                 <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour</ul>
-                                <ul>Coal mines cost 590,000</ul>
+                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1441,7 +1441,7 @@
                                 <p class="templatecontentpleft">Copper mines produce copper for your nation. Copper can be used to manufacture ammunution</p>
 
                                 <ul>Copper mines cost 8,000 per hour and produce 32 copper per hour</ul>
-                                <ul>Copper mines cost 435,000 each</ul>
+                                <ul>Copper mines cost 435,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
@@ -1487,7 +1487,7 @@
                                 <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
                                 <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour</ul>
-                                <ul>Pumpjacks cost 450,000 each</ul>
+                                <ul>Pumpjacks cost 450,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -1529,7 +1529,7 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ lumber_mills }} Lumber Mills</h3>
 
-                                <p class="templatecontentpleft">Lumber Mills</p>
+                                <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
                                 <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour</ul>
                                 <ul>Lumber mills cost 480,000 each</ul>
@@ -1576,10 +1576,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ lead_mines }} Lead Mines</h3>
 
-                                <p class="templatecontentpleft">Lead mines</p>
+                                <p class="templatecontentpleft">Lead mines allow for the production of lead, which is valuable for its use in ammunition.</p>
 
-                                <ul>Lead mines [ farmCost ] Each</ul>
-                                <ul>Lead mines 4 uranium/day</ul>
+                                <ul>Lead mines cost 12,000 per hour and produce 18 lead per hour</ul>
+                                <ul>Lead mines cost 420,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lead_mines" type="number" placeholder="Amount" />
@@ -1622,10 +1622,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ bauxite_mines}} Bauxite Mines</h3>
 
-                                <p class="templatecontentpleft">Bauxite mines</p>
+                                <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
-                                <ul>Bauxite mines [ farmCost ] Each</ul>
-                                <ul>Bauxite mines produce 6 bauxite /day</ul>
+                                <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour</ul>
+                                <ul>Bauxite mines cost 460,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -1658,38 +1658,38 @@
 
                     </div>
                     {% elif location in ["asia"] %}
-                    <!-- Copper mines -->
+                    <!-- Coal mines -->
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Copper Mines</h2>
+                        <h2 class="templatecontentheaderleft">Coal Mines</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ copper_mines }} Copper Mines</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
 
-                                <p class="templatecontentpleft">Copper Mines</p>
+                                <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Copper mines [ farmCost ] Each</ul>
-                                <ul>Copper mines 4 uranium/day</ul>
+                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour</ul>
+                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/copper_mines/{{ pId }}"><span
-                                                        class="material-icons-outlined">
-                                                        add_circle_outline
-                                                    </span>Buy</button>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/copper_mines/{{ pId }}"><span class="material-icons-outlined">
-                                                        remove_circle_outline
-                                                    </span>Sell</button>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -1698,7 +1698,7 @@
                             </div>
 
                             <div class="templatedivflex2left">
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
                             </div>
                         </div>
 
@@ -1717,10 +1717,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ pumpjacks }} Pumpjacks</h3>
 
-                                <p class="templatecontentpleft">Pumpjacks</p>
+                                <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
-                                <ul>Pumpjacks [ farmCost ] Each</ul>
-                                <ul>Pumpjacks 4 uranium/day</ul>
+                                <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour</ul>
+                                <ul>Pumpjacks cost 450,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -1729,16 +1729,16 @@
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/buy/pumpjacks/{{ pId }}"><span
-                                                        class="material-icons-outlined">
-                                                        add_circle_outline
-                                                    </span>Buy</button>
+                                                    class="material-icons-outlined">
+                                                    add_circle_outline
+                                                </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/sell/pumpjacks/{{ pId }}"><span class="material-icons-outlined">
-                                                        remove_circle_outline
-                                                    </span>Sell</button>
+                                                    remove_circle_outline
+                                                </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -1762,10 +1762,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ lumber_mills }} Lumber Mills</h3>
 
-                                <p class="templatecontentpleft">Lumber Mills</p>
+                                <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
-                                <ul>Farms cost [ farmCost ] Each</ul>
-                                <ul>Farms produce 8 rations/day for every 250K of land</ul>
+                                <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour</ul>
+                                <ul>Lumber mills cost 480,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
@@ -1774,17 +1774,17 @@
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/buy/lumber_mills/{{ pId }}"><span
-                                                    class="material-icons-outlined">
-                                                    add_circle_outline
-                                                </span>Buy</button>
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/sell/lumber_mills/{{ pId }}"><span
-                                                    class="material-icons-outlined">
-                                                    remove_circle_outline
-                                                </span>Sell</button>
+                                                class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -1806,10 +1806,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ uranium_mines }} Uranium Mines</h3>
 
-                                <p class="templatecontentpleft">Uranium Mines</p>
+                                <p class="templatecontentpleft">Uranium mines harvest uranium, which can be used to fuel nuclear reactors, or in nuclear weapons.</p>
 
-                                <ul>Uranium mines [ farmCost ] Each</ul>
-                                <ul>Uranium mines 4 uranium/day</ul>
+                                <ul>Uranium mines cost 18,000 per hour and produce 12 uranium per day</ul>
+                                <ul>Uranium mines cost 690,000 and 35 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="uranium_mines" type="number" placeholder="Amount" />
@@ -1849,12 +1849,12 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ bauxite_mines }} Bauxite Mines</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ bauxite_mines}} Bauxite Mines</h3>
 
-                                <p class="templatecontentpleft">Bauxite Mines</p>
+                                <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
-                                <ul>Bauxite mines [ farmCost ] Each</ul>
-                                <ul>Bauxite mines produce 6 bauxite /day</ul>
+                                <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour</ul>
+                                <ul>Bauxite mines cost 460,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -1897,10 +1897,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
 
-                                <p class="templatecontentpleft">Coal Mines</p>
+                                <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Coal mines [ farmCost ] Each</ul>
-                                <ul>Coal mines 4 uranium/day</ul>
+                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour</ul>
+                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1909,16 +1909,16 @@
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines/{{ pId }}"><span
-                                                        class="material-icons-outlined">
-                                                        add_circle_outline
-                                                    </span>Buy</button>
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_mines/{{ pId }}"><span class="material-icons-outlined">
-                                                        remove_circle_outline
-                                                    </span>Sell</button>
+                                                remove_circle_outline
+                                            </span>Sell</button>
 
                                         </div>
                                     </div>
