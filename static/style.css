@@ -3012,6 +3012,11 @@
     .tutorialdivactive .checkmarkparent {
         opacity: 1;
     }
+    /*ERROR*/
+    
+    .errordiv {
+        box-shadow: rgba(0, 0, 0, 0.08) 0 3px 4px 0px, rgba(0, 0, 0, 0.1) 0 12px 32px 0;
+    }
     /*FOOTER*/
     
     .footer {
