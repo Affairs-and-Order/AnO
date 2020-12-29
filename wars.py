@@ -862,7 +862,7 @@ def declare_war():
     if attacker.id == defender:
         return error(400, "Can't declare war on yourself")
 
-    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, attacker.id,))
+    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, defender.id,))
     already_war_with = db.fetchall()
 
     if (attacker.id, defender,) in already_war_with or (defender, attacker.id) in already_war_with:
