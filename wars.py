@@ -859,13 +859,15 @@ def declare_war():
     # attacker = Nation(11)
     # defender = Nation(10)
 
-    if attacker.id == defender:
+    if attacker.id == defender.id:
         return error(400, "Can't declare war on yourself")
 
     db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, defender.id,))
     already_war_with = db.fetchall()
-
-    if (attacker.id, defender,) in already_war_with or (defender, attacker.id) in already_war_with:
+    print(attacker.id)
+    print(defender.id)
+    print(already_war_with)
+    if (attacker.id, defender.id,) in already_war_with or (defender.id, attacker.id) in already_war_with:
         return error(400, "You already fight against this country!")
 
     # Check province difference
