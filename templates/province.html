@@ -14,42 +14,42 @@
         <div class="center fit notificationparent divflex2full">
             <div class="left fit notificationchild">
                 <!--If they have-->
-                <ul class="right vanilla">
-                    <span class="material-icons-outlined blue">
+                <ul class="right vanilla notificationchildleft">
+                    <span class="material-icons-outlined">
                     check
                     </span>Your province is powered
                 </ul>
                 <!--If they do not have-->
-                <ul class="right vanilla">
-                    <span class="material-icons-outlined red">
+                <ul class="right vanilla notificationchildright">
+                    <span class="material-icons-outlined">
                     clear
                     </span>Your province is not powered
                 </ul>
             </div>
             <div class="left fit notificationchild">
                 <!--If they have-->
-                <ul class="right vanilla">
-                    <span class="material-icons-outlined blue">
+                <ul class="right vanilla notificationchildleft">
+                    <span class="material-icons-outlined">
                     check
                     </span>Your citizens have food
                 </ul>
                 <!--If they do not have-->
-                <ul class="right vanilla">
-                    <span class="material-icons-outlined red">
+                <ul class="right vanilla notificationchildright">
+                    <span class="material-icons-outlined">
                     clear
                     </span>Your citizens do not have food
                 </ul>
             </div>
             <div class="left fit notificationchild">
                 <!--If they have-->
-                <ul class="right vanilla">
-                    <span class="material-icons-outlined blue">
+                <ul class="right vanilla notificationchildleft">
+                    <span class="material-icons-outlined">
                     check
-                    </span>Your citizens do not have consumer goods
+                    </span>Your citizens have consumer goods
                 </ul>
                 <!--If they do not have-->
-                <ul class="right vanilla">
-                    <span class="material-icons-outlined red">
+                <ul class="right vanilla notificationchildright">
+                    <span class="material-icons-outlined">
                     clear
                     </span>Your citizens do not have consumer goods
                 </ul>
@@ -219,28 +219,28 @@
                             </div>
                         </tr>
                         <tr>
-                            <td>{{ coal_burners }} Coal Burners</td>
+                            <td>{{ coal_burners }} Coal Power Plants</td>
                             <td>{{ gas_stations }} Gas Stations</td>
                             <td>{{ city_parks }} City Park</td>
                         </tr>
                         <tr>
-                            <td>{{ oil_burners }} Oil Burners</td>
+                            <td>{{ oil_burners }} Oil Power Plants</td>
                             <td>{{ general_stores }} General Stores</td>
-                            <td>{{ hospitals }} Hospitals</td>
+                            <td>{{ libraries }} Libraries</td>
                         </tr>
                         <tr>
                             <td>{{ solar_fields }} Solar Fields</td>
                             <td>{{ farmers_markets }} Farmers Markets</td>
-                            <td>{{ libraries }} Libraries</td>
+                            <td>{{ hospitals }} Hospitals</td>
                         </tr>
                         <tr>
                             <td>{{ hydro_dams }} Hydro Dams</td>
-                            <td>{{ malls }} Malls</td>
+                            <td>{{ banks }} Banks</td>
                             <td>{{ universities }} Universities</td>
                         </tr>
                         <tr>
                             <td>{{ nuclear_reactors }} Nuclear Reactors</td>
-                            <td>{{ banks }} Banks</td>
+                            <td>{{ malls }} Malls</td>
                             <td>{{ monorails }} Skytrains</td>
                         </tr>
                     </table>
@@ -250,17 +250,19 @@
 
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Coal Burners</h2>
+                        <h2 class="templatecontentheaderleft">Coal Power Plants</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ coal_burners }} Coal Burners</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ coal_burners }} Coal Power Plants</h3>
 
-                                <p class="templatecontentpleft">Coal burners convert coal stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Coal power plants are a cheap way to produce power for a developing nation. While they cost less to build and opperate, they contribute lots of pollution.</p>
 
-                                <ul>Coal burners cost <b>500</b> Each</ul>
-                                <ul>Coal burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Coal power plants cost 45,000 per hour and produce +4 energy
+                                </ul>
+                                <ul>Coal power plants cost 1.3M, 45 aluminium each
+                                </ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_burners" type="number" placeholder="Amount" />
@@ -288,7 +290,7 @@
                             </div>
                             <div class="templatedivflex2left">
 
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/oilburner.jpg') }}" />
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalburner.jpg') }}" />
                             </div>
                         </div>
 
@@ -296,17 +298,19 @@
 
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Oil Burners</h2>
+                        <h2 class="templatecontentheaderleft">Oil power plants</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ oil_burners }} Oil Burners</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ oil_burners }} oil power plants</h3>
 
-                                <p class="templatecontentpleft">Oil burners convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Oil power plants cost more to opperate and build than coal power plants, but produce less pollution. They are ideal for a nation pursuing tax income as a primary revenue source.</p>
 
-                                <ul>Oil burners cost <b>350</b> Each</ul>
-                                <ul>Oil burners produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Oil power plants cost 60,000 per hour and contribute +3 energy
+                                </ul>
+                                <ul>Oil power plants cost 1.6M, 50 aluminium each
+                                </ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="oil_burners" type="number" placeholder="Amount" />
@@ -343,6 +347,50 @@
                     </div>
                     <div class="menudiv">
 
+                        <h2 class="templatecontentheaderleft">Solar Fields</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ solar_fields }} Solar Fields</h3>
+
+                                <p class="templatecontentpleft">Solar fields are a hefty investment, but in return produce no pollution. They are ideal for developed nations.</p>
+
+                                <ul>Solar cost 150,000 per hour and contribute +3 energy
+                                </ul>
+                                <ul>Solar fields cost 2.3M, 55 steel each
+                                </ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="solar_fields" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}"><span class="material-icons-outlined">
+                                add_circle_outline
+                            </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}"><span class="material-icons-outlined">
+                                remove_circle_outline
+                            </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menudiv">
+
                         <h2 class="templatecontentheaderleft">Hydroelectric Dams</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -350,10 +398,12 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ hydro_dams }} Hydro Dams</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Hydro dams are expensive to build and upkeep, but provide lots of power with absolutely no production of pollution.</p>
 
-                                <ul>Hydro dams cost <b>450</b> Each</ul>
-                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                <ul>Hydro dams cost 250K per hour and contribute +6 energy
+                                </ul>
+                                <ul>Hydro damns cost 5.8M, 120 steel, 60 aluminium each
+                                </ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="hydro_dams" type="number" placeholder="Amount" />
@@ -388,48 +438,6 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Solar Fields</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ solar_fields }} Solar Fields</h3>
-
-                                <p class="templatecontentpleft"></p>
-
-                                <ul>Solar fields cost <b>550</b> Each</ul>
-                                <ul>Solar fields produce 30(electricity icon)/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="solar_fields" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/solar_fields/{{ pId }}"><span class="material-icons-outlined">
-                                add_circle_outline
-                            </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/solar_fields/{{ pId }}"><span class="material-icons-outlined">
-                                remove_circle_outline
-                            </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="templatedivflex2left">
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/solarfield.jpg') }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menudiv">
-
                         <h2 class="templatecontentheaderleft">Nuclear Reactors</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -437,10 +445,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ nuclear_reactors }} Nuclear Reactors</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Nuclear reactors are a sign of a world power. While they are costly to build and even more to mantain, it is fully compensated for by the massive amount of energy it contributes to your province.</p>
 
-                                <ul>Nuclear reactors cost <b>700</b>Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Nuclear reactors cost 1.2M, 32 uranium per hour and contribute +12 energy</ul>
+                                <ul>Nuclear reactors cost 9.5M, 250 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount" />
@@ -503,10 +511,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ gas_stations }} Gas Stations</h3>
 
-                                <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Gas stations allow your citizens to fuel their cars and to grab some groceries. They contribute a small amount of consumer goods to the economy.</p>
 
-                                <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                                <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Gas stations cost 20,000 per hour and contribute +12 consumer goods per hour</ul>
+                                <ul>Gas stations cost 2.9M, 50 steel, 35 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="gas_stations" type="number" placeholder="Amount" />
@@ -548,10 +556,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ general_stores }} General stores</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">General stores allow your citizens to pick up everyday items necessary for your economy to function.</p>
 
-                                <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                <ul>General stores cost 35,000 per hour and contribute +9 consumer goods per hour</ul>
+                                <ul>General stores cost 3.5M, 60 steel, 70 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="general_stores" type="number" placeholder="Amount" />
@@ -593,10 +601,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ farmers_markets }} Farmers Markets</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Farmers markets provide fresh and healthy food to your population without any middle man. They are perfect for producing consumer goods with little pollution.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Farmers markets cost 110,000 per hour and contribute +16 consumer goods per hour</ul>
+                                <ul>Farmers markets cost 4.2M, 75 steel, 80 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="farmers_markets" type="number" placeholder="Amount" />
@@ -630,50 +638,6 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Malls</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ malls }} Malls</h3>
-
-                                <p class="templatecontentpleft"></p>
-
-                                <ul>Malls cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Malls produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/malls/{{ pId }}"><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/malls/{{ pId }}"><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/mall.jpg') }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menudiv">
-
                         <h2 class="templatecontentheaderleft">Banks</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -681,10 +645,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ banks }} Banks</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Banks help produce a thriving debt-based economy that drastically increases production of consumer goods. Banks produce no pollution.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Banks cost 320,000 per hour and contribute +25 consumer goods per hour</ul>
+                                <ul>Banks cost 7.7M, 225 steel, 110 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="banks" type="number" placeholder="Amount" />
@@ -716,6 +680,50 @@
                             </div>
                         </div>
                     </div>
+                    <div class="menudiv">
+
+                        <h2 class="templatecontentheaderleft">Malls</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ malls }} Malls</h3>
+
+                                <p class="templatecontentpleft">Malls are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. Malls produce lots of pollution.</p>
+
+                                <ul>Malls cost 750,000 per hour and contribute +36 consumer goods</ul>
+                                <ul>Malls cost 12.5M, 360 steel, 240 aluminium each</ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/malls/{{ pId }}"><span class="material-icons-outlined">
+                                    add_circle_outline
+                                </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/malls/{{ pId }}"><span class="material-icons-outlined">
+                                    remove_circle_outline
+                                </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/mall.jpg') }}" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!--Public Works-->
                 <div id="works" class="works">
@@ -729,10 +737,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ city_parks }} City Parks</h3>
 
-                                <p class="templatecontentpleft">City parks convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">City parks are perfect establishments to increase happiness of your population, and to absorb some pollution.</p>
 
-                                <ul>City parks cost [ oilPlantCost ] Each</ul>
-                                <ul>City parks produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>City parks cost 20,000 per hour and contribute +3% happiness and -6% pollution</ul>
+                                <ul>City parks cost 5.1M, 75 steel, 60 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="city_parks" type="number" placeholder="Amount" />
@@ -767,6 +775,50 @@
                     </div>
                     <div class="menudiv">
 
+                        <h2 class="templatecontentheaderleft">Libraries</h2>
+
+                        <div class="templatedivflex2 menuflex warflexparentcolors">
+                            <div class="templatedivflex2left">
+
+                                <h3 class="templatecontentheadercenter">You have {{ libraries }} Libraries</h3>
+
+                                <p class="templatecontentpleft">Libraries are places for your citizens to enjoy a book and learn from them to become more productive.</p>
+
+                                <ul>Libraries cost 90,000 per hour and contribute +2% happiness and +2% productivity</ul>
+                                <ul>Libraries cost 5.2M, 55 steel, 40 aluminium each</ul>
+
+                                <div class="purchasemilitarydiv">
+                                    <input class="loginsignupinput" autocomplete="off" name="libraries" type="number" placeholder="Amount" />
+
+                                    <div class="templatedivflex2 divflex2center">
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/libraries/{{ pId }}"><span class="material-icons-outlined">
+                                    add_circle_outline
+                                </span>Buy</button>
+
+                                        </div>
+                                        <div class="templatedivflex2left flexchildvanilla">
+
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/libraries/{{ pId }}"><span class="material-icons-outlined">
+                                    remove_circle_outline
+                                </span>Sell</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+
+
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/library.jpg') }}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menudiv">
+
                         <h2 class="templatecontentheaderleft">Hospitals</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -774,10 +826,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ hospitals }} Hospitals</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Hospitals are equiped with advanced medical equipment and staff, allowing for the drastic increase in people who survive childbirth and deadly illnesses. People live longer and such are happier.</p>
 
-                                <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                <ul>Hospitals cost 60,000 per hour and contribute +6% population and +5% happiness</ul>
+                                <ul>Hospitals cost 8M, 140 steel, 85 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="hospitals" type="number" placeholder="Amount" />
@@ -812,50 +864,6 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Libraries</h2>
-
-                        <div class="templatedivflex2 menuflex warflexparentcolors">
-                            <div class="templatedivflex2left">
-
-                                <h3 class="templatecontentheadercenter">You have {{ libraries }} Libraries</h3>
-
-                                <p class="templatecontentpleft"></p>
-
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
-
-                                <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="libraries" type="number" placeholder="Amount" />
-
-                                    <div class="templatedivflex2 divflex2center">
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/libraries/{{ pId }}"><span class="material-icons-outlined">
-                                    add_circle_outline
-                                </span>Buy</button>
-
-                                        </div>
-                                        <div class="templatedivflex2left flexchildvanilla">
-
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/libraries/{{ pId }}"><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                </span>Sell</button>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="templatedivflex2left">
-
-
-
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/library.jpg') }}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="menudiv">
-
                         <h2 class="templatecontentheaderleft">Universities</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
@@ -863,10 +871,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ universities }} Universities</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Universities help educate your population, making them far more productive. University gives their students some great memories.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Universities cost 150K per hour and contribute +8% productivity and +4% happiness</ul>
+                                <ul>Universities cost 12.5M, 210 steel, 105 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="universities" type="number" placeholder="Amount" />
@@ -907,10 +915,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ monorails }} Monorails</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Monorails astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Monorails cost 510,000 per hour and contribute +17 productivity and +10% pollution</ul>
+                                <ul>Monorails cost 19.8M, 390 steel, 195 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="monorails" type="number" placeholder="Amount" />
@@ -976,7 +984,7 @@
                             <td>{{ component_factories }} Component Factories</td>
                         </tr>
                         <tr>
-                            <td>{{ aerodomes }} Aerodomes</td>
+                            <td>{{ aerodomes }} Aerodromes</td>
 
                             <!-- #1 Raw resource -->
                             {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
@@ -1045,10 +1053,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ army_bases }} Army Bases</h3>
 
-                                <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Army bases allow you to recruit and house soldiers, and to store tanks and artillery.</p>
 
-                                <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                                <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Army bases cost 25,000 per hour</ul>
+                                <ul>Army bases cost 1.8M and 80 wood</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="army_bases" type="number" placeholder="Amount" />
@@ -1085,25 +1093,25 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Aerodomes</h2>
+                        <h2 class="templatecontentheaderleft">Aerodromes</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ aerodomes }} Aerodomes</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ aerodomes }} Aerodromes</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Aerodromes allow for the storage and production of all air units.</p>
 
-                                <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                <ul>Aerodromes cost 55,000 per hour</ul>
+                                <ul>Aerodromes cost 2.6M, 165 steel, 40 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="aerodomes" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="aerodromes" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/aerodomes/{{ pId }}"><span
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/aerodromes/{{ pId }}"><span
                                         class="material-icons-outlined">
                                         add_circle_outline
                                     </span>Buy</button>
@@ -1111,7 +1119,7 @@
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/aerodomes/{{ pId }}"><span class="material-icons-outlined">
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/aerodromes/{{ pId }}"><span class="material-icons-outlined">
                                         remove_circle_outline
                                     </span>Sell</button>
 
@@ -1125,7 +1133,7 @@
 
 
 
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/aerodome.png') }}" />
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/aerodrome.png') }}" />
                             </div>
                         </div>
 
@@ -1139,10 +1147,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ harbours }} Harbours</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Harbours allow for the storage and production of all water units.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Harbours cost 35,000 per hour</ul>
+                                <ul>Harbours cost 2.1M, 210 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="harbours" type="number" placeholder="Amount" />
@@ -1185,10 +1193,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ admin_buildings }} Administrative Buildings</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Admin buildings provide capabilities to recruit spies and perform opperations on adversaries.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Admin buildings cost 60,000 per hour</ul>
+                                <ul>Admin buildings cost 3.2M, 90 steel, 75 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="admin_buildings" type="number" placeholder="Amount" />
@@ -1231,10 +1239,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ silos }} Silos</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Silos allow for the production, storage, and launch of ICBMs and nukes once prerequisites are acquired.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Silos cost 540,000 per hour</ul>
+                                <ul>Silos cost 12.8M, 540 steel, 240 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="silos" type="number" placeholder="Amount" />
@@ -1280,10 +1288,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ farms }} Farms</h3>
 
-                                <p class="templatecontentpleft">Farms</p>
+                                <p class="templatecontentpleft">Farms produce rations to feed your nation. Farms are best suited for established nations that own lots of land, as land influences farm production.</p>
 
-                                <ul>Farms cost [ farmCost ] Each</ul>
-                                <ul>Farms produce 8 rations/day for every 250K of land</ul>
+                                <ul>Farms cost 3,000 per hour and contribute +8 food for every land slot in the province</ul>
+                                <ul>Farms cost 220,000 and 10 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="farms" type="number" placeholder="Amount" />
@@ -1332,10 +1340,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ iron_mines }} Iron Mines</h3>
 
-                                <p class="templatecontentpleft">Iron Mines</p>
+                                <p class="templatecontentpleft">Iron mines produce iron which is necessary to produce steel.</p>
 
-                                <ul>Iron mines [ farmCost ] Each</ul>
-                                <ul>Iron mines 4 uranium/day</ul>
+                                <ul>Iron mines cost 12,000 per hour and produce 25 iron per hour</ul>
+                                <ul>Iron mines cost 640,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="iron_mines" type="number" placeholder="Amount" />
@@ -1381,10 +1389,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
 
-                                <p class="templatecontentpleft">Coal mines</p>
+                                <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Coal mines [ farmCost ] Each</ul>
-                                <ul>Coal mines 4 uranium/day</ul>
+                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour</ul>
+                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1430,10 +1438,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ copper_mines }} Copper Mines</h3>
 
-                                <p class="templatecontentpleft">Copper mines</p>
+                                <p class="templatecontentpleft">Copper mines produce copper for your nation. Copper can be used to manufacture ammunution</p>
 
-                                <ul>Copper mines [ farmCost ] Each</ul>
-                                <ul>Copper mines 4 uranium/day</ul>
+                                <ul>Copper mines cost 8,000 per hour and produce 32 copper per hour</ul>
+                                <ul>Copper mines cost 435,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
@@ -1476,10 +1484,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ pumpjacks }} Pumpjacks</h3>
 
-                                <p class="templatecontentpleft">Pumpjacks</p>
+                                <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
-                                <ul>Pumpjacks [ farmCost ] Each</ul>
-                                <ul>Pumpjacks 4 uranium/day</ul>
+                                <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour</ul>
+                                <ul>Pumpjacks cost 450,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -1521,10 +1529,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ lumber_mills }} Lumber Mills</h3>
 
-                                <p class="templatecontentpleft">Lumber Mills</p>
+                                <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
-                                <ul>Farms cost [ farmCost ] Each</ul>
-                                <ul>Farms produce 8 rations/day for every 250K of land</ul>
+                                <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour</ul>
+                                <ul>Lumber mills cost 480,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
@@ -1568,10 +1576,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ lead_mines }} Lead Mines</h3>
 
-                                <p class="templatecontentpleft">Lead mines</p>
+                                <p class="templatecontentpleft">Lead mines allow for the production of lead, which is valuable for its use in ammunition.</p>
 
-                                <ul>Lead mines [ farmCost ] Each</ul>
-                                <ul>Lead mines 4 uranium/day</ul>
+                                <ul>Lead mines cost 12,000 per hour and produce 18 lead per hour</ul>
+                                <ul>Lead mines cost 420,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lead_mines" type="number" placeholder="Amount" />
@@ -1614,10 +1622,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ bauxite_mines}} Bauxite Mines</h3>
 
-                                <p class="templatecontentpleft">Bauxite mines</p>
+                                <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
-                                <ul>Bauxite mines [ farmCost ] Each</ul>
-                                <ul>Bauxite mines produce 6 bauxite /day</ul>
+                                <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour</ul>
+                                <ul>Bauxite mines cost 460,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -1650,38 +1658,38 @@
 
                     </div>
                     {% elif location in ["asia"] %}
-                    <!-- Copper mines -->
+                    <!-- Coal mines -->
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Copper Mines</h2>
+                        <h2 class="templatecontentheaderleft">Coal Mines</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ copper_mines }} Copper Mines</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
 
-                                <p class="templatecontentpleft">Copper Mines</p>
+                                <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Copper mines [ farmCost ] Each</ul>
-                                <ul>Copper mines 4 uranium/day</ul>
+                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour</ul>
+                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
-                                    <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
+                                    <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
 
                                     <div class="templatedivflex2 divflex2center">
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/copper_mines/{{ pId }}"><span
-                                                        class="material-icons-outlined">
-                                                        add_circle_outline
-                                                    </span>Buy</button>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines/{{ pId }}"><span
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
-                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/copper_mines/{{ pId }}"><span class="material-icons-outlined">
-                                                        remove_circle_outline
-                                                    </span>Sell</button>
+                                            <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_mines/{{ pId }}"><span class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -1690,7 +1698,7 @@
                             </div>
 
                             <div class="templatedivflex2left">
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
                             </div>
                         </div>
 
@@ -1709,10 +1717,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ pumpjacks }} Pumpjacks</h3>
 
-                                <p class="templatecontentpleft">Pumpjacks</p>
+                                <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
-                                <ul>Pumpjacks [ farmCost ] Each</ul>
-                                <ul>Pumpjacks 4 uranium/day</ul>
+                                <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour</ul>
+                                <ul>Pumpjacks cost 450,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -1721,16 +1729,16 @@
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/buy/pumpjacks/{{ pId }}"><span
-                                                        class="material-icons-outlined">
-                                                        add_circle_outline
-                                                    </span>Buy</button>
+                                                    class="material-icons-outlined">
+                                                    add_circle_outline
+                                                </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/sell/pumpjacks/{{ pId }}"><span class="material-icons-outlined">
-                                                        remove_circle_outline
-                                                    </span>Sell</button>
+                                                    remove_circle_outline
+                                                </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -1754,10 +1762,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ lumber_mills }} Lumber Mills</h3>
 
-                                <p class="templatecontentpleft">Lumber Mills</p>
+                                <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
-                                <ul>Farms cost [ farmCost ] Each</ul>
-                                <ul>Farms produce 8 rations/day for every 250K of land</ul>
+                                <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour</ul>
+                                <ul>Lumber mills cost 480,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
@@ -1766,17 +1774,17 @@
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/buy/lumber_mills/{{ pId }}"><span
-                                                    class="material-icons-outlined">
-                                                    add_circle_outline
-                                                </span>Buy</button>
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/sell/lumber_mills/{{ pId }}"><span
-                                                    class="material-icons-outlined">
-                                                    remove_circle_outline
-                                                </span>Sell</button>
+                                                class="material-icons-outlined">
+                                                remove_circle_outline
+                                            </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -1798,10 +1806,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ uranium_mines }} Uranium Mines</h3>
 
-                                <p class="templatecontentpleft">Uranium Mines</p>
+                                <p class="templatecontentpleft">Uranium mines harvest uranium, which can be used to fuel nuclear reactors, or in nuclear weapons.</p>
 
-                                <ul>Uranium mines [ farmCost ] Each</ul>
-                                <ul>Uranium mines 4 uranium/day</ul>
+                                <ul>Uranium mines cost 18,000 per hour and produce 12 uranium per day</ul>
+                                <ul>Uranium mines cost 690,000 and 35 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="uranium_mines" type="number" placeholder="Amount" />
@@ -1841,12 +1849,12 @@
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ bauxite_mines }} Bauxite Mines</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ bauxite_mines}} Bauxite Mines</h3>
 
-                                <p class="templatecontentpleft">Bauxite Mines</p>
+                                <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
-                                <ul>Bauxite mines [ farmCost ] Each</ul>
-                                <ul>Bauxite mines produce 6 bauxite /day</ul>
+                                <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour</ul>
+                                <ul>Bauxite mines cost 460,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -1889,10 +1897,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
 
-                                <p class="templatecontentpleft">Coal Mines</p>
+                                <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Coal mines [ farmCost ] Each</ul>
-                                <ul>Coal mines 4 uranium/day</ul>
+                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour</ul>
+                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1901,16 +1909,16 @@
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines/{{ pId }}"><span
-                                                        class="material-icons-outlined">
-                                                        add_circle_outline
-                                                    </span>Buy</button>
+                                                class="material-icons-outlined">
+                                                add_circle_outline
+                                            </span>Buy</button>
 
                                         </div>
                                         <div class="templatedivflex2left flexchildvanilla">
 
                                             <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_mines/{{ pId }}"><span class="material-icons-outlined">
-                                                        remove_circle_outline
-                                                    </span>Sell</button>
+                                                remove_circle_outline
+                                            </span>Sell</button>
 
                                         </div>
                                     </div>
@@ -1939,10 +1947,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ component_factories }} Component factories</h3>
 
-                                <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Components factories produce components for your country from copper, steel, and aluminium. Components are incredibly valuable which are used in advanced machinery.</p>
 
-                                <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                                <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Components factories cost 220,000 per hour, and convert 20 copper, 10 steel, and 15 aluminium per hour</ul>
+                                <ul>Components factories cost 2.2M, 20 steel, 20 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="component_factories" type="number" placeholder="Amount" />
@@ -1984,10 +1992,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ steel_mills }} Steel Mills</h3>
 
-                                <p class="templatecontentpleft">Oil plants convert oil stockpiles into power for your country. Oil plants are the worst way to produce power. Oil plants create lots of emissions, each reducing your population in this province by 0.5%.</p>
+                                <p class="templatecontentpleft">Steel mills produce steel from iron and coal, an incredibly robust material</p>
 
-                                <ul>Oil plants cost [ oilPlantCost ] Each</ul>
-                                <ul>Oil plants produce 12(electricity icon)/day from 4(oil icon)/day</ul>
+                                <ul>Steel mills cost 180,000 per hour and convert 35 iron and 35 coal into 15 steel</ul>
+                                <ul>Steel mills cost 1.9M, 60 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="steel_mills" type="number" placeholder="Amount" />
@@ -2031,10 +2039,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ ammunition_factories }} Ammunition Factories</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Ammunition factories allows you to convert copper and lead into ammunition, which is necessary for war machines and useful for soldiers to fight in war.</p>
 
-                                <ul>Hydro dams cost [ hydroDamCost ] Each</ul>
-                                <ul>Hydro dams produce 12(electricity icon)/day</ul>
+                                <ul>Ammunition factories cost 140,000 per hour and convert 10 copper and 20 lead into 10 ammunition per day</ul>
+                                <ul>Ammunition factories cost 1.6M each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="ammunition_factories" type="number" placeholder="Amount" />
@@ -2069,17 +2077,17 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Aluminum Refineries</h2>
+                        <h2 class="templatecontentheaderleft">Aluminium Refineries</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ aluminium_refineries }} Aluminum Refineries</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ aluminium_refineries }} Aluminium Refineries</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Aluminium refineries allow you to convert bauxite into aluminium, a general use material.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Aluminium refineries cost 150,000 per hour and convert 15 bauxite into 12 aluminium</ul>
+                                <ul>Aluminium refineries cost 1.75M each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="aluminium_refineries" type="number" placeholder="Amount" />
@@ -2120,10 +2128,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ oil_refineries }} Oil Refineries</h3>
 
-                                <p class="templatecontentpleft"></p>
+                                <p class="templatecontentpleft">Oil refineries convert oil into gasoline, used for fueling your war machines.</p>
 
-                                <ul>Nuclear reactors cost [ nuclearReactorsCost ] Each</ul>
-                                <ul>Nuclear reactors produce 30(electricity icon)/day from 12 (Uranium icon)/day</ul>
+                                <ul>Oil refineries cost 160,000 per hour and convert 20 oil into 8 gas per hour</ul>
+                                <ul>Oil refineries cost 1.5M each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="oil_refineries" type="number" placeholder="Amount" />

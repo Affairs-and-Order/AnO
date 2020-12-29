@@ -190,11 +190,11 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     for i in users:
 
-        db.execute("SELECT date FROM users WHERE id=(%s)", (str(i[0]),))
+        db.execute("SELECT date FROM users WHERE id=(%s)", ((i[0]),))
         date = db.fetchone()[0]
         dates.append(date)
 
-        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (str([i[0]]),))
+        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (i[0],))
         population = db.fetchone()[0]
         populations.append(population)
 
@@ -202,7 +202,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
         influences.append(influence)
 
         try:
-            db.execute("SELECT flag FROM users WHERE id=(%s)", (str(i[0]),))
+            db.execute("SELECT flag FROM users WHERE id=(%s)", (i[0],))
             flag = db.fetchone()[0]
         except TypeError:
             flag = None
@@ -210,7 +210,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
         flags.append(flag)
 
         try:
-            db.execute("SELECT colId FROM coalitions WHERE userId = (%s)", (str(i[0]),))
+            db.execute("SELECT colId FROM coalitions WHERE userId = (%s)", (i[0],))
             coalition_id = db.fetchone()[0]
             coalition_ids.append(coalition_id)
 

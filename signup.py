@@ -133,7 +133,6 @@ def discord_register():
         discord = make_session(token=session.get('oauth2_token'))
 
         username = request.form.get("username")
-        continent = request.form.get("continent")
         key = request.form.get("key")
 
         try:
@@ -143,6 +142,13 @@ def discord_register():
         except TypeError:
             correct_key = False
             return error(400, "Key not found")
+
+        # Turns the continent number into 0-indexed
+        continent_number = int(request.form.get("continent")) - 1
+        # Ordered list, DO NOT EDIT
+        continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
+        continent = continents[continent_number]
+
 
         if correct_key != False:
 
@@ -223,8 +229,11 @@ def signup():
         password = request.form.get("password").encode('utf-8')
         confirmation = request.form.get("confirmation").encode('utf-8')
 
-        # Selected continent by user
-        continent = request.form.get("continent")
+        # Turns the continent number into 0-indexed
+        continent_number = int(request.form.get("continent")) - 1
+        # Ordered list, DO NOT EDIT
+        continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
+        continent = continents[continent_number]
 
         key = request.form.get("key")
         try:

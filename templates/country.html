@@ -120,26 +120,7 @@
                             <td><span class="material-icons-outlined">
                                 room
                                 </span>Country location:</td>
-                            <!--
-                            TODO: optimize this later on by checking if location
-                            consists of one word, and if its does, just capitalize the first letter
-                            -->
-                            {% if location == "northamerica" %}
-                            <td>North America</td>
-                            {% elif location == "southamerica" %}
-                            <td>South America</td>
-                            {% elif location == "europe" %}
-                            <td>Europe</td>
-                            {% elif location == "asia" %}
-                            <td>Asia</td>
-                            {% elif location == "africa" %}
-                            <td>Africa
-                                <td>
-                                    {% elif location == "australia" %}
-                                    <td>Australia</td>
-                                    {% elif location == "antarctica" %}
-                                    <td>Antarctica</td>
-                                    {% endif%}
+                            <td>{{ location }}</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
@@ -1400,17 +1381,18 @@
 
                 <label for="description">War message</label>
                 <div class="center">
-                    <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                    <textarea class="templatetextarea" name="description" placeholder="War declaration message" maxlength="240"></textarea>
                 </div>
 
-                <!-- <a class="templatedivbutton templatecenteredbutton" href="/declare_war">
-                  <span class="material-icons-outlined">
-                    check
+                <button class="templatedivbutton templatecenteredbutton">
+                    <span class="material-icons-outlined">
+                    military_tech
                   </span>Declare
-                </a> -->
-
+                    </button>
+                <!---
                 <input type="hidden" name="defender" value="{{ username }}">
                 <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
+                -->
             </form>
             <form action="/spyResult" method="POST">
                 <h2 class="templatecontentheaderleft ">Reconnaissance</h2>

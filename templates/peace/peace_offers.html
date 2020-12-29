@@ -10,7 +10,7 @@
 
     <div class="templatedivcontent">
         <!--if no offers-->
-        <h2 class="templatecontentheadercenter">You have {{outgoing_counter}} outgoing offers</h2>
+        <h2 class="templatecontentheadercenter">You have no outgoing offers</h2>
         <!--if there are offers-->
         <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
 
@@ -41,10 +41,10 @@
                         </div>
                     </td>
                     <td>
-                      <form class="material-icons iconred" method="post" class="material-icons iconred" onclick="event.target.submit();">highlight_off
-                        <input type="hidden" name="peace_offer" value="{{key}}">
-                        <input type="hidden" name="decision" value="0">
-                      </form>
+                        <form class="material-icons iconred" method="post" class="material-icons iconred" onclick="event.target.submit();">highlight_off
+                            <input type="hidden" name="peace_offer" value="{{key}}">
+                            <input type="hidden" name="decision" value="0">
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
@@ -52,7 +52,7 @@
         </div>
 
         <!--if no offers-->
-        <h2 class="templatecontentheadercenter">You have {{incoming_counter}} incoming offers</h2>
+        <h2 class="templatecontentheadercenter">You have no incoming offers</h2>
         <!--if there are offers-->
         <h2 class="templatecontentheaderleft">Incoming Offers</h2>
 
@@ -70,23 +70,23 @@
                     <td>
                         <div class="center fit">
                             <div class="left fit">
-                              {% if value["peace_type"] == "white" %}
-                              <p>White peace</p>
-                              {% else %}
-                              <!--duplicate this for every resource they offer-->
-                              {% for index in range(0, value["resource_count"]) %}
-                              <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
-                              {% endfor %}
-                              <!--until here-->
-                              {% endif %}
+                                {% if value["peace_type"] == "white" %}
+                                <p>White peace</p>
+                                {% else %}
+                                <!--duplicate this for every resource they offer-->
+                                {% for index in range(0, value["resource_count"]) %}
+                                <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
+                                {% endfor %}
+                                <!--until here-->
+                                {% endif %}
                             </div>
                         </div>
                     </td>
                     <td>
-                      <form method="post" class="material-icons iconred" onclick="event.target.submit();">check_circle_outline
-                        <input type="hidden" name="peace_offer" value="{{key}}">
-                        <input type="hidden" name="decision" value="1">
-                      </form>
+                        <form method="post" class="material-icons iconred" onclick="event.target.submit();">check_circle_outline
+                            <input type="hidden" name="peace_offer" value="{{key}}">
+                            <input type="hidden" name="decision" value="1">
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}
