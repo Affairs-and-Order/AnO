@@ -1381,17 +1381,18 @@
 
                 <label for="description">War message</label>
                 <div class="center">
-                    <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240"></textarea>
+                    <textarea class="templatetextarea" name="description" placeholder="War declaration message" maxlength="240"></textarea>
                 </div>
 
-                <!-- <a class="templatedivbutton templatecenteredbutton" href="/declare_war">
-                  <span class="material-icons-outlined">
-                    check
+                <button class="templatedivbutton templatecenteredbutton">
+                    <span class="material-icons-outlined">
+                    military_tech
                   </span>Declare
-                </a> -->
-
+                    </button>
+                <!---
                 <input type="hidden" name="defender" value="{{ username }}">
                 <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
+                -->
             </form>
             <form action="/spyResult" method="POST">
                 <h2 class="templatecontentheaderleft ">Reconnaissance</h2>
