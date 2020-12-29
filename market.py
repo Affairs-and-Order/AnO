@@ -340,6 +340,7 @@ def post_offer(offer_type):
         if offer_type == "sell":
 
             # possible sql injection posibility TODO: look into this
+            # should be fine there's no user input in resource -- steven
             rStatement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
             realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
 

@@ -39,7 +39,11 @@ def military():
         units = simple_units.copy()
         units.update(special_units)
 
-        return render_template("military.html", units=units)
+        # finding daily limits through finding number of each military building in proinfra tables that belong to a user
+        # The info of which proinfra tables belong to a user is in provinces table
+        limits = Military.get_limits(cId)
+
+        return render_template("military.html", units=units, limits=limits)
 
 @login_required
 @app.route("/<way>/<units>", methods=["POST"])
