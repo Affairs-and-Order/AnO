@@ -845,59 +845,58 @@ def declare_war():
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
-
     # Selects the country that the user is attacking
-    defender = request.form.get("defender")
+    defender = request.form.get("defender") # the problem is that declaring war through /country/id does not have a defender tag, but declaring war normally does
+    print(defender, "defender")
     war_message = request.form.get("description")
+    print(war_message)
     war_type = request.form.get("warType")
+    print(war_type)
 
-    try:
-        db.execute("SELECT id FROM users WHERE username=(%s)", (defender,))
-        defender_id = db.fetchone()[0]
 
-        attacker = Nation(session["user_id"])
-        defender = Nation(defender_id)
-        # attacker = Nation(11)
-        # defender = Nation(10)
+    attacker = Nation(session["user_id"])
+    defender = Nation(defender)
+    # attacker = Nation(11)
+    # defender = Nation(10)
 
-        if attacker.id == defender.id:
-            return error(400, "Can't declare war on yourself")
+    if attacker.id == defender:
+        return error(400, "Can't declare war on yourself")
 
-        db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, attacker.id,))
-        already_war_with = db.fetchall()
+    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, attacker.id,))
+    already_war_with = db.fetchall()
 
-        if (attacker.id, defender_id,) in already_war_with or (defender_id, attacker.id) in already_war_with:
-            return error(400, "You already fight against this country!")
+    if (attacker.id, defender,) in already_war_with or (defender, attacker.id) in already_war_with:
+        return error(400, "You already fight against this country!")
 
-        # Check province difference
-        attacker_provinces = attacker.get_provinces()["provinces_number"]
-        defender_provinces = defender.get_provinces()["provinces_number"]
+    # Check province difference
+    attacker_provinces = attacker.get_provinces()["provinces_number"]
+    defender_provinces = defender.get_provinces()["provinces_number"]
 
-        if (attacker_provinces - defender_provinces > 1):
-            return error(400, "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
-        if (defender_provinces - attacker_provinces > 3):
-            return error(400, "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
+    if (attacker_provinces - defender_provinces > 1):
+        return error(400, "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
+    if (defender_provinces - attacker_provinces > 3):
+        return error(400, "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
 
-        # Check if nation currently at peace with another nation
-        db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND (attacker=(%s) OR defender=(%s))", (attacker.id, attacker.id, defender_id, defender_id))
-        current_peace = db.fetchone()
+    # Check if nation currently at peace with another nation
+    db.execute("SELECT max(peace_date) FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND (attacker=(%s) OR defender=(%s))", (attacker.id, defender.id, attacker.id, defender.id))
+    current_peace = db.fetchone()
 
-        # 259200 = 3 days
-        if current_peace[0]:
-            if (current_peace[0]+259200) > time.time():
-                return error(403, "You can't declare war because truce has not expired!")
+    # 259200 = 3 days
+    if current_peace[0]:
+        if (current_peace[0]+259200) > time.time():
+            return error(403, "You can't declare war because truce has not expired!")
 
-        if war_type not in WAR_TYPES:
-            return error(400, "Invalid war type!")
+    if war_type not in WAR_TYPES:
+        return error(400, "Invalid war type!")
 
-    except:
-        return error(500, "Something went wrong")
+    # except:
+    #     return error(500, "Something went wrong")
 
-        # Redirects the user to an error page
-        return error(400, "No such country")
+    #     # Redirects the user to an error page
+    #     return error(400, "No such country")
 
     start_dates = time.time()
-    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (%s, %s, %s, %s, %s, %s)",(attacker.id, defender_id, war_type, war_message, start_dates, start_dates))
+    db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (%s, %s, %s, %s, %s, %s)",(attacker.id, defender.id, war_type, war_message, start_dates, start_dates))
     # current_peace = db.fetchone()
 
     connection.commit()
