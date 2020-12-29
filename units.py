@@ -316,8 +316,7 @@ class Units(Military):
         for it in sort_out:
             temp = dict.get(it, None)
             if temp == None:
-                print("ERROR because either supply_cost == 0 or available_supplies == None")
-                return "Error"
+                continue
 
             store_sort_values.append(dict[it])
             dict.pop(it)
@@ -433,7 +432,6 @@ class Units(Military):
                     mil_update = f"UPDATE military SET {unit_type}" + "=(%s) WHERE id=(%s)"
                     db.execute(mil_update, (available_unit_amount-amount, self.user_id))
 
-
             # Save supplies
             elif save_type == "supplies":
                 pass
@@ -512,14 +510,10 @@ class Units(Military):
             print("ERROR DURING SAVE")
             return "ERROR DURING SAVE"
 
-
     # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
     # Also save the remaining morale to the database
     # TODO: decrease the supplies amount in db
     def attack_cost(self, cost: int) -> str:
-
-        print("COST", cost)
-
         if self.available_supplies == None:
 
             connection = psycopg2.connect(

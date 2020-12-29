@@ -504,14 +504,10 @@ class Military(Nation):
             destruction_rate = random.uniform(0.5, 0.8)
             final_destruction = destruction_rate*min_destruction
 
-            print(defender.selected_units)
-
             before_casulaties = list(dict(defender.selected_units).values())[0]
             defender.casualties(target, final_destruction)
 
-
             # infrastructure damage
-
             connection = psycopg2.connect(
                 database=os.getenv("PG_DATABASE"),
                 user=os.getenv("PG_USER"),
