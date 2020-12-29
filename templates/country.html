@@ -1367,7 +1367,9 @@
             <h2 class="templatecontentheaderleft">War</h2>
 
             <form action="/declare_war" method="post" class="infodiv">
-                <textarea name="defender">{{ cId }}</textarea>
+
+                <textarea name="defender" class="hidden">{{ cId }}</textarea>
+
                 <div class="nomarg nopad center">
                     <label for="warType">Pick war type</label>
                     <select class="templateselect" name="warType">

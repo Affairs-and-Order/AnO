@@ -2915,6 +2915,34 @@
         user-select: none;
     }
     
+    .unitcardsmall {
+        margin: 10px;
+        border-radius: 8px;
+        align-self: stretch;
+        top: -5px;
+        position: relative;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 1px, #00a9e140 0px 8px 0px 0px;
+        transition: all 0.3s ease-in-out;
+        background: var(--tableTwo);
+        cursor: pointer;
+        opacity: 1;
+        user-select: none;
+    }
+    
+    .unitcardmini {
+        margin: 10px;
+        border-radius: 8px;
+        align-self: stretch;
+        top: -5px;
+        position: relative;
+        box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 1px, #00a9e140 0px 8px 0px 0px;
+        transition: all 0.3s ease-in-out;
+        background: var(--tableTwo);
+        cursor: pointer;
+        opacity: 1;
+        user-select: none;
+    }
+    
     .unitcard img {
         pointer-events: none;
     }
