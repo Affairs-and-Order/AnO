@@ -1386,14 +1386,15 @@
                     <textarea class="templatetextarea" name="description" placeholder="War declaration message" maxlength="240"></textarea>
                 </div>
 
-                <input class="hidden" name="defender" value="{{ username }}">
-
-                <button class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
+                <button class="templatedivbutton templatecenteredbutton">
                     <span class="material-icons-outlined">
                     military_tech
                   </span>Declare
                     </button>
-
+                <!---
+                <input type="hidden" name="defender" value="{{ username }}">
+                <input class="templatedivbutton templatecenteredbutton" type="submit" value="Declare">
+                -->
             </form>
             <form action="/spyResult" method="POST">
                 <h2 class="templatecontentheaderleft ">Reconnaissance</h2>
