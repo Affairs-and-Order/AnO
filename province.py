@@ -357,11 +357,6 @@ def province_sell_buy(way, units, province_id):
             "aluminium_refineries", "oil_refineries"
         ]
 
-        max_4 = [
-            "gas_stations", "general_stores", "farmers_markets", "malls",
-            "banks", "city_parks", "hospitals"
-        ]    
-
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         gold = int(db.fetchone()[0])
 
@@ -457,9 +452,6 @@ def province_sell_buy(way, units, province_id):
 
             if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
                 return error("You don't have enough gold", 400)
-
-            if units in max_4 and currentUnits + wantedUnits >= 4:
-                return error(400, "You can't have more than 4 of this unit")
 
             if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
                 return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
