@@ -40,6 +40,8 @@ Whoever lost fewer value in units is the winner. Based on the degree, morale cha
 # Call this from every function which displays or works with the supplies
 def update_supply(war_id):
 
+    MAX_SUPPLY = 2000
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -80,8 +82,14 @@ def update_supply(war_id):
             defender_supplies += i
         # END TODO
 
-        db.execute("UPDATE wars SET attacker_supplies=(%s), defender_supplies=(%s), last_visited=(%s) WHERE id=(%s)", (supply_by_hours+attacker_supplies, supply_by_hours+defender_supplies, time.time(), war_id))
+        # Limit supplies amount to MAX_SUPPLY
+        if attacker_supplies <= MAX_SUPPLY:
+            db.execute("UPDATE wars SET attacker_supplies=(%s) WHERE id=(%s)", (supply_by_hours+attacker_supplies, war_id))
 
+        if defender_supplies <= MAX_SUPPLY:
+            db.execute("UPDATE wars SET defender_supplies=(%s) WHERE id=(%s)", (supply_by_hours+defender_supplies, war_id))
+
+        db.execute("UPDATE wars SET last_visited=(%s) WHERE id=(%s)", (time.time(), war_id))
         connection.commit()
 
 # so this is page 0, war menu, choose a war
@@ -388,7 +396,7 @@ def war_with_id(war_id):
     db = connection.cursor()
 
     # Check if war_exist
-    db.execute("SELECT * FROM wars WHERE id=(%s)",(war_id,))
+    db.execute("SELECT * FROM wars WHERE id=(%s) AND peace_date IS NULL",(war_id,))
     valid_war = db.fetchone()
     if not valid_war:
         return error(404, "This war doesn't exist")
@@ -619,11 +627,6 @@ def warTarget():
     cId = session["user_id"]
     eId = session["enemy_id"]
 
-    # DEBUG DATA:
-    # cId = 11
-    # eId = 10
-    # session["attack_units"] = Units(cId, {"nukes": 1}, selected_units_list=["nukes"])
-
     if request.method == "GET":
 
         connection = psycopg2.connect(
@@ -701,11 +704,13 @@ def warResult():
     attacker_result = {"nation_name": attacker_name}
     defender_result = {"nation_name": defender_name}
 
+    win_condition = None
     winner = None
 
     # If user came from /wartarget only then they have from_wartarget
     result = session.get("from_wartarget", None)
-    if not result:
+    print(result, "RESULT HERE")
+    if result == None:
         db.execute("SELECT default_defense FROM military WHERE id=(%s)", (eId,))
         defensestring = db.fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
@@ -799,6 +804,7 @@ def warResult():
         defender_result["unit_loss"] = defender_loss
         attacker_result["unit_loss"] = attacker_loss
     else:
+        print("BIG ELSE")
         defender_result["unit_loss"] = result[0]
         defender_result["infra_damage"] = result[1]
 
@@ -814,6 +820,7 @@ def warResult():
 
     # save method only function for the attacker now, and maybe we won't change that
     # saves the decreased supply amount
+    print(attacker)
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
