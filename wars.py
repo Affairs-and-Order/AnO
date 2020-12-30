@@ -658,7 +658,15 @@ def warTarget():
         defender = Units(eId, {target: target_amount[0]}, selected_units_list=[target])
         attack_units = Units.rebuild_from_dict(session["attack_units"])
         # session["from_wartarget"] = Military.special_fight(session["attack_units"], defender, defender.selected_units_list[0])
-        session["from_wartarget"] = Military.special_fight(attack_units, defender, defender.selected_units_list[0])
+
+        special_fight_result = Military.special_fight(attack_units, defender, defender.selected_units_list[0])
+
+        # NOTE: MIGHT PUT THE VALIDATION WHICH GIVES ERROR TO THIS FUNCTION AND DELETE FROM SPECIAL_FIGHT (optimization purpose) 
+        # Error messages
+        if type(special_fight_result) == str:
+            return special_fight_result
+
+        session["from_wartarget"] = special_fight_result
 
         return redirect("warResult")
 
@@ -802,6 +810,9 @@ def warResult():
         for unit in attacker.selected_units_list:
             attacker_loss[unit] = prev_attacker[unit]-attacker.selected_units[unit]
 
+        print("ATTCKER, DEFENDER LOSSS")
+        print(defender_loss)
+        print(attacker_loss)
         defender_result["unit_loss"] = defender_loss
         attacker_result["unit_loss"] = attacker_loss
     else:
@@ -834,7 +845,6 @@ def warResult():
         win_condition=win_condition,
         defender_result=defender_result,
         attacker_result=attacker_result,
-        attackResult="attackResult",
         resStolen="resStolen") # resStolen needs to be a dictionary
 
 # Endpoint for war declaration
