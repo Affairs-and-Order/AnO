@@ -509,6 +509,7 @@ def give_position():
     if user_role not in ["leader", "deputy_leader", "domestic_minister"]:
         return error(400, "You're not a leader")
 
+    # DO NOT EDIT LIST. USED FOR RANKS
     roles = ["leader", "deputy_leader", "domestic_minister", "banker", "tax_collector", "foreign_ambassador", "general", "member"]
 
     role = request.form.get("role")
@@ -516,8 +517,8 @@ def give_position():
     if role not in roles:
         return error(400, "No such role exists")
 
-    if roles.index(role) >= roles.index(user_role): #
-        return error(400, "Can't edit role for a person the same rank as you")
+    if roles.index(role) > roles.index(user_role): 
+        return error(400, "Can't edit role for a person higher rank than you.")
 
     username = request.form.get("username")
 
