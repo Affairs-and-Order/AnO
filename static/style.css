@@ -2261,7 +2261,7 @@
         padding: 10px 40px;
         padding-bottom: 12px;
         font-size: 20px;
-        box-shadow: inset rgba(39, 41, 59, 0.15) 0px 0px 0px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+        box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.25) 0px 2px 5px 0px;
     }
     
     .discordlink {
