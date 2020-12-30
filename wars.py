@@ -661,7 +661,7 @@ def warTarget():
 
         special_fight_result = Military.special_fight(attack_units, defender, defender.selected_units_list[0])
 
-        # NOTE: MIGHT PUT THE VALIDATION WHICH GIVES ERROR TO THIS FUNCTION AND DELETE FROM SPECIAL_FIGHT (optimization purpose) 
+        # NOTE: MIGHT PUT THE VALIDATION WHICH GIVES ERROR TO THIS FUNCTION AND DELETE FROM SPECIAL_FIGHT (optimization purpose)
         # Error messages
         if type(special_fight_result) == str:
             return special_fight_result
@@ -961,9 +961,9 @@ def find_targets():
 @login_required
 def defense():
     cId = session["user_id"]
+    units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
 
     if request.method == "GET":
-        units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
         return render_template("defense.html", units=units)
 
     elif request.method == "POST":
