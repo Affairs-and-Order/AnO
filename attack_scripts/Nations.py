@@ -188,7 +188,7 @@ class Nation:
             self.provinces["provinces_number"] = provinces_number
 
             if provinces_number > 0:
-                db.execute("SELECT * FROM provinces WHERE userId=(?)", (self.id,))
+                db.execute("SELECT * FROM provinces WHERE userId=(%s)", (self.id,))
                 provinces = db.fetchall()
                 for province in provinces:
                     self.provinces["province_stats"][province[1]] = {
@@ -466,7 +466,7 @@ class Military(Nation):
 
         # Win the war
         if morale <= 0:
-            # TODO: need a method for give the winner the pize for winning the war (this is not negotiation because the enemy completly lost the war since morale is 0)
+            # TODO: need a method for give the winner the prize for winning the war (this is not negotiation because the enemy completly lost the war since morale is 0)
             Nation.set_peace(db, connection, war_id)
             eco = Economy(winner.user_id)
 
@@ -504,14 +504,10 @@ class Military(Nation):
             destruction_rate = random.uniform(0.5, 0.8)
             final_destruction = destruction_rate*min_destruction
 
-            print(defender.selected_units)
-
             before_casulaties = list(dict(defender.selected_units).values())[0]
             defender.casualties(target, final_destruction)
 
-
             # infrastructure damage
-
             connection = psycopg2.connect(
                 database=os.getenv("PG_DATABASE"),
                 user=os.getenv("PG_USER"),
@@ -799,6 +795,62 @@ class Military(Nation):
             "destroyers": destroyers,
             "cruisers": cruisers,
             "submarines": submarines
+        }
+
+    @staticmethod
+    def get_limits(cId): # int -> dict
+        connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+        db = connection.cursor()
+
+        # find number of each military production building the user has
+        db.execute("SELECT id FROM provinces WHERE userID=%s", (cId,))
+        provinceids = db.fetchall()
+        army_bases = 0
+        harbours = 0
+        aerodomes = 0
+        admin_buildings = 0
+        for provinceid in provinceids:
+            db.execute("SELECT army_bases FROM proinfra WHERE id=%s", (provinceid,))
+            army_bases += db.fetchone()[0]
+            db.execute("SELECT harbours FROM proinfra WHERE id=%s", (provinceid,))
+            harbours += db.fetchone()[0]
+            db.execute("SELECT aerodomes FROM proinfra WHERE id=%s", (provinceid,))
+            aerodomes += db.fetchone()[0]
+            db.execute("SELECT admin_buildings FROM proinfra WHERE id=%s", (provinceid,))
+            admin_buildings += db.fetchone()[0]
+
+        # these numbers determine the upper limit of how many of each military unit can be built per day
+        soldiers = army_bases * 100
+        tanks = army_bases * 8
+        artillery = army_bases * 8
+        bombers = aerodomes * 5
+        fighters = aerodomes * 5
+        apaches = aerodomes * 5
+        destroyers = harbours * 3
+        cruisers = harbours * 2
+        submarines = harbours * 3
+        spies = admin_buildings * 1
+        icbms = 0 # set to whether the missile silo building is built
+        nukes = 0 # set to whether the missile silo building is built
+        return {
+            "soldiers": soldiers,
+            "tanks": tanks,
+            "artillery": artillery,
+            "bombers": bombers,
+            "fighters": fighters,
+            "apaches": apaches,
+            "destroyers": destroyers,
+            "cruisers": cruisers,
+            "submarines": submarines,
+            "spies": spies,
+            "icbms": icbms,
+            "nukes": nukes
         }
 
     @staticmethod

@@ -47,7 +47,7 @@
 
                         <p class="templatecontentpleft">Soldiers are cheap and expendable. They require 1 munitions per 5000 soldiers to fight at 100% effectiveness, but will go into battle without, at 10% effectiveness. They counter artillery, apaches, and can obtain resource control.</p>
 
-                        <ul>Soldiers 200 and 2 rations each
+                        <ul>Soldiers cost 200 and 2 rations each
                         </ul>
 
                         <form action="/soldiers" method="POST">
@@ -73,7 +73,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Soldiers today</ul>
+                                <ul>You can purchase {{ limits["soldiers"] }} more Soldiers today</ul>
                             </div>
                     </div>
                     </form>
@@ -120,7 +120,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Artillery today</ul>
+                                <ul>You can purchase {{ limits["artillery"] }} more Artillery today</ul>
                             </div>
                     </div>
                     </form>
@@ -165,7 +165,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Tanks today</ul>
+                                <ul>You can purchase {{ limits["tanks"] }}  more Tanks today</ul>
                             </div>
                     </div>
                     </form>
@@ -216,7 +216,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Fighter Jets today</ul>
+                                <ul>You can purchase {{ limits["fighters"] }}  more Fighter Jets today</ul>
                             </div>
 
                     </div>
@@ -265,7 +265,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Bombers today</ul>
+                                <ul>You can purchase {{ limits["bombers"] }}  more Bombers today</ul>
                             </div>
 
                     </div>
@@ -314,7 +314,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Apaches today</ul>
+                                <ul>You can purchase {{ limits["apaches"] }}  more Apaches today</ul>
                             </div>
 
                     </div>
@@ -369,7 +369,7 @@
                                 </div>
                             </div>
 
-                            <ul>You can purchase X more Submarines today</ul>
+                            <ul>You can purchase {{ limits["submarines"] }}  more Submarines today</ul>
                     </div>
                     </form>
                     <div class="templatedivflex2left">
@@ -415,7 +415,7 @@
                                 </div>
                             </div>
 
-                            <ul>You can purchase X more Cruisers today</ul>
+                            <ul>You can purchase {{ limits["cruisers"] }}  more Cruisers today</ul>
                     </div>
                     </form>
                     <div class="templatedivflex2left">
@@ -463,7 +463,7 @@
                                 </div>
                             </div>
 
-                            <ul>You can purchase X more Destroyers today</ul>
+                            <ul>You can purchase {{ limits["destroyers"] }}  more Destroyers today</ul>
                     </div>
                     </form>
                     <div class="templatedivflex2left">
@@ -513,7 +513,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Spies today</ul>
+                                <ul>You can purchase {{ limits["spies"] }}  more Spies today</ul>
                             </div>
 
                     </div>
@@ -561,7 +561,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more ICBMs today</ul>
+                                <ul>You can purchase {{ limits["icbms"] }}  more ICBMs today</ul>
                             </div>
 
                     </div>
@@ -609,7 +609,7 @@
 
                                     </div>
                                 </div>
-                                <ul>You can purchase X more Nukes today</ul>
+                                <ul>You can purchase {{ limits["nukes"] }}  more Nukes today</ul>
                             </div>
 
                     </div>

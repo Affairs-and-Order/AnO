@@ -172,12 +172,27 @@
             });
         </script>
 
-        <form id="next_button" action="/wartarget" method="post">
-            <input type="hidden" name="targeted_unit">
-            <button class="templatedivbutton templatecenteredbutton" onclick="war_target()">
-              <span class="material-icons-outlined">arrow_forward</span>Next
-            </button>
-        </form>
+
+        <div class="templatedivflex2 divflex2center">
+            <div class="templatedivflex2left">
+
+                <a class="templatedivbutton templatecenteredbutton" href="#" onclick="history.go(-1)"><span
+                        class="material-icons-outlined">
+                        arrow_back
+                    </span>Back</a>
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <form id="next_button" action="/wartarget" method="post">
+                    <input type="hidden" name="targeted_unit">
+                    <button class="templatedivbutton templatecenteredbutton" onclick="war_target()">
+                      <span class="material-icons-outlined">arrow_forward</span>Next
+                    </button>
+                </form>
+
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

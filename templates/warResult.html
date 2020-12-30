@@ -15,42 +15,22 @@
             <div class="templatedivflex2left">
 
                 {% if winner %}
-                  <h2>The winner of the fight: {{winner}}</h2>
-                  <h2>Win type: {{win_condition}}</h2>
+                <h2>The winner of the fight: {{winner}}</h2>
+                <h2>Win type: {{win_condition}}</h2>
                 {% endif %}
 
                 <h3 class="templatecontentheadercenter">Attack effects</h3>
 
                 <!-- Attcker results -->
-                <p class="templatecontentpleft">
-                  {{attacker_result["nation_name"]}}<br>
-                  {% if attacker_result.get("unit_loss", 0) %}
-                    {% for key,value in attacker_result["unit_loss"].items() %}
-                    Losed {{value}} from {{key}}<br>
-                    {% endfor %}
-
-                    {% if attacker_result.get("infra_damage", 0) %}
-                      {% for key,value in attacker_result["infra_damage"].items() %}
-                      {{value[1]}} {{key}} is {{value[0]}}<br>
-                      {% endfor %}
-                    {% endif %}
-                  {% endif %}
+                <p class="templatecontentpleft landingpagecontent">
+                    {{attacker_result["nation_name"]}}<br> {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %} Losed {{value}} from {{key}}<br> {% endfor %} {% if attacker_result.get("infra_damage",
+                    0) %} {% for key,value in attacker_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}}<br> {% endfor %} {% endif %} {% endif %}
                 </p>
 
                 <!-- Defender results -->
-                <p class="templatecontentpleft">
-                  {{defender_result["nation_name"]}}<br>
-                  {% if defender_result.get("unit_loss", 0) %}
-                    {% for key,value in defender_result["unit_loss"].items() %}
-                    Losed {{value}} from {{key}}<br>
-                    {% endfor %}
-
-                    {% if defender_result.get("infra_damage", 0) %}
-                      {% for key,value in defender_result["infra_damage"].items() %}
-                      {{value[1]}} {{key}} is {{value[0]}}<br>
-                      {% endfor %}
-                    {% endif %}
-                  {% endif %}
+                <p class="templatecontentpleft landingpagecontent">
+                    {{defender_result["nation_name"]}}<br> {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %} Losed {{value}} from {{key}}<br> {% endfor %} {% if defender_result.get("infra_damage",
+                    0) %} {% for key,value in defender_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}}<br> {% endfor %} {% endif %} {% endif %}
                 </p>
 
             </div>
