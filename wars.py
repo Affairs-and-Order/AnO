@@ -746,13 +746,15 @@ def warResult():
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
         db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
+        # print(db.fetchall())
         war_type = db.fetchall()[-1][0]
 
         # attack_effects = sum of 3 attack effect in fight() method
         winner, win_condition, attack_effects = Military.fight(attacker, defender)
 
         if len(war_type) > 0:
-            if war_type == "Raze":
+            print(war_type, "WAR_TYPE")
+            if war_type == "Raid":
 
                 # infrastructure damage
                 attack_effects[0] = attack_effects[0]*10
@@ -763,7 +765,6 @@ def warResult():
                 attack_effects[0] = attack_effects[0]*0.2
 
                 # resource loot amount
-
 
             elif war_type == "Sustained":
                 pass
