@@ -342,6 +342,7 @@ class Units(Military):
     #        example: units_count = 3 when 3 different unit_type should be selected (like from warchoose)
     #        example: units_count = 1 when 1 unit_type sould be selected (like a special unit: nukes, icbms)
     def attach_units(self, selected_units: dict, units_count: int) -> Union[str, None]:
+        self.supply_costs = 0
         unit_types = list(selected_units.keys())
         normal_units = self.get_military(self.user_id)
         special_units = self.get_special(self.user_id)
