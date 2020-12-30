@@ -13,13 +13,13 @@
         <h2 class="templatecontentheaderleft">Choose Amount</h2>
         <p class="templatecontentpleft">Select how many of each unit you want to attack with.</p>
 
-        <div class="templatedivflex2 menuflex">
+        <div class="templatedivflex2 menuflex unitcardparent">
 
             {% for r in range(unit_range) %}
             <div class="templatedivflex2left unitcard">
                 <ul class="bold medium">{{selected_units[r] | capitalize}}</ul>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/'+selected_units[r][:-1]+'.jpg') }}" />
-                <input class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[r]}}" />
+                <input type="number" class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[r]}}" />
             </div>
             {% endfor %}
         </div>

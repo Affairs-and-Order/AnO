@@ -583,7 +583,7 @@ def warAmount():
 
             # Check if user send at least 1 amount from a specific unit type
             if not sum(selected_units.values()):
-                return error(400, "Can't attack because you haven't sent any unit")
+                return error(400, "Can't attack because you haven't sent any units")
 
             # Check every time when user input comes in, lest the user bypass input validation
             # Error code if any else return None
@@ -599,7 +599,7 @@ def warAmount():
         elif len(units_name) == 1:  # this should happen if special
             amount = int(request.form.get(units_name[0]))
             if not amount:
-                return error(400, "Can't attack because you haven't sent any unit")
+                return error(400, "Can't attack because you haven't sent any units")
 
             selected_units[units_name[0]] = amount
             err_valid = attack_units.attach_units(selected_units, 1)

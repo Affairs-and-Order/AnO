@@ -2122,11 +2122,14 @@
         width: 90%;
         background-color: var(--foreground);
         position: relative;
-        box-shadow: inset rgba(0, 0, 0, 0.015) 0 0 1000px 0, rgba(0, 0, 0, 0.03) 0px 2px 16px 0px, rgba(39, 41, 59, 0.06) 0px 2px 5px 0px;
+        box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px 0px, rgba(0, 0, 0, 0.03) 0 12px 32px 0;
+        border-radius: 4px;
+        overflow: hidden;
     }
     
     .progressbarparentlight {
-        background-color: var(--background);
+        background-color: var(--foregroundThree);
+        box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px 0px, rgba(0, 0, 0, 0.03) 0 12px 32px 0;
     }
     
     .progressbarchild {
@@ -2901,7 +2904,26 @@
     }
     /*DEFENSE*/
     
+    .unitcardparent {
+        margin: 55px 0;
+        text-align: center;
+        animation: inquriesload 1s;
+        justify-content: center;
+        display: initial;
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+    }
+    
+    @media all and (max-width: 1055px) {
+        .unitcard {
+            justify-content: center;
+        }
+    }
+    
     .unitcard {
+        float: left;
         margin: 10px;
         border-radius: 8px;
         align-self: stretch;
@@ -2913,34 +2935,8 @@
         cursor: pointer;
         opacity: 1;
         user-select: none;
-    }
-    
-    .unitcardsmall {
-        margin: 10px;
-        border-radius: 8px;
-        align-self: stretch;
-        top: -5px;
-        position: relative;
-        box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 1px, #00a9e140 0px 8px 0px 0px;
-        transition: all 0.3s ease-in-out;
-        background: var(--tableTwo);
-        cursor: pointer;
-        opacity: 1;
-        user-select: none;
-    }
-    
-    .unitcardmini {
-        margin: 10px;
-        border-radius: 8px;
-        align-self: stretch;
-        top: -5px;
-        position: relative;
-        box-shadow: rgba(0, 0, 0, 0.12) 0px 6px 16px 1px, #00a9e140 0px 8px 0px 0px;
-        transition: all 0.3s ease-in-out;
-        background: var(--tableTwo);
-        cursor: pointer;
-        opacity: 1;
-        user-select: none;
+        width: 350px;
+        height: 350px;
     }
     
     .unitcard img {
