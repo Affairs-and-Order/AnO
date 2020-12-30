@@ -250,7 +250,7 @@ class NukeUnit(BlueprintUnit):
 
     unit_type = "nukes"
     damage = 3000
-    supply_cost = 100
+    supply_cost = 1000
 
     def __init__(self, amount):
         self.amount = amount
@@ -309,20 +309,23 @@ class Units(Military):
 
     # this is needed because we can't store object in server side cache :(
     @classmethod
-    def rebuild_from_dict(cls, dict):
+    def rebuild_from_dict(cls, sess_dict):
+
+        # if you modify the sess_dict it'll affect the actual session, that is why I recomend to create a copy
+        dic = dict(sess_dict)
         sort_out = ["supply_costs", "available_supplies"]
         store_sort_values = []
-        print("DICTT", dict)
+
         for it in sort_out:
-            temp = dict.get(it, None)
+            temp = dic.get(it, None)
             if temp == None:
                 continue
 
-            store_sort_values.append(dict[it])
-            dict.pop(it)
+            store_sort_values.append(dic[it])
+            dic.pop(it)
 
         try:
-            reb = cls(**dict)
+            reb = cls(**dic)
         except:
             print("ERROR BECAUSE REB CAN't be created")
             raise TypeError
@@ -525,10 +528,9 @@ class Units(Military):
 
             db = connection.cursor()
 
-            print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
+            # print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
             db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
             attacker_id = db.fetchone()
-            print(attacker_id)
 
             # If the user is the attacker (maybe optimize this to store the user role in the war)
             if attacker_id:
@@ -545,7 +547,7 @@ class Units(Military):
 
         self.supply_costs += cost
         if self.supply_costs > self.available_supplies:
-            return "Not enougth supplies available"
+            return "Not enough supplies available"
 
 # DEBUGGING
 if __name__ == "__main__":
