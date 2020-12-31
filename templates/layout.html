@@ -18,6 +18,19 @@
     <link rel="icon" href="{{ url_for('static', filename='images/titleimage.png') }}" type="image/png">
     <title>{% block title %}{% endblock %} | A&O</title>
     <script data-ad-client="ca-pub-2399873064840158" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        const imageBackground = function(event) {
+            var output = document.getElementById('imageBackground');
+            output.src = URL.createObjectURL(event.target.files[0]);
+            output.style.width = "20vw";
+            output.style.height = "11.25vw";
+            output.onload = function() {
+                URL.revokeObjectURL(output.src) //free memory
+            }
+        };
+        alert(imageBackground)
+    </script>
+
 </head>
 
 <body>
@@ -53,9 +66,9 @@
 
 
             <div class="dropdown">
-                <button class="dropbtn">Other<span class="material-icons-outlined iconright">
+                <div class="dropbtn"><button class="dropbtnchild">Other<span class="material-icons-outlined iconright">
                         keyboard_arrow_down
-                    </span></button>
+                    </span></button></div>
                 <div class="dropdown-content">
                     <div class="dropdown-contentchild">
                         <a class="" href="/account"><span class="material-icons-outlined">
@@ -73,9 +86,9 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">Global Affairs<span class="material-icons-outlined iconright">
+                <div class="dropbtn"><button class="dropbtnchild">Global Affairs<span class="material-icons-outlined iconright">
                         keyboard_arrow_down
-                    </span></button>
+                    </span></button></div>
                 <div class="dropdown-content">
                     <div class="dropdown-contentchild">
                         {% if session.get('user_id') != None %}
@@ -100,9 +113,9 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">Internal Affairs<span class="material-icons-outlined iconright">
+                <div class="dropbtn"><button class="dropbtnchild">Internal Affairs<span class="material-icons-outlined iconright">
                         keyboard_arrow_down
-                    </span></button>
+                    </span></button></div>
                 <div class="dropdown-content">
                     <div class="dropdown-contentchild">
                         <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">

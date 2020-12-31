@@ -325,6 +325,7 @@
         font-family: 'Ubuntu', sans-serif;
         animation: textload 0.5s;
         transition: all 0.3s ease;
+        overflow-x: hidden;
     }
     
     a {
@@ -405,7 +406,7 @@
         float: left;
     }
     
-    @media all and (min-width: 815px) {
+    @media all and (min-width: 856px) {
         .menubar {
             display: none;
         }
@@ -465,7 +466,7 @@
         font-size: 19px;
     }
     
-    @media all and (max-width: 815px) {
+    @media all and (max-width: 856px) {
         .menubardiv {
             width: 100%;
             margin-left: -100%;
@@ -564,21 +565,35 @@
     }
     
     .dropbtn {
-        color: white;
-        height: 55px;
-        padding: 0 12px;
-        font-size: 20px;
-        border: none;
         cursor: pointer;
+        height: 55px;
+        transition: all 0.3s;
+        padding: 0 6px;
+    }
+    
+    .dropbtnchild {
+        color: white;
+        font-size: 20px;
+        line-height: 45px;
+        border: none;
+        height: 45px;
+        margin: 5px 0;
+        border-radius: 4px;
         transition: all 0.2s;
         width: max-content;
+        background: #363945;
+        padding: 0 12px;
+        cursor: pointer;
+    }
+    
+    .dropbtn:hover .dropbtnchild {
+        opacity: 1 !important;
+        box-shadow: inset rgba(255, 255, 255, 0.103) 0 0 10000px 0;
         background: #363945;
     }
     
     .dropbtn:hover {
         opacity: 1 !important;
-        box-shadow: inset rgba(255, 255, 255, 0.103) 0 0 10000px 0;
-        background: #363945;
     }
     
     .dropbtn span {
@@ -598,10 +613,9 @@
         font-size: 16px;
         color: white;
         user-select: none;
-        cursor: pointer;
     }
     
-    @media all and (max-width: 814px) {
+    @media all and (max-width: 857px) {
         .dropdown {
             display: none;
         }
@@ -657,6 +671,10 @@
     
     .dropdown:hover .dropbtn {
         opacity: 0.6;
+    }
+    
+    .dropdown:hover .dropbtnchild {
+        box-shadow: inset rgba(255, 255, 255, 0.103) 0 0 10000px 0;
     }
     
     .resourcediv {
