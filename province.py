@@ -222,6 +222,23 @@ def province(pId):
 
         enough_consumer_goods = enough_consumer_goods(province_user)
 
+        def enough_rations(user_id):
+
+            db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
+            rations = int(db.fetchone()[0])
+
+            rations_per_100k = 4
+
+            hundred_k = population // 100000
+            new_rations = rations - (hundred_k * rations_per_100k)
+
+            if new_rations < 1:
+                return False
+            else:
+                return True
+
+        enough_rations = enough_rations(province_user)
+
     connection.close()
 
     return render_template("province.html", pId=pId, population=population, name=name, ownProvince=ownProvince,
@@ -242,7 +259,7 @@ def province(pId):
                             component_factories=component_factories, steel_mills=steel_mills, ammunition_factories=ammunition_factories,
                             aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries,
 
-                            enough_consumer_goods=enough_consumer_goods,
+                            enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations
                             )
 
 
