@@ -406,7 +406,7 @@
         float: left;
     }
     
-    @media all and (min-width: 815px) {
+    @media all and (min-width: 856px) {
         .menubar {
             display: none;
         }
@@ -466,7 +466,7 @@
         font-size: 19px;
     }
     
-    @media all and (max-width: 815px) {
+    @media all and (max-width: 856px) {
         .menubardiv {
             width: 100%;
             margin-left: -100%;
@@ -615,7 +615,7 @@
         user-select: none;
     }
     
-    @media all and (max-width: 814px) {
+    @media all and (max-width: 857px) {
         .dropdown {
             display: none;
         }
