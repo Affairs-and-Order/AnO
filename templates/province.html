@@ -28,31 +28,37 @@
             </div>
             <div class="left fit notificationchild">
                 <!--If they have-->
+                {% if enough_rations %}
                 <ul class="right vanilla notificationchildleft">
                     <span class="material-icons-outlined">
                     check
                     </span>Your citizens have food
                 </ul>
+                {% else %}
                 <!--If they do not have-->
                 <ul class="right vanilla notificationchildright">
                     <span class="material-icons-outlined">
                     clear
                     </span>Your citizens do not have food
                 </ul>
+                {% endif %}
             </div>
             <div class="left fit notificationchild">
                 <!--If they have-->
+                {% if enough_consumer_goods %}
                 <ul class="right vanilla notificationchildleft">
                     <span class="material-icons-outlined">
                     check
                     </span>Your citizens have consumer goods
                 </ul>
+                {% else %}
                 <!--If they do not have-->
                 <ul class="right vanilla notificationchildright">
                     <span class="material-icons-outlined">
                     clear
                     </span>Your citizens do not have consumer goods
                 </ul>
+                {% endif %}
             </div>
         </div>
 

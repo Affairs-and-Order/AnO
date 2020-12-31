@@ -412,26 +412,36 @@ def generate_province_revenue(): # Runs each hour
                 if effect_minus != None:
                     effect_minus_amount *= unit_amount
 
+                    
+                province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
+                percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
+
+                user_resources = [
+                    "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+                    "lumber", "components", "steel", "consumer_goods", "aluminium",
+                    "gasoline", "ammunition", "iron"
+                ]
+
                 # Function for _plus
                 if plus_data != None:
 
-                    province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
-                    user_resources = [
-                        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
-                        "lumber", "components", "steel", "consumer_goods", "aluminium",
-                        "gasoline", "ammunition", "iron"
-                    ]
-
                     if plus_resource in province_resources:
+
                         cpr_statement = f"SELECT {plus_resource} FROM provinces" + " WHERE id=(%s)"
                         db.execute(cpr_statement, (province_id,))
                         current_plus_resource = int(db.fetchone()[0])
 
                         # Adding resource
-                        new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+                        new_resource_number = current_plus_resource + plus_amount
+
+                        if plus_resource in percentage_based and new_resource_number > 100:
+                            new_resource_number = 100
+
                         upd_prov_statement = f"UPDATE provinces SET {plus_resource}" + "=(%s) WHERE id=(%s)"
                         db.execute(upd_prov_statement, (new_resource_number, province_id))
+
                     elif plus_resource in user_resources:
+                        
                         cpr_statement = f"SELECT {plus_resource} FROM resources" + " WHERE id=(%s)"
                         db.execute(cpr_statement, (user_id,))
                         current_plus_resource = int(db.fetchone()[0])
@@ -454,6 +464,12 @@ def generate_province_revenue(): # Runs each hour
                         new_effect = current_effect + eff_amount
                     elif sign == "-":
                         new_effect = current_effect - eff_amount
+
+                    if eff in percentage_based:
+                        if new_effect > 100:
+                            new_effect = 100
+                        if new_effect < 0:
+                            new_effect = 0
 
                     db.execute(f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s", (new_effect, province_id))
 
@@ -500,4 +516,3 @@ def generate_province_revenue(): # Runs each hour
         conn.commit() # Commits the changes
 
     conn.close() # Closes the connection
-    

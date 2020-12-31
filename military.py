@@ -22,7 +22,7 @@ import os
 @login_required
 @app.route("/military", methods=["GET", "POST"])
 def military():
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -53,7 +53,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         cId = session["user_id"]
 
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -127,7 +127,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "nukes_resource2": {"steel": 600} # Costs 600 steel
 
         }
-        
+
         iterable_resources = []
 
         price = mil_dict[f"{units}_price"]
@@ -163,7 +163,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             resource3_amount = resource3_data[1]
 
             iterable_resources.append(3)
-            
+
             resource_dict.update({'resource_3': {'resource': resource3, 'amount': resource3_amount}})
 
         except KeyError:
@@ -194,7 +194,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
                 resource = resource_dict[f'resource_{x}']['resource']
                 resource_amount = resource_dict[f'resource_{x}']['amount']
-                
+
                 current_resource_statement = str(f"SELECT {resource} " + "FROM resources WHERE id=%s")
                 db.execute(current_resource_statement, (cId,))
                 current_resource = int(db.fetchone()[0])
@@ -210,7 +210,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         elif way == "buy":
 
             if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
-                return redirect("/error")
+                return error(400, "Don't have enough gold for that")
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
@@ -222,13 +222,13 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             def update_resource_minus(x):
                 resource = resource_dict[f'resource_{x}']['resource']
                 resource_amount = resource_dict[f'resource_{x}']['amount']
-                
+
                 current_resource_statement = f"SELECT {resource} " + "FROM resources WHERE id=%s"
                 db.execute(current_resource_statement, (cId,))
                 current_resource = int(db.fetchone()[0])
 
                 if current_resource < resource_amount:
-                    return error(400, "You don't have enough resources")
+                    return -1
 
                 new_resource = current_resource - resource_amount
 
@@ -236,7 +236,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 db.execute(resource_update_statement, (new_resource, cId,))
 
             for resource_number in range(1, (len(iterable_resources) + 1)):
-                update_resource_minus(resource_number)
+                err = update_resource_minus(resource_number)
+
+                # IF error is returned
+                if err == -1:
+                    return error(400, "You don't have enough resources")
 
         else:
             return error(404, "Page not found")
