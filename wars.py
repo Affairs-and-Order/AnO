@@ -1,5 +1,5 @@
 # FULLY MIGRATED
-
+import random
 from app import app
 from flask import Flask, request, render_template, session, redirect, abort, flash, url_for
 import psycopg2
@@ -166,7 +166,6 @@ def wars():
 
         return render_template("wars.html", units=units, warsCount=warsCount, war_info=war_info)
 
-# TODO: put the Peace offers lable under "Internal Affairs" or "Other"
 # Peace offers show up here
 @app.route("/peace_offers", methods=["POST", "GET"])
 @login_required
@@ -229,7 +228,6 @@ def peace_offers():
                             if cId == author_id:
                                 offer[offer_id]["owned"] = 1
 
-                        # TODO: make peace at post when clicked
                         # white peace
                         else:
                             offer[offer_id]["peace_type"] = "white"
@@ -307,7 +305,6 @@ def peace_offers():
 
         return redirect("/peace_offers")
 
-    # TODO: put a button to revoke the peace offer made by the author
     return render_template(
     "peace/peace_offers.html", cId=cId,
     incoming_peace_offers=incoming, outgoing_peace_offers=outgoing,
