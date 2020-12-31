@@ -408,51 +408,140 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
             current_cityCount = db.fetchone()[0]
 
-            multiplier = 1 + ((0.10 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
-            cityCount_price = int(1000 * multiplier) # Each city costs 1000 without the multiplier
+            multiplier = 1 + ((0.08 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
+            cityCount_price = int(250000 * multiplier) # Each city costs 250,000 without the multiplier
         else:
             cityCount_price = 0
 
+        if units == "land":
+
+            db.execute("SELECT land FROM provinces WHERE id=(%s)", (province_id,))
+            current_land = db.fetchone()[0]
+
+            multiplier = 1 + ((0.06 * wantedUnits) * current_land) # 10% Increase in cost for each city.
+            land_price = int(120000 * multiplier) # Each city costs 120,000 without the multiplier
+        else:
+            land_price = 0
+
+
+        # All the unit prices in this format:
+        """
+        unit_price: <the of the unit>, 
+        unit_resource (optional): {resource_name: amount} (how many of what resources it takes to build)
+        unit_resource2 (optional): same as one, just for second resource
+        """
+        # TODO: change the unit_resource and unit_resource2 into list based system
         unit_prices = {
-            "land_price": 1000,
+            "land_price": land_price,
             "cityCount_price": cityCount_price,
 
             "coal_burners_price": 1300000,
+            "coal_burners_resource": {"aluminium": 45},
+
             "oil_burners_price": 1600000,
+            "oil_burners_resource": {"aluminium": 50},
+
             "hydro_dams_price": 5800000,
+            "hydro_dams_resource": {"steel": 120},
+            "hydro_dams_resource2": {"aluminium": 60},
+
             "nuclear_reactors_price": 9500000,
+            "nuclear_reactors_resource": {"steel": 250},
+
             "solar_fields_price": 2300000,
+            "solar_fields_resource": {"steel": 55},
 
             "gas_stations_price": 2900000,
-            "general_stores_price": 3500000,
-            "farmers_markets_price": 4200000,
-            "malls_price": 6700000,
-            "banks_price": 8500000,
+            "gas_stations_resource": {"steel": 50},
+            "gas_stations_resource2": {"aluminium": 35},
 
-            "city_parks_price": 4900000,
-            "hospitals_price": 5300000,
-            "libraries_price": 3600000,
-            "universities_price": 6000000,
-            "monorails_price": 6800000,
+            "general_stores_price": 3500000,
+            "general_stores_resource": {"steel": 60},
+            "general_stores_resource2": {"aluminium": 70},
+
+            "farmers_markets_price": 4200000,
+            "farmers_markets_resource": {"steel": 75},
+            "farmers_markets_resource2": {"aluminium": 80},
+
+            "malls_price": 12500000, # Costs 12.5m
+            "malls_resource": {"steel": 360},
+            "malls_resource2": {"aluminium": 240},
+
+            "banks_price": 7700000,
+            "banks_resource": {"steel": 225},
+            "banks_resource2": {"aluminium": 110},
+
+            "city_parks_price": 4000000,
+            "city_parks_resource": {"steel": 75},
+            "city_parks_resource2": {"aluminium": 60},
+
+            "hospitals_price": 8000000,
+            "hospitals_resource": {"steel": 140},
+            "hospitals_resource2": {"aluminium": 85},
+
+            "libraries_price": 5200000,
+            "libraries_resource": {"steel": 55},
+            "libraries_resource2": {"aluminium": 40},
+
+            "universities_price": 12500000, # Costs 12.5m
+            "universities_resource": {"steel": 210},
+            "universities_resource2": {"aluminium": 105},
+
+            "monorails_price": 19800000,
+            "monorails_resource": {"steel": 390},
+            "monorails_resource2": {"aluminium": 195},
 
             "army_bases_price": 1800000,
+            "army_bases_resource": {"lumber": 80},
+
             "harbours_price": 2100000,
+            "harbours_resource": {"steel": 210},
+            
             "aerodomes_price": 2600000,
+            "aerodomes_resource": {"aluminium": 40},
+            "aerodomes_resource2": {"steel": 165},
+
             "admin_buildings_price": 3200000,
-            "silos_price": 1000000,
+            "admin_buildings_resource": {"steel": 90},
+            "admin_buildings_resource2": {"aluminium": 75},
+
+            "silos_price": 12800000,
+            "silos_resource": {"steel": 540},
+            "silos_resource2": {"aluminium": 240},
 
             "farms_price": 220000,
+            "farms_resource": {"lumber": 10},
+            
             "pumpjacks_price": 450000,
+            "pumpjacks_resource": {"steel": 15},
+            
             "coal_mines_price": 590000,
+            "coal_mines_resource": {"lumber": 30},
+
             "bauxite_mines_price": 460000,
+            "bauxite_mines_resource": {"lumber": 20},
+
             "copper_mines_price": 435000,
+            "copper_mines_resource": {"lumber": 25},
+
             "uranium_mines_price": 690000,
+            "uranium_mines_resource": {"steel": 35},
+
             "lead_mines_price": 420000,
+            "lead_mines_resource": {"lumber": 25},
+
             "iron_mines_price": 640000,
+            "iron_mines_resource": {"lumber": 20},
+
             "lumber_mills_price": 480000,
 
             "component_factories_price": 2200000,
+            "component_factories_resource": {"steel": 20},
+            "component_factories_resource2": {"aluminium": 20},
+
             "steel_mills_price": 1900000, 
+            "steel_mills_resource": {"aluminium": 60},
+
             "ammunition_factories_price": 1600000,
             "aluminium_refineries_price": 1750000,
             "oil_refineries_price": 1500000
