@@ -18,6 +18,7 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
         }
     });
     */
+
 //navbar events
 function menubardrop() {
 
@@ -524,36 +525,35 @@ function upgradesmilitary() {
     document.getElementById("economic").classList.remove("economicclick");
 
 }
-//
-var imageBackground = function(event) {
-    var output = document.getElementById('imageBackground');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "20vw";
-    output.style.height = "11.25vw";
-    output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
-    }
-};
+// the below 3 functions don't work, the scripts have been paraphrased in countries.html
+// var imageBackground = function(event) {
+//     var output = document.getElementById('imageBackground');
+//     output.src = URL.createObjectURL(event.target.files[0]);
+//     output.style.width = "20vw";
+//     output.style.height = "11.25vw";
+//     output.onload = function() {
+//         URL.revokeObjectURL(output.src) // free memory
+//     }
+// };
 
-var imageBackground2 = function(event) {
-    var output = document.getElementById('imageBackground2');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "20vw";
-    output.style.height = "11.25vw";
-    output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
-    }
-};
-console.log('hi')
-var imageBackground3 = function(event) {
-    var output = document.getElementById('imageBackground3');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "20vw";
-    output.style.height = "11.25vw";
-    output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
-    }
-};
+// var imageBackground2 = function(event) {
+//     var output = document.getElementById('imageBackground2');
+//     output.src = URL.createObjectURL(event.target.files[0]);
+//     output.style.width = "20vw";
+//     output.style.height = "11.25vw";
+//     output.onload = function() {
+//         URL.revokeObjectURL(output.src) // free memory
+//     }
+// };
+// var imageBackground3 = function(event) {
+//     var output = document.getElementById('imageBackground3');
+//     output.src = URL.createObjectURL(event.target.files[0]);
+//     output.style.width = "20vw";
+//     output.style.height = "11.25vw";
+//     output.onload = function() {
+//         URL.revokeObjectURL(output.src) // free memory
+//     }
+// };
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
