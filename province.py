@@ -558,19 +558,19 @@ def province_sell_buy(way, units, province_id):
         price = unit_prices[f"{units}_price"]
         totalPrice = int(wantedUnits * price)
 
-        resources_taken = []
+        resources_used = []
 
         try:
             resource_data = next(iter(unit_prices[f'{units}_resource'].items()))
 
-            resources_taken.append(resource_data)
+            resources_used.append(resource_data)
         except KeyError:
             pass
 
         try:
             resource2_data = next(iter(unit_prices[f'{units}_resource2'].items()))
 
-            resources_taken.append(resource2_data)
+            resources_used.append(resource2_data)
         except KeyError:
             pass
 
@@ -583,32 +583,68 @@ def province_sell_buy(way, units, province_id):
 
         used_slots = int(get_used_slots(province_id))
         free_infra_slots = total_infra_slots - used_slots
+
+        def resource_stuff():
+
+            for resource_data in resources_used:
+
+                resource = resource_data[0]
+                amount = resource_data[1]
+
+                if way == "buy":
+
+                    current_resource_stat = f"SELECT {resource} FROM resources" + " WHERE id=%s"
+                    db.execute(current_resource_stat, (cId,))
+                    current_resource = int(db.fetchone()[0])
+
+                    new_resource = amount * wantedUnits - current_resource
+
+                    if new_resource < 0:
+                        return error(400, f"You don't have enough {resource}")
+
+                    resource_update_stat = f"UPDATE resources SET {resource}=" + "%s WHERE id=%s"
+                    db.execute(resource_update_stat, (new_resource, cId,))
+
+                elif way == "sell":
+
+                    current_resource_stat = f"SELECT {resource} FROM resources" + " WHERE id=%s"
+                    db.execute(current_resource_stat, (cId,))
+                    current_resource = int(db.fetchone()[0])
+
+                    new_resource = current_resource + amount * wantedUnits
+
+                    resource_update_stat = f"UPDATE resources SET {resource}=" + "%s WHERE id=%s"
+                    db.execute(resource_update_stat, (new_resource, cId,))
+
+        if way == "sell":
+
+            if wantedUnits > currentUnits:  # Checks if user has enough units to sell
+                return error("You don't have enough units", 400)
+
+            unitUpd = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
+            db.execute(unitUpd, ((currentUnits - wantedUnits), province_id))
+
+            new_money = gold + (wantedUnits * price)
+
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, cId))
+
+            resource_stuff()
+
+        elif way == "buy":
+
+            if int(totalPrice) > int(gold): # Checks if user wants to buy more units than he has gold
+                return error("You don't have enough gold", 400)
+
+            if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
+                return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
+
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
+
+            updStat = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
+            db.execute(updStat, ((currentUnits + wantedUnits), province_id))
+
+            resource_stuff()
         
-        def transaction(x, price, way):
-
-            if way == "sell":
-
-                if wantedUnits > currentUnits:  # checks if unit is legit
-                    return error("You don't have enough units", 400)
-
-                unitUpd = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
-                db.execute(unitUpd, ((currentUnits - wantedUnits), province_id))
-
-                db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((gold + wantedUnits * price), cId))
-
-            elif way == "buy":
-
-                if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
-                    return error("You don't have enough gold", 400)
-
-                if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
-                    return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
-
-                db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
-
-                updStat = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
-                db.execute(updStat, ((currentUnits + wantedUnits), province_id))
-
         connection.commit()
         connection.close()
 
