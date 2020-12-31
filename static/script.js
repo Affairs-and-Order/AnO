@@ -525,17 +525,6 @@ function upgradesmilitary() {
 
 }
 //
-
-var loadFile = function(event) {
-    var output = document.getElementById('output');
-    output.src = URL.createObjectURL(event.target.files[0]);
-    output.style.width = "20vw";
-    output.style.height = "11.25vw";
-    output.onload = function() {
-        URL.revokeObjectURL(output.src) // free memory
-    }
-};
-//
 var imageBackground = function(event) {
     var output = document.getElementById('imageBackground');
     output.src = URL.createObjectURL(event.target.files[0]);

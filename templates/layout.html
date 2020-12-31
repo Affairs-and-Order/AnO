@@ -53,9 +53,9 @@
 
 
             <div class="dropdown">
-                <button class="dropbtn">Other<span class="material-icons-outlined iconright">
+                <div class="dropbtn"><button class="dropbtnchild">Other<span class="material-icons-outlined iconright">
                         keyboard_arrow_down
-                    </span></button>
+                    </span></button></div>
                 <div class="dropdown-content">
                     <div class="dropdown-contentchild">
                         <a class="" href="/account"><span class="material-icons-outlined">
@@ -73,9 +73,9 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">Global Affairs<span class="material-icons-outlined iconright">
+                <div class="dropbtn"><button class="dropbtnchild">Global Affairs<span class="material-icons-outlined iconright">
                         keyboard_arrow_down
-                    </span></button>
+                    </span></button></div>
                 <div class="dropdown-content">
                     <div class="dropdown-contentchild">
                         {% if session.get('user_id') != None %}
@@ -100,9 +100,9 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">Internal Affairs<span class="material-icons-outlined iconright">
+                <div class="dropbtn"><button class="dropbtnchild">Internal Affairs<span class="material-icons-outlined iconright">
                         keyboard_arrow_down
-                    </span></button>
+                    </span></button></div>
                 <div class="dropdown-content">
                     <div class="dropdown-contentchild">
                         <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
