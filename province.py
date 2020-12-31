@@ -558,6 +558,22 @@ def province_sell_buy(way, units, province_id):
         price = unit_prices[f"{units}_price"]
         totalPrice = int(wantedUnits * price)
 
+        resources_taken = []
+
+        try:
+            resource_data = next(iter(unit_prices[f'{units}_resource'].items()))
+
+            resources_taken.append(resource_data)
+        except KeyError:
+            pass
+
+        try:
+            resource2_data = next(iter(unit_prices[f'{units}_resource2'].items()))
+
+            resources_taken.append(resource2_data)
+        except KeyError:
+            pass
+
         curUnStat = f"SELECT {units} FROM {table} " +  "WHERE id=%s"
         db.execute(curUnStat, (province_id,))
         currentUnits = int(db.fetchone()[0])
@@ -567,32 +583,31 @@ def province_sell_buy(way, units, province_id):
 
         used_slots = int(get_used_slots(province_id))
         free_infra_slots = total_infra_slots - used_slots
+        
+        def transaction(x, price, way):
 
-        if way == "sell":
+            if way == "sell":
 
-            if wantedUnits > currentUnits:  # checks if unit is legit
-                return error("You don't have enough units", 400)
+                if wantedUnits > currentUnits:  # checks if unit is legit
+                    return error("You don't have enough units", 400)
 
-            unitUpd = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
-            db.execute(unitUpd, ((currentUnits - wantedUnits), province_id))
+                unitUpd = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
+                db.execute(unitUpd, ((currentUnits - wantedUnits), province_id))
 
-            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((gold + wantedUnits * price), cId))
+                db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((gold + wantedUnits * price), cId))
 
-        elif way == "buy":
+            elif way == "buy":
 
-            if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
-                return error("You don't have enough gold", 400)
+                if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
+                    return error("You don't have enough gold", 400)
 
-            if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
-                return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
+                if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
+                    return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
 
-            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
+                db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
-            db.execute(updStat, ((currentUnits + wantedUnits), province_id))
-
-        else:
-            return error(404, "Page not found")
+                updStat = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
+                db.execute(updStat, ((currentUnits + wantedUnits), province_id))
 
         connection.commit()
         connection.close()
