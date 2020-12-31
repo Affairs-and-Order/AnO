@@ -258,8 +258,8 @@ def update_info():
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    file = request.files["flag_input"]
-    if file and allowed_file(file.filename):
+    flag = request.files["flag_input"]
+    if flag and allowed_file(flag.filename):
 
         # Check if the user already has a flag
         try:
@@ -271,11 +271,31 @@ def update_info():
             pass
 
         # Save the file & shit
-        current_filename = file.filename
+        current_filename = flag.filename
         if allowed_file(current_filename):
             extension = current_filename.rsplit('.', 1)[1].lower()
             filename = f"flag_{cId}" + '.' + extension
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
+
+    bg_flag = request.files["bg_flag_input"]
+    if flag and allowed_file(flag.filename):
+
+        # Check if the user already has a flag
+        try:
+            db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
+            current_flag = db.fetchone()[0]
+
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
+        except TypeError:
+            pass
+
+        # Save the file & shit
+        current_filename = flag.filename
+        if allowed_file(current_filename):
+            extension = current_filename.rsplit('.', 1)[1].lower()
+            filename = f"flag_{cId}" + '.' + extension
+            flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
 
     # Location changing

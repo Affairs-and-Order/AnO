@@ -19,7 +19,7 @@
                 <h2>Win type: {{win_condition}}</h2>
                 {% endif %}
 
-                <h3 class="templatecontentheadercenter">Attack effects</h3>
+                <h3 class="templatecontentheadercenter">{{win_condition}}</h3>
 
                 <!-- Attcker results -->
                 <p class="templatecontentpleft landingpagecontent">
@@ -36,47 +36,57 @@
             </div>
             <div class="templatedivflex2left">
 
-                <!--gif of war result - MAKE IF STATEMENTS TO DETERMINE WHAT GIF TO SHOW-->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/indexcoalition.png') }}" />
+
+
+            </div>
+        </div>
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left">
+
+
+
+            </div>
+            <div class="templatedivflex2left">
+
+                <table class="templatetable">
+                    <tr>
+                        <th><span class="material-icons-outlined">
+                            article
+                            </span>Results</th>
+                    </tr>
+                    <tr>
+                        <td>Money</td>
+                        <td>$ {{resStolen}}</td>
+                    </tr>
+                    <tr>
+                        <td>resource</td>
+                        <td>{{resStolen}}</td>
+                    </tr>
+                    <tr>
+                        <td>resource</td>
+                        <td>{{resStolen}}</td>
+                    </tr>
+                    <tr>
+                        <td>resource</td>
+                        <td>{{resStolen}}</td>
+                    </tr>
+                    <tr>
+                        <td>resource</td>
+                        <td>{{resStolen}}</td>
+                    </tr>
+                    <tr>
+                        <td>resource</td>
+                        <td>{{resStolen}}</td>
+                    </tr>
+                    <tr>
+                        <td>resource</td>
+                        <td>{{resStolen}}</td>
+                    </tr>
+                </table>
 
             </div>
         </div>
 
-        <table class="templatetable">
-            <tr>
-                <th><span class="material-icons-outlined">
-                    article
-                    </span>Spoils of War</th>
-            </tr>
-            <tr>
-                <td>Money</td>
-                <td>$ {{resStolen}}</td>
-            </tr>
-            <tr>
-                <td>resource</td>
-                <td>{{resStolen}}</td>
-            </tr>
-            <tr>
-                <td>resource</td>
-                <td>{{resStolen}}</td>
-            </tr>
-            <tr>
-                <td>resource</td>
-                <td>{{resStolen}}</td>
-            </tr>
-            <tr>
-                <td>resource</td>
-                <td>{{resStolen}}</td>
-            </tr>
-            <tr>
-                <td>resource</td>
-                <td>{{resStolen}}</td>
-            </tr>
-            <tr>
-                <td>resource</td>
-                <td>{{resStolen}}</td>
-            </tr>
-        </table>
         <a class="templatedivbutton templatecenteredbutton" href="/warchoose"><span class="material-icons-outlined">
             arrow_forward
             </span>Confirm</a>

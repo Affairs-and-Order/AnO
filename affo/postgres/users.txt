@@ -5,4 +5,5 @@ email VARCHAR(100) NOT NULL UNIQUE,
 date VARCHAR(10) NOT NULL,
 hash VARCHAR(255) NOT NULL,
 description VARCHAR(500),
-flag VARCHAR(20));
+flag VARCHAR(30),
+bg_flag VARCHAR(30));
