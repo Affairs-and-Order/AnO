@@ -2553,7 +2553,7 @@
     /*COUNTRY*/
     
     .countryimagediv {
-        padding: 5px;
+        padding: 10px;
         margin: 15px auto;
         display: block;
         width: 95%;
@@ -2576,7 +2576,6 @@
         float: left;
         box-shadow: rgba(0, 0, 0, 0.2) 0 3px 4px 1px, rgba(0, 0, 0, 0.4) 0 12px 32px 0;
         text-align: center;
-        background-image: url("https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg");
         background-repeat: no-repeat;
         background-size: cover;
         object-fit: cover;
