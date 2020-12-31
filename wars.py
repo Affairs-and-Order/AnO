@@ -350,9 +350,12 @@ def send_peace_offer(war_id, enemy_id):
         resources_string = ""
         amount_string = ""
 
+        validResources = list(Economy.resources)
+        validResources.append("money")
+
         if len(resources) and len(resources_amount):
             for res, amo in zip(resources, resources_amount):
-                if res not in Economy.resources:
+                if res not in validResources:
                     raise Exception("Invalid resource")
 
                 resources_string+=res+","
