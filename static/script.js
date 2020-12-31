@@ -555,7 +555,7 @@ var imageBackground2 = function(event) {
         URL.revokeObjectURL(output.src) // free memory
     }
 };
-
+console.log('hi')
 var imageBackground3 = function(event) {
     var output = document.getElementById('imageBackground3');
     output.src = URL.createObjectURL(event.target.files[0]);
