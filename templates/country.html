@@ -83,6 +83,7 @@
         <!--View-->
         <div class="view" id="view">
 
+
             <div class="countryimagediv" id="countryFlagBackground" style="background-image: url(https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg);">
                 <!--country flag-->
                 {% if flag != None %}
@@ -91,7 +92,8 @@
                 <!-- this is the one that shows -- steven -->
                 {% else %}
                 <!-- tried first with url_for, but it didn't work -- t0dd -->
-                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> 
+                {% endif %}
                 <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
                 {% if colFlag != None %}
                 <img class="countrycoalitionimage" src="/static/flags/{{ colFlag }}" alt="{{ colFlag }}" /> {% endif %}
@@ -778,13 +780,14 @@
                             <label for="countryLocation">Change location</label>
                             <select class="templateselect" name="countryLocation">
 
-                                            <option value="antarctica" class="templateoption">Tundra</option>
-                                            <option value="australia" class="templateoption">Savanna</option>
-                                            <option value="africa" class="templateoption">Desert</option>
-                                            <option value="asia" class="templateoption">Jungle</option>
-                                            <option value="europe" class="templateoption">Boreal Forest</option>
-                                            <option value="southamerica" class="templateoption">Grassland</option>
-                                            <option value="northamerica" class="templateoption">Mountain Range</option>
+                                            <option class="templateoption" disabled>Location</option>
+                                            <option value="tundra" class="templateoption">Tundra</option>
+                                            <option value="savanna" class="templateoption">Savanna</option>
+                                            <option value="desert" class="templateoption">Desert</option>
+                                            <option value="jungle" class="templateoption">Jungle</option>
+                                            <option value="boreal_forest" class="templateoption">Boreal Forest</option>
+                                            <option value="grassland" class="templateoption">Grassland</option>
+                                            <option value="mountain_range" class="templateoption">Mountain Range</option>
 
                                         </select>
 

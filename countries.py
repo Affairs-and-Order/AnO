@@ -267,7 +267,7 @@ def update_info():
             current_flag = db.fetchone()[0]
 
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
-        except TypeError:
+        except FileNotFoundError:
             pass
 
         # Save the file & shit
@@ -279,24 +279,24 @@ def update_info():
             db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
 
     bg_flag = request.files["bg_flag_input"]
-    if flag and allowed_file(flag.filename):
+    if bg_flag and allowed_file(bg_flag.filename):
 
         # Check if the user already has a flag
         try:
-            db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
-            current_flag = db.fetchone()[0]
+            db.execute("SELECT bg_flag FROM users WHERE id=(%s)", (cId,))
+            current_bg_flag = db.fetchone()[0]
 
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
-        except TypeError:
+            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_bg_flag))
+        except FileNotFoundError:
             pass
 
         # Save the file & shit
-        current_filename = flag.filename
+        current_filename = bg_flag.filename
         if allowed_file(current_filename):
             extension = current_filename.rsplit('.', 1)[1].lower()
-            filename = f"flag_{cId}" + '.' + extension
+            filename = f"bg_flag_{cId}" + '.' + extension
             flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
+            db.execute("UPDATE users SET bg_flag=(%s) WHERE id=(%s)", (filename, cId))
 
     # Location changing
     new_location = request.form.get("countryLocation")

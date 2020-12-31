@@ -2582,6 +2582,7 @@
         background-position-y: 50%;
         position: relative;
         border-radius: 4px;
+        user-select: initial;
     }
     
     .countrycoalitionimage {
@@ -2597,6 +2598,7 @@
         background-position-y: 50%;
         border: 6px solid #36394590;
         position: relative;
+        user-select: initial;
     }
     
     .countryanthem {
