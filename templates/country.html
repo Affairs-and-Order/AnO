@@ -704,11 +704,30 @@
                             </div>
 
                             <label for="bgimage">Upload country flag</label>
-
+                            <script>
+                                const flagItselfUpload = function(event) {
+                                    var output = document.getElementById('imageBackground');
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.style.width = "20vw";
+                                    output.style.height = "11.25vw";
+                                    output.onload = function() {
+                                        URL.revokeObjectURL(output.src) //free memory
+                                    }
+                                };
+                                var flagBackgroundUpload = function(event) {
+                                    var output = document.getElementById('imageBackground2');
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.style.width = "20vw";
+                                    output.style.height = "11.25vw";
+                                    output.onload = function() {
+                                        URL.revokeObjectURL(output.src) // free memory
+                                    }
+                                };
+                            </script>
                             <label class="imageinput fit center"><span class="material-icons-outlined">
                                 wallpaper
                                     </span>Choose Image
-                                    <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground(event)">
+                                    <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagItselfUpload(event)">
                                   </label>
                         </div>
                         <div class="templatedivflex2left">
@@ -722,7 +741,7 @@
                             <label class="imageinput fit center"><span class="material-icons-outlined">
                                     wallpaper
                                         </span>Choose Image
-                                        <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
+                                        <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagBackgroundUpload(event)">
                                       </label>
                         </div>
                         <div class="templatedivflex2left">
@@ -734,11 +753,21 @@
                             </div>
 
                             <label for="bgimage">Upload country anthem</label>
-
+                            <script>
+                                var videoUpload = function(event) {
+                                    var output = document.getElementById('imageBackground3');
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.style.width = "20vw";
+                                    output.style.height = "11.25vw";
+                                    output.onload = function() {
+                                        URL.revokeObjectURL(output.src) // free memory
+                                    }
+                                };
+                            </script>
                             <label class="imageinput fit center"><span class="material-icons-outlined">
                                 slideshow
                                     </span>Choose Video
-                                    <input type="file" name="flag_input" id="imageinput" accept="video/*" onchange="imageBackground3(event)">
+                                    <input type="file" name="flag_input" id="imageinput" accept="video/*" onchange="videoUpload(event)">
                                   </label>
                         </div>
                     </div>
