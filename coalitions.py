@@ -669,8 +669,8 @@ def update_col_info(colId):
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    file = request.files["flag_input"]
-    if file and allowed_file(file.filename):
+    flag = request.files["flag_input"]
+    if flag and allowed_file(flag.filename):
 
         # Check if the user already has a flag
         try:
@@ -685,10 +685,10 @@ def update_col_info(colId):
             pass
 
         # Save the file
-        current_filename = file.filename
+        current_filename = flag.filename
         extension = current_filename.rsplit('.', 1)[1].lower()
         filename = f"col_flag_{colId}" + '.' + extension
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         db.execute("UPDATE colNames SET flag=(%s) WHERE id=(%s)", (filename, colId))
 
     connection.commit()
