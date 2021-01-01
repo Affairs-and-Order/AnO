@@ -239,6 +239,15 @@ def province(pId):
 
         enough_rations = enough_rations(province_user)
 
+        def has_power(province_id):
+
+            db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
+            energy = int(db.fetchone()[0])
+
+            return energy > 0
+
+        has_power = has_power(pId)
+
     connection.close()
 
     return render_template("province.html", pId=pId, population=population, name=name, ownProvince=ownProvince,
@@ -259,7 +268,7 @@ def province(pId):
                             component_factories=component_factories, steel_mills=steel_mills, ammunition_factories=ammunition_factories,
                             aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries,
 
-                            enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations
+                            enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power
                             )
 
 
@@ -313,7 +322,7 @@ def createprovince():
         price = int(50000 * multiplier)
         return render_template("createprovince.html", price=price)
 
-def get_used_slots(pId): # pId = province id
+def get_free_slots(pId): # pId = province id
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -324,35 +333,26 @@ def get_used_slots(pId): # pId = province id
 
     db = connection.cursor()
 
-    total_slots = 0
+    db.execute(
+    """
+    SELECT
+    coal_burners + oil_burners + hydro_dams + nuclear_reactors + solar_fields +
+    gas_stations + general_stores + farmers_markets + malls + banks +
+    city_parks + hospitals + libraries + universities + monorails +
+    army_bases + harbours + aerodomes + admin_buildings + silos +
+    farms + pumpjacks + coal_mines + bauxite_mines +
+    copper_mines + uranium_mines + lead_mines + iron_mines +
+    lumber_mills + component_factories + steel_mills + ammunition_factories +
+    aluminium_refineries + oil_refineries FROM proInfra WHERE id=%s
+    """, (pId,))
+    used_slots = int(db.fetchone()[0])
 
-    allUnits = [
-        "coal_burners", "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
-        "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
-        "city_parks", "hospitals", "libraries", "universities", "monorails",
+    db.execute("SELECT cityCount + land FROM provinces WHERE id=%s", (pId,))
+    all_slots = int(db.fetchone()[0])
 
-        "army_bases", "harbours", "aerodomes", "admin_buildings", "silos",
+    free_slots = all_slots - used_slots
 
-        "farms", "pumpjacks", "coal_mines", "bauxite_mines", 
-        "copper_mines", "uranium_mines", "lead_mines", "iron_mines",
-        "lumber_mills",
-
-        "component_factories", "steel_mills", "ammunition_factories",
-        "aluminium_refineries", "oil_refineries"
-    ]
-    
-    for unit in allUnits:
-        try:
-            select_statement = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
-            db.execute(select_statement, (pId))
-
-            amount = int(db.fetchone()[0])
-            total_slots += amount
-
-        except:
-            total_slots += 0
-
-    return total_slots
+    return free_slots
 
 @login_required
 @app.route("/<way>/<units>/<province_id>", methods=["POST"])
@@ -578,11 +578,7 @@ def province_sell_buy(way, units, province_id):
         db.execute(curUnStat, (province_id,))
         currentUnits = int(db.fetchone()[0])
 
-        db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
-        total_infra_slots = int(db.fetchone()[0])
-
-        used_slots = int(get_used_slots(province_id))
-        free_infra_slots = total_infra_slots - used_slots
+        free_slots = get_free_slots(province_id)
 
         def resource_stuff():
 
@@ -635,7 +631,7 @@ def province_sell_buy(way, units, province_id):
             if int(totalPrice) > int(gold): # Checks if user wants to buy more units than he has gold
                 return error("You don't have enough gold", 400)
 
-            if free_infra_slots < wantedUnits and units not in ["cityCount", "land"]:
+            if free_slots < wantedUnits and units not in ["cityCount", "land"]:
                 return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
