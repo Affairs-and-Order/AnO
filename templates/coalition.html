@@ -80,8 +80,6 @@
                 {% if flag != None %}
                 <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}"> {% else %}
                 <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
-                <!--Coalition Leader's flag-->
-                <img class="countrycoalitionimage" src="{{ url_for('static', filename='images/washington.jpg') }}" />
             </div>
 
             {% if description != None %}
@@ -850,7 +848,26 @@
                 <div class="infodiv">
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
-
+                            <script>
+                                const flagItselfUpload = function(event) {
+                                    var output = document.getElementById('imageBackground');
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.style.width = "20vw";
+                                    output.style.height = "11.25vw";
+                                    output.onload = function() {
+                                        URL.revokeObjectURL(output.src) //free memory
+                                    }
+                                };
+                                var flagBackgroundUpload = function(event) {
+                                    var output = document.getElementById('imageBackground2');
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.style.width = "20vw";
+                                    output.style.height = "11.25vw";
+                                    output.onload = function() {
+                                        URL.revokeObjectURL(output.src) // free memory
+                                    }
+                                };
+                            </script>
                             <div class="coalitionimagepreview">
                                 <img id="imageBackground" />
                             </div>
@@ -861,7 +878,7 @@
                                 <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                                 </span>Choose Image
-                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground(event)">
+                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagItselfUpload(event)">
                               </label>
                         </div>
                         <div class="templatedivflex2left">
@@ -875,7 +892,7 @@
                             <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                                 </span>Choose Image
-                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="imageBackground2(event)">
+                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagBackgroundUpload(event)">
                               </label>
 
                         </div>
@@ -896,8 +913,9 @@
 
                     <label for="description">War Alert</label>
 
-                    <textarea class="templatetextarea" name="description" placeholder="War alert message" maxlength="240">{{ warAlert }}</textarea>
-
+                    <div class="center">
+                        <textarea class="templatetextarea" name="description" placeholder="War alert message" maxlength="240">{{ warAlert }}</textarea>
+                    </div>
                     <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
