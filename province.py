@@ -239,6 +239,15 @@ def province(pId):
 
         enough_rations = enough_rations(province_user)
 
+        def has_power(province_id):
+
+            db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
+            energy = int(db.fetchone()[0])
+
+            return energy > 0
+
+        has_power = has_power(pId)
+
     connection.close()
 
     return render_template("province.html", pId=pId, population=population, name=name, ownProvince=ownProvince,
@@ -259,7 +268,7 @@ def province(pId):
                             component_factories=component_factories, steel_mills=steel_mills, ammunition_factories=ammunition_factories,
                             aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries,
 
-                            enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations
+                            enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power
                             )
 
 

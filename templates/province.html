@@ -14,17 +14,20 @@
         <div class="center fit notificationparent divflex2full">
             <div class="left fit notificationchild">
                 <!--If they have-->
+                {% if has_power %}
                 <ul class="right vanilla notificationchildleft">
                     <span class="material-icons-outlined">
                     check
                     </span>Your province is powered
                 </ul>
+                {% else %}
                 <!--If they do not have-->
                 <ul class="right vanilla notificationchildright">
                     <span class="material-icons-outlined">
                     clear
                     </span>Your province is not powered
                 </ul>
+                {% endif %}
             </div>
             <div class="left fit notificationchild">
                 <!--If they have-->
