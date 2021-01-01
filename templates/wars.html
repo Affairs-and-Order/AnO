@@ -114,7 +114,7 @@
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{def["morale"]}} / 100 Morale</div>
-                    <div class="progressbarchild" style="width:50%"></div>
+                    <div class="progressbarchild" style="width: {{def[" morale " + " % "]}}"></div>
                 </div>
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{def["supplies"]}} / 2000 Supplies</div>
@@ -133,7 +133,7 @@
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{att["morale"]}} / 100 Morale</div>
-                    <div class="progressbarchild" style="width:50%"></div>
+                    <div class="progressbarchild"></div>
                 </div>
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{att["supplies"]}} / 2000 Supplies</div>

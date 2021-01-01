@@ -11,39 +11,20 @@
 
     <div class="templatedivcontent">
 
+        <h3 class="templatecontentheaderleft">{{win_condition}}</h3>
+
+        <h2 class="templatecontentheadercenter">{{winner}} is the winner</h2>
+
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
-                {% if winner %}
-                <h2>The winner of the fight: {{winner}}</h2>
-                <h2>Win type: {{win_condition}}</h2>
-                {% endif %}
-
-                <h3 class="templatecontentheadercenter">{{win_condition}}</h3>
-
-                <!-- Attcker results -->
                 <p class="templatecontentpleft landingpagecontent">
-                    {{attacker_result["nation_name"]}}<br> {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %} Losed {{value}} from {{key}}<br> {% endfor %} {% if attacker_result.get("infra_damage",
-                    0) %} {% for key,value in attacker_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}}<br> {% endfor %} {% endif %} {% endif %}
+                    {{attacker_result["nation_name"]}} Ambushed {{defender_result["nation_name"]}}, obliterating {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %}, {{value}} from {{key}} {% endfor %}. Your units destroyed
+                    {% if defender_result.get("infra_damage", 0) %} {% for key,value in defender_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}} {% endfor %} {% endif %} {% endif %}
+
+                    <br /><br /> {{attacker_result["nation_name"]}} Suffered {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %}, {{value}} from {{key}} and lost {% endfor %} {% if attacker_result.get("infra_damage",
+                    0) %} {% for key,value in attacker_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}} {% endfor %} {% endif %} {% endif %}
                 </p>
-
-                <!-- Defender results -->
-                <p class="templatecontentpleft landingpagecontent">
-                    {{defender_result["nation_name"]}}<br> {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %} Losed {{value}} from {{key}}<br> {% endfor %} {% if defender_result.get("infra_damage",
-                    0) %} {% for key,value in defender_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}}<br> {% endfor %} {% endif %} {% endif %}
-                </p>
-
-            </div>
-            <div class="templatedivflex2left">
-
-
-
-            </div>
-        </div>
-        <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left">
-
-
 
             </div>
             <div class="templatedivflex2left">
@@ -54,33 +35,39 @@
                             article
                             </span>Results</th>
                     </tr>
+                    <!--Your losses-->
                     <tr>
-                        <td>Money</td>
-                        <td>$ {{resStolen}}</td>
+                        <td>Unit 1 Losses:</td>
+                        <td>[[ loss amount ]]</td>
                     </tr>
                     <tr>
-                        <td>resource</td>
-                        <td>{{resStolen}}</td>
+                        <td>Unit 2 Losses:</td>
+                        <td>[[ loss amount ]]</td>
                     </tr>
                     <tr>
-                        <td>resource</td>
-                        <td>{{resStolen}}</td>
+                        <td>Unit 3 Losses:</td>
+                        <td>[[ loss amount ]]</td>
                     </tr>
                     <tr>
-                        <td>resource</td>
-                        <td>{{resStolen}}</td>
+                        <td>Infrascture Lost:</td>
+                        <td>[[ loss amount ]]</td>
+                    </tr>
+                    <!--Enemy losses-->
+                    <tr>
+                        <td>Unit 1 Killed:</td>
+                        <td>[[ kill amount ]]</td>
                     </tr>
                     <tr>
-                        <td>resource</td>
-                        <td>{{resStolen}}</td>
+                        <td>Unit 2 Killed:</td>
+                        <td>[[ kill amount ]]</td>
                     </tr>
                     <tr>
-                        <td>resource</td>
-                        <td>{{resStolen}}</td>
+                        <td>Unit 3 Killed:</td>
+                        <td>[[ kill amount ]]</td>
                     </tr>
                     <tr>
-                        <td>resource</td>
-                        <td>{{resStolen}}</td>
+                        <td>Infrascture Destroyed:</td>
+                        <td>[[ destroyed amount ]]</td>
                     </tr>
                 </table>
 
