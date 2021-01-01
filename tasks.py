@@ -268,6 +268,8 @@ def generate_province_revenue(): # Runs each hour
     'oil_refineries_convert_plus': {'gasoline': 8}
     }
 
+    energy_units = ["coal_burners", "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields"]
+
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -399,6 +401,21 @@ def generate_province_revenue(): # Runs each hour
                     new_money = current_money - operating_costs
                     db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
 
+                def take_energy():
+
+                    if unit not in energy_units:
+
+                        db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
+                        current_energy = int(db.fetchone()[0])
+
+                        new_energy = current_energy - unit_amount
+
+                        if new_energy >= 0:
+                            
+                            db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
+
+                take_energy()
+
                 plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
                 operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
 
@@ -516,3 +533,5 @@ def generate_province_revenue(): # Runs each hour
         conn.commit() # Commits the changes
 
     conn.close() # Closes the connection
+
+generate_province_revenue()
