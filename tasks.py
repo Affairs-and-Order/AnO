@@ -465,6 +465,7 @@ def generate_province_revenue(): # Runs each hour
 
                         # Adding resource
                         new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+
                         upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=(%s) WHERE id=(%s)"
                         db.execute(upd_res_statement, (new_resource_number, province_id))
                     else:
@@ -485,6 +486,9 @@ def generate_province_revenue(): # Runs each hour
                     if eff in percentage_based:
                         if new_effect > 100:
                             new_effect = 100
+                        if new_effect < 0:
+                            new_effect = 0
+                    else:
                         if new_effect < 0:
                             new_effect = 0
 
@@ -519,6 +523,9 @@ def generate_province_revenue(): # Runs each hour
                     current_resource = int(db.fetchone()[0])
 
                     new_resource = current_resource - amount
+
+                    if new_resource < 0:
+                        new_resource = 0
 
                     resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
                     db.execute(resource_u_statement, (new_resource, user_id,))
