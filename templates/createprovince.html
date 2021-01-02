@@ -19,29 +19,25 @@
 
             <div class="templatedivflex2 menuflex">
                 <div class="templatedivflex2left">
-
-                    <div class="infodiv">
-                        <div class="templatedivflex2 divflex2center">
-                            <div class="templatedivflex2left">
-
-
-                                <ul for="newProvince" class="mediumsmall">Your next province costs <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />{{ price }}</ul>
-                                <form action="/createprovince" method="POST">
+                    <form action="/createprovince" method="POST">
+                        <div class="infodiv">
+                            <ul>Your next province costs <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />{{ price }}</ul>
+                            <div class="templatedivflex2 divflex2center menuflex">
+                                <div class="templatedivflex2left vanilla">
 
                                     <input class="loginsignupinput" autocomplete="off" name="name" placeholder="Province Name" maxlength="15" required/>
 
-                            </div>
-                            <div class="templatedivflex2right">
+                                </div>
+                                <div class="templatedivflex2left vanilla">
 
-                                <button type="submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
+                                    <button type="submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                                 add_circle_outline
                                 </span>Create</button>
 
+                                </div>
                             </div>
-
-                            </form>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <div class="templatedivflex2left">
 
