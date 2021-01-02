@@ -65,7 +65,6 @@ def update_supply(war_id):
 
     # TODO: give bonus supplies if there is specific infrastructure for it
     # if supply_bonus: xy
-
     if supply_by_hours > 0:
 
         db.execute("SELECT attacker,defender FROM wars where id=(%s)", (war_id,))
@@ -83,10 +82,14 @@ def update_supply(war_id):
         # END TODO
 
         # Limit supplies amount to MAX_SUPPLY
-        if attacker_supplies <= MAX_SUPPLY:
+        if (supply_by_hours+attacker_supplies) > MAX_SUPPLY:
+            db.execute("UPDATE wars SET attacker_supplies=(%s) WHERE id=(%s)", (MAX_SUPPLY, war_id))
+        else:
             db.execute("UPDATE wars SET attacker_supplies=(%s) WHERE id=(%s)", (supply_by_hours+attacker_supplies, war_id))
 
-        if defender_supplies <= MAX_SUPPLY:
+        if (supply_by_hours+defender_supplies) > MAX_SUPPLY:
+            db.execute("UPDATE wars SET defender_supplies=(%s) WHERE id=(%s)", (MAX_SUPPLY, war_id))
+        else:
             db.execute("UPDATE wars SET defender_supplies=(%s) WHERE id=(%s)", (supply_by_hours+defender_supplies, war_id))
 
         db.execute("UPDATE wars SET last_visited=(%s) WHERE id=(%s)", (time.time(), war_id))
