@@ -996,9 +996,9 @@
                             <td>{{ aerodomes }} Aerodromes</td>
 
                             <!-- #1 Raw resource -->
-                            {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
+                            {% if location in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
                             <td>{{ iron_mines }} Iron Mines</td>
-                            {% elif location in ["australia", "asia", "northamerica"] %}
+                            {% elif location in ["Savanna", "Jungle", "Mountain Range"] %}
                             <td>{{ coal_mines }} Coal Mines</td>
                             {% endif %}
                             <!---->
@@ -1007,11 +1007,11 @@
                         <tr>
                             <td>{{ harbours }} Harbours</td>
                             <!-- #2 Raw resource -->
-                            {% if location in ["antarctica", "australia", "asia", "southamerica"] %}
+                            {% if location in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
                             <td>{{ copper_mines }} Copper Mines</td>
-                            {% elif location in ["northamerica", "africa"] %}
+                            {% elif location in ["Mountain Range", "Desert"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
-                            {% elif location in ["asia", "europe"] %}
+                            {% elif location in ["Jungle", "Boreal Forest"] %}
                             <td>{{ lumber_mills }} Lumber Mills</td>
                             {% endif %}
                             <!---->
@@ -1020,11 +1020,11 @@
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
                             <!-- #3 Raw resource -->
-                            {% if location in ["antarctica", "australia", "europe"] %}
+                            {% if location in ["Tundra", "Savanna", "Boreal Forest"] %}
                             <td>{{ lead_mines }} Lead Mines</td>
-                            {% elif location in ["africa", "southamerica", "northamerica"] %}
+                            {% elif location in ["Desert", "Grassland", "Mountain Range"] %}
                             <td>{{ bauxite_mines }} Bauxite Mines</td>
-                            {% elif location in ["asia"] %}
+                            {% elif location in ["Jungle"] %}
                             <td>{{ copper_mines }} Copper Mines</td>
                             {% endif %}
                             <!---->
@@ -1033,15 +1033,15 @@
                         <tr>
                             <td>{{ silos }} Silos</td>
                             <!-- 4 Raw resource -->
-                            {% if location in ["asia", "southamerica"] %}
+                            {% if location in ["Jungle", "Grassland"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
-                            {% elif location in ["northamerica"] %}
+                            {% elif location in ["Mountain Range"] %}
                             <td>{{ lumber_mills }} Lumber Mills</td>
-                            {% elif location in ["africa", "antarctica"]%}
+                            {% elif location in ["Desert", "Tundra"]%}
                             <td>{{ uranium_mines }} Uranium Mines </td>
-                            {% elif location in ["australia"] %}
+                            {% elif location in ["Savanna"] %}
                             <td>{{ bauxite_mines }} Bauxite Mines</td>
-                            {% elif location in ["europe"] %}
+                            {% elif location in ["Boreal Forest"] %}
                             <td>{{ coal_mines }} Coal mines</td>
                             {% endif %}
                             <!---->
@@ -1339,7 +1339,7 @@
 
                     <!-- CONTINENT SPECIFIC RESOURCES -->
                     <!-- #1 Raw resource -->
-                    {% if location in ["antarctica", "africa", "europe", "southamerica"] %}
+                    {% if location in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
                     <!-- Iron mines -->
                     <div class="menudiv">
 
@@ -1388,7 +1388,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["australia", "asia", "northamerica"] %}
+                    {% elif location in ["Savanna", "Jungle", "Mountain Range"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
@@ -1437,7 +1437,7 @@
                     {% endif %}
 
                     <!-- #2 Raw resource -->
-                    {% if location in ["antarctica", "australia", "asia", "southamerica"] %}
+                    {% if location in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
                     <!-- Copper mines -->
                     <div class="menudiv">
 
@@ -1483,7 +1483,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["northamerica", "africa"] %}
+                    {% elif location in ["Mountain Range", "Desert"] %}
                     <!-- Pumpjacks -->
                     <div class="menudiv">
 
@@ -1529,7 +1529,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["asia", "europe"] %}
+                    {% elif location in ["Jungle", "Boreal Forest"] %}
                     <!-- Lumber mills -->
                     <div class="menudiv">
                         <h2 class="templatecontentheaderleft">Lumber Mills</h2>
@@ -1575,7 +1575,7 @@
                     {% endif %}
 
                     <!-- #3 Raw resource -->
-                    {% if location in ["antarctica", "australia", "europe"] %}
+                    {% if location in ["Tundra", "Savanna", "Boreal Forest"] %}
                     <!-- Lead mines -->
                     <div class="menudiv">
 
@@ -1621,7 +1621,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["africa", "southamerica", "northamerica"] %}
+                    {% elif location in ["Desert", "Grassland", "Mountain Range"] %}
                     <!-- Bauxite mines -->
                     <div class="menudiv">
 
@@ -1667,7 +1667,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["asia"] %}
+                    {% elif location in ["Jungle"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
@@ -1716,7 +1716,7 @@
                     {% endif %}
 
                     <!-- #4 Raw resource -->
-                    {% if location in ["asia", "southamerica"] %}
+                    {% if location in ["Jungle", "Grassland"] %}
                     <!-- Pumpjacks -->
                     <div class="menudiv">
 
@@ -1762,7 +1762,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["northamerica"] %}
+                    {% elif location in ["Mountain Range"] %}
                     <!-- Lumber mills -->
                     <div class="menudiv">
                         <h2 class="templatecontentheaderleft">Lumber Mills</h2>
@@ -1805,7 +1805,7 @@
                             </div>
                         </div>
                     </div>
-                    {% elif location in ["africa", "antarctica"]%}
+                    {% elif location in ["Desert", "Tundra"]%}
                     <!-- Uranium Mines-->
                     <div class="menudiv">
 
@@ -1850,7 +1850,7 @@
                             </div>
                         </div>
                     </div>
-                    {% elif location in ["australia"] %}
+                    {% elif location in ["Savanna"] %}
                     <!-- Bauxite mines -->
                     <div class="menudiv">
 
@@ -1896,7 +1896,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["europe"] %}
+                    {% elif location in ["Boreal Forest"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
