@@ -252,7 +252,8 @@ def sell_market_offer(offer_id):
     db.execute(res_upd_statement, (new_sellers_resource, seller_id))
 
     # Gives the resource to the buyer
-    buyers_resource = db.execute(resource_statement, (buyer_id,)).fetchone()[0] # Selects how many resources of wanted resource the buyer has
+    db.execute(resource_statement, (buyer_id,)) # Selects how many resources of wanted resource the buyer has
+    buyers_resource = db.fetchone()[0]
     new_buyers_resource = buyers_resource + amount_wanted # Generates the new amount by adding current amount + bought amount
 
     db.execute(res_upd_statement, (new_buyers_resource, buyer_id))
@@ -342,7 +343,8 @@ def post_offer(offer_type):
             # possible sql injection posibility TODO: look into this
             # should be fine there's no user input in resource -- steven
             rStatement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-            realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
+            db.execute(rStatement, (cId,))
+            realAmount = int(db.fetchone()[0])
 
             if amount > realAmount:  # Checks if user wants to sell more than he has
                 return error("400", "Selling amount is higher than actual amount You have.")
@@ -524,14 +526,15 @@ def delete_offer(offer_id):
     elif offer_type == "sell":
 
         db.execute("SELECT amount FROM offers WHERE offer_id=(%s)", (offer_id,))
-        amount = db.fetchone()[0]
+        amount = int(db.fetchone()[0])
         db.execute("SELECT resource FROM offers WHERE offer_id=(%s)", (offer_id,))
         resource = db.fetchone()[0]
 
         current_resource_statement = f"SELECT {resource} " + "FROM resources WHERE id=%s"
-        current_resource = db.execute(current_resource_statement, (cId,)).fetchone()[0]
+        db.execute(current_resource_statement, (cId,))
+        current_resource = int(db.fetchone()[0])
 
-        new_resource = current_resource + (resource * amount)
+        new_resource = current_resource + amount
 
         update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
         db.execute(update_statement, (new_resource, cId))
@@ -722,7 +725,8 @@ def accept_trade(trade_id):
 
         # Gets current amount of resource for the buyer
         currentBuyerResource = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-        buyerResource = db.execute(currentBuyerResource, (cId,)).fetchone()[0]  # executes the statement
+        db.execute(currentBuyerResource, (cId,)) # executes the statement
+        buyerResource = db.fetchone()[0]
 
         # Generates the number of the resource the buyer should have
         newBuyerResource = int(buyerResource) + int(amount)
@@ -745,7 +749,8 @@ def accept_trade(trade_id):
 
         # Sees how much of the resource the seller has
         resource_statement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-        sellers_resource = db.execute(resource_statement, (seller_id,)).fetchone()[0]
+        db.execute(resource_statement, (seller_id,))
+        sellers_resource = int(db.fetchone()[0])
 
         # Checks if it's less than what the seller wants to sell
         if sellers_resource < amount:
@@ -757,7 +762,8 @@ def accept_trade(trade_id):
         db.execute(res_upd_statement, (new_sellers_resource, seller_id))
 
         # Gives the resource to the buyer
-        buyers_resource = db.execute(resource_statement, (buyer_id,)).fetchone()[0] # Selects how many resources of wanted resource the buyer has
+        db.execute(resource_statement, (buyer_id,))
+        buyers_resource =  db.fetchone()[0]
         new_buyers_resource = buyers_resource + amount # Generates the new amount by adding current amount + bought amount
 
         db.execute(res_upd_statement, (new_buyers_resource, buyer_id))
