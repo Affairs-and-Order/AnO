@@ -80,9 +80,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
             "tanks_price": 8000, # Cost 8k
             "tanks_resource": {"steel": 5},
+            "tanks_resource2": {"components": 5},
 
             "artillery_price": 16000, # Cost 16k
             "artillery_resource": {"steel": 12},
+            "artillery_resource2": {"components": 3},
 
             ## AIR
 
