@@ -234,7 +234,6 @@ def countries():  # TODO: fix shit ton of repeated code in function
 @app.route("/update_country_info", methods=["POST"])
 @login_required
 def update_info():
-
     
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -247,10 +246,10 @@ def update_info():
     cId = session["user_id"]
 
     # Description changing
-    description = request.form.get("description")
+    description = request.form["description"]
 
-    if not description == "None":
-        db.execute("UPDATE users SET description=(%s) WHERE id=(%s)", (description, cId))
+    if description != "None" and description != "":
+        db.execute("UPDATE users SET description=%s WHERE id=%s", (description, cId))
 
     # Flag changing
     ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
@@ -260,6 +259,8 @@ def update_info():
 
     flag = request.files["flag_input"]
     if flag and allowed_file(flag.filename):
+
+        print("gone through")
 
         # Check if the user already has a flag
         try:
@@ -278,8 +279,11 @@ def update_info():
             flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
 
+    """
     bg_flag = request.files["bg_flag_input"]
     if bg_flag and allowed_file(bg_flag.filename):
+
+        print("bg flag")
 
         # Check if the user already has a flag
         try:
@@ -297,6 +301,7 @@ def update_info():
             filename = f"bg_flag_{cId}" + '.' + extension
             flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             db.execute("UPDATE users SET bg_flag=(%s) WHERE id=(%s)", (filename, cId))
+    """
 
     # Location changing
     new_location = request.form.get("countryLocation")
