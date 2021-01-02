@@ -357,7 +357,7 @@ class Units(Military):
                 if current_unit not in self.allUnits:
                     return "Invalid unit type!"
 
-                if selected_units[current_unit] > available_units[current_unit]:
+                if (selected_units[current_unit] > available_units[current_unit]) or (selected_units[current_unit] < 0) :
                     return "Invalid amount selected!"
 
                 # Check for attack cost
