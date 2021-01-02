@@ -322,7 +322,7 @@ def createprovince():
         price = int(50000 * multiplier)
         return render_template("createprovince.html", price=price)
 
-def get_free_slots(pId): # pId = province id
+def get_free_slots(pId, slot_type): # pId = province id
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -333,24 +333,40 @@ def get_free_slots(pId): # pId = province id
 
     db = connection.cursor()
 
-    db.execute(
-    """
-    SELECT
-    coal_burners + oil_burners + hydro_dams + nuclear_reactors + solar_fields +
-    gas_stations + general_stores + farmers_markets + malls + banks +
-    city_parks + hospitals + libraries + universities + monorails +
-    army_bases + harbours + aerodomes + admin_buildings + silos +
-    farms + pumpjacks + coal_mines + bauxite_mines +
-    copper_mines + uranium_mines + lead_mines + iron_mines +
-    lumber_mills + component_factories + steel_mills + ammunition_factories +
-    aluminium_refineries + oil_refineries FROM proInfra WHERE id=%s
-    """, (pId,))
-    used_slots = int(db.fetchone()[0])
+    if slot_type == "city":
 
-    db.execute("SELECT cityCount + land FROM provinces WHERE id=%s", (pId,))
-    all_slots = int(db.fetchone()[0])
+        db.execute(
+        """
+        SELECT
+        coal_burners + oil_burners + hydro_dams + nuclear_reactors + solar_fields +
+        gas_stations + general_stores + farmers_markets + malls + banks +
+        city_parks + hospitals + libraries + universities + monorails
+        FROM proInfra WHERE id=%s
+        """, (pId,))
+        used_slots = int(db.fetchone()[0])
 
-    free_slots = all_slots - used_slots
+        db.execute("SELECT cityCount FROM provinces WHERE id=%s", (pId,))
+        all_slots = int(db.fetchone()[0])
+
+        free_slots = all_slots - used_slots
+
+    elif slot_type == "land":
+
+        db.execute(
+        """
+        SELECT
+        army_bases + harbours + aerodomes + admin_buildings + silos +
+        farms + pumpjacks + coal_mines + bauxite_mines +
+        copper_mines + uranium_mines + lead_mines + iron_mines +
+        lumber_mills + component_factories + steel_mills + ammunition_factories +
+        aluminium_refineries + oil_refineries FROM proInfra WHERE id=%s
+        """, (pId,))
+        used_slots = int(db.fetchone()[0])
+
+        db.execute("SELECT land FROM provinces WHERE id=%s", (pId,))
+        all_slots = int(db.fetchone()[0])
+
+        free_slots = all_slots - used_slots
 
     return free_slots
 
@@ -398,6 +414,20 @@ def province_sell_buy(way, units, province_id):
             "aluminium_refineries", "oil_refineries"
         ]
 
+        city_units = [
+            "coal_burners", "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
+            "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
+            "city_parks", "hospitals", "libraries", "universities", "monorails",
+        ]
+
+        land_units = [
+            "army_bases", "harbours", "aerodomes", "admin_buildings", "silos",
+            "farms", "pumpjacks", "coal_mines", "bauxite_mines", 
+            "copper_mines", "uranium_mines", "lead_mines", "iron_mines",
+            "lumber_mills", "component_factories", "steel_mills",
+            "ammunition_factories", "aluminium_refineries", "oil_refineries"
+        ]
+
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         gold = int(db.fetchone()[0])
 
@@ -432,6 +462,7 @@ def province_sell_buy(way, units, province_id):
         """
         # TODO: change the unit_resource and unit_resource2 into list based system
         unit_prices = {
+
             "land_price": land_price,
             "cityCount_price": cityCount_price,
 
@@ -578,7 +609,12 @@ def province_sell_buy(way, units, province_id):
         db.execute(curUnStat, (province_id,))
         currentUnits = int(db.fetchone()[0])
 
-        free_slots = get_free_slots(province_id)
+        if units in city_units:
+            slot_type = "city"
+        elif units in land_units:
+            slot_type = "land"
+
+        free_slots = get_free_slots(province_id, slot_type)
 
         def resource_stuff():
 
