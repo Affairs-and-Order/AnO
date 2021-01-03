@@ -2121,7 +2121,7 @@
         font-size: 11px;
         top: -10px;
         margin-left: 0px;
-        box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+        box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px 0px, rgba(39, 41, 59, 0.1) 0px 2px 4px 0px;
         text-align: center;
         padding: 3px 5.69px;
     }
