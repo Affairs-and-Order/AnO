@@ -613,8 +613,12 @@ def province_sell_buy(way, units, province_id):
             slot_type = "city"
         elif units in land_units:
             slot_type = "land"
+        else: # If unit is cityCount or land
+            free_slots = 0
+            slot_type = None
 
-        free_slots = get_free_slots(province_id, slot_type)
+        if slot_type != None:
+            free_slots = get_free_slots(province_id, slot_type)
 
         def resource_stuff():
 
