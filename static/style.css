@@ -2123,7 +2123,19 @@
         margin-left: 0px;
         box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
         text-align: center;
-        padding: 4px 7px;
+        padding: 3px 5.69px;
+    }
+    
+    .notificationyellow {
+        background: rgb(245, 245, 35);
+        color: black;
+    }
+    
+    .notificationicon {
+        font-size: 17px !important;
+        padding: 3.1px 3px;
+        top: -5px;
+        left: 4px;
     }
     
     .warning {
