@@ -498,11 +498,16 @@ class Military(Nation):
 
             # Surely destroy this percentage of the targeted units
             # NOTE: devided attack_effects[0] by 20 otherwise special units damage are too overpowered maybe give it other value
-            min_destruction = target_amount*(1/5)*(attack_effects[0]/(20+attack_effects[1])*attacker.selected_units[special_unit])
+
+            # THIS COMMENTED LINE IS TOO OP BECAUSE THE target_amount
+            # min_destruction = target_amount*(1/5)*(attack_effects[0]/(1+attack_effects[1])*attacker.selected_units[special_unit])
+            min_destruction = (attack_effects[0]/(1+attack_effects[1])*attacker.selected_units[special_unit])
 
             # Random bonus on unit destruction
-            destruction_rate = random.uniform(0.5, 0.8)
+            destruction_rate = random.uniform(0.3, 0.5)
             final_destruction = destruction_rate*min_destruction
+
+            # print(final_destruction, "final_destruction")
 
             before_casulaties = list(dict(defender.selected_units).values())[0]
             defender.casualties(target, final_destruction)
