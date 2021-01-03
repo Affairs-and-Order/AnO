@@ -515,9 +515,9 @@ def warChoose():
         attack_units = Units(cId)
 
         # Output error if any
-        error = attack_units.attach_units(selected_units, unit_amount)
-        if error:
-            return error
+        return_error = attack_units.attach_units(selected_units, unit_amount)
+        if return_error:
+            return error(400, return_error)
 
         # BEFORE DEBUG:
         # cache Unit object reference in session
@@ -690,7 +690,11 @@ def warResult():
     # session["user_id"] = 3
     # DEBUG DATA END!
 
-    attacker = Units.rebuild_from_dict(session["attack_units"])
+    attack_unit_session = session.get("attack_units", None)
+    if attack_unit_session == None:
+        return redirect("/wars")
+
+    attacker = Units.rebuild_from_dict(attack_unit_session)
     eId = session["enemy_id"]
 
     # dev: making sure these values are correct
