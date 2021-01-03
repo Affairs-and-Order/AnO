@@ -347,7 +347,7 @@ def post_offer(offer_type):
             realAmount = int(db.fetchone()[0])
 
             if amount > realAmount:  # Checks if user wants to sell more than he has
-                return error("400", "Selling amount is higher than actual amount You have.")
+                return error("400", "Selling amount is higher than the amount you have.")
 
             # Calculates the resource amount the seller should have
             newResourceAmount = realAmount - amount
@@ -594,7 +594,7 @@ def trade_offer(offer_type, offeree_id):
             realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
 
             if amount > realAmount:  # Checks if user wants to sell more than he has
-                return error("400", "Selling amount is higher than actual amount You have.")
+                return error("400", "Selling amount is higher the amount you have.")
 
             # Calculates the resource amount the seller should have
             newResourceAmount = realAmount - amount
