@@ -512,13 +512,13 @@ def delete_offer(offer_id):
     if offer_type == "buy":
 
         db.execute("SELECT amount FROM offers WHERE offer_id=(%s)", (offer_id,))
-        amount = db.fetchone()[0]
+        amount = int(db.fetchone()[0])
         db.execute("SELECT price FROM offers WHERE offer_id=(%s)", (offer_id,))
-        price = db.fetchone()[0]
+        price = int(db.fetchone()[0])
 
         # Gives back the user his money
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-        current_money = db.fetchone()[0]
+        current_money = int(db.fetchone()[0])
         new_money = current_money + (price * amount)
 
         db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, cId))
@@ -539,7 +539,7 @@ def delete_offer(offer_id):
         update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
         db.execute(update_statement, (new_resource, cId))
 
-        db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id,)) # Deletes the offer
+    db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id,)) # Deletes the offer
 
     connection.commit()
     connection.close()
