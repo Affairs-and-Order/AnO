@@ -807,7 +807,6 @@
                         <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240">{{ description }}</textarea>
                     </div>
 
-
                     <button class="templatedivbutton templatecenteredbutton" formaction="/update_country_info" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
@@ -1445,7 +1444,7 @@
                         <div class="templatedivflex2left ">
 
                             <label for="warType ">Choose operation</label>
-                            <select class="templateselect " name="warType ">
+                            <select class="templateselect" name="warType ">
 
                                     <option class="templateoption ">Spy on unit amounts</option>
                                     <option class="templateoption ">Spy on defensive units</option>
@@ -1458,52 +1457,52 @@
                         <div class="templatedivflex2left ">
 
                             <label for="countryName ">Number of spies</label>
-                            <input class="loginsignupinput " name="countryName " placeholder="{{ spyCount }} " />
+                            <input class="loginsignupinput" name="countryName" placeholder="{{ spyCount }}" />
 
                         </div>
                     </div> <label for="warType ">{{ successChance }}% success chance</label>
 
-                    <button class="templatedivbutton templatecenteredbutton " type="submit "><span class="material-icons-outlined ">
+                    <button class="templatedivbutton templatecenteredbutton" type="submit "><span class="material-icons-outlined ">
                         check
                         </span>Perform</button>
                 </div>
             </form>
             <h2 class="templatecontentheaderleft ">Trade</h2>
 
-            <form method="POST ">
+            <form method="POST">
                 <div class="infodiv ">
                     <div class="templatedivflex2 divflex2center ">
                         <div class="templatedivflex2left flexchildvanilla ">
 
-                            <select name="resource " class="templateselect ">
-                            <option disabled="true " selected="selected ">Choose one</option>
-                            <option value="rations " class="templateoption ">Rations</option>
-                            <option value="oil " class="templateoption ">Oil</option>
-                            <option value="coal " class="templateoption ">Coal</option>
-                            <option value="uranium " class="templateoption ">Uranium</option>
-                            <option value="bauxite " class="templateoption ">Bauxite</option>
-                            <option value="iron " class="templateoption ">Iron</option>
-                            <option value="lead " class="templateoption ">Lead</option>
-                            <option value="copper "class="templateoption ">Copper</option>
-                            <option value="components " class="templateoption ">Components</option>
-                            <option value="steel " class="templateoption ">Steel</option>
-                            <option value="consumer_goods " class="templateoption ">Consumer Goods</option>
-                            <option value="copper_plates " class="templateoption ">Copper Plates</option>
-                            <option value="aluminium " class="templateoption ">Aluminium</option>
-                            <option value="gasoline " class="templateoption ">Gasoline</option>
-                            <option value="ammunition " class="templateoption ">Ammunition</option>
+                            <select name="resource" class="templateselect ">
+                            <option disabled="true" selected="selected ">Choose one</option>
+                            <option value="rations" class="templateoption ">Rations</option>
+                            <option value="oil" class="templateoption ">Oil</option>
+                            <option value="coal" class="templateoption ">Coal</option>
+                            <option value="uranium" class="templateoption ">Uranium</option>
+                            <option value="bauxite" class="templateoption ">Bauxite</option>
+                            <option value="iron" class="templateoption ">Iron</option>
+                            <option value="lead" class="templateoption ">Lead</option>
+                            <option value="copper"class="templateoption ">Copper</option>
+                            <option value="components" class="templateoption ">Components</option>
+                            <option value="steel" class="templateoption ">Steel</option>
+                            <option value="consumer_goods" class="templateoption ">Consumer Goods</option>
+                            <option value="copper_plates" class="templateoption ">Copper Plates</option>
+                            <option value="aluminium" class="templateoption ">Aluminium</option>
+                            <option value="gasoline" class="templateoption ">Gasoline</option>
+                            <option value="ammunition" class="templateoption ">Ammunition</option>
                         </select>
 
 
                         </div>
                         <div class="templatedivflex2left flexchildvanilla ">
 
-                            <input class="loginsignupinput " autocomplete="off " name="amount " placeholder="Amount " required/>
+                            <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
 
                         </div>
                         <div class="templatedivflex2left flexchildvanilla ">
 
-                            <input class="loginsignupinput " autocomplete="off " name="price " placeholder="Price for one " required/>
+                            <input class="loginsignupinput" autocomplete="off" name="price" placeholder="Price for one" required/>
 
                         </div>
                     </div>
@@ -1511,7 +1510,7 @@
                     <div class="templatedivflex2 divflex2center ">
                         <div class="templatedivflex2left ">
 
-                            <button formaction="/post_trade_offer/buy/{{ cId }} " class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
+                            <button formaction="/post_trade_offer/buy/{{ cId }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined ">
                             payments
                             </span>Buy offer</button>
 
@@ -1519,7 +1518,7 @@
 
                         <div class="templatedivflex2left ">
 
-                            <button formaction="/post_trade_offer/sell/{{ cId }} " type="submit " value="Submit " class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
+                            <button formaction="/post_trade_offer/sell/{{ cId }}" type="submit" value="Submit" class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
                             payments
                             </span>Sell Offer</button>
 
@@ -1528,48 +1527,48 @@
 
             </div>
             </div>
-            <form method="POST " action="/transfer/{{ cId }} ">
+            <form method="POST" action="/transfer/{{ cId }} ">
                 <h2 class="templatecontentheaderleft ">Transfer</h2>
 
                 <div class="infodiv ">
                     <div class="templatedivflex2 divflex2center ">
                         <div class="templatedivflex2left flexchildvanilla ">
 
-                            <select name="resource " class="templateselect ">
+                            <select name="resource" class="templateselect ">
 
-                        <option disabled="true " selected="selected ">Choose one</option>
+                        <option disabled="true" selected="selected ">Choose one</option>
 
-                        <option value="gold " class="templateoption ">Money</option>
+                        <option value="gold" class="templateoption ">Money</option>
 
-                        <option disabled="true " class="templateoption ">---------</option>
+                        <option disabled="true" class="templateoption ">---------</option>
 
-                        <option value="rations " class="templateoption ">Rations</option>
-                        <option value="oil " class="templateoption ">Oil</option>
-                        <option value="coal " class="templateoption ">Coal</option>
-                        <option value="uranium " class="templateoption ">Uranium</option>
-                        <option value="bauxite " class="templateoption ">Bauxite</option>
-                        <option value="iron " class="templateoption ">Iron</option>
-                        <option value="lead " class="templateoption ">Lead</option>
-                        <option value="copper " class="templateoption ">Copper</option>
-                        <option value="lumber " class="templateoption ">Lumber</option>
-                        <option value="components " class="templateoption ">Components</option>
-                        <option value="steel " class="templateoption ">Steel</option>
-                        <option value="consumer_goods " class="templateoption ">Consumer Goods</option>
-                        <option value="aluminium " class="templateoption ">Aluminium</option>
-                        <option value="gasoline " class="templateoption ">Gasoline</option>
-                        <option value="ammunition " class="templateoption ">Ammunition</option>
+                        <option value="rations" class="templateoption ">Rations</option>
+                        <option value="oil" class="templateoption ">Oil</option>
+                        <option value="coal" class="templateoption ">Coal</option>
+                        <option value="uranium" class="templateoption ">Uranium</option>
+                        <option value="bauxite" class="templateoption ">Bauxite</option>
+                        <option value="iron" class="templateoption ">Iron</option>
+                        <option value="lead" class="templateoption ">Lead</option>
+                        <option value="copper" class="templateoption ">Copper</option>
+                        <option value="lumber" class="templateoption ">Lumber</option>
+                        <option value="components" class="templateoption ">Components</option>
+                        <option value="steel" class="templateoption ">Steel</option>
+                        <option value="consumer_goods" class="templateoption ">Consumer Goods</option>
+                        <option value="aluminium" class="templateoption ">Aluminium</option>
+                        <option value="gasoline" class="templateoption ">Gasoline</option>
+                        <option value="ammunition" class="templateoption ">Ammunition</option>
                         </select>
 
 
                         </div>
-                        <div class="templatedivflex2left flexchildvanilla ">
+                        <div class="templatedivflex2left flexchildvanilla">
 
-                            <input class="loginsignupinput " autocomplete="off " name="amount " placeholder="Amount " required/>
+                            <input class="loginsignupinput" autocomplete="off" name="amount" placeholder="Amount" required/>
 
                         </div>
                     </div>
 
-                    <button class="templatedivbutton templatecenteredbutton "><span class="material-icons-outlined ">
+                    <button class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                             check
                             </span>Confirm</button>
 
