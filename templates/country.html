@@ -278,7 +278,7 @@
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
                 {% for provinceName, provinceId, population, cities, land in provinces %}
-                <a href="">
+                <a href="/province/{{ provinceId }}">
                     <tr>
                         <td>
                             <table class="templatetable inverttable">
