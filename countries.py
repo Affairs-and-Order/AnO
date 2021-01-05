@@ -82,9 +82,10 @@ def country(cId):
         colId = db.fetchone()[0]
         db.execute("SELECT name FROM colNames WHERE id =%s", (colId,))
         colName = db.fetchone()[0]
+        db.execute("SELECT role FROM coalitions WHERE userId=%s", (cId,))
+        colRole = db.fetchone()[0] 
     except:
         colId = ""
-        colName = ""
 
     try:
         db.execute("SELECT flag FROM colNames WHERE id=%s", (colId,))
@@ -120,7 +121,7 @@ def country(cId):
                            happiness=happiness, population=population, location=location, gold=gold, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
-                           colFlag=colFlag)
+                           colFlag=colFlag, colRole=colRole)
 
 
 @app.route("/countries", methods=["GET"])

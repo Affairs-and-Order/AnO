@@ -123,7 +123,7 @@
                             <td><span class="material-icons-outlined">
                                 room
                                 </span>Country location:</td>
-                            <td>{{ location }}</td>
+                            <td>{{ location|capitalize }}</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
@@ -149,6 +149,7 @@
                                 </span>Influence:</td>
                             <td>{{ influence }}</td>
                         </tr>
+                        <!--
                         <tr>
                             <td><span class="material-icons-outlined">
                                 library_music
@@ -157,8 +158,10 @@
                                 <img src="{{ countryAnthem }}" class="countryanthem" />
                             </td>
                         </tr>
+                        -->
                     </table>
 
+                    <!--
                     <table class="templatetable">
                         <tr>
                             <th><span class="material-icons-outlined">
@@ -194,6 +197,7 @@
                         </tr>
 
                     </table>
+                -->
 
                 </div>
                 <div class="templatedivflex2right">
@@ -220,14 +224,16 @@
                             <td><span class="material-icons-outlined">
                                 notes
                                 </span>Coalition role:</td>
-                            <td>role</td>
+                            <td>{{ colRole|capitalize }}</td>
                         </tr>
+                        <!--
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
                                 </span>Allied:</td>
                             <td>Yes/No</td>
                         </tr>
+                        -->
                     </table>
                     {% endif %}
                     <table class="templatetable">
@@ -248,6 +254,7 @@
                                 </span>Average Productivity:</td>
                             <td>{{ happiness }}%</td>
                         </tr>
+                        <!--
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
@@ -266,6 +273,7 @@
                                 </span>Available Resources:</td>
                             <td>{{ countryResources }}</td>
                         </tr>
+                        -->
                     </table>
 
                 </div>
