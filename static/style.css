@@ -1273,8 +1273,6 @@
     .templatedivbutton {
         width: fit-content;
         margin: 5px;
-        background-size: 200% 200%;
-        background-position: 0% 0%;
         padding: 5px 40px;
         padding-bottom: 10px;
         text-decoration: none;
@@ -1775,8 +1773,8 @@
     }
     
     @media all and (max-width: 600px) {
-        .divflex2full {
-            flex-direction: row;
+        .divflex2full div {
+            width: 100%;
         }
     }
     
@@ -2220,6 +2218,8 @@
         margin-top: 7.5vh;
         min-height: 70vh;
         border: 1.5px solid var(--border);
+        position: relative;
+        animation: templatedivcontentload 1s;
     }
     
     @media all and (max-width: 800px) {
@@ -2246,6 +2246,8 @@
         background-position: bottom;
         height: fit-content;
         margin: auto;
+        animation: templatedivcontentload 1.25s;
+        position: relative;
     }
     
     .landingchildright {

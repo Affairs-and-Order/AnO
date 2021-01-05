@@ -16,32 +16,36 @@
 
         <div class="infodiv">
 
-            <div class="templatedivflex2 divflex2center">
-                <div class="templatedivflex2left">
-
-                    <input class="loginsignupinput" name="" placeholder="New Email" />
-
-                </div>
-                <div class="templatedivflex2left">
-
-                    <input class="loginsignupinput" name="" placeholder="New Passcode" />
-
-                </div>
+            <div class="templateoutertablediv">
+                <table class="templatetable templatetable2">
+                    <tr>
+                        <th>Catagory</th>
+                        <th>Value</th>
+                        <th>Change Info</th>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>[[ email ]]</td>
+                        <td><input class="loginsignupinput" name="" placeholder="New email" /></td>
+                    </tr>
+                    <tr>
+                        <td>Passcode:</td>
+                        <td>[[ passcode ]]</td>
+                        <td> <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            arrow_forward
+                            </span>Send email</button></td>
+                    </tr>
+                    <tr>
+                        <td>Date joined:</td>
+                        <td>[[ datejoined ]]</td>
+                        <td></td>
+                    </tr>
+                </table>
             </div>
-            <div class="templatedivflex2 divflex2center menuflex">
-                <div class="templatedivflex2left vanilla">
 
-                    <input class="loginsignupinput" name="" placeholder="Current Passcode" />
-
-                </div>
-                <div class="templatedivflex2left vanilla">
-
-                    <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                        check
-                        </span>Update</button>
-
-                </div>
-            </div>
+            <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                check
+                </span>Update</button>
 
         </div>
 
