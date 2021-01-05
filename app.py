@@ -46,17 +46,17 @@ celery_beat_schedule = {
     "population_growth": {
         "task": "app.task_population_growth",
         # Run every 15 seconds
-        "schedule": crontab(minute='*/1'),
+        "schedule": crontab(hour="*/1"),
     },
     "generate_province_revenue": {
         "task": "app.task_generate_province_revenue",
         # Run every 10 seconds
-        "schedule": 10.0,
+        "schedule": crontab(hour="*/1"),
     },
     "tax_income": {
         "task": "app.task_tax_income",
         # Run every 10 seconds
-        "schedule": 10.0,
+        "schedule": crontab(hour="*/1"),
     }
 }
 
