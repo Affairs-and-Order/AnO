@@ -78,12 +78,7 @@ def province(pId):
     db.execute("SELECT location FROM stats WHERE id=(%s)", (province["user"],))
     province["location"] = db.fetchone()[0]
 
-    print(type(province["user"]))
-    print(type(cId))
-
     ownProvince = province["user"] == cId
-
-    print(ownProvince)
 
     db.execute("SELECT coal_burners FROM proInfra WHERE id=(%s)", (pId,))
     coal_burners = db.fetchone()[0]
@@ -258,6 +253,24 @@ def province(pId):
                             enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power
                             )
 
+def get_province_price(user_id):
+
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = connection.cursor()
+
+    db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (user_id,))
+    current_province_amount = db.fetchone()[0]
+
+    multiplier = 1 + (0.25 * current_province_amount)
+    price = int(50000 * multiplier)
+
+    return price
 
 @login_required
 @app.route("/createprovince", methods=["GET", "POST"])
@@ -280,12 +293,8 @@ def createprovince():
 
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         current_user_money = int(db.fetchone()[0])
-        
-        db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (cId,))
-        current_province_amount = db.fetchone()[0]
-
-        multiplier = 1 + (0.25 * current_province_amount)
-        province_price = int(50000 * multiplier)
+      
+        province_price = get_province_price(cId)
 
         if province_price > current_user_money:
             return error(400, "You don't have enough money")
@@ -303,12 +312,7 @@ def createprovince():
 
         return redirect("/provinces")
     else:
-
-        db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (cId,))
-        current_province_amount = db.fetchone()[0]
-
-        multiplier = 1 + (0.25 * current_province_amount)
-        price = int(50000 * multiplier)
+        price = get_province_price(cId)
         return render_template("createprovince.html", price=price)
 
 def get_free_slots(pId, slot_type): # pId = province id
