@@ -27,56 +27,64 @@
             </div>
         </div>
 
-        {% for cityCount, population, name, pId, land, happiness, productivity in pAll %}
-        <a href="/province/{{ pId[0] }}">
-            <div class="warflexparent templatedivflex2 menuflex ">
-                <div class="templatedivflex2left ">
+        {% for province in provinces %}
+            {% set cityCount = province[0] %}
+            {% set population = province[1] %}
+            {% set name = province[2] %}
+            {% set pId = province[3] %}
+            {% set land = province[4] %}
+            {% set happiness = province[5] %}
+            {% set productivity = province[6] %}
+            <a href="/province/{{ pId[0] }}">
+                <div class="warflexparent templatedivflex2 menuflex ">
+                    <div class="templatedivflex2left ">
 
-                    <table class="templatetable inverttable ">
-                        <tr>
-                            <th><span class="material-icons-outlined ">
-                                account_balance
-                                        </span>{{ name[0] }}</th>
-                        </tr>
-                        <tr>
-                            <td><span class="material-icons-outlined ">
-                                        people_alt
-                                        </span>Population:</td>
-                            <td>{{ population[0] }}</td>
-                        </tr>
-                        <tr>
-                            <td><span class="material-icons-outlined ">
-                                        sentiment_satisfied
-                                        </span>Happiness:</td>
-                            <td>{{ happiness[0] }}%</td>
-                        </tr>
-                        <tr>
-                            <td><span class="material-icons-outlined ">
-                                        arrow_circle_up
-                                        </span>Productivity:</td>
-                            <td>{{ productivity[0] }}%</td>
-                        </tr>
-                        <tr>
-                            <td><span class="material-icons-outlined ">
-                                        business
-                                        </span>City slots:</td>
-                            <td>{{ cityCount[0] }}</td>
-                        </tr>
-                        <tr>
-                            <td><span class="material-icons-outlined ">
-                                        landscape
-                                        </span>Land slots:</td>
-                            <td>{{ land[0] }}</td>
-                        </tr>
-                    </table>
+                        <table class="templatetable inverttable ">
+                            <tr>
+                                <th><span class="material-icons-outlined ">
+                                    account_balance
+                                            </span>{{ name }}</th>
+                            </tr>
+                            <tr>
+                                <td><span class="material-icons-outlined ">
+                                            people_alt
+                                            </span>Population:</td>
+                                <td>{{ population }}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="material-icons-outlined ">
+                                            sentiment_satisfied
+                                            </span>Happiness:</td>
+                                <td>{{ happiness }}%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="material-icons-outlined ">
+                                            arrow_circle_up
+                                            </span>Productivity:</td>
+                                <td>{{ productivity }}%</td>
+                            </tr>
+                            <tr>
+                                <td><span class="material-icons-outlined ">
+                                            business
+                                            </span>City slots:</td>
+                                <td>{{ cityCount }}</td>
+                            </tr>
+                            <tr>
+                                <td><span class="material-icons-outlined ">
+                                            landscape
+                                            </span>Land slots:</td>
+                                <td>{{ land }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <img tabindex="0" class="unitimage" src="static/images/province.jpg" />
+
+                    </div>
                 </div>
-                <div class="templatedivflex2left ">
-
-                    <img tabindex="0 " class="unitimage " src="static/images/province.jpg " />
-
-                </div>
-            </div>
-        </a> {% endfor %}
+            </a> 
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

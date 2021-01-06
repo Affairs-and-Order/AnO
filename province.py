@@ -21,6 +21,7 @@ load_dotenv()
 @login_required
 @app.route("/provinces", methods=["GET", "POST"])
 def provinces():
+
     if request.method == "GET":
         
         connection = psycopg2.connect(
@@ -34,27 +35,13 @@ def provinces():
 
         cId = session["user_id"]
 
-        db.execute("SELECT cityCount FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
-        cityCount = db.fetchall()
-        db.execute("SELECT population FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
-        population = db.fetchall()
-        db.execute("SELECT provinceName FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
-        name = db.fetchall()
-        db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
-        pId = db.fetchall()
-        db.execute("SELECT land FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
-        land = db.fetchall()
-        db.execute("SELECT happiness FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
-        happiness = db.fetchall()
-        db.execute("SELECT productivity FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
-        productivity = db.fetchall()
-
+        db.execute("""SELECT cityCount, population, provinceName, id, land, happiness, productivity
+        FROM provinces WHERE userId=(%s) ORDER BY id ASC""", (cId,))
+        provinces = db.fetchall()
+        
         connection.close()
 
-        # zips the above SELECT statements into one list.
-        pAll = zip(cityCount, population, name, pId, land, happiness, productivity)
-
-        return render_template("provinces.html", pAll=pAll)
+        return render_template("provinces.html", provinces=provinces)
 
 
 @login_required
@@ -298,14 +285,11 @@ def createprovince():
         if province_price > current_user_money:
             return error(400, "You don't have enough money")
 
-        db.execute("INSERT INTO provinces (userId, provinceName) VALUES (%s, %s)", (cId, pName))
-
-        db.execute("SELECT id FROM provinces WHERE userId=(%s) AND provinceName=(%s)", (cId, pName))
+        db.execute("INSERT INTO provinces (userId, provinceName) VALUES (%s, %s) RETURNING id", (cId, pName))
         province_id = db.fetchone()[0]
 
         db.execute("INSERT INTO proInfra (id) VALUES (%s)", (province_id,))
         
-         # Provinces cost 50k
         new_user_money = current_user_money - province_price
         db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_user_money, cId))
 
