@@ -13,16 +13,16 @@
 
         <h3 class="templatecontentheaderleft">{{win_condition}}</h3>
 
-        <h2 class="templatecontentheadercenter">{{winner}} is the winner</h2>
-
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
+                <h2 class="templatecontentheadercenter">{{winner}} is the winner</h2>
+
                 <p class="templatecontentpleft landingpagecontent">
-                    {{attacker_result["nation_name"]}} Ambushed {{defender_result["nation_name"]}}, obliterating {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %}, {{value}} from {{key}} {% endfor %}. Your units destroyed
+                    {{attacker_result["nation_name"]}} Ambushed {{defender_result["nation_name"]}}, obliterating {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %} {{value}} {{key}} {% endfor %}. Your units destroyed
                     {% if defender_result.get("infra_damage", 0) %} {% for key,value in defender_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}} {% endfor %} {% endif %} {% endif %}
 
-                    <br /><br /> {{attacker_result["nation_name"]}} Suffered {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %}, {{value}} from {{key}} and lost {% endfor %} {% if attacker_result.get("infra_damage",
+                    <br /><br /> {{attacker_result["nation_name"]}} Suffered {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %} {{value}} {{key}} and {% endfor %} {% if attacker_result.get("infra_damage",
                     0) %} {% for key,value in attacker_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}} {% endfor %} {% endif %} {% endif %}
                 </p>
 
@@ -30,57 +30,41 @@
             <div class="templatedivflex2left">
 
                 <table class="templatetable">
-                    <tr>
-                        <th><span class="material-icons-outlined">
-                            article
-                            </span>Results</th>
-                    </tr>
                     <!--Your losses-->
                     <tr>
-                      <th>{{ attacker_result["nation_name"] }}</th>
+                        <th><span class="material-icons-outlined iconlarge">
+                            outlined_flag
+                            </span>{{ attacker_result["nation_name"] }}</th>
                     </tr>
-                    {% if attacker_result.get("unit_loss", 0) %}
-
-                      {% for key,value in attacker_result["unit_loss"].items() %}
-                        <tr>
-                          <td>{{key}} killed:</td>
-                          <td>{{value}}</td>
-                        </tr>
-                      {% endfor %}
-
-                      {% if attacker_result.get("infra_damage", 0) %}
-                        {% for key,value in attacker_result["infra_damage"].items() %}
-                          <tr>
-                            <td>{{value[1]}} {{value[0]}}</td>
-                            <td>{{key}}</td>
-                          </tr>
-                        {% endfor %}
-
-                      {% endif %}
-                    {% endif %}
+                    {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %}
+                    <tr>
+                        <td>{{key}} killed:</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %} {% if attacker_result.get("infra_damage", 0) %} {% for key,value in attacker_result["infra_damage"].items() %}
+                    <tr>
+                        <td>{{value[1]}} {{value[0]}}</td>
+                        <td>{{key}}</td>
+                    </tr>
+                    {% endfor %} {% endif %} {% endif %}
                     <!--Enemy losses-->
 
                     <tr>
-                      <th>{{ defender_result["nation_name"] }}</th>
+                        <th><span class="material-icons-outlined iconlarge">
+                            outlined_flag
+                            </span>{{ defender_result["nation_name"] }}</th>
                     </tr>
-                    {% if defender_result.get("unit_loss", 0) %}
-
-                      {% for key,value in defender_result["unit_loss"].items() %}
-                        <tr>
-                          <td>{{key}} killed:</td>
-                          <td>{{value}}</td>
-                        </tr>
-                      {% endfor %}
-
-                      {% if defender_result.get("infra_damage", 0) %}
-                        {% for key,value in defender_result["infra_damage"].items() %}
-                          <tr>
-                            <td>{{key}} {{value[0]}}:</td>
-                            <td>{{value[1]}}</td>
-                          </tr>
-                        {% endfor %}
-                      {% endif %}
-                    {% endif %}
+                    {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %}
+                    <tr>
+                        <td>{{key}} killed:</td>
+                        <td>{{value}}</td>
+                    </tr>
+                    {% endfor %} {% if defender_result.get("infra_damage", 0) %} {% for key,value in defender_result["infra_damage"].items() %}
+                    <tr>
+                        <td>{{key}} {{value[0]}}:</td>
+                        <td>{{value[1]}}</td>
+                    </tr>
+                    {% endfor %} {% endif %} {% endif %}
                 </table>
 
             </div>
