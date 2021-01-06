@@ -280,7 +280,12 @@ def createprovince():
 
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         current_user_money = int(db.fetchone()[0])
-        province_price = 50000
+        
+        db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (cId,))
+        current_province_amount = db.fetchone()[0]
+
+        multiplier = 1 + (0.25 * current_province_amount)
+        province_price = int(50000 * multiplier)
 
         if province_price > current_user_money:
             return error(400, "You don't have enough money")
