@@ -146,9 +146,15 @@
                         <script>
                             const citiesCost = function(event) {
                                 var citiesamount = document.getElementById("citiesamount").value;
+                                var cityCount = document.getElementById("cityCount").value;
                                 var citiesoutput = document.getElementById("citiesoutput");
-                                //insert city cost formula
-                                var cityoutputcost = citiesoutput.innerHTML = citiesamount / 4;
+
+                                var multiplier = 1 + ((0.08 * citiesamount) * cityCount)
+                                var newPrice = (250000 * multiplier) * citiesamount
+
+                                console.log(newPrice)
+
+                                var cityoutputcost = citiesoutput.innerHTML = newPrice;
 
                                 console.log(citiesamount);
                             }
@@ -164,6 +170,7 @@
                             <div class="templatedivflex2left">
 
                                 <input class="loginsignupinput" type="number" name="cityCount" placeholder="City Amount" id="citiesamount" onchange="citiesCost(event)" />
+                                <input id="cityCount" type="hidden" value="{{ province['cityCount'] }}"/>
 
                             </div>
                             <div class="templatedivflex2right">

@@ -432,7 +432,7 @@ def province_sell_buy(way, units, province_id):
             current_cityCount = db.fetchone()[0]
 
             multiplier = 1 + ((0.08 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
-            cityCount_price = int(250000 * multiplier) # Each city costs 250,000 without the multiplier
+            cityCount_price = int((250000 * multiplier) * wantedUnits) # Each city costs 250,000 without the multiplier
         else:
             cityCount_price = 0
 
