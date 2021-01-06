@@ -55,13 +55,11 @@
                         </td>
                         <!-- Delete button -->
                         <td>
-                            <form method="POST">
+                            <form name="delete_offer" action="/delete_offer/{{ offer_id }}" method="POST">
                                 <div class="templatedivflex2 divflex2center">
-                                    <div class="templatedivflex2left">
-                                        <button formaction="/delete_offer/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-                                    remove_circle_outline
-                                    </span>Delete</button>
-                                    </div>
+                                    <span onclick="delete_offer.submit()" class="material-icons iconred">
+                                        remove_circle_outline
+                                    </span>
                                 </div>
                             </form>
                         </td>

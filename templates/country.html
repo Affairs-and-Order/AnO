@@ -213,19 +213,22 @@
                         <tr>
                             <td class="center">Not in a coalition</td>
                         </tr>
-                        {% endif %} {% if colName != "" %}
+                        {% else %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
                                 </span>Coalition:</td>
                             <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                         </tr>
+                        {% endif %}
+                        {% if colRole != None %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
                                 </span>Coalition role:</td>
                             <td>{{ colRole|capitalize }}</td>
                         </tr>
+                        {% endif %}
                         <!--
                         <tr>
                             <td><span class="material-icons-outlined">
@@ -235,7 +238,6 @@
                         </tr>
                         -->
                     </table>
-                    {% endif %}
                     <table class="templatetable">
                         <tr>
                             <th><span class="material-icons-outlined">

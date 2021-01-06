@@ -69,13 +69,17 @@ def country(cId):
         db.execute("SELECT name FROM colNames WHERE id =%s", (colId,))
         colName = db.fetchone()[0]
 
-        try:
-            db.execute("SELECT flag FROM colNames WHERE id=%s", (colId,))
-            colFlag = db.fetchone()[0]
-        except:
-            colFlag = None
     except:
-        colName = "Not in a coalition"
+        colId = 0
+        colRole = None
+        colName = ""
+
+    try:
+        db.execute("SELECT flag FROM colNames WHERE id=%s", (colId,))
+        colFlag = db.fetchone()[0]
+    except:
+        colFlag = None
+
 
     try:
         db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))

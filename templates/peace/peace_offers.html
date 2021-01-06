@@ -10,8 +10,10 @@
 
     <div class="templatedivcontent">
         <!--if no offers-->
+        {% if outgoing_peace_offer|length == 0 %}
         <h2 class="templatecontentheadercenter">You have no outgoing offers</h2>
         <!--if there are offers-->
+        {% else %}
         <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
 
         <div class="templateoutertablediv">
@@ -50,10 +52,13 @@
                 {% endfor %}
             </table>
         </div>
+        {% endif %}
 
         <!--if no offers-->
+        {% if incoming_peace_offers|length == 0 %}
         <h2 class="templatecontentheadercenter">You have no incoming offers</h2>
         <!--if there are offers-->
+        {% else %}
         <h2 class="templatecontentheaderleft">Incoming Offers</h2>
 
         <div class="templateoutertablediv">
@@ -92,6 +97,7 @@
                 {% endfor %}
             </table>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
