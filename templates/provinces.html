@@ -35,7 +35,7 @@
             {% set land = province[4] %}
             {% set happiness = province[5] %}
             {% set productivity = province[6] %}
-            <a href="/province/{{ pId[0] }}">
+            <a href="/province/{{ pId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
                     <div class="templatedivflex2left ">
 
@@ -43,37 +43,37 @@
                             <tr>
                                 <th><span class="material-icons-outlined ">
                                     account_balance
-                                            </span>{{ name }}</th>
+                                            </span>{{ province['name'] }}</th>
                             </tr>
                             <tr>
                                 <td><span class="material-icons-outlined ">
                                             people_alt
                                             </span>Population:</td>
-                                <td>{{ population }}</td>
+                                <td>{{ province['population'] }}</td>
                             </tr>
                             <tr>
                                 <td><span class="material-icons-outlined ">
                                             sentiment_satisfied
                                             </span>Happiness:</td>
-                                <td>{{ happiness }}%</td>
+                                <td>{{ province['happiness'] }}%</td>
                             </tr>
                             <tr>
                                 <td><span class="material-icons-outlined ">
                                             arrow_circle_up
                                             </span>Productivity:</td>
-                                <td>{{ productivity }}%</td>
+                                <td>{{ province['productivity'] }}%</td>
                             </tr>
                             <tr>
                                 <td><span class="material-icons-outlined ">
                                             business
                                             </span>City slots:</td>
-                                <td>{{ cityCount }}</td>
+                                <td>{{ province['cityCount'] }}</td>
                             </tr>
                             <tr>
                                 <td><span class="material-icons-outlined ">
                                             landscape
                                             </span>Land slots:</td>
-                                <td>{{ land }}</td>
+                                <td>{{ province['land'] }}</td>
                             </tr>
                         </table>
                     </div>

@@ -58,30 +58,32 @@ def province(pId):
     db = connection.cursor()
     cId = session["user_id"]
 
-    db.execute("SELECT userId FROM provinces WHERE id=(%s)", (pId,))
-    province_user = db.fetchone()[0]
-    db.execute("SELECT location FROM stats WHERE id=(%s)", (province_user,))
-    location = db.fetchone()[0]
-    
-    ownProvince = province_user == cId
+    db.execute("""SELECT userId, provinceName, population, pollution, happiness, productivity,
+    consumer_spending, cityCount, land FROM provinces WHERE id=(%s)""", (pId,))
+    province_data = db.fetchall()[0]
 
-    db.execute("SELECT provinceName FROM provinces WHERE id=(%s)", (pId,))
-    name = db.fetchone()[0]
-    db.execute("SELECT population FROM provinces WHERE id=(%s)", (pId,))
-    population = db.fetchone()[0]
-    db.execute("SELECT pollution FROM provinces WHERE id=(%s)", (pId,))
-    pollution = db.fetchone()[0]
-    db.execute("SELECT happiness FROM provinces WHERE id=(%s)", (pId,))
-    happiness = db.fetchone()[0]
-    db.execute("SELECT productivity FROM provinces WHERE id=(%s)", (pId,))
-    productivity = db.fetchone()[0]
-    db.execute("SELECT happiness FROM provinces WHERE id=(%s)", (pId,))
-    consumer_spending = db.fetchone()[0]
+    province = {}
 
-    db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (pId,))
-    cityCount = db.fetchone()[0]
-    db.execute("SELECT land FROM provinces WHERE id=(%s)", (pId,))
-    land = db.fetchone()[0]
+    province["id"] = pId
+    province["user"] = province_data[0]
+    province["name"] = province_data[1]
+    province["population"] = province_data[2]
+    province["pollution"] = province_data[3]
+    province["happiness"] = province_data[4]
+    province["productivity"] = province_data[5]
+    province["consumer_spending"] = province_data[6]
+    province["cityCount"] = province_data[7]
+    province["land"] = province_data[8]
+
+    db.execute("SELECT location FROM stats WHERE id=(%s)", (province["user"],))
+    province["location"] = db.fetchone()[0]
+
+    print(type(province["user"]))
+    print(type(cId))
+
+    ownProvince = province["user"] == cId
+
+    print(ownProvince)
 
     db.execute("SELECT coal_burners FROM proInfra WHERE id=(%s)", (pId,))
     coal_burners = db.fetchone()[0]
@@ -207,7 +209,7 @@ def province(pId):
             else:
                 return False
 
-        enough_consumer_goods = enough_consumer_goods(province_user)
+        enough_consumer_goods = enough_consumer_goods(province["user"])
 
         def enough_rations(user_id):
 
@@ -216,7 +218,7 @@ def province(pId):
 
             rations_per_100k = 4
 
-            hundred_k = population // 100000
+            hundred_k = province["population"] // 100000
             new_rations = rations - (hundred_k * rations_per_100k)
 
             if new_rations < 1:
@@ -224,7 +226,7 @@ def province(pId):
             else:
                 return True
 
-        enough_rations = enough_rations(province_user)
+        enough_rations = enough_rations(province["user"])
 
         def has_power(province_id):
 
@@ -237,9 +239,7 @@ def province(pId):
 
     connection.close()
 
-    return render_template("province.html", pId=pId, population=population, name=name, ownProvince=ownProvince,
-                            cityCount=cityCount, land=land, pollution=pollution, consumer_spending=consumer_spending,
-                            happiness=happiness, productivity=productivity, location=location,
+    return render_template("province.html", province=province, ownProvince=ownProvince,
 
                             coal_burners=coal_burners, oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
                             gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
