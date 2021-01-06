@@ -44,7 +44,7 @@ def login():
             return error(400, "No Password or Username")
 
         # selects data about user, from users
-        db.execute("SELECT * FROM users WHERE username = (%s)", (username,))
+        db.execute("SELECT * FROM users WHERE username=(%s) AND auth_type='normal'", (username,))
         user = db.fetchone()
 
         try:
@@ -121,9 +121,9 @@ def discord_login():
     discord = make_session(token=session.get('oauth2_token'))
     discord_user_id = discord.get(API_BASE_URL + '/users/@me').json()['id']
 
-    discord_auth = f"discord:{discord_user_id}"
+    discord_auth = discord_user_id
 
-    db.execute("SELECT id FROM users WHERE hash=(%s)", (discord_auth,))
+    db.execute("SELECT id FROM users WHERE hash=(%s) AND auth_type='discord'", (discord_auth,))
     user_id = db.fetchone()[0]
 
     connection.close()
