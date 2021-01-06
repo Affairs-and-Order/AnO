@@ -936,6 +936,15 @@
         width: min-content !important;
     }
     
+    .minheight {
+        height: min-content;
+    }
+    
+    .initial {
+        all: initial;
+        font-family: inherit;
+    }
+    
     .center {
         margin: auto;
         text-align: center;
