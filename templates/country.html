@@ -285,34 +285,41 @@
                         </span>Provinces ({{ provinceCount }})</th>
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
-                {% for provinceName, provinceId, population, cities, land in provinces %}
-                <a href="/province/{{ provinceId }}">
-                    <tr>
-                        <td>
-                            <table class="templatetable inverttable">
-                                <tr>
-                                    <th><span class="material-icons-outlined">
-                                            account_balance
-                                            </span>{{ provinceName[0] }}</th>
-                                </tr>
-                                <tr>
-                                    <td>Population:</td>
-                                    <td>{{ population[0] }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Cities:</td>
-                                    <td>{{ cities[0] }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Land:</td>
-                                    <td>{{ land[0] }}</td>
-                                </tr>
-                            </table>
-                        </td>
+                {% for province in provinces %}
+                    {% set provinceName = province[0] %}
+                    {% set provinceId = province[1] %}
+                    {% set provincePopulation = province[2] %}
+                    {% set provinceCityCount = province[3] %}
+                    {% set provinceLand = province[4] %}
+                    <a href="/province/{{ provinceId }}">
+                        <tr>
+                            <td>
+                                <table class="templatetable inverttable">
+                                    <tr>
+                                        <th><span class="material-icons-outlined">
+                                                account_balance
+                                                </span>{{ provinceName }}</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Population:</td>
+                                        <td>{{ provincePopulation }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cities:</td>
+                                        <td>{{ provinceCityCount }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Land:</td>
+                                        <td>{{ provinceLand }}</td>
+                                    </tr>
+                                </table>
+                            </td>
 
-                        <td class="smallimage"><img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
-                    </tr>
-                </a> {% endfor %} </table>
+                            <td class="smallimage"><img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
+                        </tr>
+                    </a>
+                {% endfor %}
+                </table>
         </div>
         <!--Revenue-->
         <div class="revenue" id="revenue">

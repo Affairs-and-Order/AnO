@@ -35,63 +35,47 @@ def country(cId):
 
     db = connection.cursor()
 
-    db.execute("SELECT username FROM users WHERE id=(%s)", (cId,))
-    username = db.fetchone()[0]  # gets country's name from db
-    # runs the get_influence function of the player's id, which calculates his influence score
+    db.execute("SELECT username, description, date FROM users WHERE id=%s", (cId,))
+    user_data = db.fetchall()[0]
+
+    username = user_data[0]
+    description = user_data[1]
+    dateCreated = user_data[2]
 
     influence = get_influence(cId)
 
-    db.execute("SELECT description FROM users WHERE id=(%s)", (cId,))
-    description = db.fetchone()[0]
+    db.execute("SELECT SUM(population), SUM(happiness), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
+    province_data = db.fetchall()[0]
 
-    db.execute("SELECT SUM(population) FROM provinces WHERE userId=(%s)", (cId,))
-    population = db.fetchone()[0]
-    db.execute("SELECT SUM(happiness) FROM provinces WHERE userId=(%s)", (cId,))
-    happiness = db.fetchone()[0]
-    db.execute("SELECT COUNT(*) FROM provinces WHERE userId=(%s)", (cId,))
-    provinceCount = db.fetchone()[0]
+    population = province_data[0]
+    happiness = province_data[1]
+    provinceCount = province_data[2]
 
-    db.execute("SELECT location FROM stats WHERE id=(%s)", (cId,))
+    db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
     location = db.fetchone()[0]
-    db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-    gold = db.fetchone()[0]
-    db.execute("SELECT date FROM users WHERE id=(%s)", (cId,))
-    dateCreated = db.fetchone()[0]
 
-    db.execute("SELECT provinceName FROM provinces WHERE userId=(%s) ORDER BY id DESC", (cId,))
-    provinceNames = db.fetchall()
-    db.execute("SELECT id FROM provinces WHERE userId=(%s) ORDER BY id DESC", (cId,))
-    provinceIds = db.fetchall()
-    db.execute("SELECT population FROM provinces WHERE userId=(%s) ORDER BY id DESC", (cId,))
-    provincePops = db.fetchall()
-    db.execute("SELECT cityCount FROM provinces WHERE userId=(%s) ORDER BY id DESC", (cId,))
-    provinceCities = db.fetchall()
-    db.execute("SELECT land FROM provinces WHERE userId=(%s) ORDER BY id DESC", (cId,))
-    provinceLand = db.fetchall()
+    db.execute("SELECT provinceName, id, population, cityCount, land FROM provinces WHERE userId=(%s) ORDER BY id DESC", (cId,))
+    provinces = db.fetchall()
 
-    provinces = zip(provinceNames, provinceIds, provincePops,
-                    provinceCities, provinceLand)
-
-    if str(cId) == str(session["user_id"]):
-        status = True
-    else:
-        status = False
+    status = cId == str(session["user_id"])
 
     try:
-        db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
-        colId = db.fetchone()[0]
+        db.execute("SELECT colId, role FROM coalitions WHERE userId=(%s)", (cId,))
+        coalition_data = db.fetchall()[0]
+
+        colId = coalition_data[0]
+        colRole = coalition_data[1]
+
         db.execute("SELECT name FROM colNames WHERE id =%s", (colId,))
         colName = db.fetchone()[0]
-        db.execute("SELECT role FROM coalitions WHERE userId=%s", (cId,))
-        colRole = db.fetchone()[0] 
-    except:
-        colId = ""
 
-    try:
-        db.execute("SELECT flag FROM colNames WHERE id=%s", (colId,))
-        colFlag = db.fetchone()[0]
+        try:
+            db.execute("SELECT flag FROM colNames WHERE id=%s", (colId,))
+            colFlag = db.fetchone()[0]
+        except:
+            colFlag = None
     except:
-        colFlag = None
+        colName = "Not in a coalition"
 
     try:
         db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
@@ -118,7 +102,7 @@ def country(cId):
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
-                           happiness=happiness, population=population, location=location, gold=gold, status=status,
+                           happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
                            colFlag=colFlag, colRole=colRole)
