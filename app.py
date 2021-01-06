@@ -17,7 +17,7 @@ load_dotenv()
 import os
 from celery.schedules import crontab
 
-from attack_scripts import Military
+from attack_scripts import Military, Economy
 
 app = Flask(__name__)
 
@@ -35,8 +35,8 @@ from coalitions import leave_col, join_col, coalitions, coalition, establish_coa
 from military import military, military_sell_buy
 from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
-from intelligence import intelligence
 from tasks import tax_income, population_growth, generate_province_revenue
+from intelligence import intelligence
 # from upgrades import upgrades
 
 app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
@@ -110,6 +110,43 @@ celery.conf.update(
     beat_schedule=celery_beat_schedule,
 )
 
+
+# runs one a day
+# transfer 20% of all resources to the winner side after a war
+@celery.task()
+def warResourceTransfer():
+    conn = psycopg2.connect(
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"))
+    db = conn.cursor()
+    db.execute("SELECT attacker,attacker_morale,defender,defender_morale FROM wars WHERE peace_date IS NOT NULL")
+    truces = db.fetchall()
+
+    for state in truces:
+        attacker,defender,a_morale,d_morale = state
+
+        # Transfer resources to attacker (winner)
+        if a_morale > d_morale:
+            winner = attacker
+            loser = defender
+        else:
+            winner = defender
+            loser = attacker
+
+        eco = Economy(winner)
+        for resource in Economy.resources:
+            resource_sel_stat = f"SELECT {resource} FROM resources " + "WHERE id=%s"
+            db.execute(resource_sel_stat, (loser,))
+            resource_amount = db.fetchone()[0]
+
+            # transfer 20% of resource on hand (TODO: implement if and alliance won how to give it)
+            eco.transfer_resources(resource, resource_amount*(1/5), winner)
+
+
+
 # runs once a day
 """
 @celery.task()
@@ -166,7 +203,7 @@ def eventCheck():
 @app.context_processor
 def inject_user():
     def get_resource_amount():
-        
+
         conn = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
