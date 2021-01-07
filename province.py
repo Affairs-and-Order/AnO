@@ -80,109 +80,59 @@ def province(pId):
 
     ownProvince = province["user"] == cId
 
-    db.execute("SELECT coal_burners FROM proInfra WHERE id=(%s)", (pId,))
-    coal_burners = db.fetchone()[0]
-    db.execute("SELECT oil_burners FROM proInfra WHERE id=(%s)", (pId,))
-    oil_burners = db.fetchone()[0]
-    db.execute("SELECT hydro_dams FROM proInfra WHERE id=(%s)", (pId,))
-    hydro_dams = db.fetchone()[0]
-    db.execute("SELECT nuclear_reactors FROM proInfra WHERE id=(%s)", (pId,))
-    nuclear_reactors = db.fetchone()[0]
-    db.execute("SELECT solar_fields FROM proInfra WHERE id=(%s)", (pId,))
-    solar_fields = db.fetchone()[0]
+    db.execute(
+    """
+    SELECT
+    coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields,
+    gas_stations, general_stores, farmers_markets, malls, banks,
+    city_parks, hospitals, libraries, universities, monorails,
+    army_bases, harbours, aerodomes, admin_buildings, silos,
+    farms, pumpjacks, coal_mines, bauxite_mines,
+    copper_mines, uranium_mines, lead_mines, iron_mines,
+    lumber_mills, component_factories, steel_mills, ammunition_factories,
+    aluminium_refineries, oil_refineries FROM proInfra WHERE id=%s
+    """, (pId,))
+    province_units = db.fetchall()[0]
 
-    db.execute("SELECT gas_stations FROM proInfra WHERE id=(%s)", (pId,))
-    gas_stations = db.fetchone()[0]
-    db.execute("SELECT general_stores FROM proInfra WHERE id=(%s)", (pId,))
-    general_stores = db.fetchone()[0]
-    db.execute("SELECT farmers_markets FROM proInfra WHERE id=(%s)", (pId,))
-    farmers_markets = db.fetchone()[0]
-    db.execute("SELECT malls FROM proInfra WHERE id=(%s)", (pId,))
-    malls = db.fetchone()[0]
-    db.execute("SELECT banks FROM proInfra WHERE id=(%s)", (pId,))
-    banks = db.fetchone()[0]
+    coal_burners = province_units[0]
+    oil_burners = province_units[1]
+    hydro_dams = province_units[2]
+    nuclear_reactors = province_units[3]
+    solar_fields = province_units[4]
 
-    db.execute("SELECT city_parks FROM proInfra WHERE id=(%s)", (pId,))
-    city_parks = db.fetchone()[0]
-    db.execute("SELECT hospitals FROM proInfra WHERE id=(%s)", (pId,))
-    hospitals = db.fetchone()[0]
-    db.execute("SELECT libraries FROM proInfra WHERE id=(%s)", (pId,))
-    libraries = db.fetchone()[0]
-    db.execute("SELECT universities FROM proInfra WHERE id=(%s)", (pId,))
-    universities = db.fetchone()[0]
-    db.execute("SELECT monorails FROM proInfra WHERE id=(%s)", (pId,))
-    monorails = db.fetchone()[0]
+    gas_stations = province_units[5]
+    general_stores = province_units[6]
+    farmers_markets = province_units[7]
+    malls = province_units[8]
+    banks = province_units[9]
 
-    db.execute("SELECT army_bases FROM proInfra WHERE id=(%s)", (pId,))
-    army_bases = db.fetchone()[0]
-    db.execute("SELECT harbours FROM proInfra WHERE id=(%s)", (pId,))
-    harbours = db.fetchone()[0]
-    db.execute("SELECT aerodomes FROM proInfra WHERE id=(%s)", (pId,))
-    aerodomes = db.fetchone()[0]
-    db.execute("SELECT admin_buildings FROM proInfra WHERE id=(%s)", (pId,))
-    admin_buildings = db.fetchone()[0]
-    db.execute("SELECT silos FROM proInfra WHERE id=(%s)", (pId,))
-    silos = db.fetchone()[0]
+    city_parks = province_units[10]
+    hospitals = province_units[11]
+    libraries = province_units[12]
+    universities = province_units[13]
+    monorails = province_units[14]
 
-    ### Industry ###
-    db.execute("SELECT farms FROM proInfra WHERE id=(%s)", (pId,))
-    farms = db.fetchone()[0]
-    try:
-        db.execute("SELECT pumpjacks FROM proInfra WHERE id=(%s)", (pId,))
-        pumpjacks = db.fetchone()[0]
-    except:
-        pumpjacks = None
-    try:
-        db.execute("SELECT coal_mines FROM proInfra WHERE id=(%s)", (pId,))
-        coal_mines = db.fetchone()[0]
-    except:
-        coal_mines = None
-    try:
-        db.execute("SELECT bauxite_mines FROM proInfra WHERE id=(%s)", (pId,))
-        bauxite_mines = db.fetchone()[0]
-    except:
-        bauxite_mines = None
-    try:
-        db.execute("SELECT copper_mines FROM proInfra WHERE id=(%s)", (pId,))
-        copper_mines = db.fetchone()[0]
-    except:
-        copper_mines = None
-    try:
-        db.execute("SELECT uranium_mines FROM proInfra WHERE id=(%s)", (pId,))
-        uranium_mines = db.fetchone()[0]
-    except:
-        uranium_mines = None
-    try:
-        db.execute("SELECT lead_mines FROM proInfra WHERE id=(%s)", (pId,))
-        lead_mines = db.fetchone()[0]
-    except:
-        lead_mines = None
-    try:
-        db.execute("SELECT iron_mines FROM proInfra WHERE id=(%s)", (pId,))
-        iron_mines = db.fetchone()[0]
-    except:
-        iron_mines = None
-    try:
-        db.execute("SELECT lumber_mills FROM proInfra WHERE id=(%s)", (pId,))
-        lumber_mills = db.fetchone()[0]
-    except:
-        lumber_mills = None
-    #############
+    army_bases = province_units[15]
+    harbours = province_units[16]
+    aerodomes = province_units[17]
+    admin_buildings = province_units[18]
+    silos = province_units[19]
 
-    ### Processing ###
-    
-    db.execute("SELECT component_factories FROM proInfra WHERE id=(%s)", (pId,))
-    component_factories = db.fetchone()[0]
-    db.execute("SELECT steel_mills FROM proInfra WHERE id=(%s)", (pId,))
-    steel_mills  = db.fetchone()[0]
-    db.execute("SELECT ammunition_factories FROM proInfra WHERE id=(%s)", (pId,))
-    ammunition_factories = db.fetchone()[0]
-    db.execute("SELECT aluminium_refineries FROM proInfra WHERE id=(%s)", (pId,))
-    aluminium_refineries = db.fetchone()[0]
-    db.execute("SELECT oil_refineries FROM proInfra WHERE id=(%s)", (pId,))
-    oil_refineries = db.fetchone()[0]
+    farms = province_units[20]
+    pumpjacks = province_units[21]
+    coal_mines = province_units[22]
+    bauxite_mines = province_units[23]
+    copper_mines = province_units[24]
+    uranium_mines = province_units[25]
+    lead_mines = province_units[26]
+    iron_mines = province_units[27]
+    lumber_mills = province_units[28]
 
-    #################
+    component_factories = province_units[29]
+    steel_mills = province_units[30]
+    ammunition_factories = province_units[31]
+    aluminium_refineries = province_units[32]
+    oil_refineries = province_units[33]
 
     if ownProvince:
 
