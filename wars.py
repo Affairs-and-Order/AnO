@@ -984,6 +984,7 @@ def defense():
 
         db = connection.cursor()
         defense_units = list(request.form.values())
+
         # defense_units = ["soldier", "tank", "apache"]
 
         for item in defense_units:
