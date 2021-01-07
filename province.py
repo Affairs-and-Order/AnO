@@ -442,7 +442,7 @@ def province_sell_buy(way, units, province_id):
             current_land = db.fetchone()[0]
 
             multiplier = 1 + ((0.06 * wantedUnits) * current_land) # 10% Increase in cost for each city.
-            land_price = int(120000 * multiplier) # Each city costs 120,000 without the multiplier
+            land_price = int((120000 * multiplier) * wantedUnits) # Each city costs 120,000 without the multiplier
         else:
             land_price = 0
 
