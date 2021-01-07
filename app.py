@@ -122,7 +122,7 @@ def warResourceTransfer():
     host=os.getenv("PG_HOST"),
     port=os.getenv("PG_PORT"))
     db = conn.cursor()
-    db.execute("SELECT attacker,attacker_morale,defender,defender_morale FROM wars WHERE peace_date IS NOT NULL")
+    db.execute("SELECT attacker, attacker_morale, defender, defender_morale FROM wars WHERE peace_date IS NOT NULL")
     truces = db.fetchall()
 
     for state in truces:

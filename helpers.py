@@ -50,10 +50,9 @@ def get_influence(country_id):
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
-    cId = session["user_id"]
-    # re-calculate influence here
-    # military score first
-    # ground
+    
+    cId = country_id
+
     db.execute("SELECT tanks FROM military WHERE id=(%s)", (cId,))
     tanks = db.fetchone()[0]
     db.execute("SELECT soldiers FROM military WHERE id=(%s)", (cId,))
