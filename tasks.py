@@ -583,7 +583,7 @@ def war_reparation_tax():
                 # This condition lower or doesn't give reparation_tax at all
                 # NOTE: for now it lowers to only 5% (the basic is 20%)
                 if war_type == "Raze":
-                    eco.transfer_resources(resource, resource_amount*(1/20))
+                    eco.transfer_resources(resource, resource_amount*(1/20), winner)
                 else:
                     # transfer 20% of all resource (TODO: implement if and alliance won how to give it)
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
