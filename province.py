@@ -524,7 +524,7 @@ def province_sell_buy(way, units, province_id):
         if units not in allUnits:
             return error("No such unit exists.", 400)
 
-        if units == "land" or units == "cityCount":
+        if units in ["land", "cityCount"]:
             table = "provinces"
         else:
             table = "proInfra"

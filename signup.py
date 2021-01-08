@@ -150,7 +150,7 @@ def discord_register():
         continent = continents[continent_number]
 
 
-        if correct_key != False:
+        if correct_key:
 
             discord_user = discord.get(API_BASE_URL + '/users/@me').json()
 

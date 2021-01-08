@@ -237,7 +237,7 @@ def update_info():
     # Description changing
     description = request.form["description"]
 
-    if description != "None" and description != "":
+    if description not in ["None", ""]:
         db.execute("UPDATE users SET description=%s WHERE id=%s", (description, cId))
 
     # Flag changing
@@ -248,8 +248,6 @@ def update_info():
 
     flag = request.files["flag_input"]
     if flag and allowed_file(flag.filename):
-
-        print("gone through")
 
         # Check if the user already has a flag
         try:

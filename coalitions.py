@@ -336,9 +336,9 @@ def coalitions():
     try:
         search = request.values.get("search")
     except TypeError:
-        search = None
+        search = ""
 
-    if search == None or search == "":
+    if not search:
         try: 
             db.execute("SELECT id FROM colNames")
             coalitions = db.fetchall()
