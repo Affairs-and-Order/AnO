@@ -422,13 +422,13 @@ def generate_province_revenue(): # Runs each hour
                 operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
 
                 # Effect stuff
-                if effect != None:
+                if effect is not None:
                     effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
 
-                if effect_2 != None:
+                if effect_2 is not None:
                     effect_2_amount *= unit_amount
 
-                if effect_minus != None:
+                if effect_minus is not None:
                     effect_minus_amount *= unit_amount
 
 
@@ -442,7 +442,7 @@ def generate_province_revenue(): # Runs each hour
                 ]
 
                 # Function for _plus
-                if plus_data != None:
+                if plus_data is not None:
 
                     if plus_resource in province_resources:
 
@@ -496,16 +496,16 @@ def generate_province_revenue(): # Runs each hour
 
                     db.execute(f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s", (new_effect, province_id))
 
-                if effect != None:
+                if effect is not None:
                     # Does the effect for "_effect"
                     do_effect(effect, effect_amount, "+") # Default settings basically
-                if effect_2 != None:
+                if effect_2 is not None:
                     do_effect(effect_2, effect_2_amount, "+")
-                if effect_minus != None:
+                if effect_minus is not None:
                     do_effect(effect_minus, effect_minus_amount, "-")
 
                 ## Convert plus
-                if convert_plus != None:
+                if convert_plus is not None:
 
                     resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
                     db.execute(resource_s_statement, (user_id,))
@@ -532,11 +532,11 @@ def generate_province_revenue(): # Runs each hour
                     resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
                     db.execute(resource_u_statement, (new_resource, user_id,))
 
-                if convert_minus != None:
+                if convert_minus is not None:
                     minus_convert(convert_minus, convert_minus_amount)
-                if convert_minus_2 != None:
+                if convert_minus_2 is not None:
                     minus_convert(convert_minus_2, convert_minus_2_amount)
-                if convert_minus_3 != None:
+                if convert_minus_3 is not None:
                     minus_convert(convert_minus_3, convert_minus_3_amount)
 
         conn.commit() # Commits the changes

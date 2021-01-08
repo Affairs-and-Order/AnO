@@ -560,7 +560,7 @@ def province_sell_buy(way, units, province_id):
             free_slots = 0
             slot_type = None
 
-        if slot_type != None:
+        if slot_type is not None:
             free_slots = get_free_slots(province_id, slot_type)
 
         def resource_stuff():

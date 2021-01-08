@@ -128,7 +128,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
     try:
         search = request.values.get("search")
     except TypeError:
-        search = None
+        search = ""
 
     try:
         lowerinf = float(request.values.get("lowerinf"))
@@ -141,27 +141,27 @@ def countries():  # TODO: fix shit ton of repeated code in function
         upperinf = None
 
 
-    # Unoptimize
-    if search == None or search == "" and upperinf == None and lowerinf == None:
+    # Optimize
+    if not search and upperinf is None and lowerinf is None:
         db.execute("SELECT id FROM users ORDER BY id")
         users = db.fetchall()
-    elif search != None and upperinf == None and lowerinf == None:
+    elif search is not None and upperinf is None and lowerinf is None:
         db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
         users = db.fetchall()
 
-    if lowerinf != None and upperinf == None:
+    if lowerinf is not None and upperinf is None:
         for user in users:
             user_id = int(user[0])
             if get_influence(user_id) < lowerinf:
                 users.remove(user)
 
-    elif upperinf != None and lowerinf == None:
+    elif upperinf is not None and lowerinf is None:
         for user in users:
             user_id = int(user[0])
             if get_influence(user_id) > upperinf:
                 users.remove(user)
 
-    elif upperinf != None and lowerinf != None:
+    elif upperinf is not None and lowerinf is not None:
         for user in users:
             user_influence = get_influence(int(user[0]))
             if user_influence > upperinf or user_influence < lowerinf:

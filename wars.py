@@ -199,7 +199,7 @@ def peace_offers():
 
             for offer in peace_offers:
                 offer_id = offer[0]
-                if offer_id != None:
+                if offer_id is not None:
 
                     # Every offer has a different subset
                     # offers[offer_id] = {}
@@ -362,7 +362,7 @@ def send_peace_offer(war_id, enemy_id):
                 amount_string+=str(amo)+","
 
         # TODO: Made peace offer where can offer to give resources and not just demand
-        # if enemy_id == None:
+        # if enemy_id is None:
         #     return "Selected target is invalid!"
 
         db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
@@ -690,7 +690,7 @@ def warResult():
     # DEBUG DATA END!
 
     attack_unit_session = session.get("attack_units", None)
-    if attack_unit_session == None:
+    if attack_unit_session is None:
         return redirect("/wars")
 
     attacker = Units.rebuild_from_dict(attack_unit_session)
@@ -724,7 +724,7 @@ def warResult():
     # If user came from /wartarget only then they have from_wartarget
     result = session.get("from_wartarget", None)
     print(result, "RESULT HERE")
-    if result == None:
+    if result is None:
         db.execute("SELECT default_defense FROM military WHERE id=(%s)", (eId,))
         defensestring = db.fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 

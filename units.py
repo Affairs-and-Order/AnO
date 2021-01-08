@@ -318,7 +318,7 @@ class Units(Military):
 
         for it in sort_out:
             temp = dic.get(it, None)
-            if temp == None:
+            if temp is None:
                 continue
 
             store_sort_values.append(dic[it])
@@ -392,7 +392,7 @@ class Units(Military):
                     # Check unit amount validity
                     unit_amount = self.selected_units.get(attacker_unit, None)
 
-                    if unit_amount == None:
+                    if unit_amount is None:
                         return "Unit is not valid!"
 
                     # interface.supply_cost*self.selected_units[attacker_unit] - calculates the supply cost based on unit amount
@@ -493,7 +493,7 @@ class Units(Military):
         except:
             return "War is already over!"
 
-        if war_id != None:
+        if war_id is not None:
             db.execute("SELECT attacker FROM wars WHERE id=(%s)", (war_id,))
             is_attacker = db.fetchone()[0]
 
@@ -518,7 +518,7 @@ class Units(Military):
     # Also save the remaining morale to the database
     # TODO: decrease the supplies amount in db
     def attack_cost(self, cost: int) -> str:
-        if self.available_supplies == None:
+        if self.available_supplies is None:
 
             connection = psycopg2.connect(
                 database=os.getenv("PG_DATABASE"),

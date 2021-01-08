@@ -180,7 +180,7 @@ class Nation:
             port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
-        if self.provinces == None:
+        if self.provinces is None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
             db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=%s", (self.id,))
             provinces_number = db.fetchone()[0]
@@ -261,7 +261,7 @@ class Nation:
     @staticmethod
     def set_peace(db, connection, war_id=None, options=None):
 
-        if war_id != None:
+        if war_id is not None:
             db.execute("UPDATE wars SET peace_date=(%s) WHERE id=(%s)", (time.time(), war_id))
 
         else:
@@ -491,7 +491,7 @@ class Military(Nation):
     def special_fight(attacker, defender, target): # Units, Units, int -> str, None
         target_amount = defender.get_military(defender.user_id).get(target, None)
 
-        if target_amount != None:
+        if target_amount is not None:
             special_unit = attacker.selected_units_list[0]
             attack_effects = attacker.attack(special_unit, target)
 

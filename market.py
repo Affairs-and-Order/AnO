@@ -91,32 +91,32 @@ def market():
 
         # Processing of query parameters into database statements
 
-        if price_type != None:
+        if price_type is not None:
             list_of_price_types = ["ASC", "DESC"]
 
             if price_type not in list_of_price_types:
                 return error(400, "No such price type")
         
-        if offer_type != None and price_type == None:  
+        if offer_type is not None and price_type is None:  
             db.execute("SELECT offer_id FROM offers WHERE type=(%s)", (offer_type,))
             offer_ids_list = db.fetchall()
 
-        elif offer_type == None and price_type != None:
+        elif offer_type is None and price_type is not None:
             offer_ids_statement = f"SELECT offer_id FROM offers ORDER BY price {price_type}"
             db.execute(offer_ids_statement)
             offer_ids_list = db.fetchall()
 
-        elif offer_type != None and price_type != None:
+        elif offer_type is not None and price_type is not None:
 
             offer_ids_statement = "SELECT offer_id FROM offers WHERE type=%s" + f"ORDER by price {price_type}"
             db.execute(offer_ids_statement, (offer_type,))
             offer_ids_list = db.fetchall()
 
-        elif offer_type == None and price_type == None:
+        elif offer_type is None and price_type is None:
             db.execute("SELECT offer_id FROM offers ORDER BY price ASC")
             offer_ids_list = db.fetchall()
 
-        if filter_resource != None:
+        if filter_resource is not None:
 
             resources = [
                 "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
@@ -140,7 +140,7 @@ def market():
             db.execute("SELECT resource FROM offers WHERE offer_id=(%s)", (i[0],))
             resource = db.fetchone()[0]
 
-            if filter_resource != None:
+            if filter_resource is not None:
                 if filter_resource == resource:
                     pass
                 else:
