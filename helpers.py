@@ -2,7 +2,7 @@
 
 import os
 import psycopg2
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, session
 from functools import wraps
 from dotenv import load_dotenv
 load_dotenv()

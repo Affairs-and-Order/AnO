@@ -1,17 +1,9 @@
 # FULLY MIGRATED
 
-from flask import Flask, request, render_template, session, redirect, flash
-from tempfile import mkdtemp
-from werkzeug.security import generate_password_hash
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
+from flask import request, render_template, session, redirect
 import datetime
-import _pickle as pickle
-import random
-from celery import Celery
-from helpers import login_required, error
+from helpers import error
 import psycopg2
-# from celery.schedules import crontab # arent currently using but will be later on
-from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import bcrypt

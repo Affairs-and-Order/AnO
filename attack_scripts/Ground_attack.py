@@ -1,5 +1,4 @@
 import random
-import sqlite3
 
 
 def ground_attack(nat1_name, nat2_name, nat1_soldiers, nat2_soldiers):
