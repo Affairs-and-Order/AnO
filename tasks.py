@@ -1,6 +1,8 @@
 import psycopg2
 import os
+import time
 from dotenv import load_dotenv
+from attack_scripts import Economy
 load_dotenv()
 
 def tax_income(): # Function for giving money to players
@@ -105,7 +107,7 @@ def population_growth(): # Function for growing population
                 productivity = 0
 
             # Each % increases / decreases max population by 0.55
-            happiness = (happiness - 50) * 0.55 # The more you have the better 
+            happiness = (happiness - 50) * 0.55 # The more you have the better
 
             # Each % increases / decreases max population by 0.3
             pollution = (pollution - 50) * -0.3 # The less you have the better
@@ -139,7 +141,7 @@ def generate_province_revenue(): # Runs each hour
 
     # Dictionary for which units give what resources, etc
     infra = {
-    ### Electricity (done) ### 
+    ### Electricity (done) ###
     'coal_burners_plus': {'energy': 4},
     'coal_burners_minus': {'coal': 48},
     'coal_burners_money': 45000,
@@ -176,7 +178,7 @@ def generate_province_revenue(): # Runs each hour
 
     'banks_plus': {'consumer_goods': 25},
     'banks_money': 320000, # Costs $320k
-    
+
     'malls_plus': {'consumer_goods': 34},
     'malls_effect': {'pollution': 10},
     'malls_money': 750000, # Costs $750k
@@ -276,7 +278,7 @@ def generate_province_revenue(): # Runs each hour
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
         port=os.getenv("PG_PORT"))
-        
+
     db = conn.cursor()
 
     columns = [
@@ -320,7 +322,7 @@ def generate_province_revenue(): # Runs each hour
 
         try:
             effect_2_data = next(iter(infra[f'{unit}_effect_2'].items()))
-            
+
             effect_2 = effect_2_data[0]
             effect_2_amount = effect_2_data[1]
         except KeyError:
@@ -411,7 +413,7 @@ def generate_province_revenue(): # Runs each hour
                         new_energy = current_energy - unit_amount
 
                         if new_energy >= 0:
-                            
+
                             db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
 
                 take_energy()
@@ -429,7 +431,7 @@ def generate_province_revenue(): # Runs each hour
                 if effect_minus != None:
                     effect_minus_amount *= unit_amount
 
-                    
+
                 province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
                 percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
 
@@ -458,7 +460,7 @@ def generate_province_revenue(): # Runs each hour
                         db.execute(upd_prov_statement, (new_resource_number, province_id))
 
                     elif plus_resource in user_resources:
-                        
+
                         cpr_statement = f"SELECT {plus_resource} FROM resources" + " WHERE id=(%s)"
                         db.execute(cpr_statement, (user_id,))
                         current_plus_resource = int(db.fetchone()[0])
@@ -495,7 +497,7 @@ def generate_province_revenue(): # Runs each hour
                     db.execute(f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s", (new_effect, province_id))
 
                 if effect != None:
-                    # Does the effect for "_effect" 
+                    # Does the effect for "_effect"
                     do_effect(effect, effect_amount, "+") # Default settings basically
                 if effect_2 != None:
                     do_effect(effect_2, effect_2_amount, "+")
@@ -513,11 +515,11 @@ def generate_province_revenue(): # Runs each hour
 
                     resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
                     db.execute(resource_u_statement, (new_resource, user_id,))
-                ## 
+                ##
 
                 ## Convert minus
-                def minus_convert(name, amount): 
-                    
+                def minus_convert(name, amount):
+
                     resource_statement = f"SELECT {name} FROM resources " + "WHERE id=%s"
                     db.execute(resource_statement, (user_id,))
                     current_resource = int(db.fetchone()[0])
@@ -540,5 +542,52 @@ def generate_province_revenue(): # Runs each hour
         conn.commit() # Commits the changes
 
     conn.close() # Closes the connection
+
+def war_reparation_tax():
+    conn = psycopg2.connect(
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"))
+    db = conn.cursor()
+    db.execute("SELECT id,peace_date,attacker,attacker_morale,defender,defender_morale FROM wars WHERE (peace_date IS NOT NULL) AND (peace_offer_id IS NULL)")
+    truces = db.fetchall()
+
+    for state in truces:
+        war_id,peace_date,attacker,a_morale,defender,d_morale = state
+
+        # For now we simply delete war record if no longer needed for reparation tax (NOTE: if we want history table for wars then move these peace redords to other table or reuse not needed wars table column -- marter )
+        # If peace is made longer than a week (604800 = one week in seconds)
+        if peace_date < (time.time()-604800):
+            db.execute("DELETE FROM wars WHERE id=%s", (war_id,))
+
+        # Transfer resources to attacker (winner)
+        else:
+            if d_morale <= 0:
+                winner = attacker
+                loser = defender
+            else:
+                winner = defender
+                loser = attacker
+
+            eco = Economy(loser)
+            for resource in Economy.resources:
+                resource_sel_stat = f"SELECT {resource} FROM resources WHERE id=%s"
+                db.execute(resource_sel_stat, (loser,))
+                resource_amount = db.fetchone()[0]
+
+                db.execute("SELECT war_type FROM wars WHERE id=%s", (war_id,))
+                war_type = db.fetchone()
+
+                # This condition lower or doesn't give reparation_tax at all
+                # NOTE: for now it lowers to only 5% (the basic is 20%)
+                if war_type == "Raze":
+                    eco.transfer_resources(resource, resource_amount*(1/20))
+                else:
+                    # transfer 20% of all resource (TODO: implement if and alliance won how to give it)
+                    eco.transfer_resources(resource, resource_amount*(1/5), winner)
+
+    connection.commit()
 
 generate_province_revenue()

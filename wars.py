@@ -382,7 +382,6 @@ def send_peace_offer(war_id, enemy_id):
         connection.commit()
 
         # Send white peace (won't lose or gain anything)
-
         return redirect("/peace_offers")
 
 # page 0, kind of a pseudo page where you can click attack vs special
@@ -769,7 +768,7 @@ def warResult():
 
         if len(war_type) > 0:
             print(war_type, "WAR_TYPE")
-            if war_type == "Raid":
+            if war_type == "Raze":
 
                 # infrastructure damage
                 attack_effects[0] = attack_effects[0]*10
@@ -860,7 +859,7 @@ def warResult():
 def declare_war():
 
     # CONSTANT VALUE
-    WAR_TYPES = ["Raid", "Sustained", "Loot"]
+    WAR_TYPES = ["Raze", "Sustained", "Loot"]
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
