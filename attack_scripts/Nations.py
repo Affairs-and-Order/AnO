@@ -102,8 +102,7 @@ class Economy:
             return "Invalid resource"
 
         # get amount of resource
-
-        resource_sel_stat = f"SELECT {resource} FROM resources " + "WHERE id=%s"
+        resource_sel_stat = f"SELECT {resource} FROM resources WHERE id=%s"
 
         db.execute(resource_sel_stat, (self.nationID,))
         originalUser = int(db.fetchone()[0])
