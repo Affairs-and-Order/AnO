@@ -1,5 +1,3 @@
-# FULLY MIGRATED
-
 from flask import Flask, request, render_template, session, redirect, flash
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash
