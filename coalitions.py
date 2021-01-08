@@ -1,12 +1,8 @@
 # ALL CONVERTED
 
 from flask import Flask, request, render_template, session, redirect, flash
-from tempfile import mkdtemp
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 import datetime
 import _pickle as pickle
-import random
 from helpers import login_required, error
 import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
