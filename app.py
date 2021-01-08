@@ -43,23 +43,23 @@ app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 celery_beat_schedule = {
     "population_growth": {
         "task": "app.task_population_growth",
-        # Run every 15 seconds
+        # Run hourly
         "schedule": crontab(minute=0, hour='*/1'),
     },
     "generate_province_revenue": {
         "task": "app.task_generate_province_revenue",
-        # Run every 10 seconds
+        # Run hourly
         "schedule": crontab(minute=0, hour='*/1'),
     },
     "tax_income": {
         "task": "app.task_tax_income",
-        # Run every 10 seconds
+        # Run hourly
         "schedule": crontab(minute=0, hour='*/1'),
     },
     "war_reparation_tax": {
         "task": "app.task_war_reparation_tax",
-        # Run every day
-        "schedule": crontab(minute=0, hour="*/1")
+        # Run every day at midnight (UTC)
+        "schedule": crontab(minute=0, hour=0)
     }
 }
 

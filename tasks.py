@@ -588,6 +588,4 @@ def war_reparation_tax():
                     # transfer 20% of all resource (TODO: implement if and alliance won how to give it)
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
 
-    connection.commit()
-
-generate_province_revenue()
+    conn.commit()
