@@ -16,7 +16,18 @@ try:
     app.secret_key = os.getenv("SECRET_KEY")
 except:
     app.secret_key = "DEVELOPMENT_SECRET_KEY"
+
+# import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
+from wars import wars, find_targets
+from login import login
+from signup import signup
+from countries import country, countries, update_info
+from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
+from military import military, military_sell_buy
+from province import createprovince, province, provinces, province_sell_buy
+from market import market, buy_market_offer, marketoffer, my_offers
 from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax
+from intelligence import intelligence
 # from upgrades import upgrades
 
 app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
