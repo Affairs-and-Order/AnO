@@ -1,7 +1,7 @@
 from app import app
 from helpers import login_required, error
 import psycopg2
-from flask import Flask, request, render_template, session, redirect, flash
+from flask import request, render_template, session, redirect, flash
 import os
 import variables
 

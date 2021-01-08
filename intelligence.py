@@ -1,12 +1,10 @@
 # FULLY MIGRATED
 
 from app import app
-from flask import Flask, request, render_template, session, redirect, abort, flash, url_for
-from helpers import login_required, error
-from attack_scripts import Nation, Military
-from units import Units
+from flask import request, render_template, session, redirect
+from helpers import login_required
+from attack_scripts import Military
 import time
-from math import floor
 from random import random
 import psycopg2
 import os
