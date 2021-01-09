@@ -820,9 +820,15 @@ label {
     outline: none;
 }
 
+.resourcetagparent img {
+    width: 30px;
+    height: 30px;
+}
+
 .resourcetag {
     width: fit-content;
     margin: 0;
+    margin-left: 5px;
     line-height: 40px;
 }
 
