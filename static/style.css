@@ -2413,11 +2413,11 @@ button {
 }
 
 .cardparent:hover .cardimage {
-    box-shadow: rgba(0, 0, 0, 0.2) 0 18px 38px 0, rgba(0, 0, 0, 0.15) 0 4px 12px 2px;
+    box-shadow: rgba(0, 0, 0, 0.322) 0 18px 38px 0, rgba(0, 0, 0, 0.363) 0 4px 12px 2px;
 }
 
 .cardtitle {
-    top: -8rem;
+    top: -7.25rem;
     left: 50%;
     transform: translate(-50%, -50%);
     position: relative;
@@ -2449,6 +2449,8 @@ button {
     margin-top: -24px;
     font-weight: bolder;
 }
+
+
 
 .landingcontactdiv {
     margin: 50px auto;
@@ -3201,7 +3203,7 @@ button {
 
 
 /*FOOTER*/
-
+/*
 .footer {
     background: #363945;
     z-index: 1;
@@ -3243,3 +3245,28 @@ button {
 .footer div a:hover {
     color: rgb(88, 196, 231);
 }
+*/
+
+
+footer {
+    background-color: #363945 !important;
+    padding: 2rem 2rem 0 2rem;
+}
+
+footer h5 {
+    color: white;
+}
+
+footer p {
+    color: white;
+}
+
+.fa-reddit {
+    font-size: 1.85rem;
+}
+
+.footer-copyright {
+    background-color: #2a2d35;
+    color: white;
+}
+
