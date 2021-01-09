@@ -373,14 +373,14 @@ class Units(Military):
                 # Check for attack cost
                 for interface in self.allUnitInterfaces:
                     if interface.unit_type == current_unit:
-                        supply_check = self.attack_cost(interface.supply_cost*selected_units[current_unit])
+                        # supply_check = self.attack_cost(interface.supply_cost*selected_units[current_unit])
+                        supply_check = self.attack_cost(interface, selected_units[current_unit])
 
                         if supply_check:
                             return supply_check
 
                         break
 
-                print(units_count, "Csdads")
                 units_count -= 1
         except Exception as e:
             print(e)
@@ -422,36 +422,6 @@ class Units(Military):
         else:
             return "Units are not attached!"
 
-    def save(self):
-
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
-        db = connection.cursor()
-
-        for save_type in self.save_for:
-            # Save casualties
-            if save_type == "casualties":
-                # The casualties method sets a suffered_casualties
-                for unit_type, amount in self.suffered_casualties.items():
-
-                    mil_statement = f"SELECT {unit_type} FROM military " + " WHERE id=(%s)"
-                    db.execute(mil_statement, (self.user_id,))
-                    available_unit_amount = db.fetchone()[0]
-
-                    mil_update = f"UPDATE military SET {unit_type}" + "=(%s) WHERE id=(%s)"
-                    db.execute(mil_update, (available_unit_amount-amount, self.user_id))
-
-            # Save supplies
-            elif save_type == "supplies":
-                pass
-
-        connection.commit()
-
     # Save casualties to the db and check for casualty validity
     # NOTE: to save the data to the db later on put it to the save method
     # unit_type -> name of the unit type, amount -> used to decreate by it
@@ -485,6 +455,8 @@ class Units(Military):
         db.execute(mil_update, (available_unit_amount-amount, self.user_id))
         connection.commit()
 
+    # Save the used supplies, resources stats
+    # The purpose for this is to be able to roll back if and error occured
     def save(self):
 
         connection = psycopg2.connect(
@@ -512,11 +484,11 @@ class Units(Military):
             else:
                 sign = "defender_supplies"
 
-            sign_select = f"SELECT {sign} FROM wars " + " WHERE id=(%s)"
+            sign_select = f"SELECT {sign} FROM wars WHERE id=(%s)"
             db.execute(sign_select, (war_id,))
             current_supplies = db.fetchone()[0]
 
-            sign_update = f"UPDATE wars SET {sign}" + "=(%s) WHERE id=(%s)"
+            sign_update = f"UPDATE wars SET {sign}=(%s) WHERE id=(%s)"
             db.execute(sign_update, (current_supplies-self.supply_costs, war_id))
 
             connection.commit()
@@ -526,7 +498,9 @@ class Units(Military):
 
     # Fetch the available supplies and resources which are required and compare it to unit attack cost
     # It also saves the remaining morale to the database
-    def attack_cost(self, cost: int) -> str:
+    def attack_cost(self, interface, unit_amount):
+        supply_cost = interface.supply_cost*unit_amount
+
         if self.available_supplies is None:
 
             connection = psycopg2.connect(
@@ -554,7 +528,7 @@ class Units(Military):
         if self.available_supplies < 200:
             return "The minimum supply amount is 200"
 
-        self.supply_costs += cost
+        self.supply_costs += supply_cost
         if self.supply_costs > self.available_supplies:
             return "Not enough supplies available"
 
