@@ -2357,7 +2357,7 @@ button {
 }
 
 .cardtitle {
-    top: -7.5rem;
+    top: -9rem;
     left: 50%;
     transform: translate(-50%, -50%);
     position: relative;
