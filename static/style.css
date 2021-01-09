@@ -2316,6 +2316,21 @@ button {
     animation: templatedivcontentload 2s;
 }
 
+.landingloginbutton {
+    background: transparent;
+    border: 2px solid #00a7e1;
+}
+
+.landingloginbutton:hover {
+    box-shadow: inset rgba(39, 41, 59, 0) 0px 0px 150px 2px, rgba(0, 0, 0, 0.15) 0 4px 10px 0;
+    background: #00a7e1;
+}
+
+.landingloginbutton:focus {
+    box-shadow: inset rgba(39, 41, 59, 0) 0px 0px 150px 2px, rgba(0, 0, 0, 0.15) 0 8px 16px 0;
+    background: #00a7e1;
+}
+
 .discordlink {
     width: 65%;
     border: none;
