@@ -161,16 +161,15 @@
                         </script>
                         <ul>Purchase Cities</ul>
 
-                        <label class="vanilla">This will cost 
-                            <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />
-                            <p class="initial" id="citiesoutput"></p>
-                        </label>
+                        <ul class="resourceparent">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
+                            <strong id="citiesoutput"></strong>
+                        </ul>
 
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
 
                                 <input class="loginsignupinput" type="number" name="cityCount" placeholder="City Amount" id="citiesamount" onchange="citiesCost(event)" />
-                                <input id="cityCount" type="hidden" value="{{ province['cityCount'] }}"/>
+                                <input id="cityCount" type="hidden" value="{{ province['cityCount'] }}" />
 
                             </div>
                             <div class="templatedivflex2right">
@@ -182,6 +181,7 @@
 
                             </div>
                         </div>
+
                         <script>
                             const landCost = function(event) {
                                 var landamount = document.getElementById("landamount").value;
@@ -193,10 +193,10 @@
                             }
                         </script>
                         <ul>Purchase Land</ul>
-                        <label class="vanilla">This will cost 
-                            <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />
-                            <p class="initial" id="landoutput"></p>
-                        </label>
+
+                        <ul class="resourceparent">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
+                            <strong id="landoutput"></strong>
+                        </ul>
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
 
