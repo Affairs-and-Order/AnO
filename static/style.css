@@ -2272,9 +2272,9 @@ button {
     background-position: bottom;
     height: fit-content;
     margin: auto;
-    animation: templatedivcontentload 1.25s;
     position: relative;
     font-weight: bold;
+    animation: templatedivcontentload 1.25s;
 }
 
 .landingheader {
@@ -2317,6 +2317,7 @@ button {
     font-size: 20px;
     box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.35) 0px 2px 5px 0px;
     background-color: #00a7e1;
+    animation: templatedivcontentload 2s;
 }
 
 .discordlink {
