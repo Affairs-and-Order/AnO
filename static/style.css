@@ -1311,6 +1311,7 @@ label {
     animation: templatedivcontentload 1.25s;
     position: relative;
     font-weight: bold;
+    font-family: 'Lato', sans-serif;
 }
 
 .templatedivbutton:hover {
