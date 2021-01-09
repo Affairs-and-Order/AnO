@@ -2360,6 +2360,7 @@ button {
     top: -7.5rem;
     left: 50%;
     transform: translate(-50%, -50%);
+    position: relative;
     width: 100%;
     color: white;
 }
