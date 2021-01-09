@@ -307,10 +307,14 @@ class Units(Military):
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
-    def __init__(self, user_id: int, selected_units: dict=None, selected_units_list: list=None, supply_costs: int=0, available_supplies=None, bonuses: int=None):
+    def __init__(self, user_id: int, selected_units: dict=None, selected_units_list: list=None, supply_costs: int=0, available_supplies=None, resource_cost={}, bonuses: int=None):
         self.user_id = user_id
         self.selected_units = selected_units
+        self.resource_cost = resource_cost
+
+        # NOTE: bonuses property might be uneccessary
         self.bonuses = bonuses
+
         self.supply_costs = supply_costs
         self.available_supplies = available_supplies
 
@@ -324,26 +328,12 @@ class Units(Military):
 
         # if you modify the sess_dict it'll affect the actual session, that is why I recomend to create a copy
         dic = dict(sess_dict)
-        
-        # sort_out = ["supply_costs", "available_supplies"]
-        # store_sort_values = []
-        #
-        # for it in sort_out:
-        #     temp = dic.get(it, None)
-        #     if temp is None:
-        #         continue
-        #
-        #     store_sort_values.append(dic[it])
-        #     dic.pop(it)
 
         try:
             reb = cls(**dic)
         except:
             print("Can't rebuild from session")
             raise TypeError
-
-        # for sort, value in zip(sort_out, store_sort_values):
-            # setattr(reb, sort, value)
 
         return reb
 
@@ -374,11 +364,11 @@ class Units(Military):
                 # Check for attack cost
                 for interface in self.allUnitInterfaces:
                     if interface.unit_type == current_unit:
-                        # supply_check = self.attack_cost(interface.supply_cost*selected_units[current_unit])
-                        supply_check = self.attack_cost(interface, selected_units[current_unit])
+                        # cost_check = self.attack_cost(interface.supply_cost*selected_units[current_unit])
+                        cost_check = self.attack_cost(interface, selected_units[current_unit])
 
-                        if supply_check:
-                            return supply_check
+                        if cost_check:
+                            return cost_check
 
                         break
 
@@ -499,18 +489,17 @@ class Units(Military):
     # Fetch the available supplies and resources which are required and compare it to unit attack cost
     # It also saves the remaining morale to the database
     def attack_cost(self, interface, unit_amount):
+        connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+        db = connection.cursor()
+
+        # Supply check
         supply_cost = interface.supply_cost*unit_amount
-
         if self.available_supplies is None:
-
-            connection = psycopg2.connect(
-                database=os.getenv("PG_DATABASE"),
-                user=os.getenv("PG_USER"),
-                password=os.getenv("PG_PASSWORD"),
-                host=os.getenv("PG_HOST"),
-                port=os.getenv("PG_PORT"))
-
-            db = connection.cursor()
 
             db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
             attacker_id = db.fetchone()
@@ -531,6 +520,18 @@ class Units(Military):
         self.supply_costs += supply_cost
         if self.supply_costs > self.available_supplies:
             return "Not enough supplies available"
+
+        # Resource check
+        for key, value in interface.resource_cost.items():
+            db.execute(f"SELECT {key} FROM resources WHERE id=%s", (self.user_id,))
+            available_resource = db.fetchone()[0]
+            if available_resource < unit_amount*value:
+                return f"Not enough {key}"
+            else:
+                if not self.resource_cost.get(key, None):
+                    self.resource_cost[key] = 0
+
+                self.resource_cost[key] += unit_amount*value
 
 # DEBUGGING
 if __name__ == "__main__":

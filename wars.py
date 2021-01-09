@@ -535,6 +535,7 @@ def warChoose():
 @check_required
 def warAmount():
     cId = session["user_id"]
+    print(session["attack_units"], "waramount")
     attack_units = Units.rebuild_from_dict(session["attack_units"])
 
     if request.method == "GET":
@@ -679,6 +680,7 @@ def warTarget():
 @login_required
 def warResult():
     attack_unit_session = session.get("attack_units", None)
+    print(attack_unit_session, "warresult")
     if attack_unit_session is None:
         return redirect("/wars")
 
@@ -857,9 +859,7 @@ def declare_war():
 
     attacker = Nation(session["user_id"])
     defender = Nation(defender)
-    # attacker = Nation(11)
-    # defender = Nation(10)
-
+    
     if attacker.id == defender.id:
         return error(400, "Can't declare war on yourself")
 
