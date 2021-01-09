@@ -11,12 +11,19 @@
 
     <div class="templatedivcontent">
 
+        {% if win_condition == None %}
+        <h3 class="templatecontentheaderleft">Special attack</h3>
+        {% else %}
         <h3 class="templatecontentheaderleft">{{win_condition}}</h3>
-
+        {% endif %}
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
+                {% if winner == None %}
+                <h2 class="templatecontentheadercenter">There is no winner</h2>
+                {% else %}
                 <h2 class="templatecontentheadercenter">{{winner}} is the winner</h2>
+                {% endif %}
 
                 <p class="templatecontentpleft landingpagecontent">
                     {{attacker_result["nation_name"]}} Ambushed {{defender_result["nation_name"]}}, obliterating {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %} {{value}} {{key}} {% endfor %}. Your units destroyed
