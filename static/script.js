@@ -26,7 +26,7 @@ function scrolltop() {
     if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
 
         document.getElementById("navbar").style.backgroundColor = "#363945";
-        document.getElementById("navbar").style.boxShadow = box - shadow: 0 0 0.5 rem 0 rgba(58, 59, 69, 0);
+        document.getElementById("navbar").style.boxShadow = "box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0)";
 
         document.getElementById("navbar").style.transition = "all 0.2s";
 
