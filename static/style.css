@@ -2346,7 +2346,23 @@ button {
     overflow: hidden;
     position: relative;
     top: 0px;
-    transition: all 0.3s ease;
+}
+
+.cardparent1 {
+    animation-delay: 0.3s;
+    animation-duration: 1.5s;
+}
+
+.cardparent2 {
+    animation-delay: 0.6s;
+    animation-duration: 1.5s;
+
+}
+
+.cardparent3 {
+    animation-delay: 0.9s;
+    animation-duration: 1.5s;
+
 }
 
 @media all and (max-width: 600px) {
@@ -2827,6 +2843,7 @@ button {
     animation: templatedivcontentload 1.25s;
     outline: none;
     border-radius: 4px;
+    animation-duration: 1.5s;
 }
 
 .purchasemilitarydiv {
@@ -3108,6 +3125,7 @@ button {
 
 .tutorialdivactive .templatedivflex2left {
     opacity: 0.5;
+    animation-duration: 1.5s;
 }
 
 .tutorialdivactive .checkmarkparent {
