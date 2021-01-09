@@ -1261,16 +1261,7 @@ label {
 .templatecontentheadercenter {
     text-align: center;
     font-size: 28px;
-    margin: 0;
-    color: white;
-    font-weight: normal;
-    text-transform: capitalize;
     font-weight: bold;
-    position: relative;
-    top: -7.5rem;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
 }
 
 .templatecontentpleft {
@@ -2363,6 +2354,14 @@ button {
         width: 90%;
         margin: 50px auto;
     }
+}
+
+.cardtitle {
+    top: -7.5rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    color: white;
 }
 
 .cardimage {
