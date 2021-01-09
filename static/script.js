@@ -36,13 +36,6 @@ function menubardrop() {
 
     document.body.classList.toggle("body");
 }
-//
-function resourcedivcontentshow() {
-
-    document.getElementById("resourcediv").classList.toggle("resourcedivshow");
-    document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
-
-}
 //SCROLLBAR ANIMATION
 window.onscroll = function() { scrolltop() };
 
@@ -50,18 +43,26 @@ function scrolltop() {
 
     if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
 
-        document.getElementById("navbar").style.backgroundColor = "rgb(56, 105, 179)";
+        document.getElementById("navbar").style.backgroundColor = "transparent";
 
-        document.getElementById("menu").style.transition = "all 0.2s";
+        document.getElementById("navbar").style.transition = "all 0.2s";
 
     } else {
 
-        document.getElementById("navbar").style.backgroundColor = "rgb(56, 105, 179)";
+        document.getElementById("navbar").style.backgroundColor = "transparent";
 
-        document.getElementById("menu").style.transition = "all 0.2s";
+        document.getElementById("navbar").style.transition = "all 0.2s";
 
     }
 }
+//
+function resourcedivcontentshow() {
+
+    document.getElementById("resourcediv").classList.toggle("resourcedivshow");
+    document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
+
+}
+
 //resourcediv stay open
 /*
 var clicked = false
