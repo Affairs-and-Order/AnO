@@ -1259,30 +1259,33 @@ label {
 .templatecontentheadercenter {
     text-align: center;
     font-size: 28px;
-    padding-top: 16px;
-    padding-bottom: 20px;
     margin: 0;
-    color: var(--colorOne);
+    color: white;
     font-weight: normal;
     text-transform: capitalize;
     font-weight: bold;
+    position: relative;
+    top: -7.5rem;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 .templatecontentpleft {
-    padding: 8px;
     color: var(--colorOne);
     opacity: 0.9;
     font-weight: normal;
     text-align: justify;
+    margin-top: 0;
 }
 
 .templatecontentpcenter {
     text-align: justify;
-    padding: 8px;
     font-size: 17px;
     color: var(--colorOne);
     font-weight: normal;
     text-align: center;
+    margin-top: 0;
 }
 
 .templatedivbutton {
@@ -2248,7 +2251,8 @@ button {
     background-size: cover;
     background-attachment: fixed;
     object-fit: cover;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
+    top: -1rem;
 }
 
 @media all and (max-width: 800px) {
@@ -2393,10 +2397,12 @@ button {
     outline: none;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    filter: brightness(45%);
 }
 
 .cardcontent {
-    padding: 30px 15px;
+    padding: 0 15px;
+    margin-top: -24px;
 }
 
 .landingcontactdiv {
