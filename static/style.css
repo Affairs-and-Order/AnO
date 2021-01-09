@@ -563,6 +563,7 @@ label {
     cursor: pointer;
     border-radius: 4px;
     margin: 7.5px 7.5px;
+    font-weight: bold;
 }
 
 .loginsignup:hover {
@@ -1037,7 +1038,7 @@ label {
     width: 95%;
     margin: 12px auto;
     position: relative !important;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
+    box-shadow: rgba(0, 0, 0, 0.075) 0px 10px 26px 0px;
     border-radius: 4px;
 }
 
@@ -1242,7 +1243,7 @@ label {
     color: black;
     animation: templatedivcontentload 0.85s;
     position: relative;
-    font-size: 17px;
+    font-size: 18px;
 }
 
 .templatecontentheaderleft {
@@ -1254,6 +1255,7 @@ label {
     border-radius: 4px;
     font-weight: normal;
     text-transform: capitalize;
+    font-weight: bold;
 }
 
 .templatecontentheadercenter {
@@ -1265,12 +1267,13 @@ label {
     color: var(--colorOne);
     font-weight: normal;
     text-transform: capitalize;
+    font-weight: bold;
 }
 
 .templatecontentpleft {
     padding: 8px;
     color: var(--colorOne);
-    opacity: 0.7;
+    opacity: 0.9;
     font-weight: normal;
     text-align: justify;
     text-justify: inter-word;
@@ -1309,6 +1312,7 @@ label {
     border-radius: 100px;
     animation: templatedivcontentload 1.25s;
     position: relative;
+    font-weight: bold;
 }
 
 .templatedivbutton:hover {
@@ -2300,10 +2304,11 @@ button {
 .landingcontent {
     color: var(--colorOne);
     margin: 30px auto;
-    font-size: 20px;
+    font-size: 21px;
     line-height: 25px;
     color: white;
     width: 50%;
+    line-height: 32px;
 }
 
 .landingchildcontainerparent {
@@ -2901,7 +2906,7 @@ button {
 }
 
 .warflexparent:hover {
-    box-shadow: rgba(0, 0, 0, 0.10) 0px 8px 16px 0.5px;
+    box-shadow: rgba(0, 0, 0, 0.10) 0px 6px 16px 0.5px;
 }
 
 .warflexparent image:hover {
