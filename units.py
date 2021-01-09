@@ -307,12 +307,12 @@ class Units(Military):
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
-    def __init__(self, user_id, selected_units: dict=None, bonuses: int=None, selected_units_list: list=None):
+    def __init__(self, user_id: int, selected_units: dict=None, selected_units_list: list=None, supply_costs: int=0, available_supplies=None, bonuses: int=None):
         self.user_id = user_id
         self.selected_units = selected_units
         self.bonuses = bonuses
-        self.supply_costs = 0
-        self.available_supplies = None
+        self.supply_costs = supply_costs
+        self.available_supplies = available_supplies
 
         # selected_units_list is needed at: Nations.py/Military->fight();
         # a list of selected_units keys
@@ -324,25 +324,26 @@ class Units(Military):
 
         # if you modify the sess_dict it'll affect the actual session, that is why I recomend to create a copy
         dic = dict(sess_dict)
-        sort_out = ["supply_costs", "available_supplies"]
-        store_sort_values = []
-
-        for it in sort_out:
-            temp = dic.get(it, None)
-            if temp is None:
-                continue
-
-            store_sort_values.append(dic[it])
-            dic.pop(it)
+        
+        # sort_out = ["supply_costs", "available_supplies"]
+        # store_sort_values = []
+        #
+        # for it in sort_out:
+        #     temp = dic.get(it, None)
+        #     if temp is None:
+        #         continue
+        #
+        #     store_sort_values.append(dic[it])
+        #     dic.pop(it)
 
         try:
             reb = cls(**dic)
         except:
-            print("ERROR BECAUSE REB CAN't be created")
+            print("Can't rebuild from session")
             raise TypeError
 
-        for sort, value in zip(sort_out, store_sort_values):
-            setattr(reb, sort, value)
+        # for sort, value in zip(sort_out, store_sort_values):
+            # setattr(reb, sort, value)
 
         return reb
 
@@ -382,8 +383,7 @@ class Units(Military):
                         break
 
                 units_count -= 1
-        except Exception as e:
-            print(e)
+        except:
             return "Not enough unit type selected"
 
         # If the validation is ended successfully
