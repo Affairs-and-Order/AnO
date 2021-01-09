@@ -2232,6 +2232,11 @@ button {
     align-items: center;
     background: var(--background);
     animation: templatedivcontentload 1.25s;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/static/images/coalition.jpg);
+    height: 100vh;
+    background-size: cover;
+    background-attachment: fixed;
+    object-fit: cover;
 }
 
 .landingparent {
@@ -2244,14 +2249,9 @@ button {
     background: var(--foregroundSeven);
     height: max-content;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
-    border: 1.5px solid var(--border);
     position: relative;
     animation: templatedivcontentload 1s;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/static/images/coalition.jpg);
     height: 100vh;
-    background-size: cover;
-    background-attachment: fixed;
-    object-fit: cover;
 }
 
 @media all and (max-width: 800px) {
