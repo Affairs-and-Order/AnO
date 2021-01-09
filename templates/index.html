@@ -8,23 +8,23 @@
 
         if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
 
-            document.getElementById("navbar").style.backgroundColor = "#363945";
-            document.getElementById("navbar").style.boxShadow = "rgba(58, 59, 69, 0)";
+            document.getElementById("navbarparent").style.backgroundColor = "#363945";
+            document.getElementById("navbarparent").style.boxShadow = "rgba(58, 59, 69, 0)";
 
-            document.getElementById("navbar").style.transition = "all 0.2s";
+            document.getElementById("navbarparent").style.transition = "all 0.2s";
 
         } else {
 
-            document.getElementById("navbar").style.backgroundColor = "transparent";
-            document.getElementById("navbar").style.boxShadow = "rgba(58, 59, 69, 0.8)";
+            document.getElementById("navbarparent").style.backgroundColor = "transparent";
+            document.getElementById("navbarparent").style.boxShadow = "rgba(58, 59, 69, 0.8)";
 
-            document.getElementById("navbar").style.transition = "all 0.2s";
+            document.getElementById("navbarparent").style.transition = "all 0.2s";
 
         }
     }
 </script>
 <style>
-    .navbar {
+    .navbarparent {
         background: #36394500;
         box-shadow: none;
     }
@@ -93,7 +93,7 @@
         </div>
         <h2 class="templatecontentheaderleft">Customize Your Economy</h2>
 
-        <div class="templatedivflex2">
+        <div class="cardcontainer templatedivflex2">
             <div class="templatedivflex2left cardparent cardparent1 wow fadeInUp">
 
                 <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
@@ -149,6 +149,11 @@
 
             </div>
         </div>
+
+        <a class="templatedivbutton landingbutton templatecenteredbutton" href="/signup"><span class="material-icons-outlined landingicon">
+            person_add_alt_1
+            </span>Get Started</a>
+
         <div class="landingcontactdiv warflexparentcolors">
 
             <h2 class="templatecontentheadercenter">Join our Community</h2>

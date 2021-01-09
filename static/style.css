@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 @font-face {
     font-family: 'Material Icons';
     font-style: normal;
@@ -80,7 +79,7 @@
 
 /*Animations*/
 
-@keyframes navbarload {
+@keyframes navbarparentload {
     from {
         top: -55px;
         opacity: 0;
@@ -324,7 +323,7 @@ body {
     background: var(--background);
     padding: 0;
     margin: 0;
-    font-family: 'Lato', sans-serif;
+    font-family: 'Roboto', sans-serif !important;
     animation: textload 0.5s;
     transition: all 0.3s ease;
     overflow-x: hidden;
@@ -340,14 +339,12 @@ p {
 
 label {
     text-align: center;
-    display: block;
-    opacity: 0.7;
-    font-size: 14px;
+    display: block !important;
+    width: fit-content;
+    margin: auto;
+    font-size: 16px;
     color: var(--colorOne);
-}
-
-.body {
-    overflow: hidden;
+    opacity: 0.7;
 }
 
 .background {
@@ -360,22 +357,21 @@ label {
 }
 
 
-/*NAVBAR*/
+/*navbarparent*/
 
-.navbar {
+.navbarparent {
     background: #363945;
     position: fixed;
     width: calc(100%);
     height: 55px;
     z-index: 1000;
     top: 0;
-    animation: navbarload 0.5s;
+    animation: navbarparentload 0.5s;
     padding: 0 5%;
-    width: 90%;
     box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8);
 }
 
-.navbartitle {
+.navbarparenttitle {
     font-weight: bold;
     font-size: 26px;
     float: left;
@@ -388,11 +384,11 @@ label {
     line-height: 55px;
 }
 
-.navbartitle:hover {
+.navbarparenttitle:hover {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.navbartitleimage {
+.navbarparenttitleimage {
     height: 45px;
     width: 45px;
     margin: 5px;
@@ -544,7 +540,7 @@ label {
 }
 
 @media all and (max-width: 620px) {
-    .navbarloginsignupdiv {
+    .navbarparentloginsignupdiv {
         display: none;
     }
 }
@@ -563,7 +559,6 @@ label {
     cursor: pointer;
     border-radius: 4px;
     margin: 7.5px 7.5px;
-    font-weight: bold;
 }
 
 .loginsignup:hover {
@@ -666,6 +661,7 @@ label {
 
 .dropdown-content a:hover {
     background-color: #515463;
+    color: white;
     box-shadow: inset rgba(58, 59, 69, 0.4) 0px 2px 9px 0px;
 }
 
@@ -715,7 +711,7 @@ label {
     right: 0px;
     padding: 0;
     padding-left: 10px;
-    width: 190px;
+    width: 200px;
     display: flex;
     flex-direction: row;
 }
@@ -752,7 +748,6 @@ label {
     display: none;
     color: white;
     font-size: 20px;
-    font-weight: normal;
     line-height: 56px;
     height: 0;
     margin: 0;
@@ -827,7 +822,8 @@ label {
 
 .resourcetag {
     width: fit-content;
-    line-height: 100%;
+    margin: 0;
+    line-height: 40px;
 }
 
 .resourceinfo {
@@ -883,17 +879,20 @@ label {
 
 /*CONTENT*/
 
-.resource {
-    width: 30px;
-    height: 30px;
-    position: relative;
-    top: 5px;
-    padding: 0 5px;
+.resourceparent {
+    line-height: 40px;
+    margin: 0;
 }
 
-.resourcesmall {
-    width: 25px !important;
-    height: 25px !important;
+.resource {
+    width: 20px;
+    height: 20px;
+    margin: 2.5px;
+    margin-bottom: 7.5px;
+}
+
+.resourceparent strong {
+    font-weight: 300;
 }
 
 .floatleft {
@@ -1254,19 +1253,16 @@ label {
     color: var(--colorOne);
     border-radius: 4px;
     font-weight: normal;
-    text-transform: capitalize;
-    font-weight: bold;
 }
 
 .templatecontentheadercenter {
     text-align: center;
     font-size: 28px;
-    font-weight: bold;
 }
 
 .templatecontentpleft {
     color: var(--colorOne);
-    opacity: 0.9;
+    opacity: 0.7;
     font-weight: normal;
     text-align: justify;
     margin-top: 0;
@@ -1285,14 +1281,14 @@ label {
     width: fit-content;
     margin: 5px;
     padding: 5px 40px;
-    padding-bottom: 10px;
+    line-height: 27.2px;
     text-decoration: none;
     color: white;
     border: none;
     font-size: 1rem;
     cursor: pointer;
     user-select: none;
-    outline: none;
+    outline: none !important;
     text-align: center;
     text-transform: uppercase;
     transition: all 0.3s ease-in-out;
@@ -1304,12 +1300,11 @@ label {
     border-radius: 100px;
     animation: templatedivcontentload 1.25s;
     position: relative;
-    font-weight: bold;
-    font-family: 'Lato', sans-serif;
 }
 
 .templatedivbutton:hover {
     box-shadow: inset rgba(39, 41, 59, 0.3) 0px 0px 150px 2px, rgba(0, 0, 0, 0.15) 0 4px 10px 0;
+    color: white;
 }
 
 .templatedivbutton:focus {
@@ -1409,7 +1404,6 @@ label {
 }
 
 .templatediv ul {
-    font-weight: 500;
     color: var(--colorOne);
     padding: 0;
     text-align: center;
@@ -1920,6 +1914,7 @@ button {
     background: var(--tableTwo);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
     border-radius: 4px;
+    border-collapse: initial;
 }
 
 .templatetable tr {
@@ -1963,9 +1958,8 @@ button {
     width: 46%;
     text-align: left;
     display: table;
-    font-weight: 500;
+    font-weight: normal;
     color: var(--colorOne);
-    opacity: 0.9;
     font-size: 15px;
     position: relative;
     float: left;
@@ -2123,7 +2117,6 @@ button {
 .menuflex2 div h3 {
     margin: 0;
     font-size: 19px;
-    font-weight: normal;
     letter-spacing: 0.5px;
     color: var(--colorOne);
 }
@@ -2269,7 +2262,6 @@ button {
     height: fit-content;
     margin: auto;
     position: relative;
-    font-weight: bold;
     animation: templatedivcontentload 1.25s;
 }
 
@@ -2285,11 +2277,18 @@ button {
 .landingcontent {
     color: var(--colorOne);
     margin: 30px auto;
-    font-size: 19px;
+    font-size: 18px;
     line-height: 25px;
     color: white;
     width: 50%;
     line-height: 32px;
+    font-weight: 500;
+}
+
+@media all and (max-width: 600px) {
+    .landingcontent {
+        width: 80%;
+    }
 }
 
 .landingchildcontainerparent {
@@ -2308,10 +2307,9 @@ button {
 }
 
 .landingbutton {
-    padding: 10px 40px;
-    padding-bottom: 12px;
+    padding: 8px 50px;
     font-size: 20px;
-    box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.35) 0px 2px 5px 0px;
+    box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.25) 0px 2px 5px 0px;
     background-color: #00a7e1;
     animation: templatedivcontentload 2s;
 }
@@ -2355,12 +2353,17 @@ button {
     }
 }
 
+.cardcontainer {
+    width: 90%;
+    margin: auto;
+}
+
 .cardparent {
-    margin: 50px;
+    margin: 0;
     padding: 0px;
-    overflow: hidden;
     position: relative;
     top: 0px;
+    transition: all 0.3s;
 }
 
 .cardparent1 {
@@ -2371,13 +2374,19 @@ button {
 .cardparent2 {
     animation-delay: 0.6s;
     animation-duration: 1.5s;
-
+    padding: 0 50px;
 }
 
 .cardparent3 {
     animation-delay: 0.9s;
     animation-duration: 1.5s;
+}
 
+@media all and (max-width: 1055px) {
+    .cardparent {
+        width: 50%;
+        margin: 50px auto;
+    }
 }
 
 @media all and (max-width: 600px) {
@@ -2387,13 +2396,34 @@ button {
     }
 }
 
+.cardcontainer:hover .cardparent {
+    opacity: 0.5;
+    transition: all 0.6s;
+}
+
+@media all and (max-width: 1055px) {
+    .cardcontainer:hover .cardparent {
+        opacity: 1;
+        transition: all 0.3s;
+    }
+}
+
+.cardparent:hover {
+    opacity: 1 !important;
+}
+
+.cardparent:hover .cardimage {
+    box-shadow: rgba(0, 0, 0, 0.2) 0 18px 38px 0, rgba(0, 0, 0, 0.15) 0 4px 12px 2px;
+}
+
 .cardtitle {
-    top: -9rem;
+    top: -8rem;
     left: 50%;
     transform: translate(-50%, -50%);
     position: relative;
     width: 100%;
     color: white;
+    font-size: 30px;
 }
 
 .cardimage {
@@ -2411,6 +2441,7 @@ button {
     border-top-right-radius: 4px;
     filter: brightness(75%);
     border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0 8px 24px 0;
 }
 
 .cardcontent {
@@ -2420,9 +2451,9 @@ button {
 }
 
 .landingcontactdiv {
-    margin: 50px;
+    margin: 50px auto;
     padding: 20px;
-    width: fit-content;
+    width: 90%;
     border-radius: 4px;
 }
 
@@ -2523,10 +2554,9 @@ button {
     top: 0;
     bottom: 0;
     margin: auto 20px;
-    padding: 16px;
     color: white;
-    width: 20px;
-    height: 20px;
+    width: 50px;
+    height: 50px;
     text-align: center;
     transition: 0.3s;
     border-radius: 100%;
@@ -2541,7 +2571,7 @@ button {
 
 .arrowchild {
     font-size: 20px;
-    line-height: 100%;
+    line-height: 50px;
 }
 
 .loginsignupinput {
@@ -2709,6 +2739,21 @@ button {
 .countryactionsclick h3,
 .countryeditclick h3 {
     color: var(--colorTwo) !important;
+}
+
+.provincelinkparent {
+    position: relative;
+}
+
+.provincelinkchild {
+    position: absolute;
+    display: block;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
 }
 
 

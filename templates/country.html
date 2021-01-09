@@ -92,8 +92,7 @@
                 <!-- this is the one that shows -- steven -->
                 {% else %}
                 <!-- tried first with url_for, but it didn't work -- t0dd -->
-                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> 
-                {% endif %}
+                <img class="countryimage" src="{{ url_for('static', filename='images/tajmahal.jpg') }}" /> {% endif %}
                 <!--Coalitions flag. if the country is in a coalition this is shown, if not it is hidden-->
                 {% if colFlag != None %}
                 <img class="countrycoalitionimage" src="/static/flags/{{ colFlag }}" alt="{{ colFlag }}" /> {% endif %}
@@ -220,8 +219,7 @@
                                 </span>Coalition:</td>
                             <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                         </tr>
-                        {% endif %}
-                        {% if colRole != None %}
+                        {% endif %} {% if colRole != None %}
                         <tr>
                             <td><span class="material-icons-outlined">
                                 notes
@@ -287,41 +285,38 @@
                         </span>Provinces ({{ provinceCount }})</th>
                 </tr>
                 <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
-                {% for province in provinces %}
-                    {% set provinceName = province[0] %}
-                    {% set provinceId = province[1] %}
-                    {% set provincePopulation = province[2] %}
-                    {% set provinceCityCount = province[3] %}
-                    {% set provinceLand = province[4] %}
-                    <a href="/province/{{ provinceId }}">
-                        <tr>
-                            <td>
-                                <table class="templatetable inverttable">
-                                    <tr>
-                                        <th><span class="material-icons-outlined">
+                {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %}
+
+                <tr class="provincelinkparent">
+                    <a href="/province/{{ provinceId }}" class="provincelinkchild">
+                        <td>
+                            <table class="templatetable inverttable">
+                                <tr>
+                                    <th><span class="material-icons-outlined">
                                                 account_balance
                                                 </span>{{ provinceName }}</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Population:</td>
-                                        <td>{{ provincePopulation }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Cities:</td>
-                                        <td>{{ provinceCityCount }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Land:</td>
-                                        <td>{{ provinceLand }}</td>
-                                    </tr>
-                                </table>
-                            </td>
+                                </tr>
+                                <tr>
+                                    <td>Population:</td>
+                                    <td>{{ provincePopulation }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Cities:</td>
+                                    <td>{{ provinceCityCount }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Land:</td>
+                                    <td>{{ provinceLand }}</td>
+                                </tr>
+                            </table>
+                        </td>
 
-                            <td class="smallimage"><img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
-                        </tr>
+                        <td class="smallimage"><img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" /></td>
                     </a>
+                </tr>
+
                 {% endfor %}
-                </table>
+            </table>
         </div>
         <!--Revenue-->
         <div class="revenue" id="revenue">
