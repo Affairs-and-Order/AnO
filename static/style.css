@@ -1261,30 +1261,33 @@ label {
 .templatecontentheadercenter {
     text-align: center;
     font-size: 28px;
-    padding-top: 16px;
-    padding-bottom: 20px;
     margin: 0;
-    color: var(--colorOne);
+    color: white;
     font-weight: normal;
     text-transform: capitalize;
     font-weight: bold;
+    position: relative;
+    top: -7.5rem;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 }
 
 .templatecontentpleft {
-    padding: 8px;
     color: var(--colorOne);
     opacity: 0.9;
     font-weight: normal;
     text-align: justify;
+    margin-top: 0;
 }
 
 .templatecontentpcenter {
     text-align: justify;
-    padding: 8px;
     font-size: 17px;
     color: var(--colorOne);
     font-weight: normal;
     text-align: center;
+    margin-top: 0;
 }
 
 .templatedivbutton {
@@ -2350,13 +2353,9 @@ button {
     margin: 50px;
     padding: 0px;
     overflow: hidden;
-    background: var(--foregroundTwo);
-    border: 1.5px solid var(--border);
     position: relative;
     top: 0px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0 8px 32px 0;
     transition: all 0.3s ease;
-    border-radius: 4px;
 }
 
 @media all and (max-width: 600px) {
@@ -2364,11 +2363,6 @@ button {
         width: 90%;
         margin: 50px auto;
     }
-}
-
-.cardparent:hover {
-    top: -5px;
-    box-shadow: rgba(0, 0, 0, 0.025) 0 8px 32px 0, rgba(0, 0, 0, 0.075) 0 12px 12px;
 }
 
 .cardimage {
@@ -2384,10 +2378,14 @@ button {
     outline: none;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
+    filter: brightness(75%);
+    border-radius: 4px;
 }
 
 .cardcontent {
-    padding: 30px 15px;
+    padding: 0 15px;
+    margin-top: -24px;
+    font-weight: bolder;
 }
 
 .landingcontactdiv {
