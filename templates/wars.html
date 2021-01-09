@@ -118,7 +118,7 @@
                 </div>
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{def["supplies"]}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width: {{ (def['supplies'] / 2000) * 100 }}%"></div>
+                    <div class="progressbarchild progressbargreen" style="width: {{ 2000 / def['supplies'] }}%"></div>
                 </div>
             </div>
 
@@ -137,7 +137,7 @@
                 </div>
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{att["supplies"]}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width: {{ (att['supplies'] / 2000) * 100 }}%"></div>
+                    <div class="progressbarchild progressbargreen" style="width: {{ 2000 / att['supplies'] }}%"></div>
                 </div>
             </div>
         </div>

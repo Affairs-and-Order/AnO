@@ -170,7 +170,7 @@
                             <div class="templatedivflex2left">
 
                                 <input class="loginsignupinput" type="number" name="cityCount" placeholder="City Amount" id="citiesamount" onchange="citiesCost(event)" />
-                                <input id="cityCount" type="hidden" value="{{ province['cityCount'] }}"/>
+                                <input id="cityCount" type="hidden" value="{{ province['cityCount'] }}" />
 
                             </div>
                             <div class="templatedivflex2right">
@@ -182,6 +182,7 @@
 
                             </div>
                         </div>
+
                         <script>
                             const landCost = function(event) {
                                 var landamount = document.getElementById("landamount").value;

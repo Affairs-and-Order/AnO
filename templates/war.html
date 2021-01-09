@@ -43,7 +43,7 @@
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{defender_info["supplies"]}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width: {{ (defender_info['supplies'] / 2000) * 100 }}%">
+                    <div class="progressbarchild progressbargreen" style="width: {{ 2000 / defender_info['supplies'] }}%">
                     </div>
                 </div>
 
@@ -67,7 +67,7 @@
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{attacker_info["supplies"]}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width: {{ (attacker_info['supplies'] / 2000) * 100 }}%">
+                    <div class="progressbarchild progressbargreen" style="width: {{ 2000 / attacker_info['supplies'] }}%">
                     </div>
                 </div>
 
@@ -112,13 +112,13 @@
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{defender_info["morale"]}} / 100 Morale</div>
-                    <div class="progressbarchild" style="width:{{ defender_info['morale'] }}%"></div>
+                    <div class="progressbarchild" style="width:{{ def['morale'] }}%"></div>
                 </div>
             </div>
 
             <div class="progressbarparent">
                 <div class="progressbarchildtext">{{defender_info["supplies"]}} / 2000 Supplies</div>
-                <div class="progressbarchild progressbargreen" style="width: {{ 2000 / defender_info['supplies'] }}%"></div>
+                <div class="progressbarchild progressbargreen" style="width: {{ 2000 / def['supplies'] }}%"></div>
             </div>
         </div>
 

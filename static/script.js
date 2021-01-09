@@ -18,7 +18,28 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
         }
     });
     */
+//SCROLLBAR ANIMATION
+window.onscroll = function() { scrolltop() };
 
+function scrolltop() {
+
+    if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
+
+        document.getElementById("navbar").style.backgroundColor = "#363945";
+        document.getElementById("navbar").style.boxShadow = "box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0)";
+
+        document.getElementById("navbar").style.transition = "all 0.2s";
+
+    } else {
+
+        document.getElementById("navbar").style.backgroundColor = "transparent";
+        document.getElementById("navbar").style.boxShadow = "box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8)";
+
+        document.getElementById("navbar").style.transition = "all 0.2s";
+
+    }
+}
+AOS.init();
 //navbar events
 function menubardrop() {
 
@@ -43,6 +64,7 @@ function resourcedivcontentshow() {
     document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
 
 }
+
 //resourcediv stay open
 /*
 var clicked = false
@@ -648,4 +670,9 @@ function war_target() {
             }
         }
     }
+}
+
+function myFunction() {
+    var element = document.getElementById("myDIV");
+    element.classList.remove("mystyle");
 }

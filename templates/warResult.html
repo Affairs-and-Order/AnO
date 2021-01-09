@@ -19,11 +19,11 @@
                 <h2 class="templatecontentheadercenter">{{winner}} is the winner</h2>
 
                 <p class="templatecontentpleft landingpagecontent">
-                    Your nation of {{attacker_result["nation_name"]}} attacked {{defender_result["nation_name"]}}, destroying {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %} {{value}} {{key}} {% endfor %}.
+                    {{attacker_result["nation_name"]}} Ambushed {{defender_result["nation_name"]}}, obliterating {% if defender_result.get("unit_loss", 0) %} {% for key,value in defender_result["unit_loss"].items() %} {{value}} {{key}} {% endfor %}. Your units destroyed
                     {% if defender_result.get("infra_damage", 0) %} {% for key,value in defender_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}} {% endfor %} {% endif %} {% endif %}
 
-                    <br /><br /> Your nation of {{attacker_result["nation_name"]}} lost {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %} {{value}} {{key}}  {% endfor %} {% if attacker_result.get("infra_damage",
-                    0) %} and {% for key,value in attacker_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}} {% endfor %} {% endif %} {% endif %}
+                    <br /><br /> {{attacker_result["nation_name"]}} Suffered {% if attacker_result.get("unit_loss", 0) %} {% for key,value in attacker_result["unit_loss"].items() %} {{value}} {{key}} and {% endfor %} {% if attacker_result.get("infra_damage",
+                    0) %} {% for key,value in attacker_result["infra_damage"].items() %} {{value[1]}} {{key}} is {{value[0]}} {% endfor %} {% endif %} {% endif %}
                 </p>
 
             </div>
