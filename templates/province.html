@@ -1039,22 +1039,21 @@
                             <td>{{ aerodomes }} Aerodromes</td>
 
                             <!-- #1 Raw resource -->
-                            {% if location in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
+                            {% if province['location'] in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
                             <td>{{ iron_mines }} Iron Mines</td>
-                            {% elif location in ["Savanna", "Jungle", "Mountain Range"] %}
+                            {% elif province['location'] in ["Savanna", "Jungle", "Mountain Range"] %}
                             <td>{{ coal_mines }} Coal Mines</td>
                             {% endif %}
-                            <!---->
                             <td>{{ steel_mills }} Steel Mills</td>
                         </tr>
                         <tr>
                             <td>{{ harbours }} Harbours</td>
                             <!-- #2 Raw resource -->
-                            {% if location in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
+                            {% if province['location'] in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
                             <td>{{ copper_mines }} Copper Mines</td>
-                            {% elif location in ["Mountain Range", "Desert"] %}
+                            {% elif province['location'] in ["Mountain Range", "Desert"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
-                            {% elif location in ["Jungle", "Boreal Forest"] %}
+                            {% elif province['location'] in ["Jungle", "Boreal Forest"] %}
                             <td>{{ lumber_mills }} Lumber Mills</td>
                             {% endif %}
                             <!---->
@@ -1063,11 +1062,11 @@
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
                             <!-- #3 Raw resource -->
-                            {% if location in ["Tundra", "Savanna", "Boreal Forest"] %}
+                            {% if province['location'] in ["Tundra", "Savanna", "Boreal Forest"] %}
                             <td>{{ lead_mines }} Lead Mines</td>
-                            {% elif location in ["Desert", "Grassland", "Mountain Range"] %}
+                            {% elif province['location'] in ["Desert", "Grassland", "Mountain Range"] %}
                             <td>{{ bauxite_mines }} Bauxite Mines</td>
-                            {% elif location in ["Jungle"] %}
+                            {% elif province['location'] in ["Jungle"] %}
                             <td>{{ copper_mines }} Copper Mines</td>
                             {% endif %}
                             <!---->
@@ -1076,15 +1075,15 @@
                         <tr>
                             <td>{{ silos }} Silos</td>
                             <!-- 4 Raw resource -->
-                            {% if location in ["Jungle", "Grassland"] %}
+                            {% if province['location'] in ["Jungle", "Grassland"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
-                            {% elif location in ["Mountain Range"] %}
+                            {% elif province['location'] in ["Mountain Range"] %}
                             <td>{{ lumber_mills }} Lumber Mills</td>
-                            {% elif location in ["Desert", "Tundra"]%}
+                            {% elif province['location'] in ["Desert", "Tundra"]%}
                             <td>{{ uranium_mines }} Uranium Mines </td>
-                            {% elif location in ["Savanna"] %}
+                            {% elif province['location'] in ["Savanna"] %}
                             <td>{{ bauxite_mines }} Bauxite Mines</td>
-                            {% elif location in ["Boreal Forest"] %}
+                            {% elif province['location'] in ["Boreal Forest"] %}
                             <td>{{ coal_mines }} Coal mines</td>
                             {% endif %}
                             <!---->
@@ -1382,7 +1381,7 @@
 
                     <!-- CONTINENT SPECIFIC RESOURCES -->
                     <!-- #1 Raw resource -->
-                    {% if location in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
+                    {% if province['location'] in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
                     <!-- Iron mines -->
                     <div class="menudiv">
 
@@ -1431,7 +1430,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Savanna", "Jungle", "Mountain Range"] %}
+                    {% elif province['location'] in ["Savanna", "Jungle", "Mountain Range"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
@@ -1480,7 +1479,7 @@
                     {% endif %}
 
                     <!-- #2 Raw resource -->
-                    {% if location in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
+                    {% if province['location'] in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
                     <!-- Copper mines -->
                     <div class="menudiv">
 
@@ -1526,7 +1525,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Mountain Range", "Desert"] %}
+                    {% elif province['location'] in ["Mountain Range", "Desert"] %}
                     <!-- Pumpjacks -->
                     <div class="menudiv">
 
@@ -1572,7 +1571,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Jungle", "Boreal Forest"] %}
+                    {% elif province['location'] in ["Jungle", "Boreal Forest"] %}
                     <!-- Lumber mills -->
                     <div class="menudiv">
                         <h2 class="templatecontentheaderleft">Lumber Mills</h2>
@@ -1618,7 +1617,7 @@
                     {% endif %}
 
                     <!-- #3 Raw resource -->
-                    {% if location in ["Tundra", "Savanna", "Boreal Forest"] %}
+                    {% if province['location'] in ["Tundra", "Savanna", "Boreal Forest"] %}
                     <!-- Lead mines -->
                     <div class="menudiv">
 
@@ -1664,7 +1663,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Desert", "Grassland", "Mountain Range"] %}
+                    {% elif province['location'] in ["Desert", "Grassland", "Mountain Range"] %}
                     <!-- Bauxite mines -->
                     <div class="menudiv">
 
@@ -1710,7 +1709,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Jungle"] %}
+                    {% elif province['location'] in ["Jungle"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
@@ -1759,7 +1758,7 @@
                     {% endif %}
 
                     <!-- #4 Raw resource -->
-                    {% if location in ["Jungle", "Grassland"] %}
+                    {% if province['location'] in ["Jungle", "Grassland"] %}
                     <!-- Pumpjacks -->
                     <div class="menudiv">
 
@@ -1805,7 +1804,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Mountain Range"] %}
+                    {% elif province['location'] in ["Mountain Range"] %}
                     <!-- Lumber mills -->
                     <div class="menudiv">
                         <h2 class="templatecontentheaderleft">Lumber Mills</h2>
@@ -1848,7 +1847,7 @@
                             </div>
                         </div>
                     </div>
-                    {% elif location in ["Desert", "Tundra"]%}
+                    {% elif province['location'] in ["Desert", "Tundra"]%}
                     <!-- Uranium Mines-->
                     <div class="menudiv">
 
@@ -1893,7 +1892,7 @@
                             </div>
                         </div>
                     </div>
-                    {% elif location in ["Savanna"] %}
+                    {% elif province['location'] in ["Savanna"] %}
                     <!-- Bauxite mines -->
                     <div class="menudiv">
 
@@ -1939,7 +1938,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Boreal Forest"] %}
+                    {% elif province['location'] in ["Boreal Forest"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 

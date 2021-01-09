@@ -140,7 +140,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
         users = db.fetchall()
         
     # elif search is not None and upperinf is None and lowerinf is None:
-    elif search is not None:
+    elif search != "":
         db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
         users = db.fetchall()
 
