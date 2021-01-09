@@ -1207,6 +1207,7 @@
     .advert {
         text-align: center;
     }
+<<<<<<< Updated upstream
     
     .advertimage {
         width: 80%;
@@ -1218,6 +1219,356 @@
         object-fit: cover;
         transition: all 0.3s;
         cursor: pointer;
+=======
+}
+
+.smalltable td {
+    line-height: 40px !important;
+    height: 0px !important;
+    margin: 0;
+    padding: 0;
+}
+
+.talltabletd {
+    line-height: 60px;
+}
+
+.templatetable {
+    padding: 8px;
+    margin: 8px auto;
+    width: 90%;
+    background: var(--tableTwo);
+    box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
+    border-radius: 4px;
+}
+
+.templatetable tr {
+    border-collapse: collapse;
+}
+
+.templatetable th {
+    height: 40px;
+    background-color: #00a7e1;
+    color: white;
+    font-size: 20px;
+    column-span: 1;
+    letter-spacing: 0.5px;
+    font-weight: 450px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+    text-transform: capitalize;
+    text-align: center;
+}
+
+.templatetable th:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.templatetable th:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.templatetable tr:nth-child(odd) {
+    background: var(--tableOne);
+}
+
+.templatetable tr:nth-child(even) {
+    background: var(--tableTwo);
+}
+
+.templatetable td {
+    margin: 0px 2%;
+    width: 46%;
+    text-align: left;
+    display: table;
+    font-weight: 500;
+    color: var(--colorOne);
+    opacity: 0.9;
+    font-size: 15px;
+    position: relative;
+    float: left;
+    line-height: 45px;
+    height: 0;
+}
+
+.templatetable td:nth-child(even) {
+    text-align: right;
+    float: left;
+}
+
+.templatesmalltd {
+    font-size: 12px !important;
+}
+
+.templatetable .anchor,
+.templatetable2 .anchor {
+    color: #00a7e1;
+    transition: all 0.2s;
+    text-decoration: none;
+    text-align: center;
+    float: none;
+    justify-self: center;
+    width: 100%;
+    margin: 3px auto;
+    font-weight: normal;
+}
+
+.templatetable .anchor a,
+.templatetable2 .anchor a {
+    display: block;
+    width: fit-content;
+    padding: 12px 15%;
+}
+
+
+/*table2*/
+
+.templateoutertablediv {
+    padding: 8px;
+    width: 90%;
+    margin: 25px auto;
+    background: var(--tableTwo);
+    box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
+    border-radius: 4px;
+}
+
+.templatetable2 {
+    margin: 0px auto;
+    width: 100%;
+    box-shadow: none;
+    border-collapse: collapse;
+}
+
+.templatetable2 th {
+    column-span: all;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
+}
+
+.templatetable2 td {
+    text-align: center;
+    height: 45px;
+    width: 23%;
+    float: none;
+    display: table-cell;
+}
+
+.templatetable2 td:nth-child(even) {
+    text-align: center;
+    float: none;
+}
+
+.templatetable a,
+.templatetable2 a {
+    color: #00a7e1;
+    transition: all 0.2s;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+}
+
+.templatetable a:hover,
+.templatetable2 a:hover {
+    color: rgb(88, 196, 231);
+}
+
+
+/*Table3*/
+
+.templatetable3 {
+    border-collapse: collapse;
+    margin: 8px 0px;
+}
+
+.templatetable3 tr {
+    background: rgba(255, 255, 255, 0) !important;
+}
+
+.templatetable3 td {
+    display: table-cell;
+    text-align: right !important;
+    float: none !important;
+    margin: 0 !important;
+    padding: 8px 0px !important;
+}
+
+.templatetable3 td:nth-child(even) {
+    padding-left: 5px;
+}
+
+
+/**/
+
+.inverttable {
+    background: var(--tableOne);
+}
+
+.inverttable tr:nth-child(odd) {
+    background: var(--tableTwo);
+}
+
+.inverttable tr:nth-child(even) {
+    background: var(--tableOne);
+}
+
+
+/*flexbox*/
+
+.menuflex2 {
+    justify-content: center;
+    text-align: center;
+    width: 85%;
+    margin: 10px auto;
+    box-shadow: rgba(39, 41, 59, 0.1) 0px 2px 3px 1px;
+    padding: 0;
+    overflow: hidden;
+    flex-direction: row;
+    border-radius: 4px;
+}
+
+.menuflex2 div {
+    cursor: pointer;
+    padding: 10px;
+    margin: 0px;
+    transition: all 0.2s ease-out;
+    border-radius: 0px;
+    text-transform: uppercase;
+    user-select: none;
+    border-collapse: collapse;
+    background: var(--foregroundFive);
+    position: relative;
+}
+
+.menuflex2 div h3 {
+    margin: 0;
+    font-size: 19px;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    color: var(--colorOne);
+}
+
+.menuflex2 div:hover {
+    background: var(--foregroundFour);
+}
+
+.menuflex2notification {
+    position: relative;
+    background: red;
+    color: white;
+    border-radius: 100%;
+    font-size: 11px;
+    top: -10px;
+    margin-left: 0px;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 1px 3px 0px, rgba(39, 41, 59, 0.1) 0px 2px 4px 0px;
+    text-align: center;
+    padding: 3px 5.69px;
+}
+
+.notificationyellow {
+    background: rgb(245, 245, 35);
+    color: black;
+}
+
+.notificationicon {
+    font-size: 17px !important;
+    padding: 3.1px 3px;
+    top: -5px;
+    left: 4px;
+}
+
+.warning {
+    color: red !important;
+}
+
+.redactionbutton {
+    background: red;
+}
+
+.progressbarparent {
+    margin: 12px auto;
+    border-radius: 0px;
+    width: 90%;
+    background-color: var(--foreground);
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px 0px, rgba(0, 0, 0, 0.03) 0 12px 32px 0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progressbarparentlight {
+    background-color: var(--foregroundThree);
+    box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px 0px, rgba(0, 0, 0, 0.03) 0 12px 32px 0;
+}
+
+.progressbarchild {
+    background: #00a7e1;
+    padding: 15px;
+    font-size: 17px;
+}
+
+.progressbargreen {
+    background: rgb(26, 196, 26);
+}
+
+.progressbarchildtext {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: fit-content;
+    font-weight: 450;
+    color: var(--colorOne);
+}
+
+.video {
+    height: 0;
+    width: 0;
+}
+
+
+/*LANDING PAGE*/
+
+.landingpagediv {
+    width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    padding-top: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.landingtopper {
+    min-height: calc(100vh - 110px);
+    align-items: center;
+    background: var(--background);
+    animation: templatedivcontentload 1.25s;
+}
+
+.landingparent {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+    margin: auto;
+    background: var(--foregroundSeven);
+    height: max-content;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
+    position: relative;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/static/images/coalition.jpg);
+    height: 100vh;
+    background-size: cover;
+    background-attachment: fixed;
+    object-fit: cover;
+    padding-top: 1.5rem;
+}
+
+@media all and (max-width: 800px) {
+    .landingparent {
+        flex-direction: column;
+>>>>>>> Stashed changes
     }
     
     .advertimage:hover {
@@ -1259,6 +1610,7 @@
         font-weight: normal;
         text-transform: capitalize;
     }
+<<<<<<< Updated upstream
     
     .templatecontentpleft {
         padding: 8px;
@@ -1267,6 +1619,83 @@
         font-weight: normal;
         text-align: justify;
         text-justify: inter-word;
+=======
+}
+
+.landingchildleft {
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    height: fit-content;
+    margin: auto;
+    animation: templatedivcontentload 1.25s;
+    position: relative;
+}
+
+.landingheader {
+    font-size: 48px;
+    color: white;
+    border-radius: 45px;
+    margin-bottom: 40px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.landingcontent {
+    color: var(--colorOne);
+    margin: 30px auto;
+    font-size: 21px;
+    line-height: 25px;
+    color: white;
+    width: 50%;
+    line-height: 32px;
+}
+
+.landingchildcontainerparent {
+    display: flex;
+    width: fit-content;
+    justify-content: center;
+    margin: 30px auto;
+    margin-bottom: 20px;
+    vertical-align: bottom;
+    flex-wrap: wrap;
+}
+
+.landingchildcontainerchild {
+    width: fit-content;
+    margin: 10px;
+}
+
+.landingbutton {
+    padding: 10px 40px;
+    padding-bottom: 12px;
+    font-size: 20px;
+    box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.35) 0px 2px 5px 0px;
+    background-color: #00a7e1;
+}
+
+.discordlink {
+    width: 65%;
+    border: none;
+    display: block;
+    margin: 10px auto;
+    height: 450px;
+    position: relative;
+    top: -5px;
+    transition: all 0.3s;
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 32px 2px, #00a9e140 0px 8px 0px 0px;
+}
+
+.discordlink:hover {
+    top: 0;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 4px 0px;
+}
+
+@media all and (max-width: 600px) {
+    .discordlink {
+        width: 85%;
+>>>>>>> Stashed changes
     }
     
     .templatecontentpcenter {
