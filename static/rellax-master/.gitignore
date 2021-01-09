@@ -1,0 +1,13 @@
+.DS_Store
+
+rellax-build.js
+
+
+npm-debug.log
+debug.log
+
+# Latest bootstrap version
+bootstrap.min_v4.css
+
+# demo file with new bootstrap file
+demo1.html
