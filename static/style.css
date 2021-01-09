@@ -554,7 +554,7 @@ label {
     width: fit-content;
     transition: all 0.2s;
     line-height: 35px;
-    border: 2.5px #00a9e1 solid;
+    border: 2.5px transparent solid;
     padding: 0 10px;
     text-decoration: none;
     color: white;
