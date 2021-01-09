@@ -20,6 +20,8 @@ class BlueprintUnit(ABC):
         - bonus: used to calculate the battle advantage
         - damage: used to determine the damage dealt to a specific target (infra, other buildings), used for percentage calculation
             * in case of nukes: damage in nuke is the pure damage to units and infrastructure (when nuke targeted to a single object/unit damage is dealt)
+        - resource_cost: the required resources per x amount unit to be able to attack
+            ex. {"ammunition": 1} <- means 1 ammunition is needed for one unit to attack
     """
 
     damage = 0
@@ -47,6 +49,7 @@ class SoldierUnit(BlueprintUnit):
     unit_type = "soldiers"
     damage = 1
     supply_cost = 1
+    resource_cost = {"ammunition": 1}
 
     def __init__(self, amount: int) -> None:
         self.amount = amount
@@ -67,6 +70,7 @@ class TankUnit(BlueprintUnit):
     unit_type = "tanks"
     damage = 40
     supply_cost = 5
+    resource_cost = {"ammunition": 1, "gasoline": 1}
 
     def __init__(self, amount):
         self.amount = amount
@@ -89,6 +93,7 @@ class ArtilleryUnit(BlueprintUnit):
     unit_type = "artillery"
     damage = 80
     supply_cost = 5
+    resource_cost = {"ammunition": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -108,6 +113,7 @@ class BomberUnit(BlueprintUnit):
     unit_type = "bombers"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -137,6 +143,7 @@ class FighterUnit(BlueprintUnit):
     unit_type = "fighters"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -155,6 +162,7 @@ class ApacheUnit(BlueprintUnit):
     unit_type = "apaches"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -178,6 +186,7 @@ class DestroyerUnit(BlueprintUnit):
     unit_type = "destroyers"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -195,6 +204,7 @@ class CruiserUnit(BlueprintUnit):
     unit_type = "cruisers"
     damage = 200
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -216,6 +226,7 @@ class SubmarineUnit(BlueprintUnit):
     unit_type = "submarines"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -233,7 +244,7 @@ class IcbmUnit(BlueprintUnit):
 
     unit_type = "icbms"
     damage = 1000
-    supply_cost = 400
+    supply_cost = 500
 
     def __init__(self, amount):
         self.amount = amount
@@ -351,7 +362,6 @@ class Units(Military):
         available_units.update(special_units)
 
         try:
-            # units_count = 3
             while units_count:
                 current_unit = unit_types[units_count-1]
                 if current_unit not in self.allUnits:
@@ -514,9 +524,8 @@ class Units(Military):
             print("ERROR DURING SAVE")
             return "ERROR DURING SAVE"
 
-    # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
-    # Also save the remaining morale to the database
-    # TODO: decrease the supplies amount in db
+    # Fetch the available supplies and resources which are required and compare it to unit attack cost
+    # It also saves the remaining morale to the database
     def attack_cost(self, cost: int) -> str:
         if self.available_supplies is None:
 
@@ -529,7 +538,6 @@ class Units(Military):
 
             db = connection.cursor()
 
-            # print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
             db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
             attacker_id = db.fetchone()
 

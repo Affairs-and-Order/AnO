@@ -678,17 +678,6 @@ def warTarget():
 @app.route("/warResult", methods=["GET"])
 @login_required
 def warResult():
-
-    # DEBUG DATA START:
-    # session["attack_units"] = Units(3, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"]).__dict__
-    # session["attack_units"]["supply_costs"] = 5
-    # session["attack_units"]["available_supplies"] = 10
-    #
-    # eId = 2
-    # session["enemy_id"] = eId
-    # session["user_id"] = 3
-    # DEBUG DATA END!
-
     attack_unit_session = session.get("attack_units", None)
     if attack_unit_session is None:
         return redirect("/wars")
@@ -723,7 +712,6 @@ def warResult():
 
     # If user came from /wartarget only then they have from_wartarget
     result = session.get("from_wartarget", None)
-    print(result, "RESULT HERE")
     if result is None:
         db.execute("SELECT default_defense FROM military WHERE id=(%s)", (eId,))
         defensestring = db.fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
@@ -760,14 +748,12 @@ def warResult():
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
         db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
-        # print(db.fetchall())
         war_type = db.fetchall()[-1][0]
 
         # attack_effects = sum of 3 attack effect in fight() method
         winner, win_condition, attack_effects = Military.fight(attacker, defender)
 
         if len(war_type) > 0:
-            print(war_type, "WAR_TYPE")
             if war_type == "Raze":
 
                 # infrastructure damage
@@ -816,13 +802,9 @@ def warResult():
         for unit in attacker.selected_units_list:
             attacker_loss[unit] = prev_attacker[unit]-attacker.selected_units[unit]
 
-        print("ATTCKER, DEFENDER LOSSS")
-        print(defender_loss)
-        print(attacker_loss)
         defender_result["unit_loss"] = defender_loss
         attacker_result["unit_loss"] = attacker_loss
     else:
-        print("BIG ELSE")
         defender_result["unit_loss"] = result[0]
         defender_result["infra_damage"] = result[1]
 
@@ -838,7 +820,6 @@ def warResult():
 
     # save method only function for the attacker now, and maybe we won't change that
     # saves the decreased supply amount
-    print(attacker)
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
@@ -871,12 +852,8 @@ def declare_war():
     db = connection.cursor()
     # Selects the country that the user is attacking
     defender = request.form.get("defender") # the problem is that declaring war through /country/id does not have a defender tag, but declaring war normally does
-    print(defender, "defender")
     war_message = request.form.get("description")
-    print(war_message)
     war_type = request.form.get("warType")
-    print(war_type)
-
 
     attacker = Nation(session["user_id"])
     defender = Nation(defender)
