@@ -134,10 +134,13 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
 
     # Optimize
-    if not search and upperinf is None and lowerinf is None:
+    # if not search and upperinf is None and lowerinf is None:
+    if not search:
         db.execute("SELECT id FROM users ORDER BY id")
         users = db.fetchall()
-    elif search is not None and upperinf is None and lowerinf is None:
+        
+    # elif search is not None and upperinf is None and lowerinf is None:
+    elif search is not None:
         db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
         users = db.fetchall()
 
@@ -215,7 +218,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
 @app.route("/update_country_info", methods=["POST"])
 @login_required
 def update_info():
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -297,7 +300,7 @@ def update_info():
 @login_required
 def delete_own_account():
 
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
