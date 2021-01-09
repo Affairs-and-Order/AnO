@@ -2212,28 +2212,26 @@
         align-items: center;
         background: var(--background);
         animation: templatedivcontentload 1.25s;
-        background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/static/images/coalition.jpg);
-        background-size: cover;
-        background-attachment: fixed;
     }
     
     .landingparent {
         display: flex;
         flex-direction: row;
-        width: 35%;
-        padding: 0rem 2rem 0rem 2rem;
+        width: 100%;
         border-radius: 4px;
         overflow: hidden;
         margin: auto;
         background: var(--foregroundSeven);
         height: max-content;
         box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
-        margin-top: 7.5vh;
-        min-height: 48vh;
         border: 1.5px solid var(--border);
         position: relative;
         animation: templatedivcontentload 1s;
-        right: 26.5%;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/static/images/coalition.jpg);
+        height: 100vh;
+        background-size: cover;
+        background-attachment: fixed;
+        object-fit: cover;
     }
     
     @media all and (max-width: 800px) {
@@ -2278,7 +2276,6 @@
         font-size: 48px;
         color: white;
         border-radius: 45px;
-        background-color: black;
         margin-bottom: 40px;
         font-weight: normal;
         text-align: center;
@@ -2289,7 +2286,8 @@
         margin: 30px auto;
         font-size: 20px;
         line-height: 25px;
-        opacity: 0.7;
+        color: white;
+        width: 50%;
     }
     
     .landingchildcontainerparent {
@@ -2311,9 +2309,8 @@
         padding: 10px 40px;
         padding-bottom: 12px;
         font-size: 20px;
-        box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.25) 0px 2px 5px 0px;
-        background-color: black;
-        color: #00a7e1;
+        box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.35) 0px 2px 5px 0px;
+        background-color: #00a7e1;
     }
     
     .discordlink {

@@ -38,7 +38,7 @@
     </div>
     {% if session.get('user_id') == None %}
     <div class="templatedivcontent">
-        <div class="templatedivflex2 menuflex whiteblue">
+        <div class="templatedivflex2 menuflex whiteblue" data-aos="fade-up">
             <div class="templatedivflex2left">
 
                 <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/administrativebuilding.jpg') }}" />
@@ -151,7 +151,7 @@
     {% endif %}
 </div>
 <script src="/static/rellax-master/rellax.min.js"></script>
-    <script>
-      var rellax = new Rellax('.rellax');
-    </script>
+<script>
+    var rellax = new Rellax('.rellax');
+</script>
 {% endblock %}

@@ -18,7 +18,7 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
         }
     });
     */
-
+AOS.init();
 //navbar events
 function menubardrop() {
 
@@ -42,6 +42,25 @@ function resourcedivcontentshow() {
     document.getElementById("resourcediv").classList.toggle("resourcedivshow");
     document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
 
+}
+//SCROLLBAR ANIMATION
+window.onscroll = function() { scrolltop() };
+
+function scrolltop() {
+
+    if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
+
+        document.getElementById("navbar").style.backgroundColor = "rgb(56, 105, 179)";
+
+        document.getElementById("menu").style.transition = "all 0.2s";
+
+    } else {
+
+        document.getElementById("navbar").style.backgroundColor = "rgb(56, 105, 179)";
+
+        document.getElementById("menu").style.transition = "all 0.2s";
+
+    }
 }
 //resourcediv stay open
 /*
@@ -648,4 +667,9 @@ function war_target() {
             }
         }
     }
+}
+
+function myFunction() {
+    var element = document.getElementById("myDIV");
+    element.classList.remove("mystyle");
 }
