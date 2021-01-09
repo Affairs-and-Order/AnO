@@ -362,7 +362,6 @@ class Units(Military):
         available_units.update(special_units)
 
         try:
-            # units_count = 3
             while units_count:
                 current_unit = unit_types[units_count-1]
                 if current_unit not in self.allUnits:
@@ -539,7 +538,6 @@ class Units(Military):
 
             db = connection.cursor()
 
-            # print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
             db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
             attacker_id = db.fetchone()
 
