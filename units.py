@@ -233,7 +233,7 @@ class IcbmUnit(BlueprintUnit):
 
     unit_type = "icbms"
     damage = 1000
-    supply_cost = 400
+    supply_cost = 500
 
     def __init__(self, amount):
         self.amount = amount
@@ -514,9 +514,8 @@ class Units(Military):
             print("ERROR DURING SAVE")
             return "ERROR DURING SAVE"
 
-    # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
-    # Also save the remaining morale to the database
-    # TODO: decrease the supplies amount in db
+    # Fetch the available supplies and resources which are required and compare it to unit attack cost
+    # It also saves the remaining morale to the database
     def attack_cost(self, cost: int) -> str:
         if self.available_supplies == None:
 
