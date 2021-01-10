@@ -272,7 +272,7 @@
 }
 
 .theme-light {
-    --background: #f7f9fd;
+    --background: #ffffff;
     --foreground: white;
     --foregroundTwo: #fdfdfd;
     --foregroundThree: #f7f7f7;
@@ -320,7 +320,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 body {
-    background: var(--background);
+    background: var(--background) !important;
     padding: 0;
     margin: 0;
     font-family: 'Roboto', sans-serif !important;
@@ -1049,6 +1049,7 @@ label {
 .templatecontainer {
     min-height: 100vh;
     margin-top: -90px;
+    background: var(--background);
 }
 
 .templatediv {
@@ -1059,7 +1060,7 @@ label {
     padding-bottom: 25px;
     overflow: hidden;
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0 0 32px 0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 3px 5px 0px, rgba(0, 0, 0, 0.06) 0 -12px 56px 0;
 }
 
 @media all and (max-width: 750px) {
@@ -3214,7 +3215,7 @@ button {
 
 footer {
     padding: 2rem 2rem 2rem 2rem;
-    background: var(--foregroundEight);
+    background: var(--foregroundSeven);
     color: var(--colorOne);
 }
 
