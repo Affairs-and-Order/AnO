@@ -2600,6 +2600,7 @@ button {
     background-position: -50% 0%;
     float: none;
     border-radius: 4px;
+    line-height: normal;
 }
 
 .loginsignupinput:focus {
