@@ -3234,6 +3234,7 @@ footer {
     color: var(--colorOne);
     font-weight: normal;
     cursor: default;
+    height: auto;
 }
 
 .footertitle:hover {
