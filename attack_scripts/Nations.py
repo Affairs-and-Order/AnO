@@ -478,7 +478,7 @@ class Military(Nation):
                 # transfer 20% of resource on hand (TODO: implement if and alliance won how to give it)
                 eco.transfer_resources(resource, resource_amount*(1/5), winner.user_id)
 
-            print("THE WAR IS OVER")
+            # print("THE WAR IS OVER")
 
         db.execute(f"UPDATE wars SET {column}=(%s) WHERE id=(%s)", (morale, war_id))
 
@@ -635,8 +635,8 @@ class Military(Nation):
         elif attacker_unit_amount_bonuses == 0:
             attacker_chance = 0.001
 
-        print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
-        print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
+        # print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
+        # print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
@@ -686,9 +686,11 @@ class Military(Nation):
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            w_casualties = winner_casulties*random.uniform(0.5, 1.5)*10
-            l_casualties =  win_type*random.uniform(0.8, 1.5)*10
+            w_casualties = winner_casulties*random.uniform(0.5, 4)*15
+            l_casualties =  win_type*random.uniform(0.8, 4)*15
 
+            # print("w_casualties", w_casualties)
+            # print("l_casualties", l_casualties)
             winner.casualties(winner_unit, w_casualties)
             loser.casualties(loser_unit, l_casualties)
 

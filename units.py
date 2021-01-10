@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from attack_scripts import Military
+from math import ceil
 from random import randint
 from typing import Union
 import psycopg2
@@ -468,7 +469,7 @@ class Units(Military):
 
         # Make sure this is and integer
         # TODO: optimize this by creating integer at the user side
-        amount = int(amount)
+        amount = int(ceil(amount))
         unit_amount = self.selected_units[unit_type]
 
         if amount > unit_amount:
@@ -560,76 +561,4 @@ class Units(Military):
 
 # DEBUGGING
 if __name__ == "__main__":
-    # l = Units(1, {"nukes": 1})
-    # l = Units(11)
-    # l.attach_units({"nukes": 1}, 1)
-    # print(l.attack("nukes", "submarines"))
-
-    # l.attack_cost(100)
-
-    # l = Units(10)
-    # l.attack_cost(600)
-
-    # CASE FOR SPECIAL FIGHT
-    attacker = Units(11)
-    defender = Units(10)
-
-    p = defender.attach_units({"soldiers": 10, "tanks": 0, "artillery": 0}, 3)
-
-    print(p)
-
-    error = attacker.attach_units({"nukes": 1}, 1)
-    if error:
-        print(error)
-
-    attacker.special_fight(attacker, defender, "soldiers")
-    attacker.save()
-
-    # attacker.infrastructure_damage(1500, {})
-
-
-    # CASE 1
-    # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},
-    #                  selected_units_list=["artillery", "tanks", "soldiers"])
-    # defender = Units(10, {"submarines": 20, "apaches": 3, "soldiers": 158},
-    #                  selected_units_list=["submarines", "apaches", "soldiers"])
-    #
-    # Military.fight(attacker, defender)
-    #
-    # print("AFTER CASUALTIES")
-    # print(attacker.selected_units)
-    # print(defender.selected_units)
-
-    # CASE 2
-    # import psycopg2
-    # from random import uniform
-    #
-    # defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
-    # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
-    #
-    # # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
-    # # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
-    #
-    # print(defender.selected_units)
-    #
-    # for i in range(3):
-    #     print("ROUND", i)
-    #     random_event = uniform(0, 5)
-    #     size_chance = attacker.selected_units["tanks"] * 30/1000
-    #     unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender)[1] # tank bonus against soldiers
-    #     nation1_chance = random_event+size_chance*unit_type_bonuses
-    #
-    #     random_event = uniform(0, 5)
-    #     size_chance = defender.selected_units["soldiers"] * 30/1000
-    #     unit_type_bonuses = 1
-    #     nation2_chance = random_event+size_chance*unit_type_bonuses
-    #
-    #     print(nation1_chance)
-    #     print(nation2_chance)
-    #
-    #     defender_loss = int(attacker.selected_units["tanks"]*0.12)
-    #     defender.casualties("soldiers", defender_loss)
-    #
-    #
-    # # print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
-    # print(defender.selected_units)
+    pass
