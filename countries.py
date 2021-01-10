@@ -244,21 +244,23 @@ def update_info():
     flag = request.files["flag_input"]
     if flag and allowed_file(flag.filename):
 
+        current_filename = flag.filename
+
         # Check if the user already has a flag
         try:
             db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
             current_flag = db.fetchone()[0]
 
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
-        except FileNotFoundError:
+        except:
             pass
 
         # Save the file & shit
-        current_filename = flag.filename
         if allowed_file(current_filename):
             extension = current_filename.rsplit('.', 1)[1].lower()
             filename = f"flag_{cId}" + '.' + extension
-            flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            new_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) 
+            flag.save(new_path)
             db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
 
     """
