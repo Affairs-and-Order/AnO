@@ -2273,7 +2273,6 @@ button {
     height: fit-content;
     margin: auto;
     position: relative;
-    animation: templatedivcontentload 1.25s;
 }
 
 .landingheader {
@@ -2281,12 +2280,22 @@ button {
     color: white;
     border-radius: 45px;
     margin-bottom: 40px;
+    margin-top: 75px;
     font-weight: 700;
     text-align: center;
 }
 
 .landingblueheader {
     color: #00a7e1;
+    animation: templatedivcontentload 1s !important;
+    position: relative;
+    top: 0;
+}
+
+.landingwhiteheader {
+    animation: templatedivcontentload 1.5s;
+    position: relative;
+    top: 0;
 }
 
 .landingcontent {
@@ -2296,8 +2305,11 @@ button {
     line-height: 25px;
     color: white;
     width: 50%;
-    line-height: 32px;
+    line-height: 35px;
     font-weight: 500;
+    animation: templatedivcontentload 2.4s;
+    position: relative;
+    top: 0;
 }
 
 @media all and (max-width: 600px) {
@@ -2314,6 +2326,8 @@ button {
     margin-bottom: 20px;
     vertical-align: bottom;
     flex-wrap: wrap;
+    position: relative;
+    top: 0;
 }
 
 .landingchildcontainerchild {
@@ -2326,7 +2340,7 @@ button {
     font-size: 20px;
     box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.25) 0px 2px 5px 0px;
     background-color: #00a7e1;
-    animation: templatedivcontentload 2s;
+    animation: templatedivtitleload 3.2s;
 }
 
 .landingloginbutton {
@@ -2343,6 +2357,8 @@ button {
     box-shadow: inset rgba(39, 41, 59, 0.5) 0px 0px 150px 2px, rgba(0, 0, 0, 0.15) 0 8px 16px 0;
     background: #00a7e1;
 }
+
+.templatedivlandingcontent {}
 
 .discordlink {
     width: 65%;
@@ -2921,7 +2937,7 @@ button {
     animation-duration: 1.5s;
 }
 
-.purchasemilitarydiv {
+landingdivcontent .purchasemilitarydiv {
     height: min-content;
 }
 
