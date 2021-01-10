@@ -186,8 +186,11 @@
                             const landCost = function(event) {
                                 var landamount = document.getElementById("landamount").value;
                                 var landoutput = document.getElementById("landoutput");
+                                let current_land = document.getElementById("currentLand").value;
                                 //insert land cost formula
-                                var landoutputcost = landoutput.innerHTML = landamount / 4;
+                                let multiplier = 1 + ((0.06 * landamount) * current_land)
+                                let land_price = ((120000 * multiplier) * landamount)
+                                var landoutputcost = landoutput.innerHTML = land_price;
 
                                 console.log(landamount);
                             }
@@ -201,6 +204,7 @@
                             <div class="templatedivflex2left">
 
                                 <input class="loginsignupinput" type="number" name="land" placeholder="Land Amount" id="landamount" onchange="landCost(event)" />
+                                <input type="hidden" id="currentLand"/>
 
                             </div>
                             <div class="templatedivflex2right">
