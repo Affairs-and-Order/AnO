@@ -140,7 +140,11 @@
                             <td><span class="material-icons-outlined">
                                 people_alt
                                 </span>Population:</td>
+                            {% if population != None %}
                             <td>{{ population }}</td>
+                            {% else %}
+                            <td>0</td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">

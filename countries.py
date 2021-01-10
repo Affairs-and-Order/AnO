@@ -11,8 +11,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-UPLOAD_FOLDER = 'static/flags'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = 'static/flags'
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
 
 @app.route("/country/id=<cId>")
 @login_required
