@@ -2341,6 +2341,7 @@ button {
     box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.25) 0px 2px 5px 0px;
     background-color: #00a7e1;
     animation: templatedivtitleload 3.2s;
+    position: static;
 }
 
 .landingloginbutton {
