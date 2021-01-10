@@ -3239,11 +3239,39 @@ footer {
     color: var(--colorOne);
 }
 
-.footericon {
+.footertitleicon {
     float: none;
     margin: 0;
 }
 
-footer p {}
+.footericon {
+    padding: 10px;
+    transition: all 0.6s ease;
+}
+
+.footericon:hover {
+    transform: rotate(360deg) scale(1.2);
+    filter: brightness(75%);
+}
+
+.discordicon {
+    color: #7289da;
+}
+
+.forumicon {
+    color: #00a7e1;
+}
+
+.twittericon {
+    color: rgba(29, 161, 242, 1.00);
+}
+
+.youtubeicon {
+    color: #ff0000;
+}
+
+.redditicon {
+    color: rgb(255, 69, 0);
+}
 
 .footercopyright {}
