@@ -339,112 +339,49 @@
             <a class="menubara " href="index.html ">World</a>
 
         </div>
-        -->{% block body %} {% endblock %}
+        -->
+    <div class="templatecontainer">{% block body %} {% endblock %}
 
-    <!-- Code for message flashes (You bought x soldiers, etc)-->
-    <!-- Please fix the html (not jinja templating) so it would show up somewhere, I recommend the bottom right corner of the screen.-->
-    <!-- t0dd -->
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        <div class="purchasediv">
-            <div class="purchasenotif">
-                <h3>{{ message }}</h3>
+        <!-- Code for message flashes (You bought x soldiers, etc)-->
+        <!-- Please fix the html (not jinja templating) so it would show up somewhere, I recommend the bottom right corner of the screen.-->
+        <!-- t0dd -->
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="purchasediv">
+                <div class="purchasenotif">
+                    <h3>{{ message }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+
+
+    </div>
+
+    <footer class="footer">
+
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left footerchild">
+
+                <a class="footertitle navbarparenttitle">
+                    <img src="{{ url_for('static', filename='images/titleimage.png') }}" class="navbarparenttitleimage footericon" /> Affairs and Order</a>
+
+                <div class="footercopyright">© Copyright 2021</div>
+
+            </div>
+            <div class="templatedivflex2left footerchild">
+
+                <a class="tw-ic" href="https://twitter.com/AffairsOrder" target="_blank">
+                    <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
+                </a>
+                <a href="https://www.reddit.com/r/AffairsAndOrder/" target="_blank"><i class="fab fa-reddit"></i></a>
+
             </div>
         </div>
-        {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
 
-<!-- Footer -->
-<footer class="page-footer font-small pt-4">
-
-    <!-- Footer Links -->
-    <div class="container-fluid text-center text-md-left">
-  
-      <!-- Grid row -->
-      <div class="row">
-  
-        <!-- Grid column -->
-        
-        <div class="col-md-6 mt-md-0 mt-3">
-  
-          <!-- Content -->
-          
-          <h5 class="text-uppercase">ABOUT A&O</h5>
-          <p>Here you can use rows and columns to organize your footer content.</p>
-          <a class="tw-ic" href="https://twitter.com/AffairsOrder" target="_blank">
-            <i class="fab fa-twitter fa-lg white-text mr-md-5 mr-3 fa-2x"> </i>
-          </a>
-          <a href="https://www.reddit.com/r/AffairsAndOrder/" target="_blank"><i class="fab fa-reddit"></i></a>
-        </div>
-        <!-- Grid column -->
-  
-        <hr class="clearfix w-100 d-md-none pb-3">
-  
-        <!-- Grid column -->
-        <div class="col-md-3 mb-md-0 mb-3">
-  
-          <!-- Links -->
-          <h5 class="text-uppercase">Links</h5>
-  
-          <ul class="list-unstyled">
-            <li>
-              <a href="#!">Link 1</a>
-            </li>
-            <li>
-              <a href="#!">Link 2</a>
-            </li>
-            <li>
-              <a href="#!">Link 3</a>
-            </li>
-            <li>
-              <a href="#!">Link 4</a>
-            </li>
-          </ul>
-  
-        </div>
-        <!-- Grid column -->
-  
-        <!-- Grid column -->
-        <div class="col-md-3 mb-md-0 mb-3">
-  
-          <!-- Links -->
-          <h5 class="text-uppercase">Links</h5>
-  
-          <ul class="list-unstyled">
-            <li>
-              <a href="#!">Link 1</a>
-            </li>
-            <li>
-              <a href="#!">Link 2</a>
-            </li>
-            <li>
-              <a href="#!">Link 3</a>
-            </li>
-            <li>
-              <a href="#!">Link 4</a>
-            </li>
-          </ul>
-  
-        </div>
-        <!-- Grid column -->
-  
-      </div>
-      <!-- Grid row -->
-  
-    </div>
-    <!-- Footer Links -->
-  
-    <!-- Copyright -->
-    
-    <!-- Copyright -->
-  
-  </footer>
-  <div class="footer-copyright text-center py-3">© 2020 Copyright:
-    <a href="https://mdbootstrap.com/">https://affairsandorder.com/</a>
-  </div>
-  <!-- Footer -->
+    </footer>
 
 </body>
 

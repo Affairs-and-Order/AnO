@@ -1,6 +1,10 @@
 {% extends "layout.html" %} {% block title %} Sign up {% endblock %} {% block body%}
 <!-- START------------------------------------------------------------------------->
-<img class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
+<style>
+    .footer {
+        display: none;
+    }
+</style>
 <script>
     //Code for image slider in signup page
 
@@ -27,6 +31,7 @@
         slides[slideIndex - 1].style.display = "block";
     }
 </script>
+<img class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
 <div class="templatediv noboxshadowtopper loginsignupdiv">
 
     <div class="templatedivtopper noboxshadowtopper">

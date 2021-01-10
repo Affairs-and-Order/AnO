@@ -1046,11 +1046,16 @@ label {
     border-radius: 4px;
 }
 
+.templatecontainer {
+    min-height: 100vh;
+    margin-top: -90px;
+}
+
 .templatediv {
     background: var(--foreground);
     width: 90%;
     margin: 50px auto;
-    margin-top: 90px;
+    margin-top: 180px;
     padding-bottom: 25px;
     overflow: hidden;
     border-radius: 4px;
@@ -1269,7 +1274,6 @@ label {
 .templatecontentpleft {
     color: var(--colorOne);
     opacity: 0.7;
-    font-weight: normal;
     text-align: justify;
     margin-top: 0;
 }
@@ -1278,9 +1282,9 @@ label {
     text-align: justify;
     font-size: 17px;
     color: var(--colorOne);
-    font-weight: normal;
     text-align: center;
     margin-top: 0;
+    opacity: 0.7;
 }
 
 .templatedivbutton {
@@ -2236,7 +2240,7 @@ button {
     box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
     position: relative;
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/static/images/coalition.jpg);
-    height: 100vh;
+    min-height: 100vh;
     background-size: cover;
     background-attachment: fixed;
     object-fit: cover;
@@ -2403,7 +2407,7 @@ button {
 }
 
 .cardcontainer:hover .cardparent {
-    opacity: 0.5;
+    opacity: 0.4;
     transition: all 0.6s;
 }
 
@@ -2411,6 +2415,7 @@ button {
     .cardcontainer:hover .cardparent {
         opacity: 1;
         transition: all 0.3s;
+        cursor: default;
     }
 }
 
@@ -2419,7 +2424,7 @@ button {
 }
 
 .cardparent:hover .cardimage {
-    box-shadow: rgba(0, 0, 0, 0.322) 0 18px 38px 0, rgba(0, 0, 0, 0.363) 0 4px 12px 2px;
+    box-shadow: rgba(0, 0, 0, 0.322) 0 18px 48px 0, rgba(0, 0, 0, 0.2) 0 4px 12px 2px;
 }
 
 .cardtitle {
@@ -2453,10 +2458,7 @@ button {
 .cardcontent {
     padding: 0 15px;
     margin-top: -24px;
-    font-weight: bolder;
 }
-
-
 
 .landingcontactdiv {
     margin: 50px auto;
@@ -3209,70 +3211,38 @@ button {
 
 
 /*FOOTER*/
-/*
-.footer {
-    background: #363945;
-    z-index: 1;
-    padding: 2vw 2vh;
-    padding-bottom: 35px;
-    color: black;
-    display: flex;
-    min-height: 10vh;
-}
-
-.footerleft,
-.footerright {
-    width: 50%;
-    flex-direction: column;
-    flex-wrap: wrap;
-}
-
-.footerright {
-    text-align: right;
-}
-
-.footer div a {
-    display: block;
-    width: fit-content;
-    text-decoration: none;
-    transition: all 0.2s;
-    color: #00a7e1;
-    padding: 2px;
-    transition: all 0.2s;
-    cursor: pointer;
-}
-
-.footer .footerright a {
-    float: right;
-    margin-left: 100%;
-    width: max-content;
-}
-
-.footer div a:hover {
-    color: rgb(88, 196, 231);
-}
-*/
-
 
 footer {
-    background-color: #363945 !important;
-    padding: 2rem 2rem 0 2rem;
+    padding: 2rem 2rem 2rem 2rem;
+    background: var(--foregroundEight);
+    color: var(--colorOne);
 }
 
-footer h5 {
-    color: white;
+.footerchild {
+    width: fit-content;
+    margin: auto;
+    text-align: left;
 }
 
-footer p {
-    color: white;
+.footertitle {
+    width: 100%;
+    float: none;
+    text-align: left;
+    margin: 0;
+    color: var(--colorOne);
+    font-weight: normal;
+    cursor: default;
 }
 
-.fa-reddit {
-    font-size: 1.85rem;
+.footertitle:hover {
+    color: var(--colorOne);
 }
 
-.footer-copyright {
-    background-color: #2a2d35;
-    color: white;
+.footericon {
+    float: none;
+    margin: 0;
 }
 
+footer p {}
+
+.footercopyright {}
