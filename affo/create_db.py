@@ -19,7 +19,7 @@ tables = [
     "treaties", "users", "peace", "wars", "reparation_tax"
 ]
 
-"""
+
 for i in tables:
     with open(f"postgres/{i}.txt") as file:
         try:
@@ -35,6 +35,5 @@ db.execute("INSERT INTO keys (key) VALUES ('b')")
 db.execute("INSERT INTO keys (key) VALUES ('c')")
 
 print("Inserted keys: a, b, c")
-"""
 
 connection.commit()
