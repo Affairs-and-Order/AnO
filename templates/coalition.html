@@ -574,7 +574,9 @@
 
                     <input class="loginsignupinput" autocomplete="off" name="coalition_name" placeholder="Coalition name" />
 
-                    <textarea class="templatetextarea" name="treatymessage" placeholder="Desribe the treaty" maxlength="5000"></textarea>
+                    <input class="loginsignupinput" autocomplete="off" name="treaty_name" placeholder="Treaty name" />
+
+                    <textarea class="templatetextarea" name="treaty_message" placeholder="Desribe the treaty" maxlength="5000"></textarea>
 
                     <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     arrow_forward
@@ -595,10 +597,11 @@
                             <th>Action</th>
                         </tr>
                         <!--for every coalition make a row with 10 max-->
-                        {% for treaty_id, col_id, col_name, treaty_name in ingoing_treaties %}
+                        {% for treaty_id, col_id, col_name, treaty_name, treaty_description in ingoing_treaties %}
                         <tr>
                             <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
                             <td>{{ treaty_name }}</td>
+                            <td>{{ treaty_description }}</td>
                             <form method="POST">
                                 <td>
                                     <button formaction="/accept_treaty/{{ treaty_id[0] }}"><span class="material-icons iconblue">
@@ -626,14 +629,15 @@
                         <tr>
                             <th>Ally</th>
                             <th>Treaty</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                         <!--for every ally make a row-->
-                        {% for coalition_id, coalition_name, treaty_name, id in active_treaties %}
+                        {% for coalition_id, coalition_name, treaty_name, id, treaty_description in active_treaties %}
                         <tr>
                             <td><a href="/coalition/{{ coalition_id }}">{{ coalition_name }}</a></td>
-                            <!--Link to treaty page (dynamic page)-->
-                            <td><a href="/treaty">View treaty</a></td>
+                            <td>{{ treaty_name }}</td>
+                            <td>{{ treaty_description }}</td>
                             <form method="POST">
                                 <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
                                                 remove_circle_outline

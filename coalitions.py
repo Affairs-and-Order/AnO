@@ -115,11 +115,12 @@ def coalition(colId):
     if user_role == "leader":
 
         #### INGOING ####
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
+        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
         ingoing_ids = db.fetchall()
         col_ids = []
         col_names = []
         trt_names = []
+        trt_descriptions = []
 
         for treaty_iddd in ingoing_ids:
 
@@ -133,25 +134,29 @@ def coalition(colId):
             coalition_name = db.fetchone()[0]
             col_names.append(coalition_name)
 
-            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (treaty_id,))
+            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (treaty_id,))
             treaty_name = db.fetchone()[0]
             trt_names.append(treaty_name)
 
-        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
+            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (treaty_id,))
+            treaty_description = db.fetchone()[0]
+            trt_descriptions.append(treaty_description)
+
+        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names, trt_descriptions)
         ingoing_length = len(list(ingoing_treaties))
         #################
 
         #### ACTIVE ####
 
         
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY treaty_id ASC", (colId, colId))
+        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
         raw_active_ids = db.fetchall()
 
         active_ids = []
         coalition_ids = []
         coalition_names = []
         treaty_names = []
-
+        treaty_descriptions = []
 
         for i in raw_active_ids:
 
@@ -173,11 +178,15 @@ def coalition(colId):
             coalition_name = db.fetchone()[0]
             coalition_names.append(coalition_name)
 
-            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (offer_id,))
+            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
             treaty_name = db.fetchone()[0]
             treaty_names.append(treaty_name)
 
-        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
+            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (offer_id,))
+            treaty_description = db.fetchone()[0]
+            treaty_descriptions.append(treaty_description)
+
+        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids, treaty_descriptions)
         active_length = len(list(active_treaties))
     else:
         ingoing_treaties = []
@@ -1008,12 +1017,9 @@ def offer_treaty():
         return error(400, "You aren't the leader of this coalition")
 
     treaty_name = request.form.get("treaty_name")
-    db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(%s)", (treaty_name,))
-    treaty_id = db.fetchone()[0]
+    treaty_message = request.form.get("treaty_message")
 
-    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id) VALUES (%s, %s, %s)", (user_coalition, col2_id, treaty_id))
-
-    treaty_id = db.fetchone()[0]
+    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_name, treaty_description) VALUES (%s, %s, %s, %s)", (user_coalition, col2_id, treaty_name, treaty_message))
 
     connection.commit()
     connection.close()
