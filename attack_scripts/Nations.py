@@ -534,6 +534,7 @@ class Military(Nation):
 
             connection.commit()
 
+            # NOTE: put this on the warResult route and use it for both the special and regular attack
             # TODO: NEED PROPER ERROR HANDLING FOR THIS INFRA DAMAGE ex. when user doesn't have province the can't damage it (it throws error)
             if len(province_id_fetch) > 0:
                 random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
