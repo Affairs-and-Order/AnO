@@ -161,42 +161,40 @@ def coalition(colId):
         db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
         raw_active_ids = db.fetchall()
 
-        active_ids = []
-        coalition_ids = []
-        coalition_names = []
-        treaty_names = []
-        treaty_descriptions = []
+        active_treaties = {}
+        active_treaties["ids"] = []
+        active_treaties["col_ids"] = []
+        active_treaties["col_names"] = []
+        active_treaties["treaty_names"] = []
+        active_treaties["treaty_descriptions"] = []
 
         for i in raw_active_ids:
 
             offer_id = i[0]
 
-            active_ids.append(offer_id)
+            active_treaties["ids"].append(offer_id)
 
             db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
             coalition_id = db.fetchone()[0]
-            if coalition_id != colId:
-                pass
-            else: 
+            if coalition_id == colId:
                 db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
                 coalition_id = db.fetchone()[0]
 
-            coalition_ids.append(coalition_id)
+            active_treaties["col_ids"].append(coalition_id)
             
             db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
             coalition_name = db.fetchone()[0]
-            coalition_names.append(coalition_name)
+            active_treaties["col_names"].append(coalition_name)
 
             db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
             treaty_name = db.fetchone()[0]
-            treaty_names.append(treaty_name)
+            active_treaties["treaty_names"].append(treaty_name)
 
             db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (offer_id,))
             treaty_description = db.fetchone()[0]
-            treaty_descriptions.append(treaty_description)
+            active_treaties["treaty_descriptions"].append(treaty_description)
 
-        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids, treaty_descriptions)
-        active_length = len(list(active_treaties))
+        active_length = len(raw_active_ids)
     else:
         ingoing_treaties = []
         active_treaties = []
@@ -278,16 +276,12 @@ def coalition(colId):
 
     connection.close()
 
-    random_list = ["test"]
-
-    print(list(random_list))
-
     return render_template("coalition.html", name=name, colId=colId, members=members, user_role=user_role,
                             description=description, colType=colType, userInCol=userInCol,
                             requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                             flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
-                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, random_list=random_list, 
+                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
                             ingoing_treaties=ingoing_treaties, zip=zip)
 
 

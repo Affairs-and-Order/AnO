@@ -634,9 +634,9 @@
                             <th>Action</th>
                         </tr>
                         <!--for every ally make a row-->
-                        {% for coalition_id, coalition_name, treaty_name, id, treaty_description in active_treaties %}
+                        {% for id, col_id, col_name, treaty_name, treaty_description in zip(active_treaties["ids"], active_treaties["col_ids"], active_treaties["col_names"], active_treaties["treaty_names"], active_treaties["treaty_descriptions"]) %}
                         <tr>
-                            <td><a href="/coalition/{{ coalition_id }}">{{ coalition_name }}</a></td>
+                            <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
                             <td>{{ treaty_name }}</td>
                             <td>{{ treaty_description }}</td>
                             <form method="POST">
