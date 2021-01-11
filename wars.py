@@ -564,7 +564,8 @@ def warAmount():
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
         # TODO: rename *.jpg file related to units because not load in (or create a list of image name with the corresponding unit)
-        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, unit_range=len(unitamounts), unitamounts=unitamounts)
+        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, 
+        unit_range=len(unitamounts), unitamounts=unitamounts, unit_interfaces=Units.allUnitInterfaces)
 
     elif request.method == "POST":
 

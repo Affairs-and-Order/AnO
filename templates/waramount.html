@@ -1,4 +1,13 @@
 {% extends "layout.html"%} {% block title %} Attack Amount {% endblock %} {% block body %}
+
+<script type="text/javascript">
+    function costs(e) {
+      let cost_table = {
+      {% for interface in unit_interfaces %} {% if interface.unit_type in selected_units %} "{{interface.unit_type}}": {"supply_cost": {{interface.supply_cost}}}, {% endif %}{% endfor %}
+      }
+    }
+</script>
+
 <div class="templatediv">
 
     <div class="templatedivtopper wartopper">
@@ -19,17 +28,21 @@
             <div class="templatedivflex2left unitcard">
                 <ul class="bold medium">{{selected_units[r] | capitalize}}</ul>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/'+selected_units[r][:-1]+'.jpg') }}" />
-                <input type="number" class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[r]}}" />
+                <input onchange="costs(event)" type="number" class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[r]}}" />
             </div>
             {% endfor %}
         </div>
 
-        <!-- change the progress bar child text based on how much supplies it would cost to send the attack based on the number of units in each thingy-->
-
-        <!-- <script>
-            let s = document.querySelector("#supplycosttext");
-            s.innerHTML = "8/ 2000"
-        </script> -->
+        <div class="templateoutertablediv inverttable">
+            <table class="templatetable templatetable2">
+                <tr>
+                    <th>Attack Costs</th>
+                </tr>
+                <tr>
+                  <td>Supply cost: <span id="resource-cost">5000</span></td>
+                </tr>
+              </table>
+        </div>
 
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
@@ -38,7 +51,6 @@
                         class="material-icons-outlined">
                         arrow_back
                     </span>Back</a>
-
             </div>
             <div class="templatedivflex2left">
 
@@ -47,9 +59,9 @@
                         class="material-icons-outlined">
                         arrow_forward
                     </span>Attack</button>
-
             </div>
         </div>
+
     </form>
 </div>
 {% endblock %}
