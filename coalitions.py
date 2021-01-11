@@ -115,16 +115,19 @@ def coalition(colId):
     if user_role == "leader":
 
         #### INGOING ####
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
-        ingoing_ids = db.fetchall()
+        try:
+            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
+            ingoing_ids = list(db.fetchall()[0])
+        except:
+            ingoing_ids = []
         col_ids = []
         col_names = []
         trt_names = []
         trt_descriptions = []
 
-        for treaty_iddd in ingoing_ids:
+        for treaty_id in ingoing_ids:
 
-            treaty_id = treaty_iddd[0]
+            treaty_id = treaty_id
 
             db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
             col_id = db.fetchone()[0]
@@ -142,13 +145,19 @@ def coalition(colId):
             treaty_description = db.fetchone()[0]
             trt_descriptions.append(treaty_description)
 
-        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names, trt_descriptions)
-        ingoing_length = len(list(ingoing_treaties))
+        # SHITTIEST FUCKING APPROACH KNOWN TO MAN BUT FUCKING JINJA DOESNT WANT TO FUCKING ZIP CONSISTENTLY
+        # SO I HAVE TO WRITE THIS ABOMINATION OF A CODE WHEN IN REALITY I SHOULDVE JUST USED FUCKING SQL JOINS
+        # BUT WE HAVE TO LAUNCH BETA IN 6 FUCKING HOURS
+        ingoing_treaties = {}
+        ingoing_treaties["ids"] = ingoing_ids,
+        ingoing_treaties["col_ids"] = col_ids,
+        ingoing_treaties["col_names"] = col_names,
+        ingoing_treaties["treaty_names"] = trt_names,
+        ingoing_treaties["treaty_descriptions"] = trt_descriptions
+        ingoing_length = len(ingoing_ids)
         #################
 
-        #### ACTIVE ####
-
-        
+        #### ACTIVE ####        
         db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
         raw_active_ids = db.fetchall()
 
@@ -269,12 +278,17 @@ def coalition(colId):
 
     connection.close()
 
+    random_list = ["test"]
+
+    print(list(random_list))
+
     return render_template("coalition.html", name=name, colId=colId, members=members, user_role=user_role,
                             description=description, colType=colType, userInCol=userInCol,
-                            requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
+                            requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                             flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
-                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles)
+                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, random_list=random_list, 
+                            ingoing_treaties=ingoing_treaties, zip=zip)
 
 
 # Route for establishing a coalition
