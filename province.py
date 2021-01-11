@@ -125,53 +125,51 @@ def province(pId):
     aluminium_refineries = province_units[32]
     oil_refineries = province_units[33]
 
-    if ownProvince:
+    def enough_consumer_goods(user_id):
 
-        def enough_consumer_goods(user_id):
+        try:
+            db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
+            population = int(db.fetchone()[0])
+        except:
+            population = 0
 
-            try:
-                db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
-                population = int(db.fetchone()[0])
-            except:
-                population = 0
+        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
+        consumer_goods = int(db.fetchone()[0])
+        consumer_goods_needed = round(population * 0.00005)
+        new_consumer_goods = consumer_goods - consumer_goods_needed
 
-            db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-            consumer_goods = int(db.fetchone()[0])
-            consumer_goods_needed = round(population * 0.00005)
-            new_consumer_goods = consumer_goods - consumer_goods_needed
+        if new_consumer_goods > 0:
+            return True
+        else:
+            return False
 
-            if new_consumer_goods > 0:
-                return True
-            else:
-                return False
+    enough_consumer_goods = enough_consumer_goods(province["user"])
 
-        enough_consumer_goods = enough_consumer_goods(province["user"])
+    def enough_rations(user_id):
 
-        def enough_rations(user_id):
+        db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
+        rations = int(db.fetchone()[0])
 
-            db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
-            rations = int(db.fetchone()[0])
+        rations_per_100k = 4
 
-            rations_per_100k = 4
+        hundred_k = province["population"] // 100000
+        new_rations = rations - (hundred_k * rations_per_100k)
 
-            hundred_k = province["population"] // 100000
-            new_rations = rations - (hundred_k * rations_per_100k)
+        if new_rations < 1:
+            return False
+        else:
+            return True
 
-            if new_rations < 1:
-                return False
-            else:
-                return True
+    enough_rations = enough_rations(province["user"])
 
-        enough_rations = enough_rations(province["user"])
+    def has_power(province_id):
 
-        def has_power(province_id):
+        db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
+        energy = int(db.fetchone()[0])
 
-            db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
-            energy = int(db.fetchone()[0])
+        return energy > 0
 
-            return energy > 0
-
-        has_power = has_power(pId)
+    has_power = has_power(pId)
 
     connection.close()
 
