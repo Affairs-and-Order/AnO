@@ -465,6 +465,7 @@ label {
     transition: margin 0.4s ease;
     overflow: hidden;
     font-size: 19px;
+    padding-bottom: 20px;
 }
 
 @media all and (max-width: 856px) {
@@ -496,13 +497,13 @@ label {
 
 .menubardiv h3 {
     color: #15aee6;
-    margin-left: 10px;
     margin: 18px;
+    margin-left: 10px;
 }
 
 @media all and (max-width: 600px) {
     .menubardiv h3 {
-        margin: auto;
+        margin: 18px auto;
         text-align: center;
     }
 }
@@ -519,6 +520,7 @@ label {
     transition: all 0.2s;
     width: 100%;
     position: relative;
+    font-weight: normal;
 }
 
 .menubara:hover {
@@ -657,6 +659,7 @@ label {
     padding-bottom: 8px;
     margin: 8px 6px;
     border-radius: 4px;
+    font-weight: normal;
 }
 
 .dropdown-content a:hover {
