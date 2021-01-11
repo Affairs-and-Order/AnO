@@ -901,7 +901,7 @@ label {
 }
 
 .resourceparent strong {
-    font-weight: 300;
+    font-weight: normal;
 }
 
 .floatleft {
@@ -1943,6 +1943,7 @@ button {
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
     border-radius: 4px;
     border-collapse: initial;
+    align-items: center;
 }
 
 .templatetable tr {
@@ -2215,13 +2216,14 @@ button {
 .progressbarchildtext {
     position: absolute;
     left: 0;
-    top: 5px;
+    top: 0;
     bottom: 0;
     right: 0;
     margin: auto;
     width: fit-content;
-    font-weight: 450;
+    font-weight: normal;
     color: var(--colorOne);
+    line-height: 30px;
 }
 
 .video {
@@ -2501,8 +2503,6 @@ button {
     transition: all 0.4s ease-in-out;
     animation: templatedivcontentload 1.25s;
     outline: none;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 4px;
     filter: brightness(75%);
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.16) 0 8px 24px 0;
@@ -2773,6 +2773,10 @@ button {
     height: 9vw;
 }
 
+.view img {
+    display: initial !important;
+}
+
 .view,
 .revenue,
 .news,
@@ -2805,20 +2809,7 @@ button {
     color: var(--colorTwo) !important;
 }
 
-.provincelinkparent {
-    position: relative;
-}
-
-.provincelinkchild {
-    position: absolute;
-    display: block;
-    z-index: 100;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-}
+.provincelinkchild {}
 
 
 /*PROVINCE*/
@@ -2948,10 +2939,32 @@ button {
     text-align: center;
 }
 
+.smallimage {
+    height: max-content;
+    align-items: center;
+    margin: auto;
+    margin: 60px 0;
+}
+
 .smallimage img {
-    margin: 8px;
-    height: 204px;
-    vertical-align: middle;
+    width: 100%;
+    border-radius: 4px;
+    object-fit: cover;
+    height: 297px;
+}
+
+@media all and (max-width: 750px) {
+    .smallimage {
+        display: none !important;
+        height: 0;
+        width: 0;
+        padding: 0;
+    }
+    .smallimage img {
+        display: none;
+        height: 0;
+        width: 0;
+    }
 }
 
 .unitimage {
@@ -3171,7 +3184,7 @@ button {
     background: #00a9e1;
     color: white;
     padding: 6px 50%;
-    margin: auto;
+    margin: 8px auto;
     position: static;
     box-shadow: rgba(0, 0, 0, 0.2) 0 4px 12px 0;
     opacity: 0;
