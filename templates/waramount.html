@@ -1,10 +1,16 @@
 {% extends "layout.html"%} {% block title %} Attack Amount {% endblock %} {% block body %}
 
 <script type="text/javascript">
-    function costs(e) {
+    function attack_costs(e) {
       let cost_table = {
       {% for interface in unit_interfaces %} {% if interface.unit_type in selected_units %} "{{interface.unit_type}}": {"supply_cost": {{interface.supply_cost}}}, {% endif %}{% endfor %}
       }
+      const units = document.getElementsByClassName("unit_class");
+      let display_supply_cost = 0;
+      for(i=0;i<3;i++) {
+        display_supply_cost += cost_table[units[i].name]["supply_cost"]*units[i].value;
+      }
+      document.getElementById("supply-cost").innerText = display_supply_cost;
     }
 </script>
 
@@ -25,23 +31,24 @@
         <div class="templatedivflex2 menuflex unitcardparent">
 
             {% for r in range(unit_range) %}
-            <div class="templatedivflex2left unitcard">
+            <div id="unit-container" class="templatedivflex2left unitcard">
                 <ul class="bold medium">{{selected_units[r] | capitalize}}</ul>
                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/'+selected_units[r][:-1]+'.jpg') }}" />
-                <input onchange="costs(event)" type="number" class="loginsignupinput templateflexfullinput" autocomplete="off" name="{{selected_units[r]}}" value="{{unitamounts[r]}}" />
+                <p class="templateflexfullinput">Available: {{unitamounts[r]}}</p>
+                <input onchange="attack_costs(event)" type="number" class="loginsignupinput templateflexfullinput unit_class" autocomplete="off" name="{{selected_units[r]}}" value="0" />
             </div>
             {% endfor %}
         </div>
 
         <div class="templateoutertablediv inverttable">
             <table class="templatetable templatetable2">
-                <tr>
-                    <th>Attack Costs</th>
-                </tr>
-                <tr>
-                  <td>Supply cost: <span id="resource-cost">5000</span></td>
-                </tr>
-              </table>
+              <tr>
+                  <th>Attack Costs</th>
+              </tr>
+              <tr>
+                <td>Supply cost: <span id="supply-cost">0</span></td>
+              </tr>
+            </table>
         </div>
 
         <div class="templatedivflex2 divflex2center">
@@ -53,15 +60,12 @@
                     </span>Back</a>
             </div>
             <div class="templatedivflex2left">
-
-                <!--SEND USER TO NEXT PAGE AS WELL-->
                 <button id="templatedivbutton" class="templatedivbutton templatecenteredbutton" type="submit"><span
                         class="material-icons-outlined">
                         arrow_forward
                     </span>Attack</button>
             </div>
         </div>
-
     </form>
 </div>
 {% endblock %}
