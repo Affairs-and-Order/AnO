@@ -2148,6 +2148,7 @@ button {
     font-size: 19px;
     letter-spacing: 0.5px;
     color: var(--colorOne);
+    font-weight: normal;
 }
 
 .menuflex2 div:hover {

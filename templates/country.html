@@ -287,7 +287,7 @@
 
             <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
             {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %}
-            <a href="/province/{{ pId }}">
+            <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
                     <div class="templatedivflex2left ">
 
