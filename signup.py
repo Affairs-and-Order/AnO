@@ -68,7 +68,6 @@ def discord():
 @app.route('/callback')
 def callback():
 
-
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -91,10 +90,10 @@ def callback():
     discord = make_session(token=token)
     discord_user_id = discord.get(API_BASE_URL + '/users/@me').json()['id']
 
-    discord_auth = f"discord:{discord_user_id}"
+    discord_auth = discord_user_id
 
     try:
-        db.execute("SELECT * FROM users WHERE hash=(%s)", (discord_auth,))
+        db.execute("SELECT * FROM users WHERE hash=(%s) AND auth_type='discord'", (discord_auth,))
         duplicate = db.fetchone()[0]
         duplicate = True
     except TypeError:
@@ -141,7 +140,6 @@ def discord_register():
         continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
         continent = continents[continent_number]
 
-
         if correct_key:
 
             discord_user = discord.get(API_BASE_URL + '/users/@me').json()
@@ -149,7 +147,7 @@ def discord_register():
             discord_user_id = discord_user['id']
             email = discord_user['email']
 
-            discord_auth = f"discord:{discord_user_id}"
+            discord_auth = discord_user_id
 
             try:
                 db.execute("SELECT username FROM users WHERE username=(%s)", (username,))
@@ -163,7 +161,7 @@ def discord_register():
 
             date = str(datetime.date.today())
 
-            db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, discord_auth, date))
+            db.execute("INSERT INTO users (username, email, hash, date, auth_type) VALUES (%s, %s, %s, %s, %s)", (username, email, discord_auth, date, "discord"))
 
             db.execute("DELETE FROM keys WHERE key=(%s)", (key,))  # deletes the used key
 
@@ -249,7 +247,7 @@ def signup():
         hashed = bcrypt.hashpw(password, bcrypt.gensalt(14)).decode("utf-8")
 
         # Inserts the user and his data to the main table for users
-        db.execute("INSERT INTO users (username, email, hash, date) VALUES (%s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today())))  # creates a new user || added account creation date
+        db.execute("INSERT INTO users (username, email, hash, date, auth_type) VALUES (%s, %s, %s, %s, %s)", (username, email, hashed, str(datetime.date.today()), "normal"))  # creates a new user || added account creation date
 
         # Selects the id of the user that was just registered. (Because id is AUTOINCREMENT'ed)
         db.execute("SELECT id FROM users WHERE username = (%s)", (username,))
