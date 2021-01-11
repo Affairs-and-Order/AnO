@@ -646,7 +646,6 @@ def delete_coalition(colId):
     db.execute("DELETE FROM colNames WHERE id=(%s)", (colId,))
     db.execute("DELETE FROM coalitions WHERE colId=(%s)", (colId,))
 
-    
     connection.commit()
     connection.close()
 
@@ -768,6 +767,9 @@ def deposit_into_bank(colId):
             db.execute(current_resource_statement, (resource, cId,))
             current_resource = int(db.fetchone()[0])
 
+            if amount < 1:
+                return error(400, "Amount cannot be less than 1")
+
             if current_resource < amount:
                 return error(400, f"You don't have enough {resource}")
 
@@ -813,6 +815,9 @@ def withdraw(resource, amount, user_id, colId):
     current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
     db.execute(current_resource_statement, (resource, colId,))
     current_resource = int(db.fetchone()[0])
+
+    if amount < 1:
+        return error(400, "Amount cannot be less than 1")
 
     if current_resource < amount:
         return error(400, f"Your coalition doesn't have enough {resource}")
@@ -877,6 +882,10 @@ def withdraw_from_bank(colId):
     for resource in withdrew_resources:
         name = resource[0]
         amount = resource[1]
+
+        if amount < 1:
+            return error(400, "Amount has to be greater than 1")
+
         withdraw(name, amount, cId, colId)
 
     return redirect(f"/coalition/{colId}")
@@ -922,7 +931,14 @@ def request_from_bank(colId):
 
     requested_resources = tuple(requested_resources[0])
 
-    db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (%s, %s, %s, %s)", (cId, colId, requested_resources[1], requested_resources[0]))
+    amount = requested_resources[1]
+
+    if amount < 1:
+        return error(400, "Amount cannot be 0 or less")
+
+    resource = requested_resources[0]
+
+    db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (%s, %s, %s, %s)", (cId, colId, amount, resource))
 
     connection.commit()
     connection.close()
