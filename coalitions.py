@@ -1,16 +1,10 @@
 # ALL CONVERTED
 
-from flask import Flask, request, render_template, session, redirect, flash
-from tempfile import mkdtemp
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
-import datetime
-import _pickle as pickle
-import random
+from flask import request, render_template, session, redirect, flash
 from helpers import login_required, error
 import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
-from helpers import get_influence, get_coalition_influence
+from helpers import get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
@@ -121,15 +115,19 @@ def coalition(colId):
     if user_role == "leader":
 
         #### INGOING ####
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
-        ingoing_ids = db.fetchall()
+        try:
+            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
+            ingoing_ids = list(db.fetchall()[0])
+        except:
+            ingoing_ids = []
         col_ids = []
         col_names = []
         trt_names = []
+        trt_descriptions = []
 
-        for treaty_iddd in ingoing_ids:
+        for treaty_id in ingoing_ids:
 
-            treaty_id = treaty_iddd[0]
+            treaty_id = treaty_id
 
             db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
             col_id = db.fetchone()[0]
@@ -139,52 +137,64 @@ def coalition(colId):
             coalition_name = db.fetchone()[0]
             col_names.append(coalition_name)
 
-            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (treaty_id,))
+            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (treaty_id,))
             treaty_name = db.fetchone()[0]
             trt_names.append(treaty_name)
 
-        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
-        ingoing_length = len(list(ingoing_treaties))
+            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (treaty_id,))
+            treaty_description = db.fetchone()[0]
+            trt_descriptions.append(treaty_description)
+
+        # SHITTIEST FUCKING APPROACH KNOWN TO MAN BUT FUCKING JINJA DOESNT WANT TO FUCKING ZIP CONSISTENTLY
+        # SO I HAVE TO WRITE THIS ABOMINATION OF A CODE WHEN IN REALITY I SHOULDVE JUST USED FUCKING SQL JOINS
+        # BUT WE HAVE TO LAUNCH BETA IN 6 FUCKING HOURS
+        ingoing_treaties = {}
+        ingoing_treaties["ids"] = ingoing_ids,
+        ingoing_treaties["col_ids"] = col_ids,
+        ingoing_treaties["col_names"] = col_names,
+        ingoing_treaties["treaty_names"] = trt_names,
+        ingoing_treaties["treaty_descriptions"] = trt_descriptions
+        ingoing_length = len(ingoing_ids)
         #################
 
-        #### ACTIVE ####
-
-        
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY treaty_id ASC", (colId, colId))
+        #### ACTIVE ####        
+        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
         raw_active_ids = db.fetchall()
 
-        active_ids = []
-        coalition_ids = []
-        coalition_names = []
-        treaty_names = []
-
+        active_treaties = {}
+        active_treaties["ids"] = []
+        active_treaties["col_ids"] = []
+        active_treaties["col_names"] = []
+        active_treaties["treaty_names"] = []
+        active_treaties["treaty_descriptions"] = []
 
         for i in raw_active_ids:
 
             offer_id = i[0]
 
-            active_ids.append(offer_id)
+            active_treaties["ids"].append(offer_id)
 
             db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
             coalition_id = db.fetchone()[0]
-            if coalition_id != colId:
-                pass
-            else: 
+            if coalition_id == colId:
                 db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
                 coalition_id = db.fetchone()[0]
 
-            coalition_ids.append(coalition_id)
+            active_treaties["col_ids"].append(coalition_id)
             
             db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
             coalition_name = db.fetchone()[0]
-            coalition_names.append(coalition_name)
+            active_treaties["col_names"].append(coalition_name)
 
-            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (offer_id,))
+            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
             treaty_name = db.fetchone()[0]
-            treaty_names.append(treaty_name)
+            active_treaties["treaty_names"].append(treaty_name)
 
-        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
-        active_length = len(list(active_treaties))
+            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (offer_id,))
+            treaty_description = db.fetchone()[0]
+            active_treaties["treaty_descriptions"].append(treaty_description)
+
+        active_length = len(raw_active_ids)
     else:
         ingoing_treaties = []
         active_treaties = []
@@ -268,10 +278,11 @@ def coalition(colId):
 
     return render_template("coalition.html", name=name, colId=colId, members=members, user_role=user_role,
                             description=description, colType=colType, userInCol=userInCol,
-                            requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
+                            requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                             flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
-                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles)
+                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
+                            ingoing_treaties=ingoing_treaties, zip=zip)
 
 
 # Route for establishing a coalition
@@ -340,9 +351,9 @@ def coalitions():
     try:
         search = request.values.get("search")
     except TypeError:
-        search = None
+        search = ""
 
-    if search == None or search == "":
+    if not search:
         try: 
             db.execute("SELECT id FROM colNames")
             coalitions = db.fetchall()
@@ -1014,12 +1025,9 @@ def offer_treaty():
         return error(400, "You aren't the leader of this coalition")
 
     treaty_name = request.form.get("treaty_name")
-    db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(%s)", (treaty_name,))
-    treaty_id = db.fetchone()[0]
+    treaty_message = request.form.get("treaty_message")
 
-    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id) VALUES (%s, %s, %s)", (user_coalition, col2_id, treaty_id))
-
-    treaty_id = db.fetchone()[0]
+    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_name, treaty_description) VALUES (%s, %s, %s, %s)", (user_coalition, col2_id, treaty_name, treaty_message))
 
     connection.commit()
     connection.close()

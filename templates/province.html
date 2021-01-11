@@ -143,30 +143,68 @@
 
                             </div>
                         </div>
+                        <script>
+                            const citiesCost = function(event) {
+                                var citiesamount = document.getElementById("citiesamount").value;
+                                var cityCount = document.getElementById("cityCount").value;
+                                var citiesoutput = document.getElementById("citiesoutput");
 
+                                var multiplier = 1 + ((0.08 * citiesamount) * cityCount)
+                                var newPrice = (250000 * multiplier) * citiesamount
+
+                                console.log(newPrice)
+
+                                var cityoutputcost = citiesoutput.innerHTML = newPrice;
+
+                                console.log(citiesamount);
+                            }
+                        </script>
                         <ul>Purchase Cities</ul>
-                        <label class="vanilla">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />{{ price }}</label>
+
+                        <ul class="resourceparent">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
+                            <strong id="citiesoutput">0</strong>
+                        </ul>
+
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
 
-                                <input class="loginsignupinput" autocomplete="off" name="cityCount" placeholder="City Amount" />
+                                <input class="loginsignupinput" type="number" name="cityCount" placeholder="City Amount" id="citiesamount" onchange="citiesCost(event)" />
+                                <input id="cityCount" type="hidden" value="{{ province['cityCount'] }}" />
 
                             </div>
                             <div class="templatedivflex2right">
 
-                                <button formaction="/buy/cityCount/{{ province['id'] }}" class="templatedivbutton templatecenteredbutton"><span
+                                <button formaction="/buy/cityCount/{{ province['id'] }}" class="templatedivbutton templatecenteredbutton" id="citiesbutton"><span
                                         class="material-icons-outlined">
                                         business
                                     </span>Purchase</button>
 
                             </div>
                         </div>
+
+                        <script>
+                            const landCost = function(event) {
+                                var landamount = document.getElementById("landamount").value;
+                                var landoutput = document.getElementById("landoutput");
+                                let current_land = document.getElementById("currentLand").value;
+                                //insert land cost formula
+                                let multiplier = 1 + ((0.06 * landamount) * current_land)
+                                let land_price = ((120000 * multiplier) * landamount)
+                                var landoutputcost = landoutput.innerHTML = land_price;
+
+                                console.log(landamount);
+                            }
+                        </script>
                         <ul>Purchase Land</ul>
-                        <label class="vanilla">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />{{ price }}</label>
+
+                        <ul class="resourceparent">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
+                            <strong id="landoutput">0</strong>
+                        </ul>
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
 
-                                <input class="loginsignupinput" autocomplete="off" name="land" placeholder="Land Amount" />
+                                <input class="loginsignupinput" type="number" name="land" placeholder="Land Amount" id="landamount" onchange="landCost(event)" />
+                                <input type="hidden" id="currentLand" value="{{ province['land'] }}"/>
 
                             </div>
                             <div class="templatedivflex2right">
@@ -933,7 +971,7 @@
 
                                 <p class="templatecontentpleft">Monorails astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>Monorails cost 510,000 per hour and contribute +17 productivity and +10% pollution</ul>
+                                <ul>Monorails cost 510,000 per hour and contribute +17 productivity and -10% pollution</ul>
                                 <ul>Monorails cost 19.8M, 390 steel, 195 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1005,22 +1043,21 @@
                             <td>{{ aerodomes }} Aerodromes</td>
 
                             <!-- #1 Raw resource -->
-                            {% if location in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
+                            {% if province['location'] in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
                             <td>{{ iron_mines }} Iron Mines</td>
-                            {% elif location in ["Savanna", "Jungle", "Mountain Range"] %}
+                            {% elif province['location'] in ["Savanna", "Jungle", "Mountain Range"] %}
                             <td>{{ coal_mines }} Coal Mines</td>
                             {% endif %}
-                            <!---->
                             <td>{{ steel_mills }} Steel Mills</td>
                         </tr>
                         <tr>
                             <td>{{ harbours }} Harbours</td>
                             <!-- #2 Raw resource -->
-                            {% if location in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
+                            {% if province['location'] in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
                             <td>{{ copper_mines }} Copper Mines</td>
-                            {% elif location in ["Mountain Range", "Desert"] %}
+                            {% elif province['location'] in ["Mountain Range", "Desert"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
-                            {% elif location in ["Jungle", "Boreal Forest"] %}
+                            {% elif province['location'] in ["Jungle", "Boreal Forest"] %}
                             <td>{{ lumber_mills }} Lumber Mills</td>
                             {% endif %}
                             <!---->
@@ -1029,11 +1066,11 @@
                         <tr>
                             <td>{{ admin_buildings }} Administrative Buildings</td>
                             <!-- #3 Raw resource -->
-                            {% if location in ["Tundra", "Savanna", "Boreal Forest"] %}
+                            {% if province['location'] in ["Tundra", "Savanna", "Boreal Forest"] %}
                             <td>{{ lead_mines }} Lead Mines</td>
-                            {% elif location in ["Desert", "Grassland", "Mountain Range"] %}
+                            {% elif province['location'] in ["Desert", "Grassland", "Mountain Range"] %}
                             <td>{{ bauxite_mines }} Bauxite Mines</td>
-                            {% elif location in ["Jungle"] %}
+                            {% elif province['location'] in ["Jungle"] %}
                             <td>{{ copper_mines }} Copper Mines</td>
                             {% endif %}
                             <!---->
@@ -1042,15 +1079,15 @@
                         <tr>
                             <td>{{ silos }} Silos</td>
                             <!-- 4 Raw resource -->
-                            {% if location in ["Jungle", "Grassland"] %}
+                            {% if province['location'] in ["Jungle", "Grassland"] %}
                             <td>{{ pumpjacks }} Pumpjacks</td>
-                            {% elif location in ["Mountain Range"] %}
+                            {% elif province['location'] in ["Mountain Range"] %}
                             <td>{{ lumber_mills }} Lumber Mills</td>
-                            {% elif location in ["Desert", "Tundra"]%}
+                            {% elif province['location'] in ["Desert", "Tundra"]%}
                             <td>{{ uranium_mines }} Uranium Mines </td>
-                            {% elif location in ["Savanna"] %}
+                            {% elif province['location'] in ["Savanna"] %}
                             <td>{{ bauxite_mines }} Bauxite Mines</td>
-                            {% elif location in ["Boreal Forest"] %}
+                            {% elif province['location'] in ["Boreal Forest"] %}
                             <td>{{ coal_mines }} Coal mines</td>
                             {% endif %}
                             <!---->
@@ -1348,7 +1385,7 @@
 
                     <!-- CONTINENT SPECIFIC RESOURCES -->
                     <!-- #1 Raw resource -->
-                    {% if location in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
+                    {% if province['location'] in ["Tundra", "Desert", "Boreal Forest", "Grassland"] %}
                     <!-- Iron mines -->
                     <div class="menudiv">
 
@@ -1397,7 +1434,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Savanna", "Jungle", "Mountain Range"] %}
+                    {% elif province['location'] in ["Savanna", "Jungle", "Mountain Range"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
@@ -1446,7 +1483,7 @@
                     {% endif %}
 
                     <!-- #2 Raw resource -->
-                    {% if location in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
+                    {% if province['location'] in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
                     <!-- Copper mines -->
                     <div class="menudiv">
 
@@ -1492,7 +1529,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Mountain Range", "Desert"] %}
+                    {% elif province['location'] in ["Mountain Range", "Desert"] %}
                     <!-- Pumpjacks -->
                     <div class="menudiv">
 
@@ -1538,7 +1575,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Jungle", "Boreal Forest"] %}
+                    {% elif province['location'] in ["Jungle", "Boreal Forest"] %}
                     <!-- Lumber mills -->
                     <div class="menudiv">
                         <h2 class="templatecontentheaderleft">Lumber Mills</h2>
@@ -1584,7 +1621,7 @@
                     {% endif %}
 
                     <!-- #3 Raw resource -->
-                    {% if location in ["Tundra", "Savanna", "Boreal Forest"] %}
+                    {% if province['location'] in ["Tundra", "Savanna", "Boreal Forest"] %}
                     <!-- Lead mines -->
                     <div class="menudiv">
 
@@ -1630,7 +1667,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Desert", "Grassland", "Mountain Range"] %}
+                    {% elif province['location'] in ["Desert", "Grassland", "Mountain Range"] %}
                     <!-- Bauxite mines -->
                     <div class="menudiv">
 
@@ -1676,7 +1713,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Jungle"] %}
+                    {% elif province['location'] in ["Jungle"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
@@ -1725,7 +1762,7 @@
                     {% endif %}
 
                     <!-- #4 Raw resource -->
-                    {% if location in ["Jungle", "Grassland"] %}
+                    {% if province['location'] in ["Jungle", "Grassland"] %}
                     <!-- Pumpjacks -->
                     <div class="menudiv">
 
@@ -1771,7 +1808,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Mountain Range"] %}
+                    {% elif province['location'] in ["Mountain Range"] %}
                     <!-- Lumber mills -->
                     <div class="menudiv">
                         <h2 class="templatecontentheaderleft">Lumber Mills</h2>
@@ -1814,7 +1851,7 @@
                             </div>
                         </div>
                     </div>
-                    {% elif location in ["Desert", "Tundra"]%}
+                    {% elif province['location'] in ["Desert", "Tundra"]%}
                     <!-- Uranium Mines-->
                     <div class="menudiv">
 
@@ -1859,7 +1896,7 @@
                             </div>
                         </div>
                     </div>
-                    {% elif location in ["Savanna"] %}
+                    {% elif province['location'] in ["Savanna"] %}
                     <!-- Bauxite mines -->
                     <div class="menudiv">
 
@@ -1905,7 +1942,7 @@
                         </div>
 
                     </div>
-                    {% elif location in ["Boreal Forest"] %}
+                    {% elif province['location'] in ["Boreal Forest"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 

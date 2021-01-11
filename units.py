@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from attack_scripts import Military
+from math import ceil
 from random import randint
 from typing import Union
 import psycopg2
@@ -20,6 +21,8 @@ class BlueprintUnit(ABC):
         - bonus: used to calculate the battle advantage
         - damage: used to determine the damage dealt to a specific target (infra, other buildings), used for percentage calculation
             * in case of nukes: damage in nuke is the pure damage to units and infrastructure (when nuke targeted to a single object/unit damage is dealt)
+        - resource_cost: the required resources per x amount unit to be able to attack
+            ex. {"ammunition": 1} <- means 1 ammunition is needed for one unit to attack
     """
 
     damage = 0
@@ -47,6 +50,7 @@ class SoldierUnit(BlueprintUnit):
     unit_type = "soldiers"
     damage = 1
     supply_cost = 1
+    resource_cost = {"ammunition": 1}
 
     def __init__(self, amount: int) -> None:
         self.amount = amount
@@ -67,6 +71,7 @@ class TankUnit(BlueprintUnit):
     unit_type = "tanks"
     damage = 40
     supply_cost = 5
+    resource_cost = {"ammunition": 1, "gasoline": 1}
 
     def __init__(self, amount):
         self.amount = amount
@@ -89,6 +94,7 @@ class ArtilleryUnit(BlueprintUnit):
     unit_type = "artillery"
     damage = 80
     supply_cost = 5
+    resource_cost = {"ammunition": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -108,6 +114,7 @@ class BomberUnit(BlueprintUnit):
     unit_type = "bombers"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -137,6 +144,7 @@ class FighterUnit(BlueprintUnit):
     unit_type = "fighters"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -155,6 +163,7 @@ class ApacheUnit(BlueprintUnit):
     unit_type = "apaches"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -178,6 +187,7 @@ class DestroyerUnit(BlueprintUnit):
     unit_type = "destroyers"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -195,6 +205,7 @@ class CruiserUnit(BlueprintUnit):
     unit_type = "cruisers"
     damage = 200
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -216,6 +227,7 @@ class SubmarineUnit(BlueprintUnit):
     unit_type = "submarines"
     damage = 100
     supply_cost = 5
+    resource_cost = {"ammunition": 2, "gasoline": 2}
 
     def __init__(self, amount):
         self.amount = amount
@@ -233,7 +245,7 @@ class IcbmUnit(BlueprintUnit):
 
     unit_type = "icbms"
     damage = 1000
-    supply_cost = 400
+    supply_cost = 500
 
     def __init__(self, amount):
         self.amount = amount
@@ -318,7 +330,7 @@ class Units(Military):
 
         for it in sort_out:
             temp = dic.get(it, None)
-            if temp == None:
+            if temp is None:
                 continue
 
             store_sort_values.append(dic[it])
@@ -351,7 +363,6 @@ class Units(Military):
         available_units.update(special_units)
 
         try:
-            # units_count = 3
             while units_count:
                 current_unit = unit_types[units_count-1]
                 if current_unit not in self.allUnits:
@@ -392,7 +403,7 @@ class Units(Military):
                     # Check unit amount validity
                     unit_amount = self.selected_units.get(attacker_unit, None)
 
-                    if unit_amount == None:
+                    if unit_amount is None:
                         return "Unit is not valid!"
 
                     # interface.supply_cost*self.selected_units[attacker_unit] - calculates the supply cost based on unit amount
@@ -458,7 +469,7 @@ class Units(Military):
 
         # Make sure this is and integer
         # TODO: optimize this by creating integer at the user side
-        amount = int(amount)
+        amount = int(ceil(amount))
         unit_amount = self.selected_units[unit_type]
 
         if amount > unit_amount:
@@ -493,7 +504,7 @@ class Units(Military):
         except:
             return "War is already over!"
 
-        if war_id != None:
+        if war_id is not None:
             db.execute("SELECT attacker FROM wars WHERE id=(%s)", (war_id,))
             is_attacker = db.fetchone()[0]
 
@@ -514,11 +525,10 @@ class Units(Military):
             print("ERROR DURING SAVE")
             return "ERROR DURING SAVE"
 
-    # Fetch the available supplies which compared to unit attack cost and check if user can't pay for it (can't give enought supplies)
-    # Also save the remaining morale to the database
-    # TODO: decrease the supplies amount in db
+    # Fetch the available supplies and resources which are required and compare it to unit attack cost
+    # It also saves the remaining morale to the database
     def attack_cost(self, cost: int) -> str:
-        if self.available_supplies == None:
+        if self.available_supplies is None:
 
             connection = psycopg2.connect(
                 database=os.getenv("PG_DATABASE"),
@@ -529,7 +539,6 @@ class Units(Military):
 
             db = connection.cursor()
 
-            # print("TRHOW ERROR MAYBE BECAUSE peace_date is set")
             db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
             attacker_id = db.fetchone()
 
@@ -552,76 +561,4 @@ class Units(Military):
 
 # DEBUGGING
 if __name__ == "__main__":
-    # l = Units(1, {"nukes": 1})
-    # l = Units(11)
-    # l.attach_units({"nukes": 1}, 1)
-    # print(l.attack("nukes", "submarines"))
-
-    # l.attack_cost(100)
-
-    # l = Units(10)
-    # l.attack_cost(600)
-
-    # CASE FOR SPECIAL FIGHT
-    attacker = Units(11)
-    defender = Units(10)
-
-    p = defender.attach_units({"soldiers": 10, "tanks": 0, "artillery": 0}, 3)
-
-    print(p)
-
-    error = attacker.attach_units({"nukes": 1}, 1)
-    if error:
-        print(error)
-
-    attacker.special_fight(attacker, defender, "soldiers")
-    attacker.save()
-
-    # attacker.infrastructure_damage(1500, {})
-
-
-    # CASE 1
-    # attacker = Units(11, {"artillery": 0, "tanks": 34, "soldiers": 24},
-    #                  selected_units_list=["artillery", "tanks", "soldiers"])
-    # defender = Units(10, {"submarines": 20, "apaches": 3, "soldiers": 158},
-    #                  selected_units_list=["submarines", "apaches", "soldiers"])
-    #
-    # Military.fight(attacker, defender)
-    #
-    # print("AFTER CASUALTIES")
-    # print(attacker.selected_units)
-    # print(defender.selected_units)
-
-    # CASE 2
-    # import psycopg2
-    # from random import uniform
-    #
-    # defender = Units(1, {"artillery": 1, "tanks": 3, "soldiers": 158})
-    # attacker = Units(2, {"artillery": 0, "tanks": 34, "soldiers": 24})
-    #
-    # # defender.attach_units({"artillery": 1, "tanks": 3, "soldiers": 158})
-    # # attacker.attach_units({"artillery": 0, "tanks": 44, "soldiers": 24})
-    #
-    # print(defender.selected_units)
-    #
-    # for i in range(3):
-    #     print("ROUND", i)
-    #     random_event = uniform(0, 5)
-    #     size_chance = attacker.selected_units["tanks"] * 30/1000
-    #     unit_type_bonuses = attacker.attack('tanks', 'soldiers', defender)[1] # tank bonus against soldiers
-    #     nation1_chance = random_event+size_chance*unit_type_bonuses
-    #
-    #     random_event = uniform(0, 5)
-    #     size_chance = defender.selected_units["soldiers"] * 30/1000
-    #     unit_type_bonuses = 1
-    #     nation2_chance = random_event+size_chance*unit_type_bonuses
-    #
-    #     print(nation1_chance)
-    #     print(nation2_chance)
-    #
-    #     defender_loss = int(attacker.selected_units["tanks"]*0.12)
-    #     defender.casualties("soldiers", defender_loss)
-    #
-    #
-    # # print(Military.get_particular_unit(1, ["soldiers", "tanks"]))
-    # print(defender.selected_units)
+    pass

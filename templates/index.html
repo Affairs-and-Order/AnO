@@ -1,14 +1,48 @@
 {% extends "layout.html"%} {% block title %} Home {% endblock %} {% block body %}
+<style>
+    .templatecontainer {
+        margin-top: 0;
+    }
+</style>
+<script>
+    window.onscroll = function() {
+        scrolltop()
+    };
 
+    function scrolltop() {
+
+        if (document.body.scrollTop > 1 || document.documentElement.scrollTop > 1) {
+
+            document.getElementById("navbarparent").style.backgroundColor = "#363945";
+            document.getElementById("navbarparent").style.boxShadow = "rgba(58, 59, 69, 0)";
+
+            document.getElementById("navbarparent").style.transition = "all 0.2s";
+
+        } else {
+
+            document.getElementById("navbarparent").style.backgroundColor = "transparent";
+            document.getElementById("navbarparent").style.boxShadow = "rgba(58, 59, 69, 0.8)";
+
+            document.getElementById("navbarparent").style.transition = "all 0.2s";
+
+        }
+    }
+</script>
+<style>
+    .navbarparent {
+        background: #36394500;
+        box-shadow: none;
+    }
+</style>
 <div class="templatediv landingpagediv">
 
     <div class="landingtopper">
         <div class="landingparent">
             <div class="landingchild landingchildleft">
-                <h1 class="landingheader">Lead Your Country</h1>
+                <h1 class="landingheader"><strong class="landingblueheader">Massively Multiplayer</strong> <strong class="landingwhiteheader">Nation Game</strong></h1>
 
-                <p class="landingcontent">Affairs & Order is a browser-based nation simulator, where you can manage your country, trade with others, join coalitions with like-minded nations and wage war.<br /><br />Please note that the game is not yet released. Stay up to date
-                    on the release date through our <a class="templatelink" target="blank" href="https://discord.gg/94CstV2">discord server</a>.</p>
+                <h2 class="landingcontent">Affairs and Order is a browser-based massively multiplayer nation building game where you can simulate your very own country.<br /><br /> In Affairs and Order you can trade with other players, join coalitions with like-minded countries,
+                    and wage war on adversaries.<br /><br />Please note that the game is not yet released. Stay up to date on the release date through our <a class="templatelink" target="blank" href="https://discord.gg/94CstV2">discord server</a>.</h2>
 
                 <div class="landingchildcontainerparent">
                     <div class="landingchildcontainerchild">
@@ -22,61 +56,59 @@
                     </div>
                     <div class="landingchildcontainerchild">
                         {% if session.get('user_id') == None %}
-                        <a class="templatedivbutton landingbutton" href="/login"><span class="material-icons-outlined landingicon">
+                        <a class="templatedivbutton landingbutton landingloginbutton" href="/login"><span class="material-icons-outlined landingicon">
                             login
-                            </span>Login</a> {% endif %}
+                            </span>Login</a> {% endif %} {% if session.get('user_id') != None %}
+                        <a class="templatedivbutton landingbutton" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined landingicon">
+                                school
+                                    </span>Tutorial</a> {% endif %}
                     </div>
                 </div>
-            </div>
-            <div class="landingchild landingchildright">
-
-
-
             </div>
         </div>
 
     </div>
     {% if session.get('user_id') == None %}
-    <div class="templatedivcontent">
+    <div class="templatedivcontent templatedivlandingcontent">
         <div class="templatedivflex2 menuflex whiteblue">
             <div class="templatedivflex2left">
 
-                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/administrativebuilding.jpg') }}" />
+                <img alt="Government building" tabindex="0" class="landingunitimage imageborder wow fadeInLeft" src="{{ url_for('static', filename='images/administrativebuilding.jpg') }}" />
 
             </div>
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left wow fadeInRight">
 
                 <!---->
-                <h2 class="templatecontentheadercenter">Establish Your Country</h2>
+                <h3 class="templatecontentheadercenter">Establish Your Country</h3>
                 <p class="templatecontentpleft landingpagecontent">Build your nation from the ground up. Collect taxes from your citizens, declare war on enemies, and establish an economy by buying and selling resources on a global market. Compete with real people to become the best.
                 </p>
 
             </div>
         </div>
         <div class="templatedivflex2 menuflex">
-            <div class="templatedivflex2left">
+            <div class="templatedivflex2left wow fadeInLeft">
 
-                <h2 class="templatecontentheadercenter">Join a Coalition</h2>
+                <h3 class="templatecontentheadercenter">Join a Coalition</h3>
                 <p class="templatecontentpleft landingpagecontent">Work with friends to build dominant factions. Engage in politics with allies; trade and establish treaties to rise to the top. Raid countries together, share resources, and fight in vigorous battles against other coalitions.
                 </p>
 
             </div>
             <div class="templatedivflex2left">
 
-                <img tabindex="0" class="unitimage imageborder" src="{{ url_for('static', filename='images/coalition.jpg') }}" />
+                <img alt="Congress" tabindex="0" class="landingunitimage imageborder wow fadeInRight" src="{{ url_for('static', filename='images/coalition.jpg') }}" />
 
             </div>
         </div>
-        <h2 class="templatecontentheaderleft">Customize Your Economy</h2>
+        <h3 class="templatecontentheaderleft">Customize Your Economy</h3>
 
-        <div class="templatedivflex2">
-            <div class="templatedivflex2left cardparent">
+        <div class="cardcontainer templatedivflex2">
+            <div class="templatedivflex2left cardparent cardparent1 wow fadeInUp">
 
-                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
+                <img alt="Trucks full of coal" tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
 
                 <div class="cardcontent">
 
-                    <h2 class="templatecontentheadercenter">Resource Production</h2>
+                    <h3 class="templatecontentheadercenter cardtitle">Resource Production</h3>
 
                     <p class="templatecontentpleft">
                         Produce resources such as food, oil, coal, uranium, and wood to sell on the market to other players.
@@ -88,13 +120,13 @@
                 </div>
 
             </div>
-            <div class="templatedivflex2left cardparent">
+            <div class="templatedivflex2left cardparent cardparent2 wow fadeInUp">
 
-                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/bank.jpg') }}" />
+                <img alt="Government building" tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/bank.jpg') }}" />
 
                 <div class="cardcontent">
 
-                    <h2 class="templatecontentheadercenter">Tax Collection</h2>
+                    <h3 class="templatecontentheadercenter cardtitle">Tax Collection</h3>
 
                     <p class="templatecontentpleft">
                         Try to keep your people happy, healthy and fed. Build stores and public works to accomplish this, and attempt to maximize your tax income.
@@ -106,13 +138,13 @@
                 </div>
 
             </div>
-            <div class="templatedivflex2left cardparent">
+            <div class="templatedivflex2left cardparent cardparent3 wow fadeInUp">
 
-                <img tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
+                <img alt="Battleship" tabindex="0" class="cardimage" src="{{ url_for('static', filename='images/cruiser.jpg') }}" />
 
                 <div class="cardcontent">
 
-                    <h2 class="templatecontentheadercenter">War Looting</h2>
+                    <h3 class="templatecontentheadercenter cardtitle">War Looting</h3>
 
                     <p class="templatecontentpleft">
                         Brandish your firearms and wage war against other players. Build up tanks, bombers, destroyers, submarines and much more to crush your enemies and steal their resources.
@@ -125,9 +157,14 @@
 
             </div>
         </div>
+
+        <a class="templatedivbutton landingbutton templatecenteredbutton" href="/signup"><span class="material-icons-outlined landingicon">
+            person_add_alt_1
+            </span>Get Started</a>
+
         <div class="landingcontactdiv warflexparentcolors">
 
-            <h2 class="templatecontentheadercenter">Join our Community</h2>
+            <h3 class="templatecontentheadercenter">Join our Community</h3>
 
             <p class="templatecontentpleft landingpagecontent">
                 Head over to our Discord server to chat with our community, and check out our Reddit and Twitter as well! You can find a coalition to join in our Discord, and you can stay up to date on changes through our Twitter.
@@ -150,4 +187,5 @@
     </div>
     {% endif %}
 </div>
+
 {% endblock %}

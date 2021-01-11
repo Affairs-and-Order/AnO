@@ -1,6 +1,15 @@
 {% extends "layout.html" %} {% block title %} Login {% endblock %} {% block body %}
 <!-- START------------------------------------------------------------------------->
-<img class="background" id="background" src="{{ url_for('static', filename='images/4.jpg') }}" />
+<style>
+    .templatecontainer {
+        background: rgba(255, 255, 255, 0);
+    }
+    
+    .footer {
+        display: none;
+    }
+</style>
+<img alt="Army soldiers" class="background" id="background" src="{{ url_for('static', filename='images/4.jpg') }}" />
 
 <div class="templatediv noboxshadowtopper loginsignupdiv">
 

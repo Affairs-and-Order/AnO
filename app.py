@@ -1,23 +1,14 @@
 # ALL MIGRATED (EXCEPT CELERY TASKS)
 
-from flask import Flask, request, render_template, session, redirect, flash
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
-import datetime
-import _pickle as pickle
-import random
+from flask import Flask, request, render_template, session, redirect
 from celery import Celery
-from helpers import login_required, error
+from helpers import login_required
 import psycopg2
-# from celery.schedules import crontab # arent currently using but will be later on
-from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from dotenv import load_dotenv
 load_dotenv()
 import os
 from celery.schedules import crontab
-
-from attack_scripts import Military, Economy
 
 app = Flask(__name__)
 
@@ -35,7 +26,7 @@ from coalitions import leave_col, join_col, coalitions, coalition, establish_coa
 from military import military, military_sell_buy
 from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
-from tasks import tax_income, population_growth, generate_province_revenue
+from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax
 from intelligence import intelligence
 # from upgrades import upgrades
 
@@ -45,18 +36,23 @@ app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 celery_beat_schedule = {
     "population_growth": {
         "task": "app.task_population_growth",
-        # Run every 15 seconds
+        # Run hourly
         "schedule": crontab(minute=0, hour='*/1'),
     },
     "generate_province_revenue": {
         "task": "app.task_generate_province_revenue",
-        # Run every 10 seconds
+        # Run hourly
         "schedule": crontab(minute=0, hour='*/1'),
     },
     "tax_income": {
         "task": "app.task_tax_income",
-        # Run every 10 seconds
+        # Run hourly
         "schedule": crontab(minute=0, hour='*/1'),
+    },
+    "war_reparation_tax": {
+        "task": "app.task_war_reparation_tax",
+        # Run every day at midnight (UTC)
+        "schedule": crontab(minute=0, hour=0)
     }
 }
 
@@ -110,42 +106,11 @@ celery.conf.update(
     beat_schedule=celery_beat_schedule,
 )
 
-
 # runs one a day
-# transfer 20% of all resources to the winner side after a war
+# transfer x% of all resources (could depends on conditions like Raze war_type)to the winner side after a war
 @celery.task()
-def warResourceTransfer():
-    conn = psycopg2.connect(
-    database=os.getenv("PG_DATABASE"),
-    user=os.getenv("PG_USER"),
-    password=os.getenv("PG_PASSWORD"),
-    host=os.getenv("PG_HOST"),
-    port=os.getenv("PG_PORT"))
-    db = conn.cursor()
-    db.execute("SELECT attacker,attacker_morale,defender,defender_morale FROM wars WHERE peace_date IS NOT NULL")
-    truces = db.fetchall()
-
-    for state in truces:
-        attacker,defender,a_morale,d_morale = state
-
-        # Transfer resources to attacker (winner)
-        if a_morale > d_morale:
-            winner = attacker
-            loser = defender
-        else:
-            winner = defender
-            loser = attacker
-
-        eco = Economy(winner)
-        for resource in Economy.resources:
-            resource_sel_stat = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-            db.execute(resource_sel_stat, (loser,))
-            resource_amount = db.fetchone()[0]
-
-            # transfer 20% of resource on hand (TODO: implement if and alliance won how to give it)
-            eco.transfer_resources(resource, resource_amount*(1/5), winner)
-
-
+def task_war_reparation_tax():
+    war_reparation_tax()
 
 # runs once a day
 """
@@ -199,6 +164,10 @@ def eventCheck():
     # will decide if natural disasters occure
 """
 
+# handling default error
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("error.html", code=404, message="Page not found!")
 
 @app.context_processor
 def inject_user():
@@ -343,4 +312,4 @@ def mass_purchase():
     return render_template("mass_purchase.html")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', use_reloader=True)

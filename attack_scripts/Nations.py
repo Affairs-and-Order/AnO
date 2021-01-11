@@ -102,8 +102,7 @@ class Economy:
             return "Invalid resource"
 
         # get amount of resource
-
-        resource_sel_stat = f"SELECT {resource} FROM resources " + "WHERE id=%s"
+        resource_sel_stat = f"SELECT {resource} FROM resources WHERE id=%s"
 
         db.execute(resource_sel_stat, (self.nationID,))
         originalUser = int(db.fetchone()[0])
@@ -181,7 +180,7 @@ class Nation:
             port=os.getenv("PG_PORT"))
 
         db = connection.cursor()
-        if self.provinces == None:
+        if self.provinces is None:
             self.provinces = {"provinces_number": 0, "province_stats": {}}
             db.execute("SELECT COUNT(provinceName) FROM provinces WHERE userId=%s", (self.id,))
             provinces_number = db.fetchone()[0]
@@ -262,7 +261,7 @@ class Nation:
     @staticmethod
     def set_peace(db, connection, war_id=None, options=None):
 
-        if war_id != None:
+        if war_id is not None:
             db.execute("UPDATE wars SET peace_date=(%s) WHERE id=(%s)", (time.time(), war_id))
 
         else:
@@ -479,7 +478,7 @@ class Military(Nation):
                 # transfer 20% of resource on hand (TODO: implement if and alliance won how to give it)
                 eco.transfer_resources(resource, resource_amount*(1/5), winner.user_id)
 
-            print("THE WAR IS OVER")
+            # print("THE WAR IS OVER")
 
         db.execute(f"UPDATE wars SET {column}=(%s) WHERE id=(%s)", (morale, war_id))
 
@@ -492,7 +491,7 @@ class Military(Nation):
     def special_fight(attacker, defender, target): # Units, Units, int -> str, None
         target_amount = defender.get_military(defender.user_id).get(target, None)
 
-        if target_amount != None:
+        if target_amount is not None:
             special_unit = attacker.selected_units_list[0]
             attack_effects = attacker.attack(special_unit, target)
 
@@ -535,6 +534,7 @@ class Military(Nation):
 
             connection.commit()
 
+            # NOTE: put this on the warResult route and use it for both the special and regular attack
             # TODO: NEED PROPER ERROR HANDLING FOR THIS INFRA DAMAGE ex. when user doesn't have province the can't damage it (it throws error)
             if len(province_id_fetch) > 0:
                 random_province = province_id_fetch[random.randint(0, len(province_id_fetch)-1)][0]
@@ -636,8 +636,8 @@ class Military(Nation):
         elif attacker_unit_amount_bonuses == 0:
             attacker_chance = 0.001
 
-        print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
-        print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
+        # print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
+        # print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
@@ -687,9 +687,11 @@ class Military(Nation):
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            w_casualties = winner_casulties*random.uniform(0.5, 1.5)*10
-            l_casualties =  win_type*random.uniform(0.8, 1.5)*10
+            w_casualties = winner_casulties*random.uniform(0.5, 4)*15
+            l_casualties =  win_type*random.uniform(0.8, 4)*15
 
+            # print("w_casualties", w_casualties)
+            # print("l_casualties", l_casualties)
             winner.casualties(winner_unit, w_casualties)
             loser.casualties(loser_unit, l_casualties)
 

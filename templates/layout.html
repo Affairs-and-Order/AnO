@@ -6,18 +6,33 @@
     <meta charset="utf-8">
     <meta property="og:image" content="{{ url_for('static', filename='images/titleimage.png') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <meta name="keywords" content="affairs and order, affairs and order game, nation simulator, nation simulation">
+    <meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game">
     <meta name="description" content="Affairs and Order is a nation simulation game where you can lead a country, developing its economy, fighting in epic battles against other players, and joining a coalition with your friends to trade and conquer.">
 
     <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
-
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
     <!-- This cause error because src="jquery" is relative path so the /war/<id> will be like this /war/jquery -->
     <!-- <script src="jquery-3.5.1.min.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
     <link rel="icon" href="{{ url_for('static', filename='images/titleimage.png') }}" type="image/png">
-    <title>{% block title %}{% endblock %} | A&O</title>
+    <title>{% block title %}{% endblock %} | Affairs and Order · Massively Multiplayer Nation Game</title>
     <script data-ad-client="ca-pub-2399873064840158" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script>
         const imageBackground = function(event) {
@@ -30,7 +45,11 @@
             }
         };
     </script>
-
+    <script>
+        $(document).ready(function() {
+            new WOW().init();
+        });
+    </script>
 </head>
 
 <body>
@@ -40,7 +59,7 @@
             channel: '709897623917822052' // #rules
         })
     </script>
-    <div class="navbar">
+    <div class="navbarparent" id="navbarparent">
 
         {% if session.get('user_id') != None %}
         <div class="menubar" onclick="menubardrop()" id="menubar">
@@ -50,12 +69,12 @@
         </div>
         {% endif %}
 
-        <img src="{{ url_for('static', filename='images/titleimage.png') }}" class="navbartitleimage" />
-        <a class="navbartitle" href="/">Affairs and Order</a>
+        <a class="navbarparenttitle" href="/">
+            <img alt="A&O bird icon" src="{{ url_for('static', filename='images/titleimage.png') }}" class="navbarparenttitleimage" /> Affairs and Order</a>
 
         <!---->
 
-        <div class="navbarloginsignupdiv">
+        <div class="navbarparentloginsignupdiv">
             {% if session.get('user_id') == None %}
             <a class="loginsignup" href="/login"><span class="material-icons-outlined">
                     login
@@ -120,7 +139,7 @@
                     <div class="dropdown-contentchild">
                         <a class="" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                             outlined_flag
-                        </span>Country<span class="menubaranotification">1</span></a>
+                        </span>Country<!--<span class="menubaranotification">1</span>--></a>
                         <!--
                         <a class="" href="/upgrades"><span class="material-icons-outlined">
                         engineering
@@ -131,10 +150,10 @@
                         </span>Provinces</a>
                         <a class="" href="/market"><span class="material-icons-outlined">
                             local_grocery_store
-                        </span>Market<span class="menubaranotification">1</span></a>
+                        </span>Market<!--<span class="menubaranotification">1</span>--></a>
                         <a class="" href="/wars"><span class="material-icons-outlined">
                             military_tech
-                        </span>Wars<span class="menubaranotification">1</span></a>
+                        </span>Wars<!--<span class="menubaranotification">1</span>--></a>
                     </div>
                 </div>
             </div>
@@ -148,7 +167,7 @@
         <h3>Internal Affairs</h3>
         <a class="menubara" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                 outlined_flag
-            </span>Country<span class="menuflex2notification">1</span></a>
+            </span>Country<!-- <span class="menuflex2notification">1</span> --> </a>
         <!--
         <a class="menubara" href="/upgrades"><span class="material-icons-outlined">
             engineering
@@ -159,10 +178,10 @@
             </span>Provinces</a>
         <a class="menubara" href="/market"><span class="material-icons-outlined">
                 local_grocery_store
-            </span>Market<span class="menubaranotification">1</span></a>
+            </span>Market<!--<span class="menubaranotification">1</span>--></a>
         <a class="menubara" href="/wars"><span class="material-icons-outlined">
                 military_tech
-            </span>Wars<span class="menubaranotification">1</span></a>
+            </span>Wars<!--<span class="menubaranotification">1</span>--></a>
 
         <h3>Global Affairs</h3>
         <a class="menubara" href="/my_coalition"><span class="material-icons-outlined">
@@ -320,24 +339,64 @@
             <a class="menubara " href="index.html ">World</a>
 
         </div>
-        -->{% block body %}FOOTer {% endblock %}
+        -->
+    <div class="templatecontainer">{% block body %} {% endblock %}
 
-    <!-- Code for message flashes (You bought x soldiers, etc)-->
-    <!-- Please fix the html (not jinja templating) so it would show up somewhere, I recommend the bottom right corner of the screen.-->
-    <!-- t0dd -->
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul class=flashes>
-        {% for message in messages %}
-        <div class="purchasediv">
-            <div class="purchasenotif">
-                <h3>{{ message }}</h3>
+        <!-- Code for message flashes (You bought x soldiers, etc)-->
+        <!-- Please fix the html (not jinja templating) so it would show up somewhere, I recommend the bottom right corner of the screen.-->
+        <!-- t0dd -->
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul class=flashes>
+            {% for message in messages %}
+            <div class="purchasediv">
+                <div class="purchasenotif">
+                    <h3>{{ message }}</h3>
+                </div>
+            </div>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+
+
+    </div>
+
+    <footer class="footer">
+
+        <div class="templatedivflex2 menuflex">
+            <div class="templatedivflex2left footerchild">
+
+                <h1 class="footertitle navbarparenttitle">
+                    <img alt="A&O bird icon" src="{{ url_for('static', filename='images/titleimage.png') }}" class="navbarparenttitleimage footertitleicon" /> Affairs and Order</h1>
+
+
+                <div class="footercopyright">© 2021</div>
+
+            </div>
+            <div class="templatedivflex2left footerchild">
+
+                <a href="https://discord.gg/94CstV2" target="_blank">
+                    <i class="fab fa-discord fa-2x discordicon footericon"></i>
+                </a>
+
+                <a href="https://affairsandorder.flarum.cloud/" target="_blank">
+                    <i class="far fa-newspaper fa-2x forumicon footericon"></i>
+                </a>
+                <a href="https://twitter.com/AffairsOrder" target="_blank">
+                    <i class="fab fa-twitter fa-2x twittericon footericon"></i>
+                </a>
+
+                <a href="https://www.youtube.com/channel/UColguUP75p-RObWBdiHiXHQ" target="_blank">
+                    <i class="fab fa-youtube fa-2x youtubeicon footericon"></i>
+                </a>
+
+                <a href="https://www.reddit.com/r/AffairsAndOrder/" target="_blank">
+                    <i class="fab fa-reddit fa-2x redditicon footericon"></i>
+                </a>
+
             </div>
         </div>
-        {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
 
-
+    </footer>
 
 </body>
 

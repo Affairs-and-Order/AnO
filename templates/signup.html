@@ -1,6 +1,14 @@
 {% extends "layout.html" %} {% block title %} Sign up {% endblock %} {% block body%}
 <!-- START------------------------------------------------------------------------->
-<img class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
+<style>
+    .templatecontainer {
+        background: rgba(255, 255, 255, 0);
+    }
+    
+    .footer {
+        display: none;
+    }
+</style>
 <script>
     //Code for image slider in signup page
 
@@ -27,6 +35,7 @@
         slides[slideIndex - 1].style.display = "block";
     }
 </script>
+<img alt="Aircraft carrier" class="background" id="background" src="{{ url_for('static', filename='images/2.jpg') }}" />
 <div class="templatediv noboxshadowtopper loginsignupdiv">
 
     <div class="templatedivtopper noboxshadowtopper">
@@ -98,7 +107,7 @@
         <h2 class="templatecontentheaderleft">Choose a Biome</h2>
 
         <div class="slidecontainer">
-            <div class="slide1 slideparent fade">
+            <div class="slide1 slideparent">
                 <div class="slidechild slidetop">
 
                     <img class="slideimage" src="{{ url_for( 'static', filename='images/tundra.jpg' ) }}">
@@ -130,7 +139,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slideparent fade">
+            <div class="slideparent">
                 <div class="slidechild slidetop">
 
                     <img class="slideimage" src="{{ url_for( 'static', filename='images/savanna.jpg' ) }}">
@@ -161,7 +170,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slideparent fade">
+            <div class="slideparent">
                 <div class="slidechild slidetop">
 
                     <img class="slideimage" src="{{ url_for( 'static', filename='images/desert.jpg' ) }}">
@@ -192,7 +201,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slideparent fade">
+            <div class="slideparent">
                 <div class="slidechild slidetop">
 
                     <img class="slideimage" src="{{ url_for( 'static', filename='images/jungle.jpg' ) }}">
@@ -223,7 +232,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slideparent fade">
+            <div class="slideparent">
                 <div class="slidechild slidetop">
 
                     <img class="slideimage" src="{{ url_for( 'static', filename='images/borealforest.jpg' ) }}">
@@ -254,7 +263,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slideparent fade">
+            <div class="slideparent">
                 <div class="slidechild slidetop">
 
                     <img class="slideimage" src="{{ url_for( 'static', filename='images/grassland.jpg' ) }}">
@@ -285,7 +294,7 @@
                     </div>
                 </div>
             </div>
-            <div class="slideparent fade">
+            <div class="slideparent">
                 <div class="slidechild slidetop">
 
                     <img class="slideimage" src="{{ url_for( 'static', filename='images/mountainrange.jpg' ) }}">

@@ -1,17 +1,9 @@
 # FULLY MIGRATED
 
-from flask import Flask, request, render_template, session, redirect, flash
-from tempfile import mkdtemp
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
-import datetime
-import _pickle as pickle
-import random
+from flask import render_template, session, redirect
 from helpers import login_required, error
 import psycopg2
 import os
-# from celery.schedules import crontab # arent currently using but will be later on
-from helpers import get_influence, get_coalition_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 from dotenv import load_dotenv
@@ -103,7 +95,7 @@ def upgrade_sell_buy(ttype, thing):
         current_gold = int(db.fetchone()[0])
 
         if current_gold < price:
-            return error(400, "You don't have enough gold")
+            return error(400, "you don't have enough money")
         
         new_gold = current_gold - price
 

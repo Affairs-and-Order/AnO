@@ -1,3 +1,5 @@
+
+
 /*
 ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
 
@@ -43,6 +45,7 @@ function resourcedivcontentshow() {
     document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
 
 }
+
 //resourcediv stay open
 /*
 var clicked = false
@@ -648,4 +651,9 @@ function war_target() {
             }
         }
     }
+}
+
+function myFunction() {
+    var element = document.getElementById("myDIV");
+    element.classList.remove("mystyle");
 }

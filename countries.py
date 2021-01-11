@@ -1,26 +1,18 @@
 # FULLY MIGRATED
 
-from flask import Flask, request, render_template, session, redirect, flash
-from tempfile import mkdtemp
-from werkzeug.security import generate_password_hash, check_password_hash
-from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
-import datetime
-import _pickle as pickle
-import random
-from celery import Celery
-from helpers import login_required, error
+from flask import request, render_template, session, redirect
+from helpers import login_required
 import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
-from helpers import get_influence, get_coalition_influence
+from helpers import get_influence
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
-from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 load_dotenv()
 
-UPLOAD_FOLDER = 'static/flags'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = 'static/flags'
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
 
 @app.route("/country/id=<cId>")
 @login_required
@@ -128,7 +120,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
     try:
         search = request.values.get("search")
     except TypeError:
-        search = None
+        search = ""
 
     try:
         lowerinf = float(request.values.get("lowerinf"))
@@ -141,27 +133,30 @@ def countries():  # TODO: fix shit ton of repeated code in function
         upperinf = None
 
 
-    # Unoptimize
-    if search == None or search == "" and upperinf == None and lowerinf == None:
+    # Optimize
+    # if not search and upperinf is None and lowerinf is None:
+    if not search:
         db.execute("SELECT id FROM users ORDER BY id")
         users = db.fetchall()
-    elif search != None and upperinf == None and lowerinf == None:
+        
+    # elif search is not None and upperinf is None and lowerinf is None:
+    elif search != "":
         db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
         users = db.fetchall()
 
-    if lowerinf != None and upperinf == None:
+    if lowerinf is not None and upperinf is None:
         for user in users:
             user_id = int(user[0])
             if get_influence(user_id) < lowerinf:
                 users.remove(user)
 
-    elif upperinf != None and lowerinf == None:
+    elif upperinf is not None and lowerinf is None:
         for user in users:
             user_id = int(user[0])
             if get_influence(user_id) > upperinf:
                 users.remove(user)
 
-    elif upperinf != None and lowerinf != None:
+    elif upperinf is not None and lowerinf is not None:
         for user in users:
             user_influence = get_influence(int(user[0]))
             if user_influence > upperinf or user_influence < lowerinf:
@@ -223,7 +218,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
 @app.route("/update_country_info", methods=["POST"])
 @login_required
 def update_info():
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -237,7 +232,7 @@ def update_info():
     # Description changing
     description = request.form["description"]
 
-    if description != "None" and description != "":
+    if description not in ["None", ""]:
         db.execute("UPDATE users SET description=%s WHERE id=%s", (description, cId))
 
     # Flag changing
@@ -249,7 +244,7 @@ def update_info():
     flag = request.files["flag_input"]
     if flag and allowed_file(flag.filename):
 
-        print("gone through")
+        current_filename = flag.filename
 
         # Check if the user already has a flag
         try:
@@ -257,15 +252,15 @@ def update_info():
             current_flag = db.fetchone()[0]
 
             os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
-        except FileNotFoundError:
+        except:
             pass
 
         # Save the file & shit
-        current_filename = flag.filename
         if allowed_file(current_filename):
             extension = current_filename.rsplit('.', 1)[1].lower()
             filename = f"flag_{cId}" + '.' + extension
-            flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            new_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) 
+            flag.save(new_path)
             db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
 
     """
@@ -307,7 +302,7 @@ def update_info():
 @login_required
 def delete_own_account():
 
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),

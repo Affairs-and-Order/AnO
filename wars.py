@@ -1,7 +1,7 @@
 # FULLY MIGRATED
 import random
 from app import app
-from flask import Flask, request, render_template, session, redirect, abort, flash, url_for
+from flask import request, render_template, session, redirect
 import psycopg2
 from helpers import login_required, error
 from attack_scripts import Nation, Military, Economy
@@ -199,7 +199,7 @@ def peace_offers():
 
             for offer in peace_offers:
                 offer_id = offer[0]
-                if offer_id != None:
+                if offer_id is not None:
 
                     # Every offer has a different subset
                     # offers[offer_id] = {}
@@ -362,7 +362,7 @@ def send_peace_offer(war_id, enemy_id):
                 amount_string+=str(amo)+","
 
         # TODO: Made peace offer where can offer to give resources and not just demand
-        # if enemy_id == None:
+        # if enemy_id is None:
         #     return "Selected target is invalid!"
 
         db.execute("SELECT peace_offer_id FROM wars WHERE id=(%s)", (war_id,))
@@ -382,7 +382,6 @@ def send_peace_offer(war_id, enemy_id):
         connection.commit()
 
         # Send white peace (won't lose or gain anything)
-
         return redirect("/peace_offers")
 
 # page 0, kind of a pseudo page where you can click attack vs special
@@ -679,19 +678,8 @@ def warTarget():
 @app.route("/warResult", methods=["GET"])
 @login_required
 def warResult():
-
-    # DEBUG DATA START:
-    # session["attack_units"] = Units(3, {"soldiers": 10, "tanks": 20, "artillery": 20}, selected_units_list=["soldiers", "tanks", "artillery"]).__dict__
-    # session["attack_units"]["supply_costs"] = 5
-    # session["attack_units"]["available_supplies"] = 10
-    #
-    # eId = 2
-    # session["enemy_id"] = eId
-    # session["user_id"] = 3
-    # DEBUG DATA END!
-
     attack_unit_session = session.get("attack_units", None)
-    if attack_unit_session == None:
+    if attack_unit_session is None:
         return redirect("/wars")
 
     attacker = Units.rebuild_from_dict(attack_unit_session)
@@ -724,8 +712,7 @@ def warResult():
 
     # If user came from /wartarget only then they have from_wartarget
     result = session.get("from_wartarget", None)
-    print(result, "RESULT HERE")
-    if result == None:
+    if result is None:
         db.execute("SELECT default_defense FROM military WHERE id=(%s)", (eId,))
         defensestring = db.fetchone()[0]  # this is in the form of a string soldiers,tanks,artillery
 
@@ -761,15 +748,13 @@ def warResult():
         # "sustained" --> 1x loot, 1x infra destruction, 1x building destroy
         # "loot" --> 2x loot, 0.1x infra destruction, buildings cannot be destroyed
         db.execute("SELECT war_type FROM wars WHERE (attacker=(%s) OR attacker=(%s)) AND (defender=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.user_id, defender.user_id, attacker.user_id, defender.user_id))
-        # print(db.fetchall())
         war_type = db.fetchall()[-1][0]
 
         # attack_effects = sum of 3 attack effect in fight() method
         winner, win_condition, attack_effects = Military.fight(attacker, defender)
 
         if len(war_type) > 0:
-            print(war_type, "WAR_TYPE")
-            if war_type == "Raid":
+            if war_type == "Raze":
 
                 # infrastructure damage
                 attack_effects[0] = attack_effects[0]*10
@@ -817,13 +802,9 @@ def warResult():
         for unit in attacker.selected_units_list:
             attacker_loss[unit] = prev_attacker[unit]-attacker.selected_units[unit]
 
-        print("ATTCKER, DEFENDER LOSSS")
-        print(defender_loss)
-        print(attacker_loss)
         defender_result["unit_loss"] = defender_loss
         attacker_result["unit_loss"] = attacker_loss
     else:
-        print("BIG ELSE")
         defender_result["unit_loss"] = result[0]
         defender_result["infra_damage"] = result[1]
 
@@ -839,7 +820,6 @@ def warResult():
 
     # save method only function for the attacker now, and maybe we won't change that
     # saves the decreased supply amount
-    print(attacker)
     attacker.save()
 
     # unlink the session values so user can't just reattack when reload or revisit this page
@@ -860,7 +840,7 @@ def warResult():
 def declare_war():
 
     # CONSTANT VALUE
-    WAR_TYPES = ["Raid", "Sustained", "Loot"]
+    WAR_TYPES = ["Raze", "Sustained", "Loot"]
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -872,12 +852,8 @@ def declare_war():
     db = connection.cursor()
     # Selects the country that the user is attacking
     defender = request.form.get("defender") # the problem is that declaring war through /country/id does not have a defender tag, but declaring war normally does
-    print(defender, "defender")
     war_message = request.form.get("description")
-    print(war_message)
     war_type = request.form.get("warType")
-    print(war_type)
-
 
     attacker = Nation(session["user_id"])
     defender = Nation(defender)
@@ -984,6 +960,7 @@ def defense():
 
         db = connection.cursor()
         defense_units = list(request.form.values())
+
         # defense_units = ["soldier", "tank", "apache"]
 
         for item in defense_units:

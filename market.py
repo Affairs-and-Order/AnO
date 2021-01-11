@@ -1,8 +1,61 @@
 from app import app
 from helpers import login_required, error
 import psycopg2
-from flask import Flask, request, render_template, session, redirect, flash
+from flask import request, render_template, session, redirect, flash
 import os
+import variables
+
+def give_resource(giver_id, taker_id, resource, amount):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+    db = conn.cursor()
+
+    giver_id = int(giver_id)
+    taker_id = int(taker_id)
+
+    amount = int(amount)
+
+    resources_list = variables.RESOURCES
+
+    # Returns error if resource doesn't exist
+    if resource not in resources_list and resource != "money":
+        return "No such resource"
+    
+    if resource in ["gold", "money"]:
+
+        print("money")
+        
+        db.execute("SELECT gold FROM stats WHERE id=%s", (giver_id,))
+        current_giver_money = db.fetchone()[0]
+
+        if current_giver_money < amount:
+            return "Giver doesn't have enough resources to transfer such amount."
+
+        db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (amount, giver_id))
+        db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (amount, taker_id))
+
+    else:
+        
+        current_resource_statement = f"SELECT {resource} FROM resources WHERE " + "id=%s"
+        db.execute(current_resource_statement, (giver_id,))
+        current_giver_resource = db.fetchone()[0]
+
+        if current_giver_resource < amount:
+            return "Giver doesn't have enough resources to transfer such amount."
+
+        giver_update_statement = f"UPDATE resources SET {resource}={resource}-{amount}" + " WHERE id=%s"
+        db.execute(giver_update_statement, (giver_id,))
+
+        taker_update_statement = f"UPDATE resources SET {resource}={resource}+{amount}" + " WHERE id=%s"
+        db.execute(taker_update_statement, (taker_id,))
+
+    conn.commit()
+    conn.close()
 
 @login_required
 @app.route("/market", methods=["GET", "POST"])
@@ -38,32 +91,32 @@ def market():
 
         # Processing of query parameters into database statements
 
-        if price_type != None:
+        if price_type is not None:
             list_of_price_types = ["ASC", "DESC"]
 
             if price_type not in list_of_price_types:
                 return error(400, "No such price type")
         
-        if offer_type != None and price_type == None:  
+        if offer_type is not None and price_type is None:  
             db.execute("SELECT offer_id FROM offers WHERE type=(%s)", (offer_type,))
             offer_ids_list = db.fetchall()
 
-        elif offer_type == None and price_type != None:
+        elif offer_type is None and price_type is not None:
             offer_ids_statement = f"SELECT offer_id FROM offers ORDER BY price {price_type}"
             db.execute(offer_ids_statement)
             offer_ids_list = db.fetchall()
 
-        elif offer_type != None and price_type != None:
+        elif offer_type is not None and price_type is not None:
 
             offer_ids_statement = "SELECT offer_id FROM offers WHERE type=%s" + f"ORDER by price {price_type}"
             db.execute(offer_ids_statement, (offer_type,))
             offer_ids_list = db.fetchall()
 
-        elif offer_type == None and price_type == None:
+        elif offer_type is None and price_type is None:
             db.execute("SELECT offer_id FROM offers ORDER BY price ASC")
             offer_ids_list = db.fetchall()
 
-        if filter_resource != None:
+        if filter_resource is not None:
 
             resources = [
                 "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
@@ -87,7 +140,7 @@ def market():
             db.execute("SELECT resource FROM offers WHERE offer_id=(%s)", (i[0],))
             resource = db.fetchone()[0]
 
-            if filter_resource != None:
+            if filter_resource is not None:
                 if filter_resource == resource:
                     pass
                 else:
@@ -165,7 +218,7 @@ def buy_market_offer(offer_id):
     buyers_gold = int(db.fetchone()[0])
 
     if (amount_wanted * price_for_one) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
-        return error(400, "You don't have enough gold") # Returns error if true
+        return error(400, "you don't have enough money") # Returns error if true
     gold_sold = buyers_gold - (amount_wanted * price_for_one)
 
     db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (gold_sold, cId))
@@ -718,7 +771,7 @@ def accept_trade(trade_id):
         buyers_gold = int(db.fetchone()[0])
 
         if (amount * price) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
-            return error(400, "You don't have enough gold") # Returns error if true
+            return error(400, "you don't have enough money") # Returns error if true
         gold_sold = buyers_gold - (amount * price)
 
         db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (gold_sold, cId))
