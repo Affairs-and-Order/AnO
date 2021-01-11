@@ -273,7 +273,7 @@
 
 *::selection {
     color: white;
-    box-shadow: #00a7e1 !important;
+    background: #00a7e1 !important;
 }
 
 .theme-light {
