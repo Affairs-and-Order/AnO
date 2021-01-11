@@ -1323,6 +1323,7 @@ label {
     border-radius: 100px;
     animation: templatedivcontentload 1.25s;
     position: relative;
+    font-weight: normal;
 }
 
 .templatedivbutton:hover {
