@@ -164,6 +164,10 @@ def eventCheck():
     # will decide if natural disasters occure
 """
 
+# handling default error
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("error.html", code=404, message="Page not found!")
 
 @app.context_processor
 def inject_user():
