@@ -162,7 +162,7 @@
                         <ul>Purchase Cities</ul>
 
                         <ul class="resourceparent">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
-                            <strong id="citiesoutput"></strong>
+                            <strong id="citiesoutput">0</strong>
                         </ul>
 
                         <div class="templatedivflex2 divflex2center">
@@ -198,13 +198,13 @@
                         <ul>Purchase Land</ul>
 
                         <ul class="resourceparent">This will cost <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
-                            <strong id="landoutput"></strong>
+                            <strong id="landoutput">0</strong>
                         </ul>
                         <div class="templatedivflex2 divflex2center">
                             <div class="templatedivflex2left">
 
                                 <input class="loginsignupinput" type="number" name="land" placeholder="Land Amount" id="landamount" onchange="landCost(event)" />
-                                <input type="hidden" id="currentLand"/>
+                                <input type="hidden" id="currentLand" />
 
                             </div>
                             <div class="templatedivflex2right">

@@ -2317,7 +2317,7 @@ button {
 
 @media all and (max-width: 600px) {
     .landingcontent {
-        width: 80%;
+        width: 90%;
     }
 }
 
@@ -2329,8 +2329,9 @@ button {
     margin-bottom: 20px;
     vertical-align: bottom;
     flex-wrap: wrap;
-    position: relative;
     top: 0;
+    animation: templatedivcontentload 3.2s;
+    position: static;
 }
 
 .landingchildcontainerchild {
@@ -2343,8 +2344,7 @@ button {
     font-size: 20px;
     box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.25) 0px 2px 5px 0px;
     background-color: #00a7e1;
-    animation: templatedivtitleload 3.2s;
-    position: static;
+    animation: templatedivcontentload 1.25s;
 }
 
 .landingloginbutton {
