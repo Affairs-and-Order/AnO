@@ -271,6 +271,12 @@
     }
 }
 
+*::selection {
+    color: black;
+    text-shadow: #00a7e1 2px 2px, #00a7e1 1px 1px;
+    opacity: 1;
+}
+
 .theme-light {
     --background: #ffffff;
     --foreground: white;
