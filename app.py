@@ -20,7 +20,6 @@ except:
 if environment == "PROD":
     app.secret_key = os.getenv("SECRET_KEY")
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-    app.config["SESSION_COOKIE_DOMAIN"] = "https://affairsandorder.com"
     
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from wars import wars, find_targets
