@@ -412,9 +412,10 @@ def generate_province_revenue(): # Runs each hour
 
                         new_energy = current_energy - unit_amount
 
-                        if new_energy >= 0:
+                        if new_energy < 0:
+                            new_energy = 0
 
-                            db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
+                        db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
 
                 take_energy()
 
