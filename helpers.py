@@ -8,6 +8,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def get_flagname(user_id):
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+    db = connection.cursor()
+    db.execute("SELECT flag FROM users WHERE id=(%s)", (user_id,))
+    flag_name = db.fetchone()[0]
+
+    if flag_name == None:
+        flag_name = "default_flag.jpg"
+
+    return flag_name
 
 def login_required(f):
     """
@@ -50,7 +65,7 @@ def get_influence(country_id):
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
-    
+
     cId = country_id
 
     try:
