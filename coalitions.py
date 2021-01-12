@@ -44,35 +44,54 @@ def coalition(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
-    name = db.fetchone()[0]
+    try:
+        db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
+        name = db.fetchone()[0]
+    except:
+        name = "This coalition doesn't exist"
 
-    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-    colType = db.fetchone()[0]
+    try:
+        db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
+        colType = db.fetchone()[0]
+    except:
+        colType = "Open"
 
-    db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
-    members = db.fetchone()[0]
+    try:
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
+        members = db.fetchone()[0]
+    except:
+        members = 0
 
-    total_influence = get_coalition_influence(colId)
+    try:
+        total_influence = get_coalition_influence(colId)
+    except:
+        total_influence = 0
 
-    average_influence = total_influence // members
+    try:
+        average_influence = total_influence // members
+    except:
+        average_influence = 0
 
-    db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
-    description = db.fetchone()[0]
+    try:
+        db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
+        description = db.fetchone()[0]
+    except:
+        desription = ""
 
-    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-    colType = db.fetchone()[0]
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+        leaders = db.fetchall() # All coalition leaders ids
+        leaders = [item for t in leaders for item in t]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+        leader_names = []
 
-    leader_names = []
-
-    for leader_id in leaders:
-        db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
-        leader_name = db.fetchone()[0]
-        leader_names.append(leader_name)
+        for leader_id in leaders:
+            db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
+            leader_name = db.fetchone()[0]
+            leader_names.append(leader_name)
+    except:
+        leaders = []
+        leader_names = []
 
     ### STUFF FOR JINJA
     try:
@@ -89,7 +108,10 @@ def coalition(colId):
     except:
         userInCurCol = False
 
-    user_role = get_user_role(cId)
+    try:
+        user_role = get_user_role(cId)
+    except:
+        user_role = None
 
     if user_role in ["leader", "deputy_leader", "domestic_minister"]:
 
