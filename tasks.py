@@ -372,181 +372,185 @@ def generate_province_revenue(): # Runs each hour
 
         for province_id in infra_ids:
 
-            province_id = province_id[0]
+            try:
 
-            db.execute("SELECT userId FROM provinces WHERE id=(%s)", (province_id,))
-            user_id = db.fetchone()[0]
+                province_id = province_id[0]
 
-            unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
-            db.execute(unit_amount_stat, (province_id,))
-            unit_amount = db.fetchone()[0]
+                db.execute("SELECT userId FROM provinces WHERE id=(%s)", (province_id,))
+                user_id = db.fetchone()[0]
 
-            # If that user doesn't have any units of this type, skip
-            if unit_amount == 0:
-                continue
-            else:
+                unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
+                db.execute(unit_amount_stat, (province_id,))
+                unit_amount = db.fetchone()[0]
 
-                """
-                print(f"Unit: {unit}")
-                print(f"Add {plus_amount} to {plus_resource}")
-                print(f"Remove ${operating_costs} as operating costs")
-                print(f"\n")
-                """
-
-                # Removing money operating costs (if user has the money)
-                db.execute("SELECT gold FROM stats WHERE id=(%s)", (user_id,))
-                current_money = int(db.fetchone()[0])
-
-                if current_money < operating_costs:
+                # If that user doesn't have any units of this type, skip
+                if unit_amount == 0:
                     continue
                 else:
-                    new_money = current_money - operating_costs
-                    try:
-                        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
-                    except:
-                        pass
 
-                def take_energy():
+                    """
+                    print(f"Unit: {unit}")
+                    print(f"Add {plus_amount} to {plus_resource}")
+                    print(f"Remove ${operating_costs} as operating costs")
+                    print(f"\n")
+                    """
 
-                    if unit not in energy_units:
+                    # Removing money operating costs (if user has the money)
+                    db.execute("SELECT gold FROM stats WHERE id=(%s)", (user_id,))
+                    current_money = int(db.fetchone()[0])
 
-                        db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
-                        current_energy = int(db.fetchone()[0])
-
-                        new_energy = current_energy - unit_amount
-
-                        if new_energy < 0:
-                            new_energy = 0
-
+                    if current_money < operating_costs:
+                        continue
+                    else:
+                        new_money = current_money - operating_costs
                         try:
-                            db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
+                            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
                         except:
                             pass
 
-                take_energy()
+                    def take_energy():
 
-                plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
-                operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
+                        if unit not in energy_units:
 
-                # Effect stuff
-                if effect is not None:
-                    effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
+                            db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
+                            current_energy = int(db.fetchone()[0])
 
-                if effect_2 is not None:
-                    effect_2_amount *= unit_amount
+                            new_energy = current_energy - unit_amount
 
-                if effect_minus is not None:
-                    effect_minus_amount *= unit_amount
+                            if new_energy < 0:
+                                new_energy = 0
 
-                province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
-                percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
+                            try:
+                                db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
+                            except:
+                                pass
 
-                user_resources = [
-                    "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
-                    "lumber", "components", "steel", "consumer_goods", "aluminium",
-                    "gasoline", "ammunition", "iron"
-                ]
+                    take_energy()
 
-                # Function for _plus
-                if plus_data is not None:
+                    plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
+                    operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
 
-                    if plus_resource in province_resources:
+                    # Effect stuff
+                    if effect is not None:
+                        effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
 
-                        cpr_statement = f"SELECT {plus_resource} FROM provinces" + " WHERE id=(%s)"
-                        db.execute(cpr_statement, (province_id,))
-                        current_plus_resource = int(db.fetchone()[0])
+                    if effect_2 is not None:
+                        effect_2_amount *= unit_amount
 
-                        # Adding resource
-                        new_resource_number = current_plus_resource + plus_amount
+                    if effect_minus is not None:
+                        effect_minus_amount *= unit_amount
 
-                        if plus_resource in percentage_based and new_resource_number > 100:
-                            new_resource_number = 100
+                    province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
+                    percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
 
-                        upd_prov_statement = f"UPDATE provinces SET {plus_resource}" + "=(%s) WHERE id=(%s)"
-                        db.execute(upd_prov_statement, (new_resource_number, province_id))
+                    user_resources = [
+                        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
+                        "lumber", "components", "steel", "consumer_goods", "aluminium",
+                        "gasoline", "ammunition", "iron"
+                    ]
 
-                    elif plus_resource in user_resources:
+                    # Function for _plus
+                    if plus_data is not None:
 
-                        cpr_statement = f"SELECT {plus_resource} FROM resources" + " WHERE id=(%s)"
-                        db.execute(cpr_statement, (user_id,))
-                        current_plus_resource = int(db.fetchone()[0])
+                        if plus_resource in province_resources:
 
-                        # Adding resource
-                        new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+                            cpr_statement = f"SELECT {plus_resource} FROM provinces" + " WHERE id=(%s)"
+                            db.execute(cpr_statement, (province_id,))
+                            current_plus_resource = int(db.fetchone()[0])
 
-                        try:
-                            upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=(%s) WHERE id=(%s)"
-                            db.execute(upd_res_statement, (new_resource_number, province_id))
-                        except:
-                            pass
-                    else:
-                        print(f"unknown plus data: {plus_resource}")
+                            # Adding resource
+                            new_resource_number = current_plus_resource + plus_amount
 
-                # Function for completing an effect (adding pollution, etc)
-                def do_effect(eff, eff_amount, sign):
+                            if plus_resource in percentage_based and new_resource_number > 100:
+                                new_resource_number = 100
 
-                    effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
-                    db.execute(effect_select, (province_id,))
-                    current_effect = int(db.fetchone()[0])
+                            upd_prov_statement = f"UPDATE provinces SET {plus_resource}" + "=(%s) WHERE id=(%s)"
+                            db.execute(upd_prov_statement, (new_resource_number, province_id))
 
-                    if sign == "+":
-                        new_effect = current_effect + eff_amount
-                    elif sign == "-":
-                        new_effect = current_effect - eff_amount
+                        elif plus_resource in user_resources:
 
-                    if eff in percentage_based:
-                        if new_effect > 100:
-                            new_effect = 100
-                        if new_effect < 0:
-                            new_effect = 0
-                    else:
-                        if new_effect < 0:
-                            new_effect = 0
+                            cpr_statement = f"SELECT {plus_resource} FROM resources" + " WHERE id=(%s)"
+                            db.execute(cpr_statement, (user_id,))
+                            current_plus_resource = int(db.fetchone()[0])
 
-                    db.execute(f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s", (new_effect, province_id))
+                            # Adding resource
+                            new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
 
-                if effect is not None:
-                    # Does the effect for "_effect"
-                    do_effect(effect, effect_amount, "+") # Default settings basically
-                if effect_2 is not None:
-                    do_effect(effect_2, effect_2_amount, "+")
-                if effect_minus is not None:
-                    do_effect(effect_minus, effect_minus_amount, "-")
+                            try:
+                                upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=(%s) WHERE id=(%s)"
+                                db.execute(upd_res_statement, (new_resource_number, province_id))
+                            except:
+                                pass
+                        else:
+                            print(f"unknown plus data: {plus_resource}")
 
-                ## Convert plus
-                if convert_plus is not None:
+                    # Function for completing an effect (adding pollution, etc)
+                    def do_effect(eff, eff_amount, sign):
 
-                    resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
-                    db.execute(resource_s_statement, (user_id,))
-                    current_resource = int(db.fetchone()[0])
+                        effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
+                        db.execute(effect_select, (province_id,))
+                        current_effect = int(db.fetchone()[0])
 
-                    new_resource = current_resource + convert_plus_amount
+                        if sign == "+":
+                            new_effect = current_effect + eff_amount
+                        elif sign == "-":
+                            new_effect = current_effect - eff_amount
 
-                    resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
-                    db.execute(resource_u_statement, (new_resource, user_id,))
-                ##
+                        if eff in percentage_based:
+                            if new_effect > 100:
+                                new_effect = 100
+                            if new_effect < 0:
+                                new_effect = 0
+                        else:
+                            if new_effect < 0:
+                                new_effect = 0
 
-                ## Convert minus
-                def minus_convert(name, amount):
+                        db.execute(f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s", (new_effect, province_id))
 
-                    resource_statement = f"SELECT {name} FROM resources " + "WHERE id=%s"
-                    db.execute(resource_statement, (user_id,))
-                    current_resource = int(db.fetchone()[0])
+                    if effect is not None:
+                        # Does the effect for "_effect"
+                        do_effect(effect, effect_amount, "+") # Default settings basically
+                    if effect_2 is not None:
+                        do_effect(effect_2, effect_2_amount, "+")
+                    if effect_minus is not None:
+                        do_effect(effect_minus, effect_minus_amount, "-")
 
-                    new_resource = current_resource - amount
+                    ## Convert plus
+                    if convert_plus is not None:
 
-                    if new_resource < 0:
-                        new_resource = 0
+                        resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
+                        db.execute(resource_s_statement, (user_id,))
+                        current_resource = int(db.fetchone()[0])
 
-                    resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
-                    db.execute(resource_u_statement, (new_resource, user_id,))
+                        new_resource = current_resource + convert_plus_amount
 
-                if convert_minus is not None:
-                    minus_convert(convert_minus, convert_minus_amount)
-                if convert_minus_2 is not None:
-                    minus_convert(convert_minus_2, convert_minus_2_amount)
-                if convert_minus_3 is not None:
-                    minus_convert(convert_minus_3, convert_minus_3_amount)
+                        resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
+                        db.execute(resource_u_statement, (new_resource, user_id,))
+                    ##
+
+                    ## Convert minus
+                    def minus_convert(name, amount):
+
+                        resource_statement = f"SELECT {name} FROM resources " + "WHERE id=%s"
+                        db.execute(resource_statement, (user_id,))
+                        current_resource = int(db.fetchone()[0])
+
+                        new_resource = current_resource - amount
+
+                        if new_resource < 0:
+                            new_resource = 0
+
+                        resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
+                        db.execute(resource_u_statement, (new_resource, user_id,))
+
+                    if convert_minus is not None:
+                        minus_convert(convert_minus, convert_minus_amount)
+                    if convert_minus_2 is not None:
+                        minus_convert(convert_minus_2, convert_minus_2_amount)
+                    if convert_minus_3 is not None:
+                        minus_convert(convert_minus_3, convert_minus_3_amount)
+            except:
+                pass
 
         conn.commit() # Commits the changes
 

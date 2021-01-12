@@ -157,7 +157,7 @@
                                 var citiesoutput = document.getElementById("citiesoutput");
 
                                 var multiplier = 1 + ((0.08 * citiesamount) * cityCount)
-                                var newPrice = (250000 * multiplier) * citiesamount
+                                var newPrice = Math.round((250000 * multiplier) * citiesamount)
 
                                 console.log(newPrice)
 
