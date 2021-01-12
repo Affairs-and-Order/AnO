@@ -578,8 +578,11 @@ def give_position():
     username = request.form.get("username")
 
     # The user id for the person being given the role
-    db.execute("SELECT id FROM users WHERE username=%s", (username,))
-    roleer = db.fetchone()[0]
+    try:
+        db.execute("SELECT id FROM users WHERE username=%s", (username,))
+        roleer = db.fetchone()[0]
+    except:
+        return error(400, f"Cannot find user {username}")
 
     try:
         db.execute("SELECT colId FROM coalitions WHERE colId=%s AND userId=%s", (colId, roleer))
