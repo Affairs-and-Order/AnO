@@ -1106,8 +1106,19 @@ def accept_treaty(offer_id):
 
     cId = session["user_id"]
 
-    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
-    user_coalition = db.fetchone()[0]
+    try:
+
+        db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
+        user_coalition = db.fetchone()[0]
+
+        db.execute("SELECT id FROM treaties WHERE col2_id=%s AND id=%s", (user_coalition, offer_id))
+        permission_offer_id = db.fetchone()[0]
+
+    except:
+        return error(400, "You do not have such an offer")
+
+    if permission_offer_id != offer_id:
+        return error(400, "You do not have an offer for this id. Please report this bug if you're using the web ui and not testing for permission vulns haha")
 
     user_role = get_user_role(cId)
 
