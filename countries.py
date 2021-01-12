@@ -138,7 +138,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
     if not search:
         db.execute("SELECT id FROM users ORDER BY id")
         users = db.fetchall()
-        
+
     # elif search is not None and upperinf is None and lowerinf is None:
     elif search != "":
         db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
@@ -162,8 +162,8 @@ def countries():  # TODO: fix shit ton of repeated code in function
             if user_influence > upperinf or user_influence < lowerinf:
                 users.remove(user)
 
-    db.execute("SELECT username FROM users ORDER BY id")
-    names = db.fetchall()
+    # db.execute("SELECT username FROM users ORDER BY id")
+    # names = db.fetchall()
 
     populations = []
     coalition_ids = []
@@ -171,8 +171,12 @@ def countries():  # TODO: fix shit ton of repeated code in function
     dates = []
     influences = []
     flags = []
+    names = []
 
     for i in users:
+
+        db.execute("SELECT username FROM users WHERE id=(%s)", (i[0],))
+        names.append(db.fetchone())
 
         db.execute("SELECT date FROM users WHERE id=(%s)", ((i[0]),))
         date = db.fetchone()[0]
@@ -261,7 +265,7 @@ def update_info():
         if allowed_file(current_filename):
             extension = current_filename.rsplit('.', 1)[1].lower()
             filename = f"flag_{cId}" + '.' + extension
-            new_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) 
+            new_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             flag.save(new_path)
             db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
 
