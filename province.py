@@ -377,10 +377,10 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
             current_cityCount = db.fetchone()[0]
 
-            multiplier = 1 + ((0.08 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
+            multiplier = round(1 + ((0.08 * wantedUnits) * current_cityCount)) # 10% Increase in cost for each city.
+            print("City multiplier: " + str(multiplier))
             cityCount_price = int((250000 * multiplier) * wantedUnits) # Each city costs 250,000 without the multiplier
-
-            print(f"total_price: {cityCount_price}")
+            print("New city price: " + str(cityCount_price))
 
         else:
             cityCount_price = 0
@@ -390,8 +390,10 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT land FROM provinces WHERE id=(%s)", (province_id,))
             current_land = db.fetchone()[0]
 
-            multiplier = 1 + ((0.06 * wantedUnits) * current_land) # 10% Increase in cost for each city.
+            multiplier = round(1 + ((0.06 * wantedUnits) * current_land)) # 10% Increase in cost for each city.
+            print("Land multiplier: " + str(multiplier))
             land_price = int((120000 * multiplier) * wantedUnits) # Each city costs 120,000 without the multiplier
+            print("New land price: " + str(land_price))
 
         else:
             land_price = 0

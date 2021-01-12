@@ -157,13 +157,11 @@
                                 var citiesoutput = document.getElementById("citiesoutput");
 
                                 var multiplier = 1 + ((0.08 * citiesamount) * cityCount)
+                                console.log("Cities multiplier: " + multiplier)
                                 var newPrice = Math.round((250000 * multiplier) * citiesamount)
-
-                                console.log(newPrice)
+                                console.log("New City price: " + newPrice)
 
                                 var cityoutputcost = citiesoutput.innerHTML = newPrice;
-
-                                console.log(citiesamount);
                             }
                         </script>
                         <ul>Purchase Cities</ul>
@@ -195,10 +193,11 @@
                                 var landoutput = document.getElementById("landoutput");
                                 let current_land = document.getElementById("currentLand").value;
                                 //insert land cost formula
-                                let multiplier = 1 + ((0.06 * landamount) * current_land)
+                                let multiplier = Math.round(1 + ((0.06 * landamount) * current_land))
+                                console.log("Land multiplier: " + multiplier);
                                 let land_price = Math.round((120000 * multiplier) * landamount)
+                                console.log("New land price: " + land_price)
                                 landoutput.innerHTML = land_price;
-
                                 console.log(landamount);
                             }
                         </script>
