@@ -14,7 +14,7 @@ load_dotenv()
 def provinces():
 
     if request.method == "GET":
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -29,7 +29,7 @@ def provinces():
         db.execute("""SELECT cityCount, population, provinceName, id, land, happiness, productivity
         FROM provinces WHERE userId=(%s) ORDER BY id ASC""", (cId,))
         provinces = db.fetchall()
-        
+
         connection.close()
 
         return render_template("provinces.html", provinces=provinces)
@@ -49,9 +49,12 @@ def province(pId):
     db = connection.cursor()
     cId = session["user_id"]
 
-    db.execute("""SELECT userId, provinceName, population, pollution, happiness, productivity,
-    consumer_spending, cityCount, land, energy FROM provinces WHERE id=(%s)""", (pId,))
-    province_data = db.fetchall()[0]
+    try:
+        db.execute("""SELECT userId, provinceName, population, pollution, happiness, productivity,
+        consumer_spending, cityCount, land, energy FROM provinces WHERE id=(%s)""", (pId,))
+        province_data = db.fetchall()[0]
+    except:
+        return error(404, "Province doesn't exist")
 
     province = {}
 
@@ -180,9 +183,9 @@ def province(pId):
                             gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
                             banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
                             monorails=monorails,
-                            
+
                             army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings, silos=silos,
-                            
+
                             farms=farms, pumpjacks=pumpjacks, coal_mines=coal_mines, bauxite_mines=bauxite_mines,
                             copper_mines=copper_mines, uranium_mines=uranium_mines, lead_mines=lead_mines, iron_mines=iron_mines,
                             lumber_mills=lumber_mills,
@@ -217,7 +220,7 @@ def get_province_price(user_id):
 def createprovince():
 
     cId = session["user_id"]
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -233,7 +236,7 @@ def createprovince():
 
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         current_user_money = int(db.fetchone()[0])
-      
+
         province_price = get_province_price(cId)
 
         if province_price > current_user_money:
@@ -243,7 +246,7 @@ def createprovince():
         province_id = db.fetchone()[0]
 
         db.execute("INSERT INTO proInfra (id) VALUES (%s)", (province_id,))
-        
+
         new_user_money = current_user_money - province_price
         db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_user_money, cId))
 
@@ -332,14 +335,14 @@ def province_sell_buy(way, units, province_id):
 
         allUnits = [
             "land", "cityCount",
-            
+
             "coal_burners", "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields",
             "gas_stations", "general_stores", "farmers_markets", "malls", "banks",
             "city_parks", "hospitals", "libraries", "universities", "monorails",
 
             "army_bases", "harbours", "aerodomes", "admin_buildings", "silos",
 
-            "farms", "pumpjacks", "coal_mines", "bauxite_mines", 
+            "farms", "pumpjacks", "coal_mines", "bauxite_mines",
             "copper_mines", "uranium_mines", "lead_mines", "iron_mines",
             "lumber_mills",
 
@@ -355,7 +358,7 @@ def province_sell_buy(way, units, province_id):
 
         land_units = [
             "army_bases", "harbours", "aerodomes", "admin_buildings", "silos",
-            "farms", "pumpjacks", "coal_mines", "bauxite_mines", 
+            "farms", "pumpjacks", "coal_mines", "bauxite_mines",
             "copper_mines", "uranium_mines", "lead_mines", "iron_mines",
             "lumber_mills", "component_factories", "steel_mills",
             "ammunition_factories", "aluminium_refineries", "oil_refineries"
@@ -389,14 +392,14 @@ def province_sell_buy(way, units, province_id):
 
             multiplier = 1 + ((0.06 * wantedUnits) * current_land) # 10% Increase in cost for each city.
             land_price = int((120000 * multiplier) * wantedUnits) # Each city costs 120,000 without the multiplier
-            
+
         else:
             land_price = 0
 
 
         # All the unit prices in this format:
         """
-        unit_price: <the of the unit>, 
+        unit_price: <the of the unit>,
         unit_resource (optional): {resource_name: amount} (how many of what resources it takes to build)
         unit_resource2 (optional): same as one, just for second resource
         """
@@ -467,7 +470,7 @@ def province_sell_buy(way, units, province_id):
 
             "harbours_price": 2100000,
             "harbours_resource": {"steel": 210},
-            
+
             "aerodomes_price": 2600000,
             "aerodomes_resource": {"aluminium": 40},
             "aerodomes_resource2": {"steel": 165},
@@ -482,10 +485,10 @@ def province_sell_buy(way, units, province_id):
 
             "farms_price": 220000,
             "farms_resource": {"lumber": 10},
-            
+
             "pumpjacks_price": 450000,
             "pumpjacks_resource": {"steel": 15},
-            
+
             "coal_mines_price": 590000,
             "coal_mines_resource": {"lumber": 30},
 
@@ -510,7 +513,7 @@ def province_sell_buy(way, units, province_id):
             "component_factories_resource": {"steel": 20},
             "component_factories_resource2": {"aluminium": 20},
 
-            "steel_mills_price": 1900000, 
+            "steel_mills_price": 1900000,
             "steel_mills_resource": {"aluminium": 60},
 
             "ammunition_factories_price": 1600000,
@@ -620,9 +623,8 @@ def province_sell_buy(way, units, province_id):
             db.execute(updStat, ((currentUnits + wantedUnits), province_id))
 
             resource_stuff()
-        
+
         connection.commit()
         connection.close()
 
         return redirect(f"/province/{province_id}")
-

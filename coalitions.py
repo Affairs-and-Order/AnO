@@ -22,7 +22,7 @@ def get_user_role(user_id):
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
-    
+
     db.execute("SELECT role FROM coalitions WHERE userId=%s", (user_id,))
     role = db.fetchone()[0]
 
@@ -48,7 +48,7 @@ def coalition(colId):
         db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
         name = db.fetchone()[0]
     except:
-        name = "This coalition doesn't exist"
+        return error(404, "This coalition doesn't exist")
 
     try:
         db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
@@ -143,7 +143,7 @@ def coalition(colId):
                 ingoing_ids = list(db.fetchall()[0])
             except:
                 ingoing_ids = []
-                
+
             col_ids = []
             col_names = []
             trt_names = []
@@ -184,8 +184,8 @@ def coalition(colId):
             ingoing_treaties = {}
             ingoing_length = 0
 
-        #### ACTIVE ####      
-        try:  
+        #### ACTIVE ####
+        try:
             try:
                 db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
                 raw_active_ids = db.fetchall()
@@ -212,10 +212,10 @@ def coalition(colId):
                     coalition_id = db.fetchone()[0]
 
                 active_treaties["col_ids"].append(coalition_id)
-                
+
                 db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
                 coalition_name = db.fetchone()[0]
-                
+
                 active_treaties["col_names"].append(coalition_name)
 
                 db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
@@ -254,16 +254,16 @@ def coalition(colId):
             'components': None,
             'steel': None,
             'consumer_goods': None,
-            'aluminium': None, 
+            'aluminium': None,
             'gasoline': None,
-            'ammunition': None       
+            'ammunition': None
         }
 
         for raw in bankRaw:
             db.execute("SELECT " + raw  + " FROM colBanks WHERE colId=(%s)", (colId,))
             bankRaw[raw] = db.fetchone()[0]
-    else: 
-        
+    else:
+
         bankRaw = {}
     ###################
 
@@ -273,7 +273,7 @@ def coalition(colId):
         flag = db.fetchone()[0]
     except:
         flag = None
-    ### 
+    ###
 
     if user_role == "leader" and colType != "Open" and userInCurCol:
 
@@ -335,7 +335,7 @@ def coalition(colId):
 def establish_coalition():
 
     if request.method == "POST":
-        
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -364,13 +364,13 @@ def establish_coalition():
             db.execute("INSERT INTO colNames (name, type, description) VALUES (%s, %s, %s)", (name, cType, desc))
 
             db.execute("SELECT id FROM colNames WHERE name = (%s)", (name,))
-            colId = db.fetchone()[0] # Gets the coalition id of the just inserted coalition 
+            colId = db.fetchone()[0] # Gets the coalition id of the just inserted coalition
 
             # Inserts the user as the leader of the coalition
             db.execute("INSERT INTO coalitions (colId, userId, role) VALUES (%s, %s, %s)", (colId, session["user_id"], "leader"))
 
             # Inserts the coalition into the table for coalition banks
-            db.execute("INSERT INTO colBanks (colId) VALUES (%s)", (colId,)) 
+            db.execute("INSERT INTO colBanks (colId) VALUES (%s)", (colId,))
 
             connection.commit() # Commits the new data
             connection.close() # Closes the connection
@@ -382,7 +382,7 @@ def establish_coalition():
 @login_required
 @app.route("/coalitions", methods=["GET"])
 def coalitions():
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -398,7 +398,7 @@ def coalitions():
         search = ""
 
     if not search:
-        try: 
+        try:
             db.execute("SELECT id FROM colNames")
             coalitions = db.fetchall()
         except:
@@ -444,7 +444,7 @@ def coalitions():
 @login_required
 @app.route("/join/<colId>", methods=["POST"])
 def join_col(colId):
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -455,7 +455,7 @@ def join_col(colId):
     db = connection.cursor()
 
     cId = session["user_id"]
-    
+
     try:
         db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
         db.fetchone()[0]
@@ -542,7 +542,7 @@ def my_coalition():
 @login_required
 @app.route("/give_position", methods=["POST"])
 def give_position():
-    
+
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -580,7 +580,7 @@ def give_position():
     # The user id for the person being given the role
     db.execute("SELECT id FROM users WHERE username=%s", (username,))
     roleer = db.fetchone()[0]
-    
+
     try:
         db.execute("SELECT colId FROM coalitions WHERE colId=%s AND userId=%s", (colId, roleer))
         db.fetchone()[0]
@@ -597,7 +597,7 @@ def give_position():
 @login_required
 @app.route("/add/<uId>", methods=["POST"])
 def adding(uId):
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -653,7 +653,7 @@ def removing_requests(uId):
     cId = session["user_id"]
 
     user_role = get_user_role(cId)
-    
+
     if user_role not in ["leader", "deputy_leader", "domestic_minister"]:
         return error(400, "You are not the leader of the coalition")
 
@@ -917,7 +917,7 @@ def withdraw(resource, amount, user_id, colId):
     connection.commit()
     connection.close()
 
-# Route from withdrawing from the bank 
+# Route from withdrawing from the bank
 @login_required
 @app.route("/withdraw_from_bank/<colId>", methods=["POST"])
 def withdraw_from_bank(colId):
@@ -1080,7 +1080,7 @@ def accept_bank_request(bankId):
 @login_required
 @app.route("/offer_treaty", methods=["POST"])
 def offer_treaty():
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -1160,7 +1160,7 @@ def accept_treaty(offer_id):
 @login_required
 @app.route("/break_treaty/<offer_id>", methods=["POST"])
 def break_treaty(offer_id):
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
