@@ -308,14 +308,14 @@ def update_info():
 
         for province_id in provinces:
 
-            db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (cId,))
-            db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (cId,))
-            db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (cId,))
-            db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (cId,))
-            db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (cId,))
-            db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (cId,))
-            db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (cId,))
-            db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (cId,))
+            db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
 
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
 
