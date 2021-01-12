@@ -339,7 +339,7 @@ def sell_market_offer(offer_id):
     new_offer_amount = (total_amount - amount_wanted)
 
     if new_offer_amount == 0: # Checks if the new offer amount is equal to 0
-        db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id)) # If yes, it deletes the offer
+        db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id,)) # If yes, it deletes the offer
 
     else:
         db.execute("UPDATE offers SET amount=(%s) WHERE id=(%s)", (new_offer_amount, offer_id)) # Updates the database with the new amount

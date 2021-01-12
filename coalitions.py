@@ -760,8 +760,13 @@ def deposit_into_bank(colId):
     deposited_resources = []
 
     for res in resources:
-        resource = request.form.get(res)
-        if resource != "":
+
+        try:
+            resource = request.form.get(res)
+        except:
+            resource = ""
+
+        if resource != "" and int(resource) > 0:
             res_tuple = (res, int(resource))
             deposited_resources.append(res_tuple)
 
@@ -798,20 +803,21 @@ def deposit_into_bank(colId):
 
             new_resource = current_resource - amount
 
-            update_statement = "UPDATE resources SET %s=%s WHERE id=%s"
+            update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
             db.execute(update_statement, (resource, new_resource, cId))
 
         # Gives the coalition the resource
-        current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
-        db.execute(current_resource_statement, (resource, colId,))
+        current_resource_statement = f"SELECT {resource} FROM colBanks" +  " WHERE colId=%s"
+        db.execute(current_resource_statement, (colId,))
         current_resource = int(db.fetchone()[0])
 
         new_resource = current_resource + amount
 
-        update_statement = "UPDATE colBanks SET %s=%s WHERE colId=%s"
-        db.execute(update_statement, (resource, new_resource, colId))
+        update_statement = f"UPDATE colBanks SET {resource}" + "=%s WHERE colId=%s"
+        db.execute(update_statement, (new_resource, colId))
 
     for resource in deposited_resources:
+        print(resource)
         name = resource[0]
         amount = resource[1]
         deposit(name, amount)
