@@ -11,6 +11,7 @@ from requests_oauthlib import OAuth2Session
 import os
 from dotenv import load_dotenv
 import requests
+from coalitions import get_user_role
 load_dotenv()
 
 OAUTH2_CLIENT_ID = os.getenv("DISCORD_CLIENT_ID")

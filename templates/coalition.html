@@ -784,10 +784,10 @@
         -->
 
             <!--HIDE ALL OF THIS infodiv and header if coalition type is "open"-->
-            {% if colType == "closed" and user_role in ["leader", "deputy_leader", "domestic_minister"] %}
+            {% if colType == "Invite Only" and user_role in ["leader", "deputy_leader", "domestic_minister"] %}
             <h2 class="templatecontentheaderleft">Applicants</h2>
             <!--show if coalition has 0 applicants-->
-            <h2 class="templatecontentheadercenter">You have {{ requests|length }} applicants</h2>
+            <h2 class="templatecontentheadercenter">You have {{ requestIds|length }} applicants</h2>
             <!--hide is coalition has 0 applicants-->
             <div class="infodiv">
                 <div class="templatedivflex2 menuflex">

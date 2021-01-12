@@ -9,6 +9,7 @@ from helpers import get_influence, error
 from app import app
 import os
 from dotenv import load_dotenv
+from coalitions import get_user_role
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
@@ -345,15 +346,88 @@ def delete_own_account():
     db.execute("DELETE FROM military WHERE id=(%s)", (cId,))
     db.execute("DELETE FROM resources WHERE id=(%s)", (cId,))
     # Deletes all market things the user is associateed with
-    db.execute("DELETE FROM offers WHERE user_id=(%s)", (cId,))
+    try:
+        db.execute("DELETE FROM offers WHERE user_id=(%s)", (cId,))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM wars WHERE defender=%s OR attacker=%s", (cId, cId))
+    except:
+        pass
 
     # Deletes all the users provinces and their infrastructure
     try:
         db.execute("SELECT id FROM provinces WHERE userId=(%s)", (cId,))
-        province_ids = db.fetchall()
-        for i in province_ids:
-            db.execute("DELETE FROM provinces WHERE id=(%s)", (i[0],))
-            db.execute("DELETE FROM proInfra WHERE id=(%s)", (i[0],))
+        province_ids = db.fetchall()[0]
+        for province_id in province_ids:
+            db.execute("DELETE FROM provinces WHERE id=(%s)", (province_id,))
+            db.execute("DELETE FROM proInfra WHERE id=(%s)", (province_id,))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM upgrades WHERE user_id=%s", (cId,))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM trades WHERE offeree=%s OR offerer=%s", (cId, cId))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM spyinfo WHERE spyer=%s OR spyee=%s", (cId, cId))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM requests WHERE reqId=%s", (cId,))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM reparation_tax WHERE loser=%s OR winner=%s", (cId, cId))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM peace WHERE author=%s", (cId,))
+    except:
+        pass
+
+    coalition_role = get_user_role(cId)
+    if coalition_role != "leader":
+        pass
+    else:
+
+        db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
+        user_coalition = db.fetchone()[0]
+
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='leader' AND colId=%s", (user_coalition,))
+        leader_count = int(db.fetchone()[0])
+
+        if leader_count != 1:
+
+            pass
+
+        else:
+
+            try:
+                db.execute("DELETE FROM coalitions WHERE colId=%s", (user_coalition,))
+                db.execute("DELETE FROM colNames WHERE id=%s", (user_coalition,))
+                db.execute("DELETE FROM colBanks WHERE colid=%s", (user_coalition,))
+                db.execute("DELETE FROM requests WHERE colId=%s", (user_coalition,))
+            except:
+                pass
+
+    try:
+        db.execute("DELETE FROM coalitions WHERE userId=%s", (cId,))
+    except:
+        pass
+
+    try:
+        db.execute("DELETE FROM colBanksRequests WHERE userId=%s", (cId,))
     except:
         pass
 

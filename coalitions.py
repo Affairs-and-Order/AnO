@@ -282,13 +282,22 @@ def coalition(colId):
 
         db.execute("SELECT reqId FROM requests WHERE colId=(%s)", (colId,))
         requestIds = db.fetchall()
+        
+        requestNames = []
 
-        db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(%s))", (colId,))
-        requestNames = db.fetchall()
+        for request_id in requestIds:
+
+            request_id = request_id[0]
+        
+            db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(%s))", (colId,))
+            requestName = db.fetchone()[0]
+
+            requestNames.append(requestName)
 
         requests = zip(requestIds, requestNames, requestMessages)
     else:
         requests = None
+        requestIds = []
 
     ### BANK STUFF
     if user_role == "leader" and userInCurCol:
@@ -317,7 +326,7 @@ def coalition(colId):
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                             flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
                             ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
-                            ingoing_treaties=ingoing_treaties, zip=zip)
+                            ingoing_treaties=ingoing_treaties, zip=zip, requestIds=requestIds)
 
 
 # Route for establishing a coalition
@@ -563,7 +572,7 @@ def give_position():
     if role not in roles:
         return error(400, "No such role exists")
 
-    if roles.index(role) > roles.index(user_role): 
+    if roles.index(role) > (roles.index(user_role) - 1): 
         return error(400, "Can't edit role for a person higher rank than you.")
 
     username = request.form.get("username")
