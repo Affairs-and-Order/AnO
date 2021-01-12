@@ -296,7 +296,7 @@ def coalition(colId):
 
         requests = zip(requestIds, requestNames, requestMessages)
     else:
-        requests = None
+        requests = []
         requestIds = []
 
     ### BANK STUFF
@@ -569,12 +569,6 @@ def give_position():
 
     role = request.form.get("role")
 
-    if role not in roles:
-        return error(400, "No such role exists")
-
-    if (roles.index(role) -1 ) > roles.index(user_role): 
-        return error(400, "Can't edit role for a person higher rank than you.")
-
     username = request.form.get("username")
 
     # The user id for the person being given the role
@@ -589,6 +583,17 @@ def give_position():
         db.fetchone()[0]
     except:
         return error(400, "There is no such user in the coalition")
+
+    db.execute("SELECT role FROM coalitions WHERE userId=%s", (roleer,))
+    current_roleer_role = db.fetchone()[0]
+
+    if role not in roles:
+        return error(400, "No such role exists")
+
+    # If the user role is lower up the hierarchy than the giving role
+    # Or if the current role of the person being given the role is higher up the hierarchy than the user giving the role
+    if roles.index(role) < roles.index(user_role) or roles.index(current_roleer_role) < roles.index(user_role): 
+        return error(400, "Can't edit role for a person higher rank than you.")
 
     db.execute("UPDATE coalitions SET role=%s WHERE userId=%s", (role, roleer))
 
