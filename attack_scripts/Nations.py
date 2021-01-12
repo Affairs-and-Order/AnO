@@ -229,10 +229,6 @@ class Nation:
 
         return id_list
 
-    def printStatistics(self):
-        print("Nation {}:\nWins {}\nLosses: {}".format(
-            self.id, self.wins, self.losses))
-
     # Get everything from proInfra table which is in the "public works" category
     @classmethod
     def get_public_works(self, province_id):
