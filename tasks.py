@@ -41,9 +41,15 @@ def tax_income(): # Function for giving money to players
 
         if new_consumer_goods >= 0:
             new_income *= 1.5
-            db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (new_consumer_goods, user_id))
+            try:
+                db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (new_consumer_goods, user_id))
+            except:
+                pass
 
-        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_income, user_id,))
+        try:
+            db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_income, user_id,))
+        except:
+            pass
 
         conn.commit()
 
