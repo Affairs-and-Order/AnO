@@ -289,7 +289,7 @@ def coalition(colId):
 
             request_id = request_id[0]
         
-            db.execute("SELECT username FROM users WHERE id=(SELECT reqId FROM requests WHERE colId=(%s))", (colId,))
+            db.execute("SELECT username FROM users WHERE id=%s", (request_id,))
             requestName = db.fetchone()[0]
 
             requestNames.append(requestName)
