@@ -790,9 +790,9 @@ def deposit_into_bank(colId):
         # If it isn't, removes the resource from the giver
         else:
 
-            current_resource_statement = "SELECT %s FROM resources WHERE id=%s"
+            current_resource_statement = f"SELECT {resource} FROM resources" + " WHERE id=%s"
 
-            db.execute(current_resource_statement, (resource, cId,))
+            db.execute(current_resource_statement, (cId,))
             current_resource = int(db.fetchone()[0])
 
             if amount < 1:
@@ -804,7 +804,7 @@ def deposit_into_bank(colId):
             new_resource = current_resource - amount
 
             update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-            db.execute(update_statement, (resource, new_resource, cId))
+            db.execute(update_statement, (new_resource, cId))
 
         # Gives the coalition the resource
         current_resource_statement = f"SELECT {resource} FROM colBanks" +  " WHERE colId=%s"
@@ -817,7 +817,6 @@ def deposit_into_bank(colId):
         db.execute(update_statement, (new_resource, colId))
 
     for resource in deposited_resources:
-        print(resource)
         name = resource[0]
         amount = resource[1]
         deposit(name, amount)
