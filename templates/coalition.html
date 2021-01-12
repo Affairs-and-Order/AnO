@@ -197,7 +197,7 @@
                             <td>View allies</td>
                         </tr>
                         <tr>
-                            <td>Block</td>
+                            <td>Bloc</td>
                             <td>{{ block }}</td>
                         </tr>
                         <tr>
@@ -598,7 +598,7 @@
                             <th>Action</th>
                         </tr>
                         <!--for every coalition make a row with 10 max-->
-                    {% for id, col_id, col_name, treaty_name, treaty_description in zip(ingoing_treaties["ids"], ingoing_treaties["col_ids"],ingoing_treaties["col_names"],ingoing_treaties["treaty_names"],ingoing_treaties["treaty_descriptions"]) %}
+                        {% for id, col_id, col_name, treaty_name, treaty_description in zip(ingoing_treaties["ids"], ingoing_treaties["col_ids"],ingoing_treaties["col_names"],ingoing_treaties["treaty_names"],ingoing_treaties["treaty_descriptions"]) %}
                         <tr>
                             <td><a href="/coalition/{{ col_id[0] }}">{{ col_name[0] }}</a></td>
                             <td>{{ treaty_name[0] }}</td>

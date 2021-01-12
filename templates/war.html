@@ -33,7 +33,7 @@
 
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/tajmahal') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{defender_info["morale"]}} / 100 Morale</div>
@@ -43,7 +43,7 @@
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{defender_info["supplies"]}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width: {{ 2000 / defender_info['supplies'] * 100 }}%">
+                    <div class="progressbarchild progressbargreen" style="width: {{ (att['supplies']/20) | round(0, 'ceil') }}%">
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
 
                 <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ attacker }}">{{ attacker_name }}</a></h2>
                 <!--aggressor nation flag-->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/tajmahal') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{attacker_info["morale"]}} / 100 Morale</div>
@@ -67,7 +67,7 @@
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{attacker_info["supplies"]}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width: {{ 2000 / attacker_info['supplies'] * 100 }}%">
+                    <div class="progressbarchild progressbargreen" style="width: {{ (att['supplies']/20) | round(0, 'ceil') }}%">
                     </div>
                 </div>
             </div>
@@ -82,7 +82,7 @@
 
                 <h2 class="templatecontentheadercenter templatelink"><a class="templatelink" href="/country/id={{ defender }}">{{ defender_name }}</a></h2>
                 <!--aggressor nation flag-->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/tajmahal') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{attacker_info["morale"]}} / 100 Morale</div>
@@ -92,7 +92,7 @@
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{attacker_info["supplies"]}} / 2000 Supplies</div>
-                    <div class="progressbarchild progressbargreen" style="width: {{ 2000 / attacker_info['supplies'] * 100}}%">
+                    <div class="progressbarchild progressbargreen" style="width: {{ (att['supplies']/20) | round(0, 'ceil') }}%">
                     </div>
                 </div>
 
@@ -107,7 +107,7 @@
                 <h2 class="templatecontentheadercenter"><a class="templatelink" href="/country/id={{ attacker }}">{{ attacker_name }}</a></h2>
                 <!-- cId is the Flask value for your country's Id-->
                 <!--defender nation flag-->
-                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coppermine.jpg') }}" />
+                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/tajmahal') }}" />
 
                 <div class="progressbarparent">
                     <div class="progressbarchildtext">{{defender_info["morale"]}} / 100 Morale</div>
@@ -115,8 +115,8 @@
                 </div>
 
                 <div class="progressbarparent">
-                  <div class="progressbarchildtext">{{defender_info["supplies"]}} / 2000 Supplies</div>
-                  <div class="progressbarchild progressbargreen" style="width: {{ 2000 / defender_info['supplies'] * 100 }}%"></div>
+                    <div class="progressbarchildtext">{{defender_info["supplies"]}} / 2000 Supplies</div>
+                    <div class="progressbarchild progressbargreen" style="width: {{ (att['supplies']/20) | round(0, 'ceil') }}%"></div>
                 </div>
             </div>
         </div>

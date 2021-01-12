@@ -1259,7 +1259,7 @@ label {
 }
 
 .templatedivcontent {
-    color: black;
+    color: var(--colorOne);
     animation: templatedivcontentload 0.85s;
     position: relative;
     font-size: 18px;
@@ -1279,6 +1279,7 @@ label {
     text-align: center;
     font-size: 28px;
     font-weight: normal;
+    color: var(--colorOne);
 }
 
 .templatecontentpleft {
