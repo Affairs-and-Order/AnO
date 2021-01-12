@@ -256,8 +256,6 @@ def signup():
         # Stores the user's 
         session["user_id"] = user_id
 
-        continent = continent.capitalize()
-
         # Inserts the user's id into the needed database tables
         db.execute("INSERT INTO stats (id, location) VALUES (%s, %s)", (user_id, continent))
         db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
