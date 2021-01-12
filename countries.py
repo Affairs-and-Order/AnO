@@ -236,17 +236,19 @@ def update_info():
         db.execute("UPDATE users SET description=%s WHERE id=%s", (description, cId))
 
     # Flag changing
-    ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+    ALLOWED_EXTENSIONS = ['png', 'jpg']
 
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
     flag = request.files["flag_input"]
-    if flag and allowed_file(flag.filename):
+    if flag:
+
+        if not allowed_file(flag.filename):
+            return error(400, "Bad flag file format")
 
         current_filename = flag.filename
 
-        # Check if the user already has a flag
         try:
             db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
             current_flag = db.fetchone()[0]
