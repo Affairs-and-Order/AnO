@@ -715,31 +715,46 @@ def update_col_info(colId):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
     flag = request.files["flag_input"]
-    if flag and allowed_file(flag.filename):
+    if flag:
+        if allowed_file(flag.filename):
 
-        # Check if the user already has a flag
-        try:
-            db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
-            current_flag = db.fetchone()[0]
+            # Check if the user already has a flag
+            try:
+                db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
+                current_flag = db.fetchone()[0]
 
-            # If he does, delete the flag
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
-            db.execute("UPDATE colNames SET flag=null WHERE id=(%s)", (colId,))
+                # If he does, delete the flag
+                os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_flag))
 
-        except TypeError:
-            pass
+            except:
+                pass
 
-        # Save the file
-        current_filename = flag.filename
-        extension = current_filename.rsplit('.', 1)[1].lower()
-        filename = f"col_flag_{colId}" + '.' + extension
-        flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        db.execute("UPDATE colNames SET flag=(%s) WHERE id=(%s)", (filename, colId))
+            # Save the file
+            current_filename = flag.filename
+            extension = current_filename.rsplit('.', 1)[1].lower()
+            filename = f"col_flag_{colId}" + '.' + extension
+            flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            db.execute("UPDATE colNames SET flag=(%s) WHERE id=(%s)", (filename, colId))
+        else:
+            return error(400, "File format not supported")
+
+    # Application type
+    application_type = request.form.get("application_type")
+    if application_type not in ["", "Open", "Invite Only"]:
+        return error(400, "No such type")
+
+    if application_type != "":
+        db.execute("UPDATE colNames SET type=%s WHERE id=%s", (application_type, colId))
+
+    # Description
+    description = request.form.get("description")
+    if description not in [None, "None", ""]:
+        db.execute("UPDATE colNames SET description=%s WHERE id=%s", (description, colId))
 
     connection.commit()
     connection.close()
 
-    return redirect(f"/coalition/{colId}")
+    return redirect("/my_coalition")
 
 ### COALITION BANK STUFF ###
 

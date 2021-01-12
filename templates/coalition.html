@@ -847,10 +847,11 @@
                     </table>
                 </div>
             </div>
-            {% endif %} {% if user_role == "leader" %}
+            {% endif %} 
+            {% if user_role == "leader" %}
             <h2 class="templatecontentheaderleft">General</h2>
 
-            <form method="POST">
+            <form action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
                 <div class="infodiv">
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
@@ -878,14 +879,13 @@
                                 <img id="imageBackground" />
                             </div>
 
-                            <form action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
-                                <label for="bgimage">Upload coalition flag</label>
+                            <label for="bgimage">Upload coalition flag</label>
 
-                                <label class="imageinput fit center"><span class="material-icons-outlined">
+                            <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
-                                </span>Choose Image
-                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagItselfUpload(event)">
-                              </label>
+                            </span>Choose Image
+                            <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagItselfUpload(event)">
+                            </label>
                         </div>
                         <div class="templatedivflex2left">
 
@@ -893,6 +893,7 @@
                                 <img id="imageBackground2" />
                             </div>
 
+                            <!--
                             <label for="bgimage">Upload flag background</label>
 
                             <label class="imageinput fit center"><span class="material-icons-outlined">
@@ -900,6 +901,7 @@
                                 </span>Choose Image
                                 <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagBackgroundUpload(event)">
                               </label>
+                            -->
 
                         </div>
                     </div>
@@ -907,20 +909,22 @@
                     <div class="templatedivflex2left center">
                         <label>Application type</label>
 
-                        <select class="templateselect center" name="treaty_name">
+                        <select class="templateselect center" name="application_type">
                     
                             <!--hovering over the options tags will tell the users what they do-->
-                            <option value="apply" class="templateoption">Apply</option>
-                            <option value="open" class="templateoption">Open</option>
+                            <option value="" selected="true" class="templateoption">Type</option>
+                            <option value="Invite Only" class="templateoption">Invite Only</option>
+                            <option value="Open" class="templateoption">Open</option>
+
                         </select>
                     </div>
 
 
 
-                    <label for="description">War Alert</label>
+                    <label for="description">Description</label>
 
                     <div class="center">
-                        <textarea class="templatetextarea" name="description" placeholder="War alert message" maxlength="240">{{ warAlert }}</textarea>
+                        <textarea class="templatetextarea" name="description" placeholder="Description" maxlength="240"></textarea>
                     </div>
                     <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
