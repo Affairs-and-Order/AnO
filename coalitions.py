@@ -138,91 +138,103 @@ def coalition(colId):
 
         #### INGOING ####
         try:
-            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
-            ingoing_ids = list(db.fetchall()[0])
+            try:
+                db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
+                ingoing_ids = list(db.fetchall()[0])
+            except:
+                ingoing_ids = []
+                
+            col_ids = []
+            col_names = []
+            trt_names = []
+            trt_descriptions = []
+
+            for treaty_id in ingoing_ids:
+
+                treaty_id = treaty_id
+
+                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
+                col_id = db.fetchone()[0]
+                col_ids.append(col_id)
+
+                db.execute("SELECT name FROM colNames WHERE id=(%s)", (col_id,))
+                coalition_name = db.fetchone()[0]
+                col_names.append(coalition_name)
+
+                db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (treaty_id,))
+                treaty_name = db.fetchone()[0]
+                trt_names.append(treaty_name)
+
+                db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (treaty_id,))
+                treaty_description = db.fetchone()[0]
+                trt_descriptions.append(treaty_description)
+
+            # SHITTIEST FUCKING APPROACH KNOWN TO MAN BUT FUCKING JINJA DOESNT WANT TO FUCKING ZIP CONSISTENTLY
+            # SO I HAVE TO WRITE THIS ABOMINATION OF A CODE WHEN IN REALITY I SHOULDVE JUST USED FUCKING SQL JOINS
+            # BUT WE HAVE TO LAUNCH BETA IN 6 FUCKING HOURS
+            ingoing_treaties = {}
+            ingoing_treaties["ids"] = ingoing_ids,
+            ingoing_treaties["col_ids"] = col_ids,
+            ingoing_treaties["col_names"] = col_names,
+            ingoing_treaties["treaty_names"] = trt_names,
+            ingoing_treaties["treaty_descriptions"] = trt_descriptions
+            ingoing_length = len(ingoing_ids)
+            #################
         except:
-            ingoing_ids = []
-            
-        col_ids = []
-        col_names = []
-        trt_names = []
-        trt_descriptions = []
+            ingoing_treaties = {}
+            ingoing_length = 0
 
-        for treaty_id in ingoing_ids:
+        #### ACTIVE ####      
+        try:  
+            try:
+                db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
+                raw_active_ids = db.fetchall()
+            except:
+                raw_active_ids = []
 
-            treaty_id = treaty_id
+            active_treaties = {}
+            active_treaties["ids"] = []
+            active_treaties["col_ids"] = []
+            active_treaties["col_names"] = []
+            active_treaties["treaty_names"] = []
+            active_treaties["treaty_descriptions"] = []
 
-            db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
-            col_id = db.fetchone()[0]
-            col_ids.append(col_id)
+            for i in raw_active_ids:
 
-            db.execute("SELECT name FROM colNames WHERE id=(%s)", (col_id,))
-            coalition_name = db.fetchone()[0]
-            col_names.append(coalition_name)
+                offer_id = i[0]
 
-            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (treaty_id,))
-            treaty_name = db.fetchone()[0]
-            trt_names.append(treaty_name)
+                active_treaties["ids"].append(offer_id)
 
-            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (treaty_id,))
-            treaty_description = db.fetchone()[0]
-            trt_descriptions.append(treaty_description)
-
-        # SHITTIEST FUCKING APPROACH KNOWN TO MAN BUT FUCKING JINJA DOESNT WANT TO FUCKING ZIP CONSISTENTLY
-        # SO I HAVE TO WRITE THIS ABOMINATION OF A CODE WHEN IN REALITY I SHOULDVE JUST USED FUCKING SQL JOINS
-        # BUT WE HAVE TO LAUNCH BETA IN 6 FUCKING HOURS
-        ingoing_treaties = {}
-        ingoing_treaties["ids"] = ingoing_ids,
-        ingoing_treaties["col_ids"] = col_ids,
-        ingoing_treaties["col_names"] = col_names,
-        ingoing_treaties["treaty_names"] = trt_names,
-        ingoing_treaties["treaty_descriptions"] = trt_descriptions
-        ingoing_length = len(ingoing_ids)
-        #################
-
-        #### ACTIVE ####        
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
-        raw_active_ids = db.fetchall()
-
-        active_treaties = {}
-        active_treaties["ids"] = []
-        active_treaties["col_ids"] = []
-        active_treaties["col_names"] = []
-        active_treaties["treaty_names"] = []
-        active_treaties["treaty_descriptions"] = []
-
-        for i in raw_active_ids:
-
-            offer_id = i[0]
-
-            active_treaties["ids"].append(offer_id)
-
-            db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
-            coalition_id = db.fetchone()[0]
-            if coalition_id == colId:
-                db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
+                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
                 coalition_id = db.fetchone()[0]
+                if coalition_id == colId:
+                    db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
+                    coalition_id = db.fetchone()[0]
 
-            active_treaties["col_ids"].append(coalition_id)
-            
-            db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
-            coalition_name = db.fetchone()[0]
-            active_treaties["col_names"].append(coalition_name)
+                active_treaties["col_ids"].append(coalition_id)
+                
+                db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
+                coalition_name = db.fetchone()[0]
+                
+                active_treaties["col_names"].append(coalition_name)
 
-            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
-            treaty_name = db.fetchone()[0]
-            active_treaties["treaty_names"].append(treaty_name)
+                db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
+                treaty_name = db.fetchone()[0]
+                active_treaties["treaty_names"].append(treaty_name)
 
-            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (offer_id,))
-            treaty_description = db.fetchone()[0]
-            active_treaties["treaty_descriptions"].append(treaty_description)
+                db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (offer_id,))
+                treaty_description = db.fetchone()[0]
+                active_treaties["treaty_descriptions"].append(treaty_description)
 
-        active_length = len(raw_active_ids)
+            active_length = len(raw_active_ids)
+        except:
+            active_treaties = {}
+            active_length = 0
     else:
-        ingoing_treaties = []
-        active_treaties = []
-        ingoing_length = None
-        active_length = None
+        ingoing_treaties = {}
+        active_treaties = {}
+        ingoing_length = 0
+        active_length = 0
         ################
     ############################################
 

@@ -420,10 +420,7 @@ def generate_province_revenue(): # Runs each hour
                             if new_energy < 0:
                                 new_energy = 0
 
-                            try:
-                                db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
-                            except:
-                                pass
+                            db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id))
 
                     take_energy()
 
@@ -481,8 +478,6 @@ def generate_province_revenue(): # Runs each hour
                                 db.execute(upd_res_statement, (new_resource_number, province_id))
                             except:
                                 pass
-                        else:
-                            print(f"unknown plus data: {plus_resource}")
 
                     # Function for completing an effect (adding pollution, etc)
                     def do_effect(eff, eff_amount, sign):
