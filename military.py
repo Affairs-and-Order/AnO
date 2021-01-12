@@ -62,6 +62,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         if units not in allUnits and units != "apaches":
             return error("No such unit exists.", 400)
 
+        wantedUnits = int(request.form.get(units))
+        
+        if wantedUnits < 1:
+            return error(400, "You cannot buy less than 1 unit")
+
         mil_dict = {
 
             ## LAND
@@ -165,8 +170,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         gold = db.fetchone()[0]
 
-        wantedUnits = request.form.get(units)
-        totalPrice = int(wantedUnits) * price
+        totalPrice = wantedUnits * price
 
         curUnStat = str(f"SELECT {units} FROM military " + "WHERE id=%s")
         db.execute(curUnStat, (cId,))

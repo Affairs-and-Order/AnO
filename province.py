@@ -365,6 +365,9 @@ def province_sell_buy(way, units, province_id):
 
         wantedUnits = int(request.form.get(units))
 
+        if wantedUnits < 1:
+            return error(400, "Units cannot be less than 1")
+
         if units == "cityCount":
 
             db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))

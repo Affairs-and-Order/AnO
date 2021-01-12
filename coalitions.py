@@ -44,35 +44,54 @@ def coalition(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
-    name = db.fetchone()[0]
+    try:
+        db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
+        name = db.fetchone()[0]
+    except:
+        name = "This coalition doesn't exist"
 
-    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-    colType = db.fetchone()[0]
+    try:
+        db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
+        colType = db.fetchone()[0]
+    except:
+        colType = "Open"
 
-    db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
-    members = db.fetchone()[0]
+    try:
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
+        members = db.fetchone()[0]
+    except:
+        members = 0
 
-    total_influence = get_coalition_influence(colId)
+    try:
+        total_influence = get_coalition_influence(colId)
+    except:
+        total_influence = 0
 
-    average_influence = total_influence // members
+    try:
+        average_influence = total_influence // members
+    except:
+        average_influence = 0
 
-    db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
-    description = db.fetchone()[0]
+    try:
+        db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
+        description = db.fetchone()[0]
+    except:
+        description = ""
 
-    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-    colType = db.fetchone()[0]
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+        leaders = db.fetchall() # All coalition leaders ids
+        leaders = [item for t in leaders for item in t]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+        leader_names = []
 
-    leader_names = []
-
-    for leader_id in leaders:
-        db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
-        leader_name = db.fetchone()[0]
-        leader_names.append(leader_name)
+        for leader_id in leaders:
+            db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
+            leader_name = db.fetchone()[0]
+            leader_names.append(leader_name)
+    except:
+        leaders = []
+        leader_names = []
 
     ### STUFF FOR JINJA
     try:
@@ -89,9 +108,12 @@ def coalition(colId):
     except:
         userInCurCol = False
 
-    user_role = get_user_role(cId)
+    try:
+        user_role = get_user_role(cId)
+    except:
+        user_role = None
 
-    if user_role in ["leader", "deputy_leader", "domestic_minister"]:
+    if user_role in ["leader", "deputy_leader", "domestic_minister"] and userInCurCol:
 
         member_roles = {
             "leader": None,
@@ -112,7 +134,7 @@ def coalition(colId):
         member_roles = {}
 
     ############## TREATIES ##################
-    if user_role == "leader":
+    if user_role in ["foreign_ambassador", "leader", "deputy_leader"] and userInCurCol:
 
         #### INGOING ####
         try:
@@ -120,6 +142,7 @@ def coalition(colId):
             ingoing_ids = list(db.fetchall()[0])
         except:
             ingoing_ids = []
+            
         col_ids = []
         col_names = []
         trt_names = []
@@ -240,7 +263,7 @@ def coalition(colId):
         flag = None
     ### 
 
-    if user_role == "leader" and colType != "Open":
+    if user_role == "leader" and colType != "Open" and userInCurCol:
 
         db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
         requestMessages = db.fetchall()
@@ -256,7 +279,7 @@ def coalition(colId):
         requests = None
 
     ### BANK STUFF
-    if user_role == "leader":
+    if user_role == "leader" and userInCurCol:
 
         db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
         bankRequests = db.fetchall()
