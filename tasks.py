@@ -602,3 +602,5 @@ def war_reparation_tax():
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
 
     conn.commit()
+
+generate_province_revenue()
