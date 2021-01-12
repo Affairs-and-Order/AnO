@@ -401,7 +401,10 @@ def generate_province_revenue(): # Runs each hour
                     continue
                 else:
                     new_money = current_money - operating_costs
-                    db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
+                    try:
+                        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
+                    except:
+                        pass
 
                 def take_energy():
 
@@ -415,7 +418,10 @@ def generate_province_revenue(): # Runs each hour
                         if new_energy < 0:
                             new_energy = 0
 
-                        db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
+                        try:
+                            db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id,))
+                        except:
+                            pass
 
                 take_energy()
 
@@ -431,7 +437,6 @@ def generate_province_revenue(): # Runs each hour
 
                 if effect_minus is not None:
                     effect_minus_amount *= unit_amount
-
 
                 province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
                 percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
@@ -469,8 +474,11 @@ def generate_province_revenue(): # Runs each hour
                         # Adding resource
                         new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
 
-                        upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=(%s) WHERE id=(%s)"
-                        db.execute(upd_res_statement, (new_resource_number, province_id))
+                        try:
+                            upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=(%s) WHERE id=(%s)"
+                            db.execute(upd_res_statement, (new_resource_number, province_id))
+                        except:
+                            pass
                     else:
                         print(f"unknown plus data: {plus_resource}")
 
