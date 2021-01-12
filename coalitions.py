@@ -113,7 +113,7 @@ def coalition(colId):
     except:
         user_role = None
 
-    if user_role in ["leader", "deputy_leader", "domestic_minister"]:
+    if user_role in ["leader", "deputy_leader", "domestic_minister"] and userInCurCol:
 
         member_roles = {
             "leader": None,
@@ -134,7 +134,7 @@ def coalition(colId):
         member_roles = {}
 
     ############## TREATIES ##################
-    if user_role == "leader":
+    if user_role in ["foreign_ambassador", "leader", "deputy_leader"] and userInCurCol:
 
         #### INGOING ####
         try:
@@ -263,7 +263,7 @@ def coalition(colId):
         flag = None
     ### 
 
-    if user_role == "leader" and colType != "Open":
+    if user_role == "leader" and colType != "Open" and userInCurCol:
 
         db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
         requestMessages = db.fetchall()
@@ -279,7 +279,7 @@ def coalition(colId):
         requests = None
 
     ### BANK STUFF
-    if user_role == "leader":
+    if user_role == "leader" and userInCurCol:
 
         db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
         bankRequests = db.fetchall()

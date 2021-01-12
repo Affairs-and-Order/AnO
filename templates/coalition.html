@@ -39,7 +39,7 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
 
-            {% if user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] %}
+            {% if user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] and not userInCurCol %}
             <script>
                 $(document).ready(function() {
 
@@ -64,7 +64,8 @@
 
                 });
             </script>
-            {% endif %} {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
+            {% endif %}
+            {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
