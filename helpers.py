@@ -8,6 +8,21 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def get_flagname(user_id):
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+    db = connection.cursor()
+    db.execute("SELECT flag FROM users WHERE id=(%s)", (user_id,))
+    flag_name = db.fetchone()[0]
+
+    if flag_name == None:
+        flag_name = "default_flag.jpg"
+
+    return flag_name
 
 def login_required(f):
     """
@@ -50,42 +65,59 @@ def get_influence(country_id):
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
-    
+
     cId = country_id
 
-    db.execute("SELECT tanks FROM military WHERE id=(%s)", (cId,))
-    tanks = db.fetchone()[0]
-    db.execute("SELECT soldiers FROM military WHERE id=(%s)", (cId,))
-    soldiers = db.fetchone()[0]
-    db.execute("SELECT artillery FROM military WHERE id=(%s)", (cId,))
-    artillery = db.fetchone()[0]
-    # air
-    db.execute("SELECT bombers FROM military WHERE id=(%s)", (cId,))
-    bombers = db.fetchone()[0]
-    db.execute("SELECT fighters FROM military WHERE id=(%s)", (cId,))
-    fighters = db.fetchone()[0]
-    db.execute("SELECT apaches FROM military WHERE id=(%s)", (cId,))
-    apaches = db.fetchone()[0]
-    # water
-    db.execute("SELECT destroyers FROM military WHERE id=(%s)", (cId,))
-    destroyers = db.fetchone()[0]
-    db.execute("SELECT cruisers FROM military WHERE id=(%s)", (cId,))
-    cruisers = db.fetchone()[0]
-    db.execute("SELECT submarines FROM military WHERE id=(%s)", (cId,))
-    submarines = db.fetchone()[0]
-    # special
-    db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
-    spies = db.fetchone()[0]
-    db.execute("SELECT ICBMs FROM military WHERE id=(%s)", (cId,))
-    icbms = db.fetchone()[0]
-    db.execute("SELECT nukes FROM military WHERE id=(%s)", (cId,))
-    nukes = db.fetchone()[0]
+    try:
+        db.execute("SELECT tanks FROM military WHERE id=(%s)", (cId,))
+        tanks = db.fetchone()[0]
+        db.execute("SELECT soldiers FROM military WHERE id=(%s)", (cId,))
+        soldiers = db.fetchone()[0]
+        db.execute("SELECT artillery FROM military WHERE id=(%s)", (cId,))
+        artillery = db.fetchone()[0]
+        # air
+        db.execute("SELECT bombers FROM military WHERE id=(%s)", (cId,))
+        bombers = db.fetchone()[0]
+        db.execute("SELECT fighters FROM military WHERE id=(%s)", (cId,))
+        fighters = db.fetchone()[0]
+        db.execute("SELECT apaches FROM military WHERE id=(%s)", (cId,))
+        apaches = db.fetchone()[0]
+        # water
+        db.execute("SELECT destroyers FROM military WHERE id=(%s)", (cId,))
+        destroyers = db.fetchone()[0]
+        db.execute("SELECT cruisers FROM military WHERE id=(%s)", (cId,))
+        cruisers = db.fetchone()[0]
+        db.execute("SELECT submarines FROM military WHERE id=(%s)", (cId,))
+        submarines = db.fetchone()[0]
+        # special
+        db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
+        spies = db.fetchone()[0]
+        db.execute("SELECT ICBMs FROM military WHERE id=(%s)", (cId,))
+        icbms = db.fetchone()[0]
+        db.execute("SELECT nukes FROM military WHERE id=(%s)", (cId,))
+        nukes = db.fetchone()[0]
+    except:
+        tanks = 0
+        soldiers = 0
+        artillery = 0
+        bombers = 0
+        fighters = 0
+        apaches = 0
+        destroyers = 0
+        cruisers = 0
+        submarines = 0
+        spies = 0
+        icbms = 0
+        nukes = 0
 
     militaryScore = tanks * 0.4 + soldiers * 0.01 + artillery * 0.8 + bombers * 1 + fighters * 1 + apaches * 1 + destroyers * 1 + cruisers * 2 + submarines * 1 + spies * 1 + icbms * 3 + nukes * 10
 
     # civilian score second
-    db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-    gold = db.fetchone()[0]
+    try:
+        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        gold = db.fetchone()[0]
+    except:
+        gold = 0
 
     try:
         db.execute("SELECT SUM(population) FROM provinces WHERE userId=(%s)", (cId,))
@@ -108,13 +140,16 @@ def get_influence(country_id):
     # all resources have a set score of 100 gold, which makes score min/maxing a strategy vs balancing your assets
     resources = 0
 
-    db.execute("SELECT * FROM resources WHERE id=(%s)", (cId,))
-    resourceList = db.fetchall()
+    try:
+        db.execute("SELECT * FROM resources WHERE id=(%s)", (cId,))
+        resourceList = db.fetchall()
 
-    iterator = iter(resourceList)
-    next(iterator) # skip id
-    for tuple in iterator:
-        resources += tuple[0]
+        iterator = iter(resourceList)
+        next(iterator) # skip id
+        for tuple in iterator:
+            resources += tuple[0]
+    except:
+        resources = 0
 
     civilianScore = gold * 0.0001 + population * 0.001 + cities * 10 + provinces * 100 + resources * 0.001
 

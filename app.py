@@ -13,10 +13,14 @@ from celery.schedules import crontab
 app = Flask(__name__)
 
 try:
-    app.secret_key = os.getenv("SECRET_KEY")
+    environment = os.getenv("ENVIRONMENT")
 except:
-    app.secret_key = "DEVELOPMENT_SECRET_KEY"
+    environment = "DEV"
 
+if environment == "PROD":
+    app.secret_key = os.getenv("SECRET_KEY")
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+    
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from wars import wars, find_targets
 from login import login
@@ -164,6 +168,10 @@ def eventCheck():
     # will decide if natural disasters occure
 """
 
+# handling default error
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template("error.html", code=404, message="Page not found!")
 
 @app.context_processor
 def inject_user():
@@ -302,10 +310,11 @@ def war():
 def warresult():
     return render_template("warresult.html")
 
-
+"""
 @app.route("/mass_purchase", methods=["GET"])
 def mass_purchase():
     return render_template("mass_purchase.html")
+"""
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', use_reloader=True)

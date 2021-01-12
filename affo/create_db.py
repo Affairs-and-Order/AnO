@@ -19,10 +19,6 @@ tables = [
     "treaties", "users", "peace", "wars", "reparation_tax"
 ]
 
-# Uncomment to add background flag column
-"""
-db.execute("ALTER TABLE users ADD COLUMN bg_flag VARCHAR(30);")
-"""
 
 for i in tables:
     with open(f"postgres/{i}.txt") as file:

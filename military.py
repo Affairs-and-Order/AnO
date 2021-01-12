@@ -62,6 +62,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         if units not in allUnits and units != "apaches":
             return error("No such unit exists.", 400)
 
+        wantedUnits = int(request.form.get(units))
+
+        if wantedUnits < 1:
+            return error(400, "You cannot buy or sell less than 1 unit")
+
         mil_dict = {
 
             ## LAND
@@ -165,8 +170,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         gold = db.fetchone()[0]
 
-        wantedUnits = request.form.get(units)
-        totalPrice = int(wantedUnits) * price
+        totalPrice = wantedUnits * price
 
         curUnStat = str(f"SELECT {units} FROM military " + "WHERE id=%s")
         db.execute(curUnStat, (cId,))
@@ -175,7 +179,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         if way == "sell":
 
             if int(wantedUnits) > int(currentUnits):  # checks if unit is legits
-                return redirect("/too_much_to_sell")  # seems to work
+                return error(400, "You don't have the correct unit amount!")
 
             unitUpd = str(f"UPDATE military SET {units}=" + "%s WHERE id=%s")
             db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), cId))

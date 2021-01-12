@@ -39,7 +39,7 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
 
-            {% if user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] %}
+            {% if user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] and not userInCurCol %}
             <script>
                 $(document).ready(function() {
 
@@ -64,7 +64,8 @@
 
                 });
             </script>
-            {% endif %} {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
+            {% endif %}
+            {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
@@ -124,7 +125,8 @@
                             currently disabled the link because we dont have where to link, will show count of total members
                             -->
                             <td>
-                                <a href="/coalition/members">{{ members }}</a></td>
+                                {{ members }}
+                            </td>
                         </tr>
                         <tr>
                             <td>Influence:</td>
@@ -197,7 +199,7 @@
                             <td>View allies</td>
                         </tr>
                         <tr>
-                            <td>Block</td>
+                            <td>Bloc</td>
                             <td>{{ block }}</td>
                         </tr>
                         <tr>
@@ -574,7 +576,9 @@
 
                     <input class="loginsignupinput" autocomplete="off" name="coalition_name" placeholder="Coalition name" />
 
-                    <textarea class="templatetextarea" name="treatymessage" placeholder="Desribe the treaty" maxlength="5000"></textarea>
+                    <input class="loginsignupinput" autocomplete="off" name="treaty_name" placeholder="Treaty name" />
+
+                    <textarea class="templatetextarea" name="treaty_message" placeholder="Desribe the treaty" maxlength="5000"></textarea>
 
                     <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     arrow_forward
@@ -592,19 +596,21 @@
                         <tr>
                             <th>Coalition Name</th>
                             <th>Treaty name</th>
+                            <th>Treaty description</th>
                             <th>Action</th>
                         </tr>
                         <!--for every coalition make a row with 10 max-->
-                        {% for treaty_id, col_id, col_name, treaty_name in ingoing_treaties %}
+                        {% for id, col_id, col_name, treaty_name, treaty_description in zip(ingoing_treaties["ids"], ingoing_treaties["col_ids"],ingoing_treaties["col_names"],ingoing_treaties["treaty_names"],ingoing_treaties["treaty_descriptions"]) %}
                         <tr>
-                            <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
-                            <td>{{ treaty_name }}</td>
+                            <td><a href="/coalition/{{ col_id[0] }}">{{ col_name[0] }}</a></td>
+                            <td>{{ treaty_name[0] }}</td>
+                            <td>{{ treaty_description }}</td>
                             <form method="POST">
                                 <td>
-                                    <button formaction="/accept_treaty/{{ treaty_id[0] }}"><span class="material-icons iconblue">
+                                    <button formaction="/accept_treaty/{{ id[0] }}"><span class="material-icons iconblue">
                                 check_circle_outline
                                         </span></button>
-                                    <button formaction="/decline_treaty/{{ treaty_id[0] }}"><span class="material-icons iconred">
+                                    <button formaction="/decline_treaty/{{ id[0] }}"><span class="material-icons iconred">
                                 remove_circle_outline
                                         </span></button>
                                 </td>
@@ -626,14 +632,15 @@
                         <tr>
                             <th>Ally</th>
                             <th>Treaty</th>
+                            <th>Description</th>
                             <th>Action</th>
                         </tr>
                         <!--for every ally make a row-->
-                        {% for coalition_id, coalition_name, treaty_name, id in active_treaties %}
+                        {% for id, col_id, col_name, treaty_name, treaty_description in zip(active_treaties["ids"], active_treaties["col_ids"], active_treaties["col_names"], active_treaties["treaty_names"], active_treaties["treaty_descriptions"]) %}
                         <tr>
-                            <td><a href="/coalition/{{ coalition_id }}">{{ coalition_name }}</a></td>
-                            <!--Link to treaty page (dynamic page)-->
-                            <td><a href="/treaty">View treaty</a></td>
+                            <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
+                            <td>{{ treaty_name }}</td>
+                            <td>{{ treaty_description }}</td>
                             <form method="POST">
                                 <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
                                                 remove_circle_outline

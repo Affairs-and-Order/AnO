@@ -211,6 +211,9 @@ def buy_market_offer(offer_id):
 
     seller_id = int(offer[3]) # The user id of the seller
 
+    if amount_wanted < 1:
+        return error(400, "Amount cannot be less than 1")
+
     if amount_wanted > total_amount:
         return error(400, "Amount wanted cant be higher than total amount")
 
@@ -292,6 +295,9 @@ def sell_market_offer(offer_id):
     db.execute(resource_statement, (seller_id,))
     sellers_resource = db.fetchone()[0]
 
+    if amount_wanted < 1:
+        return error(400, "Amount cannot be less than 1")
+
     if amount_wanted > total_amount:
         return error(400, "The amount of resources you're selling is higher than what the buyer wants")
 
@@ -333,7 +339,7 @@ def sell_market_offer(offer_id):
     new_offer_amount = (total_amount - amount_wanted)
 
     if new_offer_amount == 0: # Checks if the new offer amount is equal to 0
-        db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id)) # If yes, it deletes the offer
+        db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id,)) # If yes, it deletes the offer
 
     else:
         db.execute("UPDATE offers SET amount=(%s) WHERE id=(%s)", (new_offer_amount, offer_id)) # Updates the database with the new amount
@@ -620,6 +626,9 @@ def trade_offer(offer_type, offeree_id):
         amount = int(request.form.get("amount"))
         price = int(request.form.get("price"))
 
+        if price < 1:
+            return error(400, "Price cannot be less than 1")
+
         if not offeree_id.isnumeric():
             return error(400, "Offeree id must be numeric")
 
@@ -762,7 +771,6 @@ def accept_trade(trade_id):
     if amount < 1:  # Checks if the amount is negative
         return error(400, "Amount must be greater than 0")
 
-
     if trade_type == "sell":
         
         seller_id = offerer
@@ -849,7 +857,6 @@ def transfer(transferee):
         
     cId = session["user_id"]
 
-    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -878,6 +885,9 @@ def transfer(transferee):
 
     if resource not in resources and resource != "gold":  # Checks if the resource the user selected actually exists
         return error(400, "No such resource")
+
+    if amount < 1:
+        return error(400, "Amount cannot be less than 1")
     
     if resource == "gold":
 

@@ -4,7 +4,7 @@ from flask import request, render_template, session, redirect
 from helpers import login_required
 import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
-from helpers import get_influence
+from helpers import get_influence, error
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
@@ -138,7 +138,7 @@ def countries():  # TODO: fix shit ton of repeated code in function
     if not search:
         db.execute("SELECT id FROM users ORDER BY id")
         users = db.fetchall()
-        
+
     # elif search is not None and upperinf is None and lowerinf is None:
     elif search != "":
         db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
@@ -162,8 +162,8 @@ def countries():  # TODO: fix shit ton of repeated code in function
             if user_influence > upperinf or user_influence < lowerinf:
                 users.remove(user)
 
-    db.execute("SELECT username FROM users ORDER BY id")
-    names = db.fetchall()
+    # db.execute("SELECT username FROM users ORDER BY id")
+    # names = db.fetchall()
 
     populations = []
     coalition_ids = []
@@ -171,8 +171,12 @@ def countries():  # TODO: fix shit ton of repeated code in function
     dates = []
     influences = []
     flags = []
+    names = []
 
     for i in users:
+
+        db.execute("SELECT username FROM users WHERE id=(%s)", (i[0],))
+        names.append(db.fetchone())
 
         db.execute("SELECT date FROM users WHERE id=(%s)", ((i[0]),))
         date = db.fetchone()[0]
@@ -236,17 +240,19 @@ def update_info():
         db.execute("UPDATE users SET description=%s WHERE id=%s", (description, cId))
 
     # Flag changing
-    ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg']
+    ALLOWED_EXTENSIONS = ['png', 'jpg']
 
     def allowed_file(filename):
         return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
     flag = request.files["flag_input"]
-    if flag and allowed_file(flag.filename):
+    if flag:
+
+        if not allowed_file(flag.filename):
+            return error(400, "Bad flag file format")
 
         current_filename = flag.filename
 
-        # Check if the user already has a flag
         try:
             db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
             current_flag = db.fetchone()[0]
@@ -259,7 +265,7 @@ def update_info():
         if allowed_file(current_filename):
             extension = current_filename.rsplit('.', 1)[1].lower()
             filename = f"flag_{cId}" + '.' + extension
-            new_path = os.path.join(app.config['UPLOAD_FOLDER'], filename) 
+            new_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             flag.save(new_path)
             db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
 
@@ -289,6 +295,11 @@ def update_info():
 
     # Location changing
     new_location = request.form.get("countryLocation")
+
+    continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
+
+    if new_location not in continents:
+        return error(400, "No such continent")
 
     if not new_location == "":
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))

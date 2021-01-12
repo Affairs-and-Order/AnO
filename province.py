@@ -50,7 +50,7 @@ def province(pId):
     cId = session["user_id"]
 
     db.execute("""SELECT userId, provinceName, population, pollution, happiness, productivity,
-    consumer_spending, cityCount, land FROM provinces WHERE id=(%s)""", (pId,))
+    consumer_spending, cityCount, land, energy FROM provinces WHERE id=(%s)""", (pId,))
     province_data = db.fetchall()[0]
 
     province = {}
@@ -65,6 +65,7 @@ def province(pId):
     province["consumer_spending"] = province_data[6]
     province["cityCount"] = province_data[7]
     province["land"] = province_data[8]
+    province["electricity"] = province_data[9]
 
     db.execute("SELECT location FROM stats WHERE id=(%s)", (province["user"],))
     province["location"] = db.fetchone()[0]
@@ -364,6 +365,9 @@ def province_sell_buy(way, units, province_id):
         gold = int(db.fetchone()[0])
 
         wantedUnits = int(request.form.get(units))
+
+        if wantedUnits < 1:
+            return error(400, "Units cannot be less than 1")
 
         if units == "cityCount":
 

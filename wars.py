@@ -3,7 +3,7 @@ import random
 from app import app
 from flask import request, render_template, session, redirect
 import psycopg2
-from helpers import login_required, error
+from helpers import login_required, error, get_flagname
 from attack_scripts import Nation, Military, Economy
 from units import Units
 import time
@@ -155,6 +155,9 @@ def wars():
                 defender_info["supplies"] = def_morale_and_supplies[1]
 
                 defender_info["id"] = defender
+
+                attacker_info["flag"] = get_flagname(attacker)
+                defender_info["flag"] = get_flagname(defender)
 
                 war_info[war_id] = {"att": attacker_info, "def": defender_info}
         except:
@@ -468,9 +471,12 @@ def war_with_id(war_id):
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     connection.close()
 
-    return render_template("war.html", defender_info=defender_info, defender=defender, attacker_info=attacker_info, attacker=attacker, war_id=war_id,
-                           attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
-                           agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance, peace_to_send=enemy_id)
+    attacker_flag = get_flagname(attacker)
+    defender_flag = get_flagname(defender)
+
+    return render_template("war.html",attacker_flag=attacker_flag, defender_flag=defender_flag, defender_info=defender_info, defender=defender, attacker_info=attacker_info, attacker=attacker,
+    war_id=war_id, attacker_name=attacker_name, defender_name=defender_name, war_type=war_type,
+    agressor_message=agressor_message, cId_type=cId_type, spyCount=spyCount, successChance=successChance, peace_to_send=enemy_id)
 
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.

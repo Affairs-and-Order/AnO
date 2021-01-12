@@ -109,14 +109,21 @@
                                 business
                             </span>City slots:</td>
                         <td>{{ province['cityCount'] }}</td>
-                        <!-- X/X -->
+                        <!-- how much you are using out of how much you have -->
                     </tr>
                     <tr>
                         <td><span class="material-icons-outlined">
                                 landscape
                             </span>Land slots:</td>
                         <td>{{ province['land'] }}</td>
-                        <!-- X/X -->
+                        <!-- how much you are using out of how much you have -->
+                    </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            power
+                            </span>Electricity:</td>
+                        <td>{{ province['electricity'] }}</td>
+                        <!-- how much you have out of how much you need -->
                     </tr>
                 </table>
 
@@ -150,7 +157,7 @@
                                 var citiesoutput = document.getElementById("citiesoutput");
 
                                 var multiplier = 1 + ((0.08 * citiesamount) * cityCount)
-                                var newPrice = (250000 * multiplier) * citiesamount
+                                var newPrice = Math.round((250000 * multiplier) * citiesamount)
 
                                 console.log(newPrice)
 
@@ -189,7 +196,7 @@
                                 let current_land = document.getElementById("currentLand").value;
                                 //insert land cost formula
                                 let multiplier = 1 + ((0.06 * landamount) * current_land)
-                                let land_price = ((120000 * multiplier) * landamount)
+                                let land_price = Math.round((120000 * multiplier) * landamount)
                                 var landoutputcost = landoutput.innerHTML = land_price;
 
                                 console.log(landamount);
@@ -204,7 +211,7 @@
                             <div class="templatedivflex2left">
 
                                 <input class="loginsignupinput" type="number" name="land" placeholder="Land Amount" id="landamount" onchange="landCost(event)" />
-                                <input type="hidden" id="currentLand" value="{{ province['land'] }}"/>
+                                <input type="hidden" id="currentLand" value="{{ province['land'] }}" />
 
                             </div>
                             <div class="templatedivflex2right">
@@ -352,12 +359,12 @@
 
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Oil power plants</h2>
+                        <h2 class="templatecontentheaderleft">Oil Power Plants</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ oil_burners }} oil power plants</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ oil_burners }} Oil Power Plants</h3>
 
                                 <p class="templatecontentpleft">Oil power plants cost more to opperate and build than coal power plants, but produce less pollution. They are ideal for a nation pursuing tax income as a primary revenue source.</p>
 

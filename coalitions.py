@@ -44,35 +44,54 @@ def coalition(colId):
 
     cId = session["user_id"]
 
-    db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
-    name = db.fetchone()[0]
+    try:
+        db.execute("SELECT name FROM colNames WHERE id=(%s)", (colId,))
+        name = db.fetchone()[0]
+    except:
+        name = "This coalition doesn't exist"
 
-    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-    colType = db.fetchone()[0]
+    try:
+        db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
+        colType = db.fetchone()[0]
+    except:
+        colType = "Open"
 
-    db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
-    members = db.fetchone()[0]
+    try:
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
+        members = db.fetchone()[0]
+    except:
+        members = 0
 
-    total_influence = get_coalition_influence(colId)
+    try:
+        total_influence = get_coalition_influence(colId)
+    except:
+        total_influence = 0
 
-    average_influence = total_influence // members
+    try:
+        average_influence = total_influence // members
+    except:
+        average_influence = 0
 
-    db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
-    description = db.fetchone()[0]
+    try:
+        db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
+        description = db.fetchone()[0]
+    except:
+        description = ""
 
-    db.execute("SELECT type FROM colNames WHERE id=(%s)", (colId,))
-    colType = db.fetchone()[0]
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+        leaders = db.fetchall() # All coalition leaders ids
+        leaders = [item for t in leaders for item in t]
 
-    db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
-    leaders = db.fetchall() # All coalition leaders ids
-    leaders = [item for t in leaders for item in t]
+        leader_names = []
 
-    leader_names = []
-
-    for leader_id in leaders:
-        db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
-        leader_name = db.fetchone()[0]
-        leader_names.append(leader_name)
+        for leader_id in leaders:
+            db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
+            leader_name = db.fetchone()[0]
+            leader_names.append(leader_name)
+    except:
+        leaders = []
+        leader_names = []
 
     ### STUFF FOR JINJA
     try:
@@ -89,9 +108,12 @@ def coalition(colId):
     except:
         userInCurCol = False
 
-    user_role = get_user_role(cId)
+    try:
+        user_role = get_user_role(cId)
+    except:
+        user_role = None
 
-    if user_role in ["leader", "deputy_leader", "domestic_minister"]:
+    if user_role in ["leader", "deputy_leader", "domestic_minister"] and userInCurCol:
 
         member_roles = {
             "leader": None,
@@ -112,18 +134,23 @@ def coalition(colId):
         member_roles = {}
 
     ############## TREATIES ##################
-    if user_role == "leader":
+    if user_role in ["foreign_ambassador", "leader", "deputy_leader"] and userInCurCol:
 
         #### INGOING ####
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY treaty_id ASC", (colId,))
-        ingoing_ids = db.fetchall()
+        try:
+            db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
+            ingoing_ids = list(db.fetchall()[0])
+        except:
+            ingoing_ids = []
+            
         col_ids = []
         col_names = []
         trt_names = []
+        trt_descriptions = []
 
-        for treaty_iddd in ingoing_ids:
+        for treaty_id in ingoing_ids:
 
-            treaty_id = treaty_iddd[0]
+            treaty_id = treaty_id
 
             db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
             col_id = db.fetchone()[0]
@@ -133,52 +160,64 @@ def coalition(colId):
             coalition_name = db.fetchone()[0]
             col_names.append(coalition_name)
 
-            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (treaty_id,))
+            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (treaty_id,))
             treaty_name = db.fetchone()[0]
             trt_names.append(treaty_name)
 
-        ingoing_treaties = zip(ingoing_ids, col_ids, col_names, trt_names)
-        ingoing_length = len(list(ingoing_treaties))
+            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (treaty_id,))
+            treaty_description = db.fetchone()[0]
+            trt_descriptions.append(treaty_description)
+
+        # SHITTIEST FUCKING APPROACH KNOWN TO MAN BUT FUCKING JINJA DOESNT WANT TO FUCKING ZIP CONSISTENTLY
+        # SO I HAVE TO WRITE THIS ABOMINATION OF A CODE WHEN IN REALITY I SHOULDVE JUST USED FUCKING SQL JOINS
+        # BUT WE HAVE TO LAUNCH BETA IN 6 FUCKING HOURS
+        ingoing_treaties = {}
+        ingoing_treaties["ids"] = ingoing_ids,
+        ingoing_treaties["col_ids"] = col_ids,
+        ingoing_treaties["col_names"] = col_names,
+        ingoing_treaties["treaty_names"] = trt_names,
+        ingoing_treaties["treaty_descriptions"] = trt_descriptions
+        ingoing_length = len(ingoing_ids)
         #################
 
-        #### ACTIVE ####
-
-        
-        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY treaty_id ASC", (colId, colId))
+        #### ACTIVE ####        
+        db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Active' OR col1_id=(%s) ORDER BY id ASC", (colId, colId))
         raw_active_ids = db.fetchall()
 
-        active_ids = []
-        coalition_ids = []
-        coalition_names = []
-        treaty_names = []
-
+        active_treaties = {}
+        active_treaties["ids"] = []
+        active_treaties["col_ids"] = []
+        active_treaties["col_names"] = []
+        active_treaties["treaty_names"] = []
+        active_treaties["treaty_descriptions"] = []
 
         for i in raw_active_ids:
 
             offer_id = i[0]
 
-            active_ids.append(offer_id)
+            active_treaties["ids"].append(offer_id)
 
             db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
             coalition_id = db.fetchone()[0]
-            if coalition_id != colId:
-                pass
-            else: 
+            if coalition_id == colId:
                 db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
                 coalition_id = db.fetchone()[0]
 
-            coalition_ids.append(coalition_id)
+            active_treaties["col_ids"].append(coalition_id)
             
             db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
             coalition_name = db.fetchone()[0]
-            coalition_names.append(coalition_name)
+            active_treaties["col_names"].append(coalition_name)
 
-            db.execute("SELECT title FROM treaty_ids WHERE treaty_id=(SELECT treaty_id FROM treaties WHERE id=(%s))", (offer_id,))
+            db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
             treaty_name = db.fetchone()[0]
-            treaty_names.append(treaty_name)
+            active_treaties["treaty_names"].append(treaty_name)
 
-        active_treaties = zip(coalition_ids, coalition_names, treaty_names, active_ids)
-        active_length = len(list(active_treaties))
+            db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (offer_id,))
+            treaty_description = db.fetchone()[0]
+            active_treaties["treaty_descriptions"].append(treaty_description)
+
+        active_length = len(raw_active_ids)
     else:
         ingoing_treaties = []
         active_treaties = []
@@ -224,7 +263,7 @@ def coalition(colId):
         flag = None
     ### 
 
-    if user_role == "leader" and colType != "Open":
+    if user_role == "leader" and colType != "Open" and userInCurCol:
 
         db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
         requestMessages = db.fetchall()
@@ -240,7 +279,7 @@ def coalition(colId):
         requests = None
 
     ### BANK STUFF
-    if user_role == "leader":
+    if user_role == "leader" and userInCurCol:
 
         db.execute("SELECT reqId, amount, resource, id FROM colBanksRequests WHERE colId=(%s)", (colId,))
         bankRequests = db.fetchall()
@@ -262,10 +301,11 @@ def coalition(colId):
 
     return render_template("coalition.html", name=name, colId=colId, members=members, user_role=user_role,
                             description=description, colType=colType, userInCol=userInCol,
-                            requests=requests, userInCurCol=userInCurCol, ingoing_treaties=ingoing_treaties, total_influence=total_influence,
+                            requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                             flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
-                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles)
+                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
+                            ingoing_treaties=ingoing_treaties, zip=zip)
 
 
 # Route for establishing a coalition
@@ -629,7 +669,6 @@ def delete_coalition(colId):
     db.execute("DELETE FROM colNames WHERE id=(%s)", (colId,))
     db.execute("DELETE FROM coalitions WHERE colId=(%s)", (colId,))
 
-    
     connection.commit()
     connection.close()
 
@@ -721,8 +760,13 @@ def deposit_into_bank(colId):
     deposited_resources = []
 
     for res in resources:
-        resource = request.form.get(res)
-        if resource != "":
+
+        try:
+            resource = request.form.get(res)
+        except:
+            resource = ""
+
+        if resource != "" and int(resource) > 0:
             res_tuple = (res, int(resource))
             deposited_resources.append(res_tuple)
 
@@ -751,25 +795,29 @@ def deposit_into_bank(colId):
             db.execute(current_resource_statement, (resource, cId,))
             current_resource = int(db.fetchone()[0])
 
+            if amount < 1:
+                return error(400, "Amount cannot be less than 1")
+
             if current_resource < amount:
                 return error(400, f"You don't have enough {resource}")
 
             new_resource = current_resource - amount
 
-            update_statement = "UPDATE resources SET %s=%s WHERE id=%s"
+            update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
             db.execute(update_statement, (resource, new_resource, cId))
 
         # Gives the coalition the resource
-        current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
-        db.execute(current_resource_statement, (resource, colId,))
+        current_resource_statement = f"SELECT {resource} FROM colBanks" +  " WHERE colId=%s"
+        db.execute(current_resource_statement, (colId,))
         current_resource = int(db.fetchone()[0])
 
         new_resource = current_resource + amount
 
-        update_statement = "UPDATE colBanks SET %s=%s WHERE colId=%s"
-        db.execute(update_statement, (resource, new_resource, colId))
+        update_statement = f"UPDATE colBanks SET {resource}" + "=%s WHERE colId=%s"
+        db.execute(update_statement, (new_resource, colId))
 
     for resource in deposited_resources:
+        print(resource)
         name = resource[0]
         amount = resource[1]
         deposit(name, amount)
@@ -796,6 +844,9 @@ def withdraw(resource, amount, user_id, colId):
     current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
     db.execute(current_resource_statement, (resource, colId,))
     current_resource = int(db.fetchone()[0])
+
+    if amount < 1:
+        return error(400, "Amount cannot be less than 1")
 
     if current_resource < amount:
         return error(400, f"Your coalition doesn't have enough {resource}")
@@ -860,6 +911,10 @@ def withdraw_from_bank(colId):
     for resource in withdrew_resources:
         name = resource[0]
         amount = resource[1]
+
+        if amount < 1:
+            return error(400, "Amount has to be greater than 1")
+
         withdraw(name, amount, cId, colId)
 
     return redirect(f"/coalition/{colId}")
@@ -905,7 +960,14 @@ def request_from_bank(colId):
 
     requested_resources = tuple(requested_resources[0])
 
-    db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (%s, %s, %s, %s)", (cId, colId, requested_resources[1], requested_resources[0]))
+    amount = requested_resources[1]
+
+    if amount < 1:
+        return error(400, "Amount cannot be 0 or less")
+
+    resource = requested_resources[0]
+
+    db.execute("INSERT INTO colBanksRequests (reqId, colId, amount, resource) VALUES (%s, %s, %s, %s)", (cId, colId, amount, resource))
 
     connection.commit()
     connection.close()
@@ -1008,12 +1070,9 @@ def offer_treaty():
         return error(400, "You aren't the leader of this coalition")
 
     treaty_name = request.form.get("treaty_name")
-    db.execute("SELECT treaty_id FROM treaty_ids WHERE title=(%s)", (treaty_name,))
-    treaty_id = db.fetchone()[0]
+    treaty_message = request.form.get("treaty_message")
 
-    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_id) VALUES (%s, %s, %s)", (user_coalition, col2_id, treaty_id))
-
-    treaty_id = db.fetchone()[0]
+    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_name, treaty_description) VALUES (%s, %s, %s, %s)", (user_coalition, col2_id, treaty_name, treaty_message))
 
     connection.commit()
     connection.close()
