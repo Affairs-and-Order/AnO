@@ -4,7 +4,7 @@ from flask import request, render_template, session, redirect
 from helpers import login_required
 import psycopg2
 # from celery.schedules import crontab # arent currently using but will be later on
-from helpers import get_influence
+from helpers import get_influence, error
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
@@ -291,6 +291,11 @@ def update_info():
 
     # Location changing
     new_location = request.form.get("countryLocation")
+
+    continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
+
+    if new_location not in continents:
+        return error(400, "No such continent")
 
     if not new_location == "":
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
