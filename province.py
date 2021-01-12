@@ -376,6 +376,9 @@ def province_sell_buy(way, units, province_id):
 
             multiplier = 1 + ((0.08 * wantedUnits) * current_cityCount) # 10% Increase in cost for each city.
             cityCount_price = int((250000 * multiplier) * wantedUnits) # Each city costs 250,000 without the multiplier
+
+            print(f"total_price: {cityCount_price}")
+
         else:
             cityCount_price = 0
 
@@ -386,6 +389,7 @@ def province_sell_buy(way, units, province_id):
 
             multiplier = 1 + ((0.06 * wantedUnits) * current_land) # 10% Increase in cost for each city.
             land_price = int((120000 * multiplier) * wantedUnits) # Each city costs 120,000 without the multiplier
+            
         else:
             land_price = 0
 
