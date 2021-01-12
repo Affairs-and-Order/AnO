@@ -572,7 +572,7 @@ def give_position():
     if role not in roles:
         return error(400, "No such role exists")
 
-    if roles.index(role) > (roles.index(user_role) - 1): 
+    if (roles.index(role) -1 ) > roles.index(user_role): 
         return error(400, "Can't edit role for a person higher rank than you.")
 
     username = request.form.get("username")
