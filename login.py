@@ -49,6 +49,8 @@ def login():
             connection.commit()
             connection.close()
             return redirect("/")  # redirects user to homepage
+        else:
+            return error(400, "Wrong password")
 
     else:
         # renders login.html when "/login" is acessed via get
