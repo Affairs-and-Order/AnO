@@ -76,7 +76,7 @@ def coalition(colId):
         db.execute("SELECT description FROM colNames WHERE id=(%s)", (colId,))
         description = db.fetchone()[0]
     except:
-        desription = ""
+        description = ""
 
     try:
         db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
@@ -142,6 +142,7 @@ def coalition(colId):
             ingoing_ids = list(db.fetchall()[0])
         except:
             ingoing_ids = []
+            
         col_ids = []
         col_names = []
         trt_names = []
