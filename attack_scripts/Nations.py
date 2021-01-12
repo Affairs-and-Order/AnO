@@ -827,6 +827,8 @@ class Military(Nation):
             aerodomes += db.fetchone()[0]
             db.execute("SELECT admin_buildings FROM proinfra WHERE id=%s", (provinceid,))
             admin_buildings += db.fetchone()[0]
+            db.execute("SELECT silos FROM proInfra WHERE id=%s", (provinceid,))
+            silos = db.fetchone()[0]
 
         # these numbers determine the upper limit of how many of each military unit can be built per day
         soldiers = army_bases * 100
@@ -839,8 +841,8 @@ class Military(Nation):
         cruisers = harbours * 2
         submarines = harbours * 3
         spies = admin_buildings * 1
-        icbms = 0 # set to whether the missile silo building is built
-        nukes = 0 # set to whether the missile silo building is built
+        icbms = silos+1 # set to whether the missile silo building is built
+        nukes = silos # set to whether the missile silo building is built
         return {
             "soldiers": soldiers,
             "tanks": tanks,

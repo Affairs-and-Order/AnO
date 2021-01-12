@@ -213,7 +213,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 return error(400, "Don't have enough gold for that")
 
             if wantedUnits > limits[units]:
-                return error(400, "You exceeded the unit buy limit")
+                return error(400, "You exceeded the unit buy limit, you might want to buy more military buildings.")
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
