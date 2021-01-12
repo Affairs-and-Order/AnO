@@ -329,7 +329,6 @@ def update_info():
 @login_required
 def delete_own_account():
 
-
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
