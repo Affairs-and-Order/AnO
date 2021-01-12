@@ -39,7 +39,7 @@
                 <!--HIDE THIS WHEN USER IS A COALITION MEMBER-->
             </div>
 
-            {% if user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] and not userInCurCol %}
+            {% if not userInCurCol or user_role not in ["leader", "deputy_leader", "banker", "tax_collector", "foreign_ambassador", "general"] %}
             <script>
                 $(document).ready(function() {
 
@@ -306,7 +306,6 @@
         <!--LEADER PANEL-->
 
         <div class="leader" id="leader">
-            <!-- fix not being able to go here from /coalition even if user is leader-->
 
             {% if user_role in ["leader", "deputy_leader", "domestic_minister"] %}
             <h2 class="templatecontentheaderleft">Government</h2>
