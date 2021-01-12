@@ -13,10 +13,14 @@ from celery.schedules import crontab
 app = Flask(__name__)
 
 try:
-    app.secret_key = os.getenv("SECRET_KEY")
+    environment = os.getenv("ENVIRONMENT")
 except:
-    app.secret_key = "DEVELOPMENT_SECRET_KEY"
+    environment = "DEV"
 
+if environment == "PROD":
+    app.secret_key = os.getenv("SECRET_KEY")
+    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+    
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from wars import wars, find_targets
 from login import login
