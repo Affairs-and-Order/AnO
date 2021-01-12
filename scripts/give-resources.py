@@ -18,13 +18,7 @@ resource = sys.argv[1]
 amount = sys.argv[2]
 user_id = sys.argv[3]
 
-if resource in ["money", "gold"]:
-
-    db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (amount, user_id))
-
-    conn.commit()
-    conn.close()
-elif resource == "all":
+if resource == "all":
 
     resources = [
         "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
@@ -36,6 +30,9 @@ elif resource == "all":
 
         resource_update = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
         db.execute(resource_update, (amount, user_id,))
+
+    
+    db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (amount, user_id))
 
     conn.commit()
     conn.close()
