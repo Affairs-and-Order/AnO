@@ -206,15 +206,22 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         elif way == "buy":
 
+            wantedUnits = int(wantedUnits)
+            limits = Military.get_limits(cId)
+
             if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
                 return error(400, "Don't have enough gold for that")
 
+            if wantedUnits > limits[units]:
+                return error(400, "You exceeded the unit buy limit")
+
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
-            updStat = f"UPDATE military SET {units}" + "=%s WHERE id=%s"
+            updStat = f"UPDATE military SET {units}=%s WHERE id=%s"
+
             # fix weird table
-            db.execute(updStat, ((int(currentUnits) + int(wantedUnits)), cId))
-            flash(f"You bought {wantedUnits} {units}")
+            db.execute(updStat, ((int(currentUnits) + wantedUnits), cId))
+            # flash(f"You bought {wantedUnits} {units}")
 
             def update_resource_minus(x):
                 resource = resource_dict[f'resource_{x}']['resource']
