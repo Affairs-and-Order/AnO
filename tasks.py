@@ -500,6 +500,13 @@ def generate_province_revenue(): # Runs each hour
                         upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=%s WHERE id=%s"
                         db.execute(upd_res_statement, (new_resource_number, user_id,))
 
+                        conn.commit()
+
+                        cpr_statement = f"SELECT {plus_resource} FROM resources" + " WHERE id=%s"
+                        db.execute(cpr_statement, (user_id,))
+                        current_plus_resource = int(db.fetchone()[0])
+
+
                 # Function for completing an effect (adding pollution, etc)
                 def do_effect(eff, eff_amount, sign):
 
