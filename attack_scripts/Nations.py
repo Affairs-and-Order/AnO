@@ -841,8 +841,8 @@ class Military(Nation):
         cruisers = harbours * 2
         submarines = harbours * 3
         spies = admin_buildings * 1
-        icbms = silos+1 # set to whether the missile silo building is built
-        nukes = silos # set to whether the missile silo building is built
+        icbms = silos+1
+        nukes = silos
         return {
             "soldiers": soldiers,
             "tanks": tanks,
