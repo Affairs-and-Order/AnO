@@ -367,7 +367,10 @@ def province_sell_buy(way, units, province_id):
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         gold = int(db.fetchone()[0])
 
-        wantedUnits = int(request.form.get(units))
+        try:
+            wantedUnits = int(request.form.get(units))
+        except:
+            return error(400, "You have to enter a unit amount")
 
         if wantedUnits < 1:
             return error(400, "Units cannot be less than 1")

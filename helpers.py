@@ -68,24 +68,23 @@ def get_influence(country_id):
 
     cId = country_id
 
-    db.execute("""SELECT soldiers, artillery, tanks, fighters, bombers, apaches, submarines,
-    destroyers, cruisers, ICBMs, nukes, spies FROM military WHERE id=%s""", (cId,))
-    military = db.fetchall()[0]
+    try:
+        db.execute("""SELECT soldiers, artillery, tanks, fighters, bombers, apaches, submarines,
+        destroyers, cruisers, ICBMs, nukes, spies FROM military WHERE id=%s""", (cId,))
+        military = db.fetchall()[0]
 
-    soldiers_score = military[0] * 0.02
-    artillery_score = military[1] * 1.6
-    tanks_score = military[2] * 0.8
-    fighters_score = military[3] * 3.5
-    bombers_score = military[4] * 2.5
-    apaches_score = military[5] * 3.2
-    submarines_score = military[6] * 4.5
-    destroyers_score = military[7] * 3
-    cruisers_score = military[8] * 5.5
-    icbms_score = military[9] * 250
-    nukes_score = military[10] * 500
-    spies_score = military[11] * 25
-
-    """
+        soldiers_score = military[0] * 0.02
+        artillery_score = military[1] * 1.6
+        tanks_score = military[2] * 0.8
+        fighters_score = military[3] * 3.5
+        bombers_score = military[4] * 2.5
+        apaches_score = military[5] * 3.2
+        submarines_score = military[6] * 4.5
+        destroyers_score = military[7] * 3
+        cruisers_score = military[8] * 5.5
+        icbms_score = military[9] * 250
+        nukes_score = military[10] * 500
+        spies_score = military[11] * 25
     except:
         tanks_score = 0
         soldiers_score = 0
@@ -100,10 +99,12 @@ def get_influence(country_id):
         icbms_score = 0
         nukes_score = 0
         print(f"Couldn't get military data for user id: {cId}")
-    """
 
-    db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-    money_score = int(db.fetchone()[0]) * 0.00001
+    try:
+        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        money_score = int(db.fetchone()[0]) * 0.00001
+    except:
+        money_score = 0
 
     try:
         db.execute("SELECT SUM(cityCount) FROM provinces WHERE userId=(%s)", (cId,))
@@ -123,9 +124,12 @@ def get_influence(country_id):
     except:
         land_score = 0
 
-    db.execute("""SELECT oil + rations + coal + uranium + bauxite + iron + lead + copper + lumber + components + steel,
-    consumer_goods + aluminium + gasoline + ammunition FROM resources WHERE id=%s""", (cId,))
-    resources_score = db.fetchone()[0] * 0.001
+    try:
+        db.execute("""SELECT oil + rations + coal + uranium + bauxite + iron + lead + copper + lumber + components + steel,
+        consumer_goods + aluminium + gasoline + ammunition FROM resources WHERE id=%s""", (cId,))
+        resources_score = db.fetchone()[0] * 0.001
+    except:
+        resources_score = 0
 
     """
     (# of provinces * 300)+(# of soldiers * 0.02)+(# of artillery*1.6)+(# of tanks*0.8)
