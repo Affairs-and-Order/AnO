@@ -653,7 +653,8 @@ def trade_offer(offer_type, offeree_id):
 
             # possible sql injection posibility TODO: look into this
             rStatement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-            realAmount = int(db.execute(rStatement, (cId,)).fetchone()[0])
+            db.execute(rStatement, (cId,))
+            realAmount = int(db.fetchone()[0])
 
             if amount > realAmount:  # Checks if user wants to sell more than he has
                 return error("400", "Selling amount is higher the amount you have.")
@@ -688,7 +689,7 @@ def trade_offer(offer_type, offeree_id):
             connection.commit()
     
         connection.close()  # Closes the connection
-        return redirect("/market")
+        return redirect(f"/country/id={offeree_id}")
 
 
 @login_required
