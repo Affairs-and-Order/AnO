@@ -196,7 +196,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 db.execute(current_resource_statement, (cId,))
                 current_resource = int(db.fetchone()[0])
 
-                new_resource = current_resource + resource_amount
+                new_resource = current_resource + (resource_amount * wantedUnits)
 
                 resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                 db.execute(resource_update_statement, (new_resource, cId,))
@@ -227,7 +227,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 if current_resource < resource_amount:
                     return -1
 
-                new_resource = current_resource - resource_amount
+                new_resource = current_resource - (resource_amount * wantedUnits)
 
                 resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                 db.execute(resource_update_statement, (new_resource, cId,))
