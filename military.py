@@ -130,7 +130,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         price = mil_dict[f"{units}_price"]
 
-        resource1_data = next(iter(mil_dict[f'{units}_resource'].items()))
+        resource1_data = list(mil_dict[f'{units}_resource'].items())[0]
 
         resource1 = resource1_data[0]
         resource1_amount = resource1_data[1]
@@ -142,7 +142,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         resource_dict.update({'resource_1': {'resource': resource1, 'amount': resource1_amount}})
 
         try:
-            resource2_data = next(iter(mil_dict[f'{units}_resource2'].items()))
+            resource2_data = list(mil_dict[f'{units}_resource2'].items())[0]
 
             resource2 = resource2_data[0]
             resource2_amount = resource2_data[1]

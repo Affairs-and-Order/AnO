@@ -540,14 +540,14 @@ def province_sell_buy(way, units, province_id):
         resources_used = []
 
         try:
-            resource_data = next(iter(unit_prices[f'{units}_resource'].items()))
+            resource_data = list(unit_prices[f'{units}_resource'].items())[0]
 
             resources_used.append(resource_data)
         except KeyError:
             pass
 
         try:
-            resource2_data = next(iter(unit_prices[f'{units}_resource2'].items()))
+            resource2_data = list(unit_prices[f'{units}_resource2'].items())[0]
 
             resources_used.append(resource2_data)
         except KeyError:
