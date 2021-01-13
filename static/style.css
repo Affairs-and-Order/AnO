@@ -3028,6 +3028,15 @@ button {
 }
 
 
+/*Coalitions*/
+
+.recruitmentlabel {
+    line-height: 60.8px;
+    height: 60.8px;
+    margin: 0;
+}
+
+
 /*create_coalition*/
 
 .coalitionimagepreview {
