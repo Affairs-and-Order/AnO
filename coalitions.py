@@ -1138,6 +1138,8 @@ def accept_treaty(offer_id):
 
     cId = session["user_id"]
 
+    offer_id = int(offer_id)
+
     try:
 
         db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
