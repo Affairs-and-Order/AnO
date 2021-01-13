@@ -63,6 +63,11 @@
     opacity: 0.6;
 }
 
+.iconbutton {
+    border: none;
+    background: transparent;
+}
+
 .iconlarge {
     font-size: 40px !important;
 }
