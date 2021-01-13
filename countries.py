@@ -133,6 +133,10 @@ def countries():  # TODO: fix shit ton of repeated code in function
     except TypeError:
         upperinf = None
 
+    try:
+        province_range = int(request.values["province_range"])
+    except:
+        province_range = None
 
     # Optimize
     # if not search and upperinf is None and lowerinf is None:
@@ -165,6 +169,18 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     # db.execute("SELECT username FROM users ORDER BY id")
     # names = db.fetchall()
+
+    # db.execute("SELECT username FROM users ORDER BY id")
+    # names = db.fetchall()
+    # Check province range
+    if province_range is not None:
+        for user in users:
+            user_id = user[0]
+            db.execute(f"SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (user_id,))
+            target_province = db.fetchone()[0]
+            print(target_province)
+            if abs(target_province-province_range) > 1:
+                users.remove(user)
 
     populations = []
     coalition_ids = []

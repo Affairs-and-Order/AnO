@@ -880,6 +880,7 @@ def declare_war():
     attacker_provinces = attacker.get_provinces()["provinces_number"]
     defender_provinces = defender.get_provinces()["provinces_number"]
 
+    # TODO: might put this into abs() because if defender_provinces > attacker_provinces then the > 1 won't be true
     if (attacker_provinces - defender_provinces > 1):
         return error(400, "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
     if (defender_provinces - attacker_provinces > 3):
@@ -930,22 +931,11 @@ def find_targets():
         influence = get_influence(cId)
         upper = influence * 2
         lower = influence * 0.9
-        return redirect(f"/countries?lowerinf={lower}&upperinf={upper}")
-        # return redirect(f"/countries/search?=upperinf={upper}&lowerinf={lower}")
+    
+        db.execute("SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (cId,))
+        province_range = db.fetchone()[0]
 
-    # if request.method == "GET":
-    #     return render_template("find_targets.html")
-    # else:
-    #     # TODO: maybe delete the sql fetch and create a centralized way to fetch it
-    #
-
-    #     defender = request.form.get("defender")
-    #     db.execute("SELECT id FROM users WHERE username=(%s)", (defender,))
-    #     defender_id = db.fetchone()
-    #     if defender_id:
-    #         return redirect(f"/country/id={defender_id[0]}")
-    #     else:
-    #         return error(400, "No such country")
+        return redirect(f"/countries?lowerinf={lower}&upperinf={upper}&province_range={province_range}")
 
 @app.route("/defense", methods=["GET", "POST"])
 @login_required
