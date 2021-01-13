@@ -1092,6 +1092,12 @@ label {
     background-attachment: fixed;
 }
 
+@media all and (max-width: 750px) {
+    .templatedivtopper {
+        background-attachment: unset;
+    }
+}
+
 .templatedivtopper img {
     position: absolute;
     top: 0;
