@@ -139,7 +139,7 @@ def province(pId):
 
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
         consumer_goods = int(db.fetchone()[0])
-        consumer_goods_needed = round(population * 0.00005)
+        consumer_goods_needed = round(population * 0.000005)
         new_consumer_goods = consumer_goods - consumer_goods_needed
 
         if new_consumer_goods > 0:
