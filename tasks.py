@@ -21,37 +21,43 @@ def tax_income(): # Function for giving money to players
 
     for user in users:
 
-        user_id = user[0]
-
         try:
-            db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
-            population = int(db.fetchone()[0])
-        except:
-            population = 0
 
-        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-        consumer_goods = int(db.fetchone()[0])
-        consumer_goods_needed = round(population * 0.000005)
-        new_consumer_goods = consumer_goods - consumer_goods_needed
+            user_id = user[0]
 
-        db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
-        money = int(db.fetchone()[0])
-
-        new_income = money + population * 0.01
-
-        if new_consumer_goods >= 0:
-            new_income *= 1.5
             try:
-                db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (new_consumer_goods, user_id))
+                db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
+                population = int(db.fetchone()[0])
+            except:
+                population = 0
+
+            db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
+            consumer_goods = int(db.fetchone()[0])
+            consumer_goods_needed = round(population * 0.000005)
+            new_consumer_goods = consumer_goods - consumer_goods_needed
+
+            db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
+            money = int(db.fetchone()[0])
+
+            new_income = money + population * 0.01
+
+            if new_consumer_goods >= 0:
+                new_income *= 1.5
+                try:
+                    db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (new_consumer_goods, user_id))
+                except:
+                    pass
+
+            try:
+                db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_income, user_id,))
             except:
                 pass
 
-        try:
-            db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_income, user_id,))
-        except:
-            pass
+            conn.commit()
 
-        conn.commit()
+        except:
+            continue
+
 
     conn.close()
 
@@ -73,73 +79,78 @@ def population_growth(): # Function for growing population
 
     for user in users: # Iterates over the list of players
 
-        user_id = user[0]
+        try:
 
-        db.execute("SELECT id, population FROM provinces WHERE userId=%s", (user_id,))
-        provinces = db.fetchall()
+            user_id = user[0]
 
-        for row in provinces:
+            db.execute("SELECT id, population FROM provinces WHERE userId=%s", (user_id,))
+            provinces = db.fetchall()
 
-            prov_id = row[0] # Gets the province id
-            curPop = int(row[1])
+            for row in provinces:
 
-            maxPop = 1000000 # Base max population: 1 million
+                prov_id = row[0] # Gets the province id
+                curPop = int(row[1])
 
-            try:
-                db.execute("SELECT cityCount FROM provinces WHERE id=%s", (prov_id,))
-                cities = int(db.fetchone()[0])
-            except TypeError:
-                cities = 0
+                maxPop = 1000000 # Base max population: 1 million
 
-            if cities > 0:
-                maxPop += cities * 2000000 # Each city adds 2m population
+                try:
+                    db.execute("SELECT cityCount FROM provinces WHERE id=%s", (prov_id,))
+                    cities = int(db.fetchone()[0])
+                except TypeError:
+                    cities = 0
 
-            try:
-                db.execute("SELECT happiness FROM provinces WHERE id=%s", (prov_id,))
-                happiness = int(db.fetchone()[0])
-            except TypeError:
-                happiness = 0
+                if cities > 0:
+                    maxPop += cities * 2000000 # Each city adds 2m population
 
-            try:
-                db.execute("SELECT pollution FROM provinces WHERE id=%s", (prov_id,))
-                pollution = int(db.fetchone()[0])
-            except TypeError:
-                pollution = 0
+                try:
+                    db.execute("SELECT happiness FROM provinces WHERE id=%s", (prov_id,))
+                    happiness = int(db.fetchone()[0])
+                except TypeError:
+                    happiness = 0
 
-            try:
-                db.execute("SELECT productivity FROM provinces WHERE id=%s", (prov_id,))
-                productivity = int(db.fetchone()[0])
-            except TypeError:
-                productivity = 0
+                try:
+                    db.execute("SELECT pollution FROM provinces WHERE id=%s", (prov_id,))
+                    pollution = int(db.fetchone()[0])
+                except TypeError:
+                    pollution = 0
 
-            # Each % increases / decreases max population by 0.55
-            happiness = (happiness - 50) * 0.55 # The more you have the better
+                try:
+                    db.execute("SELECT productivity FROM provinces WHERE id=%s", (prov_id,))
+                    productivity = int(db.fetchone()[0])
+                except TypeError:
+                    productivity = 0
 
-            # Each % increases / decreases max population by 0.3
-            pollution = (pollution - 50) * -0.3 # The less you have the better
+                # Each % increases / decreases max population by 0.55
+                happiness = (happiness - 50) * 0.011 # The more you have the better
 
-            # Each % increases / decreases max population by 0.45
-            productivity = (productivity - 50) * 0.45 # The less you have the better
+                # Each % increases / decreases max population by 0.3
+                pollution = (pollution - 50) * - 0.006 # The less you have the better
 
-            maxPop += maxPop * happiness + maxPop * pollution + maxPop * productivity
+                # Each % increases / decreases max population by 0.45
+                productivity = (productivity - 50) * 0.009 # The less you have the better
 
-            if maxPop < 1000000: # If max population is less than 1M
-                maxPop = 1000000 # Make it 1M
+                maxPop += (maxPop * happiness) + (maxPop * pollution) + (maxPop * productivity)
 
-            db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
-            rations = int(db.fetchone()[0])
+                if maxPop < 1000000: # If max population is less than 1M
+                    maxPop = 1000000 # Make it 1M
 
-            hundred_k = curPop // 100000
-            new_rations = rations - (hundred_k * rations_per_100k)
+                db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
+                rations = int(db.fetchone()[0])
 
-            if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
-                newPop = curPop + maxPop // 100 # 1% of population
-            else: # If there are enough rations for everyone, increase population by 2%
-                db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
-                newPop = curPop + maxPop // 50 # 2% of population
+                hundred_k = curPop // 100000
+                new_rations = rations - (hundred_k * rations_per_100k)
 
-            db.execute("UPDATE provinces SET population=%s WHERE id=%s", (newPop, prov_id,))
-            conn.commit()
+                if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
+                    newPop = curPop + maxPop // 100 # 1% of population
+                else: # If there are enough rations for everyone, increase population by 2%
+                    db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
+                    newPop = curPop + maxPop // 50 # 2% of population
+
+                db.execute("UPDATE provinces SET population=%s WHERE id=%s", (newPop, prov_id,))
+                conn.commit()
+
+        except:
+            continue
 
     conn.close()
 
@@ -403,6 +414,8 @@ def generate_province_revenue(): # Runs each hour
                 db.execute("SELECT gold FROM stats WHERE id=(%s)", (user_id,))
                 current_money = int(db.fetchone()[0])
 
+                operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
+
                 if current_money < operating_costs:
                     continue
                 else:
@@ -431,7 +444,6 @@ def generate_province_revenue(): # Runs each hour
                 take_energy()
 
                 plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
-                operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
 
                 # Effect stuff
                 if effect is not None:
@@ -607,3 +619,5 @@ def war_reparation_tax():
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
 
     conn.commit()
+
+generate_province_revenue()
