@@ -883,13 +883,13 @@ def transfer(transferee):
             "gasoline", "ammunition", "iron"
         ]
 
-    if resource not in resources and resource != "gold":  # Checks if the resource the user selected actually exists
+    if resource not in resources and resource not in ["gold", "money"]:  # Checks if the resource the user selected actually exists
         return error(400, "No such resource")
 
     if amount < 1:
         return error(400, "Amount cannot be less than 1")
     
-    if resource == "gold":
+    if resource in ["gold", "money"]:
 
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         user_money = int(db.fetchone()[0])
@@ -916,7 +916,8 @@ def transfer(transferee):
     else:
 
         user_resource_statement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-        user_resource = int(db.execute(user_resource_statement, (cId,)).fetchone()[0])
+        db.execute(user_resource_statement, (cId,))
+        user_resource = int(db.fetchone()[0])
 
         if amount > user_resource:
             return error(400, "You don't have enough resources")
@@ -930,13 +931,14 @@ def transfer(transferee):
 
         # Sees how much of the resource the transferee has
         transferee_resource_statement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-        transferee_resource = int(db.execute(transferee_resource_statement, (transferee,)).fetchone()[0])
+        db.execute(transferee_resource_statement, (transferee,))
+        transferee_resource = int(db.fetchone()[0])
 
         # Calculates the amount of resource the transferee should have
         new_transferee_resource_amount = amount + transferee_resource
 
         # Gives the resource to the transferee
-        transferee_update_statement = f"UPDATE resources SET {resource}=(?) WHERE id=(?)"
+        transferee_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
         db.execute(transferee_update_statement, (new_transferee_resource_amount, transferee))
 
     connection.commit()
