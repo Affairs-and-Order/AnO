@@ -299,10 +299,10 @@ def update_info():
 
     continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
 
-    if new_location not in continents:
+    if new_location not in continents and new_location not in ["", "none"]:
         return error(400, "No such continent")
 
-    if not new_location == "":
+    if new_location not in ["", "none"]:
 
         try:
             db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
@@ -318,7 +318,6 @@ def update_info():
                 db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
                 db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
                 db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
-
         except:
             pass
 
