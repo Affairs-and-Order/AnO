@@ -162,12 +162,12 @@ def generate_province_revenue(): # Runs each hour
     'coal_burners_plus': {'energy': 4},
     'coal_burners_minus': {'coal': 48},
     'coal_burners_money': 45000,
-    'coal_burners_pollution': 30,
+    'coal_burners_pollution': 7,
 
     'oil_burners_plus': {'energy': 3},
     'oil_burners_minus': {'oil': 56},
     'oil_burners_money': 60000,
-    'oil_burners_pollution': 21,
+    'oil_burners_pollution': 3,
 
     'hydro_dams_plus': {'energy': 6},
     'hydro_dams_money': 250000,
@@ -186,11 +186,11 @@ def generate_province_revenue(): # Runs each hour
     'gas_stations_money': 20000, # Costs $20k
 
     'general_stores_plus': {'consumer_goods': 12},
-    'general_stores_pollution': {'pollution': 1},
+    'general_stores_pollution': {'pollution': 2},
     'general_stores_money': 35000, # Costs $35k
 
     'farmers_markets_plus': {'consumer_goods': 17}, # Generates 15 consumer goods,
-    'farmers_markets_effect': {'pollution': 6},
+    'farmers_markets_effect': {'pollution': 5},
     'farmers_markets_money': 110000, # Costs $110k
 
     'banks_plus': {'consumer_goods': 25},
@@ -234,12 +234,15 @@ def generate_province_revenue(): # Runs each hour
 
     'farms_money': 3000, # Costs $3k
     'farms_plus': {'rations': 30},
+    'farms_pollution': 1,
 
     'pumpjacks_money': 10000, # Costs $10k
     'pumpjacks_plus': {'oil': 23},
+    'pumpjacks_pollution': 1.5,
 
     'coal_mines_money': 10000, # Costs $10k
     'coal_mines_plus': {'coal': 26},
+    'coal_mines_pollution': 2,
 
     'bauxite_mines_money': 8000, # Costs $8k
     'bauxite_mines_plus': {'bauxite': 20},
@@ -258,6 +261,7 @@ def generate_province_revenue(): # Runs each hour
 
     'lumber_mills_money': 7500,
     'lumber_mills_plus': {'lumber': 32},
+    'lumber_mills_pollution': 1,
 
     ################
 
