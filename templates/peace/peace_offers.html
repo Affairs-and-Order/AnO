@@ -10,7 +10,7 @@
 
     <div class="templatedivcontent">
         <!--if no offers-->
-        {% if outgoing_peace_offer|length == 0 %}
+        {% if outgoing_counter == 0 %}
         <h2 class="templatecontentheadercenter">You have no outgoing offers</h2>
         <!--if there are offers-->
         {% else %}
@@ -55,7 +55,7 @@
         {% endif %}
 
         <!--if no offers-->
-        {% if incoming_peace_offers|length == 0 %}
+        {% if incoming_counter == 0 %}
         <h2 class="templatecontentheadercenter">You have no incoming offers</h2>
         <!--if there are offers-->
         {% else %}
