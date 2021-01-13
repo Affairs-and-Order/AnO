@@ -210,8 +210,7 @@ def generate_province_revenue(): # Runs each hour
     'city_parks_effect_minus': {'pollution': 6},
     'city_parks_money': 20000, # Costs $20k
 
-    'hospitals_effect': {'population': 0.5},
-    'hospitals_effect': {'happiness': 7},
+    'hospitals_effect': {'happiness': 9},
     'hospitals_money': 60000,
 
     'universities_effect': {'productivity': 6},
