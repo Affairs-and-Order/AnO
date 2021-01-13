@@ -165,9 +165,9 @@ def generate_province_revenue(): # Runs each hour
     'coal_burners_pollution': 30,
 
     'oil_burners_plus': {'energy': 3},
-    'oil_burners_minus': {'coal': 56},
+    'oil_burners_minus': {'oil': 56},
     'oil_burners_money': 60000,
-    'oil_burners_pollution': 25,
+    'oil_burners_pollution': 21,
 
     'hydro_dams_plus': {'energy': 6},
     'hydro_dams_money': 250000,
@@ -491,21 +491,18 @@ def generate_province_revenue(): # Runs each hour
                         db.execute(cpr_statement, (user_id,))
                         current_plus_resource = int(db.fetchone()[0])
 
+                        print(current_plus_resource)
+
                         # Adding resource
                         new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
+
+                        print(new_resource_number)
 
                         if new_resource_number < 0:
                             new_resource_number = 0
 
                         upd_res_statement = f"UPDATE resources SET {plus_resource}" + "=%s WHERE id=%s"
                         db.execute(upd_res_statement, (new_resource_number, user_id,))
-
-                        conn.commit()
-
-                        cpr_statement = f"SELECT {plus_resource} FROM resources" + " WHERE id=%s"
-                        db.execute(cpr_statement, (user_id,))
-                        current_plus_resource = int(db.fetchone()[0])
-
 
                 # Function for completing an effect (adding pollution, etc)
                 def do_effect(eff, eff_amount, sign):
@@ -626,5 +623,3 @@ def war_reparation_tax():
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
 
     conn.commit()
-
-generate_province_revenue()
