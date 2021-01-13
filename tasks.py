@@ -170,15 +170,15 @@ def generate_province_revenue(): # Runs each hour
     ####################
 
     ### Retail ### (Done)
-    'gas_stations_plus': {'consumer_goods': 12},
+    'gas_stations_plus': {'consumer_goods': 8},
     'gas_stations_effect': {'pollution': 4},
     'gas_stations_money': 20000, # Costs $20k
 
-    'general_stores_plus': {'consumer_goods': 9},
+    'general_stores_plus': {'consumer_goods': 12},
     'general_stores_pollution': {'pollution': 1},
     'general_stores_money': 35000, # Costs $35k
 
-    'farmers_markets_plus': {'consumer_goods': 16}, # Generates 15 consumer goods,
+    'farmers_markets_plus': {'consumer_goods': 17}, # Generates 15 consumer goods,
     'farmers_markets_effect': {'pollution': 6},
     'farmers_markets_money': 110000, # Costs $110k
 
