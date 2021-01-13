@@ -303,7 +303,7 @@
     --foregroundSix: #f7f7f7;
     --foregroundSeven: #363945;
     --foregroundEight: #4a4c58;
-    --border: #e3e9f000;
+    --border: #5d606b;
     --tableOne: #42444e;
     --tableTwo: #4a4c58;
     --colorOne: rgb(255, 255, 255);
@@ -1044,7 +1044,7 @@ label {
 }
 
 .warflexparentcolors {
-    background: var(--foregroundTwo);
+    background: var(--foreground);
     border: 1.5px solid var(--border);
     transition: all 0.3s ease-in-out;
     width: 95%;
@@ -1734,7 +1734,7 @@ label {
 }
 
 .infodiv {
-    background: var(--foregroundTwo);
+    background: var(--foreground);
     border: 1.5px solid var(--border);
     padding: 8px;
     width: max-content;
@@ -3041,7 +3041,7 @@ button {
 /*WARS*/
 
 .warflexparent {
-    background: var(--foregroundTwo);
+    background: var(--foreground);
     border: 1.5px solid var(--border);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
