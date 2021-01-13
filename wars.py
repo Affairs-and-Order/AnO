@@ -944,6 +944,7 @@ def defense():
     units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
 
     if request.method == "GET":
+
         return render_template("defense.html", units=units)
 
     elif request.method == "POST":
@@ -976,4 +977,4 @@ def defense():
         # should be a back button on this page to go back to wars so dw about some infinite loop
         connection.close()
 
-        return render_template("defense.html", units=units)
+        return redirect("/wars")
