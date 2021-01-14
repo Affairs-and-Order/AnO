@@ -73,14 +73,17 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
             "soldiers_price": 200, # Cost 200
             "soldiers_resource": {"rations": 2},
+            "soldiers_manpower": 1,
 
             "tanks_price": 8000, # Cost 8k
             "tanks_resource": {"steel": 5},
             "tanks_resource2": {"components": 5},
+            "tanks_manpower": 4,
 
             "artillery_price": 16000, # Cost 16k
             "artillery_resource": {"steel": 12},
             "artillery_resource2": {"components": 3},
+            "artillery_manpower": 2,
 
             ## AIR
 
@@ -88,42 +91,50 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "bombers_resource": {"aluminium": 20},
             "bombers_resource2": {"steel": 5},
             "bombers_resource3": {"components": 6},
+            "bombers_manpower": 1,
 
             "fighters_price": 35000, # Cost 35k
             "fighters_resource": {"aluminium": 12},
             "fighters_resource2": {"components": 3},
+            "fighters_manpower": 1,
 
             "apaches_price": 32000, # Cost 32k
             "apaches_resource": {"aluminium": 8},
             "apaches_resource2": {"steel": 2},
             "apaches_resource3": {"components": 4},
+            "apaches_manpower": 1,
 
             ## WATER
 
             "destroyers_price": 30000, # Cost 30k
             "destroyers_resource": {"steel": 30},
             "destroyers_resource2": {"components": 7},
+            "destroyers_manpower": 1,
 
             "cruisers_price": 55000, # Cost 55k
             "cruisers_resource": {"steel": 25},
             "cruisers_resource2": {"components": 4},
+            "cruisers_manpower": 1,
 
             "submarines_price": 45000, # Cost 45k
             "submarines_resource": {"steel": 20},
             "submarines_resource2": {"components": 8},
+            "submarines_manpower": 1,
 
             ## SPECIAL
 
             "spies_price": 25000, # Cost 25k
             "spies_resource": {"rations": 50}, # Costs 50 rations
+            "spies_manpower": 0,
 
             "icbms_price": 4000000, # Cost 4 million
             "icbms_resource": {"steel": 350}, # Costs 350 steel
+            "icbms_manpower": 0,
 
             "nukes_price": 12000000, # Cost 12 million
             "nukes_resource": {"uranium": 800}, # Costs 800 uranium
-            "nukes_resource2": {"steel": 600} # Costs 600 steel
-
+            "nukes_resource2": {"steel": 600}, # Costs 600 steel
+            "nukes_manpower": 0,
         }
 
         iterable_resources = []
@@ -215,19 +226,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
                 return error(400, "Don't have enough gold for that")
 
-            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
-
-            updStat = f"UPDATE military SET {units}=%s WHERE id=%s"
-
-            # fix weird table
-            db.execute(updStat, ((int(currentUnits) + wantedUnits), cId))
-            # flash(f"You bought {wantedUnits} {units}")
-
             def update_resource_minus(x):
                 resource = resource_dict[f'resource_{x}']['resource']
                 resource_amount = resource_dict[f'resource_{x}']['amount']
 
-                current_resource_statement = f"SELECT {resource} " + "FROM resources WHERE id=%s"
+                current_resource_statement = f"SELECT {resource} FROM resources WHERE id=%s"
                 db.execute(current_resource_statement, (cId,))
                 current_resource = int(db.fetchone()[0])
 
@@ -236,6 +239,9 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
                 new_resource = current_resource - resource_amount
 
+                # TODO: roll back when error
+                # TODO; this may cause problems because it decreases the resource amount when: then previous didn't trow error therefore it is decreased but the second returned error
+                # so the user reourse is decreased but the user hasn't got anything for that price
                 resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                 db.execute(resource_update_statement, (new_resource, cId,))
 
@@ -245,6 +251,16 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 # IF error is returned
                 if err == -1:
                     return error(400, "You don't have enough resources")
+
+
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
+            # fix weird table
+            db.execute(f"UPDATE military SET {units}=%s WHERE id=%s", (int(currentUnits)+wantedUnits, cId))
+
+            db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
+            manpower = db.fetchone()[0]
+
+            db.execute("UPDATE military SET manpower=(%s) WHERE id=(%s)", (manpower-wantedUnits*mil_dict[f"{units}_manpower"], cId))
 
         else:
             return error(404, "Page not found")

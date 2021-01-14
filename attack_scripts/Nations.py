@@ -1,6 +1,7 @@
 import random
 import psycopg2
 import os, time
+import math
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -830,16 +831,39 @@ class Military(Nation):
             db.execute("SELECT silos FROM proInfra WHERE id=%s", (provinceid,))
             silos = db.fetchone()[0]
 
+        # db.execute("SELECT SUM(population) FROM provinces WHERE userid=(%s)", (cId,))
+        # capable_population = int(db.fetchone()[0]*(0.3))
+
+        # Currently this is a constant
+        # army_tradition = 0.2
+        # manpower = int(capable_population*army_tradition)
+        
         # these numbers determine the upper limit of how many of each military unit can be built per day
-        soldiers = army_bases * 100
-        tanks = army_bases * 8
-        artillery = army_bases * 8
+        db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
+        manpower = db.fetchone()[0]
+
+        # Soldiers
+        if army_bases*100 > manpower:
+            soldiers = manpower
+        else:
+            soldiers = army_bases*100
+
+        # Tanks and artillery
+        if army_bases*8 > manpower//4:
+            tanks = manpower//4
+            artillery = army_bases//2
+        else:
+            tanks = army_bases*8
+            artillery = army_bases*8
+
         bombers = aerodomes * 5
         fighters = aerodomes * 5
         apaches = aerodomes * 5
         destroyers = harbours * 3
         cruisers = harbours * 2
         submarines = harbours * 3
+
+        # Special
         spies = admin_buildings * 1
         icbms = silos+1
         nukes = silos
