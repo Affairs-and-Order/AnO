@@ -38,6 +38,21 @@ def tax_income(): # Function for giving money to players
 
             population_score = population * 0.01
 
+            try:
+                db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
+                land = db.fetchone()[0]
+            except:
+                land = 0
+
+            land_percentage = land * 0.02 # Land percentage up to 100% 
+
+            if land_percentage > 1:
+                land_percentage = 1
+
+            new_income = population_score
+
+            new_income += new_income * land_percentage
+
             if new_consumer_goods >= 0:
                 new_income *= 1.5
                 try:
@@ -46,7 +61,7 @@ def tax_income(): # Function for giving money to players
                     pass
 
             try:
-                db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (population_score, user_id,))
+                db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (new_income, user_id,))
             except:
                 pass
 
@@ -54,7 +69,6 @@ def tax_income(): # Function for giving money to players
 
         except:
             continue
-
 
     conn.close()
 
