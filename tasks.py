@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from attack_scripts import Economy
 load_dotenv()
 
+# Seems to be working as expected
 def tax_income(): # Function for giving money to players
 
     conn = psycopg2.connect(
@@ -72,6 +73,7 @@ def tax_income(): # Function for giving money to players
 
     conn.close()
 
+# Seems to be working as expected
 def population_growth(): # Function for growing population
 
     conn = psycopg2.connect(
@@ -86,21 +88,23 @@ def population_growth(): # Function for growing population
     db.execute("SELECT id FROM users")
     users = db.fetchall()
 
-    rations_per_100k = 4
 
     for user in users: # Iterates over the list of players
 
+        user_id = user[0]
+
         try:
-
-            user_id = user[0]
-
             db.execute("SELECT id, population FROM provinces WHERE userId=%s", (user_id,))
             provinces = db.fetchall()
+        except:
+            provinces = []
 
-            for row in provinces:
+        for row in provinces:
+
+            try:
 
                 prov_id = row[0] # Gets the province id
-                curPop = int(row[1])
+                curPop = row[1]
 
                 maxPop = 1000000 # Base max population: 1 million
 
@@ -131,16 +135,23 @@ def population_growth(): # Function for growing population
                 except TypeError:
                     productivity = 0
 
+                # Everything working until here as expected
+
+                ### ALL WORKING AS EXPECTED ###
+
                 # Each % increases / decreases max population by 0.55
-                happiness = (happiness - 50) * 0.011 # The more you have the better
+                happiness = round((happiness - 50) * 0.011, 2) # The more you have the better
 
                 # Each % increases / decreases max population by 0.3
-                pollution = (pollution - 50) * - 0.006 # The less you have the better
+                pollution = round((pollution - 50) * - 0.006, 2) # The less you have the better
 
                 # Each % increases / decreases max population by 0.45
-                productivity = (productivity - 50) * 0.009 # The less you have the better
+                productivity = round((productivity - 50) * 0.009, 2) # The less you have the better
+
+                ###############################  
 
                 maxPop += (maxPop * happiness) + (maxPop * pollution) + (maxPop * productivity)
+                maxPop = round(maxPop)
 
                 if maxPop < 1000000: # If max population is less than 1M
                     maxPop = 1000000 # Make it 1M
@@ -149,19 +160,21 @@ def population_growth(): # Function for growing population
                 rations = int(db.fetchone()[0])
 
                 hundred_k = curPop // 100000
+                rations_per_100k = 4
                 new_rations = rations - (hundred_k * rations_per_100k)
 
                 if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
-                    newPop = curPop + maxPop // 100 # 1% of population
+                    newPop = maxPop // 100 # 1% of population
                 else: # If there are enough rations for everyone, increase population by 2%
+                    newPop = maxPop // 50
                     db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
-                    newPop = curPop + maxPop // 50 # 2% of population
 
-                db.execute("UPDATE provinces SET population=%s WHERE id=%s", (newPop, prov_id,))
+                db.execute("UPDATE provinces SET population=population+%s WHERE id=%s", (newPop, prov_id,))
                 conn.commit()
 
-        except:
-            continue
+            except Exception as e: 
+                print(f"Couldn't complete population growth for province: {prov_id}. Exception: {e}")
+                continue
 
     conn.close()
 
