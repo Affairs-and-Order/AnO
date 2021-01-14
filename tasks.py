@@ -350,90 +350,21 @@ def generate_province_revenue(): # Runs each hour
     ]
 
     try:
-        db.execute("SELECT id FROM proInfra")
+        db.execute("SELECT id FROM proInfra ORDER BY id ASC")
         infra_ids = db.fetchall()
     except:
         infra_ids = []
 
-    for unit in columns:
+    for province_id in infra_ids:
 
-        try:
-            plus_data = list(infra[f'{unit}_plus'].items())[0]
+        province_id = province_id[0]
 
-            plus_resource = plus_data[0]
-            plus_amount = plus_data[1]
+        db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
+        user_id = db.fetchone()[0]
 
-        except KeyError:
-            plus_data = None
-
-        operating_costs = int(infra[f'{unit}_money'])
-
-        try:
-            effect_data = list(infra[f'{unit}_effect'].items())[0]
-
-            effect = effect_data[0]
-            effect_amount = effect_data[1]
-        except KeyError:
-            effect = None
-
-        try:
-            effect_2_data = list(infra[f'{unit}_effect_2'].items())[0]
-
-            effect_2 = effect_2_data[0]
-            effect_2_amount = effect_2_data[1]
-        except KeyError:
-            effect_2 = None
-
-        try:
-            effect_minus_data = list(infra[f'{unit}_effect_minus'].items())[0]
-
-            effect_minus = effect_minus_data[0]
-            effect_minus_amount = effect_minus_data[1]
-        except KeyError:
-            effect_minus = None
-
-        # Converting stuff
-            # Plus stuff
-        try:
-            convert_plus_data = list(infra[f'{unit}_convert_plus'].items())[0]
-
-            convert_plus = convert_plus_data[0]
-            convert_plus_amount = convert_plus_data[1]
-        except KeyError:
-            convert_plus = None
-            # Minus stuff
-        try:
-            convert_minus_data = list(infra[f'{unit}_convert_minus'].items())[0]
-
-            convert_minus = convert_minus_data[0]
-            convert_minus_amount = convert_minus_data[1]
-        except KeyError:
-            convert_minus = None
-
-        try:
-            convert_minus_2_data = list(infra[f'{unit}_convert_minus_2'].items())[0]
-
-            convert_minus_2 = convert_minus_2_data[0]
-            convert_minus_2_amount = convert_minus_2_data[1]
-        except KeyError:
-            convert_minus_2 = None
-
-        try:
-            convert_minus_3_data = list(infra[f'{unit}_convert_minus_3'].items())[0]
-
-            convert_minus_3 = convert_minus_3_data[0]
-            convert_minus_3_amount = convert_minus_3_data[1]
-        except KeyError:
-            convert_minus_3 = None
-
-        for province_id in infra_ids:
-
-            province_id = province_id[0]
+        for unit in columns:
 
             try:
-                db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
-                user_id = db.fetchone()[0]
-
                 unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
                 db.execute(unit_amount_stat, (province_id,))
                 unit_amount = db.fetchone()[0]
@@ -447,6 +378,76 @@ def generate_province_revenue(): # Runs each hour
             else:
 
                 try:
+                
+                    try:
+                        plus_data = list(infra[f'{unit}_plus'].items())[0]
+
+                        plus_resource = plus_data[0]
+                        plus_amount = plus_data[1]
+
+                    except KeyError:
+                        plus_data = None
+
+                    operating_costs = int(infra[f'{unit}_money'])
+
+                    try:
+                        effect_data = list(infra[f'{unit}_effect'].items())[0]
+
+                        effect = effect_data[0]
+                        effect_amount = effect_data[1]
+                    except KeyError:
+                        effect = None
+
+                    try:
+                        effect_2_data = list(infra[f'{unit}_effect_2'].items())[0]
+
+                        effect_2 = effect_2_data[0]
+                        effect_2_amount = effect_2_data[1]
+                    except KeyError:
+                        effect_2 = None
+
+                    try:
+                        effect_minus_data = list(infra[f'{unit}_effect_minus'].items())[0]
+
+                        effect_minus = effect_minus_data[0]
+                        effect_minus_amount = effect_minus_data[1]
+                    except KeyError:
+                        effect_minus = None
+
+                    # Converting stuff
+                        # Plus stuff
+                    try:
+                        convert_plus_data = list(infra[f'{unit}_convert_plus'].items())[0]
+
+                        convert_plus = convert_plus_data[0]
+                        convert_plus_amount = convert_plus_data[1]
+                    except KeyError:
+                        convert_plus = None
+                        # Minus stuff
+                    try:
+                        convert_minus_data = list(infra[f'{unit}_convert_minus'].items())[0]
+
+                        convert_minus = convert_minus_data[0]
+                        convert_minus_amount = convert_minus_data[1]
+                    except KeyError:
+                        convert_minus = None
+
+                    try:
+                        convert_minus_2_data = list(infra[f'{unit}_convert_minus_2'].items())[0]
+
+                        convert_minus_2 = convert_minus_2_data[0]
+                        convert_minus_2_amount = convert_minus_2_data[1]
+                    except KeyError:
+                        convert_minus_2 = None
+
+                    try:
+                        convert_minus_3_data = list(infra[f'{unit}_convert_minus_3'].items())[0]
+
+                        convert_minus_3 = convert_minus_3_data[0]
+                        convert_minus_3_amount = convert_minus_3_data[1]
+                    except KeyError:
+                        convert_minus_3 = None
+
 
                     """
                     print(f"Unit: {unit}")
@@ -626,6 +627,10 @@ def generate_province_revenue(): # Runs each hour
                     print(f"Couldn't update {unit} for province id: {province_id} due to exception: {e}")
                     continue
 
+            print(f"Successfully updated {unit} for for province id: {province_id}")
+
+        print(f"Successfully updated units for province id: {province_id}")
+            
     conn.close() # Closes the connection
 
 generate_province_revenue()
