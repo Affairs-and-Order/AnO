@@ -481,11 +481,12 @@ def war_with_id(war_id):
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
 # page 1: where you can select what units to attack with
-@app.route("/warchoose", methods=["GET", "POST"])
+@app.route("/warchoose/<int:war_id>", methods=["GET", "POST"])
 @login_required
 @check_required
-def warChoose():
+def warChoose(war_id):
     cId = session["user_id"]
+    # print("HEY", session.get("attack_units", None))
 
     if request.method == "GET":
 
@@ -495,7 +496,7 @@ def warChoose():
         units = normal_units.copy()
         units.update(special_units)
 
-        return render_template("warchoose.html", units=units)
+        return render_template("warchoose.html", units=units, war_id=war_id)
 
     elif request.method == "POST":
         # this post request happens when they click submit, upon which we would redirect to /waramount
@@ -517,7 +518,7 @@ def warChoose():
             selected_units[request.form.get("u3")] = 0
             unit_amount = 3
 
-        attack_units = Units(cId)
+        attack_units = Units(cId, war_id=war_id)
 
         # Output error if any
         return_error = attack_units.attach_units(selected_units, unit_amount)
