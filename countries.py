@@ -334,12 +334,18 @@ def update_info():
                 db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
                 db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
                 db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
+
+            connection.commit()  # Commits the data
+
         except:
-            pass
+            return error(400, "")
 
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
 
+        connection.commit()
+
     connection.commit()  # Commits the data
+
     connection.close()  # Closes the connection
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country

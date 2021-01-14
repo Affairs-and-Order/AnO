@@ -470,7 +470,7 @@ def generate_province_revenue(): # Runs each hour
                         try:
                             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
                         except:
-                            conn.rolback()
+                            conn.rollback()
                             pass
 
                     def take_energy():
@@ -489,23 +489,12 @@ def generate_province_revenue(): # Runs each hour
 
                     take_energy()
 
-                    plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
                     if unit == "farms":
                         
                         db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
                         land = db.fetchone()[0]
 
                         plus_amount *= land
-
-                    # Effect stuff
-                    if effect is not None:
-                        effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
-
-                    if effect_2 is not None:
-                        effect_2_amount *= unit_amount
-
-                    if effect_minus is not None:
-                        effect_minus_amount *= unit_amount
 
                     province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
                     percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
@@ -519,9 +508,11 @@ def generate_province_revenue(): # Runs each hour
                     # Function for _plus
                     if plus_data is not None:
 
+                        plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
+
                         if plus_resource in province_resources:
 
-                            cpr_statement = f"SELECT {plus_resource} FROM provinces" + " WHERE id=(%s)"
+                            cpr_statement = f"SELECT {plus_resource} FROM provinces" + " WHERE id=%s"
                             db.execute(cpr_statement, (province_id,))
                             current_plus_resource = int(db.fetchone()[0])
 
@@ -573,18 +564,23 @@ def generate_province_revenue(): # Runs each hour
                             if new_effect < 0:
                                 new_effect = 0
 
-                        db.execute(f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s", (new_effect, province_id))
+                        eff_update = f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s"
+                        db.execute(eff_update, (new_effect, province_id))
 
                     if effect is not None:
-                        # Does the effect for "_effect"
+                        effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
                         do_effect(effect, effect_amount, "+") # Default settings basically
                     if effect_2 is not None:
+                        effect_2_amount *= unit_amount
                         do_effect(effect_2, effect_2_amount, "+")
                     if effect_minus is not None:
+                        effect_minus_amount *= unit_amount
                         do_effect(effect_minus, effect_minus_amount, "-")
 
                     ## Convert plus
                     if convert_plus is not None:
+
+                        convert_plus_amount *= unit_amount
 
                         resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
                         db.execute(resource_s_statement, (user_id,))
@@ -615,10 +611,13 @@ def generate_province_revenue(): # Runs each hour
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
                     if convert_minus is not None:
+                        convert_minus_amount *= unit_amount
                         minus_convert(convert_minus, convert_minus_amount)
                     if convert_minus_2 is not None:
+                        convert_minus_2_amount *= unit_amount
                         minus_convert(convert_minus_2, convert_minus_2_amount)
                     if convert_minus_3 is not None:
+                        convert_minus_3_amount *= unit_amount
                         minus_convert(convert_minus_3, convert_minus_3_amount)
 
                     conn.commit() # Commits the changes
@@ -628,6 +627,8 @@ def generate_province_revenue(): # Runs each hour
                     continue
 
     conn.close() # Closes the connection
+
+generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
