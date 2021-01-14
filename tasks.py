@@ -30,6 +30,7 @@ def tax_income(): # Function for giving money to players
                 db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
                 population = int(db.fetchone()[0])
             except:
+                conn.rollback()
                 population = 0
 
             db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
@@ -43,6 +44,7 @@ def tax_income(): # Function for giving money to players
                 db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
                 land = db.fetchone()[0]
             except:
+                conn.rollback()
                 land = 0
 
             land_percentage = land * 0.02 # Land percentage up to 100% 
@@ -59,16 +61,19 @@ def tax_income(): # Function for giving money to players
                 try:
                     db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (new_consumer_goods, user_id))
                 except:
+                    conn.rollback()
                     pass
 
             try:
                 db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (new_income, user_id,))
             except:
+                conn.rollback()
                 pass
 
             conn.commit()
 
         except:
+            conn.rollback()
             continue
 
     conn.close()
@@ -97,6 +102,7 @@ def population_growth(): # Function for growing population
             db.execute("SELECT id, population FROM provinces WHERE userId=%s", (user_id,))
             provinces = db.fetchall()
         except:
+            conn.rollback()
             provinces = []
 
         for row in provinces:
@@ -112,6 +118,7 @@ def population_growth(): # Function for growing population
                     db.execute("SELECT cityCount FROM provinces WHERE id=%s", (prov_id,))
                     cities = int(db.fetchone()[0])
                 except TypeError:
+                    conn.rollback()
                     cities = 0
 
                 if cities > 0:
@@ -121,18 +128,21 @@ def population_growth(): # Function for growing population
                     db.execute("SELECT happiness FROM provinces WHERE id=%s", (prov_id,))
                     happiness = int(db.fetchone()[0])
                 except TypeError:
+                    conn.rollback()
                     happiness = 0
 
                 try:
                     db.execute("SELECT pollution FROM provinces WHERE id=%s", (prov_id,))
                     pollution = int(db.fetchone()[0])
                 except TypeError:
+                    conn.rollback()
                     pollution = 0
 
                 try:
                     db.execute("SELECT productivity FROM provinces WHERE id=%s", (prov_id,))
                     productivity = int(db.fetchone()[0])
                 except TypeError:
+                    conn.rollback()
                     productivity = 0
 
                 # Everything working until here as expected
@@ -173,14 +183,13 @@ def population_growth(): # Function for growing population
                 conn.commit()
 
             except Exception as e: 
+                conn.rollback()
                 print(f"Couldn't complete population growth for province: {prov_id}. Exception: {e}")
                 continue
 
     conn.close()
 
 def generate_province_revenue(): # Runs each hour
-
-    print("version changed.")
 
     # Dictionary for which units give what resources, etc
     infra = {
