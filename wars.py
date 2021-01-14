@@ -570,7 +570,7 @@ def warAmount():
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
         # TODO: rename *.jpg file related to units because not load in (or create a list of image name with the corresponding unit)
-        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, 
+        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list,
         unit_range=len(unitamounts), unitamounts=unitamounts, unit_interfaces=Units.allUnitInterfaces)
 
     elif request.method == "POST":
@@ -857,23 +857,22 @@ def declare_war():
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
+
     # Selects the country that the user is attacking
     defender = request.form.get("defender") # the problem is that declaring war through /country/id does not have a defender tag, but declaring war normally does
     war_message = request.form.get("description")
     war_type = request.form.get("warType")
 
-    attacker = Nation(session["user_id"])
-    defender = Nation(defender)
-    # attacker = Nation(11)
-    # defender = Nation(10)
+    attacker = Nation(int(session["user_id"]))
+    defender = Nation(int(defender))
 
     if attacker.id == defender.id:
         return error(400, "Can't declare war on yourself")
 
-    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, defender.id,))
+    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, attacker.id,))
     already_war_with = db.fetchall()
 
-    if (attacker.id, int(defender.id)) in already_war_with or (int(defender.id), attacker.id) in already_war_with:
+    if ((attacker.id, defender.id) in already_war_with) or ((defender.id, attacker.id) in already_war_with):
         return error(400, "You're already in a war with this country!")
 
     # Check province difference
@@ -931,7 +930,7 @@ def find_targets():
         influence = get_influence(cId)
         upper = influence * 2
         lower = influence * 0.9
-    
+
         db.execute("SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (cId,))
         province_range = db.fetchone()[0]
 
