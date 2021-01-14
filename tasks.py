@@ -180,6 +180,8 @@ def population_growth(): # Function for growing population
 
 def generate_province_revenue(): # Runs each hour
 
+    print("version changed.")
+
     # Dictionary for which units give what resources, etc
     infra = {
     ### Electricity (done) ###
