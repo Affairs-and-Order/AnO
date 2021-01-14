@@ -612,10 +612,13 @@ def generate_province_revenue(): # Runs each hour
                         minus_convert(convert_minus_3, convert_minus_3_amount)
 
                     conn.commit() # Commits the changes
-                except:
-                    pass
+                except Exception as e:
+                    print(f"Couldn't update {unit} for province id: {province_id} due to exception: {e}")
+                    continue
 
     conn.close() # Closes the connection
+
+generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
