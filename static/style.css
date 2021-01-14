@@ -63,6 +63,11 @@
     opacity: 0.6;
 }
 
+.iconbutton {
+    border: none;
+    background: transparent;
+}
+
 .iconlarge {
     font-size: 40px !important;
 }
@@ -303,7 +308,7 @@
     --foregroundSix: #f7f7f7;
     --foregroundSeven: #363945;
     --foregroundEight: #4a4c58;
-    --border: #e3e9f000;
+    --border: #5d606b;
     --tableOne: #42444e;
     --tableTwo: #4a4c58;
     --colorOne: rgb(255, 255, 255);
@@ -1044,7 +1049,7 @@ label {
 }
 
 .warflexparentcolors {
-    background: var(--foregroundTwo);
+    background: var(--foreground);
     border: 1.5px solid var(--border);
     transition: all 0.3s ease-in-out;
     width: 95%;
@@ -1085,6 +1090,12 @@ label {
     position: relative;
     background: var(--foregroundEight);
     background-attachment: fixed;
+}
+
+@media all and (max-width: 750px) {
+    .templatedivtopper {
+        background-attachment: unset;
+    }
 }
 
 .templatedivtopper img {
@@ -1734,7 +1745,7 @@ label {
 }
 
 .infodiv {
-    background: var(--foregroundTwo);
+    background: var(--foreground);
     border: 1.5px solid var(--border);
     padding: 8px;
     width: max-content;
@@ -1942,8 +1953,8 @@ button {
 }
 
 .templatetable {
-    padding: 8px;
-    margin: 8px auto;
+    padding: 6px;
+    margin: 4px auto;
     width: 90%;
     background: var(--tableTwo);
     box-shadow: rgba(58, 59, 69, 0.15) 0px 0px 48px 0px;
@@ -1957,10 +1968,10 @@ button {
 }
 
 .templatetable th {
-    height: 40px;
+    height: 25px;
     background-color: #00a7e1;
     color: white;
-    font-size: 20px;
+    font-size: 19px;
     column-span: 1;
     letter-spacing: 0.5px;
     font-weight: 450px;
@@ -1995,10 +2006,10 @@ button {
     display: table;
     font-weight: normal;
     color: var(--colorOne);
-    font-size: 15px;
+    font-size: 14px;
     position: relative;
     float: left;
-    line-height: 45px;
+    line-height: 30px;
     height: 0;
 }
 
@@ -3023,6 +3034,15 @@ button {
 }
 
 
+/*Coalitions*/
+
+.recruitmentlabel {
+    line-height: 60.8px;
+    height: 60.8px;
+    margin: 0;
+}
+
+
 /*create_coalition*/
 
 .coalitionimagepreview {
@@ -3041,7 +3061,7 @@ button {
 /*WARS*/
 
 .warflexparent {
-    background: var(--foregroundTwo);
+    background: var(--foreground);
     border: 1.5px solid var(--border);
     transition: all 0.3s ease-in-out;
     cursor: pointer;
@@ -3049,6 +3069,7 @@ button {
     margin: 12px auto;
     position: relative !important;
     border-radius: 4px;
+    padding: 8px 0;
 }
 
 .warflexparent:hover {
@@ -3057,6 +3078,10 @@ button {
 
 .warflexparent image:hover {
     transform: scale(1);
+}
+
+.warflexparent img {
+    height: 200px;
 }
 
 .warflexlink {

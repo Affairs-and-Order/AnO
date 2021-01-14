@@ -249,13 +249,13 @@
                         <tr>
                             <td><span class="material-icons-outlined">
                                 sentiment_satisfied
-                                </span>Average Happiness:</td>
+                                </span>Average happiness:</td>
                             <td>{{ happiness }}%</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
                                 arrow_circle_up
-                                </span>Average Productivity:</td>
+                                </span>Average productivity:</td>
                             <td>{{ happiness }}%</td>
                         </tr>
                         <!--
@@ -289,7 +289,7 @@
             {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %}
             <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
-                    <div class="templatedivflex2left ">
+                    <div class="templatedivflex2left vanilla">
 
                         <table class="templatetable inverttable ">
                             <tr>
@@ -330,7 +330,7 @@
                         </table>
 
                     </div>
-                    <div class="templatedivflex2left">
+                    <div class="templatedivflex2left vanilla">
 
                         <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" />
 
@@ -343,6 +343,9 @@
         <!--Revenue-->
         <div class="revenue" id="revenue">
 
+            This page is not currently functional
+
+            <!--
 
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
@@ -528,92 +531,97 @@
                     <td>{{ gross }}%</td>
                 </tr>
             </table>
+            -->
             <!--show this if user is in a coalition-->
-            <table class="templatetable">
-                <tr>
-                    <th><span class="material-icons-outlined">
+            <!--
+        <table class="templatetable">
+            <tr>
+                <th><span class="material-icons-outlined">
                         article
                         </span>Before Tax Raw</th>
-                </tr>
-                <tr>
-                    <td>Before tax:</td>
-                    <td>{{ gross }}%</td>
-                </tr>
-                <tr>
-                    <td>Monetary before tax:</td>
-                    <td>{{ monetaryGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Rations:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Oil:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Coal:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Uranium:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Iron:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Lead:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Bauxite:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Copper:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Lumber:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <th><span class="material-icons-outlined">
+            </tr>
+            <tr>
+                <td>Before tax:</td>
+                <td>{{ gross }}%</td>
+            </tr>
+            <tr>
+                <td>Monetary before tax:</td>
+                <td>{{ monetaryGross }}%</td>
+            </tr>
+            <tr>
+                <td>Rations:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Oil:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Coal:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Uranium:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Iron:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Lead:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Bauxite:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Copper:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Lumber:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <th><span class="material-icons-outlined">
                         article
                         </span>Before Tax Processed</th>
-                </tr>
-                <tr>
-                    <td>Components:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Steel:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Consumer goods:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Aluminum:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Gasoline:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-                <tr>
-                    <td>Ammunition:</td>
-                    <td>{{ rationsGross }}%</td>
-                </tr>
-            </table>
-
+            </tr>
+            <tr>
+                <td>Components:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Steel:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Consumer goods:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Aluminum:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Gasoline:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+            <tr>
+                <td>Ammunition:</td>
+                <td>{{ rationsGross }}%</td>
+            </tr>
+        </table>
+-->
         </div>
         <!--News-->
+
         <div class="news" id="news">
 
+            This page is not currently functional
+            <!--
             <table class="templatetable">
                 <tr>
                     <th><span class="material-icons-outlined">
@@ -723,7 +731,7 @@
                     <td class="talltabletd">You gave [[ amount ]] in return for [[ amount ]]</td>
                 </tr>
             </table>
-
+            -->
         </div>
         <!--Edit-->
         <div class="edit" id="edit">
@@ -822,7 +830,7 @@
                             <label for="countryLocation">Change location</label>
                             <select class="templateselect" name="countryLocation">
 
-                                            <option class="templateoption" disabled>Location</option>
+                                            <option value="none" class="templateoption" selected="selected">Location</option>
                                             <option value="Tundra" class="templateoption">Tundra</option>
                                             <option value="Savanna" class="templateoption">Savanna</option>
                                             <option value="Desert" class="templateoption">Desert</option>

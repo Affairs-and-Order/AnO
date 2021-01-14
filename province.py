@@ -139,7 +139,7 @@ def province(pId):
 
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
         consumer_goods = int(db.fetchone()[0])
-        consumer_goods_needed = round(population * 0.00005)
+        consumer_goods_needed = round(population * 0.000005)
         new_consumer_goods = consumer_goods - consumer_goods_needed
 
         if new_consumer_goods > 0:
@@ -367,7 +367,10 @@ def province_sell_buy(way, units, province_id):
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
         gold = int(db.fetchone()[0])
 
-        wantedUnits = int(request.form.get(units))
+        try:
+            wantedUnits = int(request.form.get(units))
+        except:
+            return error(400, "You have to enter a unit amount")
 
         if wantedUnits < 1:
             return error(400, "Units cannot be less than 1")
@@ -537,14 +540,14 @@ def province_sell_buy(way, units, province_id):
         resources_used = []
 
         try:
-            resource_data = next(iter(unit_prices[f'{units}_resource'].items()))
+            resource_data = list(unit_prices[f'{units}_resource'].items())[0]
 
             resources_used.append(resource_data)
         except KeyError:
             pass
 
         try:
-            resource2_data = next(iter(unit_prices[f'{units}_resource2'].items()))
+            resource2_data = list(unit_prices[f'{units}_resource2'].items())[0]
 
             resources_used.append(resource2_data)
         except KeyError:

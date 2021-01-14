@@ -145,7 +145,7 @@
             });
         </script>
 
-        <form id="next_button" action="/warchoose" method="post">
+        <form id="next_button" action="/warchoose/{{ war_id }}" method="post">
             <!-- TODO: disable next button if checkNum < 3 -->
             <input type="hidden" name="u1">
             <input type="hidden" name="u2">
@@ -206,7 +206,7 @@
         </script>
 
 
-        <form id="next_button" action="/warchoose" method="post">
+        <form id="next_button" action="/warchoose/{{ war_id }}" method="post">
             <input type="hidden" name="special_unit">
 
             <button class="templatedivbutton templatecenteredbutton" onclick="submit_special(event)">

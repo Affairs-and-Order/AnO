@@ -64,8 +64,7 @@
 
                 });
             </script>
-            {% endif %}
-            {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
+            {% endif %} {% if userInCurCol and user_role not in ["leader", "deputy_leader"] %}
             <div class="templatedivflex2left" id="coalitionmember" onclick="coalitionmember()">
                 <h3 class="smallheader">Member Panel</h3>
             </div>
@@ -545,14 +544,14 @@
                                     <div class="templatedivflex2 menuflex">
                                         <div class="templatedivflex2left">
 
-                                            <button formaction="/accept_bank_request/{{ data[3] }}"><span class="material-icons iconblue">
+                                            <button formaction="/accept_bank_request/{{ data[3] }}" class="iconbutton"><span class="material-icons iconblue">
                                             check_circle_outline
                                         </span></button>
 
                                         </div>
                                         <div class="templatedivflex2left">
 
-                                            <button formaction="/remove_bank_request/{{ data[3] }}"><span class="material-icons iconred">
+                                            <button formaction="/remove_bank_request/{{ data[3] }}" class="iconbutton"><span class="material-icons iconred">
                                             remove_circle_outline
                                             </span></button>
 
@@ -848,8 +847,7 @@
                     </table>
                 </div>
             </div>
-            {% endif %} 
-            {% if user_role == "leader" %}
+            {% endif %} {% if user_role == "leader" %}
             <h2 class="templatecontentheaderleft">General</h2>
 
             <form action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
@@ -931,167 +929,167 @@
                     check
                     </span>Update</button>
                 </div>
+            </form>
+
+            <h2 class="templatecontentheaderleft">Danger Zone</h2>
+
+            <form method="POST">
+                <div class="infodiv">
+                    <div class="templatedivflex2 divflex2center menuflex">
+                        {% if user_role == "leader" %}
+                        <div class="templatedivflex2left">
+
+                            <button type="submit" formaction="/delete_coalition/{{ colId }}" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                                highlight_off
+                                </span>Delete Coalition</button>
+
+                        </div>
+                        {% endif %} {% if userInCurCol and user_role != "leader" %}
+                        <div class="templatedivflex2left">
+
+                            <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                                arrow_forward
+                                </span>Leave Coalition</button>
+
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+            <!--MEMBER-->
+            <div class="member" id="member">
+
+                <h2 class="templatecontentheaderleft">Bank</h2>
+
+                <div class="infodiv">
+
+                    <form method="POST">
+                        <div class="templateoutertablediv inverttable">
+                            <table class="templatetable templatetable2">
+                                <tr>
+                                    <th>Resource</th>
+                                    <th>My Resources</th>
+                                    <th>Action</th>
+                                </tr>
+                                <tr>
+                                    <td>Money:</td>
+                                    <td>{{ gross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="money" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Rations:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="rations" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Oil:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="oil" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Coal:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="coal" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Uranium:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="uranium" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Iron:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="iron" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Lead:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="lead" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Bauxite:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="bauxite" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Copper:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="copper" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Lumber:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="lumber" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Components:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="components" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Steel:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="steel" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Consumer goods:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="consumer_goods" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Aluminum:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="aluminium" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Gasoline:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="gasoline" placeholder="Amount" /></td>
+                                </tr>
+                                <tr>
+                                    <td>Ammunition:</td>
+                                    <td>{{ rationsGross }}%</td>
+                                    <td><input class="loginsignupinput" autocomplete="on" name="ammunition" placeholder="Amount" /></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="templatedivflex2 divflex2center">
+                            <div class="templatedivflex2left">
+
+                                <button formaction="/request_from_bank/{{ colId }}" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            feedback
+                            </span>Request</button>
+
+                            </div>
+                            <div class="templatedivflex2left">
+
+                                <button formaction="/deposit_into_bank/{{ colId }}" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            arrow_downward
+                            </span>Deposit</button>
+
+                            </div>
+                        </div>
+                </div>
                 </form>
 
                 <h2 class="templatecontentheaderleft">Danger Zone</h2>
 
-                <form method="POST">
-                    <div class="infodiv">
-                        <div class="templatedivflex2 divflex2center menuflex">
-                            {% if user_role == "leader" %}
-                            <div class="templatedivflex2left">
+                <div class="infodiv">
+                    <form action="/leave/{{ colId }}" method="POST">
 
-                                <button type="submit" formaction="/delete_coalition/{{ colId }}" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
-                                highlight_off
-                                </span>Delete Coalition</button>
-
-                            </div>
-                            {% endif %} {% if userInCurCol and user_role != "leader" %}
-                            <div class="templatedivflex2left">
-
-                                <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
-                                arrow_forward
-                                </span>Leave Coalition</button>
-
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-                </form>
-                {% endif %}
-                <!--MEMBER-->
-                <div class="member" id="member">
-
-                    <h2 class="templatecontentheaderleft">Bank</h2>
-
-                    <div class="infodiv">
-
-                        <form method="POST">
-                            <div class="templateoutertablediv inverttable">
-                                <table class="templatetable templatetable2">
-                                    <tr>
-                                        <th>Resource</th>
-                                        <th>My Resources</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Money:</td>
-                                        <td>{{ gross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="money" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Rations:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="rations" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Oil:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="oil" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Coal:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="coal" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Uranium:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="uranium" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Iron:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="iron" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lead:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="lead" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Bauxite:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="bauxite" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Copper:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="copper" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lumber:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="lumber" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Components:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="components" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Steel:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="steel" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Consumer goods:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="consumer_goods" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Aluminum:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="aluminium" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Gasoline:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="gasoline" placeholder="Amount" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Ammunition:</td>
-                                        <td>{{ rationsGross }}%</td>
-                                        <td><input class="loginsignupinput" autocomplete="on" name="ammunition" placeholder="Amount" /></td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class="templatedivflex2 divflex2center">
-                                <div class="templatedivflex2left">
-
-                                    <button formaction="/request_from_bank/{{ colId }}" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                            feedback
-                            </span>Request</button>
-
-                                </div>
-                                <div class="templatedivflex2left">
-
-                                    <button formaction="/deposit_into_bank/{{ colId }}" class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                            arrow_downward
-                            </span>Deposit</button>
-
-                                </div>
-                            </div>
-                    </div>
-                    </form>
-
-                    <h2 class="templatecontentheaderleft">Danger Zone</h2>
-
-                    <div class="infodiv">
-                        <form action="/leave/{{ colId }}" method="POST">
-
-                            <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                        <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
                     arrow_forward
                     </span>Leave Coalition</button>
 
-                        </form>
-                    </div>
-
+                    </form>
                 </div>
 
-                <!-- currently disabled this because of bug, moved it elsewhere-->
-                <!--END-->
+            </div>
+
+            <!-- currently disabled this because of bug, moved it elsewhere-->
+            <!--END-->
 
 
         </div>

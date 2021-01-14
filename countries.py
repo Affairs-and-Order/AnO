@@ -136,6 +136,10 @@ def countries():  # TODO: fix shit ton of repeated code in function
     except TypeError:
         upperinf = None
 
+    try:
+        province_range = int(request.values["province_range"])
+    except:
+        province_range = None
 
     # Optimize
     # if not search and upperinf is None and lowerinf is None:
@@ -168,6 +172,18 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     # db.execute("SELECT username FROM users ORDER BY id")
     # names = db.fetchall()
+
+    # db.execute("SELECT username FROM users ORDER BY id")
+    # names = db.fetchall()
+    # Check province range
+    if province_range is not None:
+        for user in users:
+            user_id = user[0]
+            db.execute(f"SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (user_id,))
+            target_province = db.fetchone()[0]
+            print(target_province)
+            if abs(target_province-province_range) > 1:
+                users.remove(user)
 
     populations = []
     coalition_ids = []
@@ -302,28 +318,37 @@ def update_info():
 
     continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
 
-    if new_location not in continents:
+    if new_location not in continents and new_location not in ["", "none"]:
         return error(400, "No such continent")
 
-    if not new_location == "":
+    if new_location not in ["", "none"]:
 
-        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
-        provinces = db.fetchall()[0]
+        try:
+            db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+            provinces = db.fetchall()[0]
 
-        for province_id in provinces:
+            for province_id in provinces:
 
-            db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
+                db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
+
+            connection.commit()  # Commits the data
+
+        except:
+            return error(400, "")
 
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
 
+        connection.commit()
+
     connection.commit()  # Commits the data
+
     connection.close()  # Closes the connection
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country

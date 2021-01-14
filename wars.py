@@ -481,11 +481,12 @@ def war_with_id(war_id):
 # the flask route that activates when you click attack on a nation in your wars page.
 # check if you have enough supplies.
 # page 1: where you can select what units to attack with
-@app.route("/warchoose", methods=["GET", "POST"])
+@app.route("/warchoose/<int:war_id>", methods=["GET", "POST"])
 @login_required
 @check_required
-def warChoose():
+def warChoose(war_id):
     cId = session["user_id"]
+    # print("HEY", session.get("attack_units", None))
 
     if request.method == "GET":
 
@@ -495,7 +496,7 @@ def warChoose():
         units = normal_units.copy()
         units.update(special_units)
 
-        return render_template("warchoose.html", units=units)
+        return render_template("warchoose.html", units=units, war_id=war_id)
 
     elif request.method == "POST":
         # this post request happens when they click submit, upon which we would redirect to /waramount
@@ -517,7 +518,7 @@ def warChoose():
             selected_units[request.form.get("u3")] = 0
             unit_amount = 3
 
-        attack_units = Units(cId)
+        attack_units = Units(cId, war_id=war_id)
 
         # Output error if any
         return_error = attack_units.attach_units(selected_units, unit_amount)
@@ -570,7 +571,7 @@ def warAmount():
 
         # if the user comes to this page by bookmark, it might crash because session["attack_units"] wouldn"t exist
         # TODO: rename *.jpg file related to units because not load in (or create a list of image name with the corresponding unit)
-        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list, 
+        return render_template("waramount.html", available_supplies=attack_units.available_supplies, selected_units=attack_units.selected_units_list,
         unit_range=len(unitamounts), unitamounts=unitamounts, unit_interfaces=Units.allUnitInterfaces)
 
     elif request.method == "POST":
@@ -857,29 +858,29 @@ def declare_war():
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
+
     # Selects the country that the user is attacking
     defender = request.form.get("defender") # the problem is that declaring war through /country/id does not have a defender tag, but declaring war normally does
     war_message = request.form.get("description")
     war_type = request.form.get("warType")
 
-    attacker = Nation(session["user_id"])
-    defender = Nation(defender)
-    # attacker = Nation(11)
-    # defender = Nation(10)
+    attacker = Nation(int(session["user_id"]))
+    defender = Nation(int(defender))
 
     if attacker.id == defender.id:
         return error(400, "Can't declare war on yourself")
 
-    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, defender.id,))
+    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, attacker.id,))
     already_war_with = db.fetchall()
 
-    if (attacker.id, int(defender.id)) in already_war_with or (int(defender.id), attacker.id) in already_war_with:
+    if ((attacker.id, defender.id) in already_war_with) or ((defender.id, attacker.id) in already_war_with):
         return error(400, "You're already in a war with this country!")
 
     # Check province difference
     attacker_provinces = attacker.get_provinces()["provinces_number"]
     defender_provinces = defender.get_provinces()["provinces_number"]
 
+    # TODO: might put this into abs() because if defender_provinces > attacker_provinces then the > 1 won't be true
     if (attacker_provinces - defender_provinces > 1):
         return error(400, "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
     if (defender_provinces - attacker_provinces > 3):
@@ -930,22 +931,11 @@ def find_targets():
         influence = get_influence(cId)
         upper = influence * 2
         lower = influence * 0.9
-        return redirect(f"/countries?lowerinf={lower}&upperinf={upper}")
-        # return redirect(f"/countries/search?=upperinf={upper}&lowerinf={lower}")
 
-    # if request.method == "GET":
-    #     return render_template("find_targets.html")
-    # else:
-    #     # TODO: maybe delete the sql fetch and create a centralized way to fetch it
-    #
+        db.execute("SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (cId,))
+        province_range = db.fetchone()[0]
 
-    #     defender = request.form.get("defender")
-    #     db.execute("SELECT id FROM users WHERE username=(%s)", (defender,))
-    #     defender_id = db.fetchone()
-    #     if defender_id:
-    #         return redirect(f"/country/id={defender_id[0]}")
-    #     else:
-    #         return error(400, "No such country")
+        return redirect(f"/countries?lowerinf={lower}&upperinf={upper}&province_range={province_range}")
 
 @app.route("/defense", methods=["GET", "POST"])
 @login_required
@@ -954,6 +944,7 @@ def defense():
     units = Military.get_military(cId) # returns dictionary {'soldiers': 1000}
 
     if request.method == "GET":
+
         return render_template("defense.html", units=units)
 
     elif request.method == "POST":
@@ -986,4 +977,4 @@ def defense():
         # should be a back button on this page to go back to wars so dw about some infinite loop
         connection.close()
 
-        return render_template("defense.html", units=units)
+        return redirect("/wars")

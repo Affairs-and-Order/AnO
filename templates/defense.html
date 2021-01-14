@@ -16,7 +16,7 @@
             Pick 3 units to defend your country for when you go to war. Choose wisely to counter your enemies attacking units.
         </p>
 
-        <div class="templatedivflex2 menuflex">
+        <div class="templatedivflex2 menuflex unitcardparent">
             <label for="1" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Soldiers</ul>
@@ -53,8 +53,6 @@
                 </span>
 
             </label>
-        </div>
-        <div class="templatedivflex2 menuflex">
             <label for="4" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Fighter Jets</ul>
@@ -91,8 +89,6 @@
                 </span>
 
             </label>
-        </div>
-        <div class="templatedivflex2 menuflex">
             <label for="7" class="templatedivflex2left unitcard">
 
                 <ul class="bold medium">Submarines</ul>
@@ -155,9 +151,9 @@
             <input type="hidden" name="u1">
             <input type="hidden" name="u2">
             <input type="hidden" name="u3">
-            <button class="templatedivbutton templatecenteredbutton" onclick="submit_next(event)">
-                        <span class="material-icons-outlined">arrow_forward</span>Next
-                    </button>
+            <a href="/wars" class=" templatedivbutton templatecenteredbutton " onclick="submit_next(event) ">
+                <span class="material-icons-outlined ">arrow_forward</span>Next
+            </a>
         </form>
     </div>
 </div>

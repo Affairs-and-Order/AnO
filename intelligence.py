@@ -26,7 +26,7 @@ def intelligence():
         cId = session["user_id"]
 
         # delete entries older than 14 days
-        # db.execute("DELETE FROM spyentries WHERE date<(?)",
+        # db.execute("DELETE FROM spyentries WHERE date<%s",
         #            (floor(time.time())-86400*14,))
 
         db.execute("SELECT username FROM users WHERE id=%s", (cId,))
@@ -70,7 +70,7 @@ def intelligence():
             except:
                 spyEntries[i]['eName'] = 'Enemy Nation Name'
                 # delete the spy entry if the spyee doesnt exist anymore
-                # db.execute("DELETE FROM spyentries WHERE id=(?)", (eId,))
+                # db.execute("DELETE FROM spyentries WHERE id=%s", (eId,))
                 # commented so we dont delete test spyentries
                 # return "enemy nation doesn't exist"
 

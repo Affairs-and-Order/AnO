@@ -212,6 +212,10 @@ def eventCheck():
 def page_not_found(error):
     return render_template("error.html", code=404, message="Page not found!")
 
+@app.template_filter()
+def commas(value):
+    return "{:,}".format(value)
+
 @app.context_processor
 def inject_user():
     def get_resource_amount():

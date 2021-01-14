@@ -141,7 +141,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         price = mil_dict[f"{units}_price"]
 
-        resource1_data = next(iter(mil_dict[f'{units}_resource'].items()))
+        resource1_data = list(mil_dict[f'{units}_resource'].items())[0]
 
         resource1 = resource1_data[0]
         resource1_amount = resource1_data[1]
@@ -153,7 +153,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         resource_dict.update({'resource_1': {'resource': resource1, 'amount': resource1_amount}})
 
         try:
-            resource2_data = next(iter(mil_dict[f'{units}_resource2'].items()))
+            resource2_data = list(mil_dict[f'{units}_resource2'].items())[0]
 
             resource2 = resource2_data[0]
             resource2_amount = resource2_data[1]
@@ -190,12 +190,12 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         if way == "sell":
 
             if int(wantedUnits) > int(currentUnits):  # checks if unit is legits
-                return error(400, "You don't have the correct unit amount!")
+                return error(400, "You don't have enough units to sell")
 
             unitUpd = str(f"UPDATE military SET {units}=" + "%s WHERE id=%s")
             db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), cId))
 
-            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((int(gold) + int(wantedUnits) * int(price)), cId,))  # clean
+            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((int(gold) + totalPrice), cId,))  # clean
             flash(f"You sold {wantedUnits} {units}")
 
             def update_resource_plus(x):
@@ -207,7 +207,10 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 db.execute(current_resource_statement, (cId,))
                 current_resource = int(db.fetchone()[0])
 
-                new_resource = current_resource + resource_amount
+                new_resource = current_resource + (resource_amount * wantedUnits)
+
+                if new_resource < 0:
+                    return error(400, f"You don't have enough {resource}")
 
                 resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                 db.execute(resource_update_statement, (new_resource, cId,))
@@ -227,6 +230,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 return error(400, "Don't have enough gold for that")
 
             def update_resource_minus(x):
+
                 resource = resource_dict[f'resource_{x}']['resource']
                 resource_amount = resource_dict[f'resource_{x}']['amount']
 
@@ -234,10 +238,10 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 db.execute(current_resource_statement, (cId,))
                 current_resource = int(db.fetchone()[0])
 
-                if current_resource < resource_amount:
+                if current_resource < resource_amount * wantedUnits:
                     return -1
 
-                new_resource = current_resource - resource_amount
+                new_resource = current_resource - (resource_amount * wantedUnits)
 
                 # TODO: roll back when error
                 # TODO; this may cause problems because it decreases the resource amount when: then previous didn't trow error therefore it is decreased but the second returned error
@@ -251,7 +255,6 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 # IF error is returned
                 if err == -1:
                     return error(400, "You don't have enough resources")
-
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
             # fix weird table
