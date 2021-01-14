@@ -33,13 +33,10 @@ def tax_income(): # Function for giving money to players
 
             db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
             consumer_goods = int(db.fetchone()[0])
-            consumer_goods_needed = round(population * 0.000005)
+            consumer_goods_needed = round(population * 0.00005)
             new_consumer_goods = consumer_goods - consumer_goods_needed
 
-            db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
-            money = int(db.fetchone()[0])
-
-            new_income = money + population * 0.01
+            population_score = population * 0.01
 
             if new_consumer_goods >= 0:
                 new_income *= 1.5
@@ -49,7 +46,7 @@ def tax_income(): # Function for giving money to players
                     pass
 
             try:
-                db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_income, user_id,))
+                db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (population_score, user_id,))
             except:
                 pass
 
