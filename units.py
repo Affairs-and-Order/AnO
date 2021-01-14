@@ -308,12 +308,13 @@ class Units(Military):
         - bonuses: bonus gained from general or something like this, type: integer (i don't know if this will be implemented or not)
     """
 
-    def __init__(self, user_id, selected_units: dict=None, bonuses: int=None, selected_units_list: list=None):
+    def __init__(self, user_id, selected_units: dict=None, bonuses: int=None, selected_units_list: list=None, war_id=None):
         self.user_id = user_id
         self.selected_units = selected_units
         self.bonuses = bonuses
         self.supply_costs = 0
         self.available_supplies = None
+        self.war_id = war_id
 
         # selected_units_list is needed at: Nations.py/Military->fight();
         # a list of selected_units keys
@@ -378,10 +379,7 @@ class Units(Military):
 
                         if supply_check:
                             return supply_check
-
                         break
-
-                print(units_count, "Csdads")
                 units_count -= 1
         except Exception as e:
             print(e)
@@ -529,27 +527,25 @@ class Units(Military):
     # It also saves the remaining morale to the database
     def attack_cost(self, cost: int) -> str:
         if self.available_supplies is None:
-
             connection = psycopg2.connect(
                 database=os.getenv("PG_DATABASE"),
                 user=os.getenv("PG_USER"),
                 password=os.getenv("PG_PASSWORD"),
                 host=os.getenv("PG_HOST"),
                 port=os.getenv("PG_PORT"))
-
             db = connection.cursor()
 
-            db.execute("SELECT attacker FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
+            db.execute("SELECT attacker FROM wars WHERE id=(%s)", (self.war_id,))
             attacker_id = db.fetchone()
 
             # If the user is the attacker (maybe optimize this to store the user role in the war)
             if attacker_id:
-                db.execute("SELECT attacker_supplies FROM wars WHERE attacker=(%s) AND peace_date IS NULL", (self.user_id,))
+                db.execute("SELECT attacker_supplies FROM wars WHERE id=(%s)", (self.war_id,))
                 self.available_supplies = db.fetchone()[0]
 
             # the user is defender
             else:
-                db.execute("SELECT defender_supplies FROM wars WHERE defender=(%s) AND peace_date IS NULL", (self.user_id,))
+                db.execute("SELECT defender_supplies FROM wars WHERE id=(%s)", (self.war_id,))
                 self.available_supplies = db.fetchone()[0]
 
         if self.available_supplies < 200:

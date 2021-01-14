@@ -1099,13 +1099,25 @@ def offer_treaty():
     db = connection.cursor()
 
     cId = session["user_id"]
-
+    
     col2_name = request.form.get("coalition_name")
-    db.execute("SELECT id FROM colNames WHERE name=(%s)", (col2_name,))
-    col2_id = db.fetchone()[0]
+    if col2_name == "":
+        return error(400, "Please enter a coalition name")
 
-    db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
-    user_coalition = db.fetchone()[0]
+    try:
+        db.execute("SELECT id FROM colNames WHERE name=(%s)", (col2_name,))
+        col2_id = db.fetchone()[0]
+    except:
+        return error(400, f"No such coalition: {col2_name}")
+
+    try:
+        db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
+        user_coalition = db.fetchone()[0]
+    except:
+        return error(400, "You are not in a coalition")
+
+    if col2_id == user_coalition:
+        return error(400, "Cannot declare treaty on your own coalition")
 
     user_role = get_user_role(cId)
 
@@ -1113,9 +1125,16 @@ def offer_treaty():
         return error(400, "You aren't the leader of this coalition")
 
     treaty_name = request.form.get("treaty_name")
-    treaty_message = request.form.get("treaty_message")
+    if treaty_name == "":
+        return error(400, "Please enter a treaty name")
 
-    db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_name, treaty_description) VALUES (%s, %s, %s, %s)", (user_coalition, col2_id, treaty_name, treaty_message))
+    treaty_message = request.form.get("treaty_message")
+    if treaty_message == "":
+        return error(400, "Please enter a treaty description")
+    try:
+        db.execute("INSERT INTO treaties (col1_id, col2_id, treaty_name, treaty_description) VALUES (%s, %s, %s, %s)", (user_coalition, col2_id, treaty_name, treaty_message))
+    except:
+        return error(400, "Error inserting into database. Please contact the website admins")
 
     connection.commit()
     connection.close()
