@@ -10,8 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 
-@login_required
 @app.route("/military", methods=["GET", "POST"])
+@login_required
 def military():
 
     connection = psycopg2.connect(
@@ -36,8 +36,8 @@ def military():
 
         return render_template("military.html", units=units, limits=limits)
 
-@login_required
 @app.route("/<way>/<units>", methods=["POST"])
+@login_required
 def military_sell_buy(way, units):  # WARNING: function used only for military
 
     if request.method == "POST":
@@ -117,8 +117,8 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "spies_price": 25000, # Cost 25k
             "spies_resource": {"rations": 50}, # Costs 50 rations
 
-            "ICBMs_price": 4000000, # Cost 4 million
-            "ICMBs_resource": {"steel": 350}, # Costs 350 steel
+            "icbms_price": 4000000, # Cost 4 million
+            "icbms_resource": {"steel": 350}, # Costs 350 steel
 
             "nukes_price": 12000000, # Cost 12 million
             "nukes_resource": {"uranium": 800}, # Costs 800 uranium
