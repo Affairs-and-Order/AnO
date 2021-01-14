@@ -420,16 +420,14 @@ def generate_province_revenue(): # Runs each hour
             province_id = province_id[0]
 
             try:
-                    
                 db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
                 user_id = db.fetchone()[0]
 
                 unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
                 db.execute(unit_amount_stat, (province_id,))
                 unit_amount = db.fetchone()[0]
-
             except:
-                unit_amount = 0
+                conn.rollback()
                 continue
 
             # If that user doesn't have any units of this type, skip
@@ -461,6 +459,7 @@ def generate_province_revenue(): # Runs each hour
                         try:
                             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
                         except:
+                            conn.rolback()
                             pass
 
                     def take_energy():
@@ -613,12 +612,11 @@ def generate_province_revenue(): # Runs each hour
 
                     conn.commit() # Commits the changes
                 except Exception as e:
+                    conn.rollback()
                     print(f"Couldn't update {unit} for province id: {province_id} due to exception: {e}")
                     continue
 
     conn.close() # Closes the connection
-
-generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
