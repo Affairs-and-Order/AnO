@@ -257,12 +257,12 @@ def generate_province_revenue(): # Runs each hour
     ### Industry (Done) ###
 
     'farms_money': 3000, # Costs $3k
-    'farms_plus': {'rations': 30},
+    'farms_plus': {'rations': 8},
     'farms_pollution': 1,
 
     'pumpjacks_money': 10000, # Costs $10k
     'pumpjacks_plus': {'oil': 23},
-    'pumpjacks_pollution': 1.5,
+    'pumpjacks_pollution': 2,
 
     'coal_mines_money': 10000, # Costs $10k
     'coal_mines_plus': {'coal': 26},
@@ -480,6 +480,12 @@ def generate_province_revenue(): # Runs each hour
                     take_energy()
 
                     plus_amount *= unit_amount # Multiply the resource revenue by the amount of units the user has
+                    if unit == "farms":
+                        
+                        db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                        land = db.fetchone()[0]
+
+                        plus_amount *= land
 
                     # Effect stuff
                     if effect is not None:
@@ -527,12 +533,8 @@ def generate_province_revenue(): # Runs each hour
                             db.execute(cpr_statement, (user_id,))
                             current_plus_resource = int(db.fetchone()[0])
 
-                            print(current_plus_resource)
-
                             # Adding resource
                             new_resource_number = current_plus_resource + plus_amount # 12 is how many uranium it generates
-
-                            print(new_resource_number)
 
                             if new_resource_number < 0:
                                 new_resource_number = 0
