@@ -395,12 +395,18 @@ def generate_province_revenue(): # Runs each hour
 
             province_id = province_id[0]
 
-            db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
-            user_id = db.fetchone()[0]
+            try:
+                    
+                db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
+                user_id = db.fetchone()[0]
 
-            unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
-            db.execute(unit_amount_stat, (province_id,))
-            unit_amount = db.fetchone()[0]
+                unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
+                db.execute(unit_amount_stat, (province_id,))
+                unit_amount = db.fetchone()[0]
+
+            except:
+                unit_amount = 0
+                continue
 
             # If that user doesn't have any units of this type, skip
             if unit_amount == 0:

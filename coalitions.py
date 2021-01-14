@@ -1107,6 +1107,9 @@ def offer_treaty():
     db.execute("SELECT colId FROM coalitions WHERE userId=(%s)", (cId,))
     user_coalition = db.fetchone()[0]
 
+    if col2_id == user_coalition:
+        return error(400, "Cannot declare treaty on your own coalition")
+
     user_role = get_user_role(cId)
 
     if user_role not in  ["leader", "deputy_leader", "foreign_ambassador"]:
