@@ -289,7 +289,7 @@
             {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %}
             <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
-                    <div class="templatedivflex2left ">
+                    <div class="templatedivflex2left vanilla">
 
                         <table class="templatetable inverttable ">
                             <tr>
@@ -330,7 +330,7 @@
                         </table>
 
                     </div>
-                    <div class="templatedivflex2left">
+                    <div class="templatedivflex2left vanilla">
 
                         <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" />
 
