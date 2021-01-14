@@ -63,6 +63,9 @@
                 </ul>
                 {% endif %}
             </div>
+
+
+
         </div>
 
         <div class="templatedivflex2 menuflex">
@@ -78,7 +81,7 @@
                         <td><span class="material-icons-outlined">
                                 people_alt
                             </span>Population:</td>
-                        <td>{{ province['population'] }}</td>
+                        <td>{{ province['population'] | commas }}</td>
                     </tr>
                     <tr>
                         <td><span class="material-icons-outlined">
@@ -122,7 +125,7 @@
                         <td><span class="material-icons-outlined">
                             power
                             </span>Electricity:</td>
-                        <td>{{ province['electricity'] }}</td>
+                        <td>{{ province['electricity'] | commas }}</td>
                         <!-- how much you have out of how much you need -->
                     </tr>
                 </table>
