@@ -355,11 +355,11 @@ def war():
 def warresult():
     return render_template("warresult.html")
 
-"""
+
 @app.route("/mass_purchase", methods=["GET"])
 def mass_purchase():
     return render_template("mass_purchase.html")
-"""
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', use_reloader=True)
