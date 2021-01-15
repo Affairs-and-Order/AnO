@@ -141,7 +141,7 @@
                                 people_alt
                                 </span>Population:</td>
                             {% if population != None %}
-                            <td>{{ population }}</td>
+                            <td>{{ population|round }}</td>
                             {% else %}
                             <td>0</td>
                             {% endif %}
@@ -250,13 +250,13 @@
                             <td><span class="material-icons-outlined">
                                 sentiment_satisfied
                                 </span>Average happiness:</td>
-                            <td>{{ happiness }}%</td>
+                            <td>{{ happiness|round }}%</td>
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
                                 arrow_circle_up
                                 </span>Average productivity:</td>
-                            <td>{{ productivity }}%</td>
+                            <td>{{ productivity|round }}%</td>
                         </tr>
                         <!--
                         <tr>
@@ -287,11 +287,13 @@
 
             <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
             {% for province in provinces %} 
-                {% set provinceName = province[0] %} 
-                {% set provinceId = province[1] %} 
-                {% set provincePopulation = province[2] %} 
-                {% set provinceCityCount = province[3] %} 
-                {% set provinceLand = province[4] %}
+            {% set provinceName = province[0] %} 
+            {% set provinceId = province[1] %} 
+            {% set provincePopulation = province[2] %} 
+            {% set provinceCityCount = province[3] %} 
+            {% set provinceLand = province[4] %}
+            {% set provinceHappiness = province[5] %}
+            {% set provinceProductivity = province[6] %}
             <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
                     <div class="templatedivflex2left vanilla">

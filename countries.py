@@ -51,7 +51,7 @@ def country(cId):
     db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
     location = db.fetchone()[0]
 
-    db.execute("SELECT provinceName, id, population, cityCount, land FROM provinces WHERE userId=(%s) ORDER BY id DESC", (cId,))
+    db.execute("SELECT provinceName, id, population, cityCount, land, happiness, productivity FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
     provinces = db.fetchall()
 
     status = cId == str(session["user_id"])
