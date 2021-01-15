@@ -98,17 +98,21 @@
                                 </span>General</th>
                         </tr>
                         <tr>
-                            {% if leaders|length
-                            < 2%} <td>Leader:</td>
+                            {% if leaders|length < 2%}
+                                <td>Leader:</td>
                                 <td><a href="/country/id={{ leaders[0] }}">{{ leaderNames[0] }}</a></td>
                                 {% else %}
                                 <td>Leaders:</td>
                                 <td>
-                                    {% for leader_id in leaders %} {% if leader_id == leaders[-1] %}
-                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}</a> {% else %}
-                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}, </a> {% endif %} {% endfor %}
+                                    {% for leader_id in leaders %} 
+                                    {% if leader_id == leaders[-1] %}
+                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}</a> 
+                                    {% else %}
+                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}, </a> 
+                                    {% endif %}
+                                    {% endfor %}
                                 </td>
-                                {% endif %}
+                            {% endif %}
                         </tr>
                         <tr>
                             <td>Deputy Leaders:</td>
@@ -120,11 +124,14 @@
                         </tr>
                         <tr>
                             <td>Members:</td>
-                            <!-- <td><a href="{{ alinktocoalitionmembers }}">{{ coalitionmembers }}</a></td> 
-                            currently disabled the link because we dont have where to link, will show count of total members
-                            -->
                             <td>
-                                {{ members }}
+                                {% for member_id in members %} 
+                                    {% if member_id == members[-1] %}
+                                    <a href="/country/id={{ member_id }}">{{ member_names[members.index(member_id)] }}</a> 
+                                    {% else %}
+                                    <a href="/country/id={{ member_id }}">{{ member_names[members.index(member_id)] }}, </a> 
+                                    {% endif %}
+                                {% endfor %}
                             </td>
                         </tr>
                         <tr>
