@@ -29,8 +29,8 @@ def get_user_role(user_id):
     return role
 
 # Route for viewing a coalition's page
-@login_required
 @app.route("/coalition/<colId>", methods=["GET"])
+@login_required
 def coalition(colId):
 
     connection = psycopg2.connect(
@@ -346,8 +346,8 @@ def coalition(colId):
 
 
 # Route for establishing a coalition
-@login_required
 @app.route("/establish_coalition", methods=["GET", "POST"])
+@login_required
 def establish_coalition():
 
     if request.method == "POST":
@@ -395,7 +395,6 @@ def establish_coalition():
         return render_template("establish_coalition.html")
 
 # Route for viewing all existing coalitions
-@login_required
 @app.route("/coalitions", methods=["GET"])
 def coalitions():
 
@@ -457,8 +456,8 @@ def coalitions():
     return render_template("coalitions.html", resultAll=resultAll)
 
 # Route for joining a coalition
-@login_required
 @app.route("/join/<colId>", methods=["POST"])
+@login_required
 def join_col(colId):
 
     connection = psycopg2.connect(
@@ -502,8 +501,8 @@ def join_col(colId):
     return redirect(f"/coalition/{colId}") # Redirects to the joined coalitions page
 
 # Route for leaving a coalition
-@login_required
 @app.route("/leave/<colId>", methods=["POST"])
+@login_required
 def leave_col(colId):
 
     connection = psycopg2.connect(
@@ -530,8 +529,8 @@ def leave_col(colId):
     return redirect("/coalitions")
 
 # Route for redirecting to the user's coalition
-@login_required
 @app.route("/my_coalition", methods=["GET"])
+@login_required
 def my_coalition():
 
     connection = psycopg2.connect(
@@ -555,8 +554,8 @@ def my_coalition():
     return redirect(f"/coalition/{coalition}")
 
 # Route for giving someone a role in your coalition
-@login_required
 @app.route("/give_position", methods=["POST"])
+@login_required
 def give_position():
 
     conn = psycopg2.connect(
@@ -618,8 +617,8 @@ def give_position():
     return redirect("/my_coalition")
 
 # Route for accepting a coalition join request
-@login_required
 @app.route("/add/<uId>", methods=["POST"])
+@login_required
 def adding(uId):
 
     connection = psycopg2.connect(
@@ -655,8 +654,8 @@ def adding(uId):
 
 
 # Route for removing a join request
-@login_required
 @app.route("/remove/<uId>", methods=["POST"])
+@login_required
 def removing_requests(uId):
 
     connection = psycopg2.connect(
@@ -688,8 +687,8 @@ def removing_requests(uId):
     return redirect(f"/coalition/{ colId }")
 
 # Route for deleting a coalition
-@login_required
 @app.route("/delete_coalition/<colId>", methods=["POST"])
+@login_required
 def delete_coalition(colId):
 
     connection = psycopg2.connect(
@@ -722,8 +721,8 @@ def delete_coalition(colId):
     return redirect("/")
 
 # Route for updating name, description, flag of coalition
-@login_required
 @app.route("/update_col_info/<colId>", methods=["POST"])
+@login_required
 def update_col_info(colId):
 
     connection = psycopg2.connect(
@@ -792,8 +791,8 @@ def update_col_info(colId):
 ### COALITION BANK STUFF ###
 
 # Route for depositing resources into the bank
-@login_required
 @app.route("/deposit_into_bank/<colId>", methods=["POST"])
+@login_required
 def deposit_into_bank(colId):
 
     connection = psycopg2.connect(
@@ -942,8 +941,8 @@ def withdraw(resource, amount, user_id, colId):
     connection.close()
 
 # Route from withdrawing from the bank
-@login_required
 @app.route("/withdraw_from_bank/<colId>", methods=["POST"])
+@login_required
 def withdraw_from_bank(colId):
 
     cId = session["user_id"]
@@ -979,8 +978,8 @@ def withdraw_from_bank(colId):
     return redirect(f"/coalition/{colId}")
 
 # Route for requesting a resource from the coalition bank
-@login_required
 @app.route("/request_from_bank/<colId>", methods=["POST"])
+@login_required
 def request_from_bank(colId):
 
     connection = psycopg2.connect(
@@ -1034,8 +1033,8 @@ def request_from_bank(colId):
     return redirect(f"/coalition/{colId}")
 
 # Route for removing a request for a resource from the coalition bank
-@login_required
 @app.route("/remove_bank_request/<bankId>", methods=["POST"])
+@login_required
 def remove_bank_request(bankId):
 
     connection = psycopg2.connect(
@@ -1062,8 +1061,8 @@ def remove_bank_request(bankId):
 
 
 # Route for accepting a bank request from the coalition bank
-@login_required
 @app.route("/accept_bank_request/<bankId>", methods=["POST"])
+@login_required
 def accept_bank_request(bankId):
 
     connection = psycopg2.connect(
@@ -1101,8 +1100,8 @@ def accept_bank_request(bankId):
     return redirect("/my_coalition")
 
 # Route for offering another coalition a treaty
-@login_required
 @app.route("/offer_treaty", methods=["POST"])
+@login_required
 def offer_treaty():
 
     connection = psycopg2.connect(
@@ -1158,8 +1157,8 @@ def offer_treaty():
     return redirect("/my_coalition")
 
 # Route for accepting a treaty offer from another coalition
-@login_required
 @app.route("/accept_treaty/<offer_id>", methods=["POST"])
+@login_required
 def accept_treaty(offer_id):
 
     connection = psycopg2.connect(
@@ -1202,8 +1201,8 @@ def accept_treaty(offer_id):
     return redirect("/my_coalition")
 
 # Route for breaking a treaty with another coalition
-@login_required
 @app.route("/break_treaty/<offer_id>", methods=["POST"])
+@login_required
 def break_treaty(offer_id):
 
     connection = psycopg2.connect(
@@ -1229,8 +1228,8 @@ def break_treaty(offer_id):
 
     return redirect("/my_coalition")
 
-@login_required
 @app.route("/decline_treaty/<offer_id>", methods=["POST"])
+@login_required
 def decline_treaty(offer_id):
 
     connection = psycopg2.connect(

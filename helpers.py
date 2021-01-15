@@ -54,7 +54,6 @@ def check_required(func):
 def error(code, message):
     return render_template("error.html", code=code, message=message)
 
-@login_required
 def get_influence(country_id):
 
     connection = psycopg2.connect(

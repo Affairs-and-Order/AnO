@@ -276,8 +276,8 @@ def inject_user():
 def index():
     return render_template("index.html")
 
-@login_required
 @app.route("/account", methods=["GET", "POST"])
+@login_required
 def account():
     if request.method == "GET":
 
@@ -300,15 +300,15 @@ def account():
         return render_template("account.html", name=name)
 
 
-@login_required
 @app.route("/recruitments", methods=["GET", "POST"])
+@login_required
 def recruitments():
     if request.method == "GET":
         return render_template("recruitments.html")
 
 
-@login_required
 @app.route("/businesses", methods=["GET", "POST"])
+@login_required
 def businesses():
     if request.method == "GET":
         return render_template("businesses.html")

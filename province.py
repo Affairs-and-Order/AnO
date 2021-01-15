@@ -9,8 +9,8 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-@login_required
 @app.route("/provinces", methods=["GET", "POST"])
+@login_required
 def provinces():
 
     if request.method == "GET":
@@ -35,8 +35,8 @@ def provinces():
         return render_template("provinces.html", provinces=provinces)
 
 
-@login_required
 @app.route("/province/<pId>", methods=["GET"])
+@login_required
 def province(pId):
 
     connection = psycopg2.connect(
@@ -218,8 +218,8 @@ def get_province_price(user_id):
 
     return price
 
-@login_required
 @app.route("/createprovince", methods=["GET", "POST"])
+@login_required
 def createprovince():
 
     cId = session["user_id"]
@@ -309,8 +309,8 @@ def get_free_slots(pId, slot_type): # pId = province id
 
     return free_slots
 
-@login_required
 @app.route("/<way>/<units>/<province_id>", methods=["POST"])
+@login_required
 def province_sell_buy(way, units, province_id):
 
     if request.method == "POST":

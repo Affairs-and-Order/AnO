@@ -9,8 +9,8 @@ from app import app
 from dotenv import load_dotenv
 load_dotenv()
 
-@login_required
 @app.route("/upgrades", methods=["GET"])
+@login_required
 def upgrades():
     # TODO: replace the falses with db selects
     conn = psycopg2.connect(
@@ -54,8 +54,8 @@ def upgrades():
     # upgrades['governmentRegulation'] = False
     return render_template("upgrades.html", upgrades=upgrades)
 
-@login_required
 @app.route("/upgrades_sb/<ttype>/<thing>", methods=["POST"])
+@login_required
 def upgrade_sell_buy(ttype, thing):
 
     conn = psycopg2.connect(
