@@ -122,7 +122,7 @@ def population_growth(): # Function for growing population
                     cities = 0
 
                 if cities > 0:
-                    maxPop += cities * 2000000 # Each city adds 2m population
+                    maxPop += cities * 750000 # Each city adds 750,000 population
 
                 try:
                     db.execute("SELECT happiness FROM provinces WHERE id=%s", (prov_id,))
@@ -245,7 +245,7 @@ def generate_province_revenue(): # Runs each hour
     'city_parks_effect_minus': {'pollution': 6},
     'city_parks_money': 20000, # Costs $20k
 
-    'hospitals_effect': {'happiness': 9},
+    'hospitals_effect': {'happiness': 9},   
     'hospitals_money': 60000,
 
     'universities_effect': {'productivity': 6},

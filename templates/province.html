@@ -63,11 +63,88 @@
                 </ul>
                 {% endif %}
             </div>
-
-
-
         </div>
+        <div class="templatedivflex2 menuflex divflex2center width100">
+            <div class="templatedivflex2left">
 
+                <button class="templatedivbutton templatecenteredbutton" id="provincesettingsbutton" onclick="provincesettingstoggle()">
+                    <span class="material-icons-outlined">
+                    settings
+                    </span>Edit</button>
+            </div>
+        </div>
+        <script>
+            function provincesettingstoggle() {
+
+                document.getElementById("provincesettingsbutton").classList.toggle("provincesettingsbuttonshow");
+                document.getElementById("provincesettingsparent").classList.toggle("provincesettingsparentshow");
+
+            }
+        </script>
+        <div class="provincesettingsparent templatedivflex2 menuflex divflex2center width100" id="provincesettingsparent">
+            <div class="infodiv">
+                <h3 class="templatecontentheadercenter">Sorry, this content is not currently functional</h3>
+                <!---
+                <div class="coalitionimagepreview">
+                    <img id="imageBackground" />
+                </div>
+
+                <div class="templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <label for="countryName">Rename province</label>
+                        <input class="loginsignupinput" name="countryName" placeholder="Province Name" />
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <label for="bgimage">New province image</label>
+                        <script>
+                            const flagItselfUpload = function(event) {
+                                var output = document.getElementById('imageBackground');
+                                output.src = URL.createObjectURL(event.target.files[0]);
+                                output.style.width = "20vw";
+                                output.style.height = "11.25vw";
+                                output.onload = function() {
+                                    URL.revokeObjectURL(output.src) //free memory
+                                }
+                            };
+                            var flagBackgroundUpload = function(event) {
+                                var output = document.getElementById('imageBackground2');
+                                output.src = URL.createObjectURL(event.target.files[0]);
+                                output.style.width = "20vw";
+                                output.style.height = "11.25vw";
+                                output.onload = function() {
+                                    URL.revokeObjectURL(output.src) // free memory
+                                }
+                            };
+                        </script>
+                        <label class="imageinput fit center"><span class="material-icons-outlined">
+                            wallpaper
+                                </span>Choose Image
+                                <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagItselfUpload(event)">
+                              </label>
+                    </div>
+                </div>
+                <div class="divflex2center templatedivflex2 menuflex">
+                    <div class="templatedivflex2left">
+
+                        <button formaction="" type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                            cancel
+                            </span>Delete Province</button>
+
+                    </div>
+                    <div class="templatedivflex2left">
+
+                        <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                            check
+                            </span>Update</button>
+
+                    </div>
+                </div>
+            -->
+            </div>
+        </div>
         <div class="templatedivflex2 menuflex">
             <div class="templatedivflex2left">
 
@@ -164,7 +241,7 @@
                                 var newPrice = Math.round((250000 * multiplier) * citiesamount)
                                 console.log("New City price: " + newPrice)
 
-                                var cityoutputcost = citiesoutput.innerHTML = newPrice;
+                                citiesoutput.innerHTML = newPrice;
                             }
                         </script>
                         <ul>Purchase Cities</ul>
@@ -200,8 +277,8 @@
                                 console.log("Land multiplier: " + multiplier);
                                 let land_price = Math.round((120000 * multiplier) * landamount)
                                 console.log("New land price: " + land_price)
+
                                 landoutput.innerHTML = land_price;
-                                console.log(landamount);
                             }
                         </script>
                         <ul>Purchase Land</ul>

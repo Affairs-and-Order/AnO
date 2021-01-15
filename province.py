@@ -154,7 +154,7 @@ def province(pId):
         db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
         rations = int(db.fetchone()[0])
 
-        rations_per_100k = 4
+        rations_per_100k = 1 # One rations per 100,000 people
 
         hundred_k = province["population"] // 100000
         new_rations = rations - (hundred_k * rations_per_100k)
@@ -393,7 +393,7 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT land FROM provinces WHERE id=(%s)", (province_id,))
             current_land = db.fetchone()[0]
 
-            multiplier = round(1 + ((0.06 * wantedUnits) * current_land)) # 10% Increase in cost for each city.
+            multiplier = round(1 + ((0.06 * wantedUnits) * current_land)) # 10% Increase in cost for each land.
             print("Land multiplier: " + str(multiplier))
             land_price = int((120000 * multiplier) * wantedUnits) # Each city costs 120,000 without the multiplier
             print("New land price: " + str(land_price))
