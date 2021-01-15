@@ -70,6 +70,9 @@ def province(pId):
     province["land"] = province_data[8]
     province["electricity"] = province_data[9]
 
+    province["free_cityCount"] = province["cityCount"] - get_free_slots(pId, "city")
+    province["free_land"] = province["land"] - get_free_slots(pId, "land")
+
     db.execute("SELECT location FROM stats WHERE id=(%s)", (province["user"],))
     province["location"] = db.fetchone()[0]
 
