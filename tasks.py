@@ -195,12 +195,12 @@ def generate_province_revenue(): # Runs each hour
     infra = {
     ### Electricity (done) ###
     'coal_burners_plus': {'energy': 4},
-    'coal_burners_minus': {'coal': 48},
+    'coal_burners_convert_minus': {'coal': 48},
     'coal_burners_money': 45000,
     'coal_burners_pollution': 7,
 
     'oil_burners_plus': {'energy': 3},
-    'oil_burners_minus': {'oil': 56},
+    'oil_burners_convert_minus': {'oil': 56},
     'oil_burners_money': 60000,
     'oil_burners_pollution': 3,
 
@@ -208,7 +208,7 @@ def generate_province_revenue(): # Runs each hour
     'hydro_dams_money': 250000,
 
     'nuclear_reactors_plus': {'energy': 12}, #  Generates 12 energy to the province
-    'nuclear_reactors_minus': {'uranium': 32},
+    'nuclear_reactors_convert_minus': {'uranium': 32},
     'nuclear_reactors_money': 1200000, # Costs $1.2 million to operate nuclear reactor for each turn
 
     'solar_fields_plus': {'energy': 3},
@@ -622,6 +622,7 @@ def generate_province_revenue(): # Runs each hour
                         minus_convert(convert_minus_3, convert_minus_3_amount)
 
                     conn.commit() # Commits the changes
+
                 except Exception as e:
                     conn.rollback()
                     print(f"Couldn't update {unit} for province id: {province_id} due to exception: {e}")
@@ -632,6 +633,8 @@ def generate_province_revenue(): # Runs each hour
         print(f"Successfully updated units for province id: {province_id}")
             
     conn.close() # Closes the connection
+
+generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
