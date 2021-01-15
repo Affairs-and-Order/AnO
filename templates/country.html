@@ -256,7 +256,7 @@
                             <td><span class="material-icons-outlined">
                                 arrow_circle_up
                                 </span>Average productivity:</td>
-                            <td>{{ happiness }}%</td>
+                            <td>{{ productivity }}%</td>
                         </tr>
                         <!--
                         <tr>
@@ -286,7 +286,12 @@
             <h2 class="templatecontentheaderleft">Provinces</h2>
 
             <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
-            {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %}
+            {% for province in provinces %} 
+                {% set provinceName = province[0] %} 
+                {% set provinceId = province[1] %} 
+                {% set provincePopulation = province[2] %} 
+                {% set provinceCityCount = province[3] %} 
+                {% set provinceLand = province[4] %}
             <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
                     <div class="templatedivflex2left vanilla">

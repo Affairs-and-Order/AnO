@@ -378,27 +378,28 @@ def province_sell_buy(way, units, province_id):
         if wantedUnits < 1:
             return error(400, "Units cannot be less than 1")
 
-        if units == "cityCount":
+        def sum_cost_exp(starting_value, rate_of_growth, current_owned, num_purchased):
+            M = (starting_value * (1 - pow(rate_of_growth, (current_owned + num_purchased)))) / (1 - rate_of_growth)
+            N = (starting_value * (1 - pow(rate_of_growth, (current_owned)))) / (1 - rate_of_growth)
+            total_cost = M - N
+            return round(total_cost)
 
+        if units == "cityCount":
             db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
             current_cityCount = db.fetchone()[0]
 
-            multiplier = round(1 + ((0.08 * wantedUnits) * current_cityCount)) # 10% Increase in cost for each city.
-            print("City multiplier: " + str(multiplier))
-            cityCount_price = int((250000 * multiplier) * wantedUnits) # Each city costs 250,000 without the multiplier
+            cityCount_price = sum_cost_exp(250000, 1.08, current_cityCount, wantedUnits)
             print("New city price: " + str(cityCount_price))
-
         else:
             cityCount_price = 0
 
         if units == "land":
-
+            
             db.execute("SELECT land FROM provinces WHERE id=(%s)", (province_id,))
             current_land = db.fetchone()[0]
 
-            multiplier = round(1 + ((0.06 * wantedUnits) * current_land)) # 10% Increase in cost for each land.
-            print("Land multiplier: " + str(multiplier))
-            land_price = int((120000 * multiplier) * wantedUnits) # Each city costs 120,000 without the multiplier
+            land_price = sum_cost_exp(120000, 1.06, current_land, wantedUnits)
+
             print("New land price: " + str(land_price))
 
         else:
@@ -538,7 +539,10 @@ def province_sell_buy(way, units, province_id):
             table = "proInfra"
 
         price = unit_prices[f"{units}_price"]
-        totalPrice = int(wantedUnits * price)
+        if units not in ["cityCount", "land"]:
+            totalPrice = int(wantedUnits * price)
+        else:
+            totalPrice = price
 
         resources_used = []
 

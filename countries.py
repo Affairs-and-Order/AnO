@@ -40,12 +40,13 @@ def country(cId):
 
     influence = get_influence(cId)
 
-    db.execute("SELECT SUM(population), SUM(happiness), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
+    db.execute("SELECT AVG(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
     province_data = db.fetchall()[0]
 
     population = province_data[0]
     happiness = province_data[1]
-    provinceCount = province_data[2]
+    productivity = province_data[2]
+    provinceCount = province_data[3]
 
     db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
     location = db.fetchone()[0]
@@ -105,7 +106,7 @@ def country(cId):
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
-                           colFlag=colFlag, colRole=colRole)
+                           colFlag=colFlag, colRole=colRole, productivity=productivity)
 
 
 @app.route("/countries", methods=["GET"])

@@ -236,12 +236,20 @@
                                 var cityCount = document.getElementById("cityCount").value;
                                 var citiesoutput = document.getElementById("citiesoutput");
 
-                                var multiplier = 1 + ((0.08 * citiesamount) * cityCount)
-                                console.log("Cities multiplier: " + multiplier)
-                                var newPrice = Math.round((250000 * multiplier) * citiesamount)
+                                citiesamount = parseInt(citiesamount);
+                                cityCount = parseInt(cityCount)
+
+                                function sum_cost_exp(startingValue, rateOfGrowth, currentOwned, numPurchased) {
+                                    const oneMinus = 1 - rateOfGrowth;
+                                    const M = (startingValue * (1 - rateOfGrowth ** (currentOwned + numPurchased))) / oneMinus;
+                                    const N = (startingValue * (1 - (rateOfGrowth ** currentOwned))) / oneMinus;
+                                    return Math.round(M - N);
+                                }
+
+                                let newPrice = sum_cost_exp(250000, 1.08, cityCount, citiesamount)
                                 console.log("New City price: " + newPrice)
 
-                                citiesoutput.innerHTML = newPrice;
+                                citiesoutput.innerHTML = newPrice.toLocaleString('fullwide', {useGrouping:false});
                             }
                         </script>
                         <ul>Purchase Cities</ul>
@@ -272,12 +280,19 @@
                                 var landamount = document.getElementById("landamount").value;
                                 var landoutput = document.getElementById("landoutput");
                                 let current_land = document.getElementById("currentLand").value;
-                                //insert land cost formula
-                                let multiplier = Math.round(1 + ((0.06 * landamount) * current_land))
-                                console.log("Land multiplier: " + multiplier);
-                                let land_price = Math.round((120000 * multiplier) * landamount)
-                                console.log("New land price: " + land_price)
 
+                                landamount = parseInt(landamount);
+                                current_land = parseInt(current_land)
+
+                                function sum_cost_exp(startingValue, rateOfGrowth, currentOwned, numPurchased) {
+                                    const oneMinus = 1 - rateOfGrowth;
+                                    const M = (startingValue * (1 - rateOfGrowth ** (currentOwned + numPurchased))) / oneMinus;
+                                    const N = (startingValue * (1 - (rateOfGrowth ** currentOwned))) / oneMinus;
+                                    return Math.round(M - N);
+                                }
+
+                                var land_price = sum_cost_exp(120000, 1.06, current_land, landamount)
+                                console.log("New land price: " + land_price)
                                 landoutput.innerHTML = land_price;
                             }
                         </script>
