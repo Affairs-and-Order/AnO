@@ -633,8 +633,6 @@ def generate_province_revenue(): # Runs each hour
             
     conn.close() # Closes the connection
 
-generate_province_revenue()
-
 def war_reparation_tax():
     conn = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
