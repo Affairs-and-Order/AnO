@@ -12,7 +12,6 @@ from celery.schedules import crontab
 import datetime
 
 app = Flask(__name__)
-app.permanent_session_lifetime = datetime.timedelta(days=365)
 
 try:
     environment = os.getenv("ENVIRONMENT")
@@ -21,7 +20,10 @@ except:
 
 if environment == "PROD":
     app.secret_key = os.getenv("SECRET_KEY")
-    
+
+app.config["SESSION_PERMANENT"] = True
+app.permanent_session_lifetime = datetime.timedelta(days=365)
+
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from wars import wars, find_targets
 from login import login
@@ -57,6 +59,11 @@ celery_beat_schedule = {
     "war_reparation_tax": {
         "task": "app.task_war_reparation_tax",
         # Run every day at midnight (UTC)
+        "schedule": crontab(minute=0, hour=0)
+    },
+    "manpower_increase": {
+        "task": "app.task_manpower_increase",
+        # Run everyday at midnight (UTC)
         "schedule": crontab(minute=0, hour=0)
     }
 }
@@ -116,6 +123,39 @@ celery.conf.update(
 @celery.task()
 def task_war_reparation_tax():
     war_reparation_tax()
+
+@celery.task()
+def task_manpower_increase():
+    conn = psycopg2.connect(
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"))
+    db = conn.cursor()
+
+    db.execute("SELECT id FROM users")
+    user_ids = db.fetchall()
+    for id in user_ids:
+        db.execute("SELECT SUM(population) FROM provinces WHERE userid=(%s)", (id[0],))
+        population = db.fetchone()[0]
+        if population:
+            capable_population = population*0.2
+
+            # Currently this is a constant
+            army_tradition = 0.1
+            produced_manpower = int(capable_population*army_tradition)
+
+            db.execute("SELECT manpower FROM military WHERE id=(%s)", (id[0],))
+            manpower = db.fetchone()[0]
+
+            if manpower+produced_manpower >= population:
+                produced_manpower = 0
+
+            db.execute("UPDATE military SET manpower=manpower+(%s) WHERE id=(%s)",(produced_manpower, id[0]))
+
+    conn.commit()
+    conn.close()
 
 # runs once a day
 """

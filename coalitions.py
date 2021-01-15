@@ -58,9 +58,9 @@ def coalition(colId):
 
     try:
         db.execute("SELECT COUNT(userId) FROM coalitions WHERE colId=(%s)", (colId,))
-        members = db.fetchone()[0]
+        members_count = db.fetchone()[0]
     except:
-        members = 0
+        members_count = 0
 
     try:
         total_influence = get_coalition_influence(colId)
@@ -68,7 +68,7 @@ def coalition(colId):
         total_influence = 0
 
     try:
-        average_influence = total_influence // members
+        average_influence = total_influence // members_count
     except:
         average_influence = 0
 
@@ -92,6 +92,21 @@ def coalition(colId):
     except:
         leaders = []
         leader_names = []
+        
+
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE colId=%s", (colId,))
+        members = db.fetchall() # All coalition leaders ids
+        members = [item for t in members for item in t]
+        member_names = []
+
+        for member_id in members:
+            db.execute("SELECT username FROM users WHERE id=%s", (member_id,))
+            member_name = db.fetchone()[0]
+            member_names.append(member_name)
+    except:
+        members = []
+        member_names = []
 
     ### STUFF FOR JINJA
     try:
@@ -320,13 +335,14 @@ def coalition(colId):
 
     connection.close()
 
-    return render_template("coalition.html", name=name, colId=colId, members=members, user_role=user_role,
+    return render_template("coalition.html", name=name, colId=colId, user_role=user_role,
                             description=description, colType=colType, userInCol=userInCol,
                             requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
                             average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
                             flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
                             ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
-                            ingoing_treaties=ingoing_treaties, zip=zip, requestIds=requestIds)
+                            ingoing_treaties=ingoing_treaties, zip=zip, requestIds=requestIds,
+                            members=members, member_names=member_names)
 
 
 # Route for establishing a coalition
