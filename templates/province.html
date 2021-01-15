@@ -246,10 +246,15 @@
                                     return Math.round(M - N);
                                 }
 
-                                let newPrice = sum_cost_exp(250000, 1.08, cityCount, citiesamount)
-                                console.log("New City price: " + newPrice)
+                                function numberWithCommas(x) {
+                                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
 
-                                citiesoutput.innerHTML = newPrice.toLocaleString('fullwide', {useGrouping:false});
+                                let newPrice = sum_cost_exp(250000, 1.08, cityCount, citiesamount)
+                                let newOutputPrice = numberWithCommas(newPrice)
+                                console.log("New City price: " + newOutputPrice)
+
+                                citiesoutput.innerHTML = newOutputPrice;
                             }
                         </script>
                         <ul>Purchase Cities</ul>
@@ -291,9 +296,14 @@
                                     return Math.round(M - N);
                                 }
 
-                                var land_price = sum_cost_exp(120000, 1.06, current_land, landamount)
-                                console.log("New land price: " + land_price)
-                                landoutput.innerHTML = land_price;
+                                function numberWithCommas(x) {
+                                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+
+                                let land_price = sum_cost_exp(120000, 1.06, current_land, landamount)
+                                let land_output_price = numberWithCommas(land_price)
+                                console.log("New land price: " + land_output_price)
+                                landoutput.innerHTML = land_output_price;
                             }
                         </script>
                         <ul>Purchase Land</ul>
