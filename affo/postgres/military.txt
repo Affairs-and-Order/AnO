@@ -13,4 +13,6 @@ destroyers BIGINT NOT NULL DEFAULT 0,
 cruisers BIGINT NOT NULL DEFAULT 0,
 submarines BIGINT NOT NULL DEFAULT 0,
 default_defense TEXT NOT NULL DEFAULT 'soldiers,tanks,artillery',
+manpower BIGINT DEFAULT 100,
+army_tradition REAL default 0.2,
 defcon BIGINT NOT NULL DEFAULT 1);

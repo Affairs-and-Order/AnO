@@ -28,8 +28,11 @@ def country(cId):
 
     db = connection.cursor()
 
-    db.execute("SELECT username, description, date FROM users WHERE id=%s", (cId,))
-    user_data = db.fetchall()[0]
+    try:
+        db.execute("SELECT username, description, date FROM users WHERE id=%s", (cId,))
+        user_data = db.fetchall()[0]
+    except:
+        return error(404, "Country doesn't exit")
 
     username = user_data[0]
     description = user_data[1]
