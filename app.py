@@ -12,7 +12,6 @@ from celery.schedules import crontab
 import datetime
 
 app = Flask(__name__)
-app.permanent_session_lifetime = datetime.timedelta(days=365)
 
 try:
     environment = os.getenv("ENVIRONMENT")
@@ -21,6 +20,9 @@ except:
 
 if environment == "PROD":
     app.secret_key = os.getenv("SECRET_KEY")
+
+app.config["SESSION_PERMANENT"] = True
+app.permanent_session_lifetime = datetime.timedelta(days=365)
 
 # import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
 from wars import wars, find_targets
