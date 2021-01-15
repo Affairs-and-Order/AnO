@@ -261,43 +261,45 @@
             <!--show until here-->
             <div class="infodiv">
                 {% if colType == "Invite Only" %}
-                <p class="templatecontentpleft">
-                    You are applying for {{ name }} please send a message to them about why you want to join, what you can offer or whatever else you would like to say.
+                <p class="templatecontentpleft landingpagecontent">
+                    You are applying to {{ name }}, please send a message to them about why you want to join, what you can offer them, or whatever else you would like to say.
                 </p>
-                <textarea name="message" class="templatetextarea" autocomplete="off" maxlength="1000" placeholder="Your message"></textarea> {% endif %}
+                <div class="center">
+                    <textarea name="message" class="templatetextarea" autocomplete="off" maxlength="1000" placeholder="Your message"></textarea> {% endif %}
+                </div>
                 <!--if not at war don't show the warning below-->
                 <ul class="warning">
                     {{ name }} is currently at war!
                 </ul>
 
                 {% if colType == "Invite Only" %}
-                <form action="/join/{{ colId }}" method="POST">
+                <for m action="/join/{{ colId }}" method="POST">
                     <button type="submit" value="submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     arrow_forward
-                    </span>Apply</button>
-                </form>
-                {% endif %}
+                        </span>Apply</button>
+                    </form>
+                    {% endif %}
 
-                <!--Hide / deactvate certian buttons depending on the coalition type-->
-                <!--will become deactivated if the user doesnt meet the specified influence-->
+                    <!--Hide / deactvate certian buttons depending on the coalition type-->
+                    <!--will become deactivated if the user doesnt meet the specified influence-->
 
-                <!-- currently only added join for open coalitions, without message-->
+                    <!-- currently only added join for open coalitions, without message-->
 
-                </form>
+                    </form>
 
-                {% if colType == "Open" %}
-                <ul>
-                    Are you sure you would like to join {{ name }}?
-                </ul>
-                <form action="/join/{{ colId }}" method="POST">
-                    <button type="submit" class="templatedivbutton templatecenteredbutton" value="submit"><span class="material-icons-outlined">
+                    {% if colType == "Open" %}
+                    <ul>
+                        Are you sure you would like to join {{ name }}?
+                    </ul>
+                    <for m action="/join/{{ colId }}" method="POST">
+                        <button type="submit" class="templatedivbutton templatecenteredbutton" value="submit"><span class="material-icons-outlined">
                     arrow_forward
-                    </span>Join</button>
-                </form>
-                {% endif %}
-                <!--There buttons will be deactivated-->
-                <!-- <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button> -->
-                <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
+                        </span>Join</button>
+                        </form>
+                        {% endif %}
+                        <!--There buttons will be deactivated-->
+                        <!-- <button class="templatedivbutton loginsignupbutton templateclosedbutton" disabled="disabled">Not enough Influence</button> -->
+                        <!--if the player does not meet the specified (by the leader) influnece required to join the coalition this button will appear-->
             </div>
         </div>
 
@@ -310,7 +312,7 @@
 
             <div class="infodiv">
 
-                <form action="/give_position" method="POST">
+                <for m action="/give_position" method="POST">
                     <div class="templatedivflex2 divflex2center menuflex">
                         <div class="templatedivflex2left">
 
@@ -333,73 +335,73 @@
                     </div>
                     <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     check
-                    </span>Give Position</button>
-                </form>
-                <!--max lenth of 10-->
-                <div class="templateoutertablediv inverttable">
-                    <table class="templatetable templatetable2">
-                        <tr>
-                            <th>Role</th>
-                            <th>About</th>
-                            <th>Members</th>
-                        </tr>
-                        <tr>
-                            <td>Leaders:</td>
-                            <td>Power over all aspects of the coalition.</td>
-                            <td>{{ member_roles["leader"] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Deputy Leader:</td>
-                            <td>Power over all aspects of the coalition, excluding coalition name and flag.</td>
-                            <td>{{ member_roles["deputy_leader"] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Domestic Ministers:</td>
-                            <td>Permission to add and remove members, and change roles of people below them.</td>
-                            <td>{{ member_roles["domestic_minister"] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Bankers:</td>
-                            <td>Able to accept widthdraw requests, edit automatic deposits, and withdraw resources.</td>
-                            <td>{{ member_roles["banker"] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Tax Collectors:</td>
-                            <td>Permission to edit tax brackets, and change who are in brackets.</td>
-                            <td>{{ member_roles["tax_collector"] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Foreign Ambassadors:</td>
-                            <td>Power to add and remove treaties.</td>
-                            <td>{{ member_roles["foreign_ambassador"] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Generals:</td>
-                            <td>Ability to declare coalition wars, edit war message, and edit war range.</td>
-                            <td>{{ member_roles["general"] }}</td>
-                        </tr>
-                        <tr>
-                            <td>Members:</td>
-                            <td>Can deposit into the bank, and make requests to withdraw from it.</td>
-                            <td>{{ member_roles["member"] }}</td>
-                        </tr>
-                    </table>
-                </div>
+                        </span>Give Position</button>
+                    </form>
+                    <!--max lenth of 10-->
+                    <div class="templateoutertablediv inverttable">
+                        <tab le class="templatetable templatetable2">
+                            <tr>
+                                <th>Role</th>
+                                <th>About</th>
+                                <th>Members</th>
+                            </tr>
+                            <tr>
+                                <td>Leaders:</td>
+                                <td>Power over all aspects of the coalition.</td>
+                                <td>{{ member_roles["leader"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Deputy Leader:</td>
+                                <td>Power over all aspects of the coalition, excluding coalition name and flag.</td>
+                                <td>{{ member_roles["deputy_leader"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Domestic Ministers:</td>
+                                <td>Permission to add and remove members, and change roles of people below them.</td>
+                                <td>{{ member_roles["domestic_minister"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Bankers:</td>
+                                <td>Able to accept widthdraw requests, edit automatic deposits, and withdraw resources.</td>
+                                <td>{{ member_roles["banker"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tax Collectors:</td>
+                                <td>Permission to edit tax brackets, and change who are in brackets.</td>
+                                <td>{{ member_roles["tax_collector"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Foreign Ambassadors:</td>
+                                <td>Power to add and remove treaties.</td>
+                                <td>{{ member_roles["foreign_ambassador"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Generals:</td>
+                                <td>Ability to declare coalition wars, edit war message, and edit war range.</td>
+                                <td>{{ member_roles["general"] }}</td>
+                            </tr>
+                            <tr>
+                                <td>Members:</td>
+                                <td>Can deposit into the bank, and make requests to withdraw from it.</td>
+                                <td>{{ member_roles["member"] }}</td>
+                            </tr>
+                            </table>
+                    </div>
 
-                <!--
+                    <!--
                 <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
                     </span>Update</button>
-                -->
+                    -->
             </div>
             {% endif %} {% if user_role in ["leader", "deputy_leader", "banker"] %}
             <h2 class="templatecontentheaderleft">Bank</h2>
 
             <div class="infodiv">
 
-                <form method="POST">
+                <for m method="POST">
                     <div class="templateoutertablediv inverttable">
-                        <table class="templatetable templatetable2">
+                        <tab le class="templatetable templatetable2">
                             <tr>
                                 <th>Resource</th>
                                 <th>Bank's resources</th>
@@ -502,7 +504,7 @@
                                 <td>{{ resources["ammunition"] }}</td>
                                 <td><input class="loginsignupinput" autocomplete="on" name="ammunition" placeholder="Amount" /></td>
                             </tr>
-                        </table>
+                            </table>
                     </div>
 
                     <div class="templatedivflex2 divflex2center">
@@ -521,55 +523,55 @@
 
                         </div>
                     </div>
-                </form>
+                    </form>
 
-                <form method="POST">
-                    <div class="templateoutertablediv inverttable">
-                        <table class="templatetable templatetable2">
-                            <tr>
-                                <th>Name</th>
-                                <th>Request</th>
-                                <th>Action</th>
-                            </tr>
-                            {% for data in bankRequests %}
-                            <tr>
-                                <td><a href="/country/id={{ data[0] }}">{{ data[4] }}</a></td>
-                                <td>
-                                    <!--for every resource requested-->
-                                    {{ data[1] }} {{ data[2] }}<br/>
-                                    <!---->
-                                </td>
-                                <td>
-                                    <div class="templatedivflex2 menuflex">
-                                        <div class="templatedivflex2left">
+                    <for m method="POST">
+                        <div class="templateoutertablediv inverttable">
+                            <table class="templatetable templatetable2">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Request</th>
+                                    <th>Action</th>
+                                </tr>
+                                {% for data in bankRequests %}
+                                <tr>
+                                    <td><a href="/country/id={{ data[0] }}">{{ data[4] }}</a></td>
+                                    <td>
+                                        <!--for every resource requested-->
+                                        {{ data[1] }} {{ data[2] }}<br/>
+                                        <!---->
+                                    </td>
+                                    <td>
+                                        <div class="templatedivflex2 menuflex">
+                                            <div class="templatedivflex2left">
 
-                                            <button formaction="/accept_bank_request/{{ data[3] }}" class="iconbutton"><span class="material-icons iconblue">
+                                                <button formaction="/accept_bank_request/{{ data[3] }}" class="iconbutton"><span class="material-icons iconblue">
                                             check_circle_outline
                                         </span></button>
 
-                                        </div>
-                                        <div class="templatedivflex2left">
+                                            </div>
+                                            <div class="templatedivflex2left">
 
-                                            <button formaction="/remove_bank_request/{{ data[3] }}" class="iconbutton"><span class="material-icons iconred">
+                                                <button formaction="/remove_bank_request/{{ data[3] }}" class="iconbutton"><span class="material-icons iconred">
                                             remove_circle_outline
                                             </span></button>
 
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
+                                    </td>
 
-                            </tr>
-                            {% endfor %}
-                        </table>
-                    </div>
-                </form>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        </form>
             </div>
             {% endif %} {% if user_role in ["leader", "deputy_leader", "foreign_ambassador"] %}
             <h2 class="templatecontentheaderleft">Diplomacy</h2>
 
             <div class="infodiv">
 
-                <form action="/offer_treaty" method="POST">
+                <for m action="/offer_treaty" method="POST">
                     <h2 class="templatecontentheadercenter">Add Ally</h2>
 
                     <input class="loginsignupinput" autocomplete="off" name="coalition_name" placeholder="Coalition name" />
@@ -580,75 +582,75 @@
 
                     <button class="templatedivbutton templatecenteredbutton" required><span class="material-icons-outlined">
                     arrow_forward
-                    </span>Send Offer</button>
-                </form>
-                <!--if no requests-->
-                {% if ingoing_length == 0 %}
-                <h2 class="templatecontentheadercenter">No incoming treaty requests</h2>
-                <!--if requests-->
-                {% elif ingoing_length != 0 %}
-                <h2 class="templatecontentheadercenter">Treaty Requests</h2>
+                        </span>Send Offer</button>
+                    </form>
+                    <!--if no requests-->
+                    {% if ingoing_length == 0 %}
+                    <h2 class="templatecontentheadercenter">No incoming treaty requests</h2>
+                    <!--if requests-->
+                    {% elif ingoing_length != 0 %}
+                    <h2 class="templatecontentheadercenter">Treaty Requests</h2>
 
-                <div class="templateoutertablediv inverttable">
-                    <table class="templatetable templatetable2">
-                        <tr>
-                            <th>Coalition Name</th>
-                            <th>Treaty name</th>
-                            <th>Treaty description</th>
-                            <th>Action</th>
-                        </tr>
-                        <!--for every coalition make a row with 10 max-->
-                        {% for id, col_id, col_name, treaty_name, treaty_description in zip(ingoing_treaties["ids"], ingoing_treaties["col_ids"],ingoing_treaties["col_names"],ingoing_treaties["treaty_names"],ingoing_treaties["treaty_descriptions"]) %}
-                        <tr>
-                            <td><a href="/coalition/{{ col_id[0] }}">{{ col_name[0] }}</a></td>
-                            <td>{{ treaty_name[0] }}</td>
-                            <td>{{ treaty_description }}</td>
-                            <form method="POST">
-                                <td>
-                                    <button formaction="/accept_treaty/{{ id[0] }}"><span class="material-icons iconblue">
+                    <div class="templateoutertablediv inverttable">
+                        <tab le class="templatetable templatetable2">
+                            <tr>
+                                <th>Coalition Name</th>
+                                <th>Treaty name</th>
+                                <th>Treaty description</th>
+                                <th>Action</th>
+                            </tr>
+                            <!--for every coalition make a row with 10 max-->
+                            {% for id, col_id, col_name, treaty_name, treaty_description in zip(ingoing_treaties["ids"], ingoing_treaties["col_ids"],ingoing_treaties["col_names"],ingoing_treaties["treaty_names"],ingoing_treaties["treaty_descriptions"]) %}
+                            <tr>
+                                <td><a href="/coalition/{{ col_id[0] }}">{{ col_name[0] }}</a></td>
+                                <td>{{ treaty_name[0] }}</td>
+                                <td>{{ treaty_description }}</td>
+                                <for m method="POST">
+                                    <td>
+                                        <button formaction="/accept_treaty/{{ id[0] }}"><span class="material-icons iconblue">
                                 check_circle_outline
-                                        </span></button>
-                                    <button formaction="/decline_treaty/{{ id[0] }}"><span class="material-icons iconred">
+                                            </span></button>
+                                        <button formaction="/decline_treaty/{{ id[0] }}"><span class="material-icons iconred">
                                 remove_circle_outline
-                                        </span></button>
-                                </td>
-                            </form>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-                {% endif %}
-                <!--If no allies-->
-                {% if active_length == 0 %}
-                <h2 class="templatecontentheadercenter">No allies</h2>
-                <!--if allies-->
-                {% elif active_length != 0 %}
-                <h2 class="templatecontentheadercenter">Current Allies</h2>
+                                            </span></button>
+                                    </td>
+                                    </form>
+                            </tr>
+                            {% endfor %}
+                            </table>
+                    </div>
+                    {% endif %}
+                    <!--If no allies-->
+                    {% if active_length == 0 %}
+                    <h2 class="templatecontentheadercenter">No allies</h2>
+                    <!--if allies-->
+                    {% elif active_length != 0 %}
+                    <h2 class="templatecontentheadercenter">Current Allies</h2>
 
-                <div class="templateoutertablediv inverttable">
-                    <table class="templatetable templatetable2">
-                        <tr>
-                            <th>Ally</th>
-                            <th>Treaty</th>
-                            <th>Description</th>
-                            <th>Action</th>
-                        </tr>
-                        <!--for every ally make a row-->
-                        {% for id, col_id, col_name, treaty_name, treaty_description in zip(active_treaties["ids"], active_treaties["col_ids"], active_treaties["col_names"], active_treaties["treaty_names"], active_treaties["treaty_descriptions"]) %}
-                        <tr>
-                            <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
-                            <td>{{ treaty_name }}</td>
-                            <td>{{ treaty_description }}</td>
-                            <form method="POST">
-                                <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
+                    <div class="templateoutertablediv inverttable">
+                        <tab le class="templatetable templatetable2">
+                            <tr>
+                                <th>Ally</th>
+                                <th>Treaty</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                            <!--for every ally make a row-->
+                            {% for id, col_id, col_name, treaty_name, treaty_description in zip(active_treaties["ids"], active_treaties["col_ids"], active_treaties["col_names"], active_treaties["treaty_names"], active_treaties["treaty_descriptions"]) %}
+                            <tr>
+                                <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
+                                <td>{{ treaty_name }}</td>
+                                <td>{{ treaty_description }}</td>
+                                <for m method="POST">
+                                    <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
                                                 remove_circle_outline
-                                                </span></button></td>
-                            </form>
-                        </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-                {% endif %}
+                                                    </span></button></td>
+                                    </form>
+                            </tr>
+                            {% endfor %}
+                            </table>
+                    </div>
+                    {% endif %}
 
             </div>
 
@@ -806,7 +808,7 @@
                     </div>
                 </div>
                 <div class="templateoutertablediv inverttable">
-                    <table class="templatetable templatetable2 scrolltable">
+                    <tab le class="templatetable templatetable2 scrolltable">
                         <tr>
                             <th>Name</th>
                             <th>Influence</th>
@@ -820,7 +822,7 @@
                             <td></td>
                             <td class="templatesmalltd">{{ message[0] }}</td>
                             <td>
-                                <form method="POST">
+                                <for m method="POST">
                                     <div class="templatedivflex2 menuflex">
                                         <!-- plus sign-->
                                         <div class="templatedivflex2left flexchildvanilla">
@@ -839,51 +841,36 @@
 
                                         </div>
                                     </div>
-                                </form>
+                                    </form>
                             </td>
                         </tr>
                         {% endfor %}
-                    </table>
+                        </table>
                 </div>
             </div>
             {% endif %} {% if user_role == "leader" %}
             <h2 class="templatecontentheaderleft">General</h2>
 
-            <form action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
+            <for m action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
                 <div class="infodiv">
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
-                            <script>
-                                const flagItselfUpload = function(event) {
-                                    var output = document.getElementById('imageBackground');
-                                    output.src = URL.createObjectURL(event.target.files[0]);
-                                    output.style.width = "20vw";
-                                    output.style.height = "11.25vw";
-                                    output.onload = function() {
-                                        URL.revokeObjectURL(output.src) //free memory
-                                    }
-                                };
-                                var flagBackgroundUpload = function(event) {
-                                    var output = document.getElementById('imageBackground2');
-                                    output.src = URL.createObjectURL(event.target.files[0]);
-                                    output.style.width = "20vw";
-                                    output.style.height = "11.25vw";
-                                    output.onload = function() {
-                                        URL.revokeObjectURL(output.src) // free memory
-                                    }
-                                };
-                            </script>
-                            <div class="coalitionimagepreview">
-                                <img id="imageBackground" />
-                            </div>
+                            <scr ipt>
+                                cons t flagItselfUpload = function(event) { var output = document.getElementById('imageBackground'); output.src = URL.createObjectURL(event.target.files[0]); output.style.width = "20vw"; output.style.height = "11.25vw"; outp ut.onload = function() { URL.revokeObjectURL(output.src)
+                                //free memory } }; var flagBackgroundUpload = function(event) { var output = document.getElementById('imageBackground2'); output.src = URL.createObjectURL(event.target.files[0]); output.style.width = "20vw"; output.style.height
+                                = "11.25vw"; outp ut.onload = function() { URL.revokeObjectURL(output.src) // free memory } };
+                                </script>
+                                <div class="coalitionimagepreview">
+                                    <img id="imageBackground" />
+                                </div>
 
-                            <label for="bgimage">Upload coalition flag</label>
+                                <label for="bgimage">Upload coalition flag</label>
 
-                            <label class="imageinput fit center"><span class="material-icons-outlined">
+                                <label class="imageinput fit center"><span class="material-icons-outlined">
                             wallpaper
                             </span>Choose Image
                             <input type="file" name="flag_input" id="imageinput" accept="image/*" onchange="flagItselfUpload(event)">
-                            </label>
+                                </label>
                         </div>
                         <div class="templatedivflex2left">
 
@@ -914,7 +901,7 @@
                             <option value="Invite Only" class="templateoption">Invite Only</option>
                             <option value="Open" class="templateoption">Open</option>
 
-                        </select>
+                            </select>
                     </div>
 
 
@@ -926,36 +913,36 @@
                     </div>
                     <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
                     check
-                    </span>Update</button>
+                        </span>Update</button>
                 </div>
-            </form>
+                </form>
 
-            <h2 class="templatecontentheaderleft">Danger Zone</h2>
+                <h2 class="templatecontentheaderleft">Danger Zone</h2>
 
-            <form method="POST">
-                <div class="infodiv">
-                    <div class="templatedivflex2 divflex2center menuflex">
-                        {% if user_role == "leader" %}
-                        <div class="templatedivflex2left">
+                <for m method="POST">
+                    <div class="infodiv">
+                        <div class="templatedivflex2 divflex2center menuflex">
+                            {% if user_role == "leader" %}
+                            <div class="templatedivflex2left">
 
-                            <button type="submit" formaction="/delete_coalition/{{ colId }}" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                                <button type="submit" formaction="/delete_coalition/{{ colId }}" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
                                 highlight_off
                                 </span>Delete Coalition</button>
 
-                        </div>
-                        {% endif %} {% if userInCurCol and user_role != "leader" %}
-                        <div class="templatedivflex2left">
+                            </div>
+                            {% endif %} {% if userInCurCol and user_role != "leader" %}
+                            <div class="templatedivflex2left">
 
-                            <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
+                                <button type="submit" class="templatedivbutton templatecenteredbutton redactionbutton" value="submit"><span class="material-icons-outlined">
                                 arrow_forward
                                 </span>Leave Coalition</button>
 
+                            </div>
+                            {% endif %}
                         </div>
-                        {% endif %}
                     </div>
-                </div>
-            </form>
-            {% endif %}
+                    </form>
+                    {% endif %}
         </div>
         <!--MEMBER-->
         <div class="member" id="member">
@@ -964,9 +951,9 @@
 
             <div class="infodiv">
 
-                <form method="POST">
+                <for m method="POST">
                     <div class="templateoutertablediv inverttable">
-                        <table class="templatetable templatetable2">
+                        <tab le class="templatetable templatetable2">
                             <tr>
                                 <th>Resource</th>
                                 <th>My Resources</th>
@@ -1052,7 +1039,7 @@
                                 <td>{{ rationsGross }}%</td>
                                 <td><input class="loginsignupinput" autocomplete="on" name="ammunition" placeholder="Amount" /></td>
                             </tr>
-                        </table>
+                            </table>
                     </div>
 
                     <div class="templatedivflex2 divflex2center">
