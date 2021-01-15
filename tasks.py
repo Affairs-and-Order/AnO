@@ -38,7 +38,7 @@ def tax_income(): # Function for giving money to players
             consumer_goods_needed = round(population * 0.00005)
             new_consumer_goods = consumer_goods - consumer_goods_needed
 
-            population_score = population * 0.01
+            population_score = population * 0.075
 
             try:
                 db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
