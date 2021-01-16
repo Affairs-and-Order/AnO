@@ -841,49 +841,85 @@ class Military(Nation):
         # these numbers determine the upper limit of how many of each military unit can be built per day
         db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
         manpower = db.fetchone()[0]
-        print(manpower)
+        military = Military.get_military(cId)
 
-        # Soldiers
+        # TODO: maybe clear this mess a bit up
+        # Land units
         if army_bases*100 > manpower:
             soldiers = manpower
+        elif (army_bases*100)-military["soldiers"] > 0:
+            soldiers = (army_bases*100)-military["soldiers"]
         else:
-            soldiers = army_bases*100
+            soldiers = 0
 
-        # Tanks and artillery
         if army_bases*8 > manpower//4:
             tanks = manpower//4
-            artillery = army_bases//2
+        elif (army_bases*8)-military["tanks"] > 0:
+            tanks = (army_bases*8)-military["tanks"]
         else:
-            tanks = army_bases*8
-            artillery = army_bases*8
+            tanks = 0
+
+        if army_bases*8 > manpower//2:
+            artillery = army_bases//2
+        elif (army_bases*8)-military["artillery"] > 0:
+            artillery = (army_bases*8)-military["artillery"]
+        else:
+            artillery = 0
 
         # Air units
+        air_units = military["fighters"]+military["bombers"]+military["apaches"]
         if aerodomes*5 > manpower:
             bombers = manpower
             fighters = manpower
             apaches = manpower
+        elif (aerodomes*5)-air_units > 0:
+            bombers = (aerodomes*5)-air_units
+            fighters = (aerodomes*5)-air_units
+            apaches = (aerodomes*5)-air_units
         else:
-            bombers = aerodomes * 5
-            fighters = aerodomes * 5
-            apaches = aerodomes * 5
+            bombers = 0
+            apaches = 0
+            fighters = 0
 
         # Naval units
         if harbours*3 > manpower//6:
             submarines = manpower//6
             destroyers = manpower//6
+        elif (harbours*3)-military["submarines"]-military["destroyers"] > 0:
+            submarines = (harbours*3)-military["submarines"]-military["destroyers"]
+            destroyers = submarines
         else:
-            destroyers = harbours * 3
-            submarines = harbours * 3
+            destroyers = 0
+            submarines = 0
 
         if harbours*2 > manpower//5:
             curisers = manpower//5
+        elif (harbours*2)-military["cruisers"] > 0:
+            cruisers = (harbours*2)-military["cruisers"]
         else:
-            cruisers = harbours * 2
+            cruisers = 0
 
         # Special
+        special_units = Military.get_special(cId)
         spies = admin_buildings * 1
         icbms = silos+1
         nukes = silos
+
+        if spies - special_units["spies"] > 0:
+            spies -= special_units["spies"]
+        else:
+            spies = 0
+
+        if icbms - special_units["icbms"] > 0:
+            icbms -= special_units["icbms"]
+        else:
+            icbms = 0
+
+        if nukes - special_units["nukes"] > 0:
+            nukes -= special_units["nukes"]
+        else:
+            nukes = 0;
+
         return {
             "soldiers": soldiers,
             "tanks": tanks,
