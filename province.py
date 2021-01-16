@@ -418,10 +418,10 @@ def province_sell_buy(way, units, province_id):
             "land_price": land_price,
             "cityCount_price": cityCount_price,
 
-            "coal_burners_price": 1300000,
+            "coal_burners_price": 400000,
             "coal_burners_resource": {"aluminium": 45},
 
-            "oil_burners_price": 1600000,
+            "oil_burners_price": 650000,
             "oil_burners_resource": {"aluminium": 50},
 
             "hydro_dams_price": 5800000,
