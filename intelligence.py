@@ -11,8 +11,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
-@login_required
 @app.route("/intelligence", methods=["GET"])
+@login_required
 def intelligence():
     if request.method == "GET":
 
@@ -79,8 +79,8 @@ def intelligence():
         return render_template("intelligence.html", yourCountry=yourCountry, spyEntries=spyEntries)
 
 
-@login_required
 @app.route("/spyAmount", methods=["GET", "POST"])
+@login_required
 def spyAmount():
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -140,8 +140,8 @@ def spyAmount():
         return redirect("/spyResult")
 
 
-@login_required
 @app.route("/spyResult", methods=["GET"])
+@login_required
 def spyResult():
     spyEntry = session["spyEntry"]
     # You've conducted a spy operation on {{enemyNation}} and revealed the following information {{spyEntry}}.

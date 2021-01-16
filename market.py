@@ -57,8 +57,8 @@ def give_resource(giver_id, taker_id, resource, amount):
     conn.commit()
     conn.close()
 
-@login_required
 @app.route("/market", methods=["GET", "POST"])
+@login_required
 def market():
     if request.method == "GET":
 
@@ -182,9 +182,8 @@ def market():
 
         return render_template("market.html", offers=offers, price_type=price_type, cId=cId)
 
-
-@login_required
 @app.route("/buy_offer/<offer_id>", methods=["POST"])
+@login_required
 def buy_market_offer(offer_id):
 
     connection = psycopg2.connect(
@@ -259,8 +258,8 @@ def buy_market_offer(offer_id):
 
     return redirect("/market")
 
-@login_required
 @app.route("/sell_offer/<offer_id>", methods=["POST"])
+@login_required
 def sell_market_offer(offer_id):
   
     connection = psycopg2.connect(
@@ -349,13 +348,13 @@ def sell_market_offer(offer_id):
 
     return redirect("/market")
 
-@login_required
 @app.route("/marketoffer/", methods=["GET"])
+@login_required
 def marketoffer():
     return render_template("marketoffer.html")
 
-@login_required
 @app.route("/post_offer/<offer_type>", methods=["POST"])
+@login_required
 def post_offer(offer_type):
 
     if request.method == "POST":
@@ -443,8 +442,8 @@ def post_offer(offer_type):
         return redirect("/market")
 
 
-@login_required
 @app.route("/my_offers", methods=["GET"])
+@login_required
 def my_offers():
 
     connection = psycopg2.connect(
@@ -543,8 +542,8 @@ def my_offers():
     return render_template("my_offers.html", cId=cId, my_offers=my_offers, outgoing_offer_amount=outgoing_offer_amount,
     incoming_trades=incoming_trades, incoming_amount=incoming_amount)
 
-@login_required
 @app.route("/delete_offer/<offer_id>", methods=["POST"])
+@login_required
 def delete_offer(offer_id):
 
     connection = psycopg2.connect(
@@ -605,8 +604,8 @@ def delete_offer(offer_id):
     
     return redirect("/my_offers")
 
-@login_required
 @app.route("/post_trade_offer/<offer_type>/<offeree_id>", methods=["POST"])
+@login_required
 def trade_offer(offer_type, offeree_id):
 
     if request.method == "POST":
@@ -691,9 +690,8 @@ def trade_offer(offer_type, offeree_id):
         connection.close()  # Closes the connection
         return redirect(f"/country/id={offeree_id}")
 
-
-@login_required
 @app.route("/decline_trade/<trade_id>", methods=["POST"])
+@login_required
 def decline_trade(trade_id):
 
     if not trade_id.isnumeric():
@@ -723,8 +721,8 @@ def decline_trade(trade_id):
 
     return redirect("/my_offers")
 
-@login_required
 @app.route("/accept_trade/<trade_id>", methods=["POST"])
+@login_required
 def accept_trade(trade_id):
         
     cId = session["user_id"]
@@ -852,8 +850,8 @@ def accept_trade(trade_id):
     connection.close()
     return redirect("/my_offers")
 
-@login_required
 @app.route("/transfer/<transferee>", methods=["POST"])
+@login_required
 def transfer(transferee):
         
     cId = session["user_id"]

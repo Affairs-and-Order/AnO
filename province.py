@@ -9,8 +9,8 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-@login_required
 @app.route("/provinces", methods=["GET", "POST"])
+@login_required
 def provinces():
 
     if request.method == "GET":
@@ -35,8 +35,8 @@ def provinces():
         return render_template("provinces.html", provinces=provinces)
 
 
-@login_required
 @app.route("/province/<pId>", methods=["GET"])
+@login_required
 def province(pId):
 
     connection = psycopg2.connect(
@@ -69,6 +69,9 @@ def province(pId):
     province["cityCount"] = province_data[7]
     province["land"] = province_data[8]
     province["electricity"] = province_data[9]
+
+    province["free_cityCount"] = province["cityCount"] - get_free_slots(pId, "city")
+    province["free_land"] = province["land"] - get_free_slots(pId, "land")
 
     db.execute("SELECT location FROM stats WHERE id=(%s)", (province["user"],))
     province["location"] = db.fetchone()[0]
@@ -215,8 +218,8 @@ def get_province_price(user_id):
 
     return price
 
-@login_required
 @app.route("/createprovince", methods=["GET", "POST"])
+@login_required
 def createprovince():
 
     cId = session["user_id"]
@@ -306,8 +309,8 @@ def get_free_slots(pId, slot_type): # pId = province id
 
     return free_slots
 
-@login_required
 @app.route("/<way>/<units>/<province_id>", methods=["POST"])
+@login_required
 def province_sell_buy(way, units, province_id):
 
     if request.method == "POST":
@@ -375,27 +378,28 @@ def province_sell_buy(way, units, province_id):
         if wantedUnits < 1:
             return error(400, "Units cannot be less than 1")
 
-        if units == "cityCount":
+        def sum_cost_exp(starting_value, rate_of_growth, current_owned, num_purchased):
+            M = (starting_value * (1 - pow(rate_of_growth, (current_owned + num_purchased)))) / (1 - rate_of_growth)
+            N = (starting_value * (1 - pow(rate_of_growth, (current_owned)))) / (1 - rate_of_growth)
+            total_cost = M - N
+            return round(total_cost)
 
+        if units == "cityCount":
             db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
             current_cityCount = db.fetchone()[0]
 
-            multiplier = round(1 + ((0.08 * wantedUnits) * current_cityCount)) # 10% Increase in cost for each city.
-            print("City multiplier: " + str(multiplier))
-            cityCount_price = int((250000 * multiplier) * wantedUnits) # Each city costs 250,000 without the multiplier
+            cityCount_price = sum_cost_exp(250000, 1.05, current_cityCount, wantedUnits)
             print("New city price: " + str(cityCount_price))
-
         else:
             cityCount_price = 0
 
         if units == "land":
-
+            
             db.execute("SELECT land FROM provinces WHERE id=(%s)", (province_id,))
             current_land = db.fetchone()[0]
 
-            multiplier = round(1 + ((0.06 * wantedUnits) * current_land)) # 10% Increase in cost for each land.
-            print("Land multiplier: " + str(multiplier))
-            land_price = int((120000 * multiplier) * wantedUnits) # Each city costs 120,000 without the multiplier
+            land_price = sum_cost_exp(120000, 1.04, current_land, wantedUnits)
+
             print("New land price: " + str(land_price))
 
         else:
@@ -414,10 +418,10 @@ def province_sell_buy(way, units, province_id):
             "land_price": land_price,
             "cityCount_price": cityCount_price,
 
-            "coal_burners_price": 1300000,
+            "coal_burners_price": 400000,
             "coal_burners_resource": {"aluminium": 45},
 
-            "oil_burners_price": 1600000,
+            "oil_burners_price": 650000,
             "oil_burners_resource": {"aluminium": 50},
 
             "hydro_dams_price": 5800000,
@@ -450,15 +454,14 @@ def province_sell_buy(way, units, province_id):
             "banks_resource": {"steel": 225},
             "banks_resource2": {"aluminium": 110},
 
-            "city_parks_price": 4000000,
-            "city_parks_resource": {"steel": 75},
-            "city_parks_resource2": {"aluminium": 60},
+            "city_parks_price": 1800000,
+            "city_parks_resource": {"steel": 15},
 
             "hospitals_price": 8000000,
             "hospitals_resource": {"steel": 140},
             "hospitals_resource2": {"aluminium": 85},
 
-            "libraries_price": 5200000,
+            "libraries_price": 4200000,
             "libraries_resource": {"steel": 55},
             "libraries_resource2": {"aluminium": 40},
 
@@ -535,7 +538,10 @@ def province_sell_buy(way, units, province_id):
             table = "proInfra"
 
         price = unit_prices[f"{units}_price"]
-        totalPrice = int(wantedUnits * price)
+        if units not in ["cityCount", "land"]:
+            totalPrice = int(wantedUnits * price)
+        else:
+            totalPrice = price
 
         resources_used = []
 

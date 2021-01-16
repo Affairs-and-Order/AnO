@@ -188,14 +188,14 @@
                         <td><span class="material-icons-outlined">
                                 business
                             </span>City slots:</td>
-                        <td>{{ province['cityCount'] }}</td>
+                        <td>{{ province['free_cityCount']}} / {{ province['cityCount'] }}</td>
                         <!-- how much you are using out of how much you have -->
                     </tr>
                     <tr>
                         <td><span class="material-icons-outlined">
                                 landscape
                             </span>Land slots:</td>
-                        <td>{{ province['land'] }}</td>
+                        <td>{{ province['free_land'] }} / {{ province['land'] }}</td>
                         <!-- how much you are using out of how much you have -->
                     </tr>
                     <tr>
@@ -236,12 +236,25 @@
                                 var cityCount = document.getElementById("cityCount").value;
                                 var citiesoutput = document.getElementById("citiesoutput");
 
-                                var multiplier = 1 + ((0.08 * citiesamount) * cityCount)
-                                console.log("Cities multiplier: " + multiplier)
-                                var newPrice = Math.round((250000 * multiplier) * citiesamount)
-                                console.log("New City price: " + newPrice)
+                                citiesamount = parseInt(citiesamount);
+                                cityCount = parseInt(cityCount)
 
-                                citiesoutput.innerHTML = newPrice;
+                                function sum_cost_exp(startingValue, rateOfGrowth, currentOwned, numPurchased) {
+                                    const oneMinus = 1 - rateOfGrowth;
+                                    const M = (startingValue * (1 - rateOfGrowth ** (currentOwned + numPurchased))) / oneMinus;
+                                    const N = (startingValue * (1 - (rateOfGrowth ** currentOwned))) / oneMinus;
+                                    return Math.round(M - N);
+                                }
+
+                                function numberWithCommas(x) {
+                                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+
+                                let newPrice = sum_cost_exp(250000, 1.05, cityCount, citiesamount)
+                                let newOutputPrice = numberWithCommas(newPrice)
+                                console.log("New City price: " + newOutputPrice)
+
+                                citiesoutput.innerHTML = newOutputPrice;
                             }
                         </script>
                         <ul>Purchase Cities</ul>
@@ -272,13 +285,25 @@
                                 var landamount = document.getElementById("landamount").value;
                                 var landoutput = document.getElementById("landoutput");
                                 let current_land = document.getElementById("currentLand").value;
-                                //insert land cost formula
-                                let multiplier = Math.round(1 + ((0.06 * landamount) * current_land))
-                                console.log("Land multiplier: " + multiplier);
-                                let land_price = Math.round((120000 * multiplier) * landamount)
-                                console.log("New land price: " + land_price)
 
-                                landoutput.innerHTML = land_price;
+                                landamount = parseInt(landamount);
+                                current_land = parseInt(current_land)
+
+                                function sum_cost_exp(startingValue, rateOfGrowth, currentOwned, numPurchased) {
+                                    const oneMinus = 1 - rateOfGrowth;
+                                    const M = (startingValue * (1 - rateOfGrowth ** (currentOwned + numPurchased))) / oneMinus;
+                                    const N = (startingValue * (1 - (rateOfGrowth ** currentOwned))) / oneMinus;
+                                    return Math.round(M - N);
+                                }
+
+                                function numberWithCommas(x) {
+                                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                                }
+
+                                let land_price = sum_cost_exp(120000, 1.04, current_land, landamount)
+                                let land_output_price = numberWithCommas(land_price)
+                                console.log("New land price: " + land_output_price)
+                                landoutput.innerHTML = land_output_price;
                             }
                         </script>
                         <ul>Purchase Land</ul>
@@ -401,7 +426,7 @@
 
                                 <ul>Coal power plants cost 45,000 per hour, takes 48 coal per hour, and produces +4 energy and +7% pollution
                                 </ul>
-                                <ul>Coal power plants cost 1.3M, 45 aluminium each
+                                <ul>Coal power plants cost 400,000, 45 aluminium each
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -449,7 +474,7 @@
 
                                 <ul>Oil power plants cost 60,000 per hour, takes 56 oil per hour, and contributes +4 energy and +3% pollution
                                 </ul>
-                                <ul>Oil power plants cost 1.6M, 50 aluminium each
+                                <ul>Oil power plants cost 650,000, 50 aluminium each
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -880,7 +905,7 @@
                                 <p class="templatecontentpleft">City parks are perfect establishments to increase happiness of your population, and to absorb some pollution.</p>
 
                                 <ul>City parks cost 20,000 per hour and contribute +3% happiness and -6% pollution</ul>
-                                <ul>City parks cost 5.1M, 75 steel, 60 aluminium each</ul>
+                                <ul>City parks cost 1.8M, 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="city_parks" type="number" placeholder="Amount" />
@@ -925,7 +950,7 @@
                                 <p class="templatecontentpleft">Libraries are places for your citizens to enjoy a book and learn from them to become more productive.</p>
 
                                 <ul>Libraries cost 90,000 per hour and contribute +2% happiness and +2% productivity</ul>
-                                <ul>Libraries cost 5.2M, 55 steel, 40 aluminium each</ul>
+                                <ul>Libraries cost 4.2M, 55 steel, 40 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="libraries" type="number" placeholder="Amount" />
@@ -1137,7 +1162,7 @@
                             <td>{{ steel_mills }} Steel Mills</td>
                         </tr>
                         <tr>
-                            <td>{{ harbours }} Air Bases</td>
+                            <td>{{ harbours }} Naval Bases</td>
                             <!-- #2 Raw resource -->
                             {% if province['location'] in ["Tundra", "Savanna", "Jungle", "Grassland"] %}
                             <td>{{ copper_mines }} Copper Mines</td>
@@ -1282,17 +1307,17 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Air Bases</h2>
+                        <h2 class="templatecontentheaderleft">Naval Bases</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ harbours }} Air Bases</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ harbours }} Naval Bases</h3>
 
-                                <p class="templatecontentpleft">Air Bases allow for the storage and production of all naval units.</p>
+                                <p class="templatecontentpleft">Naval Bases allow for the storage and production of all naval units.</p>
 
-                                <ul>Air Bases cost 35,000 per hour</ul>
-                                <ul>Air Bases cost 2.1M, 210 steel each</ul>
+                                <ul>Naval Bases cost 35,000 per hour</ul>
+                                <ul>Naval Bases cost 2.1M, 210 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="harbours" type="number" placeholder="Amount" />

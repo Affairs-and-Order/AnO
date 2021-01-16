@@ -3121,7 +3121,7 @@ button {
 }
 
 .borderbottom div {
-    border-radius: 0px;
+    border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.12) 0px 2px 3px 0px, rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
     background: #00a7e1;
     transition: all 0.3s;
@@ -3287,6 +3287,20 @@ button {
 .tutorialdiv {
     position: relative;
     overflow: hidden;
+}
+
+.tutorialiframe {
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.125) 0 3px 4px 1px, rgba(0, 0, 0, 0.2) 0 12px 32px 0;
+    width: 480px;
+    height: 270px;
+}
+
+@media all and (max-width: 700px) {
+    .tutorialiframe {
+        width: 320px;
+        height: 180px;
+    }
 }
 
 .checkmarkparent {
