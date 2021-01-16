@@ -72,6 +72,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             ## LAND
 
             "soldiers_price": 200, # Cost 200
+            "soldiers_resource": {"rations": 0},
             "soldiers_manpower": 1,
 
             "tanks_price": 8000, # Cost 8k
