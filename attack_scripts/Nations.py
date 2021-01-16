@@ -837,10 +837,11 @@ class Military(Nation):
         # Currently this is a constant
         # army_tradition = 0.2
         # manpower = int(capable_population*army_tradition)
-        
+
         # these numbers determine the upper limit of how many of each military unit can be built per day
         db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
         manpower = db.fetchone()[0]
+        print(manpower)
 
         # Soldiers
         if army_bases*100 > manpower:
@@ -856,12 +857,28 @@ class Military(Nation):
             tanks = army_bases*8
             artillery = army_bases*8
 
-        bombers = aerodomes * 5
-        fighters = aerodomes * 5
-        apaches = aerodomes * 5
-        destroyers = harbours * 3
-        cruisers = harbours * 2
-        submarines = harbours * 3
+        # Air units
+        if aerodomes*5 > manpower:
+            bombers = manpower
+            fighters = manpower
+            apaches = manpower
+        else:
+            bombers = aerodomes * 5
+            fighters = aerodomes * 5
+            apaches = aerodomes * 5
+
+        # Naval units
+        if harbours*3 > manpower//6:
+            submarines = manpower//6
+            destroyers = manpower//6
+        else:
+            destroyers = harbours * 3
+            submarines = harbours * 3
+
+        if harbours*2 > manpower//5:
+            curisers = manpower//5
+        else:
+            cruisers = harbours * 2
 
         # Special
         spies = admin_buildings * 1
