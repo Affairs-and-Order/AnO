@@ -2,7 +2,7 @@
 
 from abc import ABC, abstractmethod
 from attack_scripts import Military
-from math import ceil
+from math import floor, ceil
 from random import randint
 from typing import Union
 import psycopg2
@@ -467,7 +467,8 @@ class Units(Military):
 
         # Make sure this is and integer
         # TODO: optimize this by creating integer at the user side
-        amount = int(ceil(amount))
+        amount = int(floor(amount))
+        # print("LOSS AMOUNT", self.user_id, unit_type, amount)
         unit_amount = self.selected_units[unit_type]
 
         if amount > unit_amount:
@@ -557,4 +558,39 @@ class Units(Military):
 
 # DEBUGGING
 if __name__ == "__main__":
-    pass
+    attacker = 2
+    defender = 5
+    war_id = 666
+
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+    db = connection.cursor()
+    import time
+
+    db.execute(f"INSERT INTO wars VALUES ({war_id},{attacker},{defender},'Raze','falas message',NULL,{time.time()},2000,2000,{time.time()}, 100, 100)")
+    connection.commit()
+
+    attack_units = Units(attacker, war_id=war_id, selected_units_list=["soldiers", "cruisers", "tanks"],
+    selected_units={"soldiers": 1000, "cruisers": 100, "tanks": 50})
+
+    defender_units = Units(defender, {
+    "tanks": 544,
+    "soldiers": 64,
+    "artillery": 55
+    }, selected_units_list=["tanks", "soldiers", "artillery"])
+
+    # defender_units = Units(defender, {
+    # "tanks": 0,
+    # "soldiers": 0,
+    # "artillery": 0
+    # }, selected_units_list=["tanks", "soldiers", "artillery"])
+
+    print(Military.fight(attack_units, defender_units))
+
+    db.execute(f"DELETE FROM wars WHERE id={war_id}")
+    connection.commit()
+    connection.close()

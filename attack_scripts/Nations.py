@@ -592,12 +592,12 @@ class Military(Nation):
 
         # IMPORTANT: Here you can change the values for the fight chances, bonuses and even can controll casualties (in this whole funciton)
         # If you want to change the bonuses given by a particular unit then go to `units.py` and you can find those in the classes
-        attacker_roll = random.uniform(1, 2)
+        attacker_roll = random.uniform(1, 5)
         attacker_chance = 0
         attacker_unit_amount_bonuses = 0
         attacker_bonus = 0
 
-        defender_roll = random.uniform(1, 2)
+        defender_roll = random.uniform(1, 5)
         defender_chance = 0
         defender_unit_amount_bonuses = 0
         defender_bonus = 0
@@ -607,8 +607,8 @@ class Military(Nation):
         for attacker_unit, defender_unit in zip(attacker.selected_units_list, defender.selected_units_list):
 
             # Unit amount chance - this way still get bonuses even if no counter unit_type
-            defender_unit_amount_bonuses += defender.selected_units[defender_unit]/100 # is dict
-            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]/100
+            defender_unit_amount_bonuses += defender.selected_units[defender_unit]/150 # is dict
+            attacker_unit_amount_bonuses += attacker.selected_units[attacker_unit]/150
 
             # Compare attacker agains defender
             for unit in defender.selected_units_list:
@@ -624,30 +624,37 @@ class Military(Nation):
 
         # used to be: attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         #             defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
+        # print("BONUSE", attacker_bonus, defender_bonus)
         attacker_chance += attacker_roll+attacker_unit_amount_bonuses+attacker_bonus
         defender_chance += defender_roll+defender_unit_amount_bonuses+defender_bonus
 
-        # If there are not attackers or defenders
+        # # If there are not attackers or defenders
         if defender_unit_amount_bonuses == 0:
-            defender_chance = 0.001
+            defender_chance = 0
         elif attacker_unit_amount_bonuses == 0:
-            attacker_chance = 0.001
+            attacker_chance = 0
 
-        # print("attacker change ", attacker_chance, attacker_roll, attacker_unit_amount_bonuses, attacker_bonus)
-        # print("attacker change ", defender_chance, defender_roll, defender_unit_amount_bonuses, defender_bonus)
+        # print(attacker_chance, defender_chance)
 
         # Determine the winner
         if defender_chance >= attacker_chance:
             winner = defender
             loser = attacker
-            win_type = defender_chance/attacker_chance
-            winner_casulties = attacker_chance/defender_chance
+            if attacker_unit_amount_bonuses == 0:
+                winner_casulties = 0
+                win_type = 5
+            else:
+                win_type = defender_chance/attacker_chance
+                winner_casulties = (1+attacker_chance)/defender_chance
         else:
             winner = attacker
             loser = defender
-            win_type = attacker_chance/defender_chance
-            winner_casulties = defender_chance/attacker_chance
-
+            if defender_unit_amount_bonuses == 0:
+                winner_casulties = 0
+                win_type = 5
+            else:
+                win_type = attacker_chance/defender_chance
+                winner_casulties = (1+defender_chance)/attacker_chance
 
         # Get the absolute side (absolute attacker and defender) in the war for determining the loser's morale column name to decrease
 
@@ -684,8 +691,8 @@ class Military(Nation):
         # Maybe use the damage property also in unit loss
         # TODO: make unit loss more precise
         for winner_unit, loser_unit in zip(winner.selected_units_list, loser.selected_units_list):
-            w_casualties = winner_casulties*random.uniform(0.5, 1)
-            l_casualties =  win_type*random.uniform(0.8, 1.2)
+            w_casualties = winner_casulties*random.uniform(2, 10)*2
+            l_casualties =  win_type*random.uniform(2, 10.5)*2
 
             # print("w_casualties", w_casualties)
             # print("l_casualties", l_casualties)
