@@ -35,6 +35,18 @@
     <link rel="icon" href="{{ url_for('static', filename='images/titleimage.png') }}" type="image/png">
     <title>{% block title %}{% endblock %} | Affairs and Order · MMO Nation Game</title>
     <script data-ad-client="ca-pub-2399873064840158" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RZVBFFEGHM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-RZVBFFEGHM');
+    </script>
     <script>
         const imageBackground = function(event) {
             var output = document.getElementById('imageBackground');
