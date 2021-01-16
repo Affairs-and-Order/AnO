@@ -250,7 +250,7 @@
                                     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 }
 
-                                let newPrice = sum_cost_exp(250000, 1.08, cityCount, citiesamount)
+                                let newPrice = sum_cost_exp(250000, 1.05, cityCount, citiesamount)
                                 let newOutputPrice = numberWithCommas(newPrice)
                                 console.log("New City price: " + newOutputPrice)
 
@@ -300,7 +300,7 @@
                                     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 }
 
-                                let land_price = sum_cost_exp(120000, 1.06, current_land, landamount)
+                                let land_price = sum_cost_exp(120000, 1.04, current_land, landamount)
                                 let land_output_price = numberWithCommas(land_price)
                                 console.log("New land price: " + land_output_price)
                                 landoutput.innerHTML = land_output_price;

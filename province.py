@@ -388,7 +388,7 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
             current_cityCount = db.fetchone()[0]
 
-            cityCount_price = sum_cost_exp(250000, 1.08, current_cityCount, wantedUnits)
+            cityCount_price = sum_cost_exp(250000, 1.05, current_cityCount, wantedUnits)
             print("New city price: " + str(cityCount_price))
         else:
             cityCount_price = 0
@@ -398,7 +398,7 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT land FROM provinces WHERE id=(%s)", (province_id,))
             current_land = db.fetchone()[0]
 
-            land_price = sum_cost_exp(120000, 1.06, current_land, wantedUnits)
+            land_price = sum_cost_exp(120000, 1.04, current_land, wantedUnits)
 
             print("New land price: " + str(land_price))
 
