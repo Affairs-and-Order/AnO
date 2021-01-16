@@ -10,6 +10,7 @@ from app import app
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import variables
 
 # Function for getting the coalition role of a user
 def get_user_role(user_id):
@@ -812,9 +813,7 @@ def deposit_into_bank(colId):
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
-    resources = ["money", "rations", "oil", "coal", "uranium", "bauxite",
-    "lead", "copper", "iron", "lumber", "components", "steel", "consumer_goods",
-    "aluminium", "gasoline", "ammunition"]
+    resources = variables.RESOURCES
 
     deposited_resources = []
 
@@ -952,11 +951,7 @@ def withdraw_from_bank(colId):
     if user_role not in ["leader", "deputy_leader", "banker"]:
         return error(400, "You aren't the leader of this coalition")
 
-    resources = [
-        "money", "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-        "lumber", "components", "steel", "consumer_goods", "aluminium",
-        "gasoline", "ammunition"
-    ]
+    resources = variables.RESOURCES
 
     withdrew_resources = []
 
@@ -999,11 +994,7 @@ def request_from_bank(colId):
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
-    resources = [
-                "money", "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-                "lumber", "components", "steel", "consumer_goods", "aluminium",
-                "gasoline", "ammunition"
-    ]
+    resources = variables.RESOURCES
 
     requested_resources = []
 
