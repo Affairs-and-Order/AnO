@@ -899,9 +899,9 @@ def withdraw(resource, amount, user_id, colId):
 
     # Removes the resource from the coalition bank
 
-    current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
-    db.execute(current_resource_statement, (resource, colId,))
-    current_resource = int(db.fetchone()[0])
+    current_resource_statement = f"SELECT {resource}" + " FROM colBanks WHERE colId=%s"
+    db.execute(current_resource_statement, (colId,))
+    current_resource = db.fetchone()[0]
 
     if amount < 1:
         return error(400, "Amount cannot be less than 1")
