@@ -9,6 +9,7 @@ from random import random
 import psycopg2
 import os
 from dotenv import load_dotenv
+import variables
 load_dotenv()
 
 @app.route("/intelligence", methods=["GET"])
@@ -36,8 +37,7 @@ def intelligence():
         for unittype in Military.allUnits:
             emptyCountryDict[unittype] = 'Unknown'
 
-        resources = ["rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-                     "lumber", "components", "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"]
+        resources = variables.RESOURCES
 
         for resource in resources:
             emptyCountryDict[resource] = "Unknown"
@@ -111,8 +111,7 @@ def spyAmount():
         # calculate what values have been revealed based on prep, amount, edefcon, espies
 
 
-        resources = ["rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-                     "lumber", "components", "steel", "consumer_goods", "aluminium", "gasoline", "ammunition"]
+        resources = variables.RESOURCES
                      
         revealChance = prep * spies / (eDefcon * eSpies)
         spyEntry = {}

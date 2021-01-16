@@ -10,6 +10,7 @@ from app import app
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import variables
 
 # Function for getting the coalition role of a user
 def get_user_role(user_id):
@@ -812,9 +813,7 @@ def deposit_into_bank(colId):
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
-    resources = ["money", "rations", "oil", "coal", "uranium", "bauxite",
-    "lead", "copper", "iron", "lumber", "components", "steel", "consumer_goods",
-    "aluminium", "gasoline", "ammunition"]
+    resources = variables.RESOURCES
 
     deposited_resources = []
 
@@ -899,9 +898,9 @@ def withdraw(resource, amount, user_id, colId):
 
     # Removes the resource from the coalition bank
 
-    current_resource_statement = "SELECT %s FROM colBanks WHERE colId=%s"
-    db.execute(current_resource_statement, (resource, colId,))
-    current_resource = int(db.fetchone()[0])
+    current_resource_statement = f"SELECT {resource}" + " FROM colBanks WHERE colId=%s"
+    db.execute(current_resource_statement, (colId,))
+    current_resource = db.fetchone()[0]
 
     if amount < 1:
         return error(400, "Amount cannot be less than 1")
@@ -911,8 +910,8 @@ def withdraw(resource, amount, user_id, colId):
 
     new_resource = current_resource - amount
 
-    update_statement = "UPDATE colBanks SET %s=%s WHERE colId=%s"
-    db.execute(update_statement, (resource, new_resource, colId))
+    update_statement = f"UPDATE colBanks SET {resource}" + "=%s WHERE colId=%s"
+    db.execute(update_statement, (new_resource, colId))
 
     # Gives the leader his resource
     # If the resource is money, gives him money
@@ -928,14 +927,14 @@ def withdraw(resource, amount, user_id, colId):
     # If the resource is not money, gives him that resource
     else:
 
-        current_resource_statement = "SELECT %s FROM resources WHERE id=%s"
-        db.execute(current_resource_statement, (resource, user_id,))
-        current_resource = int(db.fetchone()[0])
+        current_resource_statement = f"SELECT {resource}" +  " FROM resources WHERE id=%s"
+        db.execute(current_resource_statement, (user_id,))
+        current_resource = db.fetchone()[0]
 
         new_resource = current_resource + amount
 
-        update_statement = "UPDATE resources SET %s=%s WHERE id=%s"
-        db.execute(update_statement, (resource, new_resource, user_id))
+        update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
+        db.execute(update_statement, (new_resource, user_id))
 
     connection.commit()
     connection.close()
@@ -952,11 +951,7 @@ def withdraw_from_bank(colId):
     if user_role not in ["leader", "deputy_leader", "banker"]:
         return error(400, "You aren't the leader of this coalition")
 
-    resources = [
-        "money", "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-        "lumber", "components", "steel", "consumer_goods", "aluminium",
-        "gasoline", "ammunition"
-    ]
+    resources = variables.RESOURCES
 
     withdrew_resources = []
 
@@ -999,11 +994,7 @@ def request_from_bank(colId):
     except TypeError:
         return redirect(400, "You aren't in this coalition")
 
-    resources = [
-                "money", "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-                "lumber", "components", "steel", "consumer_goods", "aluminium",
-                "gasoline", "ammunition"
-    ]
+    resources = variables.RESOURCES
 
     requested_resources = []
 

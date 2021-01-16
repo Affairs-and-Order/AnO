@@ -273,7 +273,7 @@
                 </ul>
 
                 {% if colType == "Invite Only" %}
-                <for m action="/join/{{ colId }}" method="POST">
+                <form action="/join/{{ colId }}" method="POST">
                     <button type="submit" value="submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
                     arrow_forward
                         </span>Apply</button>
@@ -291,7 +291,7 @@
                     <ul>
                         Are you sure you would like to join {{ name }}?
                     </ul>
-                    <for m action="/join/{{ colId }}" method="POST">
+                    <form action="/join/{{ colId }}" method="POST">
                         <button type="submit" class="templatedivbutton templatecenteredbutton" value="submit"><span class="material-icons-outlined">
                     arrow_forward
                         </span>Join</button>
@@ -312,7 +312,7 @@
 
             <div class="infodiv">
 
-                <for m action="/give_position" method="POST">
+                <form action="/give_position" method="POST">
                     <div class="templatedivflex2 divflex2center menuflex">
                         <div class="templatedivflex2left">
 
@@ -326,6 +326,7 @@
                             <option value="general" class="templateoption">General</option>
                             <option value="domestic_minister" class="templateoption">Domestic Minister</option>
                             <option value="member" class="templateoption">Member</option>
+
                         </select>
 
                         </div>
@@ -339,7 +340,7 @@
                     </form>
                     <!--max lenth of 10-->
                     <div class="templateoutertablediv inverttable">
-                        <tab le class="templatetable templatetable2">
+                        <table class="templatetable templatetable2">
                             <tr>
                                 <th>Role</th>
                                 <th>About</th>
@@ -394,14 +395,15 @@
                     </span>Update</button>
                     -->
             </div>
-            {% endif %} {% if user_role in ["leader", "deputy_leader", "banker"] %}
+            {% endif %}
+             {% if user_role in ["leader", "deputy_leader", "banker"] %}
             <h2 class="templatecontentheaderleft">Bank</h2>
 
             <div class="infodiv">
 
-                <for m method="POST">
+                <form method="POST">
                     <div class="templateoutertablediv inverttable">
-                        <tab le class="templatetable templatetable2">
+                        <table class="templatetable templatetable2">
                             <tr>
                                 <th>Resource</th>
                                 <th>Bank's resources</th>
@@ -525,7 +527,7 @@
                     </div>
                     </form>
 
-                    <for m method="POST">
+                    <form method="POST">
                         <div class="templateoutertablediv inverttable">
                             <table class="templatetable templatetable2">
                                 <tr>
@@ -571,7 +573,7 @@
 
             <div class="infodiv">
 
-                <for m action="/offer_treaty" method="POST">
+                <form action="/offer_treaty" method="POST">
                     <h2 class="templatecontentheadercenter">Add Ally</h2>
 
                     <input class="loginsignupinput" autocomplete="off" name="coalition_name" placeholder="Coalition name" />
@@ -592,7 +594,7 @@
                     <h2 class="templatecontentheadercenter">Treaty Requests</h2>
 
                     <div class="templateoutertablediv inverttable">
-                        <tab le class="templatetable templatetable2">
+                        <table class="templatetable templatetable2">
                             <tr>
                                 <th>Coalition Name</th>
                                 <th>Treaty name</th>
@@ -605,7 +607,7 @@
                                 <td><a href="/coalition/{{ col_id[0] }}">{{ col_name[0] }}</a></td>
                                 <td>{{ treaty_name[0] }}</td>
                                 <td>{{ treaty_description }}</td>
-                                <for m method="POST">
+                                <form method="POST">
                                     <td>
                                         <button formaction="/accept_treaty/{{ id[0] }}"><span class="material-icons iconblue">
                                 check_circle_outline
@@ -628,7 +630,7 @@
                     <h2 class="templatecontentheadercenter">Current Allies</h2>
 
                     <div class="templateoutertablediv inverttable">
-                        <tab le class="templatetable templatetable2">
+                        <table class="templatetable templatetable2">
                             <tr>
                                 <th>Ally</th>
                                 <th>Treaty</th>
@@ -641,7 +643,7 @@
                                 <td><a href="/coalition/{{ col_id }}">{{ col_name }}</a></td>
                                 <td>{{ treaty_name }}</td>
                                 <td>{{ treaty_description }}</td>
-                                <for m method="POST">
+                                <form method="POST">
                                     <td><button formaction="/break_treaty/{{ id }}"><span class="material-icons iconred">
                                                 remove_circle_outline
                                                     </span></button></td>
@@ -808,7 +810,7 @@
                     </div>
                 </div>
                 <div class="templateoutertablediv inverttable">
-                    <tab le class="templatetable templatetable2 scrolltable">
+                    <table class="templatetable templatetable2 scrolltable">
                         <tr>
                             <th>Name</th>
                             <th>Influence</th>
@@ -822,7 +824,7 @@
                             <td></td>
                             <td class="templatesmalltd">{{ message[0] }}</td>
                             <td>
-                                <for m method="POST">
+                                <form method="POST">
                                     <div class="templatedivflex2 menuflex">
                                         <!-- plus sign-->
                                         <div class="templatedivflex2left flexchildvanilla">
@@ -848,18 +850,34 @@
                         </table>
                 </div>
             </div>
-            {% endif %} {% if user_role == "leader" %}
+            {% endif %} 
+            {% if user_role == "leader" %}
             <h2 class="templatecontentheaderleft">General</h2>
 
-            <for m action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
+            <form action="/update_col_info/{{ colId }}" method="POST" enctype="multipart/form-data">
                 <div class="infodiv">
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
-                            <scr ipt>
-                                cons t flagItselfUpload = function(event) { var output = document.getElementById('imageBackground'); output.src = URL.createObjectURL(event.target.files[0]); output.style.width = "20vw"; output.style.height = "11.25vw"; outp ut.onload = function() { URL.revokeObjectURL(output.src)
-                                //free memory } }; var flagBackgroundUpload = function(event) { var output = document.getElementById('imageBackground2'); output.src = URL.createObjectURL(event.target.files[0]); output.style.width = "20vw"; output.style.height
-                                = "11.25vw"; outp ut.onload = function() { URL.revokeObjectURL(output.src) // free memory } };
-                                </script>
+                            <script>
+                                const flagItselfUpload = function(event) {
+                                    var output = document.getElementById('imageBackground');
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.style.width = "20vw";
+                                    output.style.height = "11.25vw";
+                                    output.onload = function() {
+                                        URL.revokeObjectURL(output.src) //free memory
+                                    }
+                                };
+                                var flagBackgroundUpload = function(event) {
+                                    var output = document.getElementById('imageBackground2');
+                                    output.src = URL.createObjectURL(event.target.files[0]);
+                                    output.style.width = "20vw";
+                                    output.style.height = "11.25vw";
+                                    output.onload = function() {
+                                        URL.revokeObjectURL(output.src) // free memory
+                                    }
+                                };
+                            </script>
                                 <div class="coalitionimagepreview">
                                     <img id="imageBackground" />
                                 </div>
@@ -919,7 +937,7 @@
 
                 <h2 class="templatecontentheaderleft">Danger Zone</h2>
 
-                <for m method="POST">
+                <form method="POST">
                     <div class="infodiv">
                         <div class="templatedivflex2 divflex2center menuflex">
                             {% if user_role == "leader" %}
@@ -951,9 +969,9 @@
 
             <div class="infodiv">
 
-                <for m method="POST">
+                <form method="POST">
                     <div class="templateoutertablediv inverttable">
-                        <tab le class="templatetable templatetable2">
+                        <table class="templatetable templatetable2">
                             <tr>
                                 <th>Resource</th>
                                 <th>My Resources</th>

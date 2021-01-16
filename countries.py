@@ -16,7 +16,6 @@ app.config['UPLOAD_FOLDER'] = 'static/flags'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
 
 @app.route("/country/id=<cId>")
-@login_required
 def country(cId):
 
     connection = psycopg2.connect(
@@ -54,7 +53,10 @@ def country(cId):
     db.execute("SELECT provinceName, id, population, cityCount, land, happiness, productivity FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
     provinces = db.fetchall()
 
-    status = cId == str(session["user_id"])
+    try:
+        status = cId == str(session["user_id"])
+    except:
+        status = False
 
     try:
         db.execute("SELECT colId, role FROM coalitions WHERE userId=(%s)", (cId,))

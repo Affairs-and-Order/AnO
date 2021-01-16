@@ -118,10 +118,7 @@ def market():
 
         if filter_resource is not None:
 
-            resources = [
-                "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
-                "lumber", "components", "steel", "consumer_goods", "aluminium",
-                "gasoline", "ammunition"]
+            resources = variables.RESOURCES
 
             if filter_resource not in resources:  # Checks if the resource the user selected actually exists
                 return error(400, "No such resource")
@@ -380,11 +377,7 @@ def post_offer(offer_type):
         """
 
         # List of all the resources in the game
-        resources = [
-            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
-            "lumber", "components", "steel", "consumer_goods", "aluminium",
-            "gasoline", "ammunition", "iron"
-        ]
+        resources = variables.RESOURCES
 
         offer_types = ["buy", "sell"]
         if offer_type not in offer_types:
@@ -636,11 +629,7 @@ def trade_offer(offer_type, offeree_id):
             return error(400, "Offer type must be 'buy' or 'sell'")
 
         # List of all the resources in the game
-        resources = [
-            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
-            "lumber", "components", "steel", "consumer_goods", "aluminium",
-            "gasoline", "ammunition", "iron"
-        ]
+        resources = variables.RESOURCES
 
         if resource not in resources:  # Checks if the resource the user selected actually exists
             return error(400, "No such resource")
@@ -758,11 +747,7 @@ def accept_trade(trade_id):
         return error(400, "Trade type must be 'buy' or 'sell'")
 
     # List of all the resources in the game
-    resources = [
-        "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
-        "lumber", "components", "steel", "consumer_goods", "aluminium",
-        "gasoline", "ammunition", "iron"
-    ]
+    resources = variables.RESOURCES
 
     if resource not in resources:  # Checks if the resource the user selected actually exists
         return error(400, "No such resource")
@@ -876,11 +861,7 @@ def transfer(transferee):
     ###################
 
     # List of all the resources in the game
-    resources = [
-            "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper",
-            "lumber", "components", "steel", "consumer_goods", "aluminium",
-            "gasoline", "ammunition", "iron"
-        ]
+    resources = variables.RESOURCES
 
     if resource not in resources and resource not in ["gold", "money"]:  # Checks if the resource the user selected actually exists
         return error(400, "No such resource")

@@ -143,19 +143,19 @@
                         {% elif resource == "ammunition" %}
                         <img src="{{ url_for( 'static', filename='images/resammunition.png' ) }}" class="resource resourcesmall" />
                         {% endif %}
-                        <span class="hidden">{{ resource }}</span>{{ amount }}</td>
+                        <span class="hidden">{{ resource }}</span>{{ amount | commas }}</td>
 
                     <td>
                         <div class="center fit">
-                            <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
-                                />{{ total_price }} Total</div>
+                            <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price | commas }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
+                                />{{ total_price | commas }} Total</div>
                         </div>
                     </td>
                     <td>
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left">
-                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="{{ amount }}" required/>
+                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="{{ amount | commas }}" required/>
                                 </div>
                                 <div class="templatedivflex2left">
                                     {% if type == "sell" %}
