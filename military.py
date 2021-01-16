@@ -109,17 +109,17 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "destroyers_price": 30000, # Cost 30k
             "destroyers_resource": {"steel": 30},
             "destroyers_resource2": {"components": 7},
-            "destroyers_manpower": 1,
+            "destroyers_manpower": 6,
 
             "cruisers_price": 55000, # Cost 55k
             "cruisers_resource": {"steel": 25},
             "cruisers_resource2": {"components": 4},
-            "cruisers_manpower": 1,
+            "cruisers_manpower": 5,
 
             "submarines_price": 45000, # Cost 45k
             "submarines_resource": {"steel": 20},
             "submarines_resource2": {"components": 8},
-            "submarines_manpower": 1,
+            "submarines_manpower": 6,
 
             ## SPECIAL
 

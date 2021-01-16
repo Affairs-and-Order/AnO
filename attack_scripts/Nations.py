@@ -894,13 +894,13 @@ class Military(Nation):
             destroyers = manpower//6
         elif (harbours*3)-military["submarines"]-military["destroyers"] > 0:
             submarines = (harbours*3)-military["submarines"]-military["destroyers"]
-            destroyers = submarines
+            destroyers = (harbours*3)-military["submarines"]-military["destroyers"]
         else:
             destroyers = 0
             submarines = 0
 
         if harbours*2 > manpower//5:
-            curisers = manpower//5
+            cruisers = manpower//5
         elif (harbours*2)-military["cruisers"] > 0:
             cruisers = (harbours*2)-military["cruisers"]
         else:
