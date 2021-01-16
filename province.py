@@ -7,6 +7,7 @@ import psycopg2
 from app import app
 from dotenv import load_dotenv
 import os
+import variables
 load_dotenv()
 
 @app.route("/provinces", methods=["GET", "POST"])
@@ -176,7 +177,40 @@ def province(pId):
 
         return energy > 0
 
+    def energy_info(province_id):
+
+        production = 0
+        consumption = 0
+
+        consumers = variables.ENERGY_CONSUMERS
+        producers = variables.ENERGY_UNITS
+        infra = variables.INFRA
+
+        for consumer in consumers:
+
+            consumer_query = f"SELECT {consumer}" + " FROM proInfra WHERE id=%s"
+            db.execute(consumer_query, (province_id,))
+            consumer_count = db.fetchone()[0]
+
+            consumption += consumer_count
+
+        for producer in producers:
+
+            producer_query = f"SELECT {producer}" + " FROM proInfra WHERE id=%s"
+            db.execute(producer_query, (province_id,))
+            producer_count = db.fetchone()[0]
+
+            plus_data = list(infra[f'{producer}_plus'].items())[0]
+            plus_amount = plus_data[1]
+
+            production += (producer_count * plus_amount)
+
+        return consumption, production
+
+    energy = {}
+
     has_power = has_power(pId)
+    energy["consumption"], energy["production"] = energy_info(pId)
 
     connection.close()
 
@@ -196,7 +230,8 @@ def province(pId):
                             component_factories=component_factories, steel_mills=steel_mills, ammunition_factories=ammunition_factories,
                             aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries,
 
-                            enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power
+                            enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power,
+                            energy=energy
                             )
 
 def get_province_price(user_id):
