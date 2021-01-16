@@ -911,8 +911,8 @@ def withdraw(resource, amount, user_id, colId):
 
     new_resource = current_resource - amount
 
-    update_statement = "UPDATE colBanks SET %s=%s WHERE colId=%s"
-    db.execute(update_statement, (resource, new_resource, colId))
+    update_statement = f"UPDATE colBanks SET {resource}" + "=%s WHERE colId=%s"
+    db.execute(update_statement, (new_resource, colId))
 
     # Gives the leader his resource
     # If the resource is money, gives him money
@@ -928,14 +928,14 @@ def withdraw(resource, amount, user_id, colId):
     # If the resource is not money, gives him that resource
     else:
 
-        current_resource_statement = "SELECT %s FROM resources WHERE id=%s"
-        db.execute(current_resource_statement, (resource, user_id,))
-        current_resource = int(db.fetchone()[0])
+        current_resource_statement = f"SELECT {resource}" +  " FROM resources WHERE id=%s"
+        db.execute(current_resource_statement, (user_id,))
+        current_resource = db.fetchone()[0]
 
         new_resource = current_resource + amount
 
-        update_statement = "UPDATE resources SET %s=%s WHERE id=%s"
-        db.execute(update_statement, (resource, new_resource, user_id))
+        update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
+        db.execute(update_statement, (new_resource, user_id))
 
     connection.commit()
     connection.close()
