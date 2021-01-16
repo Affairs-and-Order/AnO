@@ -454,15 +454,14 @@ def province_sell_buy(way, units, province_id):
             "banks_resource": {"steel": 225},
             "banks_resource2": {"aluminium": 110},
 
-            "city_parks_price": 4000000,
-            "city_parks_resource": {"steel": 75},
-            "city_parks_resource2": {"aluminium": 60},
+            "city_parks_price": 1800000,
+            "city_parks_resource": {"steel": 15},
 
             "hospitals_price": 8000000,
             "hospitals_resource": {"steel": 140},
             "hospitals_resource2": {"aluminium": 85},
 
-            "libraries_price": 5200000,
+            "libraries_price": 4200000,
             "libraries_resource": {"steel": 55},
             "libraries_resource2": {"aluminium": 40},
 
