@@ -378,9 +378,10 @@ def delete_own_account():
     db.execute("DELETE FROM wars WHERE defender=%s OR attacker=%s", (cId, cId))
 
     # Deletes all the users provinces and their infrastructure
-    db.execute("SELECT id FROM provinces WHERE userId=(%s)", (cId,))
-    province_ids = db.fetchall()[0]
+    db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+    province_ids = db.fetchall()
     for province_id in province_ids:
+        province_id = province_id[0]
         db.execute("DELETE FROM provinces WHERE id=(%s)", (province_id,))
         db.execute("DELETE FROM proInfra WHERE id=(%s)", (province_id,))
 

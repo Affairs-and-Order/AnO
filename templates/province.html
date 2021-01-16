@@ -205,6 +205,13 @@
                         <td>{{ province['electricity'] | commas }}</td>
                         <!-- how much you have out of how much you need -->
                     </tr>
+                    <tr>
+                        <td><span class="material-icons-outlined">
+                            power
+                            </span>Electricity consumption / production :</td>
+                        <td>{{ energy['consumption'] | commas }} / {{ energy['production'] | commas }}</td>
+                        <!-- how much you have out of how much you need -->
+                    </tr>
                 </table>
 
             </div>
