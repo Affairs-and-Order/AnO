@@ -661,11 +661,14 @@
                 {% for new in news %}
                 <tr>
                   <th>
+                    <!-- COME HERE CARSON -->
+                    <!-- NOTE the new[1] is the data when the message was sent -->
                     <span class="material-icons-outlined">article</span>{{new[1]}}
                     <button type="button" name="button">Delete button here</button>
                   </th>
                 </tr>
                 <tr>
+                  <!-- NOTE new[0] is the incoming message -->
                   <td>{{ new[0] }}</td>
                 </tr>
                 {% endfor %}
