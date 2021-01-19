@@ -102,14 +102,27 @@ def country(cId):
     spyCount = 0
     successChance = 0
 
+    # News page
+    id = int(cId)
+    news = []
+    news_amount = 0
+    if id == session["user_id"]:
+        # TODO: handle this as country/id=<int:cId>
+        db.execute("SELECT message,date FROM news WHERE destination_id=(%s)", (cId,))
+
+        # data order in the tuple appears as in the news schema (notice this when work with this data using jija)
+        news = db.fetchall()
+        news_amount = len(news)
+
+
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
-                           colFlag=colFlag, colRole=colRole, productivity=productivity)
-
+                           colFlag=colFlag, colRole=colRole, productivity=productivity,
+                           news=news, news_amount=news_amount)
 
 @app.route("/countries", methods=["GET"])
 @login_required

@@ -168,8 +168,18 @@ class Nation:
         pass
 
     # Function for sending posts to nation's news page
-    def news_signal(message):
-        pass
+    @staticmethod
+    def send_news(destination_id: int, message: str):
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+        db = connection.cursor()
+        db.execute("INSERT INTO news(destination_id, message) VALUES (%s, %s)", (destination_id, message))
+        connection.commit()
+        connection.close()
 
     def get_provinces(self):
 
@@ -1000,5 +1010,7 @@ if __name__ == "__main__":
     # Military.infrastructure_damage(20, p)
     # print(p)
 
-    m = Military(2)
-    m.reparation_tax([2], [1])
+    # m = Military(2)
+    # m.reparation_tax([2], [1])
+
+    Nation.send_news(2, "You won the 100 years war!")

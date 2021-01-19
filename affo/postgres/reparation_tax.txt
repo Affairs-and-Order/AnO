@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS reparation_tax
-(id PRIMARY KEY NOT NULL,
+(id SERIAL PRIMARY KEY NOT NULL,
 
 -- loser or winner of the war
 winner INT NOT NULL,
