@@ -379,6 +379,11 @@ label {
     animation: navbarparentload 0.5s;
     padding: 0 5%;
     box-shadow: 0 0 0.5rem 0 rgba(58, 59, 69, 0.8);
+    transition: all 0.3s;
+}
+
+.navbarparent:hover {
+    background: #363945 !important;
 }
 
 .navbarparenttitle {
