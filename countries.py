@@ -326,25 +326,23 @@ def update_info():
 
     if new_location not in ["", "none"]:
 
-        try:
-            db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
-            provinces = db.fetchall()[0]
+        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+        provinces = db.fetchall()
 
-            for province_id in provinces:
+        for province_id in provinces:
 
-                db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
+            province_id = province_id[0]
 
-            connection.commit()  # Commits the data
+            db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
 
-        except:
-            return error(400, "")
+        connection.commit()  # Commits the data
 
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
 
