@@ -249,7 +249,7 @@ def get_province_price(user_id):
     current_province_amount = db.fetchone()[0]
 
     multiplier = 1 + (0.16 * current_province_amount)
-    price = int(4000000 * multiplier)
+    price = int(8000000 * multiplier)
 
     return price
 

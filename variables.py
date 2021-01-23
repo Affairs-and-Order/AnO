@@ -104,7 +104,7 @@ INFRA = {
     ### Industry (Done) ###
 
     'farms_money': 3000, # Costs $3k
-    'farms_plus': {'rations': 8},
+    'farms_plus': {'rations': 2},
     'farms_effect': [{'pollution': 1}],
 
     'pumpjacks_money': 10000, # Costs $10k
