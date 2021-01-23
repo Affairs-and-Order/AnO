@@ -248,8 +248,8 @@ def get_province_price(user_id):
     db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (user_id,))
     current_province_amount = db.fetchone()[0]
 
-    multiplier = 1 + (0.25 * current_province_amount)
-    price = int(50000 * multiplier)
+    multiplier = 1 + (0.16 * current_province_amount)
+    price = int(4000000 * multiplier)
 
     return price
 
