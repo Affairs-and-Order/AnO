@@ -264,20 +264,9 @@ def generate_province_revenue(): # Runs each hour
                     operating_costs = int(infra[f'{unit}_money'])
 
                     try:
-                        effect_data = list(infra[f'{unit}_effect'].items())[0]
-
-                        effect = effect_data[0]
-                        effect_amount = effect_data[1]
+                        effect = infra[f'{unit}_effect']
                     except KeyError:
-                        effect = None
-
-                    try:
-                        effect_2_data = list(infra[f'{unit}_effect_2'].items())[0]
-
-                        effect_2 = effect_2_data[0]
-                        effect_2_amount = effect_2_data[1]
-                    except KeyError:
-                        effect_2 = None
+                        effect = []
 
                     try:
                         effect_minus_data = list(infra[f'{unit}_effect_minus'].items())[0]
@@ -298,29 +287,9 @@ def generate_province_revenue(): # Runs each hour
                         convert_plus = None
                         # Minus stuff
                     try:
-                        convert_minus_data = list(infra[f'{unit}_convert_minus'].items())[0]
-
-                        convert_minus = convert_minus_data[0]
-                        convert_minus_amount = convert_minus_data[1]
+                        convert_minus = infra[f'{unit}_convert_minus']
                     except KeyError:
-                        convert_minus = None
-
-                    try:
-                        convert_minus_2_data = list(infra[f'{unit}_convert_minus_2'].items())[0]
-
-                        convert_minus_2 = convert_minus_2_data[0]
-                        convert_minus_2_amount = convert_minus_2_data[1]
-                    except KeyError:
-                        convert_minus_2 = None
-
-                    try:
-                        convert_minus_3_data = list(infra[f'{unit}_convert_minus_3'].items())[0]
-
-                        convert_minus_3 = convert_minus_3_data[0]
-                        convert_minus_3_amount = convert_minus_3_data[1]
-                    except KeyError:
-                        convert_minus_3 = None
-
+                        convert_minus = []
 
                     """
                     print(f"Unit: {unit}")
@@ -433,12 +402,14 @@ def generate_province_revenue(): # Runs each hour
                         eff_update = f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s"
                         db.execute(eff_update, (new_effect, province_id))
 
-                    if effect is not None:
-                        effect_amount *= unit_amount # Multiply the effect amount by the amount of units the user has
-                        do_effect(effect, effect_amount, "+") # Default settings basically
-                    if effect_2 is not None:
-                        effect_2_amount *= unit_amount
-                        do_effect(effect_2, effect_2_amount, "+")
+                    for data in effect:
+
+                        data = list(data.items())[0]
+
+                        effect_resource = data[0]
+                        effect_amount = data[1] * unit_amount
+                        do_effect(effect_resource, effect_amount, "+")
+
                     if effect_minus is not None:
                         effect_minus_amount *= unit_amount
                         do_effect(effect_minus, effect_minus_amount, "-")
@@ -476,30 +447,28 @@ def generate_province_revenue(): # Runs each hour
                         resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
-                    if convert_minus is not None:
-                        convert_minus_amount *= unit_amount
-                        minus_convert(convert_minus, convert_minus_amount)
-                    if convert_minus_2 is not None:
-                        convert_minus_2_amount *= unit_amount
-                        minus_convert(convert_minus_2, convert_minus_2_amount)
-                    if convert_minus_3 is not None:
-                        convert_minus_3_amount *= unit_amount
-                        minus_convert(convert_minus_3, convert_minus_3_amount)
+                    for data in convert_minus:
+
+                        data = list(data.items())[0]
+
+                        minus_resource = data[0]
+                        minus_amount = data[1] * unit_amount
+                        minus_convert(minus_resource, minus_amount)
 
                     conn.commit() # Commits the changes
-
                 
                 except Exception as e:
                     conn.rollback()
                     print(f"Couldn't update {unit} for province id: {province_id} due to exception: {e}")
                     continue
-                
 
             print(f"Successfully updated {unit} for for province id: {province_id}")
 
         print(f"Successfully updated units for province id: {province_id}")
             
     conn.close() # Closes the connection
+
+generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(

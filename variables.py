@@ -63,8 +63,7 @@ INFRA = {
     ##############
 
     ### Public Works ### (Done)
-    'libraries_effect': {'happiness': 2},
-    'libraries_effect_2': {'productivity': 2},
+    'libraries_effect': [{'happiness': 2}, {'productivity': 2}],
     'libraries_money': 90000,
 
     'city_parks_effect': {'happiness': 3},
@@ -74,8 +73,7 @@ INFRA = {
     'hospitals_effect': {'happiness': 9},   
     'hospitals_money': 60000,
 
-    'universities_effect': {'productivity': 6},
-    'universities_effect_2': {'happiness': 6},
+    'universities_effect': [{'productivity': 6}, {'happiness': 6}],
     'universities_money': 150000,
 
     'monorails_effect': {'productivity': 12},
@@ -128,19 +126,15 @@ INFRA = {
 
     ### Processing (Done) ###
     'component_factories_money': 220000, # Costs $220k
-    'component_factories_convert_minus': {'copper': 20},
-    'component_factories_convert_minus_2': {'steel': 10},
-    'component_factories_convert_minus_3': {'aluminium': 15},
+    'component_factories_convert_minus': [{'copper': 20}, {'steel': 10}, {'aluminium': 15}],
     'component_factories_convert_plus': {'components': 5},
 
     'steel_mills_money': 180000,
-    'steel_mills_convert_minus': {'coal': 35},
-    'steel_mills_convert_minus_2': {'iron': 35},
+    'steel_mills_convert_minus': [{'coal': 35}, {'iron': 35}],
     'steel_mills_convert_plus': {'steel': 15},
 
     'ammunition_factories_money': 140000,
-    'ammunition_factories_convert_minus': {'copper': 10},
-    'ammunition_factories_convert_minus_2': {'lead': 20},
+    'ammunition_factories_convert_minus': [{'copper': 10}, {'lead': 20}],
     'ammunition_factories_convert_plus': {'ammunition': 10},
 
     'aluminium_refineries_money': 150000,
