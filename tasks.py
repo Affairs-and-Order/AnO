@@ -125,6 +125,16 @@ def population_growth(): # Function for growing population
 
                 if cities > 0:
                     maxPop += cities * 750000 # Each city adds 750,000 population
+                    
+                try:
+                    db.execute("SELECT landCount FROM provinces WHERE id=%s", (prov_id,))
+                    land = int(db.fetchone()[0])
+                except TypeError:
+                    conn.rollback()
+                    land = 0
+
+                if land > 0:
+                    maxPop += land * 120000 # Each land adds 120,000 population
 
                 try:
                     db.execute("SELECT happiness FROM provinces WHERE id=%s", (prov_id,))
