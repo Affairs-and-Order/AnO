@@ -108,7 +108,8 @@ def country(cId):
     provinces_list = db.fetchall()
 
     revenue = {
-        "gross": {}
+        "gross": {},
+        "net": {}
     }
 
     infra = variables.INFRA
@@ -116,6 +117,7 @@ def country(cId):
     resources = variables.RESOURCES
     for resource in resources:
         revenue["gross"][resource] = 0
+        revenue["net"][resource] = 0
 
     for province_id in provinces_list:
         province_id = province_id[0]
@@ -140,9 +142,31 @@ def country(cId):
 
                     plus_amount *= land
 
-                revenue["gross"][plus_resource] += building_count * plus_amount
+                total = building_count * plus_amount
+                revenue["gross"][plus_resource] += total
+                revenue["net"][plus_resource] += total
+
             except:
                 pass
+
+            try:
+                convert_minus = infra[f'{building}_convert_minus']
+
+                for data in convert_minus:
+                    
+                    data = list(data.items())[0]
+
+                    minus_resource = data[0]
+                    minus_amount = data[1]
+
+                    total = building_count * minus_amount
+                    revenue["net"][minus_resource] -= total
+            except:
+                pass
+
+    for resource in resources:
+        if revenue["net"][resource] < 0:
+            revenue["net"][resource] = 0
 
     connection.close()
 

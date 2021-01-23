@@ -79,6 +79,7 @@ def tax_income(): # Function for giving money to players
 
     conn.close()
 
+
 # Seems to be working as expected
 def population_growth(): # Function for growing population
 
