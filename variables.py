@@ -17,6 +17,18 @@ ENERGY_CONSUMERS = [
     "oil_refineries"
 ]
 
+BUILDINGS = [
+    'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
+    'gas_stations', 'general_stores', 'farmers_markets', 'malls',
+    'banks', 'city_parks', 'hospitals', 'libraries', 'universities', 'monorails',
+
+    "farms", "pumpjacks", "coal_mines", "bauxite_mines", "copper_mines", "uranium_mines",
+    "lead_mines", "iron_mines", 'lumber_mills',
+
+    "component_factories", "steel_mills", "ammunition_factories", "aluminium_refineries",
+    "oil_refineries"
+]
+
 # Dictionary for which units give what resources, etc
 INFRA = {
     ### Electricity (done) ###
@@ -127,21 +139,21 @@ INFRA = {
     ### Processing (Done) ###
     'component_factories_money': 220000, # Costs $220k
     'component_factories_convert_minus': [{'copper': 20}, {'steel': 10}, {'aluminium': 15}],
-    'component_factories_convert_plus': {'components': 5},
+    'component_factories_plus': {'components': 5},
 
     'steel_mills_money': 180000,
     'steel_mills_convert_minus': [{'coal': 35}, {'iron': 35}],
-    'steel_mills_convert_plus': {'steel': 15},
+    'steel_mills_plus': {'steel': 15},
 
     'ammunition_factories_money': 140000,
     'ammunition_factories_convert_minus': [{'copper': 10}, {'lead': 20}],
-    'ammunition_factories_convert_plus': {'ammunition': 10},
+    'ammunition_factories_plus': {'ammunition': 10},
 
     'aluminium_refineries_money': 150000,
     'aluminium_refineries_convert_minus': [{'bauxite': 15}],
-    'aluminium_refineries_convert_plus': {'aluminium': 12},
+    'aluminium_refineries_plus': {'aluminium': 12},
 
     'oil_refineries_money': 160000,
     'oil_refineries_convert_minus': [{'oil': 20}],
-    'oil_refineries_convert_plus': {'gasoline': 8}
+    'oil_refineries_plus': {'gasoline': 8}
 }

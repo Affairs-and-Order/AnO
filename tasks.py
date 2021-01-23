@@ -192,7 +192,6 @@ def population_growth(): # Function for growing population
 
 def generate_province_revenue(): # Runs each hour
 
-    energy_units = variables.ENERGY_UNITS
 
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -203,17 +202,8 @@ def generate_province_revenue(): # Runs each hour
 
     db = conn.cursor()
 
-    columns = [
-    'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
-    'gas_stations', 'general_stores', 'farmers_markets', 'malls',
-    'banks', 'city_parks', 'hospitals', 'libraries', 'universities', 'monorails',
-
-    "farms", "pumpjacks", "coal_mines", "bauxite_mines", "copper_mines", "uranium_mines",
-    "lead_mines", "iron_mines", 'lumber_mills',
-
-    "component_factories", "steel_mills", "ammunition_factories", "aluminium_refineries",
-    "oil_refineries"
-    ]
+    columns = variables.BUILDINGS
+    energy_units = variables.ENERGY_UNITS
 
     province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
     percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
@@ -276,16 +266,7 @@ def generate_province_revenue(): # Runs each hour
                     except KeyError:
                         effect_minus = None
 
-                    # Converting stuff
-                        # Plus stuff
-                    try:
-                        convert_plus_data = list(infra[f'{unit}_convert_plus'].items())[0]
-
-                        convert_plus = convert_plus_data[0]
-                        convert_plus_amount = convert_plus_data[1]
-                    except KeyError:
-                        convert_plus = None
-                        # Minus stuff
+                    # Minus stuff
                     try:
                         convert_minus = infra[f'{unit}_convert_minus']
                     except KeyError:
@@ -413,24 +394,6 @@ def generate_province_revenue(): # Runs each hour
                     if effect_minus is not None:
                         effect_minus_amount *= unit_amount
                         do_effect(effect_minus, effect_minus_amount, "-")
-
-                    ## Convert plus
-                    if convert_plus is not None:
-
-                        convert_plus_amount *= unit_amount
-
-                        resource_s_statement = f"SELECT {convert_plus} FROM resources " + "WHERE id=%s"
-                        db.execute(resource_s_statement, (user_id,))
-                        current_resource = int(db.fetchone()[0])
-
-                        new_resource = current_resource + convert_plus_amount
-
-                        if new_resource < 0:
-                            new_resource = 0
-
-                        resource_u_statement = f"UPDATE resources SET {convert_plus}" + "=%s WHERE id=%s"
-                        db.execute(resource_u_statement, (new_resource, user_id,))
-                    ##
 
                     ## Convert minus
                     def minus_convert(name, amount):

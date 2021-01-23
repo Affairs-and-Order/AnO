@@ -8,6 +8,7 @@ from helpers import get_influence, error
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
+import variables
 from dotenv import load_dotenv
 from coalitions import get_user_role
 load_dotenv()
@@ -102,13 +103,54 @@ def country(cId):
     spyCount = 0
     successChance = 0
 
+    # Revenue stuff
+    db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+    provinces_list = db.fetchall()
+
+    revenue = {
+        "gross": {}
+    }
+
+    infra = variables.INFRA
+
+    resources = variables.RESOURCES
+    for resource in resources:
+        revenue["gross"][resource] = 0
+
+    for province_id in provinces_list:
+        province_id = province_id[0]
+
+        buildings = variables.BUILDINGS
+
+        for building in buildings:
+            building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
+            db.execute(building_query, (province_id,))
+            building_count = db.fetchone()[0]
+
+            try:
+                plus_data = list(infra[f'{building}_plus'].items())[0]
+                
+                plus_resource = plus_data[0]
+                plus_amount = plus_data[1]
+
+                if building == "farms":
+                    
+                    db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                    land = db.fetchone()[0]
+
+                    plus_amount *= land
+
+                revenue["gross"][plus_resource] += building_count * plus_amount
+            except:
+                pass
+
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
-                           colFlag=colFlag, colRole=colRole, productivity=productivity)
+                           colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue)
 
 
 @app.route("/countries", methods=["GET"])

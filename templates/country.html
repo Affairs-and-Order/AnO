@@ -377,10 +377,6 @@
         <div class="revenue" id="revenue">
 
 
-            <h3 class="templatecontentheadercenter">Sorry, this page is not currently functional</h3>
-
-            <!--
-
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
 
@@ -392,47 +388,47 @@
                         </tr>
                         <tr>
                             <td>Gross:</td>
-                            <td>{{ gross }}%</td>
+                            <td>Not done yet.</td>
                         </tr>
                         <tr>
                             <td>Monetary gross:</td>
-                            <td>{{ monetaryGross }}%</td>
+                            <td>Not done yet.</td>
                         </tr>
                         <tr>
                             <td>Rations:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["rations"] }}</td>
                         </tr>
                         <tr>
                             <td>Oil:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["oil"] }}</td>
                         </tr>
                         <tr>
                             <td>Coal:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["coal"] }}</td>
                         </tr>
                         <tr>
                             <td>Uranium:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["uranium"] }}</td>
                         </tr>
                         <tr>
                             <td>Iron:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["iron"] }}</td>
                         </tr>
                         <tr>
                             <td>Lead:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["lead"] }}</td>
                         </tr>
                         <tr>
                             <td>Bauxite:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["bauxite"] }}</td>
                         </tr>
                         <tr>
                             <td>Copper:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["copper"] }}</td>
                         </tr>
                         <tr>
                             <td>Lumber:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["lumber"] }}</td>
                         </tr>
                         <tr>
                             <th><span class="material-icons-outlined">
@@ -441,27 +437,27 @@
                         </tr>
                         <tr>
                             <td>Components:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["components"] }}</td>
                         </tr>
                         <tr>
                             <td>Steel:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["steel"] }}</td>
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["consumer_goods"] }}</td>
                         </tr>
                         <tr>
                             <td>Aluminum:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["aluminium"] }}</td>
                         </tr>
                         <tr>
                             <td>Gasoline:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["gasoline"] }}</td>
                         </tr>
                         <tr>
                             <td>Ammunition:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["ammunition"] }}</td>
                         </tr>
                     </table>
 
@@ -565,7 +561,6 @@
                     <td>{{ gross }}%</td>
                 </tr>
             </table>
-            -->
             <!--show this if user is in a coalition-->
             <!--
         <table class="templatetable">
