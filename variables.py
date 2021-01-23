@@ -21,20 +21,20 @@ ENERGY_CONSUMERS = [
 INFRA = {
     ### Electricity (done) ###
     'coal_burners_plus': {'energy': 4},
-    'coal_burners_convert_minus': {'coal': 48},
+    'coal_burners_convert_minus': [{'coal': 48}],
     'coal_burners_money': 45000,
-    'coal_burners_effect': {'pollution': 7},
+    'coal_burners_effect': [{'pollution': 7}],
 
     'oil_burners_plus': {'energy': 3},
-    'oil_burners_convert_minus': {'oil': 56},
+    'oil_burners_convert_minus': [{'oil': 56}],
     'oil_burners_money': 60000,
-    'oil_burners_effect': {'pollution': 3},
+    'oil_burners_effect': [{'pollution': 3}],
 
     'hydro_dams_plus': {'energy': 6},
     'hydro_dams_money': 250000,
 
     'nuclear_reactors_plus': {'energy': 12}, #  Generates 12 energy to the province
-    'nuclear_reactors_convert_minus': {'uranium': 32},
+    'nuclear_reactors_convert_minus': [{'uranium': 32}],
     'nuclear_reactors_money': 1200000, # Costs $1.2 million to operate nuclear reactor for each turn
 
     'solar_fields_plus': {'energy': 3},
@@ -43,22 +43,22 @@ INFRA = {
 
     ### Retail ### (Done)
     'gas_stations_plus': {'consumer_goods': 8},
-    'gas_stations_effect': {'pollution': 4},
+    'gas_stations_effect': [{'pollution': 4}],
     'gas_stations_money': 20000, # Costs $20k
 
     'general_stores_plus': {'consumer_goods': 12},
-    'general_stores_pollution': {'pollution': 2},
+    'general_stores_effect': [{'pollution': 2}],
     'general_stores_money': 35000, # Costs $35k
 
     'farmers_markets_plus': {'consumer_goods': 17}, # Generates 15 consumer goods,
-    'farmers_markets_effect': {'pollution': 5},
+    'farmers_markets_effect': [{'pollution': 5}],
     'farmers_markets_money': 110000, # Costs $110k
 
     'banks_plus': {'consumer_goods': 25},
     'banks_money': 320000, # Costs $320k
 
     'malls_plus': {'consumer_goods': 34},
-    'malls_effect': {'pollution': 10},
+    'malls_effect': [{'pollution': 10}],
     'malls_money': 750000, # Costs $750k
     ##############
 
@@ -66,7 +66,7 @@ INFRA = {
     'libraries_effect': [{'happiness': 2}, {'productivity': 2}],
     'libraries_money': 90000,
 
-    'city_parks_effect': {'happiness': 3},
+    'city_parks_effect': [{'happiness': 3}],
     'city_parks_effect_minus': {'pollution': 6},
     'city_parks_money': 20000, # Costs $20k
 
@@ -76,7 +76,7 @@ INFRA = {
     'universities_effect': [{'productivity': 6}, {'happiness': 6}],
     'universities_money': 150000,
 
-    'monorails_effect': {'productivity': 12},
+    'monorails_effect': [{'productivity': 12}],
     'monorails_effect_minus': {'pollution': 10}, # Removes 10 pollution
     'monorails_money': 210000,
     ###################
@@ -93,15 +93,15 @@ INFRA = {
 
     'farms_money': 3000, # Costs $3k
     'farms_plus': {'rations': 8},
-    'farms_effect': {'pollution': 1},
+    'farms_effect': [{'pollution': 1}],
 
     'pumpjacks_money': 10000, # Costs $10k
     'pumpjacks_plus': {'oil': 23},
-    'pumpjacks_effect': {'pollution': 2},
+    'pumpjacks_effect': [{'pollution': 2}],
 
     'coal_mines_money': 10000, # Costs $10k
     'coal_mines_plus': {'coal': 26},
-    'coal_mines_effect': {'pollution': 2},
+    'coal_mines_effect': [{'pollution': 2}],
 
     'bauxite_mines_money': 8000, # Costs $8k
     'bauxite_mines_plus': {'bauxite': 20},
@@ -138,10 +138,10 @@ INFRA = {
     'ammunition_factories_convert_plus': {'ammunition': 10},
 
     'aluminium_refineries_money': 150000,
-    'aluminium_refineries_convert_minus': {'bauxite': 15},
+    'aluminium_refineries_convert_minus': [{'bauxite': 15}],
     'aluminium_refineries_convert_plus': {'aluminium': 12},
 
     'oil_refineries_money': 160000,
-    'oil_refineries_convert_minus': {'oil': 20},
+    'oil_refineries_convert_minus': [{'oil': 20}],
     'oil_refineries_convert_plus': {'gasoline': 8}
 }
