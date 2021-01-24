@@ -254,22 +254,6 @@ def generate_province_revenue(): # Runs each hour
                 try:
 
                     try:
-                        plus_data = list(infra[f'{unit}_plus'].items())[0]
-
-                        plus_resource = plus_data[0]
-                        plus_amount = plus_data[1]
-
-                    except KeyError:
-                        plus_data = None
-
-                    operating_costs = int(infra[f'{unit}_money'])
-
-                    try:
-                        effect = infra[f'{unit}_effect']
-                    except KeyError:
-                        effect = []
-
-                    try:
                         effect_minus_data = list(infra[f'{unit}_effect_minus'].items())[0]
 
                         effect_minus = effect_minus_data[0]
@@ -283,26 +267,20 @@ def generate_province_revenue(): # Runs each hour
                     except KeyError:
                         convert_minus = []
 
-                    """
-                    print(f"Unit: {unit}")
-                    print(f"Add {plus_amount} to {plus_resource}")
-                    print(f"Remove ${operating_costs} as operating costs")
-                    print(f"\n")
-                    """
+                    operating_costs = int(infra[f'{unit}_money']) * unit_amount
 
                     # Removing money operating costs (if user has the money)
                     db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
                     current_money = int(db.fetchone()[0])
 
-                    operating_costs *= unit_amount # Multiply the operating costs by the amount of units the user has
+                    # Boolean for whether a player has enough resources, energy, money to power his building
+                    has_enough_stuff = True
 
                     if current_money < operating_costs:
                         print(f"Couldn't update {unit} for {province_id} as they don't have enough money")
-                        continue
+                        has_enough_stuff = False
                     else:
                         new_money = current_money - operating_costs
-                        if new_money < 0:
-                            new_money = 0
                         try:
                             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
                         except:
@@ -310,6 +288,8 @@ def generate_province_revenue(): # Runs each hour
                             pass
 
                     def take_energy():
+
+                        global has_enough_stuff
 
                         if unit not in energy_units and unit in energy_consumers:
 
@@ -319,11 +299,67 @@ def generate_province_revenue(): # Runs each hour
                             new_energy = current_energy - unit_amount
 
                             if new_energy < 0:
+                                has_enough_stuff = False
                                 new_energy = 0
 
                             db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id))
 
                     take_energy()
+
+                    ## Convert minus
+                    def minus_convert(name, amount):
+
+                        global has_enough_stuff
+
+                        resource_statement = f"SELECT {name} FROM resources " + "WHERE id=%s"
+                        db.execute(resource_statement, (user_id,))
+                        current_resource = int(db.fetchone()[0])
+
+                        new_resource = current_resource - amount
+
+                        if new_resource < 0:
+                            has_enough_stuff = False
+                            new_resource = 0
+                        else:
+                            has_enough_stuff = True
+
+                        resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
+                        db.execute(resource_u_statement, (new_resource, user_id,))
+
+                        return has_enough_stuff
+
+                    for data in convert_minus:
+
+                        data = list(data.items())[0]
+
+                        minus_resource = data[0]
+                        minus_amount = data[1] * unit_amount
+                        has_enough_stuff = minus_convert(minus_resource, minus_amount)
+
+                    if not has_enough_stuff:
+                        print(f"Couldn't update {unit} for province id: {province_id} as they don't have enough stuff")
+                        continue
+
+                    try:
+                        plus_data = list(infra[f'{unit}_plus'].items())[0]
+
+                        plus_resource = plus_data[0]
+                        plus_amount = plus_data[1]
+
+                    except KeyError:
+                        plus_data = None
+
+                    try:
+                        effect = infra[f'{unit}_effect']
+                    except KeyError:
+                        effect = []
+
+                    """
+                    print(f"Unit: {unit}")
+                    print(f"Add {plus_amount} to {plus_resource}")
+                    print(f"Remove ${operating_costs} as operating costs")
+                    print(f"\n")
+                    """
 
                     if unit == "farms":
                         
@@ -405,29 +441,6 @@ def generate_province_revenue(): # Runs each hour
                     if effect_minus is not None:
                         effect_minus_amount *= unit_amount
                         do_effect(effect_minus, effect_minus_amount, "-")
-
-                    ## Convert minus
-                    def minus_convert(name, amount):
-
-                        resource_statement = f"SELECT {name} FROM resources " + "WHERE id=%s"
-                        db.execute(resource_statement, (user_id,))
-                        current_resource = int(db.fetchone()[0])
-
-                        new_resource = current_resource - amount
-
-                        if new_resource < 0:
-                            new_resource = 0
-
-                        resource_u_statement = f"UPDATE resources SET {name}" + "=%s WHERE id=%s"
-                        db.execute(resource_u_statement, (new_resource, user_id,))
-
-                    for data in convert_minus:
-
-                        data = list(data.items())[0]
-
-                        minus_resource = data[0]
-                        minus_amount = data[1] * unit_amount
-                        minus_convert(minus_resource, minus_amount)
 
                     conn.commit() # Commits the changes
                 
