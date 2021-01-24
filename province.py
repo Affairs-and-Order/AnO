@@ -27,7 +27,7 @@ def provinces():
 
         cId = session["user_id"]
 
-        db.execute("""SELECT cityCount, population, provinceName, id, land, happiness, productivity
+        db.execute("""SELECT cityCount, population, provinceName, id, land, happiness, productivity, energy
         FROM provinces WHERE userId=(%s) ORDER BY id ASC""", (cId,))
         provinces = db.fetchall()
 

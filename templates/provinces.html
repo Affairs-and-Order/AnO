@@ -27,8 +27,15 @@
             </div>
         </div>
 
-        {% for province in provinces %} {% set cityCount = province[0] %} {% set population = province[1] %} {% set name = province[2] %} {% set pId = province[3] %} {% set land = province[4] %} {% set happiness = province[5] %} {% set productivity = province[6]
-        %}
+        {% for province in provinces %} 
+        {% set cityCount = province[0] %} 
+        {% set population = province[1] %} 
+        {% set name = province[2] %} 
+        {% set pId = province[3] %} 
+        {% set land = province[4] %} 
+        {% set happiness = province[5] %} 
+        {% set productivity = province[6] %}
+        {% set energy = province[7] %}
         <a href="/province/{{ pId }}">
             <div class="warflexparent templatedivflex2 menuflex">
                 <div class="templatedivflex2left vanilla">
@@ -73,7 +80,11 @@
                             <td><span class="material-icons-outlined">
                                 power
                                 </span>Powered:</td>
-                            <td>[[ Yes / No]]</td>
+                            {% if energy > 0 %}
+                            <td>Yes</td>
+                            {% else %}
+                            <td>No</td>
+                            {% endif %}
                             <!-- how much you have out of how much you need -->
                         </tr>
                     </table>
