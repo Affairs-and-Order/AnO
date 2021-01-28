@@ -6,7 +6,68 @@ from attack_scripts import Economy
 import variables
 load_dotenv()
 
-# Seems to be working as expected
+# Function for calculating tax income
+def calc_ti(user_id, consumer_goods):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
+    current_money = db.fetchone()[0]
+
+    try:
+        try:
+            db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
+            population = db.fetchone()[0]
+            if population is None:
+                population = 0
+        except:
+            population = 0
+        
+        consumer_goods_needed = round(population * 0.00005)
+        new_consumer_goods = consumer_goods - consumer_goods_needed
+
+        population_score = population * 0.075
+
+        try:
+            db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
+            land = db.fetchone()[0]
+            if land is None:
+                land = 0
+        except:
+            conn.rollback()
+            land = 0
+
+        land_percentage = land * 0.02 # Land percentage up to 100% 
+
+        if land_percentage > 1:
+            land_percentage = 1
+
+        new_income = 0
+        new_income += population_score
+        new_income += new_income * land_percentage
+
+        if new_consumer_goods >= 0:
+            new_income *= 1.5
+        else:
+            new_consumer_goods = consumer_goods
+
+        new_money = round(current_money + new_income)
+
+        return new_money, new_consumer_goods
+    except Exception as e:
+        print(f"Error: {e} while calculating tax income for user id: {user_id}")
+        return current_money, consumer_goods
+
+def next_turn_ti_data():
+    pass
+
 def tax_income(): # Function for giving money to players
 
     conn = psycopg2.connect(
@@ -21,61 +82,19 @@ def tax_income(): # Function for giving money to players
     db.execute("SELECT id FROM users")
     users = db.fetchall()
 
-    for user in users:
+    for user_id in users:
 
-        try:
+        user_id = user_id[0]
 
-            user_id = user[0]
+        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
+        current_consumer_goods = db.fetchone()[0]
 
-            try:
-                db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
-                population = int(db.fetchone()[0])
-            except:
-                conn.rollback()
-                population = 0
+        money, consumer_goods = calc_ti(user_id, current_consumer_goods)
 
-            db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-            consumer_goods = int(db.fetchone()[0])
-            consumer_goods_needed = round(population * 0.00005)
-            new_consumer_goods = consumer_goods - consumer_goods_needed
+        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (money, user_id))
+        db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (consumer_goods, user_id))
 
-            population_score = population * 0.075
-
-            try:
-                db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
-                land = db.fetchone()[0]
-            except:
-                conn.rollback()
-                land = 0
-
-            land_percentage = land * 0.02 # Land percentage up to 100% 
-
-            if land_percentage > 1:
-                land_percentage = 1
-
-            new_income = population_score
-
-            new_income += new_income * land_percentage
-
-            if new_consumer_goods >= 0:
-                new_income *= 1.5
-                try:
-                    db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (new_consumer_goods, user_id))
-                except:
-                    conn.rollback()
-                    pass
-
-            try:
-                db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (new_income, user_id,))
-            except:
-                conn.rollback()
-                pass
-
-            conn.commit()
-
-        except:
-            conn.rollback()
-            continue
+        conn.commit()
 
     conn.close()
 
