@@ -11,10 +11,35 @@ import os
 import variables
 from dotenv import load_dotenv
 from coalitions import get_user_role
+from tasks import calc_pg
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
+
+def next_turn_rations(cId):
+
+        conn = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
+        db = conn.cursor()
+
+        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+        provinces = db.fetchall()
+
+        db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+        current_rations = db.fetchone()[0]
+
+        for pId in provinces:
+
+            rations, population = calc_pg(pId, current_rations)
+            current_rations = rations
+
+        return current_rations
 
 @app.route("/country/id=<cId>")
 def country(cId):
@@ -80,7 +105,6 @@ def country(cId):
     except:
         colFlag = None
 
-
     try:
         db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
         flag = db.fetchone()[0]
@@ -104,69 +128,86 @@ def country(cId):
     successChance = 0
 
     # Revenue stuff
-    db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
-    provinces_list = db.fetchall()
+    if status:
+        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+        provinces_list = db.fetchall()
 
-    revenue = {
-        "gross": {},
-        "net": {}
-    }
+        revenue = {
+            "gross": {},
+            "net": {}
+        }
 
-    infra = variables.INFRA
+        infra = variables.INFRA
 
-    resources = variables.RESOURCES
-    for resource in resources:
-        revenue["gross"][resource] = 0
-        revenue["net"][resource] = 0
-
-    for province_id in provinces_list:
-        province_id = province_id[0]
-
-        buildings = variables.BUILDINGS
-
-        for building in buildings:
-            building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
-            db.execute(building_query, (province_id,))
-            building_count = db.fetchone()[0]
-
-            try:
-                plus_data = list(infra[f'{building}_plus'].items())[0]
-                
-                plus_resource = plus_data[0]
-                plus_amount = plus_data[1]
-
-                if building == "farms":
-                    
-                    db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
-                    land = db.fetchone()[0]
-
-                    plus_amount *= land
-
-                total = building_count * plus_amount
-                revenue["gross"][plus_resource] += total
-                revenue["net"][plus_resource] += total
-
-            except:
-                pass
-
-            try:
-                convert_minus = infra[f'{building}_convert_minus']
-
-                for data in convert_minus:
-                    
-                    data = list(data.items())[0]
-
-                    minus_resource = data[0]
-                    minus_amount = data[1]
-
-                    total = building_count * minus_amount
-                    revenue["net"][minus_resource] -= total
-            except:
-                pass
-
-    for resource in resources:
-        if revenue["net"][resource] < 0:
+        resources = variables.RESOURCES
+        for resource in resources:
+            revenue["gross"][resource] = 0
             revenue["net"][resource] = 0
+
+        for province_id in provinces_list:
+            province_id = province_id[0]
+
+            buildings = variables.BUILDINGS
+
+            for building in buildings:
+                building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
+                db.execute(building_query, (province_id,))
+                building_count = db.fetchone()[0]
+
+                # Gross and initial net calculations
+                try:
+                    plus_data = list(infra[f'{building}_plus'].items())[0]
+                    
+                    plus_resource = plus_data[0]
+                    plus_amount = plus_data[1]
+
+                    if building == "farms":
+                        
+                        db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                        land = db.fetchone()[0]
+
+                        plus_amount *= land
+
+                    total = building_count * plus_amount
+                    revenue["gross"][plus_resource] += total
+                    revenue["net"][plus_resource] += total
+
+                except:
+                    pass
+
+                # Net removal from initial net
+                try:
+                    convert_minus = infra[f'{building}_convert_minus']
+
+                    for data in convert_minus:
+                        
+                        data = list(data.items())[0]
+
+                        minus_resource = data[0]
+                        minus_amount = data[1]
+
+                        total = building_count * minus_amount
+
+                        revenue["net"][minus_resource] -= total
+                except:
+                    pass
+
+        for resource in resources:
+
+            if resource == "rations":
+                db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+                current_rations = db.fetchone()[0]
+
+                new_rations = next_turn_rations(cId)
+                net_rations = current_rations - new_rations
+
+                current_net_rations = revenue["net"]["rations"]
+                revenue["net"]["rations"] = current_net_rations - net_rations
+
+            if revenue["net"][resource] < 0:
+                revenue["net"][resource] = 0
+    else:
+        revenue = {}
 
     connection.close()
 
@@ -175,7 +216,6 @@ def country(cId):
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
                            colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue)
-
 
 @app.route("/countries", methods=["GET"])
 @login_required

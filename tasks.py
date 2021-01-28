@@ -79,6 +79,92 @@ def tax_income(): # Function for giving money to players
 
     conn.close()
 
+# Function for calculating population growth for a given province
+def calc_pg(pId, rations):
+
+    conn = psycopg2.connect(
+    database=os.getenv("PG_DATABASE"),
+    user=os.getenv("PG_USER"),
+    password=os.getenv("PG_PASSWORD"),
+    host=os.getenv("PG_HOST"),
+    port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT population FROM provinces WHERE id=%s", (pId,))
+    curPop = db.fetchone()[0]
+
+    maxPop = 1000000 # Base max population: 1 million
+
+    try:
+        db.execute("SELECT cityCount FROM provinces WHERE id=%s", (pId,))
+        cities = db.fetchone()[0]
+    except TypeError:
+        conn.rollback()
+        cities = 0
+
+    maxPop += cities * 750000 # Each city adds 750,000 population
+        
+    try:
+        db.execute("SELECT land FROM provinces WHERE id=%s", (pId,))
+        land = db.fetchone()[0]
+    except TypeError:
+        conn.rollback()
+        land = 0
+
+    maxPop += land * 120000 # Each land slot adds 120,000 population
+
+    try:
+        db.execute("SELECT happiness FROM provinces WHERE id=%s", (pId,))
+        happiness = int(db.fetchone()[0])
+    except TypeError:
+        conn.rollback()
+        happiness = 0
+
+    try:
+        db.execute("SELECT pollution FROM provinces WHERE id=%s", (pId,))
+        pollution = db.fetchone()[0]
+    except TypeError:
+        conn.rollback()
+        pollution = 0
+
+    try:
+        db.execute("SELECT productivity FROM provinces WHERE id=%s", (pId,))
+        productivity = db.fetchone()[0]
+    except TypeError:
+        conn.rollback()
+        productivity = 0
+
+    # Each % increases / decreases max population by 0.55
+    happiness = round((happiness - 50) * 0.011, 2) # The more you have the better
+
+    # Each % increases / decreases max population by 0.3
+    pollution = round((pollution - 50) * - 0.006, 2) # The less you have the better
+
+    # Each % increases / decreases max population by 0.45
+    productivity = round((productivity - 50) * 0.009, 2) # The less you have the better
+
+    ###############################  
+
+    maxPop += (maxPop * happiness) + (maxPop * pollution) + (maxPop * productivity)
+    maxPop = round(maxPop)
+
+    if maxPop < 1000000: # If max population is less than 1M
+        maxPop = 1000000 # Make it 1M
+
+    hundred_k = curPop // 100000
+    rations_per_100k = 4
+    new_rations = rations - (hundred_k * rations_per_100k)
+
+    if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
+        newPop = maxPop // 100 # 1% of population
+        new_rations = rations
+    else: # If there are enough rations for everyone, increase population by 2%
+        newPop = maxPop // 50
+
+    fullPop = curPop + newPop
+
+    return new_rations, fullPop
 
 # Seems to be working as expected
 def population_growth(): # Function for growing population
@@ -92,112 +178,30 @@ def population_growth(): # Function for growing population
 
     db = conn.cursor()
 
-    db.execute("SELECT id FROM users")
-    users = db.fetchall()
+    db.execute("SELECT id FROM provinces")
+    provinces = db.fetchall()
 
-
-    for user in users: # Iterates over the list of players
-
-        user_id = user[0]
-
+    for province_id in provinces:
+        province_id = province_id[0]
         try:
-            db.execute("SELECT id, population FROM provinces WHERE userId=%s", (user_id,))
-            provinces = db.fetchall()
-        except:
+            db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
+            user_id = db.fetchone()[0]
+
+            db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
+            current_rations = db.fetchone()[0]
+
+            rations, population = calc_pg(province_id, current_rations)
+            print(rations)
+
+            db.execute("UPDATE resources SET rations=%s WHERE id=%s", (rations, user_id))
+            db.execute("UPDATE provinces SET population=%s WHERE id=%s", (population, province_id))
+
+            conn.commit()
+
+        except Exception as e: 
             conn.rollback()
-            provinces = []
-
-        for row in provinces:
-
-            try:
-
-                prov_id = row[0] # Gets the province id
-                curPop = row[1]
-
-                maxPop = 1000000 # Base max population: 1 million
-
-                try:
-                    db.execute("SELECT cityCount FROM provinces WHERE id=%s", (prov_id,))
-                    cities = int(db.fetchone()[0])
-                except TypeError:
-                    conn.rollback()
-                    cities = 0
-
-                if cities > 0:
-                    maxPop += cities * 750000 # Each city adds 750,000 population
-                    
-                try:
-                    db.execute("SELECT landCount FROM provinces WHERE id=%s", (prov_id,))
-                    land = int(db.fetchone()[0])
-                except TypeError:
-                    conn.rollback()
-                    land = 0
-
-                if land > 0:
-                    maxPop += land * 120000 # Each land adds 120,000 population
-
-                try:
-                    db.execute("SELECT happiness FROM provinces WHERE id=%s", (prov_id,))
-                    happiness = int(db.fetchone()[0])
-                except TypeError:
-                    conn.rollback()
-                    happiness = 0
-
-                try:
-                    db.execute("SELECT pollution FROM provinces WHERE id=%s", (prov_id,))
-                    pollution = int(db.fetchone()[0])
-                except TypeError:
-                    conn.rollback()
-                    pollution = 0
-
-                try:
-                    db.execute("SELECT productivity FROM provinces WHERE id=%s", (prov_id,))
-                    productivity = int(db.fetchone()[0])
-                except TypeError:
-                    conn.rollback()
-                    productivity = 0
-
-                # Everything working until here as expected
-
-                ### ALL WORKING AS EXPECTED ###
-
-                # Each % increases / decreases max population by 0.55
-                happiness = round((happiness - 50) * 0.011, 2) # The more you have the better
-
-                # Each % increases / decreases max population by 0.3
-                pollution = round((pollution - 50) * - 0.006, 2) # The less you have the better
-
-                # Each % increases / decreases max population by 0.45
-                productivity = round((productivity - 50) * 0.009, 2) # The less you have the better
-
-                ###############################  
-
-                maxPop += (maxPop * happiness) + (maxPop * pollution) + (maxPop * productivity)
-                maxPop = round(maxPop)
-
-                if maxPop < 1000000: # If max population is less than 1M
-                    maxPop = 1000000 # Make it 1M
-
-                db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
-                rations = int(db.fetchone()[0])
-
-                hundred_k = curPop // 100000
-                rations_per_100k = 4
-                new_rations = rations - (hundred_k * rations_per_100k)
-
-                if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
-                    newPop = maxPop // 100 # 1% of population
-                else: # If there are enough rations for everyone, increase population by 2%
-                    newPop = maxPop // 50
-                    db.execute("UPDATE resources SET rations=%s WHERE id=%s", (new_rations, user_id))
-
-                db.execute("UPDATE provinces SET population=population+%s WHERE id=%s", (newPop, prov_id,))
-                conn.commit()
-
-            except Exception as e: 
-                conn.rollback()
-                print(f"Couldn't complete population growth for province: {prov_id}. Exception: {e}")
-                continue
+            print(f"Couldn't complete population growth for province: {province_id}. Exception: {e}")
+            continue
 
     conn.close()
 
