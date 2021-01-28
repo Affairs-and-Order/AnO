@@ -7,7 +7,7 @@ import variables
 load_dotenv()
 
 # Function for calculating tax income
-def calc_ti(user_id, consumer_goods):
+def calc_ti(user_id):
 
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -20,6 +20,9 @@ def calc_ti(user_id, consumer_goods):
 
     db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
     current_money = db.fetchone()[0]
+
+    db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
+    consumer_goods = db.fetchone()[0]
 
     try:
         try:
@@ -65,9 +68,6 @@ def calc_ti(user_id, consumer_goods):
         print(f"Error: {e} while calculating tax income for user id: {user_id}")
         return current_money, consumer_goods
 
-def next_turn_ti_data():
-    pass
-
 def tax_income(): # Function for giving money to players
 
     conn = psycopg2.connect(
@@ -86,10 +86,7 @@ def tax_income(): # Function for giving money to players
 
         user_id = user_id[0]
 
-        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-        current_consumer_goods = db.fetchone()[0]
-
-        money, consumer_goods = calc_ti(user_id, current_consumer_goods)
+        money, consumer_goods = calc_ti(user_id)
 
         db.execute("UPDATE stats SET gold=%s WHERE id=%s", (money, user_id))
         db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (consumer_goods, user_id))

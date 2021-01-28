@@ -11,7 +11,7 @@ import os
 import variables
 from dotenv import load_dotenv
 from coalitions import get_user_role
-from tasks import calc_pg
+from tasks import calc_pg, calc_ti
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
@@ -140,9 +140,21 @@ def country(cId):
         infra = variables.INFRA
 
         resources = variables.RESOURCES
+        resources.append("money")
         for resource in resources:
             revenue["gross"][resource] = 0
             revenue["net"][resource] = 0
+
+        ti_data = calc_ti(cId)
+
+        db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
+        current_money = db.fetchone()[0]
+        revenue["gross"]["money"] = ti_data[0] - current_money
+
+        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
+        current_cg = db.fetchone()[0]
+
+        ti_cg = current_cg - ti_data[1]
 
         for province_id in provinces_list:
             province_id = province_id[0]
@@ -203,6 +215,10 @@ def country(cId):
 
                 current_net_rations = revenue["net"]["rations"]
                 revenue["net"]["rations"] = current_net_rations - net_rations
+
+            if resource == "consumer_goods":
+
+                revenue["net"]["consumer_goods"] -= ti_cg
 
             if revenue["net"][resource] < 0:
                 revenue["net"][resource] = 0
