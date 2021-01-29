@@ -377,6 +377,7 @@
         <div class="revenue" id="revenue">
 
 
+            {% if status %}
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
 
@@ -561,6 +562,7 @@
                     <td>{{ gross }}%</td>
                 </tr>
             </table>
+            {% endif %}
             <!--show this if user is in a coalition-->
             <!--
         <table class="templatetable">
