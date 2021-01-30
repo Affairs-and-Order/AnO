@@ -102,7 +102,7 @@
                         <tr>
                             {% if leaders|length == 0%}
                             <td>Leaders:</td>
-                            <td>None</td> {% endif %} {% if leaders|length
+                            <td>0</td> {% endif %} {% if leaders|length
                             < 2%} <td>Leader:</td>
                                 <td><a href="/country/id={{ leaders[0] }}">{{ leaderNames[0] }}</a></td>
                                 {% else %}
@@ -126,7 +126,7 @@
                             <td>Members:</td>
                             <td>
                                 {% for member_id in members %} {% if member_id == members[-1] %}
-                                <a href="/country/id={{ member_id }}">{{ members[0] }} </a> {% endif %} {% endfor %}
+                                <a href="#members">{{ members[0] }} </a> {% endif %} {% endfor %}
                             </td>
                         </tr>
                         <tr>
@@ -246,6 +246,38 @@
 
                 </div>
             </div>
+
+            <h2 class="templatecontentheaderleft" id="members">Members</h2>
+
+            <div class="templateoutertablediv inverttable">
+                <table class="templatetable templatetable2">
+                    <th><span class="material-icons-outlined">
+                    outlined_flag
+                    </span>Name</th>
+                    <th><span class="material-icons-outlined">
+                        people_alt
+                        </span>Influence</th>
+                    <th><span class="material-icons-outlined">
+                        account_balance
+                        </span>Provinces</th>
+                    <th>Role</th>
+                    <tr>
+                        <td>
+                            {% for member_id in members %} {% if member_id == members[-1] %}
+                            <a href="/country/id={{ member_id }}">{{ member_names[members.index(member_id)] }}</a> {% else %}
+                            <a href="/country/id={{ member_id }}">{{ member_names[members.index(member_id)] }}, </a> {% endif %} {% endfor %}
+                        </td>
+                        <td><span class="material-icons-outlined">
+                            people_alt
+                            </span>[[ Influence ]]</td>
+                        <td><span class="material-icons-outlined">
+                            account_balance
+                            </span>[[ Provinces ]]</td>
+                        <td>[[ Role ]]</td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
         <!--JOIN-->
         <div class="join" id="join">

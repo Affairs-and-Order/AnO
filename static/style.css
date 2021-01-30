@@ -339,6 +339,10 @@ body {
     overflow-x: hidden;
 }
 
+* {
+    scroll-behavior: smooth;
+}
+
 a {
     text-decoration: none;
 }
