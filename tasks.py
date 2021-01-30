@@ -36,7 +36,7 @@ def calc_ti(user_id):
         consumer_goods_needed = round(population * 0.00005)
         new_consumer_goods = consumer_goods - consumer_goods_needed
 
-        population_score = population * 0.075
+        population_score = round(population * 0.075)
 
         try:
             db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
@@ -47,7 +47,7 @@ def calc_ti(user_id):
             conn.rollback()
             land = 0
 
-        land_percentage = land * 0.02 # Land percentage up to 100% 
+        land_percentage = round(land * 0.02) # Land percentage up to 100% 
 
         if land_percentage > 1:
             land_percentage = 1
