@@ -19,27 +19,27 @@ app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
 
 def next_turn_rations(cId):
 
-        conn = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
-        db = conn.cursor()
+    db = conn.cursor()
 
-        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
-        provinces = db.fetchall()
+    db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+    provinces = db.fetchall()
 
-        db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
-        current_rations = db.fetchone()[0]
+    db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+    current_rations = db.fetchone()[0]
 
-        for pId in provinces:
+    for pId in provinces:
 
-            rations, population = calc_pg(pId, current_rations)
-            current_rations = rations
+        rations, population = calc_pg(pId, current_rations)
+        current_rations = rations
 
-        return current_rations
+    return current_rations
 
 @app.route("/country/id=<cId>")
 def country(cId):
@@ -194,15 +194,11 @@ def country(cId):
                     total = building_count * plus_amount
                     revenue["gross"][plus_resource] += total
                     revenue["net"][plus_resource] += total
-
                 except:
                     pass
 
-                try:
-                    operating_costs = infra[f'{building}_money'] * building_count
-                    revenue["net"]["money"] -= operating_costs
-                except:
-                    pass
+                operating_costs = infra[f'{building}_money'] * building_count
+                revenue["net"]["money"] -= operating_costs
 
                 # Net removal from initial net
                 try:
@@ -224,13 +220,14 @@ def country(cId):
         for resource in resources:
 
             if resource == "rations":
+
                 db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
                 current_rations = db.fetchone()[0]
 
                 new_rations = next_turn_rations(cId)
                 net_rations = current_rations - new_rations
 
-                if net_rations < current_rations:
+                if net_rations != 0:
                     revenue["net"]["rations"] -= net_rations
 
             if resource == "consumer_goods":
