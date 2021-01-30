@@ -2158,6 +2158,38 @@ button {
     height: 45px;
 }
 
+.menuflex2 div {
+    cursor: pointer;
+    margin: 0px;
+    padding: 0;
+    transition: all 0.2s ease-out;
+    border-radius: 0px;
+    text-transform: uppercase;
+    user-select: none;
+    border-collapse: collapse;
+    background: var(--foregroundFive);
+    position: relative;
+    color: var(--colorOne);
+    height: 100%;
+    height: 45px;
+}
+
+.menuflex2 div h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 19px;
+    letter-spacing: 0.5px;
+    color: var(--colorOne);
+    font-weight: 400;
+    height: 20px;
+    line-height: 45px;
+}
+
+.menuflex2 div:hover {
+    color: var(--colorOne);
+    background: var(--foregroundFour);
+}
+
 .menuflex2 a {
     cursor: pointer;
     margin: 0px;
