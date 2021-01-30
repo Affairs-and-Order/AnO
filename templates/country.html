@@ -387,49 +387,51 @@
                                 article
                                 </span>Gross Raw</th>
                         </tr>
+                        <!--
                         <tr>
                             <td>Gross:</td>
                             <td>Not done yet.</td>
                         </tr>
+                        -->
                         <tr>
                             <td>Monetary gross:</td>
-                            <td>{{ revenue["gross"]["money"] }}</td>
+                            <td>{{ revenue["gross"]["money"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Rations:</td>
-                            <td>{{ revenue["gross"]["rations"] }}</td>
+                            <td>{{ revenue["gross"]["rations"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Oil:</td>
-                            <td>{{ revenue["gross"]["oil"] }}</td>
+                            <td>{{ revenue["gross"]["oil"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Coal:</td>
-                            <td>{{ revenue["gross"]["coal"] }}</td>
+                            <td>{{ revenue["gross"]["coal"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Uranium:</td>
-                            <td>{{ revenue["gross"]["uranium"] }}</td>
+                            <td>{{ revenue["gross"]["uranium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Iron:</td>
-                            <td>{{ revenue["gross"]["iron"] }}</td>
+                            <td>{{ revenue["gross"]["iron"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lead:</td>
-                            <td>{{ revenue["gross"]["lead"] }}</td>
+                            <td>{{ revenue["gross"]["lead"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Bauxite:</td>
-                            <td>{{ revenue["gross"]["bauxite"] }}</td>
+                            <td>{{ revenue["gross"]["bauxite"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Copper:</td>
-                            <td>{{ revenue["gross"]["copper"] }}</td>
+                            <td>{{ revenue["gross"]["copper"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lumber:</td>
-                            <td>{{ revenue["gross"]["lumber"] }}</td>
+                            <td>{{ revenue["gross"]["lumber"] | commas }}</td>
                         </tr>
                         <tr>
                             <th><span class="material-icons-outlined">
@@ -438,27 +440,27 @@
                         </tr>
                         <tr>
                             <td>Components:</td>
-                            <td>{{ revenue["gross"]["components"] }}</td>
+                            <td>{{ revenue["gross"]["components"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Steel:</td>
-                            <td>{{ revenue["gross"]["steel"] }}</td>
+                            <td>{{ revenue["gross"]["steel"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ revenue["gross"]["consumer_goods"] }}</td>
+                            <td>{{ revenue["gross"]["consumer_goods"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Aluminum:</td>
-                            <td>{{ revenue["gross"]["aluminium"] }}</td>
+                            <td>{{ revenue["gross"]["aluminium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Gasoline:</td>
-                            <td>{{ revenue["gross"]["gasoline"] }}</td>
+                            <td>{{ revenue["gross"]["gasoline"]  | commas}}</td>
                         </tr>
                         <tr>
                             <td>Ammunition:</td>
-                            <td>{{ revenue["gross"]["ammunition"] }}</td>
+                            <td>{{ revenue["gross"]["ammunition"]  | commas}}</td>
                         </tr>
                     </table>
 
@@ -471,49 +473,51 @@
                                 article
                                 </span>Net Raw</th>
                         </tr>
+                        <!--
                         <tr>
                             <td>Net:</td>
                             <td>Not done yet.</td>
                         </tr>
+                        -->
                         <tr>
                             <td>Monetary net:</td>
-                            <td>{{ revenue["net"]["money"] }}</td>
+                            <td>{{ revenue["net"]["money"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Rations:</td>
-                            <td>{{ revenue["net"]["rations"] }}</td>
+                            <td>{{ revenue["net"]["rations"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Oil:</td>
-                            <td>{{ revenue["net"]["oil"] }}</td>
+                            <td>{{ revenue["net"]["oil"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Coal:</td>
-                            <td>{{ revenue["net"]["coal"] }}</td>
+                            <td>{{ revenue["net"]["coal"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Uranium:</td>
-                            <td>{{ revenue["net"]["uranium"] }}</td>
+                            <td>{{ revenue["net"]["uranium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Iron:</td>
-                            <td>{{ revenue["net"]["iron"] }}</td>
+                            <td>{{ revenue["net"]["iron"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lead:</td>
-                            <td>{{ revenue["net"]["lead"] }}</td>
+                            <td>{{ revenue["net"]["lead"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Bauxite:</td>
-                            <td>{{ revenue["net"]["bauxite"] }}</td>
+                            <td>{{ revenue["net"]["bauxite"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Copper:</td>
-                            <td>{{ revenue["net"]["copper"] }}</td>
+                            <td>{{ revenue["net"]["copper"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lumber:</td>
-                            <td>{{ revenue["net"]["lumber"] }}</td>
+                            <td>{{ revenue["net"]["lumber"] | commas }}</td>
                         </tr>
                         <tr>
                             <th><span class="material-icons-outlined">
@@ -522,27 +526,27 @@
                         </tr>
                         <tr>
                             <td>Components:</td>
-                            <td>{{ revenue["net"]["components"] }}</td>
+                            <td>{{ revenue["net"]["components"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Steel:</td>
-                            <td>{{ revenue["net"]["steel"] }}</td>
+                            <td>{{ revenue["net"]["steel"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ revenue["net"]["consumer_goods"] }}</td>
+                            <td>{{ revenue["net"]["consumer_goods"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Aluminum:</td>
-                            <td>{{ revenue["net"]["aluminium"] }}</td>
+                            <td>{{ revenue["net"]["aluminium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Gasoline:</td>
-                            <td>{{ revenue["net"]["gasoline"] }}</td>
+                            <td>{{ revenue["net"]["gasoline"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Ammunition:</td>
-                            <td>{{ revenue["net"]["ammunition"] }}</td>
+                            <td>{{ revenue["net"]["ammunition"] | commas }}</td>
                         </tr>
                     </table>
 
