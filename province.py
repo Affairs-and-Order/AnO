@@ -203,7 +203,7 @@ def province(pId):
             plus_data = list(infra[f'{producer}_plus'].items())[0]
             plus_amount = plus_data[1]
 
-            production += (producer_count * plus_amount)
+            production += producer_count * plus_amount
 
         return consumption, production
 

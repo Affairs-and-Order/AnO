@@ -47,6 +47,7 @@ def calc_ti(user_id):
 
         new_income = 0
         new_income += population_score
+        new_income = int(new_income)
         new_income *= land_percentage
         new_income = int(new_income)
 
