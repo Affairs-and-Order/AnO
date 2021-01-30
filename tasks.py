@@ -25,36 +25,30 @@ def calc_ti(user_id):
     consumer_goods = db.fetchone()[0]
 
     try:
-        try:
-            db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
-            population = db.fetchone()[0]
-            if population is None:
-                population = 0
-        except:
+        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
+        population = db.fetchone()[0]
+        if population is None:
             population = 0
         
-        consumer_goods_needed = round(population * 0.00005)
-        new_consumer_goods = consumer_goods - consumer_goods_needed
+        consumer_goods_needed = population * 0.00005
+        new_consumer_goods = int(consumer_goods - consumer_goods_needed)
 
-        population_score = round(population * 0.075)
+        population_score = int(population * 0.075)
 
-        try:
-            db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
-            land = db.fetchone()[0]
-            if land is None:
-                land = 0
-        except:
-            conn.rollback()
+        db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
+        land = db.fetchone()[0]
+        if land is None:
             land = 0
 
-        land_percentage = round(land * 0.02) # Land percentage up to 100% 
+        land_percentage = land * 0.02 # Land percentage up to 100% 
 
         if land_percentage > 1:
             land_percentage = 1
 
         new_income = 0
         new_income += population_score
-        new_income += new_income * land_percentage
+        new_income *= land_percentage
+        new_income = int(new_income)
 
         if new_consumer_goods >= 0:
             new_income *= 1.5
