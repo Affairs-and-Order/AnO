@@ -1,22 +1,9 @@
-{% extends"layout.html"%}
-
-{% block title %} {{ username }} {% endblock %} 
-
-{% block head %}
-
-    {% if flag != None %}
-    <meta property="og:image" content="/static/flags/{{ flag }}" />
-    {% endif %}
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game">
-    {% if description != None %}
-    <meta name="description" content="{{ description }}">
-    {% else %}
-    <meta name="description" content="{{ username }}'s country.">
-    {% endif %}
-{% endblock %}
-
-{% block body %}
+{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %} {% block head %} {% if flag != None %}
+<meta property="og:image" content="/static/flags/{{ flag }}" /> {% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=0.8">
+<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game"> {% if description != None %}
+<meta name="description" content="{{ description }}"> {% else %}
+<meta name="description" content="{{ username }}'s country."> {% endif %} {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -102,7 +89,7 @@
         <div class="view" id="view">
 
 
-            <div class="countryimagediv" id="countryFlagBackground" style="background-image: url(https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg);">
+            <div class="countryimagediv" id="countryFlagBackground">
                 <!--country flag-->
                 {% if flag != None %}
                 <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">
@@ -268,21 +255,21 @@
                             <td><span class="material-icons-outlined">
                                 sentiment_satisfied
                                 </span>Average happiness:</td>
-                                {% if happiness != None %}
-                                <td>{{ happiness|round }}%</td>
-                                {% else %}
-                                <td>0</td>
-                                {% endif %}
+                            {% if happiness != None %}
+                            <td>{{ happiness|round }}%</td>
+                            {% else %}
+                            <td>0</td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
                                 arrow_circle_up
                                 </span>Average productivity:</td>
-                                {% if productivity != None %}
-                                <td>{{ productivity|round }}%</td>
-                                {% else %}
-                                <td>0</td>
-                                {% endif %}
+                            {% if productivity != None %}
+                            <td>{{ productivity|round }}%</td>
+                            {% else %}
+                            <td>0</td>
+                            {% endif %}
                         </tr>
                         <!--
                         <tr>
@@ -312,14 +299,8 @@
             <h2 class="templatecontentheaderleft">Provinces</h2>
 
             <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
-            {% for province in provinces %} 
-            {% set provinceName = province[0] %} 
-            {% set provinceId = province[1] %} 
-            {% set provincePopulation = province[2] %} 
-            {% set provinceCityCount = province[3] %} 
-            {% set provinceLand = province[4] %}
-            {% set provinceHappiness = province[5] %}
-            {% set provinceProductivity = province[6] %}
+            {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %} {% set provinceHappiness
+            = province[5] %} {% set provinceProductivity = province[6] %}
             <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
                     <div class="templatedivflex2left vanilla">
@@ -456,11 +437,11 @@
                         </tr>
                         <tr>
                             <td>Gasoline:</td>
-                            <td>{{ revenue["gross"]["gasoline"]  | commas}}</td>
+                            <td>{{ revenue["gross"]["gasoline"] | commas}}</td>
                         </tr>
                         <tr>
                             <td>Ammunition:</td>
-                            <td>{{ revenue["gross"]["ammunition"]  | commas}}</td>
+                            <td>{{ revenue["gross"]["ammunition"] | commas}}</td>
                         </tr>
                     </table>
 
