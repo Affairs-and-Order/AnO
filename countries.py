@@ -150,11 +150,17 @@ def country(cId):
         db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         current_money = db.fetchone()[0]
         revenue["gross"]["money"] = ti_data[0] - current_money
+        revenue["net"]["money"] = revenue["gross"]["money"]
 
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
         current_cg = db.fetchone()[0]
 
-        ti_cg = current_cg - ti_data[1]
+        net_ti_cg = ti_data[1]
+
+        if current_cg < net_ti_cg:
+            ti_cg = 0
+        else:
+            ti_cg = current_cg - net_ti_cg
 
         for province_id in provinces_list:
             province_id = province_id[0]
@@ -187,6 +193,12 @@ def country(cId):
                 except:
                     pass
 
+                try:
+                    operating_costs = infra[f'{building}_money'] * building_count
+                    revenue["net"]["money"] -= operating_costs
+                except:
+                    pass
+
                 # Net removal from initial net
                 try:
                     convert_minus = infra[f'{building}_convert_minus']
@@ -213,15 +225,11 @@ def country(cId):
                 new_rations = next_turn_rations(cId)
                 net_rations = current_rations - new_rations
 
-                current_net_rations = revenue["net"]["rations"]
-                revenue["net"]["rations"] = current_net_rations - net_rations
+                if net_rations < current_rations:
+                    revenue["net"]["rations"] -= net_rations
 
             if resource == "consumer_goods":
-
                 revenue["net"]["consumer_goods"] -= ti_cg
-
-            if revenue["net"][resource] < 0:
-                revenue["net"][resource] = 0
     else:
         revenue = {}
 
