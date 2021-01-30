@@ -149,12 +149,17 @@ def country(cId):
 
         db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         current_money = db.fetchone()[0]
-        revenue["gross"]["money"] = ti_data[0] - current_money
+
+        # Tax income money
+        ti_money = ti_data[0]
+
+        revenue["gross"]["money"] = ti_money - current_money
         revenue["net"]["money"] = revenue["gross"]["money"]
 
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
         current_cg = db.fetchone()[0]
 
+        # Net tax income consumer goods
         net_ti_cg = ti_data[1]
 
         if current_cg < net_ti_cg:
@@ -314,7 +319,6 @@ def countries():  # TODO: fix shit ton of repeated code in function
             user_id = user[0]
             db.execute(f"SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (user_id,))
             target_province = db.fetchone()[0]
-            print(target_province)
             if abs(target_province-province_range) > 1:
                 users.remove(user)
 

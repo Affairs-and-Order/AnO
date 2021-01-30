@@ -55,7 +55,7 @@ def calc_ti(user_id):
         else:
             new_consumer_goods = consumer_goods
 
-        new_money = round(current_money + new_income)
+        new_money = int(current_money + new_income)
 
         return new_money, new_consumer_goods
     except Exception as e:
@@ -305,7 +305,7 @@ def generate_province_revenue(): # Runs each hour
 
                         global has_enough_stuff
 
-                        if unit not in energy_units and unit in energy_consumers:
+                        if unit in energy_consumers:
 
                             db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
                             current_energy = int(db.fetchone()[0])
