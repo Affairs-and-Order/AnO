@@ -29,6 +29,8 @@ def calc_ti(user_id):
         population = db.fetchone()[0]
         if population is None:
             population = 0
+
+        population = int(population)
         
         consumer_goods_needed = population * 0.00005
         new_consumer_goods = int(consumer_goods - consumer_goods_needed)
@@ -40,6 +42,7 @@ def calc_ti(user_id):
         if land is None:
             land = 0
 
+        land = int(land)
         land_percentage = land * 0.02 # Land percentage up to 100% 
 
         if land_percentage > 1:
