@@ -55,7 +55,7 @@ def calc_ti(user_id):
         new_income = int(new_income)
 
         if new_consumer_goods >= 0:
-            new_income *= 1.5
+            new_income *= 1.75
         else:
             new_consumer_goods = consumer_goods
 
