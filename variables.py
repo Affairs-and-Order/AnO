@@ -32,7 +32,7 @@ BUILDINGS = [
 # Dictionary for which units give what resources, etc
 INFRA = {
     ### Electricity (done) ###
-    'coal_burners_plus': {'energy': 4}, # energy increase
+    'coal_burners_plus': {'energy': 3}, # energy increase
     'coal_burners_convert_minus': [{'coal': 48}], # resource upkeep cost
     'coal_burners_money': 12000, # monetary upkeep cost
     'coal_burners_effect': [{'pollution': 9}], # pollution amount added
@@ -90,7 +90,7 @@ INFRA = {
     'universities_money': 175000,
 
     'monorails_effect': [{'productivity': 12}],
-    'monorails_effect_minus': {'pollution': 10}, # Removes 10 pollution
+    'monorails_effect_minus': {'pollution': 20}, # Removes 10 pollution
     'monorails_money': 510000,
     ###################
 
