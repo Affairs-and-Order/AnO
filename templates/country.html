@@ -655,13 +655,11 @@
                 <tbody data-contain="{{new[2]}}">
                   <tr>
                     <th>
-                      <!-- NOTE the new[1] is the data when the message was sent (date) -->
                       <span class="material-icons-outlined">article</span>{{new[1]}}
                       <span onclick="pop_from_page('/delete_news/{{new[2]}}', {{new[2]}})" class="material-icons-outlined dismiss-notification" style="color:red;position:absolute;right:2%;">highlight_off</span>
                     </th>
                   </tr>
                   <tr>
-                    <!-- NOTE new[0] is the incoming message -->
                     <td>{{ new[0] }}</td>
                   </tr>
                 </tbody>
