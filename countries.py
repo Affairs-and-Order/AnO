@@ -41,7 +41,27 @@ def next_turn_rations(cId):
 
     return current_rations
 
+@app.route("/delete_news/<int:id>", methods=["POST"])
+@login_required
+def delete_news(id):
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+    db = conn.cursor()
+    db.execute("SELECT destination_id FROM news WHERE id=(%s)", (id,))
+    destination_id = db.fetchone()[0]
+    if destination_id == session["user_id"]:
+        db.execute("DELETE FROM news WHERE id=(%s)", (id,))
+        conn.commit()
+        return "200"
+    else:
+        return "403"
+
 @app.route("/country/id=<cId>")
+@login_required
 def country(cId):
 
     connection = psycopg2.connect(
@@ -133,7 +153,7 @@ def country(cId):
     news_amount = 0
     if id == session["user_id"]:
         # TODO: handle this as country/id=<int:cId>
-        db.execute("SELECT message,date FROM news WHERE destination_id=(%s)", (cId,))
+        db.execute("SELECT message,date,id FROM news WHERE destination_id=(%s)", (cId,))
 
         # data order in the tuple appears as in the news schema (notice this when work with this data using jija)
         news = db.fetchall()

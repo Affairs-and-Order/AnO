@@ -1,10 +1,20 @@
-{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %} {% block head %} {% if flag != None %}
-<meta property="og:image" content="/static/flags/{{ flag }}" /> {% endif %}
-<meta name="viewport" content="width=device-width, initial-scale=0.8">
-<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game"> {% if description != None %}
-<meta name="description" content="{{ description }}"> {% else %}
-<meta name="description" content="{{ username }}'s country."> {% endif %} {% endblock %} {% block body %}
+{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %}
 
+{% block head %}
+{% if flag != None %}
+<meta property="og:image" content="/static/flags/{{ flag }}" />
+{% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=0.8">
+<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game">
+
+{% if description != None %}
+<meta name="description" content="{{ description }}">
+{% endif %}
+
+<meta name="description" content="{{ username }}'s country.">
+{% endblock %}
+
+{% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper provincetopper">
@@ -299,19 +309,8 @@
             <h2 class="templatecontentheaderleft">Provinces</h2>
 
             <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
-<<<<<<< HEAD
-            {% for province in provinces %}
-            {% set provinceName = province[0] %}
-            {% set provinceId = province[1] %}
-            {% set provincePopulation = province[2] %}
-            {% set provinceCityCount = province[3] %}
-            {% set provinceLand = province[4] %}
-            {% set provinceHappiness = province[5] %}
-            {% set provinceProductivity = province[6] %}
-=======
             {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %} {% set provinceHappiness
             = province[5] %} {% set provinceProductivity = province[6] %}
->>>>>>> master
             <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
                     <div class="templatedivflex2left vanilla">
@@ -646,24 +645,26 @@
 
         <!--News-->
         <div class="news" id="news">
-
-            <!-- <h3 class="templatecontentheadercenter">Sorry, this page is not currently functional</h3> -->
-
-            <!-- NOTE: put a delete button on the side -->
+            <style media="screen">
+              .dismiss-notification:hover {
+                cursor: pointer;
+              }
+            </style>
             <table class="templatetable">
                 {% for new in news %}
-                <tr>
-                  <th>
-                    <!-- COME HERE CARSON -->
-                    <!-- NOTE the new[1] is the data when the message was sent -->
-                    <span class="material-icons-outlined">article</span>{{new[1]}}
-                    <button type="button" name="button">Delete button here</button>
-                  </th>
-                </tr>
-                <tr>
-                  <!-- NOTE new[0] is the incoming message -->
-                  <td>{{ new[0] }}</td>
-                </tr>
+                <tbody data-contain="{{new[2]}}">
+                  <tr>
+                    <th>
+                      <!-- NOTE the new[1] is the data when the message was sent (date) -->
+                      <span class="material-icons-outlined">article</span>{{new[1]}}
+                      <span onclick="pop_from_page('/delete_news/{{new[2]}}', {{new[2]}})" class="material-icons-outlined dismiss-notification" style="color:red;position:absolute;right:2%;">highlight_off</span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <!-- NOTE new[0] is the incoming message -->
+                    <td>{{ new[0] }}</td>
+                  </tr>
+                </tbody>
                 {% endfor %}
             </table>
 
