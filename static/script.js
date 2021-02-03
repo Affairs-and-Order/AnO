@@ -1,5 +1,3 @@
-
-
 /*
 ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
 
@@ -43,9 +41,31 @@ function resourcedivcontentshow() {
 
     document.getElementById("resourcediv").classList.toggle("resourcedivshow");
     document.getElementById("resourcedivcontent").classList.toggle("resourcedivcontentshow");
+    localStorage.setItem('resourcedivcontentshow', true);
 
 }
+/*
+$("#divid1").click(function() {
+    $("#divid1").hide(); //want this to keep hidden after refresh
+    $("#hideid1").hide(); //want this to keep hidden after refresh
+    $("#id1").show(); //want this to keep showing after refresh
+    localStorage.setItem('hidden', true);
+});
 
+$(function() {
+    // if localStorage has hidden as true, hide the div and show other
+    if (localStorage.getItem('hidden')) {
+        $("#divid1").hide();
+        $("#hideid1").hide();
+        $("#id1").show();
+    }
+});
+
+// Clear the storage
+function clearLocal() {
+    localStorage.clear();
+}
+*/
 //resourcediv stay open
 /*
 var clicked = false

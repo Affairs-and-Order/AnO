@@ -208,7 +208,7 @@
                     <tr>
                         <td><span class="material-icons-outlined">
                             power
-                            </span>Electricity consumption / production :</td>
+                            </span>Electricity Consumption / Production:</td>
                         <td>{{ energy['consumption'] | commas }} / {{ energy['production'] | commas }}</td>
                         <!-- how much you have out of how much you need -->
                     </tr>
@@ -257,7 +257,7 @@
                                     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 }
 
-                                let newPrice = sum_cost_exp(250000, 1.05, cityCount, citiesamount)
+                                let newPrice = sum_cost_exp(750000, 1.09, cityCount, citiesamount)
                                 let newOutputPrice = numberWithCommas(newPrice)
                                 console.log("New City price: " + newOutputPrice)
 
@@ -307,7 +307,7 @@
                                     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
                                 }
 
-                                let land_price = sum_cost_exp(120000, 1.04, current_land, landamount)
+                                let land_price = sum_cost_exp(520000, 1.07, current_land, landamount)
                                 let land_output_price = numberWithCommas(land_price)
                                 console.log("New land price: " + land_output_price)
                                 landoutput.innerHTML = land_output_price;
@@ -342,22 +342,22 @@
         <h2 class="templatecontentheaderleft">Infrastructure</h2>
 
         <div class="templatedivflex2 menuflex2">
-            <div class="templatedivflex2left" id="provincecity" onclick="provincecity()">
+            <a href="#cityshow" class="templatedivflex2left" id="provincecity" onclick="provincecity()">
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
                     business
                 </span>City
                 </h3>
 
-            </div>
-            <div class="templatedivflex2left" id="provinceland" onclick="provinceland()">
+            </a>
+            <a href="#landshow" class="templatedivflex2left" id="provinceland" onclick="provinceland()">
 
                 <h3 class="smallheader"><span class="material-icons-outlined">
                     landscape
                 </span>Land
                 </h3>
 
-            </div>
+            </a>
         </div>
         <!--Cities-->
         <form method="POST">
@@ -368,26 +368,26 @@
                     <table class="templatetable templatetable2 smalltable">
                         <tr>
                             <div class="templatedivflex2 menuflex2 width100">
-                                <div class="templatedivflex2left" id="cityelectricity" onclick="cityelectricity()">
+                                <a href="#electricity" class="templatedivflex2left" id="cityelectricity" onclick="cityelectricity()">
 
                                     <h3 class="smallheader">Electricity
                                     </h3>
 
-                                </div>
-                                <div class="templatedivflex2left" id="cityretail" onclick="cityretail()">
+                                </a>
+                                <a href="#retail" class="templatedivflex2left" id="cityretail" onclick="cityretail()">
 
                                     <h3 class="smallheader">Retail
                                         <span class="menuflex2notification material-icons-outlined notificationyellow notificationicon">power</span>
                                     </h3>
 
-                                </div>
-                                <div class="templatedivflex2left" id="cityworks" onclick="cityworks()">
+                                </a>
+                                <a href="#publicWorks" class="templatedivflex2left" id="cityworks" onclick="cityworks()">
 
                                     <h3 class="smallheader">Public Works
                                         <span class="menuflex2notification material-icons-outlined notificationyellow notificationicon">power</span>
                                     </h3>
 
-                                </div>
+                                </a>
                             </div>
                         </tr>
                         <tr>
@@ -431,9 +431,9 @@
 
                                 <p class="templatecontentpleft">Coal power plants are a cheap way to produce power for a developing nation. While they cost less to build and opperate, they contribute lots of pollution.</p>
 
-                                <ul>Coal power plants cost 45,000 per hour, takes 48 coal per hour, and produces +4 energy and +7% pollution
+                                <ul>Coal power plants cost 12,000 per hour, takes 48 coal per hour, and produces +3 electricity and +9% pollution
                                 </ul>
-                                <ul>Coal power plants cost 400,000, 45 aluminium each
+                                <ul>Coal power plants cost 200,000, 45 aluminium each
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -479,9 +479,9 @@
 
                                 <p class="templatecontentpleft">Oil power plants cost more to opperate and build than coal power plants, but produce less pollution. They are ideal for a nation pursuing tax income as a primary revenue source.</p>
 
-                                <ul>Oil power plants cost 60,000 per hour, takes 56 oil per hour, and contributes +4 energy and +3% pollution
+                                <ul>Oil power plants cost 18,000 per hour, takes 56 oil per hour, and contributes +4 electricity and +3% pollution
                                 </ul>
-                                <ul>Oil power plants cost 650,000, 50 aluminium each
+                                <ul>Oil power plants cost 350,000, 50 aluminium each
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -528,9 +528,9 @@
 
                                 <p class="templatecontentpleft">Solar fields are a hefty investment, but in return produce no pollution. They are ideal for developed nations.</p>
 
-                                <ul>Solar cost 150,000 per hour and contribute +3 energy
+                                <ul>Solar cost 5,000 per hour and contribute +4 electricity
                                 </ul>
-                                <ul>Solar fields cost 2.3M, 55 steel each
+                                <ul>Solar fields cost 500,000, 55 steel each
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -572,9 +572,9 @@
 
                                 <p class="templatecontentpleft">Hydro dams are expensive to build and upkeep, but provide lots of power with absolutely no production of pollution.</p>
 
-                                <ul>Hydro dams cost 250K per hour and contribute +6 energy
+                                <ul>Hydro dams cost 35,000 per hour and contribute +8 electricity
                                 </ul>
-                                <ul>Hydro damns cost 5.8M, 120 steel, 60 aluminium each
+                                <ul>Hydro damns cost 2.2M, 120 steel, 60 aluminium each
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -617,10 +617,10 @@
 
                                 <h3 class="templatecontentheadercenter">You have {{ nuclear_reactors }} Nuclear Reactors</h3>
 
-                                <p class="templatecontentpleft">Nuclear reactors are a sign of a world power. While they are costly to build and even more to mantain, it is fully compensated for by the massive amount of energy it contributes to your province.</p>
+                                <p class="templatecontentpleft">Nuclear reactors are a sign of a world power. While they are costly to build and even more to mantain, it is fully compensated for by the massive amount of electricity it contributes to your province.</p>
 
-                                <ul>Nuclear reactors cost 1.2M, 32 uranium per hour and contribute +12 energy</ul>
-                                <ul>Nuclear reactors cost 9.5M, 250 steel each</ul>
+                                <ul>Nuclear reactors cost 380,000, 32 uranium per hour and contribute +14 electricity</ul>
+                                <ul>Nuclear reactors cost 8.5M, 250 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount" />
@@ -686,7 +686,7 @@
                                 <p class="templatecontentpleft">Gas stations allow your citizens to fuel their cars and to grab some groceries. They contribute a small amount of consumer goods to the economy.</p>
 
                                 <ul>Gas stations cost 20,000 per hour and contribute +8 consumer goods per hour, as well as +4% pollution</ul>
-                                <ul>Gas stations cost 2.9M, 50 steel, 35 aluminium each</ul>
+                                <ul>Gas stations cost 550,000, 50 steel, 35 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="gas_stations" type="number" placeholder="Amount" />
@@ -731,7 +731,7 @@
                                 <p class="templatecontentpleft">General stores allow your citizens to pick up everyday items necessary for your economy to function.</p>
 
                                 <ul>General stores cost 35,000 per hour and contribute +12 consumer goods per hour, as well as +2% pollution</ul>
-                                <ul>General stores cost 3.5M, 60 steel, 70 aluminium each</ul>
+                                <ul>General stores cost 1.2M, 60 steel, 70 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="general_stores" type="number" placeholder="Amount" />
@@ -775,8 +775,8 @@
 
                                 <p class="templatecontentpleft">Farmers markets provide fresh produce to your population without any middle man. They are perfect for producing consumer goods with little pollution.</p>
 
-                                <ul>Farmers markets cost 110,000 per hour and contribute +17 consumer goods per hour, as well as +5% pollution</ul>
-                                <ul>Farmers markets cost 4.2M, 75 steel, 80 aluminium each</ul>
+                                <ul>Farmers markets cost 80,000 per hour and contribute +17 consumer goods per hour, as well as +5% pollution</ul>
+                                <ul>Farmers markets cost 3.5M, 75 steel, 80 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="farmers_markets" type="number" placeholder="Amount" />
@@ -819,8 +819,8 @@
 
                                 <p class="templatecontentpleft">Banks help produce a thriving debt-based economy that drastically increases production of consumer goods. Banks produce no pollution.</p>
 
-                                <ul>Banks cost 320,000 per hour and contribute +25 consumer goods per hour</ul>
-                                <ul>Banks cost 7.7M, 225 steel, 110 aluminium each</ul>
+                                <ul>Banks cost 220,000 per hour and contribute +25 consumer goods per hour</ul>
+                                <ul>Banks cost 9M, 225 steel, 110 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="banks" type="number" placeholder="Amount" />
@@ -863,8 +863,8 @@
 
                                 <p class="templatecontentpleft">Malls are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. Malls produce lots of pollution.</p>
 
-                                <ul>Malls cost 750,000 per hour and contribute +36 consumer goods per hour, as well as +10% pollution</ul>
-                                <ul>Malls cost 12.5M, 360 steel, 240 aluminium each</ul>
+                                <ul>Malls cost 450,000 per hour and contribute +36 consumer goods per hour, as well as +10% pollution</ul>
+                                <ul>Malls cost 15.5M, 360 steel, 240 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
@@ -911,8 +911,8 @@
 
                                 <p class="templatecontentpleft">City parks are perfect establishments to increase happiness of your population, and to absorb some pollution.</p>
 
-                                <ul>City parks cost 20,000 per hour and contribute +3% happiness and -6% pollution</ul>
-                                <ul>City parks cost 1.8M, 15 steel each</ul>
+                                <ul>City parks cost 25,000 per hour and contribute +3% happiness and -6% pollution</ul>
+                                <ul>City parks cost 350,000, 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="city_parks" type="number" placeholder="Amount" />
@@ -956,8 +956,8 @@
 
                                 <p class="templatecontentpleft">Libraries are places for your citizens to enjoy a book and learn from them to become more productive.</p>
 
-                                <ul>Libraries cost 90,000 per hour and contribute +2% happiness and +2% productivity</ul>
-                                <ul>Libraries cost 4.2M, 55 steel, 40 aluminium each</ul>
+                                <ul>Libraries cost 60,000 per hour and contribute +3% happiness and +3% productivity</ul>
+                                <ul>Libraries cost 800,000, 55 steel, 40 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="libraries" type="number" placeholder="Amount" />
@@ -1000,8 +1000,8 @@
 
                                 <p class="templatecontentpleft">Hospitals are equiped with advanced medical equipment and staff, allowing for the drastic increase in people who survive childbirth and deadly illnesses. People live longer and such are happier.</p>
 
-                                <ul>Hospitals cost 60,000 per hour and contribute +0.5% population and +7% happiness</ul>
-                                <ul>Hospitals cost 8M, 140 steel, 85 aluminium each</ul>
+                                <ul>Hospitals cost 90,000 per hour and contribute +9% happiness</ul>
+                                <ul>Hospitals cost 2.3M, 140 steel, 85 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="hospitals" type="number" placeholder="Amount" />
@@ -1045,8 +1045,8 @@
 
                                 <p class="templatecontentpleft">Universities help educate your population, making them far more productive. University gives their students some great memories.</p>
 
-                                <ul>Universities cost 150K per hour and contribute +8% productivity and +4% happiness</ul>
-                                <ul>Universities cost 12.5M, 210 steel, 105 aluminium each</ul>
+                                <ul>Universities cost 175,000 per hour and contribute +9% productivity and +6% happiness</ul>
+                                <ul>Universities cost 6.8M, 210 steel, 105 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="universities" type="number" placeholder="Amount" />
@@ -1089,8 +1089,8 @@
 
                                 <p class="templatecontentpleft">Monorails astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>Monorails cost 510,000 per hour and contribute +17 productivity and -10% pollution</ul>
-                                <ul>Monorails cost 19.8M, 390 steel, 195 aluminium each</ul>
+                                <ul>Monorails cost 510,000 per hour and contribute +18% productivity and -20% pollution</ul>
+                                <ul>Monorails cost 17.5M, 390 steel, 195 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="monorails" type="number" placeholder="Amount" />
@@ -1131,23 +1131,23 @@
                     <table class="templatetable templatetable2 smalltable">
                         <tr>
                             <div class="templatedivflex2 menuflex2 width100">
-                                <div class="templatedivflex2left" id="landmilitary" onclick="landmilitary()">
+                                <a href="#military" class="templatedivflex2left" id="landmilitary" onclick="landmilitary()">
 
                                     <h3 class="smallheader">Military</h3>
 
-                                </div>
-                                <div class="templatedivflex2left" id="landindustry" onclick="landindustry()">
+                                </a>
+                                <a href="#industry" class="templatedivflex2left" id="landindustry" onclick="landindustry()">
 
                                     <h3 class="smallheader">industry</h3>
 
-                                </div>
-                                <div class="templatedivflex2left" id="landprocessing" onclick="landprocessing()">
+                                </a>
+                                <a href="#processing" class="templatedivflex2left" id="landprocessing" onclick="landprocessing()">
 
                                     <h3 class="smallheader">Processing
                                         <span class="menuflex2notification material-icons-outlined notificationyellow notificationicon">power</span>
                                     </h3>
 
-                                </div>
+                                </a>
                             </div>
                         </tr>
                         <!--FOR CARSON - make these tds links in the future (using IDs)-->
@@ -1229,7 +1229,7 @@
                                 <p class="templatecontentpleft">Army bases allow you to recruit and house soldiers, and to store tanks and artillery.</p>
 
                                 <ul>Army bases cost 25,000 per hour</ul>
-                                <ul>Army bases cost 1.8M and 80 wood</ul>
+                                <ul>Army bases cost 650,000 and 80 wood</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="army_bases" type="number" placeholder="Amount" />
@@ -1277,7 +1277,7 @@
                                 <p class="templatecontentpleft">Air Bases allow for the storage and production of all air units.</p>
 
                                 <ul>Air Bases cost 55,000 per hour</ul>
-                                <ul>Air Bases cost 2.6M, 165 steel, 40 aluminium each</ul>
+                                <ul>Air Bases cost 1.4M, 165 steel, 40 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="aerodomes" type="number" placeholder="Amount" />
@@ -1324,7 +1324,7 @@
                                 <p class="templatecontentpleft">Naval Bases allow for the storage and production of all naval units.</p>
 
                                 <ul>Naval Bases cost 35,000 per hour</ul>
-                                <ul>Naval Bases cost 2.1M, 210 steel each</ul>
+                                <ul>Naval Bases cost 1.2M, 210 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="harbours" type="number" placeholder="Amount" />
@@ -1369,8 +1369,8 @@
 
                                 <p class="templatecontentpleft">Admin buildings provide capabilities to recruit spies and perform opperations on adversaries.</p>
 
-                                <ul>Admin buildings cost 60,000 per hour</ul>
-                                <ul>Admin buildings cost 3.2M, 90 steel, 75 aluminium each</ul>
+                                <ul>Admin buildings cost 90,000 per hour</ul>
+                                <ul>Admin buildings cost 3.6M, 90 steel, 75 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="admin_buildings" type="number" placeholder="Amount" />
@@ -1415,8 +1415,8 @@
 
                                 <p class="templatecontentpleft">Silos allow for the production, storage, and launch of Ballistic Missiles and nukes once prerequisites are acquired.</p>
 
-                                <ul>Silos cost 540,000 per hour</ul>
-                                <ul>Silos cost 12.8M, 540 steel, 240 aluminium each</ul>
+                                <ul>Silos cost 340,000 per hour</ul>
+                                <ul>Silos cost 21M, 540 steel, 240 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="silos" type="number" placeholder="Amount" />
@@ -1464,8 +1464,8 @@
 
                                 <p class="templatecontentpleft">Farms produce rations to feed your nation. Farms are best suited for established nations that own lots of land, as land influences farm production.</p>
 
-                                <ul>Farms cost 3,000 per hour and contribute +8 food for every land slot in the province, and add +1% pollution</ul>
-                                <ul>Farms cost 220,000 and 10 wood each</ul>
+                                <ul>Farms cost 3,000 per hour and contribute +1 food for every second land slot in the province, and add +1% pollution</ul>
+                                <ul>Farms cost 140,000 and 10 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="farms" type="number" placeholder="Amount" />
@@ -1517,7 +1517,7 @@
                                 <p class="templatecontentpleft">Iron mines produce iron which is necessary to produce steel.</p>
 
                                 <ul>Iron mines cost 12,000 per hour and produce 25 iron per hour</ul>
-                                <ul>Iron mines cost 640,000 and 20 wood each</ul>
+                                <ul>Iron mines cost 310,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="iron_mines" type="number" placeholder="Amount" />
@@ -1565,8 +1565,8 @@
 
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
-                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
+                                <ul>Coal mines cost 8,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
+                                <ul>Coal mines cost 290,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1615,7 +1615,7 @@
                                 <p class="templatecontentpleft">Copper mines produce copper for your nation. Copper can be used to manufacture ammunution</p>
 
                                 <ul>Copper mines cost 8,000 per hour and produce 32 copper per hour</ul>
-                                <ul>Copper mines cost 435,000 and 25 wood each</ul>
+                                <ul>Copper mines cost 245,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
@@ -1661,7 +1661,7 @@
                                 <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
                                 <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour, as well as +1.5% pollution</ul>
-                                <ul>Pumpjacks cost 450,000 and 15 steel each</ul>
+                                <ul>Pumpjacks cost 250,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -1706,7 +1706,7 @@
                                 <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
                                 <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour, as well as +1% pollution</ul>
-                                <ul>Lumber mills cost 480,000 each</ul>
+                                <ul>Lumber mills cost 180,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
@@ -1753,7 +1753,7 @@
                                 <p class="templatecontentpleft">Lead mines allow for the production of lead, which is valuable for its use in ammunition.</p>
 
                                 <ul>Lead mines cost 12,000 per hour and produce 18 lead per hour</ul>
-                                <ul>Lead mines cost 420,000 and 25 wood each</ul>
+                                <ul>Lead mines cost 220,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lead_mines" type="number" placeholder="Amount" />
@@ -1799,7 +1799,7 @@
                                 <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
                                 <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour</ul>
-                                <ul>Bauxite mines cost 460,000 and 20 wood each</ul>
+                                <ul>Bauxite mines cost 260,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -1844,8 +1844,8 @@
 
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
-                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
+                                <ul>Coal mines cost 8,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
+                                <ul>Coal mines cost 290,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1894,7 +1894,7 @@
                                 <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
                                 <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour, as well as +1.5% pollution</ul>
-                                <ul>Pumpjacks cost 450,000 and 15 steel each</ul>
+                                <ul>Pumpjacks cost 250,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -1939,7 +1939,7 @@
                                 <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
                                 <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour, as well as +1% pollution</ul>
-                                <ul>Lumber mills cost 480,000 each</ul>
+                                <ul>Lumber mills cost 180,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
@@ -1983,7 +1983,7 @@
                                 <p class="templatecontentpleft">Uranium mines harvest uranium, which can be used to fuel nuclear reactors, or in nuclear weapons.</p>
 
                                 <ul>Uranium mines cost 18,000 per hour and produce 12 uranium per hour</ul>
-                                <ul>Uranium mines cost 690,000 and 35 steel each</ul>
+                                <ul>Uranium mines cost 380,000 and 35 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="uranium_mines" type="number" placeholder="Amount" />
@@ -2028,7 +2028,7 @@
                                 <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
                                 <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour</ul>
-                                <ul>Bauxite mines cost 460,000 and 20 wood each</ul>
+                                <ul>Bauxite mines cost 260,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -2074,7 +2074,7 @@
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
                                 <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
-                                <ul>Coal mines cost 590,000 and 30 wood each</ul>
+                                <ul>Coal mines cost 290,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -2124,7 +2124,7 @@
                                 <p class="templatecontentpleft">Components factories produce components for your country from copper, steel, and aluminium. Components are incredibly valuable which are used in advanced machinery.</p>
 
                                 <ul>Components factories cost 220,000 per hour, and convert 20 copper, 10 steel, and 15 aluminium per hour</ul>
-                                <ul>Components factories cost 2.2M, 20 steel, 20 aluminium each</ul>
+                                <ul>Components factories cost 1.2M, 20 steel, 20 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="component_factories" type="number" placeholder="Amount" />
@@ -2169,7 +2169,7 @@
                                 <p class="templatecontentpleft">Steel mills produce steel from iron and coal, an incredibly robust material</p>
 
                                 <ul>Steel mills cost 180,000 per hour and convert 35 iron and 35 coal into 15 steel</ul>
-                                <ul>Steel mills cost 1.9M, 60 aluminium each</ul>
+                                <ul>Steel mills cost 900,000, 60 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="steel_mills" type="number" placeholder="Amount" />
@@ -2216,7 +2216,7 @@
                                 <p class="templatecontentpleft">Ammunition factories allows you to convert copper and lead into ammunition, which is necessary for war machines and useful for soldiers to fight in war.</p>
 
                                 <ul>Ammunition factories cost 140,000 per hour and convert 10 copper and 20 lead into 10 ammunition per hour</ul>
-                                <ul>Ammunition factories cost 1.6M each</ul>
+                                <ul>Ammunition factories cost 750,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="ammunition_factories" type="number" placeholder="Amount" />
@@ -2261,7 +2261,7 @@
                                 <p class="templatecontentpleft">Aluminium refineries allow you to convert bauxite into aluminium, a general use material.</p>
 
                                 <ul>Aluminium refineries cost 150,000 per hour and convert 15 bauxite into 12 aluminium</ul>
-                                <ul>Aluminium refineries cost 1.75M each</ul>
+                                <ul>Aluminium refineries cost 820,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="aluminium_refineries" type="number" placeholder="Amount" />
@@ -2305,7 +2305,7 @@
                                 <p class="templatecontentpleft">Oil refineries convert oil into gasoline, used for fueling your war machines.</p>
 
                                 <ul>Oil refineries cost 160,000 per hour and convert 20 oil into 8 gas per hour</ul>
-                                <ul>Oil refineries cost 1.5M each</ul>
+                                <ul>Oil refineries cost 680,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="oil_refineries" type="number" placeholder="Amount" />

@@ -1,22 +1,9 @@
-{% extends"layout.html"%}
-
-{% block title %} {{ username }} {% endblock %}
-
-{% block head %}
-
-    {% if flag != None %}
-    <meta property="og:image" content="/static/flags/{{ flag }}" />
-    {% endif %}
-    <meta name="viewport" content="width=device-width, initial-scale=0.8">
-    <meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game">
-    {% if description != None %}
-    <meta name="description" content="{{ description }}">
-    {% else %}
-    <meta name="description" content="{{ username }}'s country.">
-    {% endif %}
-{% endblock %}
-
-{% block body %}
+{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %} {% block head %} {% if flag != None %}
+<meta property="og:image" content="/static/flags/{{ flag }}" /> {% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=0.8">
+<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game"> {% if description != None %}
+<meta name="description" content="{{ description }}"> {% else %}
+<meta name="description" content="{{ username }}'s country."> {% endif %} {% endblock %} {% block body %}
 
 <div class="templatediv">
 
@@ -102,7 +89,7 @@
         <div class="view" id="view">
 
 
-            <div class="countryimagediv" id="countryFlagBackground" style="background-image: url(https://i.pinimg.com/originals/5e/65/20/5e6520289b44e11a9e74363c18ce3ee1.jpg);">
+            <div class="countryimagediv" id="countryFlagBackground">
                 <!--country flag-->
                 {% if flag != None %}
                 <img class="countryimage" src="/static/flags/{{ flag }}" alt="{{ flag }}">
@@ -268,21 +255,21 @@
                             <td><span class="material-icons-outlined">
                                 sentiment_satisfied
                                 </span>Average happiness:</td>
-                                {% if happiness != None %}
-                                <td>{{ happiness|round }}%</td>
-                                {% else %}
-                                <td>0</td>
-                                {% endif %}
+                            {% if happiness != None %}
+                            <td>{{ happiness|round }}%</td>
+                            {% else %}
+                            <td>0</td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td><span class="material-icons-outlined">
                                 arrow_circle_up
                                 </span>Average productivity:</td>
-                                {% if productivity != None %}
-                                <td>{{ productivity|round }}%</td>
-                                {% else %}
-                                <td>0</td>
-                                {% endif %}
+                            {% if productivity != None %}
+                            <td>{{ productivity|round }}%</td>
+                            {% else %}
+                            <td>0</td>
+                            {% endif %}
                         </tr>
                         <!--
                         <tr>
@@ -312,6 +299,7 @@
             <h2 class="templatecontentheaderleft">Provinces</h2>
 
             <!--make a table row for every province the country has **(OR FOR THE FIRST 5 PROVINCES IF THAT's POSSIBLE)**-->
+<<<<<<< HEAD
             {% for province in provinces %}
             {% set provinceName = province[0] %}
             {% set provinceId = province[1] %}
@@ -320,6 +308,10 @@
             {% set provinceLand = province[4] %}
             {% set provinceHappiness = province[5] %}
             {% set provinceProductivity = province[6] %}
+=======
+            {% for province in provinces %} {% set provinceName = province[0] %} {% set provinceId = province[1] %} {% set provincePopulation = province[2] %} {% set provinceCityCount = province[3] %} {% set provinceLand = province[4] %} {% set provinceHappiness
+            = province[5] %} {% set provinceProductivity = province[6] %}
+>>>>>>> master
             <a href="/province/{{ provinceId }}">
                 <div class="warflexparent templatedivflex2 menuflex ">
                     <div class="templatedivflex2left vanilla">
@@ -377,10 +369,7 @@
         <div class="revenue" id="revenue">
 
 
-            <h3 class="templatecontentheadercenter">Sorry, this page is not currently functional</h3>
-
-            <!--
-
+            {% if status %}
             <div class="templatedivflex2">
                 <div class="templatedivflex2left">
 
@@ -390,49 +379,51 @@
                                 article
                                 </span>Gross Raw</th>
                         </tr>
+                        <!--
                         <tr>
                             <td>Gross:</td>
-                            <td>{{ gross }}%</td>
+                            <td>Not done yet.</td>
                         </tr>
+                        -->
                         <tr>
                             <td>Monetary gross:</td>
-                            <td>{{ monetaryGross }}%</td>
+                            <td>{{ revenue["gross"]["money"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Rations:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["rations"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Oil:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["oil"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Coal:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["coal"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Uranium:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["uranium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Iron:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["iron"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lead:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["lead"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Bauxite:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["bauxite"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Copper:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["copper"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lumber:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["lumber"] | commas }}</td>
                         </tr>
                         <tr>
                             <th><span class="material-icons-outlined">
@@ -441,27 +432,27 @@
                         </tr>
                         <tr>
                             <td>Components:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["components"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Steel:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["steel"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["consumer_goods"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Aluminum:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["aluminium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Gasoline:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["gasoline"] | commas}}</td>
                         </tr>
                         <tr>
                             <td>Ammunition:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["gross"]["ammunition"] | commas}}</td>
                         </tr>
                     </table>
 
@@ -474,49 +465,51 @@
                                 article
                                 </span>Net Raw</th>
                         </tr>
+                        <!--
                         <tr>
                             <td>Net:</td>
-                            <td>{{ gross }}%</td>
+                            <td>Not done yet.</td>
                         </tr>
+                        -->
                         <tr>
                             <td>Monetary net:</td>
-                            <td>{{ monetaryGross }}%</td>
+                            <td>{{ revenue["net"]["money"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Rations:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["rations"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Oil:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["oil"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Coal:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["coal"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Uranium:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["uranium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Iron:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["iron"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lead:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["lead"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Bauxite:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["bauxite"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Copper:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["copper"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Lumber:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["lumber"] | commas }}</td>
                         </tr>
                         <tr>
                             <th><span class="material-icons-outlined">
@@ -525,27 +518,27 @@
                         </tr>
                         <tr>
                             <td>Components:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["components"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Steel:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["steel"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["consumer_goods"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Aluminum:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["aluminium"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Gasoline:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["gasoline"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Ammunition:</td>
-                            <td>{{ rationsGross }}%</td>
+                            <td>{{ revenue["net"]["ammunition"] | commas }}</td>
                         </tr>
                     </table>
 
@@ -565,7 +558,7 @@
                     <td>{{ gross }}%</td>
                 </tr>
             </table>
-            -->
+            {% endif %}
             <!--show this if user is in a coalition-->
             <!--
         <table class="templatetable">
@@ -769,7 +762,8 @@
                     <div class="templatedivflex2 menuflex">
                         <div class="templatedivflex2left">
 
-                            <label for="countryLocation">Change location</label>
+
+                            <label for="countryLocation">Change location (WARNING: changing location will remove all industry buildings)</label>
                             <select class="templateselect" name="countryLocation">
 
                                             <option value="none" class="templateoption" selected="selected">Location</option>

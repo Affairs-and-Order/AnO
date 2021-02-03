@@ -27,7 +27,7 @@ def provinces():
 
         cId = session["user_id"]
 
-        db.execute("""SELECT cityCount, population, provinceName, id, land, happiness, productivity
+        db.execute("""SELECT cityCount, population, provinceName, id, land, happiness, productivity, energy
         FROM provinces WHERE userId=(%s) ORDER BY id ASC""", (cId,))
         provinces = db.fetchall()
 
@@ -203,7 +203,7 @@ def province(pId):
             plus_data = list(infra[f'{producer}_plus'].items())[0]
             plus_amount = plus_data[1]
 
-            production += (producer_count * plus_amount)
+            production += producer_count * plus_amount
 
         return consumption, production
 
@@ -248,8 +248,8 @@ def get_province_price(user_id):
     db.execute("SELECT COUNT(id) FROM provinces WHERE userId=(%s)", (user_id,))
     current_province_amount = db.fetchone()[0]
 
-    multiplier = 1 + (0.25 * current_province_amount)
-    price = int(50000 * multiplier)
+    multiplier = 1 + (0.16 * current_province_amount)
+    price = int(8000000 * multiplier)
 
     return price
 
@@ -423,7 +423,7 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT cityCount FROM provinces WHERE id=(%s)", (province_id,))
             current_cityCount = db.fetchone()[0]
 
-            cityCount_price = sum_cost_exp(250000, 1.05, current_cityCount, wantedUnits)
+            cityCount_price = sum_cost_exp(750000, 1.09, current_cityCount, wantedUnits)
             print("New city price: " + str(cityCount_price))
         else:
             cityCount_price = 0
@@ -433,7 +433,7 @@ def province_sell_buy(way, units, province_id):
             db.execute("SELECT land FROM provinces WHERE id=(%s)", (province_id,))
             current_land = db.fetchone()[0]
 
-            land_price = sum_cost_exp(120000, 1.04, current_land, wantedUnits)
+            land_price = sum_cost_exp(520000, 1.07, current_land, wantedUnits)
 
             print("New land price: " + str(land_price))
 
@@ -453,115 +453,115 @@ def province_sell_buy(way, units, province_id):
             "land_price": land_price,
             "cityCount_price": cityCount_price,
 
-            "coal_burners_price": 400000,
+            "coal_burners_price": 200000,
             "coal_burners_resource": {"aluminium": 45},
 
-            "oil_burners_price": 650000,
+            "oil_burners_price": 350000,
             "oil_burners_resource": {"aluminium": 50},
 
-            "hydro_dams_price": 5800000,
+            "hydro_dams_price": 2200000,
             "hydro_dams_resource": {"steel": 120},
             "hydro_dams_resource2": {"aluminium": 60},
 
-            "nuclear_reactors_price": 9500000,
+            "nuclear_reactors_price": 8500000,
             "nuclear_reactors_resource": {"steel": 250},
 
-            "solar_fields_price": 2300000,
+            "solar_fields_price": 500000,
             "solar_fields_resource": {"steel": 55},
 
-            "gas_stations_price": 2900000,
+            "gas_stations_price": 550000,
             "gas_stations_resource": {"steel": 50},
             "gas_stations_resource2": {"aluminium": 35},
 
-            "general_stores_price": 3500000,
+            "general_stores_price": 1200000,
             "general_stores_resource": {"steel": 60},
             "general_stores_resource2": {"aluminium": 70},
 
-            "farmers_markets_price": 4200000,
+            "farmers_markets_price": 350000,
             "farmers_markets_resource": {"steel": 75},
             "farmers_markets_resource2": {"aluminium": 80},
 
-            "malls_price": 12500000, # Costs 12.5m
+            "malls_price": 15500000, # Costs 12.5m
             "malls_resource": {"steel": 360},
             "malls_resource2": {"aluminium": 240},
 
-            "banks_price": 7700000,
+            "banks_price": 9000000,
             "banks_resource": {"steel": 225},
             "banks_resource2": {"aluminium": 110},
 
-            "city_parks_price": 1800000,
+            "city_parks_price": 350000,
             "city_parks_resource": {"steel": 15},
 
-            "hospitals_price": 8000000,
+            "hospitals_price": 2300000,
             "hospitals_resource": {"steel": 140},
             "hospitals_resource2": {"aluminium": 85},
 
-            "libraries_price": 4200000,
+            "libraries_price": 800000,
             "libraries_resource": {"steel": 55},
             "libraries_resource2": {"aluminium": 40},
 
-            "universities_price": 12500000, # Costs 12.5m
+            "universities_price": 6800000, # Costs 12.5m
             "universities_resource": {"steel": 210},
             "universities_resource2": {"aluminium": 105},
 
-            "monorails_price": 19800000,
+            "monorails_price": 17500000,
             "monorails_resource": {"steel": 390},
             "monorails_resource2": {"aluminium": 195},
 
-            "army_bases_price": 1800000,
+            "army_bases_price": 650000,
             "army_bases_resource": {"lumber": 80},
 
-            "harbours_price": 2100000,
+            "harbours_price": 1200000,
             "harbours_resource": {"steel": 210},
 
-            "aerodomes_price": 2600000,
+            "aerodomes_price": 1400000,
             "aerodomes_resource": {"aluminium": 40},
             "aerodomes_resource2": {"steel": 165},
 
-            "admin_buildings_price": 3200000,
+            "admin_buildings_price": 3600000,
             "admin_buildings_resource": {"steel": 90},
             "admin_buildings_resource2": {"aluminium": 75},
 
-            "silos_price": 12800000,
+            "silos_price": 21000000,
             "silos_resource": {"steel": 540},
             "silos_resource2": {"aluminium": 240},
 
-            "farms_price": 220000,
+            "farms_price": 140000,
             "farms_resource": {"lumber": 10},
 
-            "pumpjacks_price": 450000,
+            "pumpjacks_price": 250000,
             "pumpjacks_resource": {"steel": 15},
 
-            "coal_mines_price": 590000,
+            "coal_mines_price": 290000,
             "coal_mines_resource": {"lumber": 30},
 
-            "bauxite_mines_price": 460000,
+            "bauxite_mines_price": 260000,
             "bauxite_mines_resource": {"lumber": 20},
 
-            "copper_mines_price": 435000,
+            "copper_mines_price": 235000,
             "copper_mines_resource": {"lumber": 25},
 
-            "uranium_mines_price": 690000,
+            "uranium_mines_price": 380000,
             "uranium_mines_resource": {"steel": 35},
 
-            "lead_mines_price": 420000,
+            "lead_mines_price": 220000,
             "lead_mines_resource": {"lumber": 25},
 
-            "iron_mines_price": 640000,
+            "iron_mines_price": 310000,
             "iron_mines_resource": {"lumber": 20},
 
-            "lumber_mills_price": 480000,
+            "lumber_mills_price": 180000,
 
-            "component_factories_price": 2200000,
+            "component_factories_price": 1200000,
             "component_factories_resource": {"steel": 20},
             "component_factories_resource2": {"aluminium": 20},
 
-            "steel_mills_price": 1900000,
+            "steel_mills_price": 900000,
             "steel_mills_resource": {"aluminium": 60},
 
-            "ammunition_factories_price": 1600000,
-            "aluminium_refineries_price": 1750000,
-            "oil_refineries_price": 1500000
+            "ammunition_factories_price": 750000,
+            "aluminium_refineries_price": 820000,
+            "oil_refineries_price": 680000
         }
 
         if units not in allUnits:
@@ -622,10 +622,10 @@ def province_sell_buy(way, units, province_id):
                     db.execute(current_resource_stat, (cId,))
                     current_resource = int(db.fetchone()[0])
 
-                    new_resource = amount * wantedUnits - current_resource
+                    new_resource = current_resource - (amount * wantedUnits)
 
                     if new_resource < 0:
-                        return error(400, f"You don't have enough {resource}")
+                        return 1
 
                     resource_update_stat = f"UPDATE resources SET {resource}=" + "%s WHERE id=%s"
                     db.execute(resource_update_stat, (new_resource, cId,))
@@ -636,7 +636,7 @@ def province_sell_buy(way, units, province_id):
                     db.execute(current_resource_stat, (cId,))
                     current_resource = int(db.fetchone()[0])
 
-                    new_resource = current_resource + amount * wantedUnits
+                    new_resource = current_resource + (amount * wantedUnits)
 
                     resource_update_stat = f"UPDATE resources SET {resource}=" + "%s WHERE id=%s"
                     db.execute(resource_update_stat, (new_resource, cId,))
@@ -663,12 +663,14 @@ def province_sell_buy(way, units, province_id):
             if free_slots < wantedUnits and units not in ["cityCount", "land"]:
                 return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
 
+            res_error = resource_stuff()
+            if res_error == 1:
+                return error(400, "You don't have enough resources")
+
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
             updStat = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
             db.execute(updStat, ((currentUnits + wantedUnits), province_id))
-
-            resource_stuff()
 
         connection.commit()
         connection.close()

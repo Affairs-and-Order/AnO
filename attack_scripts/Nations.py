@@ -862,22 +862,22 @@ class Military(Nation):
 
         # TODO: maybe clear this mess a bit up
         # Land units
-        if army_bases*100 > manpower:
+        if army_bases*100 >= manpower:
             soldiers = manpower
         elif (army_bases*100)-military["soldiers"] > 0:
             soldiers = (army_bases*100)-military["soldiers"]
         else:
             soldiers = 0
 
-        if army_bases*8 > manpower//4:
+        if army_bases*8 >= manpower//4:
             tanks = manpower//4
         elif (army_bases*8)-military["tanks"] > 0:
             tanks = (army_bases*8)-military["tanks"]
         else:
             tanks = 0
 
-        if army_bases*8 > manpower//2:
-            artillery = army_bases//2
+        if army_bases*8 >= manpower//2:
+            artillery = manpower//2
         elif (army_bases*8)-military["artillery"] > 0:
             artillery = (army_bases*8)-military["artillery"]
         else:
@@ -885,7 +885,7 @@ class Military(Nation):
 
         # Air units
         air_units = military["fighters"]+military["bombers"]+military["apaches"]
-        if aerodomes*5 > manpower:
+        if aerodomes*5 >= manpower:
             bombers = manpower
             fighters = manpower
             apaches = manpower
@@ -899,7 +899,7 @@ class Military(Nation):
             fighters = 0
 
         # Naval units
-        if harbours*3 > manpower//6:
+        if harbours*3 >= manpower//6:
             submarines = manpower//6
             destroyers = manpower//6
         elif (harbours*3)-military["submarines"]-military["destroyers"] > 0:
@@ -909,7 +909,7 @@ class Military(Nation):
             destroyers = 0
             submarines = 0
 
-        if harbours*2 > manpower//5:
+        if harbours*2 >= manpower//5:
             cruisers = manpower//5
         elif (harbours*2)-military["cruisers"] > 0:
             cruisers = (harbours*2)-military["cruisers"]

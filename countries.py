@@ -8,12 +8,38 @@ from helpers import get_influence, error
 # Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
+import variables
 from dotenv import load_dotenv
 from coalitions import get_user_role
+from tasks import calc_pg, calc_ti
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
+
+def next_turn_rations(cId):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+    provinces = db.fetchall()
+
+    db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+    current_rations = db.fetchone()[0]
+
+    for pId in provinces:
+
+        rations, population = calc_pg(pId, current_rations)
+        current_rations = rations
+
+    return current_rations
 
 @app.route("/country/id=<cId>")
 def country(cId):
@@ -79,7 +105,6 @@ def country(cId):
     except:
         colFlag = None
 
-
     try:
         db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
         flag = db.fetchone()[0]
@@ -114,6 +139,113 @@ def country(cId):
         news = db.fetchall()
         news_amount = len(news)
 
+    # Revenue stuff
+    if status:
+        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+        provinces_list = db.fetchall()
+
+        revenue = {
+            "gross": {},
+            "net": {}
+        }
+
+        infra = variables.INFRA
+
+        resources = variables.RESOURCES
+        resources.append("money")
+        for resource in resources:
+            revenue["gross"][resource] = 0
+            revenue["net"][resource] = 0
+
+        ti_data = calc_ti(cId)
+
+        db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
+        current_money = db.fetchone()[0]
+
+        # Tax income money
+        ti_money = ti_data[0]
+
+        revenue["gross"]["money"] = ti_money - current_money
+        revenue["net"]["money"] = revenue["gross"]["money"]
+
+        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
+        current_cg = db.fetchone()[0]
+
+        # Net tax income consumer goods
+        net_ti_cg = ti_data[1]
+
+        if current_cg < net_ti_cg:
+            ti_cg = 0
+        else:
+            ti_cg = current_cg - net_ti_cg
+
+        for province_id in provinces_list:
+            province_id = province_id[0]
+
+            buildings = variables.BUILDINGS
+
+            for building in buildings:
+                building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
+                db.execute(building_query, (province_id,))
+                building_count = db.fetchone()[0]
+
+                # Gross and initial net calculations
+                try:
+                    plus_data = list(infra[f'{building}_plus'].items())[0]
+
+                    plus_resource = plus_data[0]
+                    plus_amount = plus_data[1]
+
+                    if building == "farms":
+
+                        db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                        land = db.fetchone()[0]
+
+                        plus_amount *= land
+
+                    total = building_count * plus_amount
+                    revenue["gross"][plus_resource] += total
+                    revenue["net"][plus_resource] += total
+                except:
+                    pass
+
+                operating_costs = infra[f'{building}_money'] * building_count
+                revenue["net"]["money"] -= operating_costs
+
+                # Net removal from initial net
+                try:
+                    convert_minus = infra[f'{building}_convert_minus']
+
+                    for data in convert_minus:
+
+                        data = list(data.items())[0]
+
+                        minus_resource = data[0]
+                        minus_amount = data[1]
+
+                        total = building_count * minus_amount
+
+                        revenue["net"][minus_resource] -= total
+                except:
+                    pass
+
+        for resource in resources:
+
+            if resource == "rations":
+
+                db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+                current_rations = db.fetchone()[0]
+
+                new_rations = next_turn_rations(cId)
+                net_rations = current_rations - new_rations
+
+                if net_rations != 0:
+                    revenue["net"]["rations"] -= net_rations
+
+            if resource == "consumer_goods":
+                revenue["net"]["consumer_goods"] -= ti_cg
+    else:
+        revenue = {}
 
     connection.close()
 
@@ -121,8 +253,7 @@ def country(cId):
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
-                           colFlag=colFlag, colRole=colRole, productivity=productivity,
-                           news=news, news_amount=news_amount)
+                           colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount)
 
 @app.route("/countries", methods=["GET"])
 @login_required
@@ -197,7 +328,6 @@ def countries():  # TODO: fix shit ton of repeated code in function
             user_id = user[0]
             db.execute(f"SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (user_id,))
             target_province = db.fetchone()[0]
-            print(target_province)
             if abs(target_province-province_range) > 1:
                 users.remove(user)
 
@@ -339,25 +469,23 @@ def update_info():
 
     if new_location not in ["", "none"]:
 
-        try:
-            db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
-            provinces = db.fetchall()[0]
+        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+        provinces = db.fetchall()
 
-            for province_id in provinces:
+        for province_id in provinces:
 
-                db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
-                db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
+            province_id = province_id[0]
 
-            connection.commit()  # Commits the data
+            db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
+            db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
 
-        except:
-            return error(400, "")
+        connection.commit()  # Commits the data
 
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
 
