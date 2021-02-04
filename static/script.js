@@ -19,6 +19,15 @@ ATTEMPT TO MAKE RESOURCEBAR STAY OPEN ON REFRESH
     });
     */
 
+
+// Delete item from page and send request to server
+// container_id should be inside a data-contain attribute
+function pop_from_page(req_path, container_id) {
+  let item = document.querySelector(`[data-contain="${container_id}"]`);
+  fetch(req_path, {"method": "POST"});
+  item.remove();
+}
+
 //navbar events
 function menubardrop() {
 

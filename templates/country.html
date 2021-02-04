@@ -1,10 +1,20 @@
-{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %} {% block head %} {% if flag != None %}
-<meta property="og:image" content="/static/flags/{{ flag }}" /> {% endif %}
-<meta name="viewport" content="width=device-width, initial-scale=0.8">
-<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game"> {% if description != None %}
-<meta name="description" content="{{ description }}"> {% else %}
-<meta name="description" content="{{ username }}'s country."> {% endif %} {% endblock %} {% block body %}
+{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %}
 
+{% block head %}
+{% if flag != None %}
+<meta property="og:image" content="/static/flags/{{ flag }}" />
+{% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=0.8">
+<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game">
+
+{% if description != None %}
+<meta name="description" content="{{ description }}">
+{% endif %}
+
+<meta name="description" content="{{ username }}'s country.">
+{% endblock %}
+
+{% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper provincetopper">
@@ -56,7 +66,9 @@
             <div class="templatedivflex2left" id="countrynews" onclick="countrynews()">
 
                 <h3 class="smallheader">News
-                    <span class="menuflex2notification">1</span>
+                  {% if news_amount != 0 %}
+                    <span class="menuflex2notification">{{news_amount}}</span>
+                  {% endif %}
                 </h3>
                 <!--Hide when vising other nations-->
 
@@ -632,122 +644,30 @@
         </table>
 -->
         </div>
+
         <!--News-->
-
         <div class="news" id="news">
-
-            <h3 class="templatecontentheadercenter">Sorry, this page is not currently functional</h3>
-            <!--
+            <style media="screen">
+              .dismiss-notification:hover {
+                cursor: pointer;
+              }
+            </style>
             <table class="templatetable">
-                <tr>
-                    <th><span class="material-icons-outlined">
-                        article
-                        </span>War</th>
-                </tr>
-                <tr>
-                    <td class="talltabletd"><strong>Victory over [[ enemyCountry ]]!</strong></td>
-                    <td class="talltabletd">[[ results ]]
-                        <br />
-                        <table class="templatetable inverttable">
-                            <tr>
-                                <th><span class="material-icons-outlined">
-                                    article
-                                    </span>Resources</th>
-                            </tr>
-                            <tr>
-                                <td>Money:</td>
-                                <td>{{ gross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Rations:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Oil:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Coal:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Uranium:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Iron:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Lead:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Bauxite:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Copper:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Lumber:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Components:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Steel:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Consumer goods:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Aluminum:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Gasoline:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                            <tr>
-                                <td>Ammunition:</td>
-                                <td>{{ rationsGross }}%</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="talltabletd"><strong>Defeated by [[ enemyCountry ]]!</strong></td>
-                    <td class="talltabletd">[[ results ]]</td>
-                </tr>
-                <tr>
-                    <td class="talltabletd"><strong>Attacked by [[ enemyCountry ]]!</strong></td>
-                    <td class="talltabletd">[[ results ]]</td>
-                </tr>
-                <tr>
-                    <td class="talltabletd"><strong>Decleration of War from [[ enemyCountry ]]!</strong></td>
-                    <td class="talltabletd">[[ declerationMessage ]][[ peaceRequest ]]</td>
-                </tr>
-                <tr>
-                    <th><span class="material-icons-outlined">
-                        article
-                        </span>Trade</th>
-                </tr>
-                <tr>
-                    <td class="talltabletd"><strong>[[ country ]] has sent you a trade offer</strong></td>
-                    <td class="talltabletd">[[ tradeOffer ]]</td>
-                </tr>
-                <tr>
-                    <td class="talltabletd"><strong>[[ country ]] Traded with you</strong></td>
-                    <td class="talltabletd">You gave [[ amount ]] in return for [[ amount ]]</td>
-                </tr>
+                {% for new in news %}
+                <tbody data-contain="{{new[2]}}">
+                  <tr>
+                    <th>
+                      <span class="material-icons-outlined">article</span>{{new[1]}}
+                      <span onclick="pop_from_page('/delete_news/{{new[2]}}', {{new[2]}})" class="material-icons-outlined dismiss-notification" style="color:red;position:absolute;right:2%;">highlight_off</span>
+                    </th>
+                  </tr>
+                  <tr>
+                    <td>{{ new[0] }}</td>
+                  </tr>
+                </tbody>
+                {% endfor %}
             </table>
-            -->
+
         </div>
         <!--Edit-->
         <div class="edit" id="edit">

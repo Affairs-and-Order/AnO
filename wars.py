@@ -908,6 +908,11 @@ def declare_war():
     db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (%s, %s, %s, %s, %s, %s)",(attacker.id, defender.id, war_type, war_message, start_dates, start_dates))
     # current_peace = db.fetchone()
 
+    # War declaration notification
+    db.execute("SELECT username FROM users WHERE id=(%s)", (attacker.id,))
+    attacker_name = db.fetchone()[0]
+    Nation.send_news(defender.id, f"{attacker_name} declared war!")
+
     connection.commit()
     connection.close()
 

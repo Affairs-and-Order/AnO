@@ -41,7 +41,27 @@ def next_turn_rations(cId):
 
     return current_rations
 
+@app.route("/delete_news/<int:id>", methods=["POST"])
+@login_required
+def delete_news(id):
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+    db = conn.cursor()
+    db.execute("SELECT destination_id FROM news WHERE id=(%s)", (id,))
+    destination_id = db.fetchone()[0]
+    if destination_id == session["user_id"]:
+        db.execute("DELETE FROM news WHERE id=(%s)", (id,))
+        conn.commit()
+        return "200"
+    else:
+        return "403"
+
 @app.route("/country/id=<cId>")
+@login_required
 def country(cId):
 
     connection = psycopg2.connect(
@@ -127,6 +147,18 @@ def country(cId):
     spyCount = 0
     successChance = 0
 
+    # News page
+    id = int(cId)
+    news = []
+    news_amount = 0
+    if id == session["user_id"]:
+        # TODO: handle this as country/id=<int:cId>
+        db.execute("SELECT message,date,id FROM news WHERE destination_id=(%s)", (cId,))
+
+        # data order in the tuple appears as in the news schema (notice this when work with this data using jija)
+        news = db.fetchall()
+        news_amount = len(news)
+
     # Revenue stuff
     if status:
         db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
@@ -180,12 +212,12 @@ def country(cId):
                 # Gross and initial net calculations
                 try:
                     plus_data = list(infra[f'{building}_plus'].items())[0]
-                    
+
                     plus_resource = plus_data[0]
                     plus_amount = plus_data[1]
 
                     if building == "farms":
-                        
+
                         db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
                         land = db.fetchone()[0]
 
@@ -205,7 +237,7 @@ def country(cId):
                     convert_minus = infra[f'{building}_convert_minus']
 
                     for data in convert_minus:
-                        
+
                         data = list(data.items())[0]
 
                         minus_resource = data[0]
@@ -241,7 +273,7 @@ def country(cId):
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
-                           colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue)
+                           colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount)
 
 @app.route("/countries", methods=["GET"])
 @login_required
