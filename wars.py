@@ -911,7 +911,7 @@ def declare_war():
     # War declaration notification
     db.execute("SELECT username FROM users WHERE id=(%s)", (attacker.id,))
     attacker_name = db.fetchone()[0]
-    Nation.send_news(defener.id, f"{attacker_name} declared war!")
+    Nation.send_news(defender.id, f"{attacker_name} declared war!")
 
     connection.commit()
     connection.close()
