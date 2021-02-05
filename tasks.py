@@ -198,6 +198,7 @@ def population_growth(): # Function for growing population
     for province_id in provinces:
         province_id = province_id[0]
         try:
+
             db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
             user_id = db.fetchone()[0]
 
@@ -205,7 +206,6 @@ def population_growth(): # Function for growing population
             current_rations = db.fetchone()[0]
 
             rations, population = calc_pg(province_id, current_rations)
-            print(rations)
 
             db.execute("UPDATE resources SET rations=%s WHERE id=%s", (rations, user_id))
             db.execute("UPDATE provinces SET population=%s WHERE id=%s", (population, province_id))
@@ -221,7 +221,6 @@ def population_growth(): # Function for growing population
 
 def generate_province_revenue(): # Runs each hour
 
-
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -232,7 +231,6 @@ def generate_province_revenue(): # Runs each hour
     db = conn.cursor()
 
     columns = variables.BUILDINGS
-    energy_units = variables.ENERGY_UNITS
 
     province_resources = ["energy", "population", "happiness", "pollution", "productivity", "consumer_spending"]
     percentage_based = ["happiness", "productivity", "consumer_spending", "pollution"]
