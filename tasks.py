@@ -98,8 +98,6 @@ def tax_income(): # Function for giving money to players
 
     conn.close()
 
-tax_income()
-
 # Function for calculating population growth for a given province
 def calc_pg(pId, rations):
 
