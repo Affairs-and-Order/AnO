@@ -75,8 +75,7 @@ INFRA = {
     ##############
 
     ### Public Works ### (Done)
-    'libraries_effect': [{'happiness': 3},
-    {'productivity': 3}],
+    'libraries_effect': [{'happiness': 3}, {'productivity': 3}],
     'libraries_money': 60000,
 
     'city_parks_effect': [{'happiness': 3}],
@@ -133,7 +132,7 @@ INFRA = {
 
     'lumber_mills_money': 7500,
     'lumber_mills_plus': {'lumber': 32},
-    'lumber_mills_effect': {'pollution': 1},
+    'lumber_mills_effect': [{'pollution': 1}],
 
     ################
 
