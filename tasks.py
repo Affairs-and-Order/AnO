@@ -84,7 +84,12 @@ def tax_income(): # Function for giving money to players
 
         user_id = user_id[0]
 
+        db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
+        current_money = db.fetchone()[0]
+
         money, consumer_goods = calc_ti(user_id)
+
+        print(f"Updated money for user id: {user_id}. Set {current_money} money to {money} money. ({money-current_money})")
 
         db.execute("UPDATE stats SET gold=%s WHERE id=%s", (money, user_id))
         db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (consumer_goods, user_id))
@@ -92,6 +97,8 @@ def tax_income(): # Function for giving money to players
         conn.commit()
 
     conn.close()
+
+tax_income()
 
 # Function for calculating population growth for a given province
 def calc_pg(pId, rations):
