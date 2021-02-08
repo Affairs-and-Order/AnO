@@ -836,7 +836,9 @@ class Military(Nation):
         harbours = 0
         aerodomes = 0
         admin_buildings = 0
+        silos = 0
         for provinceid in provinceids:
+
             db.execute("SELECT army_bases FROM proinfra WHERE id=%s", (provinceid,))
             army_bases += db.fetchone()[0]
             db.execute("SELECT harbours FROM proinfra WHERE id=%s", (provinceid,))
