@@ -1,5 +1,3 @@
-# FULLY MIGRATED
-
 from flask import request, render_template, session, redirect
 from helpers import login_required
 import psycopg2
@@ -79,19 +77,14 @@ def country(cId):
     except:
         return error(404, "Country doesn't exit")
 
-    username = user_data[0]
-    description = user_data[1]
-    dateCreated = user_data[2]
+    username, description, dateCreated = user_data
 
     influence = get_influence(cId)
 
-    db.execute("SELECT AVG(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
+    db.execute("SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
     province_data = db.fetchall()[0]
 
-    population = province_data[0]
-    happiness = province_data[1]
-    productivity = province_data[2]
-    provinceCount = province_data[3]
+    population, happiness, productivity, provinceCount = province_data
 
     db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
     location = db.fetchone()[0]
