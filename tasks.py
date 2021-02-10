@@ -37,6 +37,8 @@ def calc_ti(user_id):
         cg_needed = population // 20000
         cg_needed_percent = consumer_goods / cg_needed
         cg_increase = round(cg_needed_percent * 0.75, 2)
+        if cg_increase > 0.75:
+            cg_increase = 0.75
         
         if consumer_goods > cg_needed:
             new_cg = consumer_goods - cg_needed
