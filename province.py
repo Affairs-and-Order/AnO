@@ -50,14 +50,15 @@ def province(pId):
     db = connection.cursor()
     cId = session["user_id"]
 
+    # Object under which the data about a province is stored
+    province = {}
+
     try:
         db.execute("""SELECT userId, provinceName, population, pollution, happiness, productivity,
         consumer_spending, cityCount, land, energy FROM provinces WHERE id=(%s)""", (pId,))
         province_data = db.fetchall()[0]
     except:
         return error(404, "Province doesn't exist")
-
-    province = {}
 
     province["id"] = pId
     province["user"] = province_data[0]
@@ -79,6 +80,7 @@ def province(pId):
 
     ownProvince = province["user"] == cId
 
+    # Selects values for province buildings from the database and assigns them to vars
     db.execute(
     """
     SELECT
@@ -89,49 +91,18 @@ def province(pId):
     farms, pumpjacks, coal_mines, bauxite_mines,
     copper_mines, uranium_mines, lead_mines, iron_mines,
     lumber_mills, component_factories, steel_mills, ammunition_factories,
-    aluminium_refineries, oil_refineries FROM proInfra WHERE id=%s
+    aluminium_refineries, oil_refineries
+    FROM proInfra WHERE id=%s
     """, (pId,))
     province_units = db.fetchall()[0]
 
-    coal_burners = province_units[0]
-    oil_burners = province_units[1]
-    hydro_dams = province_units[2]
-    nuclear_reactors = province_units[3]
-    solar_fields = province_units[4]
-
-    gas_stations = province_units[5]
-    general_stores = province_units[6]
-    farmers_markets = province_units[7]
-    malls = province_units[8]
-    banks = province_units[9]
-
-    city_parks = province_units[10]
-    hospitals = province_units[11]
-    libraries = province_units[12]
-    universities = province_units[13]
-    monorails = province_units[14]
-
-    army_bases = province_units[15]
-    harbours = province_units[16]
-    aerodomes = province_units[17]
-    admin_buildings = province_units[18]
-    silos = province_units[19]
-
-    farms = province_units[20]
-    pumpjacks = province_units[21]
-    coal_mines = province_units[22]
-    bauxite_mines = province_units[23]
-    copper_mines = province_units[24]
-    uranium_mines = province_units[25]
-    lead_mines = province_units[26]
-    iron_mines = province_units[27]
-    lumber_mills = province_units[28]
-
-    component_factories = province_units[29]
-    steel_mills = province_units[30]
-    ammunition_factories = province_units[31]
-    aluminium_refineries = province_units[32]
-    oil_refineries = province_units[33]
+    coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields, \
+    gas_stations, general_stores, farmers_markets, malls, banks, \
+    city_parks, hospitals, libraries, universities, monorails, \
+    army_bases, harbours, aerodomes, admin_buildings, silos, \
+    farms, pumpjacks, coal_mines, bauxite_mines, copper_mines, uranium_mines, \
+    lead_mines, iron_mines, lumber_mills, \
+    component_factories, steel_mills, ammunition_factories, aluminium_refineries, oil_refineries = province_units
 
     def enough_consumer_goods(user_id):
 

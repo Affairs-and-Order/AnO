@@ -73,18 +73,14 @@ def country(cId):
 
     try:
         db.execute("SELECT username, description, date FROM users WHERE id=%s", (cId,))
-        user_data = db.fetchall()[0]
+        username, description, dateCreated = db.fetchall()[0]
     except:
         return error(404, "Country doesn't exit")
-
-    username, description, dateCreated = user_data
 
     influence = get_influence(cId)
 
     db.execute("SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
-    province_data = db.fetchall()[0]
-
-    population, happiness, productivity, provinceCount = province_data
+    population, happiness, productivity, provinceCount = db.fetchall()[0]
 
     db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
     location = db.fetchone()[0]

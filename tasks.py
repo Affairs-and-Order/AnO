@@ -7,6 +7,7 @@ import variables
 load_dotenv()
 
 # Function for calculating tax income
+# FUNCTION ASSUMES YOU NEED 1 CONSUMER GOOD PER 20K POP
 def calc_ti(user_id):
 
     conn = psycopg2.connect(
@@ -31,9 +32,19 @@ def calc_ti(user_id):
             population = 0
 
         population = int(population)
+
+        # How many consumer goods are needed to feed a nation 
+        cg_needed = population // 20000
+        cg_needed_percent = consumer_goods / cg_needed
+        cg_increase = round(cg_needed_percent * 0.75, 2)
         
-        consumer_goods_needed = population * 0.00005
-        new_consumer_goods = int(consumer_goods - consumer_goods_needed)
+        if consumer_goods > cg_needed:
+            new_cg = consumer_goods - cg_needed
+        elif consumer_goods == cg_needed:
+            new_cg = 0
+        # If the player has less consumer goods than what is needed
+        else:
+            new_cg = cg_needed - consumer_goods
 
         population_score = int(population * 0.075)
 
@@ -48,20 +59,18 @@ def calc_ti(user_id):
         if land_percentage > 1:
             land_percentage = 1
 
+        cg_increase_full = 1 + cg_increase
+
         new_income = 0
         new_income += population_score
         new_income = int(new_income)
         new_income *= land_percentage
         new_income = int(new_income)
-
-        if new_consumer_goods >= 0:
-            new_income *= 1.75
-        else:
-            new_consumer_goods = consumer_goods
+        new_income *= cg_increase_full
 
         new_money = int(current_money + new_income)
 
-        return new_money, new_consumer_goods
+        return new_money, new_cg
     except Exception as e:
         print(f"Error: {e} while calculating tax income for user id: {user_id}")
         return current_money, consumer_goods
