@@ -8,7 +8,7 @@ load_dotenv()
 
 # Function for calculating tax income
 # FUNCTION ASSUMES YOU NEED 1 CONSUMER GOOD PER 20K POP
-def calc_ti(user_id):
+def calc_ti(user_id, consumer_goods):
 
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -21,9 +21,6 @@ def calc_ti(user_id):
 
     db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
     current_money = db.fetchone()[0]
-
-    db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-    consumer_goods = db.fetchone()[0]
 
     try:
         db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
@@ -71,6 +68,8 @@ def calc_ti(user_id):
         new_income *= cg_increase_full
 
         new_money = int(current_money + new_income)
+        
+        print(consumer_goods, new_cg)
 
         return new_money, new_cg
     except Exception as e:
@@ -98,7 +97,10 @@ def tax_income(): # Function for giving money to players
         db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
         current_money = db.fetchone()[0]
 
-        money, consumer_goods = calc_ti(user_id)
+        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
+        current_cgoods = db.fetchone()[0]
+
+        money, consumer_goods = calc_ti(user_id, current_cgoods)
 
         print(f"Updated money for user id: {user_id}. Set {current_money} money to {money} money. ({money-current_money})")
 

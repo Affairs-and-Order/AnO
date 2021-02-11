@@ -58,6 +58,28 @@ def delete_news(id):
     else:
         return "403"
 
+# The amount of consumer goods a player needs to fill up fully
+def cg_need(user_id):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
+    population = db.fetchone()[0]
+    if population is None:
+        population = 0
+
+    # How many consumer goods are needed to feed a nation 
+    cg_needed = population // 20000
+
+    return cg_needed
+
 @app.route("/country/id=<cId>")
 @login_required
 def country(cId):
@@ -87,6 +109,8 @@ def country(cId):
 
     db.execute("SELECT provinceName, id, population, cityCount, land, happiness, productivity FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
     provinces = db.fetchall()
+
+    cg_needed = cg_need(cId)
 
     try:
         status = cId == str(session["user_id"])
@@ -160,13 +184,17 @@ def country(cId):
 
         infra = variables.INFRA
 
+        # TODO: look into possible bug with how consumer goods net is calculated
         resources = variables.RESOURCES
         resources.append("money")
         for resource in resources:
             revenue["gross"][resource] = 0
             revenue["net"][resource] = 0
 
-        ti_data = calc_ti(cId)
+        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
+        current_cg = db.fetchone()[0]
+
+        ti_data = calc_ti(cId, current_cg)
 
         db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         current_money = db.fetchone()[0]
@@ -176,9 +204,6 @@ def country(cId):
 
         revenue["gross"]["money"] = ti_money - current_money
         revenue["net"]["money"] = revenue["gross"]["money"]
-
-        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
-        current_cg = db.fetchone()[0]
 
         # Net tax income consumer goods
         net_ti_cg = ti_data[1]
@@ -223,6 +248,7 @@ def country(cId):
 
                 # Net removal from initial net
                 try:
+                    
                     convert_minus = infra[f'{building}_convert_minus']
 
                     for data in convert_minus:
@@ -252,7 +278,7 @@ def country(cId):
                     revenue["net"]["rations"] -= net_rations
 
             if resource == "consumer_goods":
-                revenue["net"]["consumer_goods"] -= ti_cg
+                revenue["net"]["consumer_goods"] -= (ti_cg + revenue["gross"]["consumer_goods"])
     else:
         revenue = {}
 
@@ -262,7 +288,8 @@ def country(cId):
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
-                           colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount)
+                           colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount,
+                           cg_needed=cg_needed)
 
 @app.route("/countries", methods=["GET"])
 @login_required
