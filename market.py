@@ -338,7 +338,7 @@ def sell_market_offer(offer_id):
         db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id,)) # If yes, it deletes the offer
 
     else:
-        db.execute("UPDATE offers SET amount=(%s) WHERE id=(%s)", (new_offer_amount, offer_id)) # Updates the database with the new amount
+        db.execute("UPDATE offers SET amount=(%s) WHERE offer_id=(%s)", (new_offer_amount, offer_id)) # Updates the database with the new amount
 
     connection.commit()
     connection.close()
