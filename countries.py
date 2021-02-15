@@ -182,6 +182,8 @@ def country(cId):
             "net": {}
         }
 
+        revenue["gross"]["consumer_goods"] = 0
+
         infra = variables.INFRA
 
         # TODO: look into possible bug with how consumer goods net is calculated
@@ -258,8 +260,13 @@ def country(cId):
     else:
         revenue = {}
 
+
     db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
-    current_cg = db.fetchone()[0] + revenue["gross"]["consumer_goods"]
+    current_cg = db.fetchone()[0]
+    try:
+        current_cg += revenue["gross"]["consumer_goods"]
+    except:
+        print(f"Couldn't get gross.consumer_goods for id {cId}")
 
     ti_money, ti_cg = calc_ti(cId, current_cg)
 
