@@ -17,6 +17,9 @@ ENERGY_CONSUMERS = [
     "oil_refineries"
 ]
 
+# 1 Consumer good per x population
+CG_PER = 250000 # 250k rn, change var to change amount
+
 BUILDINGS = [
     'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
     'gas_stations', 'general_stores', 'farmers_markets', 'malls',

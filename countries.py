@@ -34,7 +34,7 @@ def next_turn_rations(cId):
 
     for pId in provinces:
 
-        rations, population = calc_pg(pId, current_rations)
+        rations, _ = calc_pg(pId, current_rations)
         current_rations = rations
 
     return current_rations
@@ -76,7 +76,7 @@ def cg_need(user_id):
         population = 0
 
     # How many consumer goods are needed to feed a nation 
-    cg_needed = population // 20000
+    cg_needed = population // variables.CG_PER
 
     return cg_needed
 

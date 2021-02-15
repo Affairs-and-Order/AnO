@@ -31,7 +31,7 @@ def calc_ti(user_id, consumer_goods):
         population = int(population)
 
         # How many consumer goods are needed to feed a nation 
-        cg_needed = population // 20000
+        cg_needed = population // variables.CG_PER
         cg_needed_percent = consumer_goods / cg_needed
         cg_increase = round(cg_needed_percent * 0.75, 2)
         if cg_increase > 0.75:
