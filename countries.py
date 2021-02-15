@@ -191,28 +191,6 @@ def country(cId):
             revenue["gross"][resource] = 0
             revenue["net"][resource] = 0
 
-        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
-        current_cg = db.fetchone()[0]
-
-        ti_data = calc_ti(cId, current_cg)
-
-        db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
-        current_money = db.fetchone()[0]
-
-        # Tax income money
-        ti_money = ti_data[0]
-
-        revenue["gross"]["money"] = ti_money - current_money
-        revenue["net"]["money"] = revenue["gross"]["money"]
-
-        # Net tax income consumer goods
-        net_ti_cg = ti_data[1]
-
-        if current_cg < net_ti_cg:
-            ti_cg = 0
-        else:
-            ti_cg = current_cg - net_ti_cg
-
         for province_id in provinces_list:
             province_id = province_id[0]
 
@@ -277,10 +255,25 @@ def country(cId):
                 if net_rations != 0:
                     revenue["net"]["rations"] -= net_rations
 
-            if resource == "consumer_goods":
-                revenue["net"]["consumer_goods"] -= (ti_cg + revenue["gross"]["consumer_goods"])
     else:
         revenue = {}
+
+    db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
+    current_cg = db.fetchone()[0] + revenue["gross"]["consumer_goods"]
+
+    ti_money, ti_cg = calc_ti(cId, current_cg)
+
+    # Updates money
+    db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
+    current_money = db.fetchone()[0]
+
+    revenue["gross"]["money"] += ti_money - current_money
+    revenue["net"]["money"] += ti_money - current_money
+
+    if current_cg - ti_cg == cg_needed:
+        revenue["net"]["consumer_goods"] = cg_needed * -1 + revenue["gross"]["consumer_goods"]
+    elif current_cg > ti_cg:
+        revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
 
     connection.close()
 

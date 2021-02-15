@@ -37,13 +37,15 @@ def calc_ti(user_id, consumer_goods):
         if cg_increase > 0.75:
             cg_increase = 0.75
         
+        # If the player has more consumer goods than what is needed
         if consumer_goods > cg_needed:
             new_cg = consumer_goods - cg_needed
+        # If the player has just as much consumer goods as is needed
         elif consumer_goods == cg_needed:
             new_cg = 0
         # If the player has less consumer goods than what is needed
         else:
-            new_cg = cg_needed - consumer_goods
+            new_cg = 0
 
         population_score = int(population * 0.075)
 
@@ -66,11 +68,8 @@ def calc_ti(user_id, consumer_goods):
         new_income *= land_percentage
         new_income = int(new_income)
         new_income *= cg_increase_full
-
         new_money = int(current_money + new_income)
         
-        print(consumer_goods, new_cg)
-
         return new_money, new_cg
     except Exception as e:
         print(f"Error: {e} while calculating tax income for user id: {user_id}")
