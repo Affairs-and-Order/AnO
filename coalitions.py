@@ -519,7 +519,7 @@ def leave_col(colId):
 
     role = get_user_role(cId)
 
-    if role != "leader":
+    if role == "leader":
         return error(400, "Can't leave coalition, you're the leader")
 
     db.execute("DELETE FROM coalitions WHERE userId=(%s) AND colId=(%s)", (cId, colId))
