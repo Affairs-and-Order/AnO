@@ -112,6 +112,9 @@ def discord_register():
 
     elif request.method == "POST":
 
+        app.config["SESSION_PERMANENT"] = True
+        app.permanent_session_lifetime = datetime.timedelta(days=365)
+
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),

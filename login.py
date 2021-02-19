@@ -7,12 +7,16 @@ import bcrypt
 import os
 from requests_oauthlib import OAuth2Session
 from dotenv import load_dotenv
+import datetime
 load_dotenv()
 
 @app.route("/login/", methods=["GET", "POST"])
 def login():
 
     if request.method == "POST":
+
+        app.config["SESSION_PERMANENT"] = True
+        app.permanent_session_lifetime = datetime.timedelta(days=365)
         
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -98,6 +102,9 @@ def make_session(token=None, state=None, scope=None):
 
 @app.route('/discord_login/', methods=["GET"])
 def discord_login():
+
+    app.config["SESSION_PERMANENT"] = True
+    app.permanent_session_lifetime = datetime.timedelta(days=365)
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
