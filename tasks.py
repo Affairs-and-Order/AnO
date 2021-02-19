@@ -7,7 +7,6 @@ import variables
 load_dotenv()
 
 # Function for calculating tax income
-# FUNCTION ASSUMES YOU NEED 1 CONSUMER GOOD PER 20K POP
 def calc_ti(user_id, consumer_goods):
 
     conn = psycopg2.connect(
@@ -75,7 +74,8 @@ def calc_ti(user_id, consumer_goods):
         print(f"Error: {e} while calculating tax income for user id: {user_id}")
         return current_money, consumer_goods
 
-def tax_income(): # Function for giving money to players
+# Function for actually giving money to players
+def tax_income():
 
     conn = psycopg2.connect(
     database=os.getenv("PG_DATABASE"),
@@ -124,6 +124,7 @@ def calc_pg(pId, rations):
 
     db.execute("SELECT population FROM provinces WHERE id=%s", (pId,))
     curPop = db.fetchone()[0]
+    population = curPop
 
     maxPop = 1000000 # Base max population: 1 million
 
@@ -175,8 +176,6 @@ def calc_pg(pId, rations):
     # Each % increases / decreases max population by 0.45
     productivity = round((productivity - 50) * 0.009, 2) # The less you have the better
 
-    ###############################  
-
     maxPop += (maxPop * happiness) + (maxPop * pollution) + (maxPop * productivity)
     maxPop = round(maxPop)
 
@@ -184,14 +183,24 @@ def calc_pg(pId, rations):
         maxPop = 1000000 # Make it 1M
 
     hundred_k = curPop // 100000
-    rations_per_100k = 4
-    new_rations = rations - (hundred_k * rations_per_100k)
+    rations_per_100k = variables.RATIONS_PER_100K
 
-    if new_rations < 1: # If there aren't enough rations for everyone, increase population by 1%
-        newPop = maxPop // 100 # 1% of population
-        new_rations = rations
-    else: # If there are enough rations for everyone, increase population by 2%
-        newPop = maxPop // 50
+    # Default rations increase
+    rations_increase = 1
+
+    rations_needed = hundred_k * rations_per_100k
+    rations_needed_percent = rations / rations_needed
+    if rations_needed_percent > 1:
+        rations_needed_percent = 1
+    rations_increase += round(rations_needed_percent * 1, 2)
+
+    # Calculates the new rations of the player
+    if rations > rations_needed:
+        new_rations = rations - rations_needed
+    else:
+        new_rations = 0
+
+    newPop = (maxPop // 100) * rations_increase
 
     fullPop = curPop + newPop
 

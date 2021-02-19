@@ -18,7 +18,10 @@ ENERGY_CONSUMERS = [
 ]
 
 # 1 Consumer good per x population
-CG_PER = 250000 # 250k rn, change var to change amount
+CG_PER = 250000  # 250k rn, change var to change amount
+
+# Rations per 100k population
+RATIONS_PER_100K = 4
 
 BUILDINGS = [
     'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',

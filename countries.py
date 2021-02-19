@@ -15,6 +15,32 @@ load_dotenv()
 app.config['UPLOAD_FOLDER'] = 'static/flags'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
 
+def rations_needed(cId):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT population, id FROM provinces WHERE userId=%s", (cId,))
+    provinces = db.fetchall()
+
+    db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+    current_rations = db.fetchone()[0]
+
+    total_rations = 0
+    for population, pId in provinces:
+
+        hundred_k = population // 100000
+        rations_needed = hundred_k * variables.RATIONS_PER_100K
+        total_rations += rations_needed
+    
+    return total_rations
+
 def next_turn_rations(cId):
 
     conn = psycopg2.connect(
@@ -282,6 +308,8 @@ def country(cId):
     else:
         revenue = {}
 
+    rations_need = rations_needed(cId)
+
     connection.close()
 
     return render_template("country.html", username=username, cId=cId, description=description,
@@ -289,7 +317,7 @@ def country(cId):
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
                            colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount,
-                           cg_needed=cg_needed)
+                           cg_needed=cg_needed, rations_need=rations_need)
 
 @app.route("/countries", methods=["GET"])
 @login_required
