@@ -16,7 +16,7 @@ tables = [
     "coalitions", "colBanks", "colBanksRequests", "colNames",
     "keys", "military", "offers", "proInfra", "provinces", "upgrades",
     "requests", "resources", "spyinfo", "stats", "trades",
-    "treaties", "users", "peace", "wars", "reparation_tax"
+    "treaties", "users", "peace", "wars", "reparation_tax", "news"
 ]
 
 
