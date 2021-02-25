@@ -29,11 +29,8 @@ def rations_needed(cId):
     db.execute("SELECT population, id FROM provinces WHERE userId=%s", (cId,))
     provinces = db.fetchall()
 
-    db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
-    current_rations = db.fetchone()[0]
-
     total_rations = 0
-    for population, pId in provinces:
+    for population, _ in provinces:
 
         hundred_k = population // 100000
         rations_needed = hundred_k * variables.RATIONS_PER_100K
@@ -41,7 +38,7 @@ def rations_needed(cId):
     
     return total_rations
 
-def next_turn_rations(cId):
+def next_turn_rations(cId, prod_rations):
 
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -56,11 +53,11 @@ def next_turn_rations(cId):
     provinces = db.fetchall()
 
     db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
-    current_rations = db.fetchone()[0]
+    current_rations = db.fetchone()[0] + prod_rations
 
     for pId in provinces:
 
-        rations, population = calc_pg(pId, current_rations)
+        rations, _ = calc_pg(pId, current_rations)
         current_rations = rations
 
     return current_rations
@@ -271,19 +268,6 @@ def country(cId):
                 except:
                     pass
 
-        for resource in resources:
-
-            if resource == "rations":
-
-                db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
-                current_rations = db.fetchone()[0]
-
-                new_rations = next_turn_rations(cId)
-                net_rations = current_rations - new_rations
-
-                if net_rations != 0:
-                    revenue["net"]["rations"] -= net_rations
-
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
         current_cg = db.fetchone()[0]
         try:
@@ -305,6 +289,13 @@ def country(cId):
         elif current_cg > ti_cg:
             revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
 
+        db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+        current_rations = db.fetchone()[0]
+
+        prod_rations = revenue["gross"]["rations"]
+        new_rations = next_turn_rations(cId, prod_rations)
+        net_rations = current_rations - new_rations
+        revenue["net"]["rations"] = net_rations
     else:
         revenue = {}
 

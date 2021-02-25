@@ -408,7 +408,7 @@ def generate_province_revenue(): # Runs each hour
                         db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
                         land = db.fetchone()[0]
 
-                        plus_amount *= land / 2
+                        plus_amount *= (land / 2)
 
                     # Function for _plus
                     if plus_data is not None:
