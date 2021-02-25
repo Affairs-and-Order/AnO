@@ -54,8 +54,15 @@
                         <td>{{key}}</td>
                     </tr>
                     {% endfor %} {% endif %} {% endif %}
-                    <!--Enemy losses-->
-
+                    
+                    {% if attacker_result.get("loot") != None %}
+                    <tr>
+                        <td>Looted money:</td>
+                        <td>{{attacker_result["loot"]["money"] | commas }}</td>
+                    </tr>
+                    {% endif %}
+                    
+                    <!-- Defender losses -->
                     <tr>
                         <th><span class="material-icons-outlined">
                             outlined_flag

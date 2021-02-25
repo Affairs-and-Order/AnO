@@ -773,6 +773,16 @@ def warResult():
                 attack_effects[0] = attack_effects[0]*0.2
 
                 # resource loot amount
+                if winner == attacker.user_id:
+         
+                  # TODO: maybe include all resources here
+                  lootable_resource = "gold"
+                  db.execute("SELECT gold FROM stats WHERE id=(%s)", (defender.user_id,))
+                  available_resource = db.fetchone()[0]
+                
+                  # max lootable is 10% of available resources
+                  loot = random.randint(0, available_resource*0.1)
+                  attacker_result["loot"] = {"money": loot}
 
             elif war_type == "Sustained":
                 pass
@@ -839,8 +849,7 @@ def warResult():
         winner=winner,
         win_condition=win_condition,
         defender_result=defender_result,
-        attacker_result=attacker_result,
-        resStolen="resStolen") # resStolen needs to be a dictionary
+        attacker_result=attacker_result)
 
 # Endpoint for war declaration
 @app.route("/declare_war", methods=["POST"])
