@@ -36,6 +36,7 @@ def login():
             return error(400, "No Password or Username")
 
         # selects data about user, from users
+        # to run locally remove "AND auth_type='normal'", type it back in before pushing to github
         db.execute("SELECT * FROM users WHERE username=(%s) AND auth_type='normal'", (username,))
         user = db.fetchone()
 

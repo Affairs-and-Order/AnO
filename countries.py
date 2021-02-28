@@ -167,12 +167,17 @@ def country(cId):
     except:
         flag = None
 
+    spyCount = 0
+    successChance = 0
+
     """
-    db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
+    uId == str(session["user_id"])
+    db.execute("SELECT spies FROM military WHERE id=(%s)", (uId,))
     spyCount = db.fetchone()[0]
-    spyPrep = 1 # this is an integer from 1 to 5
-    eSpyCount = 0 # this is an integer from 0 to 100
-    eDefcon = 1 # this is an integer from 1 to 5
+    spyPrep = 1 # this is an integer from 1 to 5, alter the stats table to include this data
+    
+    eSpyCount = db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
+    eDefcon = 1 # this is an integer from 1 to 5, alter the stats table to include this data
 
     if eSpyCount == 0:
         successChance = 100
@@ -180,8 +185,6 @@ def country(cId):
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     """
 
-    spyCount = 0
-    successChance = 0
 
     # News page
     idd = int(cId)
@@ -302,7 +305,6 @@ def country(cId):
     rations_need = rations_needed(cId)
 
     connection.close()
-
     return render_template("country.html", username=username, cId=cId, description=description,
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
