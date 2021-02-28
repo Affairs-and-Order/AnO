@@ -176,7 +176,7 @@ def calc_pg(pId, rations):
     # Each % increases / decreases max population by 0.45
     productivity = round((productivity - 50) * 0.009, 2) # The less you have the better
 
-    maxPop += (maxPop * happiness) + (maxPop * pollution) + (maxPop * productivity)
+    maxPop += (maxPop * happiness) + (maxPop * pollution)
     maxPop = round(maxPop)
 
     if maxPop < 1000000: # If max population is less than 1M
