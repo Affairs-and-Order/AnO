@@ -26,13 +26,15 @@ RATIONS_PER_100K = 4
 BUILDINGS = [
     'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
     'gas_stations', 'general_stores', 'farmers_markets', 'malls',
-    'banks', 'city_parks', 'hospitals', 'libraries', 'universities', 'monorails',
+    'banks', 'hospitals', 'libraries', 'universities',
 
     "farms", "pumpjacks", "coal_mines", "bauxite_mines", "copper_mines", "uranium_mines",
     "lead_mines", "iron_mines", 'lumber_mills',
 
     "component_factories", "steel_mills", "ammunition_factories", "aluminium_refineries",
-    "oil_refineries"
+    "oil_refineries",
+
+    'city_parks','monorails', # Had to put them here so pollution would be minused at the end
 ]
 
 # Dictionary for which units give what resources, etc

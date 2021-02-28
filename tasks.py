@@ -469,6 +469,7 @@ def generate_province_revenue(): # Runs each hour
                             if new_effect < 0:
                                 new_effect = 0
 
+                        print(eff_amount, eff)
                         eff_update = f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s"
                         db.execute(eff_update, (new_effect, province_id))
 
@@ -496,6 +497,8 @@ def generate_province_revenue(): # Runs each hour
         print(f"Successfully updated units for province id: {province_id}")
             
     conn.close() # Closes the connection
+
+generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
