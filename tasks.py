@@ -275,6 +275,7 @@ def generate_province_revenue(): # Runs each hour
 
         province_id = province_id[0]
 
+        db.execute("UPDATE provinces SET energy=0 WHERE id=%s", (province_id,)) # So energy would reset each turn
         db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
         user_id = db.fetchone()[0]
 
@@ -469,7 +470,6 @@ def generate_province_revenue(): # Runs each hour
                             if new_effect < 0:
                                 new_effect = 0
 
-                        print(eff_amount, eff)
                         eff_update = f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s"
                         db.execute(eff_update, (new_effect, province_id))
 
