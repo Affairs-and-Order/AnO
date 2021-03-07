@@ -110,6 +110,10 @@ def tax_income():
 
     conn.close()
 
+# Returns an energy score from 0% (enough energy) to -60% (no energy)
+def get_energy_score():
+    s
+
 # Function for calculating population growth for a given province
 def calc_pg(pId, rations):
 
