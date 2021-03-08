@@ -6,6 +6,83 @@ from attack_scripts import Economy
 import variables
 load_dotenv()
 
+# Returns energy production and consumption from a certain province
+def energy_info(province_id):
+
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = connection.cursor()
+
+    production = 0
+    consumption = 0
+
+    consumers = variables.ENERGY_CONSUMERS
+    producers = variables.ENERGY_UNITS
+    infra = variables.INFRA
+
+    for consumer in consumers:
+
+        consumer_query = f"SELECT {consumer}" + " FROM proInfra WHERE id=%s"
+        db.execute(consumer_query, (province_id,))
+        consumer_count = db.fetchone()[0]
+
+        consumption += consumer_count
+
+    for producer in producers:
+
+        producer_query = f"SELECT {producer}" + " FROM proInfra WHERE id=%s"
+        db.execute(producer_query, (province_id,))
+        producer_count = db.fetchone()[0]
+
+        plus_data = list(infra[f'{producer}_plus'].items())[0]
+        plus_amount = plus_data[1]
+
+        production += producer_count * plus_amount
+
+    return consumption, production
+
+def energy_stats(user_id): 
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT id FROM provinces WHERE userId=%s", (user_id,))
+    provinces = db.fetchall()
+
+    total_energy_consumption = 0
+    total_energy_production = 0
+
+    for province_id in provinces:
+        province_id = province_id[0]
+
+        consumption, production = energy_info(province_id)
+        total_energy_consumption += consumption
+        total_energy_production += production
+
+    if total_energy_consumption == 0: total_energy_consumption = 1
+
+    tcp = (total_energy_production / total_energy_consumption) - 1 # Normalizes the score to 0.
+    if tcp > 0: tcp = 0
+
+    score_multiplier = 0.6
+
+    score = -1 + (tcp * score_multiplier)
+
+    print(f"Energy score: {score}")
+
+    return score
+
 # Function for calculating tax income
 def calc_ti(user_id, consumer_goods):
 
@@ -67,6 +144,10 @@ def calc_ti(user_id, consumer_goods):
         new_income *= land_percentage
         new_income = int(new_income)
         new_income *= cg_increase_full
+
+        energy_score = energy_stats(user_id)
+        new_income = new_income * 2 + (new_income * energy_score)
+
         new_money = int(current_money + new_income)
         
         return new_money, new_cg
@@ -109,10 +190,6 @@ def tax_income():
         conn.commit()
 
     conn.close()
-
-# Returns an energy score from 0% (enough energy) to -60% (no energy)
-def get_energy_score():
-    s
 
 # Function for calculating population growth for a given province
 def calc_pg(pId, rations):
