@@ -9,34 +9,11 @@ import os
 import variables
 from dotenv import load_dotenv
 from coalitions import get_user_role
-from tasks import calc_pg, calc_ti
+from tasks import calc_pg, calc_ti, rations_needed
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
-
-def rations_needed(cId):
-
-    conn = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
-
-    db = conn.cursor()
-
-    db.execute("SELECT population, id FROM provinces WHERE userId=%s", (cId,))
-    provinces = db.fetchall()
-
-    total_rations = 0
-    for population, _ in provinces:
-
-        hundred_k = population // 100000
-        rations_needed = hundred_k * variables.RATIONS_PER_100K
-        total_rations += rations_needed
-    
-    return total_rations
 
 def next_turn_rations(cId, prod_rations):
 

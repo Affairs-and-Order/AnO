@@ -6,6 +6,30 @@ from attack_scripts import Economy
 import variables
 load_dotenv()
 
+# Returns how many rations a player needs
+def rations_needed(cId):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("SELECT population, id FROM provinces WHERE userId=%s", (cId,))
+    provinces = db.fetchall()
+
+    total_rations = 0
+    for population, _ in provinces:
+
+        hundred_k = population // 100000
+        rations_needed = hundred_k * variables.RATIONS_PER_100K
+        total_rations += rations_needed
+    
+    return total_rations
+
 # Returns energy production and consumption from a certain province
 def energy_info(province_id):
 
@@ -46,6 +70,38 @@ def energy_info(province_id):
 
     return consumption, production
 
+# Returns a rations score for a user, from -1 to -1.4
+# -1 = Enough or more than enough rations
+# -1.4 = No rations at all
+def food_stats(user_id):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    needed_rations = rations_needed(user_id)
+
+    db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
+    current_rations = db.fetchone()[0]
+
+    if needed_rations == 0: needed_rations = 1
+
+    rcp = (current_rations / needed_rations) - 1 # Normalizes the score to 0.
+    if rcp > 0: rcp = 0
+
+    score_multiplier = 0.4
+    score = -1 + (rcp * score_multiplier)
+
+    return score
+
+# Returns an energy score for a user, from -1 to -1.6
+# -1 = Enough or more than enough energy
+# -1.6 = No energy at all
 def energy_stats(user_id): 
 
     conn = psycopg2.connect(
@@ -76,9 +132,7 @@ def energy_stats(user_id):
     if tcp > 0: tcp = 0
 
     score_multiplier = 0.6
-
     score = -1 + (tcp * score_multiplier)
-
     print(f"Energy score: {score}")
 
     return score
@@ -145,9 +199,10 @@ def calc_ti(user_id, consumer_goods):
         new_income = int(new_income)
         new_income *= cg_increase_full
 
-        energy_score = energy_stats(user_id)
-        new_income = new_income * 2 + (new_income * energy_score)
+        energy_score = energy_stats(user_id) # From -1 to to -1.6
+        food_score = food_stats(user_id) # From -1 to -1.4
 
+        new_income = int(new_income * 3 + (new_income * (energy_score + food_score)))
         new_money = int(current_money + new_income)
         
         return new_money, new_cg
