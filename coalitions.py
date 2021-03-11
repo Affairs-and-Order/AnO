@@ -1,11 +1,7 @@
-# ALL CONVERTED
-
 from flask import request, render_template, session, redirect, flash
 from helpers import login_required, error
 import psycopg2
-# from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_coalition_influence
-# Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
 from dotenv import load_dotenv
@@ -109,7 +105,6 @@ def coalition(colId):
         members = []
         member_names = []
 
-    ### STUFF FOR JINJA
     try:
         db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (cId,))
         userInCol = db.fetchone()[0]
@@ -376,7 +371,7 @@ def establish_coalition():
         desc = request.form.get("description")
 
         if len(str(name)) > 40:
-            return error(400, "name too long! the coalition name needs to be under 40 characters")
+            return error(400, "Name too long! the coalition name needs to be under 40 characters")
         else:
             db.execute("INSERT INTO colNames (name, type, description) VALUES (%s, %s, %s)", (name, cType, desc))
 

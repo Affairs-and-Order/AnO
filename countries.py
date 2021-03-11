@@ -1,9 +1,7 @@
 from flask import request, render_template, session, redirect
 from helpers import login_required
 import psycopg2
-# from celery.schedules import crontab # arent currently using but will be later on
 from helpers import get_influence, error
-# Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 import os
 import variables
@@ -13,7 +11,7 @@ from tasks import calc_pg, calc_ti, rations_needed
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024    # 2 Mb limit
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 # 2 Mb limit
 
 def next_turn_rations(cId, prod_rations):
 

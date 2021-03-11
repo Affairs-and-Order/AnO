@@ -94,8 +94,7 @@ def food_stats(user_id):
     rcp = (current_rations / needed_rations) - 1 # Normalizes the score to 0.
     if rcp > 0: rcp = 0
 
-    score_multiplier = 0.4
-    score = -1 + (rcp * score_multiplier)
+    score = -1 + (rcp * variables.NO_FOOD_MULTIPLIER)
 
     return score
 
@@ -131,8 +130,8 @@ def energy_stats(user_id):
     tcp = (total_energy_production / total_energy_consumption) - 1 # Normalizes the score to 0.
     if tcp > 0: tcp = 0
 
-    score_multiplier = 0.6
-    score = -1 + (tcp * score_multiplier)
+    
+    score = -1 + (tcp * variables.NO_ENERGY_MULTIPLIER)
     print(f"Energy score: {score}")
 
     return score

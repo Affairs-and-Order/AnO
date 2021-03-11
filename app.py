@@ -1,10 +1,7 @@
-# ALL MIGRATED (EXCEPT CELERY TASKS)
-
 from flask import Flask, request, render_template, session, redirect
 from celery import Celery
 from helpers import login_required
 import psycopg2
-# Game.ping() # temporarily removed this line because it might make celery not work
 from dotenv import load_dotenv
 load_dotenv()
 import os
@@ -21,7 +18,8 @@ except:
 if environment == "PROD":
     app.secret_key = os.getenv("SECRET_KEY")
 
-# import written packages DONT U DARE PUT THESE IMPORTS ABOVE `app=Flask(__name__) or it causes a circular import since these files import app themselves!`
+# Import written packages 
+# Don't put these above app = Flask(__name__), because it will cause a circular import error
 from wars import wars, find_targets
 from login import login
 from signup import signup
@@ -88,21 +86,6 @@ def task_tax_income():
 def task_generate_province_revenue():
     generate_province_revenue()
 
-"""
-    "check_war": {
-        "task": "app.warPing",
-        # Run every day
-        "schedule": 8600.0,
-    },
-
-    "increase_supplies": {
-        "task": "app.increaseSupplies",
-        # Runs every hour
-        "schedule": 3600.0,
-    }
-"""
-
-
 # Initialize Celery and update its config
 celery = Celery(app.name)
 celery.conf.update(
@@ -115,8 +98,8 @@ celery.conf.update(
     beat_schedule=celery_beat_schedule,
 )
 
-# runs one a day
-# transfer x% of all resources (could depends on conditions like Raze war_type)to the winner side after a war
+# Runs one a day
+# Transfer X% of all resources (could depends on conditions like Raze war_type) to the winner side after a war
 @celery.task()
 def task_war_reparation_tax():
     war_reparation_tax()
@@ -154,63 +137,12 @@ def task_manpower_increase():
     conn.commit()
     conn.close()
 
-# runs once a day
-"""
-@celery.task()
-def warPing():
-    connection = sqlite3.connect("affo/aoo.db")
-    cursor = connection.cursor()
-    for user in cursor.execute(f"SELECT id FROM war", ()).fetchall():
-        # war has lasted more than 3 days, end the war
-        if cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] > 3:
-            nationObject = pickle.load(cursor.execute(
-                f"SELECT nation FROM users WHERE id={user}").fetchone()[0])
-            enemyID = cursor.execute(
-                f"SELECT enemy FROM war WHERE id={user}").fetchone()[0]
-
-            enemyObject = pickle.load(cursor.execute(
-                f"SELECT nation FROM users WHERE id={enemyID}").fetchone()[0])
-
-        # otherwise, update the duration of the war
-        elif cursor.execute(f"SELECT duration FROM war WHERE id={user}").fetchone()[0] < 3:
-            currentDuration = cursor.execute(
-                f"SELECT duration FROM war WHERE id={user}").fetchone()[0]
-            cursor.execute(
-                f"INSERT INTO war (duration)  VALUES ({currentDuration + 1},)", ())
-            connection.commit()
-"""
-
-"""
-# runs once every hour
-@celery.task()
-def increaseSupplies():
-    connection = sqlite3.connect("affo/aoo.db")
-    cursor = connection.cursor()
-    for user in cursor.execute(f"SELECT id FROM users").fetchall():
-        for supplies in cursor.execute(f"SELECT supplies FROM war WHERE id={user[0]}").fetchall():
-            increasedSupplies = supplies[0] + 100
-            cursor.execute(
-                f"INSERT INTO war (supplies) VALUES ({increasedSupplies} WHERE id={user[0]})")
-            connection.commit()
-"""
-
-# runs once a day
-"""
-@celery.task()
-def eventCheck():
-    rng = random.randint(1, 100)
-    events = {
-    }
-    if rng == 50:
-        pass
-    # will decide if natural disasters occure
-"""
-
-# handling default error
+# Handling default error
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template("error.html", code=404, message="Page not found!")
 
+# Jinja2 filter to add commas to numbers
 @app.template_filter()
 def commas(value):
     return "{:,}".format(value)
@@ -317,7 +249,6 @@ def assembly():
     if request.method == "GET":
         return render_template("assembly.html")
 """
-
 
 @app.route("/logout/")
 def logout():

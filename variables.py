@@ -1,5 +1,9 @@
 # File for variables that are repeated multiple times in other files (for example, the resources list)
 
+CG_PER = 250000 # 1 Consumer good per x population
+RATIONS_PER_100K = 4 # Rations per 100k population
+NO_ENERGY_MULTIPLIER = 0.6 # How much the tax income will decrease if there's no energy
+NO_FOOD_MULTIPLIER = 0.4 # How much the tax income will decrease if there's no food
 
 RESOURCES = [
     "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
@@ -16,12 +20,6 @@ ENERGY_CONSUMERS = [
     "component_factories", "steel_mills", "ammunition_factories", "aluminium_refineries",
     "oil_refineries"
 ]
-
-# 1 Consumer good per x population
-CG_PER = 250000  # 250k rn, change var to change amount
-
-# Rations per 100k population
-RATIONS_PER_100K = 4
 
 BUILDINGS = [
     'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
@@ -40,11 +38,10 @@ BUILDINGS = [
 # Dictionary for which units give what resources, etc
 INFRA = {
     ### Electricity (done) ###
-    'coal_burners_plus': {'energy': 3}, # energy increase
-    'coal_burners_convert_minus': [{'coal': 48}], # resource upkeep cost
-    'coal_burners_money': 12000, # monetary upkeep cost
-    'coal_burners_effect': [{'pollution': 9}], # pollution amount added
-
+    'coal_burners_plus': {'energy': 3}, # Energy increase
+    'coal_burners_convert_minus': [{'coal': 48}], # Resource upkeep cost
+    'coal_burners_money': 12000, # Monetary upkeep cost
+    'coal_burners_effect': [{'pollution': 9}], # Pollution amount added
     'oil_burners_plus': {'energy': 4},
     'oil_burners_convert_minus': [{'oil': 56}],
     'oil_burners_money': 18000,
