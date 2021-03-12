@@ -142,6 +142,16 @@ def task_manpower_increase():
 def page_not_found(error):
     return render_template("error.html", code=404, message="Page not found!")
 
+# Handling default error
+@app.errorhandler(405)
+def method_not_allowed(error):
+    method = request.method
+    if method == "POST": correct_method = "GET"
+    elif method == "GET": correct_method = "POST"
+
+    message = f"Sorry, this method is not allowed! The correct method is {correct_method}"
+    return render_template("error.html", code=405, message=message)
+
 # Jinja2 filter to add commas to numbers
 @app.template_filter()
 def commas(value):
@@ -162,7 +172,6 @@ def inject_user():
         session_id = session["user_id"]
 
         try:
-
 
             db.execute("SELECT gold FROM stats WHERE id=(%s)", (session_id,))  # DONE
             money = db.fetchone()[0]
@@ -205,52 +214,48 @@ def inject_user():
 def index():
     return render_template("index.html")
 
-@app.route("/account", methods=["GET", "POST"])
+@app.route("/account", methods=["GET"])
 @login_required
 def account():
-    if request.method == "GET":
 
-        cId = session["user_id"]
+    cId = session["user_id"]
 
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
 
-        db = connection.cursor()
+    db = connection.cursor()
 
-        db.execute("SELECT username FROM users WHERE id=%s", (cId,))
-        name = db.fetchone()[0]
+    db.execute("SELECT username FROM users WHERE id=%s", (cId,))
+    name = db.fetchone()[0]
 
-        connection.close()
+    connection.close()
 
-        return render_template("account.html", name=name)
+    return render_template("account.html", name=name)
 
 
-@app.route("/recruitments", methods=["GET", "POST"])
+@app.route("/recruitments", methods=["GET"])
 @login_required
 def recruitments():
-    if request.method == "GET":
-        return render_template("recruitments.html")
+    return render_template("recruitments.html")
 
 
-@app.route("/businesses", methods=["GET", "POST"])
+@app.route("/businesses", methods=["GET"])
 @login_required
 def businesses():
-    if request.method == "GET":
-        return render_template("businesses.html")
+    return render_template("businesses.html")
 
 """
 @login_required
-@app.route("/assembly", methods=["GET", "POST"])
+@app.route("/assembly", methods=["GET"])
 def assembly():
-    if request.method == "GET":
-        return render_template("assembly.html")
+    return render_template("assembly.html")
 """
 
-@app.route("/logout/")
+@app.route("/logout")
 def logout():
     if session.get('user_id') is not None:
         session.clear()
@@ -273,21 +278,17 @@ def statistics():
 def myoffers():
     return render_template("my_offers.html")
 
-
 @app.route("/war", methods=["GET"])
 def war():
     return render_template("war.html")
-
 
 @app.route("/warresult", methods=["GET"])
 def warresult():
     return render_template("warresult.html")
 
-
 @app.route("/mass_purchase", methods=["GET"])
 def mass_purchase():
     return render_template("mass_purchase.html")
-
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', use_reloader=True)

@@ -144,10 +144,10 @@ def coalition(colId):
     else:
         member_roles = {}
 
-    ############## TREATIES ##################
+    # Treaties
     if user_role in ["foreign_ambassador", "leader", "deputy_leader"] and userInCurCol:
 
-        #### INGOING ####
+        # Ingoing
         try:
             try:
                 db.execute("SELECT id FROM treaties WHERE col2_id=(%s) AND status='Pending' ORDER BY id ASC", (colId,))
@@ -332,13 +332,13 @@ def coalition(colId):
     connection.close()
 
     return render_template("coalition.html", name=name, colId=colId, user_role=user_role,
-                            description=description, colType=colType, userInCol=userInCol,
-                            requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
-                            average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
-                            flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
-                            ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
-                            ingoing_treaties=ingoing_treaties, zip=zip, requestIds=requestIds,
-                            members=members, member_names=member_names)
+        description=description, colType=colType, userInCol=userInCol,
+        requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
+        average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
+        flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
+        ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
+        ingoing_treaties=ingoing_treaties, zip=zip, requestIds=requestIds,
+        members=members, member_names=member_names)
 
 
 # Route for establishing a coalition
@@ -509,9 +509,7 @@ def leave_col(colId):
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
-
     cId = session["user_id"]
-
     role = get_user_role(cId)
 
     if role == "leader":
