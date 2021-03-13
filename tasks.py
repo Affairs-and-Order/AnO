@@ -130,7 +130,6 @@ def energy_stats(user_id):
     tcp = (total_energy_production / total_energy_consumption) - 1 # Normalizes the score to 0.
     if tcp > 0: tcp = 0
 
-    
     score = -1 + (tcp * variables.NO_ENERGY_MULTIPLIER)
     print(f"Energy score: {score}")
 
@@ -207,7 +206,9 @@ def calc_ti(user_id, consumer_goods):
         
         return new_money, new_cg
     except Exception as e:
-        print(f"Error: {e} while calculating tax income for user id: {user_id}")
+        filename = __file__
+        line = e.__traceback__.tb_lineno
+        print(f"Filename: {filename}\nError: {e} while calculating tax income for user id: {user_id}\nLine: {line}")
         return current_money, consumer_goods
 
 # Function for actually giving money to players
