@@ -161,6 +161,10 @@ def calc_ti(user_id, consumer_goods):
 
         # How many consumer goods are needed to feed a nation 
         cg_needed = population // variables.CG_PER
+
+        if consumer_goods == 0: consumer_goods = 1
+        if cg_needed == 0: cg_needed = 1
+
         cg_needed_percent = consumer_goods / cg_needed
         cg_increase = round(cg_needed_percent * 0.75, 2)
         if cg_increase > 0.75:
@@ -377,7 +381,9 @@ def population_growth(): # Function for growing population
 
         except Exception as e: 
             conn.rollback()
-            print(f"Couldn't complete population growth for province: {province_id}. Exception: {e}")
+            filename = __file__
+            line = e.__traceback__.tb_lineno
+            print(f"Filename: {filename}\nError: {e} while calculating population growth for user id: {user_id}\nLine: {line}")
             continue
 
     conn.close()
@@ -626,7 +632,9 @@ def generate_province_revenue(): # Runs each hour
                 
                 except Exception as e:
                     conn.rollback()
-                    print(f"Couldn't update {unit} for province id: {province_id} due to exception: {e}")
+                    filename = __file__
+                    line = e.__traceback__.tb_lineno
+                    print(f"Filename: {filename}\nError: {e} while updating {unit} for province id: {province_id} for user id: {user_id}\nLine: {line}")
                     continue
 
             print(f"Successfully updated {unit} for for province id: {province_id}")
