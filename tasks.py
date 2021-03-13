@@ -154,8 +154,9 @@ def calc_ti(user_id, consumer_goods):
     try:
         db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
         population = db.fetchone()[0]
+
         if population is None:
-            population = 0
+            population = 100000 # Say a base population
 
         population = int(population)
 
@@ -632,6 +633,7 @@ def generate_province_revenue(): # Runs each hour
         print(f"Successfully updated units for province id: {province_id}")
             
     conn.close() # Closes the connection
+
 
 def war_reparation_tax():
     conn = psycopg2.connect(
