@@ -263,7 +263,6 @@ def logout():
         pass
     return redirect("/")
 
-
 @app.route("/tutorial", methods=["GET"])
 def tutorial():
     return render_template("tutorial.html")

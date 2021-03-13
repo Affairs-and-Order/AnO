@@ -638,7 +638,6 @@ def adding(uId):
         return error(400, "You are not a leader of the coalition")
 
     db.execute("DELETE FROM requests WHERE reqId=(%s) AND colId=(%s)", (uId, colId))
-
     db.execute("INSERT INTO coalitions (colId, userId) VALUES (%s, %s)", (colId, uId))
 
     connection.commit()
@@ -695,7 +694,6 @@ def delete_coalition(colId):
     db = connection.cursor()
 
     cId = session["user_id"]
-
     user_role = get_user_role(cId)
 
     if user_role != "leader":

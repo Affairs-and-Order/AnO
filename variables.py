@@ -21,6 +21,8 @@ ENERGY_CONSUMERS = [
     "oil_refineries"
 ]
 
+TRADE_TYPES = ["buy", "sell"]
+
 BUILDINGS = [
     'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
     'gas_stations', 'general_stores', 'farmers_markets', 'malls',

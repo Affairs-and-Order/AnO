@@ -7,7 +7,9 @@ import variables
 
 def give_resource(giver_id, taker_id, resource, amount):
 
-    # If giver_id is bank, don't remove any resources
+    # If giver_id is bank, don't remove any resources from anyone
+    # If taker_id is bank, just remove the resources from the player
+
 
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -15,12 +17,11 @@ def give_resource(giver_id, taker_id, resource, amount):
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
         port=os.getenv("PG_PORT"))
+
     db = conn.cursor()
 
-    if giver_id != "bank":
-        giver_id = int(giver_id)
-
-    taker_id = int(taker_id)
+    if giver_id != "bank": giver_id = int(giver_id)
+    if taker_id != "bank": taker_id = int(taker_id)
     amount = int(amount)
 
     resources_list = variables.RESOURCES
@@ -32,7 +33,6 @@ def give_resource(giver_id, taker_id, resource, amount):
     if resource in ["gold", "money"]:
 
         if giver_id != "bank":
-
             db.execute("SELECT gold FROM stats WHERE id=%s", (giver_id,))
             current_giver_money = db.fetchone()[0]
 
@@ -41,7 +41,8 @@ def give_resource(giver_id, taker_id, resource, amount):
 
             db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (amount, giver_id))
 
-        db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (amount, taker_id))
+        if taker_id != "bank":
+            db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (amount, taker_id))
 
     else:
         
@@ -56,8 +57,9 @@ def give_resource(giver_id, taker_id, resource, amount):
             giver_update_statement = f"UPDATE resources SET {resource}={resource}-{amount}" + " WHERE id=%s"
             db.execute(giver_update_statement, (giver_id,))
 
-        taker_update_statement = f"UPDATE resources SET {resource}={resource}+{amount}" + " WHERE id=%s"
-        db.execute(taker_update_statement, (taker_id,))
+        if taker_id != "bank":
+            taker_update_statement = f"UPDATE resources SET {resource}={resource}+{amount}" + " WHERE id=%s"
+            db.execute(taker_update_statement, (taker_id,))
 
     conn.commit()
     conn.close()
@@ -494,33 +496,17 @@ def delete_offer(offer_id):
 
     if offer_type == "buy":
 
-        db.execute("SELECT amount FROM offers WHERE offer_id=(%s)", (offer_id,))
-        amount = int(db.fetchone()[0])
-        db.execute("SELECT price FROM offers WHERE offer_id=(%s)", (offer_id,))
-        price = int(db.fetchone()[0])
+        db.execute("SELECT amount, price FROM offers WHERE offer_id=(%s)", (offer_id,))
+        amount, price = db.fetchone()
 
-        # Gives back the user his money
-        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-        current_money = int(db.fetchone()[0])
-        new_money = current_money + (price * amount)
-
-        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, cId))
+        give_resource("bank", cId, "money", price * amount)
 
     elif offer_type == "sell":
 
-        db.execute("SELECT amount FROM offers WHERE offer_id=(%s)", (offer_id,))
-        amount = int(db.fetchone()[0])
-        db.execute("SELECT resource FROM offers WHERE offer_id=(%s)", (offer_id,))
-        resource = db.fetchone()[0]
+        db.execute("SELECT amount, resource FROM offers WHERE offer_id=(%s)", (offer_id,))
+        amount, resource = db.fetchone()
 
-        current_resource_statement = f"SELECT {resource} " + "FROM resources WHERE id=%s"
-        db.execute(current_resource_statement, (cId,))
-        current_resource = int(db.fetchone()[0])
-
-        new_resource = current_resource + amount
-
-        update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-        db.execute(update_statement, (new_resource, cId))
+        give_resource("bank", cId, resource, amount)
 
     db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id,)) # Deletes the offer
 
@@ -571,7 +557,6 @@ def trade_offer(offer_type, offeree_id):
 
         if offer_type == "sell":
 
-            # possible sql injection posibility TODO: look into this
             rStatement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
             db.execute(rStatement, (cId,))
             realAmount = int(db.fetchone()[0])
@@ -663,16 +648,8 @@ def accept_trade(trade_id):
     if trade_offeree != cId:
         return error(400, "You can't accept that offer")
 
-    db.execute("SELECT type FROM trades WHERE offer_id=(%s)", (trade_id,))
-    trade_type = db.fetchone()[0]
-    db.execute("SELECT offerer FROM trades WHERE offer_id=(%s)", (trade_id,))
-    offerer = db.fetchone()[0]
-    db.execute("SELECT resource FROM trades WHERE offer_id=(%s)", (trade_id,))
-    resource = db.fetchone()[0]
-    db.execute("SELECT amount FROM trades WHERE offer_id=(%s)", (trade_id,))
-    amount = db.fetchone()[0]
-    db.execute("SELECT price FROM trades WHERE offer_id=(%s)", (trade_id,))
-    price = db.fetchone()[0]
+    db.execute("SELECT type, offerer, resource, amount, price FROM trades WHERE offer_id=(%s)", (trade_id,))
+    trade_type, offerer, resource, amount, price = db.fetchone()
 
     trade_types = ["buy", "sell"]
     if trade_type not in trade_types:
