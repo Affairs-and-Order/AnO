@@ -10,7 +10,6 @@ def give_resource(giver_id, taker_id, resource, amount):
     # If giver_id is bank, don't remove any resources from anyone
     # If taker_id is bank, just remove the resources from the player
 
-
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -216,8 +215,6 @@ def buy_market_offer(offer_id):
     else:
         db.execute("UPDATE offers SET amount=(%s) WHERE offer_id=(%s)", (new_offer_amount, offer_id))
 
-    # updates the offer with the new amount
-
     connection.commit() # Commits the connection
     connection.close() # Closes the connection
 
@@ -227,14 +224,14 @@ def buy_market_offer(offer_id):
 @login_required
 def sell_market_offer(offer_id):
   
-    connection = psycopg2.connect(
+    conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
         port=os.getenv("PG_PORT"))
 
-    db = connection.cursor()
+    db = conn.cursor()
 
     seller_id = session["user_id"]
     amount_wanted = int(request.form.get(f"amount_{offer_id}"))
@@ -260,38 +257,14 @@ def sell_market_offer(offer_id):
     if sellers_resource < amount_wanted:
         return error(400, "You don't have enough of that resource")
 
-    # Removes the resource from the seller
-    new_sellers_resource = sellers_resource - amount_wanted
-    res_upd_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-    db.execute(res_upd_statement, (new_sellers_resource, seller_id))
+    # Removes the resource from the seller and gives it to the buyer
+    give_resource(seller_id, buyer_id, resource, amount_wanted)
 
-    # Gives the resource to the buyer
-    db.execute(resource_statement, (buyer_id,)) # Selects how many resources of wanted resource the buyer has
-    buyers_resource = db.fetchone()[0]
-    new_buyers_resource = buyers_resource + amount_wanted # Generates the new amount by adding current amount + bought amount
-
-    db.execute(res_upd_statement, (new_buyers_resource, buyer_id))
-
-    # Takes away the money used for buying from the buyer
-
-    db.execute("SELECT gold FROM stats WHERE id=(%s)", (buyer_id,))
-    current_buyers_money = db.fetchone()[0]
-
-    new_buyers_money = current_buyers_money - (price_for_one * amount_wanted)
-
-    db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_buyers_money, buyer_id,))
-
-    # Gives the money to the seller
-
-    db.execute("SELECT gold FROM stats WHERE id=(%s)", (seller_id,))
-    current_sellers_money = db.fetchone()[0]
-    new_sellers_money = current_sellers_money + (price_for_one * amount_wanted)
-
-    db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_sellers_money, seller_id,))
+    # Takes away the money used for buying from the buyer and gives it to the seller
+    give_resource(buyer_id, seller_id, "money", price_for_one * amount_wanted)
 
     # Generates the new amount, after the buyer has got his resources from the seller
-
-    new_offer_amount = (total_amount - amount_wanted)
+    new_offer_amount = total_amount - amount_wanted
 
     if new_offer_amount == 0: # Checks if the new offer amount is equal to 0
         db.execute("DELETE FROM offers WHERE offer_id=(%s)", (offer_id,)) # If yes, it deletes the offer
@@ -299,8 +272,8 @@ def sell_market_offer(offer_id):
     else:
         db.execute("UPDATE offers SET amount=(%s) WHERE offer_id=(%s)", (new_offer_amount, offer_id)) # Updates the database with the new amount
 
-    connection.commit()
-    connection.close()
+    conn.commit()
+    conn.close()
 
     return redirect("/market")
 
@@ -351,16 +324,11 @@ def post_offer(offer_type):
             return error("400", "Selling amount is higher than the amount you have.")
 
         # Calculates the resource amount the seller should have
-        newResourceAmount = realAmount - amount
-
-        upStatement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-        db.execute(upStatement, (newResourceAmount, cId))
+        give_resource(cId, "bank", resource, amount)
 
         # Creates a new offer
         db.execute("INSERT INTO offers (user_id, type, resource, amount, price) VALUES (%s, %s, %s, %s, %s)", 
         (cId, offer_type, resource, int(amount), int(price), ))
-
-        connection.commit()  # Commits the data to the database
 
     elif offer_type == "buy":
 
@@ -373,14 +341,11 @@ def post_offer(offer_type):
 
         if current_money < money_to_take_away:
             return error(400, "You don't have enough money")
-        new_money = current_money - money_to_take_away
 
-        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, cId))
+        give_resource(cId, "bank", "money", money_to_take_away)
 
-        flash("You just posted a market offer")
-
-        connection.commit()
-
+    connection.commit()
+    flash("You just posted a market offer")
     connection.close()  # Closes the connection
     return redirect("/market")
 
@@ -399,7 +364,6 @@ def my_offers():
     cId = session["user_id"]
 
     ## USER'S OUTGOING OFFERS
-
     db.execute("SELECT offer_id FROM offers WHERE user_id=(%s) ORDER BY offer_id ASC", (cId,))
     offer_ids_list = db.fetchall()
 
@@ -428,7 +392,6 @@ def my_offers():
     my_offers = zip(offer_ids, prices, resources, amounts, offer_types, total_prices)
 
     ## USER'S INCOMING TRADES
-
     db.execute("SELECT offer_id FROM trades WHERE offeree=(%s) ORDER BY offer_id ASC", (cId,))
     trade_ids_list = db.fetchall()
 

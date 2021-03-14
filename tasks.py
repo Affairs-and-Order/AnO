@@ -7,6 +7,13 @@ import variables
 load_dotenv()
 
 # Returns how many rations a player needs
+def handle_exception(e):
+    filename = __file__
+    line = e.__traceback__.tb_lineno
+    print("-----------------START OF EXCEPTION-------------------")
+    print(f"Filename: {filename}\nError: {e}\nLine: {line}")
+    print("-----------------END OF EXCEPTION---------------------")
+
 def rations_needed(cId):
 
     conn = psycopg2.connect(
@@ -131,7 +138,6 @@ def energy_stats(user_id):
     if tcp > 0: tcp = 0
 
     score = -1 + (tcp * variables.NO_ENERGY_MULTIPLIER)
-    print(f"Energy score: {score}")
 
     return score
 
@@ -210,9 +216,7 @@ def calc_ti(user_id, consumer_goods):
         
         return new_money, new_cg
     except Exception as e:
-        filename = __file__
-        line = e.__traceback__.tb_lineno
-        print(f"Filename: {filename}\nError: {e} while calculating tax income for user id: {user_id}\nLine: {line}")
+        handle_exception(e)
         return current_money, consumer_goods
 
 # Function for actually giving money to players
@@ -381,9 +385,7 @@ def population_growth(): # Function for growing population
 
         except Exception as e: 
             conn.rollback()
-            filename = __file__
-            line = e.__traceback__.tb_lineno
-            print(f"Filename: {filename}\nError: {e} while calculating population growth for user id: {user_id}\nLine: {line}")
+            handle_exception(e)
             continue
 
     conn.close()
@@ -632,9 +634,7 @@ def generate_province_revenue(): # Runs each hour
                 
                 except Exception as e:
                     conn.rollback()
-                    filename = __file__
-                    line = e.__traceback__.tb_lineno
-                    print(f"Filename: {filename}\nError: {e} while updating {unit} for province id: {province_id} for user id: {user_id}\nLine: {line}")
+                    handle_exception(e)
                     continue
 
             print(f"Successfully updated {unit} for for province id: {province_id}")
