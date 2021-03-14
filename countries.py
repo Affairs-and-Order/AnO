@@ -160,7 +160,6 @@ def country(cId):
         successChance = spyCount * spyPrep / eSpyCount / eDefcon
     """
 
-
     # News page
     idd = int(cId)
     news = []
@@ -188,7 +187,6 @@ def country(cId):
 
         infra = variables.INFRA
 
-        # TODO: look into possible bug with how consumer goods net is calculated
         resources = variables.RESOURCES
         resources.append("money")
         for resource in resources:
@@ -273,7 +271,7 @@ def country(cId):
         prod_rations = revenue["gross"]["rations"]
         new_rations = next_turn_rations(cId, prod_rations)
         net_rations = current_rations - new_rations
-        revenue["net"]["rations"] = net_rations
+        revenue["net"]["rations"] -= net_rations
     else:
         revenue = {}
 
