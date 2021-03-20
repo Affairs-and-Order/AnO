@@ -1,14 +1,12 @@
-# FULLY MIGRATED
-
 from flask import request, render_template, session, redirect, flash
 from helpers import login_required, error
 import psycopg2
-# Game.ping() # temporarily removed this line because it might make celery not work
 from app import app
 from attack_scripts import Military
 from dotenv import load_dotenv
 load_dotenv()
 import os
+from helpers import get_date
 
 @app.route("/military", methods=["GET", "POST"])
 @login_required
@@ -257,8 +255,8 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                     return error(400, "You don't have enough resources")
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
-            # fix weird table
-            db.execute(f"UPDATE military SET {units}=%s WHERE id=%s", (int(currentUnits)+wantedUnits, cId))
+            updMil = f"UPDATE military SET {units}" + "=%s WHERE id=%s"
+            db.execute(updMil, (int(currentUnits)+wantedUnits, cId))
 
             db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
             manpower = db.fetchone()[0]
@@ -267,6 +265,14 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         else:
             return error(404, "Page not found")
+
+        if way == "buy": rev_type = "expense"
+        elif way == "sell": rev_type = "revenue"
+        name = f"{way.capitalize()}ing {wantedUnits} {units} for your military."
+        description = ""
+
+        db.execute("INSERT INTO revenue (user_id, type, name, description, date, resource, amount) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
+        (cId, rev_type, name, description, get_date(), units, wantedUnits,))
 
         connection.commit()
         connection.close()

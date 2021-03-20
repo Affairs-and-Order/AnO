@@ -5,8 +5,13 @@ import psycopg2
 from flask import redirect, render_template, session
 from functools import wraps
 from dotenv import load_dotenv
+from datetime import date
 load_dotenv()
 
+
+def get_date():
+    today = date.today()
+    return today.strftime("%Y-%m-%d")
 
 def get_flagname(user_id):
     connection = psycopg2.connect(

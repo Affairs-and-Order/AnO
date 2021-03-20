@@ -7,6 +7,7 @@ import os
 import variables
 from tasks import energy_info
 from datetime import date
+from helpers import get_date
 load_dotenv()
 
 @app.route("/provinces", methods=["GET"])
@@ -278,10 +279,6 @@ def get_free_slots(pId, slot_type): # pId = province id
         free_slots = all_slots - used_slots
 
     return free_slots
-
-def get_date():
-    today = date.today()
-    return today.strftime("%Y-%m-%d")
 
 @app.route("/<way>/<units>/<province_id>", methods=["POST"])
 @login_required
@@ -608,7 +605,7 @@ def province_sell_buy(way, units, province_id):
     if way == "buy": rev_type = "expense"
     elif way == "sell": rev_type = "revenue"
 
-    name = f"Buying {wantedUnits} {units} in a province."
+    name = f"{way.capitalize()}ing {wantedUnits} {units} in a province."
     description = ""
 
     db.execute("INSERT INTO revenue (user_id, type, name, description, date, resource, amount) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
