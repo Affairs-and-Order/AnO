@@ -31,8 +31,7 @@ def rations_needed(cId):
     total_rations = 0
     for population, _ in provinces:
 
-        hundred_k = population // 100000
-        rations_needed = hundred_k * variables.RATIONS_PER_100K
+        rations_needed = population // variables.RATIONS_PER
         total_rations += rations_needed
     
     return total_rations
@@ -327,13 +326,11 @@ def calc_pg(pId, rations):
     if maxPop < 1000000: # If max population is less than 1M
         maxPop = 1000000 # Make it 1M
 
-    hundred_k = curPop // 100000
-    rations_per_100k = variables.RATIONS_PER_100K
-
     # Default rations increase
     rations_increase = 1
 
-    rations_needed = hundred_k * rations_per_100k
+    rations_needed = curPop // variables.RATIONS_PER
+
     rations_needed_percent = rations / rations_needed
     if rations_needed_percent > 1:
         rations_needed_percent = 1

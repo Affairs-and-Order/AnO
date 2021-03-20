@@ -272,6 +272,7 @@ def country(cId):
         new_rations = next_turn_rations(cId, prod_rations)
         net_rations = current_rations - new_rations
         revenue["net"]["rations"] -= net_rations
+        
     else:
         revenue = {}
 

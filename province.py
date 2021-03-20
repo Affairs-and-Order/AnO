@@ -125,10 +125,8 @@ def province(pId):
         db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
         rations = int(db.fetchone()[0])
 
-        rations_per_100k = 1 # One rations per 100,000 people
-
-        hundred_k = province["population"] // 100000
-        new_rations = rations - (hundred_k * rations_per_100k)
+        rations_minus = province["population"] // variables.RATIONS_PER
+        new_rations = rations - rations_minus
 
         if new_rations < 1:
             return False
