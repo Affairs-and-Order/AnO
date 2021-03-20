@@ -268,7 +268,6 @@ def calc_pg(pId, rations):
 
     db.execute("SELECT population FROM provinces WHERE id=%s", (pId,))
     curPop = db.fetchone()[0]
-    population = curPop
 
     maxPop = 1000000 # Base max population: 1 million
 
@@ -334,6 +333,7 @@ def calc_pg(pId, rations):
     rations_needed_percent = rations / rations_needed
     if rations_needed_percent > 1:
         rations_needed_percent = 1
+        
     rations_increase += round(rations_needed_percent * 1, 2)
 
     # Calculates the new rations of the player
@@ -343,7 +343,6 @@ def calc_pg(pId, rations):
         new_rations = 0
 
     newPop = (maxPop // 100) * rations_increase
-
     fullPop = curPop + newPop
 
     return new_rations, fullPop
