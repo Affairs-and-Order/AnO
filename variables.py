@@ -1,7 +1,7 @@
 # File for variables that are repeated multiple times in other files (for example, the resources list)
 
 CG_PER = 250000 # 1 Consumer good per x population
-RATIONS_PER = 25000  # 1 Ration per x population
+RATIONS_PER = 200000  # 1 Ration per x population
 
 NO_ENERGY_MULTIPLIER = 0.6 # How much the tax income will decrease if there's no energy
 NO_FOOD_MULTIPLIER = 0.4 # How much the tax income will decrease if there's no food
