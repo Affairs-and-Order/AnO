@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 import os
 import variables
 from tasks import energy_info
-from datetime import date
 from helpers import get_date
 load_dotenv()
 

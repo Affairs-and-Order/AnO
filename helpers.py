@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 from datetime import date
 load_dotenv()
 
-
 def get_date():
     today = date.today()
     return today.strftime("%Y-%m-%d")

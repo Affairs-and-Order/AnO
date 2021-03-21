@@ -411,8 +411,6 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     return render_template("countries.html", resultAll=resultAll)
 
-
-
 @app.route("/update_country_info", methods=["POST"])
 @login_required
 def update_info():
@@ -513,14 +511,9 @@ def update_info():
             db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
             db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
 
-        connection.commit()  # Commits the data
-
         db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
 
-        connection.commit()
-
     connection.commit()  # Commits the data
-
     connection.close()  # Closes the connection
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country
@@ -544,7 +537,7 @@ def delete_own_account():
     db.execute("DELETE FROM stats WHERE id=(%s)", (cId,))
     db.execute("DELETE FROM military WHERE id=(%s)", (cId,))
     db.execute("DELETE FROM resources WHERE id=(%s)", (cId,))
-    # Deletes all market things the user is associateed with
+    # Deletes all market things the user is associated with
     db.execute("DELETE FROM offers WHERE user_id=(%s)", (cId,))
     db.execute("DELETE FROM wars WHERE defender=%s OR attacker=%s", (cId, cId))
 
@@ -557,15 +550,10 @@ def delete_own_account():
         db.execute("DELETE FROM proInfra WHERE id=(%s)", (province_id,))
 
     db.execute("DELETE FROM upgrades WHERE user_id=%s", (cId,))
-
     db.execute("DELETE FROM trades WHERE offeree=%s OR offerer=%s", (cId, cId))
-
     db.execute("DELETE FROM spyinfo WHERE spyer=%s OR spyee=%s", (cId, cId))
-
     db.execute("DELETE FROM requests WHERE reqId=%s", (cId,))
-
     db.execute("DELETE FROM reparation_tax WHERE loser=%s OR winner=%s", (cId, cId))
-
     db.execute("DELETE FROM peace WHERE author=%s", (cId,))
 
     coalition_role = get_user_role(cId)
@@ -580,11 +568,8 @@ def delete_own_account():
         leader_count = int(db.fetchone()[0])
 
         if leader_count != 1:
-
             pass
-
         else:
-
             db.execute("DELETE FROM coalitions WHERE colId=%s", (user_coalition,))
             db.execute("DELETE FROM colNames WHERE id=%s", (user_coalition,))
             db.execute("DELETE FROM colBanks WHERE colid=%s", (user_coalition,))
@@ -599,27 +584,3 @@ def delete_own_account():
     session.clear()
 
     return redirect("/")
-
-@app.route("/username_available/<username>", methods=["GET"])
-def username_avalaible(username):
-
-    connection = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
-
-    db = connection.cursor()
-
-    try:
-        db.execute("SELECT username FROM users WHERE username=(%s)", (username,))
-        username_exists = db.fetchone()[0]
-        username_exists = True
-    except TypeError:
-        username_exists = False
-
-    if username_exists:
-        return "No"
-    else:
-        return "Yes"

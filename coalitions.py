@@ -89,7 +89,6 @@ def coalition(colId):
     except:
         leaders = []
         leader_names = []
-        
 
     try:
         db.execute("SELECT userId FROM coalitions WHERE colId=%s", (colId,))
@@ -164,25 +163,16 @@ def coalition(colId):
 
                 treaty_id = treaty_id
 
-                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (treaty_id,))
-                col_id = db.fetchone()[0]
+                db.execute("SELECT col1_id, treaty_name, treaty_description FROM treaties WHERE id=(%s)", (treaty_id,))
+                col_id, treaty_name, treaty_description = db.fetchone()
                 col_ids.append(col_id)
+                trt_names.append(treaty_name)
+                trt_descriptions.append(treaty_description)
 
                 db.execute("SELECT name FROM colNames WHERE id=(%s)", (col_id,))
                 coalition_name = db.fetchone()[0]
                 col_names.append(coalition_name)
 
-                db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (treaty_id,))
-                treaty_name = db.fetchone()[0]
-                trt_names.append(treaty_name)
-
-                db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (treaty_id,))
-                treaty_description = db.fetchone()[0]
-                trt_descriptions.append(treaty_description)
-
-            # SHITTIEST FUCKING APPROACH KNOWN TO MAN BUT FUCKING JINJA DOESNT WANT TO FUCKING ZIP CONSISTENTLY
-            # SO I HAVE TO WRITE THIS ABOMINATION OF A CODE WHEN IN REALITY I SHOULDVE JUST USED FUCKING SQL JOINS
-            # BUT WE HAVE TO LAUNCH BETA IN 6 FUCKING HOURS
             ingoing_treaties = {}
             ingoing_treaties["ids"] = ingoing_ids,
             ingoing_treaties["col_ids"] = col_ids,
@@ -190,7 +180,6 @@ def coalition(colId):
             ingoing_treaties["treaty_names"] = trt_names,
             ingoing_treaties["treaty_descriptions"] = trt_descriptions
             ingoing_length = len(ingoing_ids)
-            #################
         except:
             ingoing_treaties = {}
             ingoing_length = 0
@@ -211,30 +200,22 @@ def coalition(colId):
             active_treaties["treaty_descriptions"] = []
 
             for i in raw_active_ids:
-
                 offer_id = i[0]
 
                 active_treaties["ids"].append(offer_id)
 
-                db.execute("SELECT col1_id FROM treaties WHERE id=(%s)", (offer_id,))
-                coalition_id = db.fetchone()[0]
+                db.execute("SELECT col1_id, treaty_name, treaty_description FROM treaties WHERE id=(%s)", (offer_id,))
+                coalition_id, treaty_name, treaty_description = db.fetchone()
                 if coalition_id == colId:
                     db.execute("SELECT col2_id FROM treaties WHERE id=(%s)", (offer_id,))
                     coalition_id = db.fetchone()[0]
 
-                active_treaties["col_ids"].append(coalition_id)
-
                 db.execute("SELECT name FROM colNames WHERE id=(%s)", (coalition_id,))
                 coalition_name = db.fetchone()[0]
 
+                active_treaties["col_ids"].append(coalition_id)
                 active_treaties["col_names"].append(coalition_name)
-
-                db.execute("SELECT treaty_name FROM treaties WHERE id=%s", (offer_id,))
-                treaty_name = db.fetchone()[0]
                 active_treaties["treaty_names"].append(treaty_name)
-
-                db.execute("SELECT treaty_description FROM treaties WHERE id=%s", (offer_id,))
-                treaty_description = db.fetchone()[0]
                 active_treaties["treaty_descriptions"].append(treaty_description)
 
             active_length = len(raw_active_ids)
@@ -246,10 +227,7 @@ def coalition(colId):
         active_treaties = {}
         ingoing_length = 0
         active_length = 0
-        ################
-    ############################################
 
-    ### BANK STUFF ###
     if userInCurCol:
         bankRaw = {
             'money': None,
@@ -274,35 +252,27 @@ def coalition(colId):
             db.execute("SELECT " + raw  + " FROM colBanks WHERE colId=(%s)", (colId,))
             bankRaw[raw] = db.fetchone()[0]
     else:
-
         bankRaw = {}
-    ###################
 
-    ### FLAG STUFF
     try:
         db.execute("SELECT flag FROM colNames WHERE id=(%s)", (colId,))
         flag = db.fetchone()[0]
     except:
         flag = None
-    ###
 
     if user_role == "leader" and colType != "Open" and userInCurCol:
 
-        db.execute("SELECT message FROM requests WHERE colId=(%s)", (colId,))
+        db.execute("SELECT message FROM requests WHERE colId=(%s) ORDER BY reqId ASC", (colId,))
         requestMessages = db.fetchall()
-
-        db.execute("SELECT reqId FROM requests WHERE colId=(%s)", (colId,))
+        db.execute("SELECT reqId FROM requests WHERE colId=(%s) ORDER BY reqId ASC", (colId,))
         requestIds = db.fetchall()
-        
         requestNames = []
 
         for request_id in requestIds:
 
             request_id = request_id[0]
-        
             db.execute("SELECT username FROM users WHERE id=%s", (request_id,))
             requestName = db.fetchone()[0]
-
             requestNames.append(requestName)
 
         requests = zip(requestIds, requestNames, requestMessages)
@@ -479,19 +449,18 @@ def join_col(colId):
     colType = db.fetchone()[0]
 
     if colType == "Open":
-
         db.execute("INSERT INTO coalitions (colId, userId) VALUES (%s, %s)", (colId, cId))
-
-        connection.commit()
-
     else:
 
-        message = request.form.get("message")
-
+        db.execute("SELECT FROM requests WHERE colId=%s and reqId=%s", (colId, cId,))
+        duplicate = db.fetchone()
+        if duplicate is not None:
+            return error(400, "You've already submitted a request to join this coalition")
+            
+        message = request.form["message"]
         db.execute("INSERT INTO requests (colId, reqId, message) VALUES (%s, %s, %s)", (colId, cId, message))
 
-        connection.commit()
-
+    connection.commit()
     connection.close()
 
     return redirect(f"/coalition/{colId}") # Redirects to the joined coalitions page

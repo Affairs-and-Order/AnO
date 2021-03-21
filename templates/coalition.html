@@ -296,31 +296,29 @@
             <!--show until here-->
             <div class="infodiv">
                 {% if colType == "Invite Only" %}
-                <p class="templatecontentpleft landingpagecontent">
-                    You are applying to {{ name }}, please send a message to them about why you want to join, what you can offer them, or whatever else you would like to say.
-                </p>
-                <div class="center">
-                    <textarea name="message" class="templatetextarea" autocomplete="off" maxlength="1000" placeholder="Your message"></textarea> {% endif %}
-                </div>
+                <form action="/join/{{ colId }}" method="POST">
+                    <p class="templatecontentpleft landingpagecontent">
+                        You are applying to {{ name }}, please send a message to them about why you want to join, what you can offer them, or whatever else you would like to say.
+                    </p>
+                    <div class="center">
+                        <textarea name="message" class="templatetextarea" autocomplete="off" maxlength="1000" placeholder="Your message"></textarea> 
+                    </div>
+                    <button type="submit" value="submit" class="templatedivbutton templatecenteredbutton"><span
+                            class="material-icons-outlined">
+                            arrow_forward
+                        </span>Apply</button>
+                </form>
+                {% endif %}
+
                 <!--if not at war don't show the warning below-->
                 <ul class="warning">
                     {{ name }} is currently at war!
                 </ul>
 
-                {% if colType == "Invite Only" %}
-                <form action="/join/{{ colId }}" method="POST">
-                    <button type="submit" value="submit" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-                    arrow_forward
-                        </span>Apply</button>
-                </form>
-                {% endif %}
-
                 <!--Hide / deactvate certian buttons depending on the coalition type-->
                 <!--will become deactivated if the user doesnt meet the specified influence-->
 
                 <!-- currently only added join for open coalitions, without message-->
-
-                </form>
 
                 {% if colType == "Open" %}
                 <ul>
