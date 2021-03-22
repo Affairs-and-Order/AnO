@@ -273,6 +273,12 @@ def country(cId):
     else:
         revenue = {}
 
+    if status:
+        db.execute("SELECT name, type, resource, amount, date FROM revenue WHERE user_id=%s", (cId,))
+        expenses = db.fetchall()
+    else:
+        expenses = []
+
     rations_need = rations_needed(cId)
 
     connection.close()
@@ -281,7 +287,7 @@ def country(cId):
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
                            colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount,
-                           cg_needed=cg_needed, rations_need=rations_need)
+                           cg_needed=cg_needed, rations_need=rations_need, expenses=expenses)
 
 @app.route("/countries", methods=["GET"])
 @login_required

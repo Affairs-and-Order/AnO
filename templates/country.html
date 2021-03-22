@@ -546,20 +546,29 @@
                 </div>
             </div>
 
-            <h2 class="templatecontentheaderleft">More Information</h2>
+            {% if expenses != [] %}
+            <h2 class="templatecontentheaderleft">Expenses</h2>
 
-            <table class="templatetable">
+            <table class="templatetable templatetable2">
                 <tr>
-                    <th><span class="material-icons-outlined">
-                        article
-                        </span>Expenses</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Resource</th>
+                    <th>Amount</th>
+                    <th>Date</th>
                 </tr>
-                <tr>
-                    <td>stuff:</td>
-                    <td>{{ gross }}%</td>
-                </tr>
+                {% for name, type, resource, amount, date in expenses %}
+                    <tr>
+                        <td>{{ name }}</td>
+                        <td>{{ type }}</td>
+                        <td>{{ resource }}</td>
+                        <td>{{ amount }}</td>
+                        <td>{{ date }}</td>
+                    </tr>
+                {% endfor %}
             </table>
             {% endif %}
+        {% endif %}
             <!--show this if user is in a coalition-->
             <!--
         <table class="templatetable">
