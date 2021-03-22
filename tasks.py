@@ -6,14 +6,15 @@ from attack_scripts import Economy
 import variables
 load_dotenv()
 
-# Returns how many rations a player needs
+# Handles exception for an error
 def handle_exception(e):
     filename = __file__
     line = e.__traceback__.tb_lineno
-    print("-----------------START OF EXCEPTION-------------------")
+    print("\n-----------------START OF EXCEPTION-------------------")
     print(f"Filename: {filename}\nError: {e}\nLine: {line}")
-    print("-----------------END OF EXCEPTION---------------------")
+    print("-----------------END OF EXCEPTION---------------------\n")
 
+# Returns how many rations a player needs
 def rations_needed(cId):
 
     conn = psycopg2.connect(
@@ -374,6 +375,8 @@ def population_growth(): # Function for growing population
 
             rations, population = calc_pg(province_id, current_rations)
 
+            print(f"Updated rations for province id: {province_id}, user id: {user_id}")
+            print(f"Set {current_rations} to {rations} ({rations - current_rations})")
             db.execute("UPDATE resources SET rations=%s WHERE id=%s", (rations, user_id))
             db.execute("UPDATE provinces SET population=%s WHERE id=%s", (population, province_id))
 
