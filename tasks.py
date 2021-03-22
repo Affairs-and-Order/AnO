@@ -360,7 +360,7 @@ def population_growth(): # Function for growing population
 
     db = conn.cursor()
 
-    db.execute("SELECT id FROM provinces")
+    db.execute("SELECT id FROM provinces ORDER BY userId ASC")
     provinces = db.fetchall()
 
     for province_id in provinces:
