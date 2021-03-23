@@ -11,7 +11,9 @@ def handle_exception(e):
     filename = __file__
     line = e.__traceback__.tb_lineno
     print("\n-----------------START OF EXCEPTION-------------------")
-    print(f"Filename: {filename}\nError: {e}\nLine: {line}")
+    print(f"Filename: {filename}")
+    print(f"Error: {e}")
+    print(f"Line: {line}")
     print("-----------------END OF EXCEPTION---------------------\n")
 
 # Returns how many rations a player needs
@@ -437,9 +439,7 @@ def generate_province_revenue(): # Runs each hour
             if unit_amount == 0:
                 continue
             else:
-
                 try:
-
                     try:
                         effect_minus_data = list(infra[f'{unit}_effect_minus'].items())[0]
 
@@ -636,10 +636,6 @@ def generate_province_revenue(): # Runs each hour
                     handle_exception(e)
                     continue
 
-            print(f"Successfully updated {unit} for for province id: {province_id}")
-
-        print(f"Successfully updated units for province id: {province_id}")
-            
     conn.close() # Closes the connection
 
 
