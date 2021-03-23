@@ -3013,6 +3013,48 @@ button {
     transition: all 0.3s;
 }
 
+.pinfotooltipparent {
+    cursor: pointer;
+    width: fit-content;
+}
+
+.pinfotooltip {
+    padding: 5px;
+    border-radius: 4px;
+    opacity: 0;
+    top: -150%;
+    pointer-events: none;
+    font-weight: 400;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: var(--foregroundTwo);
+    box-shadow: rgba(0, 0, 0, 0.08) 0 12px 22px 1px, rgba(0, 0, 0, 0.05) 0 12px 12px;
+    font-size: 13.5px;
+    z-index: 0;
+}
+
+.pinfotooltip span {
+    margin: 0;
+    top: 0;
+    left: 0;
+}
+
+.pinfotooltip p {
+    margin: 0;
+    margin-left: 5px;
+    line-height: 15px;
+    width: fit-content;
+}
+
+.pinfotooltipparent:hover .pinfotooltip {
+    pointer-events: none;
+    opacity: 1;
+    top: -150%;
+    transition: all 0.3s;
+}
+
 
 /*MILITARY*/
 
@@ -3457,5 +3499,7 @@ footer {
 .redditicon {
     color: rgb(255, 69, 0);
 }
+
+.footercopyright {}
 
 .footercopyright {}

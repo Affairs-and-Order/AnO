@@ -188,7 +188,7 @@ def calc_ti(user_id, consumer_goods):
         else:
             new_cg = 0
 
-        population_score = int(population * 0.075)
+        population_score = int(population * 0.05)
 
         db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
         land = db.fetchone()[0]
@@ -314,13 +314,13 @@ def calc_pg(pId, rations):
         productivity = 0
 
     # Each % increases / decreases max population by 0.55
-    happiness = round((happiness - 50) * 0.011, 2) # The more you have the better
+    happiness = round((happiness - 50) * 0.012, 2) # The more you have the better
 
     # Each % increases / decreases max population by 0.3
-    pollution = round((pollution - 50) * - 0.006, 2) # The less you have the better
+    pollution = round((pollution - 50) * - 0.0085, 2) # The less you have the better
 
     # Each % increases / decreases max population by 0.45
-    productivity = round((productivity - 50) * 0.009, 2) # The less you have the better
+    productivity = round((productivity - 50) * 0.009, 2) # The more you have the better
 
     maxPop += (maxPop * happiness) + (maxPop * pollution)
     maxPop = round(maxPop)
