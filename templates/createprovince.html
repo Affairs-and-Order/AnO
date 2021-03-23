@@ -21,7 +21,7 @@
                 <div class="templatedivflex2left">
                     <form action="/createprovince" method="POST">
                         <div class="infodiv">
-                            <ul class="resourceparent">Your next province costs <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />{{ price }}</ul>
+                            <ul class="resourceparent">Your next province costs <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />{{ price | commas }}</ul>
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left">
 
