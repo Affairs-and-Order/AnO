@@ -102,18 +102,25 @@
                         <tr>
                             {% if leaders|length == 0%}
                             <td>Leaders:</td>
-                            <td>0</td> {% endif %} {% if leaders|length
-                            < 2%} <td>Leader:</td>
-                                <td><a href="/country/id={{ leaders[0] }}">{{ leaderNames[0] }}</a></td>
+                            <td>0</td>
+                            {% endif %}
+                            {% if leaders|length < 2%}
+                                <td>Leader:</td>
+                                <td><a href="/country/id={{ leaders[0][0] }}">{{ leaders[0][1] }}</a></td>
                                 {% else %}
                                 <td>Leaders:</td>
                                 <td>
-                                    {% for leader_id in leaders %} {% if leader_id == leaders[-1] %}
-                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}</a> {% else %}
-                                    <a href="/country/id={{ leader_id }}">{{ leaderNames[leaders.index(leader_id)] }}, </a> {% endif %} {% endfor %}
+                                    {% for leader_id, username in leaders %}
+                                        {% if leader_id == leaders[leaders|length-1][0] %}
+                                        <a href="/country/id={{ leader_id }}">{{ username }}</a>
+                                        {% else %}
+                                        <a href="/country/id={{ leader_id }}">{{ username }}, </a>
+                                        {% endif %}
+                                    {% endfor %}
                                 </td>
                                 {% endif %}
                         </tr>
+                        <!--
                         <tr>
                             <td>Deputy Leaders:</td>
                             <td>[[deputy leaders]]</td>
@@ -122,11 +129,11 @@
                             <td>Ministers:</td>
                             <td>[[ministers]]</td>
                         </tr>
+                        -->
                         <tr>
                             <td>Members:</td>
                             <td>
-                                {% for member_id in members %} {% if member_id == members[-1] %}
-                                <a href="#members">{{ members[0] }} </a> {% endif %} {% endfor %}
+                                <a href="#members">{{ members|length }}</a>
                             </td>
                         </tr>
                         <tr>
@@ -254,27 +261,27 @@
                     <th><span class="material-icons-outlined">
                     outlined_flag
                     </span>Name</th>
+                    <th>Role</th>
                     <th><span class="material-icons-outlined">
                         people_alt
                         </span>Influence</th>
                     <th><span class="material-icons-outlined">
                         account_balance
                         </span>Provinces</th>
-                    <th>Role</th>
+                    {% for member_id, username, role in members %}
                     <tr>
                         <td>
-                            {% for member_id in members %} {% if member_id == members[-1] %}
-                            <a href="/country/id={{ member_id }}">{{ member_names[members.index(member_id)] }}</a> {% else %}
-                            <a href="/country/id={{ member_id }}">{{ member_names[members.index(member_id)] }}, </a> {% endif %} {% endfor %}
+                            <a href="/country/id={{ member_id }}">{{ username }}</a>
                         </td>
+                        <td>{{ role.capitalize() }}</td>
                         <td><span class="material-icons-outlined">
                             people_alt
                             </span>[[ Influence ]]</td>
                         <td><span class="material-icons-outlined">
                             account_balance
                             </span>[[ Provinces ]]</td>
-                        <td>[[ Role ]]</td>
                     </tr>
+                    {% endfor %}
                 </table>
             </div>
 

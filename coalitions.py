@@ -76,33 +76,16 @@ def coalition(colId):
         description = ""
 
     try:
-        db.execute("SELECT userId FROM coalitions WHERE role='leader' AND colId=(%s)", (colId,))
+        db.execute("SELECT coalitions.userId, users.username FROM coalitions INNER JOIN users ON coalitions.userId=users.id AND coalitions.role='leader' AND coalitions.colId=%s", (colId,))
         leaders = db.fetchall() # All coalition leaders ids
-        leaders = [item for t in leaders for item in t]
-
-        leader_names = []
-
-        for leader_id in leaders:
-            db.execute("SELECT username FROM users WHERE id=%s", (leader_id,))
-            leader_name = db.fetchone()[0]
-            leader_names.append(leader_name)
     except:
         leaders = []
-        leader_names = []
 
     try:
-        db.execute("SELECT userId FROM coalitions WHERE colId=%s", (colId,))
+        db.execute("SELECT coalitions.userId, users.username, coalitions.role FROM coalitions INNER JOIN users ON coalitions.userId=users.id AND coalitions.colId=%s", (colId,))
         members = db.fetchall() # All coalition leaders ids
-        members = [item for t in members for item in t]
-        member_names = []
-
-        for member_id in members:
-            db.execute("SELECT username FROM users WHERE id=%s", (member_id,))
-            member_name = db.fetchone()[0]
-            member_names.append(member_name)
     except:
         members = []
-        member_names = []
 
     try:
         db.execute("SELECT userId FROM coalitions WHERE userId=(%s)", (cId,))
@@ -301,14 +284,16 @@ def coalition(colId):
 
     connection.close()
 
+    print(members)
+
     return render_template("coalition.html", name=name, colId=colId, user_role=user_role,
         description=description, colType=colType, userInCol=userInCol,
         requests=requests, userInCurCol=userInCurCol, total_influence=total_influence,
-        average_influence=average_influence, leaderNames=leader_names, leaders=leaders,
+        average_influence=average_influence, leaders=leaders,
         flag=flag, bankRequests=bankRequests, active_treaties=active_treaties, bankRaw=bankRaw,
         ingoing_length=ingoing_length, active_length=active_length, member_roles=member_roles, 
         ingoing_treaties=ingoing_treaties, zip=zip, requestIds=requestIds,
-        members=members, member_names=member_names)
+        members=members)
 
 
 # Route for establishing a coalition
