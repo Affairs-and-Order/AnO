@@ -1,20 +1,10 @@
-{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %}
-
-{% block head %}
-{% if flag != None %}
-<meta property="og:image" content="/static/flags/{{ flag }}" />
-{% endif %}
+{% extends"layout.html"%} {% block title %} {{ username }} {% endblock %} {% block head %} {% if flag != None %}
+<meta property="og:image" content="/static/flags/{{ flag }}" /> {% endif %}
 <meta name="viewport" content="width=device-width, initial-scale=0.8">
-<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game">
+<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game"> {% if description != None %}
+<meta name="description" content="{{ description }}"> {% endif %}
 
-{% if description != None %}
-<meta name="description" content="{{ description }}">
-{% endif %}
-
-<meta name="description" content="{{ username }}'s country.">
-{% endblock %}
-
-{% block body %}
+<meta name="description" content="{{ username }}'s country."> {% endblock %} {% block body %}
 <div class="templatediv">
 
     <div class="templatedivtopper provincetopper">
@@ -65,10 +55,8 @@
             </div>
             <div class="templatedivflex2left" id="countrynews" onclick="countrynews()">
 
-                <h3 class="smallheader">News
-                  {% if news_amount != 0 %}
-                    <span class="menuflex2notification">{{news_amount}}</span>
-                  {% endif %}
+                <h3 class="smallheader">News {% if news_amount != 0 %}
+                    <span class="menuflex2notification">{{news_amount}}</span> {% endif %}
                 </h3>
                 <!--Hide when vising other nations-->
 
@@ -441,7 +429,7 @@
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ revenue["gross"]["consumer_goods"] | commas }}  ({{ cg_needed | commas }}) </td>
+                            <td>{{ revenue["gross"]["consumer_goods"] | commas }} ({{ cg_needed | commas }}) </td>
                         </tr>
                         <tr>
                             <td>Aluminum:</td>
@@ -558,17 +546,16 @@
                     <th>Date</th>
                 </tr>
                 {% for name, type, resource, amount, date in expenses %}
-                    <tr>
-                        <td>{{ name }}</td>
-                        <td>{{ type }}</td>
-                        <td>{{ resource }}</td>
-                        <td>{{ amount }}</td>
-                        <td>{{ date }}</td>
-                    </tr>
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ type }}</td>
+                    <td>{{ resource }}</td>
+                    <td>{{ amount }}</td>
+                    <td>{{ date }}</td>
+                </tr>
                 {% endfor %}
             </table>
-            {% endif %}
-        {% endif %}
+            {% endif %} {% endif %}
             <!--show this if user is in a coalition-->
             <!--
         <table class="templatetable">
@@ -657,22 +644,22 @@
         <!--News-->
         <div class="news" id="news">
             <style media="screen">
-              .dismiss-notification:hover {
-                cursor: pointer;
-              }
+                .dismiss-notification:hover {
+                    cursor: pointer;
+                }
             </style>
             <table class="templatetable">
                 {% for new in news %}
                 <tbody data-contain="{{new[2]}}">
-                  <tr>
-                    <th>
-                      <span class="material-icons-outlined">article</span>{{new[1]}}
-                      <span onclick="pop_from_page('/delete_news/{{new[2]}}', {{new[2]}})" class="material-icons-outlined dismiss-notification" style="color:red;position:absolute;right:2%;">highlight_off</span>
-                    </th>
-                  </tr>
-                  <tr>
-                    <td>{{ new[0] }}</td>
-                  </tr>
+                    <tr>
+                        <th>
+                            <span class="material-icons-outlined">article</span>{{new[1]}}
+                            <span onclick="pop_from_page('/delete_news/{{new[2]}}', {{new[2]}})" class="material-icons-outlined dismiss-notification" style="color:red;position:absolute;right:2%;">highlight_off</span>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>{{ new[0] }}</td>
+                    </tr>
                 </tbody>
                 {% endfor %}
             </table>
@@ -773,10 +760,10 @@
                         <div class="templatedivflex2left">
 
 
-                            <label for="countryLocation">Change location (WARNING: changing location will remove all industry buildings)</label>
+                            <label for="countryLocation">Change biome (WARNING: changing location will remove all industry buildings)</label>
                             <select class="templateselect" name="countryLocation">
 
-                                            <option value="none" class="templateoption" selected="selected">Location</option>
+                                            <option value="none" class="templateoption" selected="selected">Biomes</option>
                                             <option value="Tundra" class="templateoption">Tundra</option>
                                             <option value="Savanna" class="templateoption">Savanna</option>
                                             <option value="Desert" class="templateoption">Desert</option>
