@@ -313,13 +313,13 @@ def calc_pg(pId, rations):
         conn.rollback()
         productivity = 0
 
-    # Each % increases / decreases max population by 0.55
+    # Each % increases / decreases max population by 
     happiness = round((happiness - 50) * 0.012, 2) # The more you have the better
 
-    # Each % increases / decreases max population by 0.3
+    # Each % increases / decreases max population by 
     pollution = round((pollution - 50) * - 0.0085, 2) # The less you have the better
 
-    # Each % increases / decreases max population by 0.45
+    # Each % increases / decreases resource output by 
     productivity = round((productivity - 50) * 0.009, 2) # The more you have the better
 
     maxPop += (maxPop * happiness) + (maxPop * pollution)

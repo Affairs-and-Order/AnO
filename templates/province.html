@@ -155,53 +155,63 @@
                             </span>Province Information</th>
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td>
+                            <strong class="tooltipparent">
+                                <div class="tooltip">Every 20 citizens pay $1 of taxes</div><span class="material-icons-outlined">
                                 people_alt
-                            </span>Population:</td>
+                            </span>Population:</strong>
+                        </td>
                         <td>{{ province['population'] | commas }}</td>
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td><strong class="tooltipparent">
+                            <div class="tooltip">Each percent of happiness increases max population by 1.2%</div><span class="material-icons-outlined">
                                 sentiment_satisfied
-                            </span>Happiness:</td>
+                            </span>Happiness:</strong></td>
                         <td>{{ province['happiness'] }}%</td>
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td><strong class="tooltipparent">
+                            <div class="tooltip">Each percent of productivity increases resource output by x</div><span class="material-icons-outlined">
                                 arrow_circle_up
-                            </span>Productivity:</td>
+                            </span>Productivity:</strong></td>
                         <td>{{ province['productivity'] }}%</td>
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td><strong class="tooltipparent">
+                            <div class="tooltip">When consumer spending is 100%, tax income is increased by 120%</div><span class="material-icons-outlined">
                                 attach_money
-                            </span>Consumer Spending:</td>
+                            </span>Consumer Spending:</strong></td>
                         <td>{{ province['consumer_spending'] }}%</td>
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td><strong class="tooltipparent">
+                            <div class="tooltip">Each percent of pollution decreases max population 0.85%</div><span class="material-icons-outlined">
                                 emoji_transportation
-                            </span>Pollution:</td>
+                            </span>Pollution:</strong></td>
                         <td>{{ province['pollution'] }}%</td>
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td><strong class="tooltipparent">
+                            <div class="tooltip">Each city slot allows construction of an additional city infrastructure</div><span class="material-icons-outlined">
                                 business
-                            </span>City slots:</td>
+                            </span>City slots:</strong></td>
                         <td>{{ province['free_cityCount']}} / {{ province['cityCount'] }}</td>
                         <!-- how much you are using out of how much you have -->
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td><strong class="tooltipparent">
+                            <div class="tooltip">Each land slot allows construction of an additional land infrastructure</div><span class="material-icons-outlined">
                                 landscape
-                            </span>Land slots:</td>
+                            </span>Land slots:</strong></td>
                         <td>{{ province['free_land'] }} / {{ province['land'] }}</td>
                         <!-- how much you are using out of how much you have -->
                     </tr>
                     <tr>
-                        <td><span class="material-icons-outlined">
+                        <td><strong class="tooltipparent">
+                            <div class="tooltip">Electricity is required for certain infrastructure to function</div><span class="material-icons-outlined">
                             power
-                            </span>Electricity Consumption / Production:</td>
+                            </span>Electricity:</strong></td>
                         <td>{{ energy['consumption'] | commas }} / {{ energy['production'] | commas }}</td>
                         <!-- how much you have out of how much you need -->
                     </tr>

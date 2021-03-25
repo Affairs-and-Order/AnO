@@ -3013,9 +3013,32 @@ button {
     transition: all 0.3s;
 }
 
-.pinfotooltipparent {
-    cursor: pointer;
-    width: fit-content;
+.tooltipparent {
+    position: relative;
+    font-weight: initial;
+    cursor: default;
+    padding: 8px 0;
+}
+
+.tooltip {
+    position: absolute;
+    top: -60px;
+    transform: translateY(-60%);
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: var(--foregroundTwo);
+    color: var(--colorOne);
+    max-width: 300px;
+    width: max-content;
+    transition: all 0.3s;
+    pointer-events: none;
+}
+
+.tooltipparent:hover .tooltip {
+    opacity: 1;
+    top: -40px;
+    transform: translateY(-60%);
+    box-shadow: rgb(0 0 0 / 15%) 0 12px 22px 2px, rgb(0 0 0 / 6%) 0 12px 12px;
 }
 
 
