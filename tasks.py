@@ -325,27 +325,23 @@ def calc_pg(pId, rations):
     maxPop += (maxPop * happiness) + (maxPop * pollution)
     maxPop = round(maxPop)
 
-    if maxPop < 1000000: # If max population is less than 1M
-        maxPop = 1000000 # Make it 1M
+    if maxPop < 1000000:
+        maxPop = 1000000
 
-    # Default rations increase
-    rations_increase = 1
-
+    rations_increase = -1 # Default rations increase. If user has no rations it will decrease by 1% of maxPop 
     rations_needed = curPop // variables.RATIONS_PER
-
     rations_needed_percent = rations / rations_needed
     if rations_needed_percent > 1:
         rations_needed_percent = 1
         
-    rations_increase += round(rations_needed_percent * 1, 2)
+    rations_increase += round(rations_needed_percent * 2, 2)
 
     # Calculates the new rations of the player
-    if rations > rations_needed:
-        new_rations = rations - rations_needed
-    else:
+    new_rations = rations - rations_needed
+    if new_rations < 0:
         new_rations = 0
 
-    newPop = (maxPop // 100) * rations_increase
+    newPop = (maxPop // 100) * rations_increase  # 1% of maxPop * -1 to 1
     fullPop = curPop + newPop
 
     return new_rations, fullPop
