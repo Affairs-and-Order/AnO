@@ -534,21 +534,43 @@
                 </div>
             </div>
 
-            <h2 class="templatecontentheaderleft">Statistics</h2>
-            <div style="margin-left: 50px;" >
-                <p>Electricity upkeep costs: x</p>
-                <p>Retail upkeep costs: x</p>
-                <p>Public works upkeep costs: x</p>
-                
-                <p>Military upkeep costs: x</p>
-                <p>Industry upkeep costs: x</p>
-                <p>Processing upkeep costs: x</p>
+            <h2 class="templatecontentheaderleft">Upkeep Costs</h2>
+            <div>
+                <table class="templatetable">
+                    <tr>
+                        <th>Infrastructure</th>
+                    </tr>
+                    <tr>
+                        <td>Electricity:</td>
+                        <td>x</td>
+                    </tr>
+                    <tr>
+                        <td>Retail:</td>
+                        <td>x</td>
+                    </tr>
+                    <tr>
+                        <td>Public Works:</td>
+                        <td>x</td>
+                    </tr>
+                    <tr>
+                        <td>Military:</td>
+                        <td>x</td>
+                    </tr>
+                    <tr>
+                        <td>industry:</td>
+                        <td>x</td>
+                    </tr>
 
+                    <tr>
+                        <td>Processing:</td>
+                        <td>x</td>
+                    </tr>
+                </table>
             </div>
 
             {% if expenses != [] %}
             <h2 class="templatecontentheaderleft">Expenses</h2>
-            <div class="templateoutertablediv inverttable">
+            <div class="templateoutertablediv">
                 <table class="templatetable templatetable2">
                     <tr>
                         <th>Name</th>
@@ -568,9 +590,7 @@
                     {% endfor %}
                 </table>
             </div>
-            {% endif %}
-            
-            {% endif %}
+            {% endif %} {% endif %}
             <!--show this if user is in a coalition-->
             <!--
         <table class="templatetable">
