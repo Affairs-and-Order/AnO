@@ -13,6 +13,112 @@ load_dotenv()
 app.config['UPLOAD_FOLDER'] = 'static/flags'
 app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 # 2 Mb limit
 
+def get_revenue(cId):
+
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    cg_needed = cg_need(cId)
+
+    db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
+    provinces_list = db.fetchall()
+
+    revenue = {
+        "gross": {},
+        "net": {}
+    }
+
+    infra = variables.INFRA
+    resources = variables.RESOURCES
+    resources.append("money")
+    for resource in resources:
+        revenue["gross"][resource] = 0
+        revenue["net"][resource] = 0
+
+    for province_id in provinces_list:
+        province_id = province_id[0]
+
+        buildings = variables.BUILDINGS
+
+        for building in buildings:
+            building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
+            db.execute(building_query, (province_id,))
+            building_count = db.fetchone()[0]
+
+            # Gross and initial net calculations
+            try:
+                plus_data = list(infra[f'{building}_plus'].items())[0]
+
+                plus_resource = plus_data[0]
+                plus_amount = plus_data[1]
+
+                if building == "farms":
+
+                    db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                    land = db.fetchone()[0]
+
+                    plus_amount *= land
+
+                total = building_count * plus_amount
+                revenue["gross"][plus_resource] += total
+                revenue["net"][plus_resource] += total
+            except:
+                pass
+
+            operating_costs = infra[f'{building}_money'] * building_count
+            revenue["net"]["money"] -= operating_costs
+
+            # Net removal from initial net
+            try:
+                
+                convert_minus = infra[f'{building}_convert_minus']
+
+                for data in convert_minus:
+
+                    data = list(data.items())[0]
+
+                    minus_resource = data[0]
+                    minus_amount = data[1]
+
+                    total = building_count * minus_amount
+
+                    revenue["net"][minus_resource] -= total
+            except:
+                pass
+
+    db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
+    current_cg = db.fetchone()[0]
+    current_cg += revenue["gross"]["consumer_goods"]
+
+    ti_money, ti_cg = calc_ti(cId, current_cg)
+
+    # Updates money
+    db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
+    current_money = db.fetchone()[0]
+
+    revenue["gross"]["money"] += ti_money - current_money
+    revenue["net"]["money"] += ti_money - current_money
+
+    if current_cg - ti_cg == cg_needed:
+        revenue["net"]["consumer_goods"] = cg_needed * -1 + revenue["gross"]["consumer_goods"]
+    elif current_cg > ti_cg:
+        revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
+
+    db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+    current_rations = db.fetchone()[0]
+
+    prod_rations = revenue["gross"]["rations"]
+    new_rations = next_turn_rations(cId, prod_rations)
+    revenue["net"]["rations"] = new_rations - current_rations
+
+    return revenue
+
 def next_turn_rations(cId, prod_rations):
 
     conn = psycopg2.connect(
@@ -175,100 +281,7 @@ def country(cId):
     # Revenue stuff
     if status:
 
-        db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
-        provinces_list = db.fetchall()
-
-        revenue = {
-            "gross": {},
-            "net": {}
-        }
-
-
-        infra = variables.INFRA
-        resources = variables.RESOURCES
-        resources.append("money")
-        for resource in resources:
-            revenue["gross"][resource] = 0
-            revenue["net"][resource] = 0
-
-        for province_id in provinces_list:
-            province_id = province_id[0]
-
-            buildings = variables.BUILDINGS
-
-            for building in buildings:
-                building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
-                db.execute(building_query, (province_id,))
-                building_count = db.fetchone()[0]
-
-                # Gross and initial net calculations
-                try:
-                    plus_data = list(infra[f'{building}_plus'].items())[0]
-
-                    plus_resource = plus_data[0]
-                    plus_amount = plus_data[1]
-
-                    if building == "farms":
-
-                        db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
-                        land = db.fetchone()[0]
-
-                        plus_amount *= land
-
-                    total = building_count * plus_amount
-                    revenue["gross"][plus_resource] += total
-                    revenue["net"][plus_resource] += total
-                except:
-                    pass
-
-                operating_costs = infra[f'{building}_money'] * building_count
-                revenue["net"]["money"] -= operating_costs
-
-                # Net removal from initial net
-                try:
-                    
-                    convert_minus = infra[f'{building}_convert_minus']
-
-                    for data in convert_minus:
-
-                        data = list(data.items())[0]
-
-                        minus_resource = data[0]
-                        minus_amount = data[1]
-
-                        total = building_count * minus_amount
-
-                        revenue["net"][minus_resource] -= total
-                except:
-                    pass
-
-        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
-        current_cg = db.fetchone()[0]
-        try:
-            current_cg += revenue["gross"]["consumer_goods"]
-        except:
-            print(f"Couldn't get gross.consumer_goods for id {cId}")
-
-        ti_money, ti_cg = calc_ti(cId, current_cg)
-
-        # Updates money
-        db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
-        current_money = db.fetchone()[0]
-
-        revenue["gross"]["money"] += ti_money - current_money
-        revenue["net"]["money"] += ti_money - current_money
-
-        if current_cg - ti_cg == cg_needed:
-            revenue["net"]["consumer_goods"] = cg_needed * -1 + revenue["gross"]["consumer_goods"]
-        elif current_cg > ti_cg:
-            revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
-
-        db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
-        current_rations = db.fetchone()[0]
-
-        prod_rations = revenue["gross"]["rations"]
-        new_rations = next_turn_rations(cId, prod_rations)
-        revenue["net"]["rations"] = new_rations - current_rations
+        revenue = get_revenue(cId)
         
     else:
         revenue = {}
