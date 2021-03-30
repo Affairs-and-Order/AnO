@@ -534,6 +534,18 @@
                 </div>
             </div>
 
+            <h2 class="templatecontentheaderleft">Statistics</h2>
+            <div style="margin-left: 50px;" >
+                <p>Electricity upkeep costs: x</p>
+                <p>Retail upkeep costs: x</p>
+                <p>Public works upkeep costs: x</p>
+                
+                <p>Military upkeep costs: x</p>
+                <p>Industry upkeep costs: x</p>
+                <p>Processing upkeep costs: x</p>
+
+            </div>
+
             {% if expenses != [] %}
             <h2 class="templatecontentheaderleft">Expenses</h2>
             <div class="templateoutertablediv inverttable">
@@ -556,7 +568,9 @@
                     {% endfor %}
                 </table>
             </div>
-            {% endif %} {% endif %}
+            {% endif %}
+            
+            {% endif %}
             <!--show this if user is in a coalition-->
             <!--
         <table class="templatetable">
