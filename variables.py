@@ -96,7 +96,7 @@ INFRA = {
     'universities_effect': [{'productivity': 9}, {'happiness': 6}],
     'universities_money': 175000,
 
-    'monorails_effect': [{'productivity': 12}],
+    'monorails_effect': [{'productivity': 18}],
     'monorails_effect_minus': {'pollution': 20},
     'monorails_money': 510000,
     ###################
@@ -117,7 +117,7 @@ INFRA = {
 
     'pumpjacks_money': 10000, # Costs $10k
     'pumpjacks_plus': {'oil': 23},
-    'pumpjacks_effect': [{'pollution': 2}],
+    'pumpjacks_effect': [{'pollution': 1.5}],
 
     'coal_mines_money': 10000, # Costs $10k
     'coal_mines_plus': {'coal': 26},
