@@ -77,7 +77,7 @@ INFRA = {
     'banks_plus': {'consumer_goods': 25},
     'banks_money': 220000, # Costs $320k
 
-    'malls_plus': {'consumer_goods': 34},
+    'malls_plus': {'consumer_goods': 36},
     'malls_effect': [{'pollution': 10}],
     'malls_money': 450000, # Costs $750k
     ##############
