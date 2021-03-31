@@ -93,11 +93,11 @@ INFRA = {
     'hospitals_effect': {'happiness': 9},   
     'hospitals_money': 90000,
 
-    'universities_effect': [{'productivity': 6}, {'happiness': 6}],
+    'universities_effect': [{'productivity': 9}, {'happiness': 6}],
     'universities_money': 175000,
 
     'monorails_effect': [{'productivity': 12}],
-    'monorails_effect_minus': {'pollution': 20}, # Removes 10 pollution
+    'monorails_effect_minus': {'pollution': 20},
     'monorails_money': 510000,
     ###################
 
