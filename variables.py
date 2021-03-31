@@ -45,6 +45,7 @@ INFRA = {
     'coal_burners_convert_minus': [{'coal': 48}], # Resource upkeep cost
     'coal_burners_money': 12000, # Monetary upkeep cost
     'coal_burners_effect': [{'pollution': 9}], # Pollution amount added
+    
     'oil_burners_plus': {'energy': 4},
     'oil_burners_convert_minus': [{'oil': 56}],
     'oil_burners_money': 18000,
