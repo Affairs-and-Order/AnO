@@ -155,7 +155,7 @@
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left">
-                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" placeholder="{{ amount | commas }}" required/>
+                                    <input class="loginsignupinput" autocomplete="on" name="amount_{{ offer_id }}" type="text" value="{{ amount }}" placeholder="{{ amount | commas }}" required/>
                                 </div>
                                 <div class="templatedivflex2left">
                                     {% if type == "sell" %}

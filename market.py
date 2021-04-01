@@ -186,7 +186,7 @@ def buy_market_offer(offer_id):
     db = connection.cursor()
 
     cId = session["user_id"]
-    amount_wanted = int(request.form.get(f"amount_{offer_id}"))
+    amount_wanted = int(request.form.get(f"amount_{offer_id}").replace(",", ""))
 
     db.execute("SELECT resource, amount, price, user_id FROM offers WHERE offer_id=(%s)", (offer_id,))
     resource, total_amount, price_for_one, seller_id = db.fetchone()

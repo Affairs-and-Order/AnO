@@ -24,6 +24,16 @@ ENERGY_CONSUMERS = [
 
 TRADE_TYPES = ["buy", "sell"]
 
+INFRA_TYPES = ["electricity", "retail", "public_works", "military", "industry", "processing"]
+INFRA_TYPE_BUILDINGS = {
+    "electricity": [],
+    "retail": [],
+    "public_works": [],
+    "military": [],
+    "industry": [],
+    "processing": []
+}
+
 BUILDINGS = [
     'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
     'gas_stations', 'general_stores', 'farmers_markets', 'malls',

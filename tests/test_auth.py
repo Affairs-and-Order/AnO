@@ -14,6 +14,20 @@ confirmation = password
 key = "testkey12345"
 continent = "1"
 
+def delete_user(username, email):
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = conn.cursor()
+
+    db.execute("DELETE FROM users WHERE username=%s AND email=%s", (username, email))
+
+    return True
+
 def register():
 
     data = {
@@ -34,7 +48,7 @@ def register():
 
     db = conn.cursor()
 
-    db.execute("DELETE FROM users WHERE username=%s AND email=%s", (username, email))
+    delete_user(username, email)
 
     db.execute("INSERT INTO keys (key) VALUES (%s)", (key,))
     conn.commit()
