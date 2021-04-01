@@ -7,6 +7,9 @@ load_dotenv()
 import os
 from celery.schedules import crontab
 import datetime
+import random
+import string
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -151,6 +154,22 @@ def method_not_allowed(error):
 
     message = f"Sorry, this method is not allowed! The correct method is {correct_method}"
     return render_template("error.html", code=405, message=message)
+
+def generate_error_code():
+    numbers = 20
+    code = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(numbers))
+    time = int(datetime.now().timestamp())
+    full = f"{code}-{time}"
+    return full
+
+# Handling default error
+@app.errorhandler(500)
+def invalid_server_error(error):
+    error_message = "Invalid Server Error. Sorry about that."
+    error_code = generate_error_code()
+    print(f"[ERROR! ^^^] [{error_code}]")
+
+    return render_template("error.html", code=500, message=error_message, error_code=error_code)
 
 # Jinja2 filter to add commas to numbers
 @app.template_filter()

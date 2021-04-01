@@ -187,7 +187,7 @@ def cg_need(user_id):
 @app.route("/country/id=<cId>")
 @login_required
 def country(cId):
-
+    
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),

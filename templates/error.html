@@ -13,6 +13,12 @@
         <br /><br />
         <p class="landingpagecontent center">{{ message }}</p>
         <br />
+        {% if error_code %}
+        <p class="landingpagecontent center">Please report this bug and send the following id:</p>
+        <br/>
+        <p class="landingpagecontent center">{{ error_code }}</p>
+        <br/>
+        {% endif %}
         <div class="templatedivflex2 divflex2center">
             <div class="templatedivflex2left">
 
