@@ -55,7 +55,7 @@ INFRA = {
     'coal_burners_convert_minus': [{'coal': 48}], # Resource upkeep cost
     'coal_burners_money': 12000, # Monetary upkeep cost
     'coal_burners_effect': [{'pollution': 9}], # Pollution amount added
-    
+
     'oil_burners_plus': {'energy': 4},
     'oil_burners_convert_minus': [{'oil': 56}],
     'oil_burners_money': 18000,
@@ -136,18 +136,23 @@ INFRA = {
 
     'bauxite_mines_money': 8000, # Costs $8k
     'bauxite_mines_plus': {'bauxite': 20},
+    'bauxite_mines_effect': [{'pollution': 1.5}],
 
     'copper_mines_money': 8000, # Costs $8k
     'copper_mines_plus': {'copper': 32},
+    'copper_mines_effect': [{'pollution': 1.5}],
 
     'uranium_mines_money': 18000, # Costs $18k
     'uranium_mines_plus': {'uranium': 12},
+    'uranium_mines_effect': [{'pollution': 1}],
 
     'lead_mines_money': 12000,
     'lead_mines_plus': {'lead': 18},
+    'lumber_mills_effect': [{'pollution': 1.5}],
 
     'iron_mines_money': 12000,
     'iron_mines_plus': {'iron': 25},
+    'iron_mines_effect': [{'pollution': 1.5}],
 
     'lumber_mills_money': 7500,
     'lumber_mills_plus': {'lumber': 32},
