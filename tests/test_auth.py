@@ -2,9 +2,8 @@ import requests
 import psycopg2
 import os
 from dotenv import load_dotenv
+from init import BASE_URL, main_session
 load_dotenv()
-
-website_url = "http://127.0.0.1:5000"
 
 # Auth test config
 username = "test_user1234"
@@ -14,7 +13,7 @@ confirmation = password
 key = "testkey12345"
 continent = "1"
 
-s = requests.Session()
+deleted_session = requests.Session()
 
 def delete_user(username, email):
     conn = psycopg2.connect(
@@ -26,10 +25,10 @@ def delete_user(username, email):
 
     db = conn.cursor()
 
-    if s.cookies.get_dict() == {}:
+    if deleted_session.cookies.get_dict() == {}:
         return False
 
-    s.post(f"{website_url}/delete_own_account")
+    deleted_session.post(f"{BASE_URL}/delete_own_account")
 
     try:
         db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", 
@@ -63,10 +62,10 @@ def register():
     db.execute("INSERT INTO keys (key) VALUES (%s)", (key,))
     conn.commit()
 
-    response = s.post(f"{website_url}/signup", data=data, allow_redirects=True)
+    deleted_session.post(f"{BASE_URL}/signup", data=data, allow_redirects=True)
 
-    print(response.headers)
-    print(s.cookies.get_dict())
+    if deleted_session.cookies.get_dict() == {}:
+        return False
 
     try:
         db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", 
@@ -85,10 +84,8 @@ def login():
         'rememberme': 'on'
     }
 
-    response = requests.post(f"{website_url}/login/", data=data, allow_redirects=False)
-    try:
-        response.headers["set-cookie"]
-    except:
+    main_session.post(f"{BASE_URL}/login/", data=data, allow_redirects=False)
+    if main_session == {}:
         return False
 
     return True

@@ -1,13 +1,14 @@
 import requests
+from init import BASE_URL, main_session
 
-routes = ["/coalitions", "/countries"]
+def invalid():
+    routes = ["/coalitions", "/countries", "/provinces"]
+    for route in routes:
+        r = requests.get(f"{BASE_URL}{route}")
+        stc = r.status_code
+        if stc == 400:
+            return route
+    return False
 
-base_url = "http://127.0.0.1:5000"
-
-for route in routes:
-    r = requests.get(f"{base_url}{route}")
-    stc = r.status_code
-    if stc == 400:
-        print(f"Error while accessing {route}")
-
-
+def test_invalid():
+    assert invalid() == False

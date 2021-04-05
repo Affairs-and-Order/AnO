@@ -339,10 +339,16 @@ def cg_need(user_id):
 
     return cg_needed
 
+@app.route("/my_country")
+@login_required
+def my_country():
+    user_id = session["user_id"]
+    return redirect(f"/country/id={user_id}")
+
 @app.route("/country/id=<cId>")
 @login_required
 def country(cId):
-    
+
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
