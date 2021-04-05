@@ -26,18 +26,20 @@ TRADE_TYPES = ["buy", "sell"]
 
 INFRA_TYPES = ["electricity", "retail", "public_works", "military", "industry", "processing"]
 INFRA_TYPE_BUILDINGS = {
-    "electricity": [],
-    "retail": [],
-    "public_works": [],
-    "military": [],
-    "industry": [],
-    "processing": []
+    "electricity": ["coal_burners", "oil_burners", "hydro_dams", "nuclear_reactors", "solar_fields"],
+    "retail": ['gas_stations', 'general_stores', 'farmers_markets', 'malls', 'banks'],
+    "public_works": ['hospitals', 'libraries', 'universities', 'city_parks','monorails'],
+    "military": ["army_bases", "harbours", "aerodomes", "admin_buildings", "silos"],
+    "industry": ["farms", "pumpjacks", "coal_mines", "bauxite_mines", "copper_mines", "uranium_mines", "lead_mines", "iron_mines", 'lumber_mills',],
+    "processing": [ "component_factories", "steel_mills", "ammunition_factories", "aluminium_refineries", "oil_refineries",]
 }
 
 BUILDINGS = [
     'coal_burners', 'oil_burners', 'hydro_dams', 'nuclear_reactors', 'solar_fields',
-    'gas_stations', 'general_stores', 'farmers_markets', 'malls',
-    'banks', 'hospitals', 'libraries', 'universities',
+
+    'gas_stations', 'general_stores', 'farmers_markets', 'malls', 'banks',
+    
+    'hospitals', 'libraries', 'universities',
 
     "farms", "pumpjacks", "coal_mines", "bauxite_mines", "copper_mines", "uranium_mines",
     "lead_mines", "iron_mines", 'lumber_mills',

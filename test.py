@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import psycopg2
 from collections import defaultdict
+from variables import INFRA, INFRA_TYPE_BUILDINGS
 
 def get_econ_statistics(cId):
 
@@ -100,8 +101,66 @@ def get_econ_statistics(cId):
         total["aluminium_refineries"] += aluminium_refineries
         total["oil_refineries"] += oil_refineries
 
-    for k, v in total.items():
-        if v != 0:
-            print(k,v)
+    expenses = {}
+    expenses = defaultdict(lambda: defaultdict(lambda: 0), expenses)
+    
+    def get_unit_type(unit):
+        for type_name, buildings in INFRA_TYPE_BUILDINGS.items():
+            if unit in buildings: return type_name
 
-get_econ_statistics(1)
+    def check_for_resource_upkeep(unit, amount):
+        try:
+            convert_minus = list(INFRA[f'{unit}_convert_minus'][0].items())[0]
+            minus = convert_minus[0]
+            minus_amount = convert_minus[1] * amount
+        except KeyError:
+            minus, minus_amount = [None, None]
+            convert_minus = []
+            return False
+
+        if minus != None:
+            unit_type = get_unit_type(unit)
+            expenses[unit_type][minus] += minus_amount
+        return True
+
+    def check_for_monetary_upkeep(unit, amount):
+        operating_costs = int(INFRA[f'{unit}_money']) * amount
+        unit_type = get_unit_type(unit)
+        expenses[unit_type]["money"] += operating_costs
+
+    for unit, amount in total.items():
+        if amount != 0:
+            check_for_resource_upkeep(unit, amount)
+            check_for_monetary_upkeep(unit, amount)
+
+    """
+    for k, v in expenses.items():
+        for f, g in v.items():
+            print(k, f, g)
+    """
+
+    return expenses
+
+def format_econ_statistics(statistics):
+
+    formatted = {}
+    formatted = defaultdict(lambda:"", formatted)
+
+    for unit_type, unit_type_data in statistics.items():
+        unit_type_data = list(unit_type_data.items())
+        idx = 0
+        for resource, amount in unit_type_data:
+
+            if idx != len(unit_type_data)-1:
+                expense_string = f"{amount} {resource}, "
+            else:
+                expense_string = f"{amount} {resource}"
+
+            formatted[unit_type] += expense_string
+            idx += 1
+
+    return formatted
+
+statistics = get_econ_statistics(1)
+formatted_statistics = format_econ_statistics(statistics)
+print(formatted_statistics)
