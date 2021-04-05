@@ -41,20 +41,23 @@ def get_econ_statistics(cId):
     # This is a pretty bad way of doing this, but the best
     # I thought of in the time given
     # TODO: find way to do this that would take less LOC
-    db.execute(
-    """
-    SELECT
-    coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields,
-    gas_stations, general_stores, farmers_markets, malls, banks,
-    city_parks, hospitals, libraries, universities, monorails,
-    army_bases, harbours, aerodomes, admin_buildings, silos,
-    farms, pumpjacks, coal_mines, bauxite_mines,
-    copper_mines, uranium_mines, lead_mines, iron_mines,
-    lumber_mills, component_factories, steel_mills, ammunition_factories,
-    aluminium_refineries, oil_refineries
-    FROM proInfra WHERE id IN %s
-    """, (provinces,))
-    province_units = db.fetchall()
+    try:
+        db.execute(
+        """
+        SELECT
+        coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields,
+        gas_stations, general_stores, farmers_markets, malls, banks,
+        city_parks, hospitals, libraries, universities, monorails,
+        army_bases, harbours, aerodomes, admin_buildings, silos,
+        farms, pumpjacks, coal_mines, bauxite_mines,
+        copper_mines, uranium_mines, lead_mines, iron_mines,
+        lumber_mills, component_factories, steel_mills, ammunition_factories,
+        aluminium_refineries, oil_refineries
+        FROM proInfra WHERE id IN %s
+        """, (provinces,))
+        province_units = db.fetchall()
+    except:
+        province_units = []
 
     for units in province_units:
 
@@ -727,7 +730,10 @@ def delete_own_account():
     db.execute("DELETE FROM reparation_tax WHERE loser=%s OR winner=%s", (cId, cId))
     db.execute("DELETE FROM peace WHERE author=%s", (cId,))
 
-    coalition_role = get_user_role(cId)
+    try:
+        coalition_role = get_user_role(cId)
+    except:
+        coalition_role = None
     if coalition_role != "leader":
         pass
     else:

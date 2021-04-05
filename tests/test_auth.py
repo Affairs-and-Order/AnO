@@ -7,12 +7,14 @@ load_dotenv()
 website_url = "http://127.0.0.1:5000"
 
 # Auth test config
-username = "test_user123"
-email = "affairsandorder@test.com"
+username = "test_user1234"
+email = "affairsandorder@teste.com"
 password = "testpassword12345"
 confirmation = password
 key = "testkey12345"
 continent = "1"
+
+s = requests.Session()
 
 def delete_user(username, email):
     conn = psycopg2.connect(
@@ -24,9 +26,19 @@ def delete_user(username, email):
 
     db = conn.cursor()
 
-    db.execute("DELETE FROM users WHERE username=%s AND email=%s", (username, email))
+    if s.cookies.get_dict() == {}:
+        return False
 
-    return True
+    s.post(f"{website_url}/delete_own_account")
+
+    try:
+        db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", 
+        (username, email))
+        db.fetchone()[0]
+    except:
+        return True
+
+    return False
 
 def register():
 
@@ -48,17 +60,13 @@ def register():
 
     db = conn.cursor()
 
-    delete_user(username, email)
-
     db.execute("INSERT INTO keys (key) VALUES (%s)", (key,))
     conn.commit()
 
-    response = requests.post(f"{website_url}/signup", data=data, allow_redirects=False)
+    response = s.post(f"{website_url}/signup", data=data, allow_redirects=True)
 
-    try:
-        response.headers["set-cookie"]
-    except KeyError:
-        return False
+    print(response.headers)
+    print(s.cookies.get_dict())
 
     try:
         db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", 
@@ -90,3 +98,6 @@ def test_register():
 
 def test_login():
     assert login() == True
+
+def test_deletion():
+    assert delete_user(username, email) == True
