@@ -166,20 +166,25 @@ INFRA = {
     'component_factories_money': 220000, # Costs $220k
     'component_factories_convert_minus': [{'copper': 20}, {'steel': 10}, {'aluminium': 15}],
     'component_factories_plus': {'components': 5},
+    'component_factories_effect': [{'pollution': 5}],
 
     'steel_mills_money': 180000,
     'steel_mills_convert_minus': [{'coal': 35}, {'iron': 35}],
     'steel_mills_plus': {'steel': 15},
+    'steel_mills_effect': [{'pollution': 4}],
 
     'ammunition_factories_money': 140000,
     'ammunition_factories_convert_minus': [{'copper': 10}, {'lead': 20}],
     'ammunition_factories_plus': {'ammunition': 10},
+    'ammunition_factories_effect': [{'pollution': 3}],
 
     'aluminium_refineries_money': 150000,
     'aluminium_refineries_convert_minus': [{'bauxite': 15}],
     'aluminium_refineries_plus': {'aluminium': 12},
+    'aluminium_refineries_effect': [{'pollution': 3}],
 
     'oil_refineries_money': 160000,
     'oil_refineries_convert_minus': [{'oil': 20}],
-    'oil_refineries_plus': {'gasoline': 8}
+    'oil_refineries_plus': {'gasoline': 8},
+    'oil_refineries_effect': [{'pollution': 6}]
 }
