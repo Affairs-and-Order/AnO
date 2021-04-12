@@ -29,10 +29,10 @@
                 <tr>
                     <!-- Type -->
                     {% if type == "buy" %}
-                    <td>Buying</a>
+                    <td>Buying
                     </td>
                     {% elif type == "sell" %}
-                    <td>Selling</a>
+                    <td>Selling
                         {% endif %}
 
                         <!-- Resource -->
@@ -46,7 +46,7 @@
                             {% elif resource == "coal" %}
                             <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" />
                             {% elif resource == "lead" %}
-                            <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> 
+                            <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" />
                             {% elif resource == "bauxite" %}
                             <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" />
                             {% elif resource == "iron" %}
@@ -76,17 +76,17 @@
                         </td>
 
                         <!-- Price -->
-                        <td>
                             <div class="center fit">
+                              <td>
                                 <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
                                     />${{ total_price }} Total</div>
+                              </td>
                             </div>
-                        </td>
                         <!-- Delete button -->
                         <td>
-                            <form name="delete_offer" action="/delete_offer/{{ offer_id }}" method="POST">
+                            <form name="delete_offer{{ offer_id }}" action="/delete_offer/{{ offer_id }}" method="POST">
                                 <div class="templatedivflex2 divflex2center">
-                                    <span onclick="delete_offer.submit()" class="material-icons iconred">
+                                    <span onclick="delete_offer{{ offer_id }}.submit()" class="material-icons iconred">
                                         remove_circle_outline
                                     </span>
                                 </div>
@@ -96,7 +96,7 @@
                 {% endfor %}
             </table>
         </div>
-        {% endif %} 
+        {% endif %}
         {% if incoming_amount == 0 %}
         <!--if no offers-->
         <h2 class="templatecontentheadercenter">You have no incoming offers</h2>
@@ -119,10 +119,10 @@
                     <!-- Type -->
                     <td><a href="/country/id={{ offerer_id }}">{{ offerer_name }}</a></td>
                     {% if type == "buy" %}
-                    <td>Buying</a>
+                    <td>Buying
                     </td>
                     {% elif type == "sell" %}
-                    <td>Selling</a>
+                    <td>Selling
                         {% endif %}
 
                         <!-- Resource -->
