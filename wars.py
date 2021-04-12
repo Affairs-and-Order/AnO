@@ -774,12 +774,12 @@ def warResult():
 
                 # resource loot amount
                 if winner == attacker.user_id:
-         
+
                   # TODO: maybe include all resources here
                   lootable_resource = "gold"
                   db.execute("SELECT gold FROM stats WHERE id=(%s)", (defender.user_id,))
                   available_resource = db.fetchone()[0]
-                
+
                   # max lootable is 10% of available resources
                   loot = random.randint(0, available_resource*0.1)
                   attacker_result["loot"] = {"money": loot}
@@ -859,59 +859,57 @@ def declare_war():
     # CONSTANT VALUE
     WAR_TYPES = ["Raze", "Sustained", "Loot"]
 
-    connection = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
+    try:
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
 
-    db = connection.cursor()
+        db = connection.cursor()
 
-    # Selects the country that the user is attacking
-    defender = request.form.get("defender") # the problem is that declaring war through /country/id does not have a defender tag, but declaring war normally does
-    war_message = request.form.get("description")
-    war_type = request.form.get("warType")
+        # Selects the country that the user is attacking
+        defender = request.form.get("defender") # the problem is that declaring war through /country/id does not have a defender tag, but declaring war normally does
+        war_message = request.form.get("description")
+        war_type = request.form.get("warType")
 
-    attacker = Nation(int(session["user_id"]))
-    defender = Nation(int(defender))
+        attacker = Nation(int(session["user_id"]))
+        defender = Nation(int(defender))
 
-    if attacker.id == defender.id:
-        return error(400, "Can't declare war on yourself")
+        if attacker.id == defender.id:
+            return error(400, "Can't declare war on yourself")
 
-    db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, attacker.id,))
-    already_war_with = db.fetchall()
+        db.execute("SELECT attacker, defender FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND peace_date IS NULL", (attacker.id, attacker.id,))
+        already_war_with = db.fetchall()
 
-    if ((attacker.id, defender.id) in already_war_with) or ((defender.id, attacker.id) in already_war_with):
-        return error(400, "You're already in a war with this country!")
+        if ((attacker.id, defender.id) in already_war_with) or ((defender.id, attacker.id) in already_war_with):
+            return error(400, "You're already in a war with this country!")
 
-    # Check province difference
-    attacker_provinces = attacker.get_provinces()["provinces_number"]
-    defender_provinces = defender.get_provinces()["provinces_number"]
+        # Check province difference
+        attacker_provinces = attacker.get_provinces()["provinces_number"]
+        defender_provinces = defender.get_provinces()["provinces_number"]
 
-    # TODO: might put this into abs() because if defender_provinces > attacker_provinces then the > 1 won't be true
-    if (attacker_provinces - defender_provinces > 1):
-        return error(400, "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
-    if (defender_provinces - attacker_provinces > 3):
-        return error(400, "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
+        # TODO: might put this into abs() because if defender_provinces > attacker_provinces then the > 1 won't be true
+        if (attacker_provinces - defender_provinces > 1):
+            return error(400, "That country has too few provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
+        if (defender_provinces - attacker_provinces > 3):
+            return error(400, "That country has too many provinces for you! You can only declare war on countries within 3 provinces more or 1 less province than you.")
 
-    # Check if nation currently at peace with another nation
-    db.execute("SELECT MAX(peace_date) FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND (attacker=(%s) OR defender=(%s))", (attacker.id, attacker.id, defender.id, defender.id))
-    current_peace = db.fetchone()
+        # Check if nation currently at peace with another nation
+        db.execute("SELECT MAX(peace_date) FROM wars WHERE (attacker=(%s) OR defender=(%s)) AND (attacker=(%s) OR defender=(%s))", (attacker.id, attacker.id, defender.id, defender.id))
+        current_peace = db.fetchone()
 
-    # 259200 = 3 days
-    if current_peace[0]:
-        if (current_peace[0]+259200) > time.time():
-            return error(403, "You can't declare war because truce has not expired!")
+        # 259200 = 3 days
+        if current_peace[0]:
+            if (current_peace[0]+259200) > time.time():
+                return error(403, "You can't declare war because truce has not expired!")
 
-    if war_type not in WAR_TYPES:
-        return error(400, "Invalid war type!")
+        if war_type not in WAR_TYPES:
+            return error(400, "Invalid war type!")
 
-    # except:
-    #     return error(500, "Something went wrong")
-
-    #     # Redirects the user to an error page
-    #     return error(400, "No such country")
+    except Exception:
+        return error(500, "Something went wrong")
 
     start_dates = time.time()
     db.execute("INSERT INTO wars (attacker, defender, war_type, agressor_message, start_date, last_visited) VALUES (%s, %s, %s, %s, %s, %s)",(attacker.id, defender.id, war_type, war_message, start_dates, start_dates))
