@@ -387,6 +387,13 @@ def population_growth(): # Function for growing population
 
     conn.close()
 
+def find_unit_category(unit):
+    categories = variables.INFRA_TYPE_BUILDINGS
+    for name, list in categories.items():
+        if unit in list:
+            return name
+    return False
+
 def generate_province_revenue(): # Runs each hour
 
     conn = psycopg2.connect(
@@ -423,6 +430,8 @@ def generate_province_revenue(): # Runs each hour
 
         for unit in columns:
 
+            unit_category = find_unit_category(unit)
+
             try:
                 unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
                 db.execute(unit_amount_stat, (province_id,))
@@ -451,6 +460,14 @@ def generate_province_revenue(): # Runs each hour
                         convert_minus = []
 
                     operating_costs = int(infra[f'{unit}_money']) * unit_amount
+
+                    ### CHEAPER MATERIALS
+                    if unit_category == "industry":
+                        db.execute("SELECT cheapermaterials FROM upgrades WHERE user_id=%s", (user_id,))
+                        cheaper_materials = db.fetchone()[0]
+                        if cheaper_materials == 1:
+                            operating_costs *= 0.8
+                    ###
 
                     # Removing money operating costs (if user has the money)
                     db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
