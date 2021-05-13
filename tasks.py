@@ -532,6 +532,15 @@ def generate_province_revenue(): # Runs each hour
                     except KeyError:
                         plus_data = None
 
+                    ### BETTER ENGINEERING
+                    if unit == "nuclear_reactors":
+                        db.execute("SELECT betterengineering FROM upgrades WHERE user_id=%s", (user_id,))
+                        betterengineering = db.fetchone()[0]
+
+                        if betterengineering == 1:
+                            plus_amount += 6
+                    ###
+
                     try:
                         effect = infra[f'{unit}_effect']
                     except KeyError:
