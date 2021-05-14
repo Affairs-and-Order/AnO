@@ -1,5 +1,3 @@
-# FULLY MIGRATED
-
 from flask import render_template, session, redirect
 from helpers import login_required, error
 import psycopg2

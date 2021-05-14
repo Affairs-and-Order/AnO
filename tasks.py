@@ -467,6 +467,12 @@ def generate_province_revenue(): # Runs each hour
                         cheaper_materials = db.fetchone()[0]
                         if cheaper_materials == 1:
                             operating_costs *= 0.8
+                    ### ONLINE SHOPPING
+                    if unit == "malls":
+                        db.execute("SELECT onlineshopping FROM upgrades WHERE user_id=%s", (user_id,))
+                        online_shopping = db.fetchone()[0]
+                        if online_shopping == 1:
+                            operating_costs *= 0.7
                     ###
 
                     # Removing money operating costs (if user has the money)
