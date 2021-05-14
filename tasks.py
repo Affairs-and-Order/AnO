@@ -465,13 +465,13 @@ def generate_province_revenue(): # Runs each hour
                     if unit_category == "industry":
                         db.execute("SELECT cheapermaterials FROM upgrades WHERE user_id=%s", (user_id,))
                         cheaper_materials = db.fetchone()[0]
-                        if cheaper_materials == 1:
+                        if cheaper_materials:
                             operating_costs *= 0.8
                     ### ONLINE SHOPPING
                     if unit == "malls":
                         db.execute("SELECT onlineshopping FROM upgrades WHERE user_id=%s", (user_id,))
                         online_shopping = db.fetchone()[0]
-                        if online_shopping == 1:
+                        if online_shopping:
                             operating_costs *= 0.7
                     ###
 
@@ -627,6 +627,15 @@ def generate_province_revenue(): # Runs each hour
                         effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
                         db.execute(effect_select, (province_id,))
                         current_effect = int(db.fetchone()[0])
+
+                        ### GOVERNMENT REGULATION
+                        if unit_category == "retail":
+                            db.execute("SELECT governmentregulation FROM upgrades WHERE user_id=%s", (user_id,))
+                            government_regulation = db.fetchone()[0]
+                            if government_regulation:
+                                if eff == "pollution" and sign == "+":
+                                    eff_amount *= 0.75
+                        ###
 
                         if sign == "+":
                             new_effect = current_effect + eff_amount
