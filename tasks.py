@@ -560,7 +560,7 @@ def generate_province_revenue(): # Runs each hour
                         db.execute("SELECT betterengineering FROM upgrades WHERE user_id=%s", (user_id,))
                         betterengineering = db.fetchone()[0]
 
-                        if betterengineering == 1:
+                        if betterengineering:
                             plus_amount += 6
                     ###
 
@@ -572,13 +572,13 @@ def generate_province_revenue(): # Runs each hour
                     if unit == "hospitals":
                         db.execute("SELECT nationalhealthinstitution FROM upgrades WHERE user_id=%s", (user_id,))
                         nhi = db.fetchone()[0]
-                        if nhi == 1:
+                        if nhi:
                             effect["happiness"] *= 1.3
 
                     if unit == "monorails":
                         db.execute("SELECT highspeedrail FROM upgrades WHERE user_id=%s", (user_id,))
                         hsr = db.fetchone()[0]
-                        if hsr == 1:
+                        if hsr:
                             effect[0]["productivity"] *= 1.2
 
                     """
@@ -587,12 +587,17 @@ def generate_province_revenue(): # Runs each hour
                     print(f"Remove ${operating_costs} as operating costs")
                     print(f"\n")
                     """
+                    if unit == "bauxite_mines":
+                        db.execute("SELECT strongerexplosives FROM upgrades WHERE user_id=%s", (user_id,))
+                        se = db.fetchone()[0]
+                        if se:
+                            plus_amount *= 1.45
 
                     if unit == "farms":
 
                         db.execute("SELECT advancedmachinery FROM upgrades WHERE user_id=%s", (user_id,))
                         am = db.fetchone()[0]
-                        if am == 1:
+                        if am:
                             plus_amount *= 1.5
 
                         db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
