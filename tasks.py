@@ -589,7 +589,12 @@ def generate_province_revenue(): # Runs each hour
                     """
 
                     if unit == "farms":
-                        
+
+                        db.execute("SELECT advancedmachinery FROM upgrades WHERE user_id=%s", (user_id,))
+                        am = db.fetchone()[0]
+                        if am == 1:
+                            plus_amount *= 1.5
+
                         db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
                         land = db.fetchone()[0]
 
