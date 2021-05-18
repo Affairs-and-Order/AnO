@@ -527,6 +527,13 @@ def generate_province_revenue(): # Runs each hour
                             if ai:
                                 amount *= 0.75
 
+                        if unit == "steel_mills":
+                            db.execute("SELECT largerforges FROM upgrades WHERE user_id=%s", (user_id,))
+                            lf = db.fetchone()[0]
+                            if lf:
+                                amount *= 0.7
+
+
                         new_resource = current_resource - amount
 
                         if new_resource < 0:
