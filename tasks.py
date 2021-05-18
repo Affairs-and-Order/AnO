@@ -569,6 +569,12 @@ def generate_province_revenue(): # Runs each hour
                     except KeyError:
                         effect = []
 
+                    if unit == "hospital":
+                        db.execute("SELECT nationalhealthinstitution FROM upgrades WHERE user_id=%s", (user_id,))
+                        nhi = db.fetchone()[0]
+                        if nhi == 1:
+                            effect *= 1.3
+
                     """
                     print(f"Unit: {unit}")
                     print(f"Add {plus_amount} to {plus_resource}")
