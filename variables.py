@@ -50,6 +50,10 @@ BUILDINGS = [
     'city_parks','monorails', # Had to put them here so pollution would be minused at the end
 ]
 
+UPGRADES = {
+    "oil_burners"
+}
+
 # Dictionary for which units give what resources, etc
 INFRA = {
     ### Electricity (done) ###

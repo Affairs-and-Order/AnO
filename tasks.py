@@ -569,11 +569,17 @@ def generate_province_revenue(): # Runs each hour
                     except KeyError:
                         effect = []
 
-                    if unit == "hospital":
+                    if unit == "hospitals":
                         db.execute("SELECT nationalhealthinstitution FROM upgrades WHERE user_id=%s", (user_id,))
                         nhi = db.fetchone()[0]
                         if nhi == 1:
-                            effect *= 1.3
+                            effect["happiness"] *= 1.3
+
+                    if unit == "monorails":
+                        db.execute("SELECT highspeedrail FROM upgrades WHERE user_id=%s", (user_id,))
+                        hsr = db.fetchone()[0]
+                        if hsr == 1:
+                            effect[0]["productivity"] *= 1.2
 
                     """
                     print(f"Unit: {unit}")
