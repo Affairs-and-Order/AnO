@@ -521,6 +521,12 @@ def generate_province_revenue(): # Runs each hour
                         db.execute(resource_statement, (user_id,))
                         current_resource = int(db.fetchone()[0])
 
+                        if unit == "component_factories":
+                            db.execute("SELECT automationintegration FROM upgrades WHERE user_id=%s", (user_id,))
+                            ai = db.fetchone()[0]
+                            if ai:
+                                amount *= 0.75
+
                         new_resource = current_resource - amount
 
                         if new_resource < 0:
