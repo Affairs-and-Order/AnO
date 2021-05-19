@@ -134,6 +134,9 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "nukes_manpower": 0,
         }
 
+        # TODO: clear this mess i called code once i get the time
+        # if you're reading this please excuse the messiness 
+
         iterable_resources = []
 
         price = mil_dict[f"{units}_price"]

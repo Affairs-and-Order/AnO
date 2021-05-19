@@ -936,7 +936,12 @@ class Military(Nation):
         if nukes - special_units["nukes"] > 0:
             nukes -= special_units["nukes"]
         else:
-            nukes = 0;
+            nukes = 0
+
+        db.execute("SELECT increasedfunding FROM upgrades WHERE user_id=%s", (cId,))
+        increased_funding = db.fetchone()[0]
+        if increased_funding:
+            spies *= 1.4
 
         return {
             "soldiers": soldiers,
