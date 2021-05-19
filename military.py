@@ -42,7 +42,6 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         cId = session["user_id"]
 
-
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
             user=os.getenv("PG_USER"),
@@ -224,7 +223,13 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             if wantedUnits > limits[units]:
                 return error(400, "You exceeded the unit buy limit, you might want to buy more military buildings.")
 
-            if int(totalPrice) > int(gold):  # checks if user wants to buy more units than he has gold
+            if units == "soldiers":
+                db.execute("SELECT widespreadpropaganda FROM upgrades WHERE user_id=%s", (cId,))
+                wp = db.fetchone()[0]
+                if wp:
+                    totalPrice *= 0.65
+
+            if totalPrice > gold:  # checks if user wants to buy more units than he has gold
                 return error(400, "Don't have enough gold for that")
 
             def update_resource_minus(x):
