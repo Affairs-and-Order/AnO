@@ -63,7 +63,7 @@
             new WOW().init();
         });
     </script>
-    {% block head %}  {% endblock %}
+    {% block head %} {% endblock %}
 </head>
 
 <body>
@@ -155,7 +155,7 @@
                         </span>Country<!--<span class="menubaranotification">1</span>--></a>
                         <a class="" href="/upgrades"><span class="material-icons-outlined">
                         engineering
-                        </span>Upgrades</a>
+                        </span>Projects</a>
                         <a class="" href="/provinces"><span class="material-icons-outlined">
                             account_balance
                         </span>Provinces</a>
@@ -179,11 +179,11 @@
         <a class="menubara" href="/country/id={{ session['user_id'] }}"><span class="material-icons-outlined">
                 outlined_flag
             </span>Country<!-- <span class="menuflex2notification">1</span> --> </a>
-        <!--
+
         <a class="menubara" href="/upgrades"><span class="material-icons-outlined">
             engineering
-            </span>Upgrades</a>
-        -->
+            </span>Projects</a>
+
         <a class="menubara" href="/provinces"><span class="material-icons-outlined">
                 account_balance
             </span>Provinces</a>
@@ -301,13 +301,13 @@
             <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/rescomponents.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["components"] | commas }}</p>
-                <div class="resourceinfo">Components are necessary for advanced war machines and country upgrades.</div>
+                <div class="resourceinfo">Components are necessary for advanced war machines and country projects.</div>
 
             </div>
             <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/ressteel.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["steel"] | commas }}</p>
-                <div class="resourceinfo">Steel is invaluable for building infrastructure, military machines, and upgrades.</div>
+                <div class="resourceinfo">Steel is invaluable for building infrastructure, military machines, and projects.</div>
 
             </div>
             <div class="resourcetagparent" tabindex="0">
@@ -319,7 +319,7 @@
             <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resaluminium.png' ) }}" class="resource" />
                 <p class="resourcetag">{{ resources["aluminium"] | commas}}</p>
-                <div class="resourceinfo">Aluminium is a useful material for infrastructure, military, and upgrades.</div>
+                <div class="resourceinfo">Aluminium is a useful material for infrastructure, military, and projects.</div>
 
             </div>
             <div class="resourcetagparent" tabindex="0">
