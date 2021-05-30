@@ -147,6 +147,8 @@ def province(pId):
     has_power = has_power(pId)
     energy["consumption"], energy["production"] = energy_info(pId)
 
+    infra = variables.INFRA
+
     connection.close()
 
     return render_template("province.html", province=province, ownProvince=ownProvince,
@@ -166,7 +168,7 @@ def province(pId):
     aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries,
 
     enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power,
-    energy=energy
+    energy=energy, infra=infra
     )
 
 def get_province_price(user_id):

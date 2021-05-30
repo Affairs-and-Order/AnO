@@ -687,7 +687,7 @@
 
                                 <p class="templatecontentpleft">Gas stations allow your citizens to fuel their cars and to grab some groceries. They contribute a small amount of consumer goods to the economy.</p>
 
-                                <ul>Gas stations cost 20,000 per hour and contribute +8 consumer goods per hour, as well as +4% pollution</ul>
+                                <ul>Gas stations cost {{ infra["gas_stations_money"] | commas }} per hour and contribute +{{ infra["gas_stations_plus"]["consumer_goods"]}} consumer goods per hour, as well as +{{ infra["gas_stations_effect"][0]["pollution"] }}% pollution</ul>
                                 <ul>Gas stations cost 550,000, 50 steel, 35 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -732,7 +732,7 @@
 
                                 <p class="templatecontentpleft">General stores allow your citizens to pick up everyday items necessary for your economy to function.</p>
 
-                                <ul>General stores cost 35,000 per hour and contribute +12 consumer goods per hour, as well as +2% pollution</ul>
+                                <ul>General stores cost {{ infra["general_stores_money"] | commas }} per hour and contribute +{{ infra["general_stores_plus"]["consumer_goods"]}} consumer goods per hour, as well as +{{ infra["general_stores_effect"][0]["pollution"] }}% pollution</ul>
                                 <ul>General stores cost 1.2M, 60 steel, 70 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -777,7 +777,7 @@
 
                                 <p class="templatecontentpleft">Farmers markets provide fresh produce to your population without any middle man. They are perfect for producing consumer goods with little pollution.</p>
 
-                                <ul>Farmers markets cost 80,000 per hour and contribute +17 consumer goods per hour, as well as +5% pollution</ul>
+                                <ul>Farmers markets cost {{ infra["farmers_markets_money"] | commas }} per hour and contribute {{ infra["farmers_markets_plus"]["consumer_goods"] }} consumer goods per hour, as well as +{{ infra["farmers_markets_effect"][0]["pollution"] }}% pollution</ul>
                                 <ul>Farmers markets cost 3.5M, 75 steel, 80 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -804,8 +804,6 @@
                             </div>
                             <div class="templatedivflex2left">
 
-
-
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/farmersmarket.jpg') }}" />
                             </div>
                         </div>
@@ -821,7 +819,7 @@
 
                                 <p class="templatecontentpleft">Banks help produce a thriving debt-based economy that drastically increases production of consumer goods. Banks produce no pollution.</p>
 
-                                <ul>Banks cost 220,000 per hour and contribute +25 consumer goods per hour</ul>
+                                <ul>Banks cost {{ infra["banks_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour</ul>
                                 <ul>Banks cost 9M, 225 steel, 110 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -865,7 +863,7 @@
 
                                 <p class="templatecontentpleft">Malls are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. Malls produce lots of pollution.</p>
 
-                                <ul>Malls cost 450,000 per hour and contribute +36 consumer goods per hour, as well as +10% pollution</ul>
+                                <ul>Malls cost {{ infra["malls_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
                                 <ul>Malls cost 15.5M, 360 steel, 240 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
