@@ -50,28 +50,32 @@ BUILDINGS = [
     'city_parks','monorails', # Had to put them here so pollution would be minused at the end
 ]
 
+UPGRADES = {
+    "oil_burners"
+}
+
 # Dictionary for which units give what resources, etc
 INFRA = {
     ### Electricity (done) ###
-    'coal_burners_plus': {'energy': 3}, # Energy increase
+    'coal_burners_plus': {'energy': 4}, # Energy increase
     'coal_burners_convert_minus': [{'coal': 48}], # Resource upkeep cost
-    'coal_burners_money': 12000, # Monetary upkeep cost
+    'coal_burners_money': 7800, # Monetary upkeep cost
     'coal_burners_effect': [{'pollution': 9}], # Pollution amount added
 
-    'oil_burners_plus': {'energy': 4},
+    'oil_burners_plus': {'energy': 5},
     'oil_burners_convert_minus': [{'oil': 56}],
-    'oil_burners_money': 18000,
+    'oil_burners_money': 11700,
     'oil_burners_effect': [{'pollution': 3}],
 
-    'hydro_dams_plus': {'energy': 8},
-    'hydro_dams_money': 35000,
+    'hydro_dams_plus': {'energy': 6},
+    'hydro_dams_money': 31200,
 
-    'nuclear_reactors_plus': {'energy': 14}, 
+    'nuclear_reactors_plus': {'energy': 20}, 
     'nuclear_reactors_convert_minus': [{'uranium': 32}],
-    'nuclear_reactors_money': 380000, 
+    'nuclear_reactors_money': 54600, 
 
     'solar_fields_plus': {'energy': 4},
-    'solar_fields_money': 5000, 
+    'solar_fields_money': 18000, 
     ####################
 
     ### Retail ### (Done)
