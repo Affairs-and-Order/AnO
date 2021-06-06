@@ -433,7 +433,8 @@
 
                                 <p class="templatecontentpleft">Coal power plants are a cheap way to produce power for a developing nation. While they cost less to build and opperate, they contribute lots of pollution.</p>
 
-                                <ul>Coal power plants cost 12,000 per hour, takes 48 coal per hour, and produces +3 electricity and +9% pollution
+                                <ul>Coal power plants cost {{ infra["coal_burners_money"] }} per hour, takes {{ infra["coal_burners_convert_minus"][0]["coal"] }} coal per hour,
+                                and produces +{{ infra["coal_burners_plus"]["energy"] }} electricity and +{{ infra["coal_burners_effect"][0]["pollution"] }}% pollution
                                 </ul>
                                 <ul>Coal power plants cost 200,000, 45 aluminium each
                                 </ul>
@@ -481,7 +482,7 @@
 
                                 <p class="templatecontentpleft">Oil power plants cost more to opperate and build than coal power plants, but produce less pollution. They are ideal for a nation pursuing tax income as a primary revenue source.</p>
 
-                                <ul>Oil power plants cost 18,000 per hour, takes 56 oil per hour, and contributes +4 electricity and +3% pollution
+                                <ul>Oil power plants cost {{ infra["oil_burners_money"] }} per hour, takes {{ infra["oil_burners_convert_minus"][0]["oil"] }} oil per hour, and contributes +{{ infra["oil_burners_plus"]["energy"] }} electricity and +{{ infra["oil_burners_effect"][0]["pollution"] }}% pollution
                                 </ul>
                                 <ul>Oil power plants cost 350,000, 50 aluminium each
                                 </ul>
@@ -530,7 +531,7 @@
 
                                 <p class="templatecontentpleft">Solar fields are a hefty investment, but in return produce no pollution. They are ideal for developed nations.</p>
 
-                                <ul>Solar cost 5,000 per hour and contribute +4 electricity
+                                <ul>Solar cost {{ infra["solar_fields_money"]}} per hour and contribute +{{ infra["solar_fields_plus"]["energy"]}} electricity
                                 </ul>
                                 <ul>Solar fields cost 500,000, 55 steel each
                                 </ul>
@@ -574,7 +575,7 @@
 
                                 <p class="templatecontentpleft">Hydro dams are expensive to build and upkeep, but provide lots of power with absolutely no production of pollution.</p>
 
-                                <ul>Hydro dams cost 35,000 per hour and contribute +8 electricity
+                                <ul>Hydro dams cost {{ infra["hydro_dams_money"] }} per hour and contribute +{{ infra["hydro_dams_plus"]["energy"] }} electricity
                                 </ul>
                                 <ul>Hydro damns cost 2.2M, 120 steel, 60 aluminium each
                                 </ul>
@@ -621,7 +622,7 @@
 
                                 <p class="templatecontentpleft">Nuclear reactors are a sign of a world power. While they are costly to build and even more to mantain, it is fully compensated for by the massive amount of electricity it contributes to your province.</p>
 
-                                <ul>Nuclear reactors cost 380,000, 32 uranium per hour and contribute +14 electricity</ul>
+                                <ul>Nuclear reactors cost {{ infra["nuclear_reactors_money"] | commas }}, {{ infra["nuclear_reactors_convert_minus"][0]["uranium"] }} uranium per hour and contribute {{ infra["nuclear_reactors_plus"]["energy"] }} electricity</ul>
                                 <ul>Nuclear reactors cost 8.5M, 250 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
