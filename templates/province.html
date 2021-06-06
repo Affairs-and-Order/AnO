@@ -433,7 +433,7 @@
 
                                 <p class="templatecontentpleft">Coal power plants are a cheap way to produce power for a developing nation. While they cost less to build and opperate, they contribute lots of pollution.</p>
 
-                                <ul>Coal power plants cost {{ infra["coal_burners_money"] }} per hour, takes {{ infra["coal_burners_convert_minus"][0]["coal"] }} coal per hour,
+                                <ul>Coal power plants cost {{ infra["coal_burners_money"] | commas }} per hour, takes {{ infra["coal_burners_convert_minus"][0]["coal"] }} coal per hour,
                                 and produces +{{ infra["coal_burners_plus"]["energy"] }} electricity and +{{ infra["coal_burners_effect"][0]["pollution"] }}% pollution
                                 </ul>
                                 <ul>Coal power plants cost 200,000, 45 aluminium each
@@ -482,7 +482,7 @@
 
                                 <p class="templatecontentpleft">Oil power plants cost more to opperate and build than coal power plants, but produce less pollution. They are ideal for a nation pursuing tax income as a primary revenue source.</p>
 
-                                <ul>Oil power plants cost {{ infra["oil_burners_money"] }} per hour, takes {{ infra["oil_burners_convert_minus"][0]["oil"] }} oil per hour, and contributes +{{ infra["oil_burners_plus"]["energy"] }} electricity and +{{ infra["oil_burners_effect"][0]["pollution"] }}% pollution
+                                <ul>Oil power plants cost {{ infra["oil_burners_money"] | commas }} per hour, takes {{ infra["oil_burners_convert_minus"][0]["oil"] }} oil per hour, and contributes +{{ infra["oil_burners_plus"]["energy"] }} electricity and +{{ infra["oil_burners_effect"][0]["pollution"] }}% pollution
                                 </ul>
                                 <ul>Oil power plants cost 350,000, 50 aluminium each
                                 </ul>
@@ -531,7 +531,7 @@
 
                                 <p class="templatecontentpleft">Solar fields are a hefty investment, but in return produce no pollution. They are ideal for developed nations.</p>
 
-                                <ul>Solar cost {{ infra["solar_fields_money"]}} per hour and contribute +{{ infra["solar_fields_plus"]["energy"]}} electricity
+                                <ul>Solar cost {{ infra["solar_fields_money"] | commas }} per hour and contribute +{{ infra["solar_fields_plus"]["energy"]}} electricity
                                 </ul>
                                 <ul>Solar fields cost 500,000, 55 steel each
                                 </ul>
@@ -912,7 +912,9 @@
 
                                 <p class="templatecontentpleft">City parks are perfect establishments to increase happiness of your population, and to absorb some pollution.</p>
 
-                                <ul>City parks cost 25,000 per hour and contribute +3% happiness and -6% pollution</ul>
+                                <ul>City parks cost {{ infra["city_parks_money"] | commas }} per hour and contribute
+                                    +{{ infra["city_parks_effect"][0]["happiness"] }}% happiness
+                                    and -{{ infra["city_parks_effect_minus"]["pollution"] }}% pollution</ul>
                                 <ul>City parks cost 350,000, 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -957,7 +959,8 @@
 
                                 <p class="templatecontentpleft">Libraries are places for your citizens to enjoy a book and learn from them to become more productive.</p>
 
-                                <ul>Libraries cost 60,000 per hour and contribute +3% happiness and +3% productivity</ul>
+                                <ul>Libraries cost {{ infra["libraries_money"] | commas }} per hour and contribute
+                                    +{{ infra["libraries_effect"][0]["happiness"] }}% happiness and +{{ infra["libraries_effect"][1]["productivity"] }}% productivity</ul>
                                 <ul>Libraries cost 800,000, 55 steel, 40 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -984,8 +987,6 @@
                             </div>
                             <div class="templatedivflex2left">
 
-
-
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/library.jpg') }}" />
                             </div>
                         </div>
@@ -1001,7 +1002,8 @@
 
                                 <p class="templatecontentpleft">Hospitals are equiped with advanced medical equipment and staff, allowing for the drastic increase in people who survive childbirth and deadly illnesses. People live longer and such are happier.</p>
 
-                                <ul>Hospitals cost 90,000 per hour and contribute +9% happiness</ul>
+                                <ul>Hospitals cost {{ infra["hospitals_money"] | commas }} per hour and
+                                    contribute +{{ infra["hospitals_effect"]["happiness"] }}% happiness</ul>
                                 <ul>Hospitals cost 2.3M, 140 steel, 85 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1046,7 +1048,8 @@
 
                                 <p class="templatecontentpleft">Universities help educate your population, making them far more productive. University gives their students some great memories.</p>
 
-                                <ul>Universities cost 175,000 per hour and contribute +9% productivity and +6% happiness</ul>
+                                <ul>Universities cost {{ infra["universities_money"] | commas }} per hour and contribute
+                                +{{ infra["universities_effect"][0]["productivity"] }}% productivity and +{{ infra["universities_effect"][0]["happiness"] }}% happiness</ul>
                                 <ul>Universities cost 6.8M, 210 steel, 105 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1090,7 +1093,9 @@
 
                                 <p class="templatecontentpleft">Monorails astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>Monorails cost 510,000 per hour and contribute +18% productivity and -20% pollution</ul>
+                                <ul>Monorails cost {{ infra["monorails_money"] | commas }} per hour and 
+                                contribute +{{ infra["monorails_effect"][0]["productivity"] }}% productivity 
+                                and -{{ infra["monorails_effect_minus"]["pollution"] }}% pollution</ul>
                                 <ul>Monorails cost 17.5M, 390 steel, 195 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
