@@ -57,65 +57,65 @@ UPGRADES = {
 # Dictionary for which units give what resources, etc
 INFRA = {
     ### Electricity (done) ###
-    'coal_burners_plus': {'energy': 3}, # Energy increase
+    'coal_burners_plus': {'energy': 4}, # Energy increase
     'coal_burners_convert_minus': [{'coal': 48}], # Resource upkeep cost
-    'coal_burners_money': 12000, # Monetary upkeep cost
+    'coal_burners_money': 7800, # Monetary upkeep cost
     'coal_burners_effect': [{'pollution': 9}], # Pollution amount added
 
-    'oil_burners_plus': {'energy': 4},
+    'oil_burners_plus': {'energy': 5},
     'oil_burners_convert_minus': [{'oil': 56}],
-    'oil_burners_money': 18000,
+    'oil_burners_money': 11700,
     'oil_burners_effect': [{'pollution': 3}],
 
-    'hydro_dams_plus': {'energy': 8},
-    'hydro_dams_money': 35000,
+    'hydro_dams_plus': {'energy': 6},
+    'hydro_dams_money': 31200,
 
-    'nuclear_reactors_plus': {'energy': 14}, 
+    'nuclear_reactors_plus': {'energy': 20}, 
     'nuclear_reactors_convert_minus': [{'uranium': 32}],
-    'nuclear_reactors_money': 380000, 
+    'nuclear_reactors_money': 54600, 
 
     'solar_fields_plus': {'energy': 4},
-    'solar_fields_money': 5000, 
+    'solar_fields_money': 18000, 
     ####################
 
     ### Retail ### (Done)
-    'gas_stations_plus': {'consumer_goods': 8},
+    'gas_stations_plus': {'consumer_goods': 10},
     'gas_stations_effect': [{'pollution': 4}],
-    'gas_stations_money': 20000, # Costs $20k
+    'gas_stations_money': 20000,
 
-    'general_stores_plus': {'consumer_goods': 12},
+    'general_stores_plus': {'consumer_goods': 14},
     'general_stores_effect': [{'pollution': 2}],
-    'general_stores_money': 35000, # Costs $35k
+    'general_stores_money': 35000, 
 
-    'farmers_markets_plus': {'consumer_goods': 17}, # Generates 15 consumer goods,
+    'farmers_markets_plus': {'consumer_goods': 16},
     'farmers_markets_effect': [{'pollution': 5}],
-    'farmers_markets_money': 80000, # Costs $110k
+    'farmers_markets_money': 80000, 
 
-    'banks_plus': {'consumer_goods': 25},
-    'banks_money': 220000, # Costs $320k
+    'banks_plus': {'consumer_goods': 20},
+    'banks_money': 220000,
 
-    'malls_plus': {'consumer_goods': 36},
+    'malls_plus': {'consumer_goods': 30},
     'malls_effect': [{'pollution': 10}],
     'malls_money': 450000, # Costs $750k
     ##############
 
     ### Public Works ### (Done)
-    'libraries_effect': [{'happiness': 3}, {'productivity': 3}],
+    'city_parks_effect': [{'happiness': 5}],
+    'city_parks_effect_minus': {'pollution': 6},
+    'city_parks_money': 25000,
+
+    'libraries_effect': [{'happiness': 5}, {'productivity': 3}],
     'libraries_money': 60000,
 
-    'city_parks_effect': [{'happiness': 3}],
-    'city_parks_effect_minus': {'pollution': 6},
-    'city_parks_money': 25000, # Costs $20k
-
-    'hospitals_effect': {'happiness': 9},   
+    'hospitals_effect': {'happiness': 8},   
     'hospitals_money': 90000,
 
-    'universities_effect': [{'productivity': 9}, {'happiness': 6}],
+    'universities_effect': [{'productivity': 10}, {'happiness': 4}],
     'universities_money': 175000,
 
-    'monorails_effect': [{'productivity': 18}],
+    'monorails_effect': [{'productivity': 16}],
     'monorails_effect_minus': {'pollution': 20},
-    'monorails_money': 510000,
+    'monorails_money': 500000,
     ###################
 
     ### Military (Done) ###
