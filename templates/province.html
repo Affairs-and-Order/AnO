@@ -622,7 +622,11 @@
 
                                 <p class="templatecontentpleft">Nuclear reactors are a sign of a world power. While they are costly to build and even more to mantain, it is fully compensated for by the massive amount of electricity it contributes to your province.</p>
 
+                                {% if upgrades["better_engineering"] %}
+                                <ul>Nuclear reactors cost {{ infra["nuclear_reactors_money"] | commas }}, {{ infra["nuclear_reactors_convert_minus"][0]["uranium"] }} uranium per hour and contribute {{ infra["nuclear_reactors_plus"]["energy"] + 6 }} electricity</ul>
+                                {% else %}
                                 <ul>Nuclear reactors cost {{ infra["nuclear_reactors_money"] | commas }}, {{ infra["nuclear_reactors_convert_minus"][0]["uranium"] }} uranium per hour and contribute {{ infra["nuclear_reactors_plus"]["energy"] }} electricity</ul>
+                                {% endif %}
                                 <ul>Nuclear reactors cost 8.5M, 250 steel each</ul>
 
                                 <div class="purchasemilitarydiv">

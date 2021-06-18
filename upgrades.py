@@ -6,6 +6,22 @@ import os
 from app import app
 from dotenv import load_dotenv
 load_dotenv()
+from psycopg2.extras import RealDictCursor
+
+def get_upgrades(cId): 
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"),
+        cursor_factory=RealDictCursor)
+    db = conn.cursor()
+
+    db.execute("SELECT * FROM upgrades WHERE user_id=%s", (cId,))
+    upgrades = db.fetchone()
+
+    return upgrades
 
 @app.route("/upgrades", methods=["GET"])
 @login_required

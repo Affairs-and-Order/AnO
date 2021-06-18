@@ -7,6 +7,7 @@ import os
 import variables
 from tasks import energy_info
 from helpers import get_date
+from upgrades import get_upgrades
 load_dotenv()
 
 @app.route("/provinces", methods=["GET"])
@@ -45,6 +46,8 @@ def province(pId):
 
     db = connection.cursor()
     cId = session["user_id"]
+
+    upgrades = get_upgrades(cId)
 
     # Object under which the data about a province is stored
     province = {}
@@ -168,7 +171,7 @@ def province(pId):
     aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries,
 
     enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power,
-    energy=energy, infra=infra
+    energy=energy, infra=infra, upgrades=upgrades
     )
 
 def get_province_price(user_id):
