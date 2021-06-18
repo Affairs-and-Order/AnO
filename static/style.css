@@ -1243,6 +1243,16 @@ label {
     background-position-y: 50%;
 }
 
+.upgradestopper {
+    overflow: hidden;
+    text-align: center;
+    background-image: url("images/upgrades.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    background-position-y: 50%;
+}
+
 .templatedivtitle {
     text-align: center;
     color: rgb(255, 255, 255);
