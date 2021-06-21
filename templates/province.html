@@ -670,9 +670,6 @@
 
                             </div>
                             <div class="templatedivflex2left">
-
-
-
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/nuclearreactor.jpg') }}" />
                             </div>
                         </div>
@@ -824,7 +821,7 @@
 
                                 <p class="templatecontentpleft">Banks help produce a thriving debt-based economy that drastically increases production of consumer goods. Banks produce no pollution.</p>
 
-                                <ul>Banks cost {{ infra["banks_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour</ul>
+                                <ul>Banks cost {{ infra["banks_money"] | commas }} per hour and contribute +{{ infra["banks_plus"]["consumer_goods"] }} consumer goods per hour</ul>
                                 <ul>Banks cost 9M, 225 steel, 110 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -868,7 +865,11 @@
 
                                 <p class="templatecontentpleft">Malls are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. Malls produce lots of pollution.</p>
 
+                                {% if upgrades["onlineshopping"] %}
+                                <ul>Malls cost {{ (infra["malls_money"] * 0.7) | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
+                                {% else %}
                                 <ul>Malls cost {{ infra["malls_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
+                                {% endif %}
                                 <ul>Malls cost 15.5M, 360 steel, 240 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">

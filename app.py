@@ -174,7 +174,8 @@ def invalid_server_error(error):
 # Jinja2 filter to add commas to numbers
 @app.template_filter()
 def commas(value):
-    return "{:,}".format(value)
+    rounded = round(value)
+    return "{:,}".format(rounded)
 
 @app.context_processor
 def inject_user():
