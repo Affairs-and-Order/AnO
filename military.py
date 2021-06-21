@@ -134,6 +134,12 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             "nukes_manpower": 0,
         }
 
+        if units == "soldiers":
+            db.execute("SELECT widespreadpropaganda FROM upgrades WHERE user_id=%s", (cId,))
+            wp = db.fetchone()[0]
+            if wp:
+                mil_dict["soldiers_price"] *= 0.65
+
         # TODO: clear this mess i called code once i get the time
         # if you're reading this please excuse the messiness 
 

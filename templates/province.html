@@ -1008,7 +1008,11 @@
                                 <p class="templatecontentpleft">Hospitals are equiped with advanced medical equipment and staff, allowing for the drastic increase in people who survive childbirth and deadly illnesses. People live longer and such are happier.</p>
 
                                 <ul>Hospitals cost {{ infra["hospitals_money"] | commas }} per hour and
+                                    {% if upgrades["nationalhealthinstitution"] %}
+                                    contribute +{{ infra["hospitals_effect"]["happiness"] * 1.3 }}% happiness</ul>
+                                    {% else %}
                                     contribute +{{ infra["hospitals_effect"]["happiness"] }}% happiness</ul>
+                                    {% endif %}
                                 <ul>Hospitals cost 2.3M, 140 steel, 85 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1098,8 +1102,12 @@
 
                                 <p class="templatecontentpleft">Monorails astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>Monorails cost {{ infra["monorails_money"] | commas }} per hour and 
-                                contribute +{{ infra["monorails_effect"][0]["productivity"] }}% productivity 
+                                <ul>Monorails cost {{ infra["monorails_money"] | commas }} per hour and
+                                    {% if upgrades["highspeedrail"] %} 
+                                    contribute +{{ infra["monorails_effect"][0]["productivity"] * 1.2 }}% productivity 
+                                    {% else %}
+                                    contribute +{{ infra["monorails_effect"][0]["productivity"] }}% productivity 
+                                    {% endif %}
                                 and -{{ infra["monorails_effect_minus"]["pollution"] }}% pollution</ul>
                                 <ul>Monorails cost 17.5M, 390 steel, 195 aluminium each</ul>
 
@@ -1475,7 +1483,12 @@
 
                                 <p class="templatecontentpleft">Farms produce rations to feed your nation. Farms are best suited for established nations that own lots of land, as land influences farm production.</p>
 
-                                <ul>Farms cost 3,000 per hour and contribute +2 food for every land slot in the province, and add +1% pollution</ul>
+                                {% if upgrades["advancedmachinery"] %}
+                                <ul>Farms cost 3,000 per hour and contribute +{{ (2 * 1.5) | commas }} food for every land slot in the province,
+                                {% else %}
+                                <ul>Farms cost 3,000 per hour and contribute +2 food for every land slot in the province,
+                                {% endif %}
+                                and add +1% pollution</ul>
                                 <ul>Farms cost 140,000 and 10 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1809,7 +1822,7 @@
 
                                 <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
-                                <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour, as well as +1.5% pollution</ul>
+                                <ul>Bauxite mines cost 8,000 per hour and produce {{ (20 * 1.45) | commas}} bauxite per hour, as well as +1.5% pollution</ul>
                                 <ul>Bauxite mines cost 260,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
