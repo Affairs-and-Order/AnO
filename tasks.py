@@ -461,6 +461,13 @@ def generate_province_revenue(): # Runs each hour
 
                     operating_costs = int(infra[f'{unit}_money']) * unit_amount
 
+                    ### lARGER FORGES
+                    db.execute("SELECT largerforges FROM upgrades WHERE user_id=%s", (user_id,))
+                    lf = db.fetchone()[0]
+                    if lf:
+                        operating_costs *= 0.7
+                        operating_costs = int(operating_costs)
+
                     ### CHEAPER MATERIALS
                     if unit_category == "industry":
                         db.execute("SELECT cheapermaterials FROM upgrades WHERE user_id=%s", (user_id,))
@@ -521,18 +528,19 @@ def generate_province_revenue(): # Runs each hour
                         db.execute(resource_statement, (user_id,))
                         current_resource = int(db.fetchone()[0])
 
+                        ### AUTOMATION INTEGRATION
                         if unit == "component_factories":
                             db.execute("SELECT automationintegration FROM upgrades WHERE user_id=%s", (user_id,))
                             ai = db.fetchone()[0]
                             if ai:
                                 amount *= 0.75
 
+                        ### LARGER FORGES
                         if unit == "steel_mills":
                             db.execute("SELECT largerforges FROM upgrades WHERE user_id=%s", (user_id,))
                             lf = db.fetchone()[0]
                             if lf:
                                 amount *= 0.7
-
 
                         new_resource = current_resource - amount
 

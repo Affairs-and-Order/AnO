@@ -2192,7 +2192,11 @@
 
                                 <p class="templatecontentpleft">Steel mills produce steel from iron and coal, an incredibly robust material</p>
 
+                                {% if upgrades["largerforges"] %}
+                                <ul>Steel mills cost {{ (180000 * 0.7) | commas }} per hour and convert {{ (35 * 0.7) | commas }} iron and {{ (35 * 0.7) | commas}} coal into 15 steel per hour, producing +4% pollution</ul>
+                                {% else %}
                                 <ul>Steel mills cost 180,000 per hour and convert 35 iron and 35 coal into 15 steel per hour, producing +4% pollution</ul>
+                                {% endif %}
                                 <ul>Steel mills cost 900,000, 60 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
