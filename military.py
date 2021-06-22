@@ -7,32 +7,27 @@ from dotenv import load_dotenv
 load_dotenv()
 import os
 from helpers import get_date
+from upgrades import get_upgrades
 
 @app.route("/military", methods=["GET", "POST"])
 @login_required
 def military():
 
-    connection = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
-
-    db = connection.cursor()
     cId = session["user_id"]
 
     if request.method == "GET":  # maybe optimise this later with css anchors
+
         simple_units = Military.get_military(cId)
         special_units = Military.get_special(cId)
         units = simple_units.copy()
         units.update(special_units)
+        upgrades = get_upgrades(cId)
 
         # finding daily limits through finding number of each military building in proinfra tables that belong to a user
         # The info of which proinfra tables belong to a user is in provinces table
         limits = Military.get_limits(cId)
 
-        return render_template("military.html", units=units, limits=limits)
+        return render_template("military.html", units=units, limits=limits, upgrades=upgrades)
 
 @app.route("/<way>/<units>", methods=["POST"])
 @login_required

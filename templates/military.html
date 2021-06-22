@@ -47,8 +47,11 @@
 
                         <p class="templatecontentpleft">Soldiers are cheap and expendable. They require 1 munitions per 5000 soldiers to fight at 100% effectiveness, but will go into battle without, at 10% effectiveness. They counter artillery, apaches, and can obtain resource control.</p>
 
-                        <ul>Soldiers cost 200 each
-                        </ul>
+                        {% if upgrades["widespreadpropaganda"] %}
+                        <ul>Soldiers cost {{ (200 * 0.65 ) | commas }} each</ul>
+                        {% else %}
+                        <ul>Soldiers cost 200 each</ul>
+                        {% endif %}
 
                         <form action="/soldiers" method="POST">
                             <div class="purchasemilitarydiv">
