@@ -2147,7 +2147,11 @@
 
                                 <p class="templatecontentpleft">Components factories produce components for your country from copper, steel, and aluminium. Components are incredibly valuable which are used in advanced machinery.</p>
 
+                                {% if upgrades["automationintegration"] %}
+                                <ul>Components factories cost 220,000 per hour, and convert {{ (20 * 0.7) | commas }} copper, {{ (10 * 0.7) | commas }} steel, and {{ (15 * 0.7) | commas }} aluminium into 5 components per hour, producing +5% pollution</ul>
+                                {% else %}
                                 <ul>Components factories cost 220,000 per hour, and convert 20 copper, 10 steel, and 15 aluminium into 5 components per hour, producing +5% pollution</ul>
+                                {% endif %}
                                 <ul>Components factories cost 1.2M, 20 steel, 20 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
