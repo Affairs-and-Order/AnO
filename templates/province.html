@@ -689,7 +689,12 @@
 
                                 <p class="templatecontentpleft">Gas stations allow your citizens to fuel their cars and to grab some groceries. They contribute a small amount of consumer goods to the economy.</p>
 
-                                <ul>Gas stations cost {{ infra["gas_stations_money"] | commas }} per hour and contribute +{{ infra["gas_stations_plus"]["consumer_goods"]}} consumer goods per hour, as well as +{{ infra["gas_stations_effect"][0]["pollution"] }}% pollution</ul>
+                                <ul>Gas stations cost {{ infra["gas_stations_money"] | commas }} per hour and contribute +{{ infra["gas_stations_plus"]["consumer_goods"]}} consumer goods per hour, 
+                                {% if upgrades["governmentregulation"] %}
+                                as well as +{{ (infra["gas_stations_effect"][0]["pollution"] * 0.75) | commas }}% pollution</ul>
+                                {% else %}
+                                as well as +{{ infra["gas_stations_effect"][0]["pollution"] }}% pollution</ul>
+                                {% endif %}
                                 <ul>Gas stations cost 550,000, 50 steel, 35 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -734,7 +739,13 @@
 
                                 <p class="templatecontentpleft">General stores allow your citizens to pick up everyday items necessary for your economy to function.</p>
 
-                                <ul>General stores cost {{ infra["general_stores_money"] | commas }} per hour and contribute +{{ infra["general_stores_plus"]["consumer_goods"]}} consumer goods per hour, as well as +{{ infra["general_stores_effect"][0]["pollution"] }}% pollution</ul>
+                                <ul>General stores cost {{ infra["general_stores_money"] | commas }} per hour and contribute +{{ infra["general_stores_plus"]["consumer_goods"]}} consumer goods per hour, as well as
+                                    
+                                {% if upgrades["governmentregulation"] %}
+                                +{{ (infra["general_stores_effect"][0]["pollution"] * 0.75) | commas }}% pollution</ul>
+                                {% else %}
+                                +{{ infra["general_stores_effect"][0]["pollution"] }}% pollution</ul>
+                                {% endif %}
                                 <ul>General stores cost 1.2M, 60 steel, 70 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -779,7 +790,13 @@
 
                                 <p class="templatecontentpleft">Farmers markets provide fresh produce to your population without any middle man. They are perfect for producing consumer goods with little pollution.</p>
 
-                                <ul>Farmers markets cost {{ infra["farmers_markets_money"] | commas }} per hour and contribute {{ infra["farmers_markets_plus"]["consumer_goods"] }} consumer goods per hour, as well as +{{ infra["farmers_markets_effect"][0]["pollution"] }}% pollution</ul>
+                                <ul>Farmers markets cost {{ infra["farmers_markets_money"] | commas }} per hour and contribute {{ infra["farmers_markets_plus"]["consumer_goods"] }} consumer goods per hour, as well as
+                                    
+                                {% if upgrades["governmentregulation"] %}
+                                +{{ (infra["farmers_markets_effect"][0]["pollution"] * 0.75) | commas }}% pollution</ul>
+                                {% else %}
+                                +{{ infra["farmers_markets_effect"][0]["pollution"] }}% pollution</ul>
+                                {% endif %}
                                 <ul>Farmers markets cost 3.5M, 75 steel, 80 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -866,10 +883,17 @@
                                 <p class="templatecontentpleft">Malls are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. Malls produce lots of pollution.</p>
 
                                 {% if upgrades["onlineshopping"] %}
-                                <ul>Malls cost {{ (infra["malls_money"] * 0.7) | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
+                                <ul>Malls cost {{ (infra["malls_money"] * 0.7) | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as 
                                 {% else %}
-                                <ul>Malls cost {{ infra["malls_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
+                                <ul>Malls cost {{ infra["malls_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as
                                 {% endif %}
+
+                                {% if upgrades["governmentregulation"] %}
+                                +{{ (infra["malls_effect"][0]["pollution"] * 0.75) | commas }}% pollution</ul>
+                                {% else %}
+                                +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
+                                {% endif %}
+
                                 <ul>Malls cost 15.5M, 360 steel, 240 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
