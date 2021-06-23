@@ -1482,11 +1482,16 @@
                                 <h3 class="templatecontentheadercenter">You have {{ farms }} Farms</h3>
 
                                 <p class="templatecontentpleft">Farms produce rations to feed your nation. Farms are best suited for established nations that own lots of land, as land influences farm production.</p>
-
-                                {% if upgrades["advancedmachinery"] %}
-                                <ul>Farms cost 3,000 per hour and contribute +{{ (2 * 1.5) | commas }} food for every land slot in the province,
+                                
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Farms cost {{ (3000 * 0.8) | commas}} per hour
                                 {% else %}
-                                <ul>Farms cost 3,000 per hour and contribute +2 food for every land slot in the province,
+                                <ul>Farms cost 3,000 per hour
+                                {% endif %}
+                                {% if upgrades["advancedmachinery"] %}
+                                and contribute +{{ (2 * 1.5) | commas }} food for every land slot in the province,
+                                {% else %}
+                                and contribute +2 food for every land slot in the province,
                                 {% endif %}
                                 and add +1% pollution</ul>
                                 <ul>Farms cost 140,000 and 10 wood each</ul>
@@ -1540,7 +1545,12 @@
 
                                 <p class="templatecontentpleft">Iron mines produce iron which is necessary to produce steel.</p>
 
-                                <ul>Iron mines cost 12,000 per hour and produce 25 iron per hour, as well as +1.5% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Iron mines cost {{ (12000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Iron mines cost 12,000 per hour
+                                {% endif %}
+                                and produce 25 iron per hour, as well as +1.5% pollution</ul>
                                 <ul>Iron mines cost 310,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1589,7 +1599,12 @@
 
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Coal mines cost 8,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Coal mines cost {{ (8000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Coal mines cost 8,000 per hour
+                                {% endif %}
+                                <ul>and produce 26 coal per hour, as well as +2% pollution</ul>
                                 <ul>Coal mines cost 290,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1638,7 +1653,12 @@
 
                                 <p class="templatecontentpleft">Copper mines produce copper for your nation. Copper can be used to manufacture ammunution</p>
 
-                                <ul>Copper mines cost 8,000 per hour and produce 32 copper per hour, as well as +1.5% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Copper mines cost {{ (8000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Copper mines cost 8,000 per hour
+                                {% endif %}
+                                and produce 32 copper per hour, as well as +1.5% pollution</ul>
                                 <ul>Copper mines cost 245,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1684,7 +1704,12 @@
 
                                 <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
-                                <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour, as well as +1.5% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Pumpjacks cost {{ (10000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Pumpjacks cost 10,000 per hour
+                                {% endif %}
+                                and produce 23 oil per hour, as well as +1.5% pollution</ul>
                                 <ul>Pumpjacks cost 250,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1729,7 +1754,12 @@
 
                                 <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
-                                <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour, as well as +1% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Lumber mills cost {{ (7500 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Lumber mills cost 7,500 per hour
+                                {% endif %}
+                                and produce 32 lumber per hour, as well as +1% pollution</ul>
                                 <ul>Lumber mills cost 180,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1776,7 +1806,12 @@
 
                                 <p class="templatecontentpleft">Lead mines allow for the production of lead, which is valuable for its use in ammunition.</p>
 
-                                <ul>Lead mines cost 12,000 per hour and produce 18 lead per hour, as well as +1.5% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Lead mines cost {{ (12000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Lead mines cost 12,000 per hour
+                                {% endif %}
+                                and produce 18 lead per hour, as well as +1.5% pollution</ul>
                                 <ul>Lead mines cost 220,000 and 25 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1822,7 +1857,12 @@
 
                                 <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
-                                <ul>Bauxite mines cost 8,000 per hour and produce {{ (20 * 1.45) | commas}} bauxite per hour, as well as +1.5% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Bauxite mines cost {{ (8000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Bauxite mines cost 8,000 per hour
+                                {% endif %}
+                                and produce {{ (20 * 1.45) | commas}} bauxite per hour, as well as +1.5% pollution</ul>
                                 <ul>Bauxite mines cost 260,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1867,8 +1907,13 @@
                                 <h3 class="templatecontentheadercenter">You have {{ coal_mines }} Coal Mines</h3>
 
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
-
-                                <ul>Coal mines cost 8,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
+                                
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Coal mines cost {{ (8000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Coal mines cost 8,000 per hour
+                                {% endif %}
+                                and produce 26 coal per hour, as well as +2% pollution</ul>
                                 <ul>Coal mines cost 290,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1917,7 +1962,12 @@
 
                                 <p class="templatecontentpleft">Pumpjacks harvest oil from the ground, providing a resource that can be processed into gasoline.</p>
 
-                                <ul>Pumpjacks cost 10,000 per hour and produce 23 oil per hour, as well as +1.5% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Pumpjacks cost {{ (10000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Pumpjacks cost 10,000 per hour
+                                {% endif %}
+                                and produce 23 oil per hour, as well as +1.5% pollution</ul>
                                 <ul>Pumpjacks cost 250,000 and 15 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -1962,7 +2012,12 @@
 
                                 <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
-                                <ul>Lumber mills cost 7,500 per hour and produce 32 lumber per hour, as well as +1% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Lumber mills cost {{ (7500 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Lumber mills cost 7,500 per hour
+                                {% endif %}
+                                and produce 32 lumber per hour, as well as +1% pollution</ul>
                                 <ul>Lumber mills cost 180,000 each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -2006,7 +2061,12 @@
 
                                 <p class="templatecontentpleft">Uranium mines harvest uranium, which can be used to fuel nuclear reactors, or in nuclear weapons.</p>
 
-                                <ul>Uranium mines cost 18,000 per hour and produce 12 uranium per hour, as well as +1% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Uranium mines cost {{ (18000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Uranium mines cost 18,000 per hour
+                                {% endif %}
+                                and produce 12 uranium per hour, as well as +1% pollution</ul>
                                 <ul>Uranium mines cost 380,000 and 35 steel each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -2051,7 +2111,12 @@
 
                                 <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
-                                <ul>Bauxite mines cost 8,000 per hour and produce 20 bauxite per hour, as well as +1.5% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Bauxite mines cost {{ 8000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Bauxite mines cost 8,000 per hour
+                                {% endif %}
+                                and produce 20 bauxite per hour, as well as +1.5% pollution</ul>
                                 <ul>Bauxite mines cost 260,000 and 20 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
@@ -2097,7 +2162,12 @@
 
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
-                                <ul>Coal mines cost 10,000 per hour and produce 26 coal per hour, as well as +2% pollution</ul>
+                                {% if upgrades["cheapermaterials"] %}
+                                <ul>Coal mines cost {{ 8000 * 0.8) | commas }} per hour
+                                {% else %}
+                                <ul>Coal mines cost 8,000 per hour
+                                {% endif %}
+                                and produce 26 coal per hour, as well as +2% pollution</ul>
                                 <ul>Coal mines cost 290,000 and 30 wood each</ul>
 
                                 <div class="purchasemilitarydiv">
