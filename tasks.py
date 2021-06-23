@@ -595,12 +595,14 @@ def generate_province_revenue(): # Runs each hour
                         nhi = db.fetchone()[0]
                         if nhi:
                             effect["happiness"] *= 1.3
+                            effect["happiness"] = int(effect["happiness"])
 
                     if unit == "monorails":
                         db.execute("SELECT highspeedrail FROM upgrades WHERE user_id=%s", (user_id,))
                         hsr = db.fetchone()[0]
                         if hsr:
                             effect[0]["productivity"] *= 1.2
+                            effect[0]["productivity"] = int(effect[0]["productivity"])
 
                     """
                     print(f"Unit: {unit}")
@@ -625,6 +627,7 @@ def generate_province_revenue(): # Runs each hour
                         land = db.fetchone()[0]
 
                         plus_amount *= (land / 2)
+                        plus_amount = int(plus_amount)
 
                     # Function for _plus
                     if plus_data is not None:
@@ -680,6 +683,7 @@ def generate_province_revenue(): # Runs each hour
                                     eff_amount *= 0.75
                         ###
 
+                        eff_amount = int(eff_amount)
                         if sign == "+":
                             new_effect = current_effect + eff_amount
                         elif sign == "-":
