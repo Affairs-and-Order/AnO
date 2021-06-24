@@ -2351,9 +2351,7 @@ button {
     background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(/static/images/coalition.jpg);
     min-height: 100vh;
     background-size: cover;
-    background-attachment: fixed;
     object-fit: cover;
-    background-position: 50%;
 }
 
 @media all and (max-width: 800px) {
