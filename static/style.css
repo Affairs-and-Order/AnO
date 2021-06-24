@@ -1320,7 +1320,6 @@ label {
     font-size: 28px;
     font-weight: normal;
     color: var(--colorOne);
-    cursor: default;
 }
 
 .templatecontentpleft {
@@ -2572,13 +2571,17 @@ button {
 }
 
 .cardtitle {
-    top: -7.25rem;
+    line-height: 275px;
+    margin: 0;
+    top: -113.5px;
     left: 50%;
     transform: translate(-50%, -50%);
     position: relative;
     width: 100%;
     color: white;
     font-size: 30px;
+    cursor: default;
+    user-select: none;
 }
 
 .cardimage {
