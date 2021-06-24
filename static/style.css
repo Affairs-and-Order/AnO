@@ -349,6 +349,7 @@ a {
 
 p {
     line-height: 30px;
+    font-weight: 200;
 }
 
 label {
@@ -376,7 +377,7 @@ label {
 .navbarparent {
     background: #363945;
     position: fixed;
-    width: calc(100%);
+    width: 90%;
     height: 55px;
     z-index: 1000;
     top: 0;
@@ -412,7 +413,7 @@ label {
     width: 45px;
     margin: 5px;
     float: left;
-    margin-left: 15px;
+    margin-right: 10px;
     user-select: none;
 }
 
@@ -1895,9 +1896,6 @@ button {
     margin: 0px auto;
 }
 
-.fadeInLeft,
-.fadeInRight {}
-
 .templatedivflex2left,
 .templatedivflex2right {
     width: 100%;
@@ -2394,13 +2392,13 @@ button {
 
 .landingblueheader {
     color: #00a7e1;
-    animation: templatedivcontentload 1s !important;
+    animation: templatedivcontentload 2s !important;
     position: relative;
     top: 0;
 }
 
 .landingwhiteheader {
-    animation: templatedivcontentload 1.5s;
+    animation: templatedivcontentload 2.4s;
     position: relative;
     top: 0;
 }
@@ -2414,7 +2412,7 @@ button {
     width: 50%;
     line-height: 35px;
     font-weight: 350;
-    animation: templatedivcontentload 2.4s;
+    animation: templatedivcontentload 1.25s;
     position: relative;
     top: 0;
 }
@@ -2434,7 +2432,6 @@ button {
     vertical-align: bottom;
     flex-wrap: wrap;
     top: 0;
-    animation: templatedivcontentload 3.2s;
     position: static;
 }
 
@@ -2448,7 +2445,6 @@ button {
     font-size: 20px;
     box-shadow: inset rgba(39, 41, 59, 0.0) 0px 0px 0px 0px, rgba(39, 41, 59, 0.25) 0px 2px 5px 0px;
     background-color: #00a7e1;
-    animation: templatedivcontentload 1.25s;
 }
 
 .landingloginbutton {
@@ -2479,8 +2475,6 @@ button {
     border-radius: 4px;
     animation-duration: 1.5s;
 }
-
-.templatedivlandingcontent {}
 
 .discordlink {
     width: 65%;
@@ -2676,8 +2670,6 @@ button {
 .slidechild {
     position: relative;
 }
-
-.slidetop {}
 
 .slidebottom {
     margin: 40px 0;
@@ -2910,8 +2902,6 @@ button {
 .countryeditclick h3 {
     color: var(--colorTwo) !important;
 }
-
-.provincelinkchild {}
 
 
 /*PROVINCE*/
@@ -3478,6 +3468,8 @@ footer {
     font-weight: normal;
     cursor: default;
     height: auto;
+    display: flex;
+    align-items: center;
 }
 
 .footertitle:hover {
@@ -3487,6 +3479,7 @@ footer {
 .footertitleicon {
     float: none;
     margin: 0;
+    margin-right: 10px;
 }
 
 .footericon {
@@ -3518,7 +3511,3 @@ footer {
 .redditicon {
     color: rgb(255, 69, 0);
 }
-
-.footercopyright {}
-
-.footercopyright {}
