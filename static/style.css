@@ -1320,6 +1320,7 @@ label {
     font-size: 28px;
     font-weight: normal;
     color: var(--colorOne);
+    cursor: default;
 }
 
 .templatecontentpleft {
@@ -2617,6 +2618,17 @@ button {
 
 .landingpagecontent {
     width: 70%;
+    margin: auto;
+}
+
+.getStartedContainer {
+    background: var(--foregroundEight);
+    padding: 60px 0;
+    margin: 15px 0;
+}
+
+.getStartedContainer .templatedivbutton {
+    width: fit-content;
     margin: auto;
 }
 
