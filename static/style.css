@@ -2352,6 +2352,7 @@ button {
     min-height: 100vh;
     background-size: cover;
     object-fit: cover;
+    background-position: center;
 }
 
 @media all and (max-width: 800px) {
