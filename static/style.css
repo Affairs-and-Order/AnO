@@ -2346,7 +2346,7 @@ button {
     height: max-content;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 16px 26px 0px;
     position: relative;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url(/static/images/coalition.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.65)), url("images/coalition.jpg");
     min-height: 100vh;
     background-size: cover;
     object-fit: cover;
