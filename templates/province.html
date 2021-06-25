@@ -414,7 +414,11 @@
                         </tr>
                         <tr>
                             <td>{{ nuclear_reactors }} Nuclear Reactors</td>
+                            {% if upgrades["onlineshopping"] %}
+                            <td>{{ malls }} Fulfillment Centers</td>
+                            {% else %}
                             <td>{{ malls }} Malls</td>
+                            {% endif %}
                             {% if upgrades["highspeedrail"] %}
                             <td>{{ monorails }} Bullet Trains</td>
                             {% else %}
@@ -877,19 +881,24 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Malls</h2>
+                        {% if upgrades["onlineshopping"] %}
+                            {% set malls_name = "Fulfillment Centers" %}
+                        {% else %}
+                            {% set malls_name = "Malls" %}
+                        {% endif %}
+                        <h2 class="templatecontentheaderleft">{{ malls_name }}</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ malls }} Malls</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ malls }} {{ malls_name }}</h3>
 
-                                <p class="templatecontentpleft">Malls are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. Malls produce lots of pollution.</p>
+                                <p class="templatecontentpleft">{{ malls_name }} are supercenters of consumer spending. Dozens of stores make up a mall and get consumers to spend money at every store. {{ malls_name }} produce lots of pollution.</p>
 
                                 {% if upgrades["onlineshopping"] %}
-                                <ul>Malls cost {{ (infra["malls_money"] * 0.7) | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as 
+                                <ul>{{ malls_name }} cost {{ (infra["malls_money"] * 0.7) | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as 
                                 {% else %}
-                                <ul>Malls cost {{ infra["malls_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as
+                                <ul>{{ malls_name }} cost {{ infra["malls_money"] | commas }} per hour and contribute +{{ infra["malls_plus"]["consumer_goods"] }} consumer goods per hour, as well as
                                 {% endif %}
 
                                 {% if upgrades["governmentregulation"] %}
@@ -898,7 +907,7 @@
                                 +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
                                 {% endif %}
 
-                                <ul>Malls cost 15.5M, 360 steel, 240 aluminium each</ul>
+                                <ul>{{ malls_name }} cost 15.5M, 360 steel, 240 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
@@ -926,7 +935,11 @@
 
 
 
+                                {% if upgrades["onlineshopping"] %}
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/fulfillmentcenters.jpg') }}" />
+                                {% else %}
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/mall.jpg') }}" />
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -1122,27 +1135,27 @@
                     <div class="menudiv">
 
                         {% if upgrades["highspeedrail"] %}
-                            {% set name = "Bullet Trains" %}
+                            {% set monorails_name = "Bullet Trains" %}
                         {% else %}
-                            {% set name = "Monorails" %}
+                            {% set monorails_name = "Monorails" %}
                         {% endif %}
-                        <h2 class="templatecontentheaderleft">{{ name }}</h2>
+                        <h2 class="templatecontentheaderleft">{{ monorails_name }}</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ monorails }} {{ name }}</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ monorails }} {{ monorails_name }}</h3>
 
-                                <p class="templatecontentpleft">{{ name }} astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
+                                <p class="templatecontentpleft">{{ monorails_name }} astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>{{ name }} cost {{ infra["monorails_money"] | commas }} per hour and
+                                <ul>{{ monorails_name }} cost {{ infra["monorails_money"] | commas }} per hour and
                                     {% if upgrades["highspeedrail"] %} 
                                     contribute +{{ infra["monorails_effect"][0]["productivity"] * 1.2 }}% productivity 
                                     {% else %}
                                     contribute +{{ infra["monorails_effect"][0]["productivity"] }}% productivity 
                                     {% endif %}
                                 and -{{ infra["monorails_effect_minus"]["pollution"] }}% pollution</ul>
-                                <ul>{{ name }} cost 17.5M, 390 steel, 195 aluminium each</ul>
+                                <ul>{{ monorails_name }} cost 17.5M, 390 steel, 195 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="monorails" type="number" placeholder="Amount" />
