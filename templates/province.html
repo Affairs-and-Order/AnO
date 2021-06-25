@@ -415,7 +415,11 @@
                         <tr>
                             <td>{{ nuclear_reactors }} Nuclear Reactors</td>
                             <td>{{ malls }} Malls</td>
+                            {% if upgrades["highspeedrail"] %}
+                            <td>{{ monorails }} Bullet Trains</td>
+                            {% else %}
                             <td>{{ monorails }} Monorails</td>
+                            {% endif %}
                         </tr>
                     </table>
                 </div>
@@ -1117,23 +1121,28 @@
                     </div>
                     <div class="menudiv">
 
-                        <h2 class="templatecontentheaderleft">Monorails</h2>
+                        {% if upgrades["highspeedrail"] %}
+                            {% set name = "Bullet Trains" %}
+                        {% else %}
+                            {% set name = "Monorails" %}
+                        {% endif %}
+                        <h2 class="templatecontentheaderleft">{{ name }}</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ monorails }} Monorails</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ monorails }} {{ name }}</h3>
 
-                                <p class="templatecontentpleft">Monorails astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
+                                <p class="templatecontentpleft">{{ name }} astronimically increase the productivity of your citizens by deceasing the time it takes for them to get to work. They also reduce pollution drastically by cutting down on the use of cars.</p>
 
-                                <ul>Monorails cost {{ infra["monorails_money"] | commas }} per hour and
+                                <ul>{{ name }} cost {{ infra["monorails_money"] | commas }} per hour and
                                     {% if upgrades["highspeedrail"] %} 
                                     contribute +{{ infra["monorails_effect"][0]["productivity"] * 1.2 }}% productivity 
                                     {% else %}
                                     contribute +{{ infra["monorails_effect"][0]["productivity"] }}% productivity 
                                     {% endif %}
                                 and -{{ infra["monorails_effect_minus"]["pollution"] }}% pollution</ul>
-                                <ul>Monorails cost 17.5M, 390 steel, 195 aluminium each</ul>
+                                <ul>{{ name }} cost 17.5M, 390 steel, 195 aluminium each</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="monorails" type="number" placeholder="Amount" />
@@ -1161,7 +1170,11 @@
 
 
 
+                                {% if upgrades["highspeedrail"] %}
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/bullettrains.jpg') }}" />
+                                {% else %}
                                 <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/skytrain.jpg') }}" />
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -2136,7 +2149,7 @@
                                 <p class="templatecontentpleft">Bauxite mines make bauxite for your country. Bauxite can be processed into aluminium.</p>
 
                                 {% if upgrades["cheapermaterials"] %}
-                                <ul>Bauxite mines cost {{ 8000 * 0.8) | commas }} per hour
+                                <ul>Bauxite mines cost {{ (8000 * 0.8) | commas }} per hour
                                 {% else %}
                                 <ul>Bauxite mines cost 8,000 per hour
                                 {% endif %}
@@ -2187,7 +2200,7 @@
                                 <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
 
                                 {% if upgrades["cheapermaterials"] %}
-                                <ul>Coal mines cost {{ 8000 * 0.8) | commas }} per hour
+                                <ul>Coal mines cost {{ (8000 * 0.8) | commas }} per hour
                                 {% else %}
                                 <ul>Coal mines cost 8,000 per hour
                                 {% endif %}
