@@ -27,15 +27,8 @@
             </div>
         </div>
 
-        {% for province in provinces %} 
-        {% set cityCount = province[0] %} 
-        {% set population = province[1] %} 
-        {% set name = province[2] %} 
-        {% set pId = province[3] %} 
-        {% set land = province[4] %} 
-        {% set happiness = province[5] %} 
-        {% set productivity = province[6] %}
-        {% set energy = province[7] %}
+        {% for province in provinces %} {% set cityCount = province[0] %} {% set population = province[1] %} {% set name = province[2] %} {% set pId = province[3] %} {% set land = province[4] %} {% set happiness = province[5] %} {% set productivity = province[6]
+        %} {% set energy = province[7] %}
         <a href="/province/{{ pId }}">
             <div class="warflexparent templatedivflex2 menuflex">
                 <div class="templatedivflex2left vanilla">
@@ -91,7 +84,7 @@
                 </div>
                 <div class="templatedivflex2left vanilla">
 
-                    <img tabindex="0" class="unitimage" src="static/images/province.jpg" />
+                    <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/province.jpg') }}" />
 
                 </div>
             </div>

@@ -282,7 +282,7 @@
 }
 
 .theme-light {
-    --background: #ffffff;
+    --background: #f1f1f1;
     --foreground: white;
     --foregroundTwo: #fdfdfd;
     --foregroundThree: #f7f7f7;
@@ -734,7 +734,7 @@ label {
     right: 0px;
     padding: 0;
     padding-left: 10px;
-    width: 200px;
+    width: 190px;
     display: flex;
     flex-direction: row;
 }
@@ -1083,7 +1083,7 @@ label {
     padding-bottom: 25px;
     overflow: hidden;
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.05) 0 3px 5px 0px, rgba(0, 0, 0, 0.06) 0 -12px 56px 0;
+    box-shadow: rgba(0, 0, 0, 0.07) 0 3px 5px 0px, rgba(0, 0, 0, 0.2) 0 -12px 76px 0;
 }
 
 @media all and (max-width: 750px) {
@@ -3055,13 +3055,14 @@ button {
     width: max-content;
     transition: all 0.3s;
     pointer-events: none;
+    opacity: 0;
 }
 
 .tooltipparent:hover .tooltip {
     opacity: 1;
     top: -40px;
     transform: translateY(-60%);
-    box-shadow: rgb(0 0 0 / 15%) 0 12px 22px 2px, rgb(0 0 0 / 6%) 0 12px 12px;
+    box-shadow: rgb(0 0 0 / 10%) 0 4px 22px 2px, rgb(0 0 0 / 6%) 0 4px 12px;
 }
 
 
