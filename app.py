@@ -11,7 +11,7 @@ import random
 import string
 from datetime import datetime
 
-app = Flask(__name__, static_folder='static', static_url_path='')
+app = Flask(__name__)
 
 try:
     environment = os.getenv("ENVIRONMENT")
