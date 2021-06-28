@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect
+from flask import Flask, request, render_template, session, redirect, send_from_directory
 from celery import Celery
 from helpers import login_required
 import psycopg2
@@ -237,6 +237,10 @@ def inject_user():
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
+
+@app.route("/robots.txt")
+def robots():
+    return send_from_directory("static", "robots.txt")
 
 @app.route("/account", methods=["GET"])
 @login_required
