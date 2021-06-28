@@ -330,6 +330,9 @@ def calc_pg(pId, rations):
 
     rations_increase = -1 # Default rations increase. If user has no rations it will decrease by 1% of maxPop 
     rations_needed = curPop // variables.RATIONS_PER
+
+    if rations_needed < 1: rations_needed = 1 # Trying to not get division by zero error
+
     rations_needed_percent = rations / rations_needed
     if rations_needed_percent > 1:
         rations_needed_percent = 1
