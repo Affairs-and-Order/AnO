@@ -1,3 +1,4 @@
+window.addEventListener("load", parallax)
 window.addEventListener("scroll", parallax)
 
 function parallax() {
@@ -17,9 +18,8 @@ function parallax() {
 
             item.dataset.speedMultiplier = "0.7"
         }
-        item.style.position = "relative"
 
-        item.style.top = getPosition(item) * item.dataset.speedMultiplier + "px"
+        item.style.transform = "translateY(" + getPosition(item) * item.dataset.speedMultiplier + "px)"
     }
 
     let imagesToParallax = document.getElementsByClassName("parallaxifyBg")
