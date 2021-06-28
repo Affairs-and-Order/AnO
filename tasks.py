@@ -162,7 +162,7 @@ def calc_ti(user_id, consumer_goods):
         db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
         population = db.fetchone()[0]
 
-        if population is None:
+        if population is None or population < 100000:
             population = 100000 # Say a base population
 
         population = int(population)
@@ -346,6 +346,8 @@ def calc_pg(pId, rations):
 
     newPop = (maxPop // 100) * rations_increase  # 1% of maxPop * -1 to 1
     fullPop = curPop + newPop
+
+    if fullPop < 0: fullPop = 0
 
     return new_rations, fullPop
 
