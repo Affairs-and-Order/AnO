@@ -592,7 +592,7 @@ def province_sell_buy(way, units, province_id):
     elif way == "buy":
 
         if int(totalPrice) > int(gold): # Checks if user wants to buy more units than he has gold
-            return error("you don't have enough money", 400)
+            return error("You don't have enough money", 400)
 
         if free_slots < wantedUnits and units not in ["cityCount", "land"]:
             return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")

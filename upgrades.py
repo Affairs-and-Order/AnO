@@ -109,7 +109,7 @@ def upgrade_sell_buy(ttype, thing):
         current_gold = int(db.fetchone()[0])
 
         if current_gold < price:
-            return error(400, "you don't have enough money")
+            return error(400, "You don't have enough money")
         
         new_gold = current_gold - price
 

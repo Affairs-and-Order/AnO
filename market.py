@@ -635,7 +635,7 @@ def accept_trade(trade_id):
         buyers_gold = int(db.fetchone()[0])
 
         if (amount * price) > buyers_gold: # Checks if buyer doesnt have enough gold for buyin
-            return error(400, "you don't have enough money") # Returns error if true
+            return error(400, "You don't have enough money") # Returns error if true
         gold_sold = buyers_gold - (amount * price)
 
         db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (gold_sold, cId))
