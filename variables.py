@@ -154,7 +154,7 @@ INFRA = {
 
     'lead_mines_money': 12000,
     'lead_mines_plus': {'lead': 18},
-    'lumber_mills_effect': [{'pollution': 1.5}],
+    'lead_mines_effect': [{'pollution': 1.5}],
 
     'iron_mines_money': 12000,
     'iron_mines_plus': {'iron': 25},
