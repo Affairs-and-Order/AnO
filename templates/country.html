@@ -7,8 +7,8 @@
 <meta name="description" content="{{ username }}'s country."> {% endblock %} {% block body %}
 <div class="templatediv">
 
-    <div class="templatedivtopper provincetopper">
-        <img src="{{ url_for('static', filename='images/country.jpg') }}" />
+    <div class="templatedivtopper countrytopper" style="background-image: url('{{ url_for('static', filename='images/country.jpg') }}');">
+        <!-- <img src="{{ url_for('static', filename='images/country.jpg') }}" /> -->
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
             outlined_flag
             </span>{{ username }}</h1>

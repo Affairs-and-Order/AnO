@@ -1123,6 +1123,15 @@ label {
     box-shadow: rgba(0, 0, 0, 0.06) 0 3px 4px 1px, rgba(0, 0, 0, 0.1) 0 12px 32px 0;
 }
 
+.countrytopper {
+    overflow: hidden;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-position-y: 150%;
+}
+
 .provincestopper {
     overflow: hidden;
     text-align: center;
@@ -1130,7 +1139,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .provincetopper {
@@ -1150,7 +1159,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .wartopper {
@@ -1160,7 +1169,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .militarytopper {
@@ -1170,7 +1179,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .establishcoalitiontopper {
@@ -1180,7 +1189,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .coalitionstopper {
@@ -1190,7 +1199,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .coalitiontopper {
@@ -1200,7 +1209,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .countriestopper {
@@ -1210,7 +1219,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .marketoffertopper {
@@ -1220,7 +1229,17 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
+}
+
+.recruitmentdivtopper {
+    overflow: hidden;
+    text-align: center;
+    background-image: url("images/recruitment.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    background-position-y: center;
 }
 
 .businessestopper {
@@ -1230,7 +1249,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .assemblytopper {
@@ -1240,7 +1259,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .upgradestopper {
@@ -1250,7 +1269,7 @@ label {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
 }
 
 .templatedivtitle {
@@ -1802,7 +1821,7 @@ label {
 .notificationdiv ul {
     background: #363945;
     color: #ffffff;
-    box-shadow: 0 0 20px 0 rgba(58, 59, 69, .55);
+    box-shadow: rgba(58, 59, 69, 0.3) 0 3px 8px 0;
     padding: 10px !important;
     margin: 6px 0 !important;
     font-size-adjust: 16px;
@@ -1992,7 +2011,7 @@ button {
 }
 
 .templatetable th {
-    height: 25px;
+    height: 35px;
     background-color: #00a7e1;
     color: white;
     font-size: 19px;
@@ -2164,7 +2183,7 @@ button {
     text-align: center;
     width: 85%;
     margin: 10px auto;
-    box-shadow: rgba(39, 41, 59, 0.1) 0px 2px 3px 1px;
+    box-shadow: rgba(39, 41, 59, 0.11) 0px 2px 20px 1px;
     padding: 0;
     overflow: hidden;
     flex-direction: row;
@@ -2823,8 +2842,8 @@ button {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
-    box-shadow: 0 0.2rem 1rem 0.2rem rgba(58, 59, 69, 0.3);
+    background-position: center;
+    box-shadow: rgba(0, 0, 0, 0.48) 0 5px 16px 0;
     user-select: none;
     border-radius: 4px;
 }
@@ -2838,7 +2857,7 @@ button {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
     position: relative;
     border-radius: 4px;
     user-select: initial;
@@ -2854,7 +2873,7 @@ button {
     background-repeat: no-repeat;
     background-size: cover;
     object-fit: cover;
-    background-position-y: 50%;
+    background-position: center;
     border: 6px solid #36394590;
     position: relative;
     user-select: initial;
