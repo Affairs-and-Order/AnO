@@ -713,7 +713,7 @@ label {
     transition: all 0.4s ease-in-out;
     box-shadow: rgba(58, 59, 69, 0.4) 0px 0px 6px 0px;
     z-index: 1000;
-    border-radius: 100%;
+    border-radius: 100px;
 }
 
 @media all and (max-width: 500px) {
