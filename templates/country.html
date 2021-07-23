@@ -697,7 +697,9 @@
                     cursor: pointer;
                 }
             </style>
+            {% if news|length %}
             <table class="templatetable">
+
                 {% for new in news %}
                 <tbody data-contain="{{new[2]}}">
                     <tr>
@@ -712,6 +714,8 @@
                 </tbody>
                 {% endfor %}
             </table>
+            {% else %}
+            <h2 class="templatecontentheadercenter">You have no news</h2> {% endif %}
 
         </div>
         <!--Edit-->
