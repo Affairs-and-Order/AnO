@@ -1543,12 +1543,9 @@ label {
 
 .radiodivparent {
     justify-content: center !important;
-}
-
-@media all and (max-width: 1400px) {
-    .radiodivparent {
-        flex-direction: column;
-    }
+    flex-wrap: wrap;
+    border: none;
+    user-select: none;
 }
 
 .radiodiv {
@@ -1575,7 +1572,7 @@ label {
     margin: 0 auto;
 }
 
-.radioleft input[type=radio] {
+.radioleft input {
     position: absolute;
     visibility: hidden;
 }
@@ -1628,12 +1625,12 @@ label {
     background-color: rgba(0, 0, 0, 0);
 }
 
-.radioleft input[type=radio]:checked~.check {
+.radioleft input:checked~.check {
     border: 3px solid #00a7e1;
     box-shadow: #00a9e190 0 0 22px 0;
 }
 
-.radioleft input[type=radio]:checked~.check::before {
+.radioleft input:checked~.check::before {
     background: #00a7e1;
     height: 10px;
     width: 10px;
@@ -3382,6 +3379,18 @@ button {
 .upgradeseconomicclick h3,
 .upgradesmilitaryclick h3 {
     color: var(--colorTwo) !important;
+}
+
+
+/*POlICIES*/
+
+.policyHeader {
+    text-align: center;
+    font-weight: 500;
+}
+
+.radiodivContentShow {
+    opacity: 0.7;
 }
 
 
