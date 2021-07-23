@@ -380,7 +380,7 @@
                         </tr>
                         <tr>
                             <td>Rations:</td>
-                            <td>{{ revenue["gross"]["rations"] | commas }} ({{ rations_need | commas}})</td>
+                            <td>{{ revenue["gross"]["rations"] | commas }}</td>
                         </tr>
                         <tr>
                             <td>Oil:</td>
@@ -429,7 +429,7 @@
                         </tr>
                         <tr>
                             <td>Consumer goods:</td>
-                            <td>{{ revenue["gross"]["consumer_goods"] | commas }} ({{ cg_needed | commas }}) </td>
+                            <td>{{ revenue["gross"]["consumer_goods"] | commas }} </td>
                         </tr>
                         <tr>
                             <td>Aluminum:</td>
@@ -535,6 +535,20 @@
             </div>
 
             <h2 class="templatecontentheaderleft">Upkeep Costs</h2>
+
+            <div class="templateoutertablediv">
+                <table class="templatetable templatetable2">
+                    <tr>
+                        <th>Consumer</th>
+                        <th>Resources</th>
+                    </tr>
+                    <tr>
+                        <td>Citizens</td>
+                        <td>{{ rations_need | commas}} rations, {{ cg_needed | commas }} consumer goods</td>
+                    </tr>
+                </table>
+            </div>
+
             <div>
                 <table class="templatetable">
                     <tr>
