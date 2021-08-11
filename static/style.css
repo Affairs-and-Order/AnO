@@ -2370,6 +2370,7 @@ button {
     background-size: cover;
     object-fit: cover;
     background-position: center;
+    transition: none;
 }
 
 @media all and (max-width: 800px) {
@@ -2839,7 +2840,6 @@ button {
     margin: 15px auto;
     display: block;
     width: 95%;
-    transition: all 0.2s;
     overflow: hidden;
     text-align: center;
     background-image: url("images/tundra.jpg");
@@ -2847,9 +2847,9 @@ button {
     background-size: cover;
     object-fit: cover;
     background-position: center;
-    box-shadow: rgba(0, 0, 0, 0.48) 0 5px 16px 0;
     user-select: none;
     border-radius: 4px;
+    transition: none;
 }
 
 .countryimage {
