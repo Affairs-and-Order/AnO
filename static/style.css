@@ -7,6 +7,10 @@
     src: local('Material Icons'), local('MaterialIcons-Regular'), url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'), url(https://example.com/MaterialIcons-Regular.woff) format('woff'), url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
 }
 
+* {
+    transition: all 0.3s;
+}
+
 .material-icons-outlined {
     font-family: 'Material Icons';
     position: relative;
