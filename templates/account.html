@@ -13,41 +13,42 @@
         <h2 class="templatecontentheaderleft">Account Information</h2>
 
 
-
-        <div class="infodiv">
-
-            <div class="templateoutertablediv">
-                <table class="templatetable templatetable2">
-                    <tr>
-                        <th>Catagory</th>
-                        <th>Value</th>
-                        <th>Change Info</th>
-                    </tr>
-                    <tr>
-                        <td>Email:</td>
-                        <td>[[ email ]]</td>
-                        <td><input class="loginsignupinput" name="" placeholder="New email" /></td>
-                    </tr>
-                    <tr>
-                        <td>Passcode:</td>
-                        <td>[[ passcode ]]</td>
-                        <td> <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                            arrow_forward
-                            </span>Send email</button></td>
-                    </tr>
-                    <tr>
-                        <td>Date joined:</td>
-                        <td>[[ datejoined ]]</td>
-                        <td></td>
-                    </tr>
-                </table>
+        <form action="/change_email">
+            <div class="infodiv">
+                <div class="templateoutertablediv">
+                    <table class="templatetable templatetable2">
+                        <tr>
+                            <th>Catagory</th>
+                            <th>Value</th>
+                            <th>Change Info</th>
+                        </tr>
+                        <tr>
+                            <td>Email:</td>
+                            <td>{{ email }}</td>
+                            <td><input class="loginsignupinput" name="" placeholder="New email" /></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td>************</td>
+                            <td> <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                                arrow_forward
+                                </span>Send email</button></td>
+                        </tr>
+                        <tr>
+                            <td>Date joined:</td>
+                            <td>{{ date }}</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+    
+                <input class="loginsignupinput" name="current_password" placeholder="Enter current password" />
+    
+                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                    check
+                    </span>Update</button>
             </div>
-
-            <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                check
-                </span>Update</button>
-
-        </div>
+        </form>
 
         <h2 class="templatecontentheaderleft">General</h2>
 

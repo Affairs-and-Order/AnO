@@ -258,12 +258,12 @@ def account():
 
     db = connection.cursor()
 
-    db.execute("SELECT username FROM users WHERE id=%s", (cId,))
-    name = db.fetchone()[0]
+    db.execute("SELECT username, email, date FROM users WHERE id=%s", (cId,))
+    username, email, date = db.fetchone()
 
     connection.close()
 
-    return render_template("account.html", name=name)
+    return render_template("account.html", username=username, email=email, date=date)
 
 
 @app.route("/recruitments", methods=["GET"])
