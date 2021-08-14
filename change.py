@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 import bcrypt
 load_dotenv()
 
-@app.route("/change_email", methods=["POST"])
+@app.route("/change", methods=["POST"])
 @login_required
-def change_email():
+def change():
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -23,12 +23,19 @@ def change_email():
 
     password = request.form.get("current_password").encode("utf-8")
     email = request.form.get("email")
+    name = request.form.get("name")
+
+    if not password:
+        return error(400, "No password provided")
 
     db.execute("SELECT hash FROM users WHERE id=%s", (cId,))
     hash = db.fetchone()[0].encode("utf-8")
 
     if bcrypt.checkpw(password, hash):
-        db.execute("UPDATE users SET email=%s WHERE id=%s", (email, cId))
+        if email:
+            db.execute("UPDATE users SET email=%s WHERE id=%s", (email, cId))
+        if name:
+            db.execute("UPDATE users SET username=%s WHERE id=%s", (name, cId))
     else:
         return error(401, "Incorrect password")
 

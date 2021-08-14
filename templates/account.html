@@ -13,14 +13,19 @@
         <h2 class="templatecontentheaderleft">Account Information</h2>
 
 
-        <form action="/change_email" method="POST">
+        <form action="/change" method="POST">
             <div class="infodiv">
                 <div class="templateoutertablediv">
                     <table class="templatetable templatetable2">
                         <tr>
-                            <th>Catagory</th>
+                            <th>Category</th>
                             <th>Value</th>
                             <th>Change Info</th>
+                        </tr>
+                        <tr>
+                            <td>Country:</td>
+                            <td>{{ username }}</td>
+                            <td><input class="loginsignupinput" name="name" placeholder="New name" /></td>
                         </tr>
                         <tr>
                             <td>Email:</td>
