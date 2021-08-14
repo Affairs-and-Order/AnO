@@ -1086,7 +1086,7 @@ label {
     padding-bottom: 25px;
     overflow: hidden;
     border-radius: 4px;
-    box-shadow: rgba(0, 0, 0, 0.07) 0 3px 5px 0px, rgba(0, 0, 0, 0.2) 0 -12px 76px 0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 20px 50px 0px;
 }
 
 @media all and (max-width: 750px) {
