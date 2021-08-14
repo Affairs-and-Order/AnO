@@ -35,6 +35,7 @@ from market import market, buy_market_offer, marketoffer, my_offers
 from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax
 from intelligence import intelligence
 from upgrades import upgrades
+from change import change_email
 
 app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
 app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
