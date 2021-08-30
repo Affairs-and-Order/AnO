@@ -7,6 +7,20 @@ from dotenv import load_dotenv
 import bcrypt
 load_dotenv()
 
+@app.route("/reset_password/<code>", methods=["GET"])
+def reset_password(code):
+    
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = connection.cursor()
+
+    
+
 @app.route("/change", methods=["POST"])
 @login_required
 def change():
