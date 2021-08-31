@@ -47,22 +47,31 @@ def request_password_reset():
 
     db = connection.cursor()
 
-    cId = session["user_id"]
+    try:
+        cId = session["user_id"]
+    except KeyError:
+        cId = False
+
     code = generateResetCode()
     if cId: # User is logged in
         db.execute("SELECT email FROM users WHERE id=%s", (cId,))
         email = db.fetchone()[0]
-        db.execute("INSERT INTO reset_codes (url_code, user_id, created_at) VALUES (%s, %s, %s)", 
-        (code, cId, int(datetime.now().timestamp())))
-        sendEmail(email, code)
     else:
-        ...
+        email = request.form.get("email")
+        try:
+            db.execute("SELECT id FROM users WHERE email=%s", (email,))
+            cId = db.fetchone()[0]
+        except:
+            return error(400, "No account with the provided email exists.")
+        
+    db.execute("INSERT INTO reset_codes (url_code, user_id, created_at) VALUES (%s, %s, %s)", 
+    (code, cId, int(datetime.now().timestamp())))
+    sendEmail(email, code)
 
     connection.commit()
     connection.close()
 
     return redirect("/")
-
 
 # Route for resetting password after request for changing password has been submitted.
 @app.route("/reset_password/<code>", methods=["GET", "POST"])
@@ -96,7 +105,7 @@ def reset_password(code):
         connection.commit()
         connection.close()
 
-        return redirect("/account")
+        return redirect("/")
 
 @app.route("/change", methods=["POST"])
 @login_required
