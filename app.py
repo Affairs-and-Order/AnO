@@ -297,6 +297,10 @@ def logout():
 def tutorial():
     return render_template("tutorial.html")
 
+@app.route("/forgot_password", methods=["GET"])
+def forget_password():
+    return render_template("forgot_password.html")
+
 """
 @app.route("/statistics", methods=["GET"])
 def statistics():
