@@ -8,7 +8,18 @@ import bcrypt
 from string import ascii_uppercase, ascii_lowercase, digits
 from datetime import datetime
 from random import SystemRandom
+from flask_mail import Mail, Message
 load_dotenv()
+
+# Email config
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
+app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
 
 def generateResetCode():
     length = 64
@@ -28,11 +39,13 @@ def generateUrlFromCode(code):
 
     return url
 
-
 def sendEmail(recipient, code):
     url = generateUrlFromCode(code)
-    # Should send email here
-    print(url)
+    msg = Message(f"Password change request")
+    msg.sender = os.getenv("MAIL_USERNAME")
+    msg.recipients = [recipient]
+    msg.body = f"Click this URL and complete further steps to change your password. {url}. If you did not request a password change, ignore this email."
+    mail.send(msg)
 
 # Route for requesting the reset of a password, after which the user can reset his password.
 @app.route("/request_password_reset", methods=["POST"])
