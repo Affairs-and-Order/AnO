@@ -360,6 +360,7 @@ label {
     text-align: center;
     display: block !important;
     width: fit-content;
+    width: -moz-fit-content;
     margin: auto;
     font-size: 16px;
     color: var(--colorOne);
@@ -574,6 +575,7 @@ label {
 .loginsignup {
     float: right;
     width: fit-content;
+    width: -moz-fit-content;
     transition: all 0.2s;
     line-height: 35px;
     border: 2.5px transparent solid;
@@ -635,6 +637,7 @@ label {
     position: relative;
     float: right;
     width: fit-content;
+    width: -moz-fit-content;
     transition: all 0.2s;
     text-decoration: none;
     font-size: 16px;
@@ -854,6 +857,7 @@ label {
 
 .resourcetag {
     width: fit-content;
+    width: -moz-fit-content;
     margin: 0;
     margin-left: 5px;
     line-height: 40px;
@@ -883,6 +887,7 @@ label {
     right: 26px;
     bottom: 8px;
     width: fit-content;
+    width: -moz-fit-content;
     z-index: 1;
     margin: auto 0;
     margin-bottom: 40px;
@@ -968,6 +973,7 @@ label {
 
 .fit {
     width: fit-content;
+    width: -moz-fit-content;
 }
 
 .min {
@@ -1285,6 +1291,7 @@ label {
     padding: 0px;
     position: relative;
     width: fit-content;
+    width: -moz-fit-content;
     margin: auto;
     padding: 10px 20px;
     background-color: #00a7e1;
@@ -1371,6 +1378,7 @@ label {
 
 .templatedivbutton {
     width: fit-content;
+    width: -moz-fit-content;
     margin: 5px;
     padding: 5px 40px;
     line-height: 27.2px;
@@ -1592,6 +1600,7 @@ label {
     position: relative;
     float: left;
     width: fit-content;
+    width: -moz-fit-content;
     margin: 0 auto;
 }
 
@@ -1609,6 +1618,7 @@ label {
     z-index: 9;
     cursor: pointer;
     width: fit-content;
+    width: -moz-fit-content;
     transition: all 0.25s;
     color: var(--colorOne);
     opacity: 1 !important;
@@ -1674,6 +1684,7 @@ label {
     color: var(--colorOne);
     font-size: 15px;
     width: fit-content;
+    width: -moz-fit-content;
     transition: all 0.4s ease;
 }
 
@@ -1820,6 +1831,7 @@ label {
     margin: 0 10px;
     padding: 0;
     width: fit-content;
+    width: -moz-fit-content;
 }
 
 .notificationdiv ul {
@@ -1860,6 +1872,7 @@ label {
 
 .divflex2full div {
     width: fit-content;
+    width: -moz-fit-content;
     padding: 0;
     text-align: center;
     margin: 10px auto;
@@ -1880,6 +1893,7 @@ label {
 .divflex2center {
     height: min-content;
     width: fit-content;
+    width: -moz-fit-content;
     justify-items: center;
     justify-self: center;
     margin: auto;
@@ -2086,6 +2100,7 @@ button {
 .templatetable2 .anchor a {
     display: block;
     width: fit-content;
+    width: -moz-fit-content;
     padding: 12px 15%;
 }
 
@@ -2327,6 +2342,7 @@ button {
     right: 0;
     margin: auto;
     width: fit-content;
+    width: -moz-fit-content;
     font-weight: normal;
     color: var(--colorOne);
     line-height: 30px;
@@ -2446,6 +2462,7 @@ button {
 .landingchildcontainerparent {
     display: flex;
     width: fit-content;
+    width: -moz-fit-content;
     justify-content: center;
     margin: 30px auto;
     margin-bottom: 20px;
@@ -2457,6 +2474,7 @@ button {
 
 .landingchildcontainerchild {
     width: fit-content;
+    width: -moz-fit-content;
     margin: 10px;
 }
 
@@ -2645,6 +2663,7 @@ button {
 
 .getStartedContainer .templatedivbutton {
     width: fit-content;
+    width: -moz-fit-content;
     margin: auto;
 }
 
@@ -2712,6 +2731,7 @@ button {
 .listcontainer {
     margin: auto;
     width: fit-content;
+    width: -moz-fit-content;
 }
 
 .slidelist {
@@ -2800,6 +2820,7 @@ button {
     transition: all 0.2s;
     text-decoration: none;
     cursor: pointer;
+    font-size: 16px;
 }
 
 .loginsignupforgot:hover {
@@ -2821,6 +2842,7 @@ button {
     display: block;
     text-align: center;
     width: fit-content;
+    width: -moz-fit-content;
     margin: auto;
 }
 
@@ -3489,6 +3511,7 @@ footer {
 
 .footerchild {
     width: fit-content;
+    width: -moz-fit-content;
     margin: auto;
     text-align: left;
 }
