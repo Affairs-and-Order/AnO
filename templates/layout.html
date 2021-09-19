@@ -240,10 +240,10 @@
 
         <div class="resourcedivcontent" id="resourcedivcontent">
             <!--I WILL REPLACE THE TEXT WITH RESOURCE ICONS SOON - CARSON-->
-            {% set resources = get_resource_amount() %}
+            {% set resources = get_resources() %}
             <div class="resourcetagparent" tabindex="0">
                 <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource" />
-                <p class="resourcetag">{{ resources["money"] | commas }}</p>
+                <p class="resourcetag">{{ resources["gold"] | commas }}</p>
                 <div class="resourceinfo">Money is the primary facilitator of trade in Terra.</div>
             </div>
             <br />

@@ -10,7 +10,7 @@ import datetime
 import random
 import string
 from datetime import datetime
-import sys
+from psycopg2.extras import RealDictCursor
 
 app = Flask(__name__)
 
@@ -43,28 +43,23 @@ app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 celery_beat_schedule = {
     "population_growth": {
         "task": "app.task_population_growth",
-        # Run hourly
-        "schedule": crontab(minute=0, hour='*/1'),
+        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
     },
     "generate_province_revenue": {
         "task": "app.task_generate_province_revenue",
-        # Run hourly
-        "schedule": crontab(minute=0, hour='*/1'),
+        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
     },
     "tax_income": {
         "task": "app.task_tax_income",
-        # Run hourly
-        "schedule": crontab(minute=0, hour='*/1'),
+        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
     },
     "war_reparation_tax": {
         "task": "app.task_war_reparation_tax",
-        # Run every day at midnight (UTC)
-        "schedule": crontab(minute=0, hour=0)
+        "schedule": crontab(minute=0, hour=0) # Run every day at midnight (UTC)
     },
     "manpower_increase": {
         "task": "app.task_manpower_increase",
-        # Run everyday at midnight (UTC)
-        "schedule": crontab(minute=0, hour=0)
+        "schedule": crontab(minute=0, hour=0) # Run everyday at midnight (UTC)
     }
 }
 
@@ -80,34 +75,18 @@ celery.conf.update(
 )
 
 @celery.task()
-def task_population_growth():
-    population_growth()
+def task_population_growth(): population_growth()
 
 @celery.task()
-def task_tax_income():
-    tax_income()
+def task_tax_income(): tax_income()
 
 @celery.task()
-def task_generate_province_revenue():
-    generate_province_revenue()
-
-# Initialize Celery and update its config
-celery = Celery(app.name)
-celery.conf.update(
-    result_backend=app.config["CELERY_RESULT_BACKEND"],
-    broker_url=app.config["CELERY_BROKER_URL"],
-    timezone="UTC",
-    task_serializer="json",
-    accept_content=["json"],
-    result_serializer="json",
-    beat_schedule=celery_beat_schedule,
-)
+def task_generate_province_revenue(): generate_province_revenue()
 
 # Runs one a day
 # Transfer X% of all resources (could depends on conditions like Raze war_type) to the winner side after a war
 @celery.task()
-def task_war_reparation_tax():
-    war_reparation_tax()
+def task_war_reparation_tax(): war_reparation_tax()
 
 @celery.task()
 def task_manpower_increase():
@@ -142,12 +121,17 @@ def task_manpower_increase():
     conn.commit()
     conn.close()
 
-# Handling default error
+def generate_error_code():
+    numbers = 20
+    code = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(numbers))
+    time = int(datetime.now().timestamp())
+    full = f"{code}-{time}"
+    return full
+
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template("error.html", code=404, message="Page not found!")
 
-# Handling default error
 @app.errorhandler(405)
 def method_not_allowed(error):
     method = request.method
@@ -157,14 +141,6 @@ def method_not_allowed(error):
     message = f"Sorry, this method is not allowed! The correct method is {correct_method}"
     return render_template("error.html", code=405, message=message)
 
-def generate_error_code():
-    numbers = 20
-    code = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(numbers))
-    time = int(datetime.now().timestamp())
-    full = f"{code}-{time}"
-    return full
-
-# Handling default error
 @app.errorhandler(500)
 def invalid_server_error(error):
     error_message = "Invalid Server Error. Sorry about that."
@@ -183,58 +159,29 @@ def commas(value):
         returned = value
     return returned
 
+def get_resources():
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"),
+        cursor_factory=RealDictCursor
+    )
+
+    db = conn.cursor()
+    cId = session["user_id"]
+
+    try:
+        db.execute("SELECT * FROM resources INNER JOIN stats ON resources.id=stats.id WHERE stats.id=%s", (cId,))
+        resources = dict(db.fetchone())
+        return resources
+    except TypeError:
+        return {}
+
 @app.context_processor
 def inject_user():
-    def get_resource_amount():
-
-        conn = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
-        db = conn.cursor()
-        session_id = session["user_id"]
-
-        try:
-
-            db.execute("SELECT gold FROM stats WHERE id=(%s)", (session_id,))  # DONE
-            money = db.fetchone()[0]
-
-            db.execute("""
-            SELECT rations, oil, coal, uranium, bauxite, iron, lead, copper, lumber,
-            components, steel, consumer_goods, aluminium, gasoline, ammunition FROM resources
-            WHERE id=%s
-            """, (session_id,))
-            resource = db.fetchall()
-            resource = list(resource[0])
-
-            resources = {
-                "money": money,
-                "rations": resource[0],
-                "oil": resource[1],
-                "coal": resource[2],
-                "uranium": resource[3],
-                "bauxite": resource[4],
-                "iron": resource[5],
-                "lead": resource[6],
-                "copper": resource[7],
-                "lumber": resource[8],
-                "components": resource[9],
-                "steel": resource[10],
-                "consumer_goods": resource[11],
-                "aluminium": resource[12],
-                "gasoline": resource[13],
-                "ammunition": resource[14],
-            }
-
-            return resources
-
-        except TypeError:
-            resources = {}
-
-    return dict(get_resource_amount=get_resource_amount)
+    return dict(get_resources=get_resources)
 
 @app.route("/", methods=["GET"])
 def index():
