@@ -18,9 +18,8 @@ def create_database(database, user, password, host, port):
         "keys", "military", "offers", "proInfra", "provinces", "upgrades",
         "requests", "resources", "spyinfo", "stats", "trades",
         "treaties", "users", "peace", "wars", "reparation_tax", "news",
-        "revenue", "reset_codes"
+        "revenue", "reset_codes", "policies"
     ]
-
 
     for i in tables:
         with open(f"postgres/{i}.txt") as file:
