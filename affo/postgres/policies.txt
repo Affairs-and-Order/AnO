@@ -1,4 +1,4 @@
 CREATE TABLE IF NOT EXISTS policies
 (user_id SERIAL PRIMARY KEY NOT NULL,
-soldiers_policy INTEGER NOT NULL,
-education_policy INTEGER NOT NULL);
+soldiers INTEGER NOT NULL,
+education INTEGER NOT NULL);
