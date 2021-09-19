@@ -166,15 +166,14 @@ def get_resources():
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
         port=os.getenv("PG_PORT"),
-        cursor_factory=RealDictCursor
-    )
-
+        cursor_factory=RealDictCursor)
     db = conn.cursor()
     cId = session["user_id"]
 
     try:
         db.execute("SELECT * FROM resources INNER JOIN stats ON resources.id=stats.id WHERE stats.id=%s", (cId,))
         resources = dict(db.fetchone())
+        conn.close()
         return resources
     except TypeError:
         return {}
@@ -194,31 +193,27 @@ def robots():
 @app.route("/account", methods=["GET"])
 @login_required
 def account():
-
-    cId = session["user_id"]
-
-    connection = psycopg2.connect(
+    conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
+        port=os.getenv("PG_PORT"),
+        cursor_factory=RealDictCursor)
+    db = conn.cursor()
 
-    db = connection.cursor()
+    cId = session["user_id"]
 
     db.execute("SELECT username, email, date FROM users WHERE id=%s", (cId,))
-    username, email, date = db.fetchone()
+    user = dict(db.fetchone())
+    conn.close()
 
-    connection.close()
-
-    return render_template("account.html", username=username, email=email, date=date)
-
+    return render_template("account.html", user=user)
 
 @app.route("/recruitments", methods=["GET"])
 @login_required
 def recruitments():
     return render_template("recruitments.html")
-
 
 @app.route("/businesses", methods=["GET"])
 @login_required
