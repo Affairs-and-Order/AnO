@@ -24,6 +24,7 @@ if environment == "PROD":
 
 # Import written packages 
 # Don't put these above app = Flask(__name__), because it will cause a circular import error
+from policies import policies
 from wars import wars, find_targets
 from login import login
 from signup import signup

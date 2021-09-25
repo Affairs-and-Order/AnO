@@ -842,224 +842,224 @@
             </div>
 
             <h2 class="templatecontentheaderleft">Policies</h2>
+            <form method="POST" action="/policies/update">
+                <div class="infodiv">
 
-            <div class="infodiv">
+                    <script>
+                        function showContent(radioLabel) {
 
-                <script>
-                    function showContent(radioLabel) {
+                            radioLabel.parentElement.parentElement.childNodes[3].classList.toggle("radiodivContentShow")
+                        }
+                    </script>
 
-                        radioLabel.parentElement.parentElement.childNodes[3].classList.toggle("radiodivContentShow")
-                    }
-                </script>
+                    <h3 class="policyHeader">Choose how to organize soldiers in your military</h3>
 
-                <h3 class="policyHeader">Choose how to organize soldiers in your military</h3>
+                    <fieldset class="vanilla templatedivflex2 space radiodivparent">
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="military" value="1" type="checkbox" id="a1">
+                                <label for="a1" onclick="showContent(this)">Mandatory 10 year draft for all able citizens (1)</label>
 
-                <fieldset class="vanilla templatedivflex2 space radiodivparent">
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="a1">
-                            <label for="a1" onclick="showContent(this)">Mandatory 10 year draft for all able citizens</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Citizens pay 3% less taxes</div>
+                                <div>soldiers are 16% cheaper to recruit</div>
 
-                            <div>Citizens pay 3% less taxes</div>
-                            <div>soldiers are 16% cheaper to recruit</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="military" value="2" type="checkbox" id="a2">
+                                <label for="a2" onclick="showContent(this)">Retired soldiers will receive long term care (2)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="a2">
-                            <label for="a2" onclick="showContent(this)">Retired soldiers will receive long term care</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Happiness benefit from hospitals +8%</div>
+                                <div>Hospital upkeep cost +12%</div>
 
-                            <div>Happiness benefit from hospitals +8%</div>
-                            <div>Hospital upkeep cost +12%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="military" value="3" type="checkbox" id="a3">
+                                <label for="a3" onclick="showContent(this)">Soldiers who serve more than 2 years will receive free university (3)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="a3">
-                            <label for="a3" onclick="showContent(this)">Soldiers who serve more than 2 years will receive free university</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Productivity benefit from universities +2% each</div>
+                                <div>University upkeep cost +9%</div>
 
-                            <div>Productivity benefit from universities +2% each</div>
-                            <div>University upkeep cost +9%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="military" value="4" type="checkbox" id="a4">
+                                <label for="a4" onclick="showContent(this)">Soldiers should be given the latest warfare technology (4)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="a4">
-                            <label for="a4" onclick="showContent(this)">Soldiers should be given the latest warfare technology</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Soldiers are 8% more effective</div>
+                                <div>Each province Happiness -14%</div>
 
-                            <div>Soldiers are 8% more effective</div>
-                            <div>Each province Happiness -14%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="military" value="5" type="checkbox" id="a5">
+                                <label for="a5" onclick="showContent(this)">Military funding should be diverted to domestic matters (5)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="a5">
-                            <label for="a5" onclick="showContent(this)">Military funding should be diverted to domestic matters</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Country tax income +2%</div>
+                                <div>Decreases max possible soldiers by 13%</div>
 
-                            <div>Country tax income +2%</div>
-                            <div>Decreases max possible soldiers by 13%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="military" value="6" type="checkbox" id="a6">
+                                <label for="a6" onclick="showContent(this)">Propaganda should be used to recruit new soldiers (6)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="a6">
-                            <label for="a6" onclick="showContent(this)">Propaganda should be used to recruit new soldiers</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Army base possible soldier recruits per day + 7%</div>
+                                <div>Soldier recruitment cost +9%</div>
 
-                            <div>Army base possible soldier recruits per day + 7%</div>
-                            <div>Soldier recruitment cost +9%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="military" value="7" type="checkbox" id="a7">
+                                <label for="a7" onclick="showContent(this)">Soldier’s families will be provided for financially (7)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="a7">
-                            <label for="a7" onclick="showContent(this)">Soldier’s families will be provided for financially </label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Happiness + 4% per province</div>
+                                <div>Soldier upkeep cost + 7%</div>
 
-                            <div>Happiness + 4% per province</div>
-                            <div>Soldier upkeep cost + 7%</div>
+                            </li>
+                        </div>
+                    </fieldset>
 
-                        </li>
-                    </div>
-                </fieldset>
+                    <h3 class="policyHeader">How should we manage education?</h3>
 
-                <h3 class="policyHeader">How should we manage education?</h3>
+                    <fieldset class="vanilla templatedivflex2 space radiodivparent">
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="education" value="1" type="checkbox" id="b1">
+                                <label for="b1" onclick="showContent(this)">Students must attend a form of formal education (1)</label>
 
-                <fieldset class="vanilla templatedivflex2 space radiodivparent">
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="b1">
-                            <label for="b1" onclick="showContent(this)">Students must attend a form of formal education</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Citizens pay +1% more taxes</div>
+                                <div>University construction and upkeep +14%</div>
 
-                            <div>Citizens pay +1% more taxes</div>
-                            <div>University construction and upkeep +14%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="education" value="2" type="checkbox" id="b2">
+                                <label for="b2" onclick="showContent(this)">Student education will focus on learning skills for the workplace (2)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="b2">
-                            <label for="b2" onclick="showContent(this)">Student education will focus on learning skills for the workplace</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Infrastructure buildings -4% construction cost</div>
+                                <div>Happiness -11% in every province</div>
 
-                            <div>Infrastructure buildings -4% construction cost</div>
-                            <div>Happiness -11% in every province</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="education" value="3" type="checkbox" id="b3">
+                                <label for="b3" onclick="showContent(this)">Teachers must receive and education in communication (3)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="b3">
-                            <label for="b3" onclick="showContent(this)">Teachers must receive and education in communication</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>University effects +10%</div>
+                                <div>University upkeep +18%</div>
 
-                            <div>University effects +10%</div>
-                            <div>University upkeep +18%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="education" value="4" type="checkbox" id="b4">
+                                <label for="b4" onclick="showContent(this)">Private schools will be an option for those who can afford it (4)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="b4">
-                            <label for="b4" onclick="showContent(this)">Private schools will be an option for those who can afford it</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Productivity in the country +5%</div>
+                                <div>Tax income for each province -2%</div>
 
-                            <div>Productivity in the country +5%</div>
-                            <div>Tax income for each province -2%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="education" value="5" type="checkbox" id="b5">
+                                <label for="b5" onclick="showContent(this)">Religious schools are permitted and may use their own curriculum (5)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="b5">
-                            <label for="b5" onclick="showContent(this)">Religious schools are permitted and may use their own curriculum</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Population growth +16%</div>
+                                <div>Productivity -9%</div>
 
-                            <div>Population growth +16%</div>
-                            <div>Productivity -9%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                        <div class="vanilla radiodiv">
+                            <li class="radioleft">
+                                <input name="education" value="6" type="checkbox" id="b6">
+                                <label for="b6" onclick="showContent(this)">Students must pay tuition to attend public university (6)</label>
 
-                    <div class="vanilla radiodiv">
-                        <li class="radioleft">
-                            <input type="checkbox" id="b6">
-                            <label for="b6" onclick="showContent(this)">Students must pay tuition to attend public university</label>
+                                <div class="vanilla check"></div>
+                            </li>
+                            <li class="radioright">
 
-                            <div class="vanilla check"></div>
-                        </li>
-                        <li class="radioright">
+                                <div>Universities cost -7% construction and upkeep</div>
+                                <div>Tax income -2%</div>
 
-                            <div>Universities cost -7% construction and upkeep</div>
-                            <div>Tax income -2%</div>
+                            </li>
+                        </div>
 
-                        </li>
-                    </div>
+                    </fieldset>
 
-                </fieldset>
-
-                <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
-                    check
-                    </span>Update</button>
-
+                    <button class="templatedivbutton templatecenteredbutton" type="submit"><span class="material-icons-outlined">
+                        check
+                        </span>Update</button>
+            </form>
             </div>
         </div>
 
@@ -1777,7 +1777,7 @@
 
         </div>
         </div>
-        <form method="POST" action="/transfer/{{ cId }} ">
+        <form method="POST" action="/transfer/{{ cId }}">
             <h2 class="templatecontentheaderleft ">Transfer</h2>
 
             <div class="infodiv ">

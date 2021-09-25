@@ -177,6 +177,7 @@ def discord_register():
             db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
             db.execute("INSERT INTO resources (id) VALUES (%s)", (user_id,))
             db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user_id,))
+            db.execute("INSERT INTO policies (user_id) VALUES (%s)", (user_id,))
 
             # Clears session variables from oauth
             try:
@@ -264,6 +265,7 @@ def signup():
         db.execute("INSERT INTO military (id) VALUES (%s)", (user_id,))
         db.execute("INSERT INTO resources (id) VALUES (%s)", (user_id,))
         db.execute("INSERT INTO upgrades (user_id) VALUES (%s)", (user_id,))
+        db.execute("INSERT INTO policies (user_id) VALUES (%s)", (user_id,))
 
         db.execute("DELETE FROM keys WHERE key=(%s)", (key,)) # Deletes the key used for signup
 
