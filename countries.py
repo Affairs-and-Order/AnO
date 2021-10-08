@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from coalitions import get_user_role
 from tasks import calc_pg, calc_ti, rations_needed
 from collections import defaultdict
+from policies import get_user_policies
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
@@ -219,10 +220,8 @@ def get_revenue(cId):
                 plus_amount = plus_data[1]
 
                 if building == "farms":
-
                     db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
                     land = db.fetchone()[0]
-
                     plus_amount *= land
 
                 total = building_count * plus_amount
@@ -236,18 +235,10 @@ def get_revenue(cId):
 
             # Net removal from initial net
             try:
-                
                 convert_minus = infra[f'{building}_convert_minus']
-
                 for data in convert_minus:
-
-                    data = list(data.items())[0]
-
-                    minus_resource = data[0]
-                    minus_amount = data[1]
-
+                    minus_resource, minus_amount = list(data.items())[0]
                     total = building_count * minus_amount
-
                     revenue["net"][minus_resource] -= total
             except:
                 pass
@@ -369,6 +360,8 @@ def country(cId):
     except:
         return error(404, "Country doesn't exit")
 
+    policies = get_user_policies(cId)
+    print(policies)
     influence = get_influence(cId)
 
     db.execute("SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
@@ -466,7 +459,7 @@ def country(cId):
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
                            provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
                            colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount,
-                           cg_needed=cg_needed, rations_need=rations_need, expenses=expenses, statistics=statistics)
+                           cg_needed=cg_needed, rations_need=rations_need, expenses=expenses, statistics=statistics, policies=policies)
 
 @app.route("/countries", methods=["GET"])
 @login_required

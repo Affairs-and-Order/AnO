@@ -852,6 +852,8 @@
                         }
                     </script>
 
+
+
                     <h3 class="policyHeader">Choose how to organize soldiers in your military</h3>
 
                     <fieldset class="vanilla templatedivflex2 space radiodivparent">
@@ -1062,6 +1064,17 @@
             </form>
             </div>
         </div>
+
+        <script type="text/javascript">
+            // Hacky JavaScript script to check and uncheck policies
+            const policies = JSON.parse('{{ policies | tojson }}')
+            for (let key of Object.keys(policies)) {
+                let value = policies[key]
+                let checkbox = document.getElementsByName(key)[0]
+                if (value) checkbox.checked = true;
+                else checkbox.unchecked = true;
+            }
+        </script>
 
         <!--
             <h2 class="templatecontentheaderleft">Policies</h2>
