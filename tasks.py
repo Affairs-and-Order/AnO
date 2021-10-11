@@ -214,12 +214,23 @@ def calc_ti(user_id, consumer_goods):
         food_score = food_stats(user_id) # From -1 to -1.4
 
         new_income = int(new_income * 3 + (new_income * (energy_score + food_score)))
+
+        db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
+        policies = db.fetchone()[0]
+        if 1 in policies: # 1 Policy (1)
+            new_income *= 0.99 # Income is 99% of actual (citizens pay 1% more tax)
+        if 6 in policies: # 6 Policy (2)
+            new_income *= 0.98
+        if 4 in policies: # 4 Policy (2)
+            new_income *= 0.98
+
         new_money = int(current_money + new_income)
         
         return new_money, new_cg
     except Exception as e:
         handle_exception(e)
         return current_money, consumer_goods
+
 
 # Function for actually giving money to players
 def tax_income():
