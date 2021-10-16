@@ -513,13 +513,15 @@ def province_sell_buy(way, units, province_id):
 
     if 2 in policies:
         price *= 0.96
+    if 6 in policies and units == "universities":
+        price *= 0.93
+    if 1 in policies and units == "universities":
+        price *= 1.14
 
     if units not in ["cityCount", "land"]:
         totalPrice = int(wantedUnits * price)
     else:
         totalPrice = price
-
-    
 
     resources_used = []
 

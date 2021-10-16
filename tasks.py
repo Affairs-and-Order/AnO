@@ -497,6 +497,13 @@ def generate_province_revenue(): # Runs each hour
 
                     operating_costs = int(infra[f'{unit}_money']) * unit_amount
 
+                    if 1 in policies and unit == "universities":
+                        operating_costs *= 1.14
+                    if 3 in policies and unit == "universities":
+                        operating_costs *= 1.18
+                    if 6 in policies and unit == "universities":
+                        operating_costs *= 0.93
+
                     ### lARGER FORGES
                     db.execute("SELECT largerforges FROM upgrades WHERE user_id=%s", (user_id,))
                     lf = db.fetchone()[0]
@@ -625,6 +632,10 @@ def generate_province_revenue(): # Runs each hour
                         effect = infra[f'{unit}_effect']
                     except KeyError:
                         effect = []
+
+                    if unit == "universities" and 3 in policies:
+                        effect[0]["productivity"] *= 1.10
+                        effect[1]["happiness"] *= 1.10
 
                     if unit == "hospitals":
                         db.execute("SELECT nationalhealthinstitution FROM upgrades WHERE user_id=%s", (user_id,))
