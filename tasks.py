@@ -218,7 +218,7 @@ def calc_ti(user_id, consumer_goods):
         db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
         policies = db.fetchone()[0]
         if 1 in policies: # 1 Policy (1)
-            new_income *= 0.99 # Income is 99% of actual (citizens pay 1% more tax)
+            new_income *= 1.01 # Income is 101% of actual (citizens pay 1% more tax)
         if 6 in policies: # 6 Policy (2)
             new_income *= 0.98
         if 4 in policies: # 4 Policy (2)
@@ -356,6 +356,16 @@ def calc_pg(pId, rations):
         new_rations = 0
 
     newPop = (maxPop // 100) * rations_increase  # 1% of maxPop * -1 to 1
+
+    db.execute("SELECT userid FROM provinces WHERE id=%s", (pId,))
+    owner = db.fetchone()[0]
+
+    db.execute("SELECT education FROM policies WHERE user_id=%s", (owner,))
+    policies = db.fetchone()[0]
+
+    if 5 in policies:
+        newPop *= 1.16 # 16% increase
+
     fullPop = curPop + newPop
 
     if fullPop < 0: fullPop = 0
@@ -443,6 +453,16 @@ def generate_province_revenue(): # Runs each hour
         db.execute("UPDATE provinces SET energy=0 WHERE id=%s", (province_id,)) # So energy would reset each turn
         db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
         user_id = db.fetchone()[0]
+
+        db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
+        policies = db.fetchone()[0]
+
+        if 5 in policies:
+            db.execute("UPDATE provinces SET productivity=productivity*0.91 WHERE id=%s", (province_id,))
+        if 4 in policies:
+            db.execute("UPDATE provinces SET productivity=productivity*1.05 WHERE id=%s", (province_id,))
+        if 2 in policies:
+            db.execute("UPDATE provinces SET happiness=happiness*0.89 WHERE id=%s", (province_id,))
 
         for unit in columns:
 

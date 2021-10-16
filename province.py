@@ -507,10 +507,19 @@ def province_sell_buy(way, units, province_id):
         table = "proInfra"
 
     price = unit_prices[f"{units}_price"]
+
+    db.execute("SELECT education FROM policies WHERE user_id=%s", (cId,))
+    policies = db.fetchone()[0]
+
+    if 2 in policies:
+        price *= 0.96
+
     if units not in ["cityCount", "land"]:
         totalPrice = int(wantedUnits * price)
     else:
         totalPrice = price
+
+    
 
     resources_used = []
 
