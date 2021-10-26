@@ -215,14 +215,19 @@ def calc_ti(user_id, consumer_goods):
 
         new_income = int(new_income * 3 + (new_income * (energy_score + food_score)))
 
-        db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
-        policies = db.fetchone()[0]
+        try:
+            db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
+            policies = db.fetchone()[0]
+        except: 
+            policies = []
+        print(f"First income: {new_income}")
         if 1 in policies: # 1 Policy (1)
             new_income *= 1.01 # Income is 101% of actual (citizens pay 1% more tax)
         if 6 in policies: # 6 Policy (2)
             new_income *= 0.98
         if 4 in policies: # 4 Policy (2)
             new_income *= 0.98
+        print(f"Last income: {new_income}")
 
         new_money = int(current_money + new_income)
         
@@ -360,8 +365,11 @@ def calc_pg(pId, rations):
     db.execute("SELECT userid FROM provinces WHERE id=%s", (pId,))
     owner = db.fetchone()[0]
 
-    db.execute("SELECT education FROM policies WHERE user_id=%s", (owner,))
-    policies = db.fetchone()[0]
+    try:
+        db.execute("SELECT education FROM policies WHERE user_id=%s", (owner,))
+        policies = db.fetchone()[0]
+    except:
+        policies = []
 
     if 5 in policies:
         newPop *= 1.16 # 16% increase
@@ -454,15 +462,27 @@ def generate_province_revenue(): # Runs each hour
         db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
         user_id = db.fetchone()[0]
 
-        db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
-        policies = db.fetchone()[0]
+        try:
+            db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
+            policies = db.fetchone()[0]
+        except:
+            policies = []
+        print(policies)
 
         if 5 in policies:
             db.execute("UPDATE provinces SET productivity=productivity*0.91 WHERE id=%s", (province_id,))
         if 4 in policies:
             db.execute("UPDATE provinces SET productivity=productivity*1.05 WHERE id=%s", (province_id,))
         if 2 in policies:
+            db.execute("SELECT happiness FROM provinces WHERE id=%s", (province_id, ))
+            res1 = db.fetchone()[0]
+            print(res1)
+
             db.execute("UPDATE provinces SET happiness=happiness*0.89 WHERE id=%s", (province_id,))
+
+            db.execute("SELECT happiness FROM provinces WHERE id=%s", (province_id, ))
+            res2 = db.fetchone()[0]
+            print(res2)
 
         for unit in columns:
 
@@ -769,6 +789,8 @@ def generate_province_revenue(): # Runs each hour
 
     conn.close() # Closes the connection
 
+
+# generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(

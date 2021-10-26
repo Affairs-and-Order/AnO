@@ -508,8 +508,11 @@ def province_sell_buy(way, units, province_id):
 
     price = unit_prices[f"{units}_price"]
 
-    db.execute("SELECT education FROM policies WHERE user_id=%s", (cId,))
-    policies = db.fetchone()[0]
+    try:
+        db.execute("SELECT education FROM policies WHERE user_id=%s", (cId,))
+        policies = db.fetchone()[0]
+    except:
+        policies = []
 
     if 2 in policies:
         price *= 0.96

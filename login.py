@@ -50,6 +50,12 @@ def login():
             # sets session's user_id to current user's id
             session["user_id"] = user[0]
 
+            # TODO: remove later, this is for old users
+            try:
+                db.execute("SELECT education, soldiers FROM policies WHERE user_id=%s", (user[0],))
+            except:
+                db.execute("INSERT INTO policies (user_id) VALUES (%s)", (user[0],))
+
             print('User has succesfully logged in.')
             connection.commit()
             connection.close()
@@ -123,6 +129,12 @@ def discord_login():
 
     db.execute("SELECT id FROM users WHERE hash=(%s) AND auth_type='discord'", (discord_auth,))
     user_id = db.fetchone()[0]
+
+    # TODO: remove later, this is for old users
+    try:
+        db.execute("SELECT education, soldiers FROM policies WHERE user_id=%s", (user_id,))
+    except:
+        db.execute("INSERT INTO policies (user_id) VALUES (%s)", (user_id,))
 
     connection.close()
 

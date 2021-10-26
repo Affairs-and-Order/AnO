@@ -29,8 +29,12 @@ def get_user_policies(user_id):
 
     policies = {}
     temp_policies = {}
-    db.execute("SELECT soldiers, education FROM policies WHERE user_id=%s", (user_id,))
-    temp_policies["soldiers"], temp_policies["education"] = db.fetchone()
+    try:
+        db.execute("SELECT soldiers, education FROM policies WHERE user_id=%s", (user_id,))
+        temp_policies["soldiers"], temp_policies["education"] = db.fetchone()
+    except:
+        temp_policies["soldiers"] = []
+        temp_policies["education"] = []
     
     soldiers_policies = get_policy_in_format(temp_policies, "soldiers", 7)
     education_policies = get_policy_in_format(temp_policies, "education", 6)
