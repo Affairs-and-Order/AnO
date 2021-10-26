@@ -3,6 +3,7 @@ import os
 import time
 from dotenv import load_dotenv
 from attack_scripts import Economy
+import math
 import variables
 load_dotenv()
 
@@ -467,22 +468,13 @@ def generate_province_revenue(): # Runs each hour
             policies = db.fetchone()[0]
         except:
             policies = []
-        print(policies)
 
         if 5 in policies:
             db.execute("UPDATE provinces SET productivity=productivity*0.91 WHERE id=%s", (province_id,))
         if 4 in policies:
             db.execute("UPDATE provinces SET productivity=productivity*1.05 WHERE id=%s", (province_id,))
         if 2 in policies:
-            db.execute("SELECT happiness FROM provinces WHERE id=%s", (province_id, ))
-            res1 = db.fetchone()[0]
-            print(res1)
-
             db.execute("UPDATE provinces SET happiness=happiness*0.89 WHERE id=%s", (province_id,))
-
-            db.execute("SELECT happiness FROM provinces WHERE id=%s", (province_id, ))
-            res2 = db.fetchone()[0]
-            print(res2)
 
         for unit in columns:
 
@@ -548,6 +540,8 @@ def generate_province_revenue(): # Runs each hour
                     # Removing money operating costs (if user has the money)
                     db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
                     current_money = int(db.fetchone()[0])
+
+                    operating_costs = int(operating_costs)
 
                     # Boolean for whether a player has enough resources, energy, money to power his building
                     has_enough_stuff = True
@@ -749,8 +743,11 @@ def generate_province_revenue(): # Runs each hour
                                 if eff == "pollution" and sign == "+":
                                     eff_amount *= 0.75
                         ###
+                        if unit == "universities":
+                            if 3 in policies:
+                                eff_amount *= 1.1
 
-                        eff_amount = int(eff_amount)
+                        eff_amount = math.ceil(eff_amount) # Using math.ceil so universities +18% would work
                         if sign == "+":
                             new_effect = current_effect + eff_amount
                         elif sign == "-":
@@ -788,9 +785,6 @@ def generate_province_revenue(): # Runs each hour
                     continue
 
     conn.close() # Closes the connection
-
-
-# generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
