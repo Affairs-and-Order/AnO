@@ -2,7 +2,7 @@ import requests
 import psycopg2
 import os
 from dotenv import load_dotenv
-from init import BASE_URL, main_session
+from init import BASE_URL
 load_dotenv()
 
 # Auth test config
@@ -13,7 +13,8 @@ confirmation = password
 key = "testkey12345"
 continent = "1"
 
-deleted_session = requests.Session()
+login_session = requests.Session()
+register_session = requests.Session()
 
 def delete_user(username, email):
     conn = psycopg2.connect(
@@ -25,22 +26,16 @@ def delete_user(username, email):
 
     db = conn.cursor()
 
-    if deleted_session.cookies.get_dict() == {}:
-        return False
-
-    deleted_session.post(f"{BASE_URL}/delete_own_account")
+    login_session.post(f"{BASE_URL}/delete_own_account")
 
     try:
-        db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", 
-        (username, email))
-        db.fetchone()[0]
+        db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'",  (username, email))
+        result = db.fetchone()[0]
     except:
         return True
-
     return False
 
 def register():
-
     data = {
         'username': username,
         'email': email,
@@ -62,39 +57,44 @@ def register():
     db.execute("INSERT INTO keys (key) VALUES (%s)", (key,))
     conn.commit()
 
-    deleted_session.post(f"{BASE_URL}/signup", data=data, allow_redirects=True)
+    register_session.post(f"{BASE_URL}/signup", data=data, allow_redirects=True)
 
-    if deleted_session.cookies.get_dict() == {}:
+    if register_session.cookies.get_dict() == {}:
         return False
 
     try:
-        db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", 
-        (username, email))
-        db.fetchone()[0]
+        db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", (username, email))
+        result = db.fetchone()[0]
     except:
         return False
 
     return True
 
 def login():
-
     data = {
         'username': username,
         'password': password,
         'rememberme': 'on'
     }
+    login_session.post(f"{BASE_URL}/login/", data=data, allow_redirects=False)
+    return login_session.cookies.get_dict() != {}
 
-    main_session.post(f"{BASE_URL}/login/", data=data, allow_redirects=False)
-    if main_session == {}:
-        return False
-
-    return True
+def logout():
+    base = register_session.cookies.get_dict()
+    register_session.get(f"{BASE_URL}/logout")
+    return register_session.cookies.get_dict() == {} and base != {}
 
 def test_register():
     assert register() == True
+
+def test_logout():
+    assert logout() == True
 
 def test_login():
     assert login() == True
 
 def test_deletion():
     assert delete_user(username, email) == True
+
+def test_login_after_deletion():
+    assert login() == False
