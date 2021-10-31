@@ -16,7 +16,7 @@ continent = "1"
 login_session = requests.Session()
 register_session = requests.Session()
 
-def delete_user(username, email):
+def delete_user(username, email, session):
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
         user=os.getenv("PG_USER"),
@@ -26,7 +26,7 @@ def delete_user(username, email):
 
     db = conn.cursor()
 
-    login_session.post(f"{BASE_URL}/delete_own_account")
+    session.post(f"{BASE_URL}/delete_own_account")
 
     try:
         db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'",  (username, email))
@@ -35,7 +35,7 @@ def delete_user(username, email):
         return True
     return False
 
-def register():
+def register(session):
     data = {
         'username': username,
         'email': email,
@@ -57,9 +57,9 @@ def register():
     db.execute("INSERT INTO keys (key) VALUES (%s)", (key,))
     conn.commit()
 
-    register_session.post(f"{BASE_URL}/signup", data=data, allow_redirects=True)
+    session.post(f"{BASE_URL}/signup", data=data, allow_redirects=True)
 
-    if register_session.cookies.get_dict() == {}:
+    if session.cookies.get_dict() == {}:
         return False
 
     try:
@@ -70,31 +70,31 @@ def register():
 
     return True
 
-def login():
+def login(session):
     data = {
         'username': username,
         'password': password,
         'rememberme': 'on'
     }
-    login_session.post(f"{BASE_URL}/login/", data=data, allow_redirects=False)
-    return login_session.cookies.get_dict() != {}
+    session.post(f"{BASE_URL}/login/", data=data, allow_redirects=False)
+    return session.cookies.get_dict() != {}
 
-def logout():
-    base = register_session.cookies.get_dict()
-    register_session.get(f"{BASE_URL}/logout")
-    return register_session.cookies.get_dict() == {} and base != {}
+def logout(session):
+    base = session.cookies.get_dict()
+    session.get(f"{BASE_URL}/logout")
+    return session.cookies.get_dict() == {} and base != {}
 
 def test_register():
-    assert register() == True
+    assert register(register_session) == True
 
 def test_logout():
-    assert logout() == True
+    assert logout(register_session) == True
 
 def test_login():
-    assert login() == True
+    assert login(login_session) == True
 
 def test_deletion():
-    assert delete_user(username, email) == True
+    assert delete_user(username, email, login_session) == True
 
 def test_login_after_deletion():
-    assert login() == False
+    assert login(login_session) == False
