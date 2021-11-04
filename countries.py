@@ -494,6 +494,8 @@ def countries():
 
     db = connection.cursor()
 
+    cId = session["user_id"]
+
     search = request.values.get("search")
     lowerinf = request.values.get("lowerinf")
     upperinf = request.values.get("upperinf")
@@ -507,7 +509,8 @@ FROM USERS
 LEFT JOIN provinces ON users.id = provinces.userId
 LEFT JOIN coalitions ON users.id = coalitions.userId
 LEFT JOIN colNames ON colNames.id = coalitions.colId
-GROUP BY users.id, coalitions.colId, colNames.name;""")
+WHERE users.id != %s
+GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
     dbResults = db.fetchall()
 
     connection.commit()
