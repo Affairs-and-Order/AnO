@@ -13,7 +13,7 @@ from policies import get_user_policies
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024 # 2 Mb limit
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1024 * 1024  # 2 Mb limit
 
 
 def get_econ_statistics(cId):
@@ -37,14 +37,14 @@ def get_econ_statistics(cId):
     provinces = tuple(provinces)
 
     total = {}
-    total = defaultdict(lambda:0, total)
+    total = defaultdict(lambda: 0, total)
 
     # This is a pretty bad way of doing this, but the best
     # I thought of in the time given
     # TODO: find way to do this that would take less LOC
     try:
         db.execute(
-        """
+            """
         SELECT
         coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields,
         gas_stations, general_stores, farmers_markets, malls, banks,
@@ -65,13 +65,13 @@ def get_econ_statistics(cId):
         units = list(units)
 
         coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields, \
-        gas_stations, general_stores, farmers_markets, malls, banks, \
-        city_parks, hospitals, libraries, universities, monorails, \
-        army_bases, harbours, aerodomes, admin_buildings, silos, \
-        farms, pumpjacks, coal_mines, bauxite_mines, \
-        copper_mines, uranium_mines, lead_mines, iron_mines, \
-        lumber_mills, component_factories, steel_mills, ammunition_factories, \
-        aluminium_refineries, oil_refineries = units
+            gas_stations, general_stores, farmers_markets, malls, banks, \
+            city_parks, hospitals, libraries, universities, monorails, \
+            army_bases, harbours, aerodomes, admin_buildings, silos, \
+            farms, pumpjacks, coal_mines, bauxite_mines, \
+            copper_mines, uranium_mines, lead_mines, iron_mines, \
+            lumber_mills, component_factories, steel_mills, ammunition_factories, \
+            aluminium_refineries, oil_refineries = units
 
         total["coal_burners"] += coal_burners
         total["oil_burners"] += oil_burners
@@ -101,7 +101,7 @@ def get_econ_statistics(cId):
         total["pumpjacks"] + pumpjacks
         total["coal_mines"] += coal_mines
         total["bauxite_mines"] += bauxite_mines
-        
+
         total["copper_mines"] += copper_mines
         total["uranium_mines"] += uranium_mines
         total["lead_mines"] += lead_mines
@@ -117,14 +117,16 @@ def get_econ_statistics(cId):
 
     expenses = {}
     expenses = defaultdict(lambda: defaultdict(lambda: 0), expenses)
-    
+
     def get_unit_type(unit):
         for type_name, buildings in variables.INFRA_TYPE_BUILDINGS.items():
-            if unit in buildings: return type_name
+            if unit in buildings:
+                return type_name
 
     def check_for_resource_upkeep(unit, amount):
         try:
-            convert_minus = list(variables.INFRA[f'{unit}_convert_minus'][0].items())[0]
+            convert_minus = list(
+                variables.INFRA[f'{unit}_convert_minus'][0].items())[0]
             minus = convert_minus[0]
             minus_amount = convert_minus[1] * amount
         except KeyError:
@@ -149,10 +151,11 @@ def get_econ_statistics(cId):
 
     return expenses
 
+
 def format_econ_statistics(statistics):
 
     formatted = {}
-    formatted = defaultdict(lambda:"", formatted)
+    formatted = defaultdict(lambda: "", formatted)
 
     for unit_type, unit_type_data in statistics.items():
         unit_type_data = list(unit_type_data.items())
@@ -166,13 +169,14 @@ def format_econ_statistics(statistics):
             else:
                 expense_string = f"{amount} {resource}"
 
-            if resource == "money": # Bit of a hack but the simplest and cleanest approach
+            if resource == "money":  # Bit of a hack but the simplest and cleanest approach
                 expense_string = expense_string.replace(" money", "")
 
             formatted[unit_type] += expense_string
             idx += 1
 
     return formatted
+
 
 def get_revenue(cId):
 
@@ -208,7 +212,8 @@ def get_revenue(cId):
         buildings = variables.BUILDINGS
 
         for building in buildings:
-            building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
+            building_query = f"SELECT {building}" + \
+                " FROM proInfra WHERE id=%s"
             db.execute(building_query, (province_id,))
             building_count = db.fetchone()[0]
 
@@ -220,7 +225,8 @@ def get_revenue(cId):
                 plus_amount = plus_data[1]
 
                 if building == "farms":
-                    db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                    db.execute(
+                        "SELECT land FROM provinces WHERE id=%s", (province_id,))
                     land = db.fetchone()[0]
                     plus_amount *= land
 
@@ -257,7 +263,8 @@ def get_revenue(cId):
     revenue["net"]["money"] += ti_money - current_money
 
     if current_cg - ti_cg == cg_needed:
-        revenue["net"]["consumer_goods"] = cg_needed * -1 + revenue["gross"]["consumer_goods"]
+        revenue["net"]["consumer_goods"] = cg_needed * - \
+            1 + revenue["gross"]["consumer_goods"]
     elif current_cg > ti_cg:
         revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
 
@@ -269,6 +276,7 @@ def get_revenue(cId):
     revenue["net"]["rations"] = new_rations - current_rations
 
     return revenue
+
 
 def next_turn_rations(cId, prod_rations):
 
@@ -294,6 +302,7 @@ def next_turn_rations(cId, prod_rations):
 
     return current_rations
 
+
 @app.route("/delete_news/<int:id>", methods=["POST"])
 @login_required
 def delete_news(id):
@@ -314,6 +323,8 @@ def delete_news(id):
         return "403"
 
 # The amount of consumer goods a player needs to fill up fully
+
+
 def cg_need(user_id):
 
     conn = psycopg2.connect(
@@ -330,16 +341,18 @@ def cg_need(user_id):
     if population is None:
         population = 0
 
-    # How many consumer goods are needed to feed a nation 
+    # How many consumer goods are needed to feed a nation
     cg_needed = population // variables.CG_PER
 
     return cg_needed
+
 
 @app.route("/my_country")
 @login_required
 def my_country():
     user_id = session["user_id"]
     return redirect(f"/country/id={user_id}")
+
 
 @app.route("/country/id=<cId>")
 @login_required
@@ -355,7 +368,8 @@ def country(cId):
     db = connection.cursor()
 
     try:
-        db.execute("SELECT username, description, date FROM users WHERE id=%s", (cId,))
+        db.execute(
+            "SELECT username, description, date FROM users WHERE id=%s", (cId,))
         username, description, dateCreated = db.fetchall()[0]
     except:
         return error(404, "Country doesn't exit")
@@ -364,7 +378,8 @@ def country(cId):
     print(policies)
     influence = get_influence(cId)
 
-    db.execute("SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
+    db.execute(
+        "SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
     population, happiness, productivity, provinceCount = db.fetchall()[0]
 
     db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
@@ -415,7 +430,7 @@ def country(cId):
     db.execute("SELECT spies FROM military WHERE id=(%s)", (uId,))
     spyCount = db.fetchone()[0]
     spyPrep = 1 # this is an integer from 1 to 5, alter the stats table to include this data
-    
+
     eSpyCount = db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
     eDefcon = 1 # this is an integer from 1 to 5, alter the stats table to include this data
 
@@ -431,7 +446,8 @@ def country(cId):
     news_amount = 0
     if idd == session["user_id"]:
         # TODO: handle this as country/id=<int:cId>
-        db.execute("SELECT message,date,id FROM news WHERE destination_id=(%s)", (cId,))
+        db.execute(
+            "SELECT message,date,id FROM news WHERE destination_id=(%s)", (cId,))
 
         # data order in the tuple appears as in the news schema (notice this when work with this data using jija)
         news = db.fetchall()
@@ -441,7 +457,8 @@ def country(cId):
     if status:
         revenue = get_revenue(cId)
 
-        db.execute("SELECT name, type, resource, amount, date FROM revenue WHERE user_id=%s", (cId,))
+        db.execute(
+            "SELECT name, type, resource, amount, date FROM revenue WHERE user_id=%s", (cId,))
         expenses = db.fetchall()
 
         statistics = get_econ_statistics(cId)
@@ -461,9 +478,10 @@ def country(cId):
                            colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount,
                            cg_needed=cg_needed, rations_need=rations_need, expenses=expenses, statistics=statistics, policies=policies)
 
+
 @app.route("/countries", methods=["GET"])
 @login_required
-def countries():  # TODO: fix shit ton of repeated code in function
+def countries():
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -474,123 +492,55 @@ def countries():  # TODO: fix shit ton of repeated code in function
 
     db = connection.cursor()
 
-    try:
-        search = request.values.get("search")
-    except TypeError:
-        search = ""
+    search = request.values.get("search")
+    lowerinf = request.values.get("lowerinf")
+    upperinf = request.values.get("upperinf")
+    province_range = request.values.get("province_range")
 
-    try:
-        lowerinf = float(request.values.get("lowerinf"))
-    except TypeError:
-        lowerinf = None
+    db.execute("""SELECT users.id, users.username, users.date, users.flag, sum(provinces.population) AS province_population,
+coalitions.colId, colNames.name, COUNT(provinces.id) as provinces_count
+FROM USERS
+LEFT JOIN provinces ON users.id = provinces.userId
+LEFT JOIN coalitions ON users.id = coalitions.userId
+LEFT JOIN colNames ON colNames.id = coalitions.colId
+GROUP BY users.id, coalitions.colId, colNames.name;""")
+    dbResults = db.fetchall()
+    results = []
+    # Hack to add influence into the query, filter influence, province range, etc.
+    for user in dbResults:
+        addUser = True
+        user_id = user[0]
+        user = list(user)
+        influence = get_influence(user_id)
 
-    try:
-        upperinf = float(request.values.get("upperinf"))
-    except TypeError:
-        upperinf = None
+        user.append(influence)
+        if search:
+            username = user[1]
+            if username != search:
+                addUser = False
+        if lowerinf:
+            if influence < float(lowerinf):
+                addUser = False
+        if upperinf:
+            if influence > float(upperinf):
+                addUser = False
+        if province_range:
+            province_count = user[7]
+            if province_count > int(province_range):
+                addUser = False
 
-    try:
-        province_range = int(request.values["province_range"])
-    except:
-        province_range = None
-
-    # Optimize
-    # if not search and upperinf is None and lowerinf is None:
-    if not search:
-        db.execute("SELECT id FROM users ORDER BY id")
-        users = db.fetchall()
-
-    # elif search is not None and upperinf is None and lowerinf is None:
-    elif search != "":
-        db.execute("SELECT id FROM users WHERE username=(%s) ORDER BY id", (search,))
-        users = db.fetchall()
-
-    if lowerinf is not None and upperinf is None:
-        for user in users:
-            user_id = int(user[0])
-            if get_influence(user_id) < lowerinf:
-                users.remove(user)
-
-    elif upperinf is not None and lowerinf is None:
-        for user in users:
-            user_id = int(user[0])
-            if get_influence(user_id) > upperinf:
-                users.remove(user)
-
-    elif upperinf is not None and lowerinf is not None:
-        for user in users:
-            user_influence = get_influence(int(user[0]))
-            if user_influence > upperinf or user_influence < lowerinf:
-                users.remove(user)
-
-    # db.execute("SELECT username FROM users ORDER BY id")
-    # names = db.fetchall()
-
-    # db.execute("SELECT username FROM users ORDER BY id")
-    # names = db.fetchall()
-    # Check province range
-    if province_range is not None:
-        for user in users:
-            user_id = user[0]
-            db.execute(f"SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (user_id,))
-            target_province = db.fetchone()[0]
-            if abs(target_province-province_range) > 1:
-                users.remove(user)
-
-    populations = []
-    coalition_ids = []
-    coalition_names = []
-    dates = []
-    influences = []
-    flags = []
-    names = []
-
-    for i in users:
-
-        db.execute("SELECT username FROM users WHERE id=(%s)", (i[0],))
-        names.append(db.fetchone())
-
-        db.execute("SELECT date FROM users WHERE id=(%s)", ((i[0]),))
-        date = db.fetchone()[0]
-        dates.append(date)
-
-        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (i[0],))
-        population = db.fetchone()[0]
-        populations.append(population)
-
-        influence = get_influence(str(i[0]))
-        influences.append(influence)
-
-        try:
-            db.execute("SELECT flag FROM users WHERE id=(%s)", (i[0],))
-            flag = db.fetchone()[0]
-        except TypeError:
-            flag = None
-
-        flags.append(flag)
-
-        try:
-            db.execute("SELECT colId FROM coalitions WHERE userId = (%s)", (i[0],))
-            coalition_id = db.fetchone()[0]
-            coalition_ids.append(coalition_id)
-
-            db.execute("SELECT name FROM colNames WHERE id = (%s)", (coalition_id,))
-            coalition_name = db.fetchone()[0]
-            coalition_names.append(coalition_name)
-        except:
-            coalition_ids.append("No Coalition")
-            coalition_names.append("No Coalition")
+        if addUser:
+            print(user)
+            results.append(user)
 
     connection.commit()
     connection.close()
 
-    resultAll = zip(populations, users, names, coalition_ids,
-                    coalition_names, dates, influences, flags)
+    return render_template("countries.html", countries=results)
 
-    return render_template("countries.html", resultAll=resultAll)
 
-@app.route("/update_country_info", methods=["POST"])
-@login_required
+@ app.route("/update_country_info", methods=["POST"])
+@ login_required
 def update_info():
 
     connection = psycopg2.connect(
@@ -607,7 +557,8 @@ def update_info():
     description = request.form["description"]
 
     if description not in ["None", ""]:
-        db.execute("UPDATE users SET description=%s WHERE id=%s", (description, cId))
+        db.execute("UPDATE users SET description=%s WHERE id=%s",
+                   (description, cId))
 
     # Flag changing
     ALLOWED_EXTENSIONS = ['png', 'jpg']
@@ -637,7 +588,8 @@ def update_info():
             filename = f"flag_{cId}" + '.' + extension
             new_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             flag.save(new_path)
-            db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)", (filename, cId))
+            db.execute("UPDATE users SET flag=(%s) WHERE id=(%s)",
+                       (filename, cId))
 
     """
     bg_flag = request.files["bg_flag_input"]
@@ -650,7 +602,8 @@ def update_info():
             db.execute("SELECT bg_flag FROM users WHERE id=(%s)", (cId,))
             current_bg_flag = db.fetchone()[0]
 
-            os.remove(os.path.join(app.config['UPLOAD_FOLDER'], current_bg_flag))
+            os.remove(os.path.join(
+                app.config['UPLOAD_FOLDER'], current_bg_flag))
         except FileNotFoundError:
             pass
 
@@ -660,13 +613,15 @@ def update_info():
             extension = current_filename.rsplit('.', 1)[1].lower()
             filename = f"bg_flag_{cId}" + '.' + extension
             flag.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            db.execute("UPDATE users SET bg_flag=(%s) WHERE id=(%s)", (filename, cId))
+            db.execute("UPDATE users SET bg_flag=(%s) WHERE id=(%s)",
+                       (filename, cId))
     """
 
     # Location changing
     new_location = request.form.get("countryLocation")
 
-    continents = ["Tundra", "Savanna", "Desert", "Jungle", "Boreal Forest", "Grassland", "Mountain Range"]
+    continents = ["Tundra", "Savanna", "Desert", "Jungle",
+                  "Boreal Forest", "Grassland", "Mountain Range"]
 
     if new_location not in continents and new_location not in ["", "none"]:
         return error(400, "No such continent")
@@ -680,24 +635,34 @@ def update_info():
 
             province_id = province_id[0]
 
-            db.execute("UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
-            db.execute("UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
+            db.execute(
+                "UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
 
-        db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)", (new_location, cId))
+        db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)",
+                   (new_location, cId))
 
     connection.commit()  # Commits the data
     connection.close()  # Closes the connection
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country
 
-@app.route("/delete_own_account", methods=["POST"])
-@login_required
+
+@ app.route("/delete_own_account", methods=["POST"])
+@ login_required
 def delete_own_account():
 
     connection = psycopg2.connect(
@@ -731,7 +696,8 @@ def delete_own_account():
     db.execute("DELETE FROM trades WHERE offeree=%s OR offerer=%s", (cId, cId))
     db.execute("DELETE FROM spyinfo WHERE spyer=%s OR spyee=%s", (cId, cId))
     db.execute("DELETE FROM requests WHERE reqId=%s", (cId,))
-    db.execute("DELETE FROM reparation_tax WHERE loser=%s OR winner=%s", (cId, cId))
+    db.execute(
+        "DELETE FROM reparation_tax WHERE loser=%s OR winner=%s", (cId, cId))
     db.execute("DELETE FROM peace WHERE author=%s", (cId,))
 
     try:
@@ -745,16 +711,20 @@ def delete_own_account():
         db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
         user_coalition = db.fetchone()[0]
 
-        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='leader' AND colId=%s", (user_coalition,))
+        db.execute(
+            "SELECT COUNT(userId) FROM coalitions WHERE role='leader' AND colId=%s", (user_coalition,))
         leader_count = int(db.fetchone()[0])
 
         if leader_count != 1:
             pass
         else:
-            db.execute("DELETE FROM coalitions WHERE colId=%s", (user_coalition,))
+            db.execute("DELETE FROM coalitions WHERE colId=%s",
+                       (user_coalition,))
             db.execute("DELETE FROM colNames WHERE id=%s", (user_coalition,))
-            db.execute("DELETE FROM colBanks WHERE colid=%s", (user_coalition,))
-            db.execute("DELETE FROM requests WHERE colId=%s", (user_coalition,))
+            db.execute("DELETE FROM colBanks WHERE colid=%s",
+                       (user_coalition,))
+            db.execute("DELETE FROM requests WHERE colId=%s",
+                       (user_coalition,))
 
     db.execute("DELETE FROM coalitions WHERE userId=%s", (cId,))
     db.execute("DELETE FROM colBanksRequests WHERE reqId=%s", (cId,))

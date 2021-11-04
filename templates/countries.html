@@ -61,22 +61,25 @@
                     <th>Influence</th>
                     <th>Date Created</th>
                     <th>Coalition</th>
+                    <th>Provinces</th>
 
-                    {% for pop, id, name, colId, colName, date, influence, flag in resultAll %}
+                    {% for id, username, date, flag, province_population, colId, colName, province_count, influence in countries %}
                     <tr>
 
+                        <!--
                         {% if flag != None %}
-                        <!-- you can acess the flag here with the {{ flag }} var -->
                         {% endif %}
+                        -->
 
-                        <td><a href="/country/id={{ id[0] }}">{{ name[0] }}</a></td>
+                        <td><a href="/country/id={{ id }}">{{ username }}</a></td>
                         <td>{{ influence }}</td>
                         <td>{{ date }}</td>
-                        {% if colName == "No Coalition" %}
+                        {% if colName == None %}
                         <td>No coalition</td>
-                        {% endif %} {% if colName != "No Coalition" %}
+                        {% else %}
                         <td><a href="/coalition/{{ colId }}">{{ colName }}</a></td>
                         {% endif %}
+                        <td>{{ province_count }}</td>
 
 
                     </tr>
