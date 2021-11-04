@@ -10,6 +10,8 @@ from coalitions import get_user_role
 from tasks import calc_pg, calc_ti, rations_needed
 from collections import defaultdict
 from policies import get_user_policies
+from operator import itemgetter
+from datetime import datetime
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
@@ -496,8 +498,10 @@ def countries():
     lowerinf = request.values.get("lowerinf")
     upperinf = request.values.get("upperinf")
     province_range = request.values.get("province_range")
+    sort = request.values.get("sort")
+    sortway = request.values.get("sortway")
 
-    db.execute("""SELECT users.id, users.username, users.date, users.flag, sum(provinces.population) AS province_population,
+    db.execute("""SELECT users.id, users.username, users.date, users.flag, COALESCE(SUM(provinces.population), 0) AS province_population,
 coalitions.colId, colNames.name, COUNT(provinces.id) as provinces_count
 FROM USERS
 LEFT JOIN provinces ON users.id = provinces.userId
@@ -505,15 +509,24 @@ LEFT JOIN coalitions ON users.id = coalitions.userId
 LEFT JOIN colNames ON colNames.id = coalitions.colId
 GROUP BY users.id, coalitions.colId, colNames.name;""")
     dbResults = db.fetchall()
-    results = []
+
+    connection.commit()
+    connection.close()
+
     # Hack to add influence into the query, filter influence, province range, etc.
+    results = []
     for user in dbResults:
         addUser = True
         user_id = user[0]
         user = list(user)
         influence = get_influence(user_id)
 
+        user_date = user[2]
+        date = datetime.fromisoformat(user_date)
+        unix = int((date - datetime(1970, 1, 1)).total_seconds())
+
         user.append(influence)
+        user.append(unix)
         if search:
             username = user[1]
             if username != search:
@@ -530,11 +543,21 @@ GROUP BY users.id, coalitions.colId, colNames.name;""")
                 addUser = False
 
         if addUser:
-            print(user)
             results.append(user)
 
-    connection.commit()
-    connection.close()
+    if not sort:
+        sortway = "desc"
+        sort = "influence"
+
+    reverse = False
+    if sortway == "desc":
+        reverse = True
+    if sort == "influence":
+        results = sorted(results, key=itemgetter(8), reverse=reverse)
+    if sort == "age":
+        results = sorted(results, key=itemgetter(9), reverse=reverse)
+    if sort == "population":
+        results = sorted(results, key=itemgetter(4), reverse=reverse)
 
     return render_template("countries.html", countries=results)
 
