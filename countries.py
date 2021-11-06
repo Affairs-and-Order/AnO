@@ -513,7 +513,6 @@ WHERE users.id != %s
 GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
     dbResults = db.fetchall()
 
-    connection.commit()
     connection.close()
 
     # Hack to add influence into the query, filter influence, province range, etc.

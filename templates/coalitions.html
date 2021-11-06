@@ -76,7 +76,7 @@
                         <th>Date Created</th>
                         <th>Type</th>
                     </tr>
-                    {% for name, id, members, type, influence in resultAll %}
+                    {% for id, type, name, members, influence in coalitions %}
                     <tr>
                         <td><a href="/coalition/{{ id }}">{{ name }}</a></td>
                         <td>{{ influence }}</td>

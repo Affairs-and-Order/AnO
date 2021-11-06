@@ -357,54 +357,35 @@ def coalitions():
         port=os.getenv("PG_PORT"))
 
     db = connection.cursor()
+    search = request.values.get("search")
 
-    try:
-        search = request.values.get("search")
-    except TypeError:
-        search = ""
-
-    if not search:
-        try:
-            db.execute("SELECT id FROM colNames")
-            coalitions = db.fetchall()
-        except:
-            coalitions = []
-    else:
-        db.execute("SELECT id FROM colNames WHERE name=(%s)", (search,))
-        coalitions = db.fetchall()
-
-    names = []
-    ids = []
-    members = []
-    types = []
-    influences = []
-
-    for i in coalitions:
-
-        ids.append(i[0])
-
-        idd = str(i[0])
-
-        db.execute("SELECT type FROM colNames WHERE id=%s", (idd,))
-        colType = db.fetchone()[0]
-        types.append(colType)
-
-        db.execute("SELECT name FROM colNames WHERE id=%s", (idd,))
-        colName = db.fetchone()[0]
-        names.append(colName)
-
-        db.execute("SELECT count(userId) FROM coalitions WHERE colId=%s", (idd,))
-        colMembers = db.fetchone()[0]
-        members.append(colMembers)
-
-        influence = get_coalition_influence(idd)
-        influences.append(influence)
+    db.execute("""SELECT colNames.id, colNames.type, colNames.name, COUNT(coalitions.userId) AS members
+FROM colNames
+INNER JOIN coalitions
+ON colNames.id=coalitions.colId
+GROUP BY colNames.id;
+""")
+    coalitionsDb = db.fetchall()
 
     connection.close()
 
-    resultAll = zip(names, ids, members, types, influences)
+    coalitions = []
+    for col in coalitionsDb:
+        col = list(col)
+        addCoalition = True
+        col_id = col[0]
+        name = col[2]
 
-    return render_template("coalitions.html", resultAll=resultAll)
+        influence = get_coalition_influence(col_id)
+        col.append(influence)
+
+        if search:
+            if search != name: addCoalition = False
+
+        if addCoalition:
+            coalitions.append(col)
+
+    return render_template("coalitions.html", coalitions=coalitions)
 
 # Route for joining a coalition
 @app.route("/join/<colId>", methods=["POST"])
