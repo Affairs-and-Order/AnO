@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import variables
+from operator import itemgetter
 
 # Function for getting the coalition role of a user
 def get_user_role(user_id):
@@ -358,6 +359,8 @@ def coalitions():
 
     db = connection.cursor()
     search = request.values.get("search")
+    sort = request.values.get("sort")
+    sortway = request.values.get("search")
 
     db.execute("""SELECT colNames.id, colNames.type, colNames.name, COUNT(coalitions.userId) AS members
 FROM colNames
@@ -384,6 +387,15 @@ GROUP BY colNames.id;
 
         if addCoalition:
             coalitions.append(col)
+
+    reverse = False
+    if not sort:
+        sortway = "desc"
+        sort = "influence"
+    if sortway == "desc":
+        reverse = True
+    if sort == "influence":
+        coalitions = sorted(coalitions, key=itemgetter(4), reverse=reverse)
 
     return render_template("coalitions.html", coalitions=coalitions)
 
