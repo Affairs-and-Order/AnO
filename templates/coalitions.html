@@ -73,7 +73,7 @@
                         <th>Name</th>
                         <th>Influence</th>
                         <th>Members</th>
-                        <th>Date Created</th>
+                        <!-- <th>Date Created</th> -->
                         <th>Type</th>
                     </tr>
                     {% for id, type, name, members, influence in coalitions %}
@@ -81,7 +81,7 @@
                         <td><a href="/coalition/{{ id }}">{{ name }}</a></td>
                         <td>{{ influence }}</td>
                         <td>{{ members }}</td>
-                        <td>[[ date ]]</td>
+                        <!-- <td>[[ date ]]</td> -->
                         <td>{{ type }}</td>
                     </tr>
                     {% endfor %}
