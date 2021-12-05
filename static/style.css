@@ -918,8 +918,11 @@ label {
 /*CONTENT*/
 
 .resourceparent {
-    line-height: 40px;
     margin: 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .resource {
