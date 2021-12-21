@@ -82,7 +82,13 @@ def upgrade_sell_buy(ttype, thing):
     cId = session["user_id"]
 
     prices = {
-        'betterEngineering': 254000000,
+        'betterEngineering': {
+            "money": 254000000,
+            "resources": {
+                "steel": 500,
+                "aluminium": 420
+            }
+        },
         'cheaperMaterials': 22000000,
         'onlineShopping': 184000000,
         'governmentRegulation': 112000000,
@@ -101,26 +107,32 @@ def upgrade_sell_buy(ttype, thing):
         'ICBMsilo': 500,
         'nuclearTestingFacility': 500
     }       
-    if ttype == "buy":
+    if ttype == "buy": # TODO Make resources and gold into one update query.
+
+        # Removal of money for purchase and error handling
+        money = prices[thing]["money"]
+        try:
+            db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (money, cId,))
+        except psycopg2.errors.lookup("23514"): # CheckViolation error
+            return error(400, "You don't have enough money to buy this upgrade.")
+
+        # Removal of resources for purchase and error handling
+        resources = prices[thing]["resources"]
+        for resource, amount in resources.items():
+            try:
+                resource_statement = f"UPDATE resources SET {resource}={resource}" + "-%s WHERE id=%s"
+                db.execute(resource_statement, (amount, cId,))
+            except psycopg2.errors.lookup("23514") as e: # CheckViolation error
+                estr = str(e)
+                check_failed = (estr[:estr.index("_check")]).partition("_")[2]
+                return error(400, f"You don't have enough {check_failed.upper()} to buy this upgrade.")
         
-        price = prices[thing]
-
-        db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
-        current_gold = int(db.fetchone()[0])
-
-        if current_gold < price:
-            return error(400, "You don't have enough money")
-        
-        new_gold = current_gold - price
-
-        # Removes the gold from the user
-        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_gold, cId))
-
         upgrade_statement = f"UPDATE upgrades SET {thing}=1 " +  "WHERE user_id=%s"
         db.execute(upgrade_statement, (cId,))
 
     elif ttype == "sell":
         
+        """
         price = prices[thing]
 
         db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
@@ -130,6 +142,7 @@ def upgrade_sell_buy(ttype, thing):
 
         # Removes the gold from the user
         db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_gold, cId))
+        """
 
         upgrade_statement = f"UPDATE upgrades SET {thing}=0 " +  "WHERE user_id=%s"
         db.execute(upgrade_statement, (cId,))
