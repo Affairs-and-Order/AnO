@@ -107,17 +107,19 @@ def upgrade_sell_buy(ttype, thing):
         'ICBMsilo': 500,
         'nuclearTestingFacility': 500
     }       
+
+    money = prices[thing]["money"]
+    resources = prices[thing]["resources"]
+
     if ttype == "buy": # TODO Make resources and gold into one update query.
 
         # Removal of money for purchase and error handling
-        money = prices[thing]["money"]
         try:
             db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (money, cId,))
         except psycopg2.errors.lookup("23514"): # CheckViolation error
             return error(400, "You don't have enough money to buy this upgrade.")
 
         # Removal of resources for purchase and error handling
-        resources = prices[thing]["resources"]
         for resource, amount in resources.items():
             try:
                 resource_statement = f"UPDATE resources SET {resource}={resource}" + "-%s WHERE id=%s"
@@ -131,18 +133,11 @@ def upgrade_sell_buy(ttype, thing):
         db.execute(upgrade_statement, (cId,))
 
     elif ttype == "sell":
-        
-        """
-        price = prices[thing]
 
-        db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
-        current_gold = int(db.fetchone()[0])
-
-        new_gold = current_gold + price
-
-        # Removes the gold from the user
-        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_gold, cId))
-        """
+        db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (money, cId))
+        for resource, amount in resources.items():
+            resource_statement = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
+            db.execute(resource_statement, (amount, cId,))
 
         upgrade_statement = f"UPDATE upgrades SET {thing}=0 " +  "WHERE user_id=%s"
         db.execute(upgrade_statement, (cId,))
