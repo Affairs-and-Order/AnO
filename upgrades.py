@@ -89,24 +89,89 @@ def upgrade_sell_buy(ttype, thing):
                 "aluminium": 420
             }
         },
-        'cheaperMaterials': 22000000,
-        'onlineShopping': 184000000,
-        'governmentRegulation': 112000000,
-        'nationalHealthInstitution': 95000000,
-        'highSpeedRail': 220000000,
-        'advancedMachinery': 180000000,
-        'strongerExplosives': 65000000,
-        'widespreadPropaganda': 150000000,
-        'increasedFunding': 225000000,
-        'automationIntegration': 420000000,
-        'largerForges': 320000000,
+        'cheaperMaterials': {
+            "money": 22000000,
+            "resources": {
+                "lumber": 220
+            }
+        },
+        'onlineShopping': {
+            "money": 184000000,
+            "resources": {
+                "steel": 600,
+                "aluminium": 450,
+                "lumber": 800
+            }
+        },
+        'governmentRegulation': {
+            "money": 112000000,
+            "resources": {
+                "steel": 980,
+                "aluminium": 750,
+            }
+        },
+        'nationalHealthInstitution': {
+            "money": 95000000,
+            "resources": {
+                "steel": 320,
+                "aluminium": 80,
+                "lumber": 675
+            }
+        },
+        'highSpeedRail': {
+            "money": 220000000,
+            "resources": {
+                "steel": 1350,
+                "aluminium": 450,
+            }
+        },
+        'advancedMachinery': {
+            "money": 180000000,
+            "resources": {
+                "steel": 1400,
+                "aluminium": 320,
+                "lumber": 850
+            }
+        },
+        'strongerExplosives': {
+            "money": 65000000,
+            "resources": {}
+        },
+        'widespreadPropaganda': {
+            "money": 150000000,
+            "resources": {}
+        },
+        'increasedFunding': {
+            "money": 225000000,
+            "resources": {
+                "steel": 950,
+                "aluminium": 450
+            }
+        },
+        'automationIntegration': {
+            "money": 420000000,
+            "resources": {
+                "steel": 2200,
+                "aluminium": 1150
+            }
+        },
+        'largerForges': {
+            "money": 320000000,
+            "resources":  {
+                "steel": 1850,
+                "aluminium": 650
+            }
+        }
+    }
+    """
         'lootingTeams': 500,
         'organizedSupplyLines': 500,
         'largeStoreHouses': 500,
         'ballisticMissileSilo': 500,
         'ICBMsilo': 500,
         'nuclearTestingFacility': 500
-    }       
+    }
+    """    
 
     money = prices[thing]["money"]
     resources = prices[thing]["resources"]
