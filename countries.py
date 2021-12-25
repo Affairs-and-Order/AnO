@@ -557,6 +557,8 @@ GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
         sortway = "desc"
         sort = "influence"
 
+    print(results)
+
     reverse = False
     if sortway == "desc":
         reverse = True
@@ -566,6 +568,8 @@ GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
         results = sorted(results, key=itemgetter(9), reverse=reverse)
     if sort == "population":
         results = sorted(results, key=itemgetter(4), reverse=reverse)
+    if sort == "provinces":
+        results = sorted(results, key=itemgetter(7), reverse=reverse)
 
     return render_template("countries.html", countries=results)
 
