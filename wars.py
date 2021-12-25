@@ -925,29 +925,36 @@ def declare_war():
 
     return redirect("/wars")
 
+def target_data(cId):
+
+    connection = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+
+    db = connection.cursor()
+
+    influence = get_influence(cId)
+    db.execute("SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (cId,))
+    province_range = db.fetchone()[0]
+
+    data = {
+        "upper": influence * 2,
+        "lower": influence * 0.9,
+        "province_range": province_range
+    }
+    return data
+
 # this should go to countries with a specific URL influence arguments set up by taking the user's influence and putting in the lower and upper bounds.
 @app.route("/find_targets", methods=["GET"])
 @login_required
 def find_targets():
-    if request.method == "GET":
-
-        connection = psycopg2.connect(
-            database=os.getenv("PG_DATABASE"),
-            user=os.getenv("PG_USER"),
-            password=os.getenv("PG_PASSWORD"),
-            host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
-
-        db = connection.cursor()
-        cId = session["user_id"]
-        influence = get_influence(cId)
-        upper = influence * 2
-        lower = influence * 0.9
-
-        db.execute("SELECT COUNT(id) FROM provinces WHERE userid=(%s)", (cId,))
-        province_range = db.fetchone()[0]
-
-        return redirect(f"/countries?lowerinf={lower}&upperinf={upper}&province_range={province_range}")
+    cId = session["user_id"]
+    target = target_data(cId)
+    url = f"/countries?lowerinf={target['lower']}&upperinf={target['upper']}&province_range={target['province_range']}"
+    return redirect(url)
 
 @app.route("/defense", methods=["GET", "POST"])
 @login_required

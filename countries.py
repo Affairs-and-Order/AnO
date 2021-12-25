@@ -12,6 +12,7 @@ from collections import defaultdict
 from policies import get_user_policies
 from operator import itemgetter
 from datetime import datetime
+from wars import target_data
 load_dotenv()
 
 app.config['UPLOAD_FOLDER'] = 'static/flags'
@@ -503,6 +504,12 @@ def countries():
     sort = request.values.get("sort")
     sortway = request.values.get("sortway")
 
+    if sort == "war_range":
+        target = target_data(cId)
+        lowerinf = target["lower"]
+        upperinf = target["upper"]
+        province_range = target["province_range"]
+
     db.execute("""SELECT users.id, users.username, users.date, users.flag, COALESCE(SUM(provinces.population), 0) AS province_population,
 coalitions.colId, colNames.name, COUNT(provinces.id) as provinces_count
 FROM USERS
@@ -543,7 +550,6 @@ GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
             province_count = user[7]
             if province_count > int(province_range):
                 addUser = False
-
         if addUser:
             results.append(user)
 
