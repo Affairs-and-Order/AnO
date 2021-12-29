@@ -360,7 +360,7 @@ def coalitions():
     db = connection.cursor()
     search = request.values.get("search")
     sort = request.values.get("sort")
-    sortway = request.values.get("search")
+    sortway = request.values.get("sortway")
 
     db.execute("""SELECT colNames.id, colNames.type, colNames.name, COUNT(coalitions.userId) AS members
 FROM colNames
@@ -378,24 +378,28 @@ GROUP BY colNames.id;
         addCoalition = True
         col_id = col[0]
         name = col[2]
+        members = col[3]
 
         influence = get_coalition_influence(col_id)
         col.append(influence)
 
-        if search:
-            if search != name: addCoalition = False
+        if search and search != name:
+            addCoalition = False
 
         if addCoalition:
             coalitions.append(col)
 
+    print(sort, sortway)
     reverse = False
     if not sort:
         sortway = "desc"
         sort = "influence"
-    if sortway == "desc":
+    if sortway == "desc": 
         reverse = True
     if sort == "influence":
         coalitions = sorted(coalitions, key=itemgetter(4), reverse=reverse)
+    elif sort == "members":
+        coalitions = sorted(coalitions, key=itemgetter(3), reverse=reverse)
 
     return render_template("coalitions.html", coalitions=coalitions)
 

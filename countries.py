@@ -557,8 +557,6 @@ GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
         sortway = "desc"
         sort = "influence"
 
-    print(results)
-
     reverse = False
     if sortway == "desc":
         reverse = True
