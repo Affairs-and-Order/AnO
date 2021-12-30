@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 import variables
 from operator import itemgetter
+import datetime
 
 # Function for getting the coalition role of a user
 def get_user_role(user_id):
@@ -329,7 +330,8 @@ def establish_coalition():
         if len(str(name)) > 40:
             return error(400, "Name too long! the coalition name needs to be under 40 characters")
         else:
-            db.execute("INSERT INTO colNames (name, type, description) VALUES (%s, %s, %s)", (name, cType, desc))
+            date = str(datetime.date.today())
+            db.execute("INSERT INTO colNames (name, type, description, date) VALUES (%s, %s, %s, %s)", (name, cType, desc, date))
 
             db.execute("SELECT id FROM colNames WHERE name = (%s)", (name,))
             colId = db.fetchone()[0] # Gets the coalition id of the just inserted coalition
