@@ -383,7 +383,7 @@ GROUP BY colNames.id;
         influence = get_coalition_influence(col_id)
         col.append(influence)
 
-        if search and search != name:
+        if search and search not in name:
             addCoalition = False
 
         if sort == "invite_only" and col_type == "Open":
@@ -396,7 +396,7 @@ GROUP BY colNames.id;
 
     reverse = False
     if not sort or sort in ["open", "invite_only"]: # Default sort by influence for invite only and open
-        sortway = "desc"
+        if not sortway: sortway = "desc"
         sort = "influence"
     if sortway == "desc": reverse = True
     if sort == "influence":

@@ -538,7 +538,7 @@ GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
         user.append(unix)
         if search:
             username = user[1]
-            if username != search:
+            if search not in username:
                 addUser = False
         if lowerinf:
             if influence < float(lowerinf):
