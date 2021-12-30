@@ -18,7 +18,7 @@
                     <select name="sort" class="templateselect">
 
                         <option value="influence" class="templateoption">Influence</option>
-                        <!-- <option value="age" class="templateoption">Age</option> -->
+                        <option value="age" class="templateoption">Age</option>
                         <option value="invite_only" class="templateoption">Invite Only</option>
                         <option value="open" class="templateoption">Open</option>
                         <option value="members" class="templateoption">Members</option>
@@ -77,15 +77,15 @@
                         <th>Name</th>
                         <th>Influence</th>
                         <th>Members</th>
-                        <!-- <th>Date Created</th> -->
+                        <th>Date Created</th>
                         <th>Type</th>
                     </tr>
-                    {% for id, type, name, members, influence in coalitions %}
+                    {% for id, type, name, members, date, influence, unix in coalitions %}
                     <tr>
                         <td><a href="/coalition/{{ id }}">{{ name }}</a></td>
                         <td>{{ influence }}</td>
                         <td>{{ members }}</td>
-                        <!-- <td>[[ date ]]</td> -->
+                        <td>{{ date }}</td>
                         <td>{{ type }}</td>
                     </tr>
                     {% endfor %}

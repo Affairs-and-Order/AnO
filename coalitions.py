@@ -364,7 +364,7 @@ def coalitions():
     sort = request.values.get("sort")
     sortway = request.values.get("sortway")
 
-    db.execute("""SELECT colNames.id, colNames.type, colNames.name, COUNT(coalitions.userId) AS members
+    db.execute("""SELECT colNames.id, colNames.type, colNames.name, COUNT(coalitions.userId) AS members, date
 FROM colNames
 INNER JOIN coalitions
 ON colNames.id=coalitions.colId
@@ -379,11 +379,16 @@ GROUP BY colNames.id;
         col = list(col)
         addCoalition = True
         col_id = col[0]
-        name = col[2]
         col_type = col[1]
+        name = col[2]
+        col_date = col[4]
 
         influence = get_coalition_influence(col_id)
         col.append(influence)
+
+        date = datetime.datetime.fromisoformat(col_date)
+        unix = int((date - datetime.datetime(1970, 1, 1)).total_seconds())
+        col.append(unix)
 
         if search and search not in name:
             addCoalition = False
@@ -405,6 +410,8 @@ GROUP BY colNames.id;
         coalitions = sorted(coalitions, key=itemgetter(4), reverse=reverse)
     elif sort == "members":
         coalitions = sorted(coalitions, key=itemgetter(3), reverse=reverse)
+    elif sort == "age":
+        coalitions = sorted(coalitions, key=itemgetter(5), reverse=not reverse)
 
     return render_template("coalitions.html", coalitions=coalitions)
 
