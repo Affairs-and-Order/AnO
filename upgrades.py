@@ -26,46 +26,8 @@ def get_upgrades(cId):
 @app.route("/upgrades", methods=["GET"])
 @login_required
 def upgrades():
-    # TODO: replace the falses with db selects
-    conn = psycopg2.connect(
-        database=os.getenv("PG_DATABASE"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD"),
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
-    db = conn.cursor()
     cId = session["user_id"]
-
-    upgrades = {
-        'betterEngineering': None,
-        'cheaperMaterials': None,
-        'onlineShopping': None,
-        'governmentRegulation': None,
-        'nationalHealthInstitution': None,
-        'highSpeedRail': None,
-        'advancedMachinery': None,
-        'strongerExplosives': None,
-        'widespreadPropaganda': None,
-        'increasedFunding': None,
-        'automationIntegration': None,
-        'largerForges': None,
-        'lootingTeams': None,
-        'organizedSupplyLines': None,
-        'largeStoreHouses' : None,
-        'ballisticMissileSilo': None,
-        'ICBMsilo': None,
-        'nuclearTestingFacility': None
-    }
-
-    for upgrade in upgrades:
-        db.execute("SELECT " + upgrade + " FROM upgrades WHERE user_id=%s", (cId,))
-        upgrades[upgrade] = db.fetchone()[0] 
-
-    # working examples based on whether user has the upgrade. Database stores 0 or 1.
-    # upgrades['betterEngineering'] = 0
-    # upgrades['cheaperMaterials'] = 1
-    # upgrades['onlineShopping'] = True
-    # upgrades['governmentRegulation'] = False
+    upgrades = dict(get_upgrades(cId)) # upgrades['betterEngineering'] = 0
     return render_template("upgrades.html", upgrades=upgrades)
 
 @app.route("/upgrades_sb/<ttype>/<thing>", methods=["POST"])
