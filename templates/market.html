@@ -133,8 +133,16 @@
                         <div class="center fit">
                             <div class="left middle fit">
 
-                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price | commas }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
-                                />{{ total_price | commas }} Total</div>
+                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price | commas }} Each
+
+                            </div>
+                        </div>
+                        <div class="center fit">
+                            <div class="left middle fit">
+
+                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" /> {{ total_price | commas }} Total
+
+                            </div>
                         </div>
                     </td>
                     <td>
