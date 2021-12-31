@@ -928,7 +928,6 @@ label {
 .resource {
     width: 20px;
     height: 20px;
-    margin: 2.5px 5px;
 }
 
 .resourceparent strong {
@@ -996,6 +995,12 @@ label {
     margin: auto;
     text-align: center;
     justify-self: center;
+}
+
+.middle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .hidden {
@@ -1173,6 +1178,16 @@ label {
     background-size: cover;
     object-fit: cover;
     background-position: center;
+}
+
+.peaceTopper {
+    overflow: hidden;
+    text-align: center;
+    background-image: url("images/peaceTopper.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    background-position-y: 55%;
 }
 
 .wartopper {

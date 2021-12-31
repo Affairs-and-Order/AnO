@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block title %} Peace Offers {% endblock %} {% block body %}
 <div class="templatediv">
 
-    <div class="templatedivtopper">
+    <div class="templatedivtopper peaceTopper">
         <h1 class="templatedivtitle"><span class="material-icons-outlined iconlarge">
           favorite_border
             </span>Peace Offers</h1>
@@ -19,8 +19,8 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
+                    <th>Recipient</th>
+                    <th>Resources</th>
                     <th>Action</th>
                 </tr>
                 {% for key,value in outgoing_peace_offers.items() %}
@@ -29,14 +29,11 @@
                     <td>{{value["receiver"]}}</td>
                     <td>
                         <div class="center fit">
-                            <div class="left fit">
-                                {% if value["peace_type"] == "white" %}
-                                <p>White peace</p>
-                                {% else %}
+                            <div class="left middle fit">
+                                {% if value["peace_type"] == "white" %} No requests {% else %}
                                 <!--duplicate this for every resource they offer-->
                                 {% for index in range(0, value["resource_count"]) %}
-                                <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
-                                {% endfor %}
+                                <img src="{{ url_for( 'static', filename='images/res' + value['resources'][index] + '.png ' ) }}" class="resource resourcesmall" /> {{ value["amounts"][index] }} {% endfor %}
                                 <!--until here-->
                                 {% endif %}
                             </div>
@@ -64,8 +61,8 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
-                    <th>Name</th>
-                    <th>Amount</th>
+                    <th>Offerer</th>
+                    <th>Resources</th>
                     <th>Action</th>
                 </tr>
                 {% for key,value in incoming_peace_offers.items() %}
@@ -74,21 +71,18 @@
                     <td>{{value["author"][1]}}</td>
                     <td>
                         <div class="center fit">
-                            <div class="left fit">
-                                {% if value["peace_type"] == "white" %}
-                                <p>White peace</p>
-                                {% else %}
+                            <div class="left middle fit">
+                                {% if value["peace_type"] == "white" %} No requests {% else %}
                                 <!--duplicate this for every resource they offer-->
                                 {% for index in range(0, value["resource_count"]) %}
-                                <p>{{ value["resources"][index] }} {{ value["amounts"][index] }}</p>
-                                {% endfor %}
+                                <img src="{{ url_for( 'static', filename='images/res' + value['resources'][index] + '.png ' ) }}" class="resource resourcesmall" /> {{ value["amounts"][index] }} {% endfor %}
                                 <!--until here-->
                                 {% endif %}
                             </div>
                         </div>
                     </td>
                     <td>
-                        <form method="post" class="material-icons iconred" onclick="event.target.submit();">check_circle_outline
+                        <form method="post" class="material-icons iconblue" onclick="event.target.submit();">check_circle_outline
                             <input type="hidden" name="peace_offer" value="{{key}}">
                             <input type="hidden" name="decision" value="1">
                         </form>
