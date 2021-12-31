@@ -102,7 +102,6 @@
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
                 <tr>
-                    <th>User</th>
                     <th>Type</th>
                     <th>Resource</th>
                     <th>Price</th>
@@ -112,12 +111,12 @@
                 {% for offer_id, price, resource, amount, type, total_price, offerer_id, offerer_name in incoming_trades %}
                 <tr>
                     <!-- Type -->
-                    <td><a href="/country/id={{ offerer_id }}">{{ offerer_name }}</a></td>
                     {% if type == "buy" %}
-                    <td>Buying
+                    <td>Buying from <a href="/country/id={{ offerer_id }}">{{ offerer_name }}</a>
                     </td>
                     {% elif type == "sell" %}
-                    <td>Selling</td> {% endif %}
+                    <td>Selling from <a href="/country/id={{ offerer_id }}">{{ offerer_name }}</a>
+                    </td> {% endif %}
 
                     <!-- Resource -->
                     <td>
@@ -168,14 +167,14 @@
                         <form method="POST">
                             <div class="templatedivflex2 divflex2center">
                                 <div class="templatedivflex2left">
-                                    <button formaction="/accept_trade/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-                                    check
-                                    </span>Accept</button>
+                                    <button formaction="/accept_trade/{{ offer_id }}" class="material-icons iconblue">
+                                        check_circle_outline
+                                    </button>
                                 </div>
                                 <div class="templatedivflex2left">
-                                    <button formaction="/decline_trade/{{ offer_id }}" class="templatedivbutton templatecenteredbutton"><span class="material-icons-outlined">
-                                        remove_circle_outline
-                                        </span>Decline</button>
+                                    <button formaction="/decline_trade/{{ offer_id }}" class="material-icons iconred">
+                                            remove_circle_outline
+                                        </button>
                                 </div>
                             </div>
                         </form>

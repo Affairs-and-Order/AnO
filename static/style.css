@@ -51,6 +51,9 @@
     transition: all 0.2s linear;
     vertical-align: middle;
     user-select: none;
+    border: none;
+    background: transparent;
+    margin: 0;
 }
 
 .iconred {
@@ -60,6 +63,9 @@
     transition: all 0.2s linear;
     vertical-align: middle;
     user-select: none;
+    border: none;
+    background: transparent;
+    margin: 0;
 }
 
 .iconblue:hover,
