@@ -365,74 +365,17 @@ def my_offers():
     db = conn.cursor()
     cId = session["user_id"]
 
-    ## USER'S OUTGOING OFFERS
-    db.execute("SELECT offer_id FROM offers WHERE user_id=(%s) ORDER BY offer_id ASC", (cId,))
-    offer_ids_list = db.fetchall()
+    offers = {}
 
-    outgoing_offer_amount = len(offer_ids_list)
+    db.execute("SELECT offer_id, price, resource, amount, type, offeree FROM trades WHERE offerer=(%s) ORDER BY offer_id ASC", (cId,))
+    offers["outgoing"] = db.fetchall()
 
-    offer_ids = []
-    total_prices = []
-    prices = []
-    resources = []
-    amounts = []
-    offer_types = []
-
-    for offer_idd in offer_ids_list:
-
-        offer_id = offer_idd[0]
-        db.execute("SELECT price, resource, amount, type FROM offers WHERE offer_id=(%s)", (offer_id,))
-        price, resource, amount, offer_type = db.fetchone()
-        
-        prices.append(price)
-        resources.append(resource)
-        amounts.append(amount)
-        offer_types.append(offer_type)
-        total_prices.append(price * amount)
-        offer_ids.append(offer_id)
-
-    my_offers = zip(offer_ids, prices, resources, amounts, offer_types, total_prices)
-
-    ## USER'S INCOMING TRADES
-    db.execute("SELECT offer_id FROM trades WHERE offeree=(%s) ORDER BY offer_id ASC", (cId,))
-    trade_ids_list = db.fetchall()
-
-    incoming_amount = len(trade_ids_list)
-
-    trade_ids = []
-    total_pricess = []
-    pricess = []
-    resourcess = []
-    amountss = []
-    offer_typess = []
-    offerer_ids = []
-    offerer_names = []
-
-    for offer_idd in trade_ids_list:
-
-        offer_id = offer_idd[0]
-
-        db.execute("SELECT price, resource, amount, type, offerer FROM trades WHERE offer_id=(%s)", (offer_id,))
-        price, resource, amount, offer_type, offerer = db.fetchone()
-
-        db.execute("SELECT username FROM users WHERE id=(%s)", (offerer,))
-        offerer_name = db.fetchone()[0]
-
-        pricess.append(price)
-        resourcess.append(resource)
-        amountss.append(amount)
-        offer_typess.append(offer_type)
-        total_pricess.append(price * amount)
-        trade_ids.append(offer_id)
-        offerer_ids.append(offerer)
-        offerer_names.append(offerer_name)
-
-    incoming_trades = zip(trade_ids, pricess, resourcess, amountss, offer_typess, total_pricess, offerer_ids, offerer_names)
+    db.execute("SELECT offer_id, price, resource, amount, type, offerer FROM trades WHERE offeree=(%s) ORDER BY offer_id ASC", (cId,))
+    offers["incoming"] = db.fetchall()
 
     conn.close()
 
-    return render_template("my_offers.html", cId=cId, my_offers=my_offers, outgoing_offer_amount=outgoing_offer_amount,
-    incoming_trades=incoming_trades, incoming_amount=incoming_amount)
+    return render_template("my_offers.html", cId=cId, offers=offers)
 
 @app.route("/delete_offer/<offer_id>", methods=["POST"])
 @login_required

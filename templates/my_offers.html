@@ -10,9 +10,9 @@
 
     <div class="templatedivcontent">
         <!--if no offers-->
-        {% if outgoing_offer_amount == 0 %}
+        {% if offers["outgoing"] | length == 0 %}
         <h2 class="templatecontentheadercenter">You have no outgoing offers</h2>
-        {% elif outgoing_offer_amount > 0 %}
+        {% else %}
         <!--if there are offers-->
         <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
 
@@ -25,14 +25,14 @@
                     <th>Action</th>
                 </tr>
 
-                {% for offer_id, price, resource, amount, type, total_price in my_offers %}
+                {% for offer_id, price, resource, amount, type, offeree in offers["outgoing"] %}
                 <tr>
                     <!-- Type -->
                     {% if type == "buy" %}
-                    <td>Buying
-                    </td>
+                    <td>Buying from <a href="/country/id={{ offeree }}">country</a>
                     {% elif type == "sell" %}
-                    <td>Selling</td> {% endif %}
+                    <td>Selling to <a href="/country/id={{ offeree }}">country</a>
+                    {% endif %}
 
                     <!-- Resource -->
                     <td>
@@ -73,7 +73,7 @@
                         <div class="center fit">
                             <div class="left middle fit">
 
-                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" /> {{ total_price | commas }} Total
+                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" /> {{ (price*amount) | commas }} Total
 
                             </div>
                         </div>
@@ -92,11 +92,13 @@
                 {% endfor %}
             </table>
         </div>
-        {% endif %} {% if incoming_amount == 0 %}
+        {% endif %} 
+        
+        {% if offers["incoming"] | length == 0 %}
         <!--if no offers-->
         <h2 class="templatecontentheadercenter">You have no incoming offers</h2>
         <!--if there are offers-->
-        {% elif incoming_amount > 0 %}
+        {% else %}
         <h2 class="templatecontentheaderleft">Incoming Offers</h2>
 
         <div class="templateoutertablediv">
@@ -108,14 +110,14 @@
                     <th>Action</th>
                 </tr>
 
-                {% for offer_id, price, resource, amount, type, total_price, offerer_id, offerer_name in incoming_trades %}
+                {% for offer_id, price, resource, amount, type, offerer_id in offers["incoming"] %}
                 <tr>
                     <!-- Type -->
                     {% if type == "buy" %}
-                    <td>Buying from <a href="/country/id={{ offerer_id }}">{{ offerer_name }}</a>
+                    <td>Buying from <a href="/country/id={{ offerer_id }}">country</a>
                     </td>
                     {% elif type == "sell" %}
-                    <td>Selling from <a href="/country/id={{ offerer_id }}">{{ offerer_name }}</a>
+                    <td>Selling from <a href="/country/id={{ offerer_id }}">country</a>
                     </td> {% endif %}
 
                     <!-- Resource -->
@@ -157,7 +159,7 @@
                         <div class="center fit">
                             <div class="left middle fit">
 
-                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" /> {{ total_price | commas }} Total
+                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" /> {{ (price*amount) | commas }} Total
 
                             </div>
                         </div>
