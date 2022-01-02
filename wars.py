@@ -11,6 +11,7 @@ from helpers import get_influence, check_required
 from dotenv import load_dotenv
 load_dotenv()
 import os
+from market import give_resource
 
 """
 war page: choose a war
@@ -197,6 +198,8 @@ def peace_offers():
     incoming={}
     outgoing={}
 
+    resources = []
+
     try:
         if peace_offers:
 
@@ -291,21 +294,28 @@ def peace_offers():
                 eco = Economy(cId)
                 resource_dict = eco.get_particular_resources(resources)
 
+                # MAYBE WORKS until this part (???????????)
+                print(resource_dict)
+
                 # TODO: move the below check to the transfer_resources
                 # check validity if amount is bigger than available resources
                 count = 0
                 for value in resource_dict.values():
                     if int(amounts[count]) > value:
-                        return error(400, "Can't accept peace offer because you don't have the required resources!")
+                        return error(400, f"Can't accept peace offer because you don't have the required resources!. {int(amounts[count])} > {value}")
 
-                    eco.transfer_resources(resources[count], int(amounts[count]), author_id)
+                    print(f"Transfer: {resources[count], int(amounts[count]), author_id, cId}")
+
+                    successful = give_resource(cId, author_id, resources[count], int(amounts[count]))
+                    if successful != True:
+                        return error(400, successful)
                     count += 1
 
+                # TODO: test this 
                 Nation.set_peace(db, connection, None, {"option": "peace_offer_id", "value": offer_id})
 
             else:
                 return error(400, "No decision was made.")
-
         else:
             return error(403, "You can't accept your own offer.")
 

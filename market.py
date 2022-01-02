@@ -63,6 +63,8 @@ def give_resource(giver_id, taker_id, resource, amount):
     conn.commit()
     conn.close()
 
+    return True
+
 @app.route("/market", methods=["GET", "POST"])
 @login_required
 def market():

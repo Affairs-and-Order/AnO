@@ -50,7 +50,7 @@ class Economy:
         # TODO fix this when the databases changes and update to include all resources
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (self.nationID,))
         self.gold = db.fetchone()[0]
-    def get_particular_resources(self, resources):
+    def get_particular_resources(self, resources): # works, i think (?) returns players resources
 
         connection = psycopg2.connect(
             database=os.getenv("PG_DATABASE"),
@@ -62,16 +62,24 @@ class Economy:
 
         resource_dict = {}
 
+        print(resources)
+
         try:
             for resource in resources:
-                db.execute(f"SELECT {resource} FROM resources WHERE id=(%s)", (self.nationID,))
-                resource_dict[resource] = db.fetchone()[0]
-        except:
-
+                if resource == "money":
+                    db.execute("SELECT gold FROM stats WHERE id=(%s)", (self.nationID,))
+                    resource_dict[resource] = db.fetchone()[0]
+                else:
+                    query = f"SELECT {resource}" + " FROM resources WHERE id=(%s)"
+                    db.execute(query, (self.nationID,))
+                    resource_dict[resource] = db.fetchone()[0]
+        except Exception as e:
             # TODO ERROR HANDLER OR RETURN THE ERROR AS A VAlUE
+            print(e)
             print("INVALID RESOURCE NAME")
             return "Invalid resource"
 
+        print(resource_dict)
         return resource_dict
 
 
@@ -267,13 +275,14 @@ class Nation:
     # set the peace_date in wars table for a particular war
     @staticmethod
     def set_peace(db, connection, war_id=None, options=None):
-
+        print("Setting war peace")
+        print(war_id, options)
         if war_id is not None:
             db.execute("UPDATE wars SET peace_date=(%s) WHERE id=(%s)", (time.time(), war_id))
-
         else:
             option = options["option"]
-            db.execute(f"UPDATE wars SET peace_date=(%s) WHERE {option}=(%s)", (time.time(), options["value"]))
+            query = "UPDATE wars SET peace_date=(%s)" + f"WHERE {option}" +"=(%s)"
+            db.execute(query, (time.time(), options["value"]))
 
         connection.commit()
 
