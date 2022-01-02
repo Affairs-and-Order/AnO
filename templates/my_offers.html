@@ -11,10 +11,10 @@
     <div class="templatedivcontent">
         <!--if no offers-->
         {% if offers["outgoing"] | length == 0 %}
-        <h2 class="templatecontentheadercenter">You have no outgoing offers</h2>
+        <h2 class="templatecontentheadercenter">You have no outgoing trade offers</h2>
         {% else %}
         <!--if there are offers-->
-        <h2 class="templatecontentheaderleft">Outgoing Offers</h2>
+        <h2 class="templatecontentheaderleft">Outgoing trade offers</h2>
 
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
@@ -80,11 +80,13 @@
                     </td>
                     <!-- Delete button -->
                     <td>
-                        <form name="delete_offer{{ offer_id }}" action="/delete_offer/{{ offer_id }}" method="POST">
+                        <form method="POST">
                             <div class="templatedivflex2 divflex2center">
-                                <span onclick="delete_offer{{ offer_id }}.submit()" class="material-icons iconred">
-                                        remove_circle_outline
-                                    </span>
+                                <div class="templatedivflex2left">
+                                    <button formaction="/decline_trade/{{ offer_id }}" class="material-icons iconred">
+                                            remove_circle_outline
+                                        </button>
+                                </div>
                             </div>
                         </form>
                     </td>
@@ -96,10 +98,10 @@
         
         {% if offers["incoming"] | length == 0 %}
         <!--if no offers-->
-        <h2 class="templatecontentheadercenter">You have no incoming offers</h2>
+        <h2 class="templatecontentheadercenter">You have no incoming trade offers</h2>
         <!--if there are offers-->
         {% else %}
-        <h2 class="templatecontentheaderleft">Incoming Offers</h2>
+        <h2 class="templatecontentheaderleft">Incoming trade offers</h2>
 
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">

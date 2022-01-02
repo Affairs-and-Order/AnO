@@ -522,10 +522,10 @@ def decline_trade(trade_id):
 
     db = connection.cursor()
 
-    db.execute("SELECT offeree FROM trades WHERE offer_id=(%s)", (trade_id,))
-    trade_offeree = db.fetchone()[0]
+    db.execute("SELECT offeree, offerer FROM trades WHERE offer_id=(%s)", (trade_id,))
+    offeree, offerer = db.fetchone()
 
-    if cId != trade_offeree:
+    if cId not in [offeree, offerer]:
         return error(400, "You haven't been sent that offer")
 
     db.execute("DELETE FROM trades WHERE offer_id=(%s)", (trade_id,))
