@@ -26,7 +26,7 @@
                 {% for key,value in outgoing_peace_offers.items() %}
                 <tr>
                     <!-- The target of the message -->
-                    <td>{{value["receiver"]}}</td>
+                    <td><a href="/country/id={{ value['receiver_id'] }}">{{ value["receiver"]}}</a></td>
                     <td>
                         <div class="center fit">
                             <div class="left middle fit">
@@ -68,7 +68,7 @@
                 {% for key,value in incoming_peace_offers.items() %}
                 <tr>
                     <!-- The target of the message -->
-                    <td>{{value["author"][1]}}</td>
+                    <td><a href="/country/id={{ value['author'][0] }}">{{ value["author"][1] }}</a></td>
                     <td>
                         <div class="center fit">
                             <div class="left middle fit">

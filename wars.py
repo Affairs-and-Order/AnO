@@ -251,10 +251,13 @@ def peace_offers():
                         if ids[0] == author_id:
                             db.execute("SELECT username FROM users WHERE id=(%s)", (ids[1],))
                             receiver_name = db.fetchone()[0]
+                            receiver_id = ids[1]
                         else:
                             db.execute("SELECT username FROM users WHERE id=(%s)", (ids[0],))
+                            receiver_id = ids[0]
                             receiver_name = db.fetchone()[0]
 
+                        offer[offer_id]["receiver_id"] = receiver_id
                         offer[offer_id]["receiver"] = receiver_name
     except:
         return "Something went wrong."
