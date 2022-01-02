@@ -110,13 +110,13 @@
                     <th>Action</th>
                 </tr>
 
-                {% for offer_id, price, resource, amount, type, offeree in offers["outgoing"] %}
+                {% for offer_id, price, resource, amount, type, offeree, name in offers["outgoing"] %}
                 <tr>
                     <!-- Type -->
                     {% if type == "buy" %}
-                    <td>Buying from <a href="/country/id={{ offeree }}">country</a>
+                    <td>Buying to <a href="/country/id={{ offeree }}">{{ name }}</a>
                     {% elif type == "sell" %}
-                    <td>Selling to <a href="/country/id={{ offeree }}">country</a>
+                    <td>Selling to <a href="/country/id={{ offeree }}">{{ name }}</a>
                     {% endif %}
 
                     <!-- Resource -->
@@ -197,14 +197,14 @@
                     <th>Action</th>
                 </tr>
 
-                {% for offer_id, price, resource, amount, type, offerer_id in offers["incoming"] %}
+                {% for offer_id, price, resource, amount, type, offerer_id, name in offers["incoming"] %}
                 <tr>
                     <!-- Type -->
                     {% if type == "buy" %}
-                    <td>Buying from <a href="/country/id={{ offerer_id }}">country</a>
+                    <td>Buying from <a href="/country/id={{ offerer_id }}">{{ name }}</a>
                     </td>
                     {% elif type == "sell" %}
-                    <td>Selling from <a href="/country/id={{ offerer_id }}">country</a>
+                    <td>Selling from <a href="/country/id={{ offerer_id }}">{{ name }}</a>
                     </td> {% endif %}
 
                     <!-- Resource -->

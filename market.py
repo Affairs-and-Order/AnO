@@ -367,10 +367,18 @@ def my_offers():
 
     offers = {}
 
-    db.execute("SELECT offer_id, price, resource, amount, type, offeree FROM trades WHERE offerer=(%s) ORDER BY offer_id ASC", (cId,))
+    db.execute("""
+SELECT trades.offer_id, trades.price, trades.resource, trades.amount, trades.type, trades.offeree, users.username
+FROM trades INNER JOIN users ON trades.offeree=users.id
+WHERE trades.offerer=(%s) ORDER BY trades.offer_id ASC
+""", (cId,))
     offers["outgoing"] = db.fetchall()
 
-    db.execute("SELECT offer_id, price, resource, amount, type, offerer FROM trades WHERE offeree=(%s) ORDER BY offer_id ASC", (cId,))
+    db.execute("""
+SELECT trades.offer_id, trades.price, trades.resource, trades.amount, trades.type, trades.offerer, users.username
+FROM trades INNER JOIN users ON trades.offerer=users.id
+WHERE trades.offeree=(%s) ORDER BY trades.offer_id ASC
+""", (cId,))
     offers["incoming"] = db.fetchall()
 
     db.execute("SELECT offer_id, price, resource, amount, type FROM offers WHERE user_id=(%s) ORDER BY offer_id ASC", (cId,))
