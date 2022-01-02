@@ -373,6 +373,9 @@ def my_offers():
     db.execute("SELECT offer_id, price, resource, amount, type, offerer FROM trades WHERE offeree=(%s) ORDER BY offer_id ASC", (cId,))
     offers["incoming"] = db.fetchall()
 
+    db.execute("SELECT offer_id, price, resource, amount, type FROM offers WHERE user_id=(%s) ORDER BY offer_id ASC", (cId,))
+    offers["market"] = db.fetchall()
+
     conn.close()
 
     return render_template("my_offers.html", cId=cId, offers=offers)
