@@ -51,6 +51,9 @@
     transition: all 0.2s linear;
     vertical-align: middle;
     user-select: none;
+    border: none;
+    background: transparent;
+    margin: 0;
 }
 
 .iconred {
@@ -60,6 +63,9 @@
     transition: all 0.2s linear;
     vertical-align: middle;
     user-select: none;
+    border: none;
+    background: transparent;
+    margin: 0;
 }
 
 .iconblue:hover,
@@ -928,7 +934,6 @@ label {
 .resource {
     width: 20px;
     height: 20px;
-    margin: 2.5px 5px;
 }
 
 .resourceparent strong {
@@ -996,6 +1001,13 @@ label {
     margin: auto;
     text-align: center;
     justify-self: center;
+}
+
+.middle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
 }
 
 .hidden {
@@ -1173,6 +1185,16 @@ label {
     background-size: cover;
     object-fit: cover;
     background-position: center;
+}
+
+.peaceTopper {
+    overflow: hidden;
+    text-align: center;
+    background-image: url("images/peaceTopper.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    background-position-y: 55%;
 }
 
 .wartopper {

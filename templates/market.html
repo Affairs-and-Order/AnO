@@ -96,7 +96,7 @@
                     <th>Purchase</th>
                 </tr>
 
-                {% for id, type, name, resource, amount, price, offer_id, total_price in offers %} 
+                {% for id, type, name, resource, amount, price, offer_id, total_price in offers %}
                 <tr>
                     <td><a href="/country/id={{ id }}">{{ name }}</a></td>
                     <!--Buying or Selling-->
@@ -108,47 +108,41 @@
                     </td>
                     {% endif %}
                     <td>
-                        {% if resource == "rations" %}
-                        <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "uranium" %}
-                        <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "oil" %}
-                        <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "coal" %}
-                        <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "lead" %}
-                        <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> 
-                        {% elif resource == "bauxite" %}
-                        <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "iron" %}
-                        <img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "lead" %}
-                        <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "copper" %}
-                        <img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "lumber" %}
-                        <img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "components" %}
-                        <img src="{{ url_for( 'static', filename='images/rescomponents.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "steel" %}
-                        <img src="{{ url_for( 'static', filename='images/ressteel.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "consumer_goods" %}
-                        <img src="{{ url_for( 'static', filename='images/resconsumer_goods.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "copper_plates" %}
-                        <img src="{{ url_for( 'static', filename='images/rescopper_plates.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "aluminium" %}
-                        <img src="{{ url_for( 'static', filename='images/resaluminium.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "gasoline" %}
-                        <img src="{{ url_for( 'static', filename='images/resgasoline.png' ) }}" class="resource resourcesmall" />
-                        {% elif resource == "ammunition" %}
-                        <img src="{{ url_for( 'static', filename='images/resammunition.png' ) }}" class="resource resourcesmall" />
-                        {% endif %}
-                        <span class="hidden">{{ resource }}</span>{{ amount | commas }}</td>
-
+                        <div class="middle">
+                            {% if resource == "rations" %}
+                            <img src="{{ url_for( 'static', filename='images/resrations.png' ) }}" class="resource resourcesmall" /> {% elif resource == "uranium" %}
+                            <img src="{{ url_for( 'static', filename='images/resuranium.png' ) }}" class="resource resourcesmall" /> {% elif resource == "oil" %}
+                            <img src="{{ url_for( 'static', filename='images/resoil.png' ) }}" class="resource resourcesmall" /> {% elif resource == "coal" %}
+                            <img src="{{ url_for( 'static', filename='images/rescoal.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
+                            <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "bauxite" %}
+                            <img src="{{ url_for( 'static', filename='images/resbauxite.png' ) }}" class="resource resourcesmall" /> {% elif resource == "iron" %}
+                            <img src="{{ url_for( 'static', filename='images/resiron.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lead" %}
+                            <img src="{{ url_for( 'static', filename='images/reslead.png' ) }}" class="resource resourcesmall" /> {% elif resource == "copper" %}
+                            <img src="{{ url_for( 'static', filename='images/rescopper.png' ) }}" class="resource resourcesmall" /> {% elif resource == "lumber" %}
+                            <img src="{{ url_for( 'static', filename='images/reslumber.png' ) }}" class="resource resourcesmall" /> {% elif resource == "components" %}
+                            <img src="{{ url_for( 'static', filename='images/rescomponents.png' ) }}" class="resource resourcesmall" /> {% elif resource == "steel" %}
+                            <img src="{{ url_for( 'static', filename='images/ressteel.png' ) }}" class="resource resourcesmall" /> {% elif resource == "consumer_goods" %}
+                            <img src="{{ url_for( 'static', filename='images/resconsumer_goods.png' ) }}" class="resource resourcesmall" /> {% elif resource == "copper_plates" %}
+                            <img src="{{ url_for( 'static', filename='images/rescopper_plates.png' ) }}" class="resource resourcesmall" /> {% elif resource == "aluminium" %}
+                            <img src="{{ url_for( 'static', filename='images/resaluminium.png' ) }}" class="resource resourcesmall" /> {% elif resource == "gasoline" %}
+                            <img src="{{ url_for( 'static', filename='images/resgasoline.png' ) }}" class="resource resourcesmall" /> {% elif resource == "ammunition" %}
+                            <img src="{{ url_for( 'static', filename='images/resammunition.png' ) }}" class="resource resourcesmall" /> {% endif %}
+                            <span class="hidden">{{ resource }}</span>{{ amount | commas }}</td>
+                    </div>
                     <td>
                         <div class="center fit">
-                            <div class="left fit"><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price | commas }} Each<br /><img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall"
-                                />{{ total_price | commas }} Total</div>
+                            <div class="left middle fit">
+
+                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" />${{ price | commas }} Each
+
+                            </div>
+                        </div>
+                        <div class="center fit">
+                            <div class="left middle fit">
+
+                                <img src="{{ url_for( 'static', filename='images/resmoney.png' ) }}" class="resource resourcesmall" /> {{ total_price | commas }} Total
+
+                            </div>
                         </div>
                     </td>
                     <td>
