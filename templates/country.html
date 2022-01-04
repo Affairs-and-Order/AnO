@@ -831,6 +831,11 @@
 
                     <label for="description">Describe your country</label>
                     <div class="center">
+
+                        <div id="descriptionEditor">Rich editor</div>
+                        <script>
+                            $('#descriptionEditor').trumbowyg()
+                        </script>
                         <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240">{{ description }}</textarea>
                     </div>
 
