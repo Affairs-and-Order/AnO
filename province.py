@@ -8,6 +8,7 @@ import variables
 from tasks import energy_info
 from helpers import get_date
 from upgrades import get_upgrades
+from psycopg2.extras import RealDictCursor
 load_dotenv()
 
 @app.route("/provinces", methods=["GET"])
@@ -42,7 +43,8 @@ def province(pId):
         user=os.getenv("PG_USER"),
         password=os.getenv("PG_PASSWORD"),
         host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"))
+        port=os.getenv("PG_PORT"),
+        cursor_factory=RealDictCursor)
 
     db = connection.cursor()
     cId = session["user_id"]
@@ -50,99 +52,46 @@ def province(pId):
     upgrades = get_upgrades(cId)
 
     # Object under which the data about a province is stored
-    province = {}
 
     try:
-        db.execute("""SELECT userId, provinceName, population, pollution, happiness, productivity,
-        consumer_spending, cityCount, land, energy FROM provinces WHERE id=(%s)""", (pId,))
-        province_data = db.fetchall()[0]
+        db.execute("""SELECT id, userId AS user, provinceName AS name, population, pollution, happiness, productivity,
+        consumer_spending, cityCount, land, energy AS electricity FROM provinces WHERE id=(%s)""", (pId,))
+        province = dict(db.fetchone())
     except:
         return error(404, "Province doesn't exist")
 
-    province["id"] = pId
-    province["user"] = province_data[0]
-    province["name"] = province_data[1]
-    province["population"] = province_data[2]
-    province["pollution"] = province_data[3]
-    province["happiness"] = province_data[4]
-    province["productivity"] = province_data[5]
-    province["consumer_spending"] = province_data[6]
-    province["cityCount"] = province_data[7]
-    province["land"] = province_data[8]
-    province["electricity"] = province_data[9]
-
-    province["free_cityCount"] = province["cityCount"] - get_free_slots(pId, "city")
+    db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
+    province["location"] = dict(db.fetchone())["location"]
+    province["free_cityCount"] = province["citycount"] - get_free_slots(pId, "city")
     province["free_land"] = province["land"] - get_free_slots(pId, "land")
-
-    db.execute("SELECT location FROM stats WHERE id=(%s)", (province["user"],))
-    province["location"] = db.fetchone()[0]
-
-    ownProvince = province["user"] == cId
+    province["own"] = province["user"] == cId
 
     # Selects values for province buildings from the database and assigns them to vars
-    db.execute(
-    """
-    SELECT
-    coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields,
-    gas_stations, general_stores, farmers_markets, malls, banks,
-    city_parks, hospitals, libraries, universities, monorails,
-    army_bases, harbours, aerodomes, admin_buildings, silos,
-    farms, pumpjacks, coal_mines, bauxite_mines,
-    copper_mines, uranium_mines, lead_mines, iron_mines,
-    lumber_mills, component_factories, steel_mills, ammunition_factories,
-    aluminium_refineries, oil_refineries
-    FROM proInfra WHERE id=%s
-    """, (pId,))
-    province_units = db.fetchall()[0]
-
-    coal_burners, oil_burners, hydro_dams, nuclear_reactors, solar_fields, \
-    gas_stations, general_stores, farmers_markets, malls, banks, \
-    city_parks, hospitals, libraries, universities, monorails, \
-    army_bases, harbours, aerodomes, admin_buildings, silos, \
-    farms, pumpjacks, coal_mines, bauxite_mines, copper_mines, uranium_mines, \
-    lead_mines, iron_mines, lumber_mills, \
-    component_factories, steel_mills, ammunition_factories, aluminium_refineries, oil_refineries = province_units
+    db.execute("""SELECT * FROM proInfra WHERE id=%s""", (pId,))
+    units = dict(db.fetchone())
 
     def enough_consumer_goods(user_id):
-
-        try:
-            db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
-            population = int(db.fetchone()[0])
-        except:
-            population = 0
-
+        db.execute("SELECT SUM(population) AS population FROM provinces WHERE userId=%s", (user_id,))
+        population = dict(db.fetchone())["population"]
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-        consumer_goods = int(db.fetchone()[0])
+        consumer_goods = (dict(db.fetchone()))["consumer_goods"]
         consumer_goods_needed = round(population * 0.000003)
         new_consumer_goods = consumer_goods - consumer_goods_needed
-
-        if new_consumer_goods > 0:
-            return True
-        else:
-            return False
+        return new_consumer_goods > 0
 
     enough_consumer_goods = enough_consumer_goods(province["user"])
 
     def enough_rations(user_id):
-
         db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
-        rations = int(db.fetchone()[0])
-
+        rations = dict(db.fetchone())["rations"]
         rations_minus = province["population"] // variables.RATIONS_PER
-        new_rations = rations - rations_minus
-
-        if new_rations < 1:
-            return False
-        else:
-            return True
+        return rations - rations_minus > 1
 
     enough_rations = enough_rations(province["user"])
 
     def has_power(province_id):
-
         db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
-        energy = int(db.fetchone()[0])
-
+        energy = (dict(db.fetchone()))["energy"]
         return energy > 0
 
     energy = {}
@@ -154,25 +103,9 @@ def province(pId):
 
     connection.close()
 
-    return render_template("province.html", province=province, ownProvince=ownProvince,
-
-    coal_burners=coal_burners, oil_burners=oil_burners, hydro_dams=hydro_dams, nuclear_reactors=nuclear_reactors, solar_fields=solar_fields,
-    gas_stations=gas_stations, general_stores=general_stores, farmers_markets=farmers_markets, malls=malls,
-    banks=banks, city_parks=city_parks, hospitals=hospitals, libraries=libraries, universities=universities,
-    monorails=monorails,
-
-    army_bases=army_bases, harbours=harbours, aerodomes=aerodomes, admin_buildings=admin_buildings, silos=silos,
-
-    farms=farms, pumpjacks=pumpjacks, coal_mines=coal_mines, bauxite_mines=bauxite_mines,
-    copper_mines=copper_mines, uranium_mines=uranium_mines, lead_mines=lead_mines, iron_mines=iron_mines,
-    lumber_mills=lumber_mills,
-
-    component_factories=component_factories, steel_mills=steel_mills, ammunition_factories=ammunition_factories,
-    aluminium_refineries=aluminium_refineries, oil_refineries=oil_refineries,
-
+    return render_template("province.html", province=province, units=units,
     enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power,
-    energy=energy, infra=infra, upgrades=upgrades
-    )
+    energy=energy, infra=infra, upgrades=upgrades)
 
 def get_province_price(user_id):
 
