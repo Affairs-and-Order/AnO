@@ -85,7 +85,7 @@
             {% if description != None %}
             <h2 class="templatecontentheaderleft">About</h2>
 
-            <div class="strongpadding">{{ description }}</div>
+            <div class="strongpadding">{{ description|markdown }}</div>
             {% endif %}
 
             <h2 class="templatecontentheaderleft">Coalition Info</h2>

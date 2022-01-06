@@ -11,10 +11,11 @@ import random
 import string
 from datetime import datetime
 from psycopg2.extras import RealDictCursor
-import mimetypes
-mimetypes.add_type('image/svg+xml', '.svg')
+from flaskext.markdown import Markdown
 
 app = Flask(__name__)
+
+Markdown(app)
 
 try:
     environment = os.getenv("ENVIRONMENT")
