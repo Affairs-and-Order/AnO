@@ -1,8 +1,7 @@
 {% extends"layout.html"%} {% block title %} {{ username }} {% endblock %} {% block head %} {% if flag != None %}
 <meta property="og:image" content="/static/flags/{{ flag }}" /> {% endif %}
 <meta name="viewport" content="width=device-width, initial-scale=0.8">
-<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game"> {% if description != None %}
-<meta name="description" content="{{ description }}"> {% endif %}
+<meta name="keywords" content="affairs and order, affairs and order game, country simulator, politics game, country game, nation building game, web game, nation game, create a nation game, mmo game">
 
 <meta name="description" content="{{ username }}'s country."> {% endblock %} {% block body %}
 <div class="templatediv">
@@ -107,7 +106,7 @@
             {% if description != None %}
             <h2 class="templatecontentheaderleft">About</h2>
 
-            <div class="strongpadding">{{ description|markdown }}</div>
+            <div class="strongpadding richDescription">{{ description|markdown }}</div>
 
             {% endif %}
 
@@ -831,7 +830,15 @@
 
                     <label for="description">Describe your country</label>
                     <div class="center">
-                        <textarea class="templatetextarea" name="description" placeholder="Country Description" maxlength="240">{{ description }}</textarea>
+                        <textarea id="countryDescription" class="templatetextarea" name="description" placeholder="Country Description">{{ description }}</textarea>
+                        <script>
+                            var simplemde = new SimpleMDE({
+                                element: document.getElementById("countryDescription"),
+                                hideIcons: ['side-by-side', 'fullscreen'],
+                                showIcons: ['table', 'italic', 'strikethrough', 'horizontal-rule'],
+                                autosave: true,
+                            })
+                        </script>
                     </div>
 
                     <button class="templatedivbutton templatecenteredbutton" formaction="/update_country_info" type="submit"><span class="material-icons-outlined">

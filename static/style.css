@@ -2379,6 +2379,61 @@ button {
 }
 
 
+/* Rich text and rich descriptions */
+
+.richDescription {}
+
+.richDescription ul {
+    margin: 10px 0;
+    padding-left: 20px;
+    text-align: initial !important;
+}
+
+.richDescription a {
+    color: #00a7e1;
+    transition: all 0.2s;
+    text-decoration: none;
+    cursor: pointer;
+    background: transparent;
+    border: transparent;
+    outline: none;
+    font-size: inherit;
+}
+
+.richDescription a:hover {
+    color: rgb(88, 196, 231);
+}
+
+.richDescription hr {
+    border: none;
+    border-bottom: solid 3px var(--foregroundThree);
+    animation: borderpulse 4s infinite;
+}
+
+.richDescription img {
+    margin: auto;
+}
+
+.editor-toolbar {
+    margin-top: 5px !important;
+    padding: 0 !important;
+}
+
+.CodeMirror {
+    padding: initial !important;
+    margin: initial !important;
+}
+
+.CodeMirror div {
+    padding: initial !important;
+    margin: initial !important;
+}
+
+.CodeMirror-scroll {
+    border: 5px solid transparent;
+}
+
+
 /*LANDING PAGE*/
 
 .landingpagediv {
@@ -3592,4 +3647,12 @@ footer {
 
 .redditicon {
     color: rgb(255, 69, 0);
+}
+
+color: rgb(255,
+69,
+0);
+
+}
+
 }
