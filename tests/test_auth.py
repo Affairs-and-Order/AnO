@@ -3,15 +3,8 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 from init import BASE_URL
+import credentials
 load_dotenv()
-
-# Auth test config
-username = "test_user1234"
-email = "affairsandorder@teste.com"
-password = "testpassword12345"
-confirmation = password
-key = "testkey12345"
-continent = "1"
 
 login_session = requests.Session()
 register_session = requests.Session()
@@ -37,12 +30,12 @@ def delete_user(username, email, session):
 
 def register(session):
     data = {
-        'username': username,
-        'email': email,
-        'password': password,
-        'confirmation': confirmation,
-        'key': key,
-        'continent': continent
+        'username': credentials.username,
+        'email': credentials.email,
+        'password': credentials.password,
+        'confirmation': credentials.confirmation,
+        'key': credentials.key,
+        'continent': credentials.continent
     }
 
     conn = psycopg2.connect(
@@ -54,7 +47,7 @@ def register(session):
 
     db = conn.cursor()
 
-    db.execute("INSERT INTO keys (key) VALUES (%s)", (key,))
+    db.execute("INSERT INTO keys (key) VALUES (%s)", (credentials.key,))
     conn.commit()
 
     session.post(f"{BASE_URL}/signup", data=data, allow_redirects=True)
@@ -63,7 +56,7 @@ def register(session):
         return False
 
     try:
-        db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", (username, email))
+        db.execute("SELECT id FROM users WHERE username=%s AND email=%s AND auth_type='normal'", (credentials.username, credentials.email))
         result = db.fetchone()[0]
     except:
         return False
@@ -72,8 +65,8 @@ def register(session):
 
 def login(session):
     data = {
-        'username': username,
-        'password': password,
+        'username': credentials.username,
+        'password': credentials.password,
         'rememberme': 'on'
     }
     session.post(f"{BASE_URL}/login/", data=data, allow_redirects=False)
@@ -92,9 +85,3 @@ def test_logout():
 
 def test_login():
     assert login(login_session) == True
-
-def test_deletion():
-    assert delete_user(username, email, login_session) == True
-
-def test_login_after_deletion():
-    assert login(login_session) == False
