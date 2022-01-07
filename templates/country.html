@@ -106,7 +106,7 @@
             {% if description != None %}
             <h2 class="templatecontentheaderleft">About</h2>
 
-            <div class="strongpadding richDescription">{{ description|markdown }}</div>
+            <div class="strongpadding richDescription">{{ description|e|markdown }}</div>
 
             {% endif %}
 
@@ -830,7 +830,7 @@
 
                     <label for="description">Describe your country</label>
                     <div class="center">
-                        <textarea id="countryDescription" class="templatetextarea" name="description" placeholder="Country Description">{{ description }}</textarea>
+                        <textarea id="countryDescription" class="templatetextarea" name="description" placeholder="Country description">{{ description|e }}</textarea>
                         <script>
                             var simplemde = new SimpleMDE({
                                 element: document.getElementById("countryDescription"),
