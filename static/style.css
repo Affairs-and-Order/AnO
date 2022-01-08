@@ -2381,10 +2381,13 @@ button {
 
 /* Rich text and rich descriptions */
 
-.richDescription {}
+.richDescription {
+    text-align: center;
+}
 
 .richDescription ul {
-    margin: 10px 0;
+    margin: 10px auto;
+    width: fit-content;
     padding-left: 20px;
     text-align: initial !important;
 }
