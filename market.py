@@ -324,7 +324,7 @@ def post_offer(offer_type):
         realAmount = int(db.fetchone()[0])
 
         if amount > realAmount:  # Checks if user wants to sell more than he has
-            return error("400", "Selling amount is higher than the amount you have.")
+            return error(400, "Selling amount is higher than the amount you have.")
 
         # Calculates the resource amount the seller should have
         give_resource(cId, "bank", resource, amount)
@@ -534,13 +534,19 @@ def decline_trade(trade_id):
 
     db = connection.cursor()
 
-    db.execute("SELECT offeree, offerer FROM trades WHERE offer_id=(%s)", (trade_id,))
-    offeree, offerer = db.fetchone()
+    db.execute("SELECT offeree, offerer, type, resource, amount, price FROM trades WHERE offer_id=(%s)", (trade_id,))
+    offeree, offerer, type, resource, amount, price = db.fetchone()
 
     if cId not in [offeree, offerer]:
         return error(400, "You haven't been sent that offer")
 
     db.execute("DELETE FROM trades WHERE offer_id=(%s)", (trade_id,))
+
+    if type == "sell": # Give back resources, not money
+        query = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
+        db.execute(query, (amount, offerer,))
+    elif type == "buy":
+        db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (amount*price, offerer,))
 
     connection.commit()
     connection.close()
