@@ -1,4 +1,6 @@
+from turtle import update
 from flask import request, render_template, session, redirect, flash
+from numpy import require
 from helpers import login_required, error
 import psycopg2
 from app import app
@@ -62,175 +64,129 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         mil_dict = {
 
             ## LAND
+            "soldiers": {
+                "price": 200,
+                "resources": {},
+                "manpower": 1
+            },
 
-            "soldiers_price": 200, # Cost 200
-            "soldiers_resource": {"rations": 0},
-            "soldiers_manpower": 1,
+            "tanks": {
+                "price": 8000,
+                "resources": {"steel": 5, "components": 5},
+                "manpower": 4
+            },
 
-            "tanks_price": 8000, # Cost 8k
-            "tanks_resource": {"steel": 5},
-            "tanks_resource2": {"components": 5},
-            "tanks_manpower": 4,
-
-            "artillery_price": 16000, # Cost 16k
-            "artillery_resource": {"steel": 12},
-            "artillery_resource2": {"components": 3},
-            "artillery_manpower": 2,
+            "artillery": {
+                "price": 16000,
+                "resources": {"steel": 12, "components": 3},
+                "manpower": 2
+            },
 
             ## AIR
 
-            "bombers_price": 25000, # Cost 25k
-            "bombers_resource": {"aluminium": 20},
-            "bombers_resource2": {"steel": 5},
-            "bombers_resource3": {"components": 6},
-            "bombers_manpower": 1,
+            "bombers": {
+                "price": 25000,
+                "resources": {"aluminium": 20, "steel": 5, "components": 6},
+                "manpower": 1,
+            },
 
-            "fighters_price": 35000, # Cost 35k
-            "fighters_resource": {"aluminium": 12},
-            "fighters_resource2": {"components": 3},
-            "fighters_manpower": 1,
+            "fighters": {
+                "price": 35000, 
+                "resources": {"aluminium": 12, "components": 3},
+                "manpower": 1,
+            },
 
-            "apaches_price": 32000, # Cost 32k
-            "apaches_resource": {"aluminium": 8},
-            "apaches_resource2": {"steel": 2},
-            "apaches_resource3": {"components": 4},
-            "apaches_manpower": 1,
+            "apaches": {
+                "price": 32000,
+                "resources": {"aluminium": 8, "steel": 2, "components": 4},
+                "manpower": 1,
+            },
 
             ## WATER
 
-            "destroyers_price": 30000, # Cost 30k
-            "destroyers_resource": {"steel": 30},
-            "destroyers_resource2": {"components": 7},
-            "destroyers_manpower": 6,
+            "destroyers": {
+                "price": 30000,
+                "resources": {"steel": 30, "components": 7},
+                "manpower": 6,
+            },
 
-            "cruisers_price": 55000, # Cost 55k
-            "cruisers_resource": {"steel": 25},
-            "cruisers_resource2": {"components": 4},
-            "cruisers_manpower": 5,
+            "cruisers": {
+                "price": 55000, 
+                "resources": {"steel": 25, "components": 4},
+                "manpower": 5,
+            },
 
-            "submarines_price": 45000, # Cost 45k
-            "submarines_resource": {"steel": 20},
-            "submarines_resource2": {"components": 8},
-            "submarines_manpower": 6,
+            "submarines": {
+                "price": 45000,
+                "resources": {"steel": 20, "components": 8},
+                "manpower": 6,
+            },
 
             ## SPECIAL
 
-            "spies_price": 25000, # Cost 25k
-            "spies_resource": {"rations": 50}, # Costs 50 rations
-            "spies_manpower": 0,
+            "spies": {
+                "price": 25000, # Cost 25k
+                "resources": {"rations": 50}, # Costs 50 rations
+                "manpower": 0,
+            },
 
-            "icbms_price": 4000000, # Cost 4 million
-            "icbms_resource": {"steel": 350}, # Costs 350 steel
-            "icbms_manpower": 0,
+            "icbms": {
+                "price": 4000000, # Cost 4 million
+                "resource": {"steel": 350}, # Costs 350 steel
+                "manpower": 0,
+            },
 
-            "nukes_price": 12000000, # Cost 12 million
-            "nukes_resource": {"uranium": 800}, # Costs 800 uranium
-            "nukes_resource2": {"steel": 600}, # Costs 600 steel
-            "nukes_manpower": 0,
+            "nukes": {
+                "price": 12000000, # Cost 12 million
+                "resource": {"uranium": 800, "steel": 600}, # Costs 800 uranium
+                "manpower": 0,
+            }
         }
 
         if units == "soldiers":
             db.execute("SELECT widespreadpropaganda FROM upgrades WHERE user_id=%s", (cId,))
             wp = db.fetchone()[0]
             if wp:
-                mil_dict["soldiers_price"] *= 0.65
+                mil_dict["soldiers"]["price"] *= 0.65
 
         # TODO: clear this mess i called code once i get the time
         # if you're reading this please excuse the messiness 
 
-        iterable_resources = []
+        price = mil_dict[units]["price"]
 
-        price = mil_dict[f"{units}_price"]
-
-        resource1_data = list(mil_dict[f'{units}_resource'].items())[0]
-
-        resource1 = resource1_data[0]
-        resource1_amount = resource1_data[1]
-
-        resource_dict = {}
-
-        iterable_resources.append(1)
-
-        resource_dict.update({'resource_1': {'resource': resource1, 'amount': resource1_amount}})
-
-        try:
-            resource2_data = list(mil_dict[f'{units}_resource2'].items())[0]
-
-            resource2 = resource2_data[0]
-            resource2_amount = resource2_data[1]
-
-            iterable_resources.append(2)
-
-            resource_dict.update({'resource_2': {'resource': resource2, 'amount': resource2_amount}})
-
-        except KeyError:
-            pass
-
-        try:
-            resource3_data = next(iter(mil_dict[f'{units}_resource3'].items()))
-
-            resource3 = resource3_data[0]
-            resource3_amount = resource3_data[1]
-
-            iterable_resources.append(3)
-
-            resource_dict.update({'resource_3': {'resource': resource3, 'amount': resource3_amount}})
-
-        except KeyError:
-            pass
-
-        db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
+        db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         gold = db.fetchone()[0]
 
         totalPrice = wantedUnits * price
 
-        curUnStat = str(f"SELECT {units} FROM military " + "WHERE id=%s")
+        curUnStat = f"SELECT {units} FROM military " + "WHERE id=%s"
         db.execute(curUnStat, (cId,))
         currentUnits = db.fetchone()[0]
 
+        resources = mil_dict[units]["resources"]
+
         if way == "sell":
 
-            if int(wantedUnits) > int(currentUnits):  # checks if unit is legits
-                return error(400, "You don't have enough units to sell")
+            if wantedUnits > currentUnits: 
+                return error(400, f"You don't have enough {units} to sell ({wantedUnits}/{currentUnits}.")
 
-            unitUpd = str(f"UPDATE military SET {units}=" + "%s WHERE id=%s")
-            db.execute(unitUpd, (int(currentUnits) - int(wantedUnits), cId))
+            for resource, amount in resources.items():
+                addResources = wantedUnits * amount
+                updateResource = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
+                db.execute(updateResource, (addResources, cId,))
 
-            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", ((int(gold) + totalPrice), cId,))  # clean
-            flash(f"You sold {wantedUnits} {units}")
+            unitUpd = f"UPDATE military SET {units}={units}" + "-%s WHERE id=%s"
+            db.execute(unitUpd, (wantedUnits, cId,))
+            db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (totalPrice, cId,))
+            db.execute("UPDATE military SET manpower=manpower+%s WHERE id=%s", (wantedUnits*mil_dict[units]["manpower"], cId))
 
-            def update_resource_plus(x):
-
-                resource = resource_dict[f'resource_{x}']['resource']
-                resource_amount = resource_dict[f'resource_{x}']['amount']
-
-                current_resource_statement = str(f"SELECT {resource} " + "FROM resources WHERE id=%s")
-                db.execute(current_resource_statement, (cId,))
-                current_resource = int(db.fetchone()[0])
-
-                new_resource = current_resource + (resource_amount * wantedUnits)
-
-                if new_resource < 0:
-                    return error(400, f"You don't have enough {resource}")
-
-                resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-                db.execute(resource_update_statement, (new_resource, cId,))
-
-            for resource_number in range(1, (len(iterable_resources) + 1)):
-                update_resource_plus(resource_number)
-
-            db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
-            manpower = db.fetchone()[0]
-
-            db.execute("UPDATE military SET manpower=(%s) WHERE id=(%s)", (manpower+wantedUnits*mil_dict[f"{units}_manpower"], cId))
-
+            # flash(f"You sold {wantedUnits} {units}")
         elif way == "buy":
 
-            wantedUnits = int(wantedUnits)
             limits = Military.get_limits(cId)
 
             if wantedUnits > limits[units]:
-                return error(400, "You exceeded the unit buy limit, you might want to buy more military buildings.")
+                return error(400, f"You exceeded the unit buy limit, you might want to buy more military buildings. You can buy {limits[units]}/{wantedUnits} {units}.")
 
             if units == "soldiers":
                 db.execute("SELECT widespreadpropaganda FROM upgrades WHERE user_id=%s", (cId,))
@@ -239,47 +195,32 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                     totalPrice *= 0.65
 
             if totalPrice > gold:  # checks if user wants to buy more units than he has gold
-                return error(400, "Don't have enough gold for that")
+                return error(400, f"You don't have enough money for that ({gold}/{totalPrice}). You need {totalPrice-gold} more money.")
 
-            def update_resource_minus(x):
+            for resource, amount in resources.items():
+                selectResource = f"SELECT {resource} FROM resources WHERE id=" + "%s"
+                db.execute(selectResource, (cId,))
+                currentResources = db.fetchone()[0]
+                requiredResources = amount * wantedUnits
+                
+                if requiredResources > currentResources:
+                    return error(400, f"You have {currentResources}/{requiredResources} {resource}, meaning you need {requiredResources-currentResources} more.")
 
-                resource = resource_dict[f'resource_{x}']['resource']
-                resource_amount = resource_dict[f'resource_{x}']['amount']
+            for resource, amount in resources.items():
+                requiredResources = amount * wantedUnits
+                updateResource = f"UPDATE resources SET {resource}={resource}" + "-%s WHERE id=%s"
+                db.execute(updateResource, (requiredResources, cId)) 
 
-                current_resource_statement = f"SELECT {resource} FROM resources WHERE id=%s"
-                db.execute(current_resource_statement, (cId,))
-                current_resource = int(db.fetchone()[0])
+            db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (totalPrice, cId))
+            updMil = f"UPDATE military SET {units}={units}" + "+%s WHERE id=%s"
+            db.execute(updMil, (wantedUnits, cId))
 
-                if current_resource < resource_amount * wantedUnits:
-                    return -1
-
-                new_resource = current_resource - (resource_amount * wantedUnits)
-
-                # TODO: roll back when error
-                # TODO; this may cause problems because it decreases the resource amount when: then previous didn't trow error therefore it is decreased but the second returned error
-                # so the user reourse is decreased but the user hasn't got anything for that price
-                resource_update_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-                db.execute(resource_update_statement, (new_resource, cId,))
-
-            for resource_number in range(1, (len(iterable_resources) + 1)):
-                err = update_resource_minus(resource_number)
-
-                # IF error is returned
-                if err == -1:
-                    return error(400, "You don't have enough resources")
-
-            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
-            updMil = f"UPDATE military SET {units}" + "=%s WHERE id=%s"
-            db.execute(updMil, (int(currentUnits)+wantedUnits, cId))
-
-            db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
-            manpower = db.fetchone()[0]
-
-            db.execute("UPDATE military SET manpower=(%s) WHERE id=(%s)", (manpower-wantedUnits*mil_dict[f"{units}_manpower"], cId))
+            db.execute("UPDATE military SET manpower=manpower-%s WHERE id=%s", (wantedUnits*mil_dict[units]["manpower"], cId))
 
         else:
             return error(404, "Page not found")
 
+        ####### UPDATING REVENUE #############
         if way == "buy": rev_type = "expense"
         elif way == "sell": rev_type = "revenue"
         name = f"{way.capitalize()}ing {wantedUnits} {units} for your military."
@@ -287,6 +228,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
 
         db.execute("INSERT INTO revenue (user_id, type, name, description, date, resource, amount) VALUES (%s, %s, %s, %s, %s, %s, %s)", 
         (cId, rev_type, name, description, get_date(), units, wantedUnits,))
+        #######################################
 
         connection.commit()
         connection.close()
