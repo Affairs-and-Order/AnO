@@ -219,6 +219,11 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             for resource_number in range(1, (len(iterable_resources) + 1)):
                 update_resource_plus(resource_number)
 
+            db.execute("SELECT manpower FROM military WHERE id=(%s)", (cId,))
+            manpower = db.fetchone()[0]
+
+            db.execute("UPDATE military SET manpower=(%s) WHERE id=(%s)", (manpower+wantedUnits*mil_dict[f"{units}_manpower"], cId))
+
         elif way == "buy":
 
             wantedUnits = int(wantedUnits)
