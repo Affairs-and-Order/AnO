@@ -542,7 +542,7 @@ def province_sell_buy(way, units, province_id):
             return error("You don't have enough money", 400)
 
         if free_slots < wantedUnits and units not in ["cityCount", "land"]:
-            return error(400, f"You don't have enough city slots to buy {wantedUnits} units. Buy more cities to fix this problem")
+            return error(400, f"You don't have enough {slot_type} to buy {wantedUnits} units. Buy more {slot_type} to fix this problem")
 
         res_error = resource_stuff()
         if res_error == 1:
