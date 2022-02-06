@@ -10,6 +10,7 @@ load_dotenv()
 import os
 from helpers import get_date
 from upgrades import get_upgrades
+from variables import MILDICT
 
 @app.route("/military", methods=["GET", "POST"])
 @login_required
@@ -29,7 +30,7 @@ def military():
         # The info of which proinfra tables belong to a user is in provinces table
         limits = Military.get_limits(cId)
 
-        return render_template("military.html", units=units, limits=limits, upgrades=upgrades)
+        return render_template("military.html", units=units, limits=limits, upgrades=upgrades, mildict=MILDICT)
 
 @app.route("/<way>/<units>", methods=["POST"])
 @login_required
@@ -61,98 +62,16 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         if wantedUnits < 1:
             return error(400, "You cannot buy or sell less than 1 unit")
 
-        mil_dict = {
-
-            ## LAND
-            "soldiers": {
-                "price": 200,
-                "resources": {},
-                "manpower": 1
-            },
-
-            "tanks": {
-                "price": 8000,
-                "resources": {"steel": 5, "components": 5},
-                "manpower": 4
-            },
-
-            "artillery": {
-                "price": 16000,
-                "resources": {"steel": 12, "components": 3},
-                "manpower": 2
-            },
-
-            ## AIR
-
-            "bombers": {
-                "price": 25000,
-                "resources": {"aluminium": 20, "steel": 5, "components": 6},
-                "manpower": 1,
-            },
-
-            "fighters": {
-                "price": 35000, 
-                "resources": {"aluminium": 12, "components": 3},
-                "manpower": 1,
-            },
-
-            "apaches": {
-                "price": 32000,
-                "resources": {"aluminium": 8, "steel": 2, "components": 4},
-                "manpower": 1,
-            },
-
-            ## WATER
-
-            "destroyers": {
-                "price": 30000,
-                "resources": {"steel": 30, "components": 7},
-                "manpower": 6,
-            },
-
-            "cruisers": {
-                "price": 55000, 
-                "resources": {"steel": 25, "components": 4},
-                "manpower": 5,
-            },
-
-            "submarines": {
-                "price": 45000,
-                "resources": {"steel": 20, "components": 8},
-                "manpower": 6,
-            },
-
-            ## SPECIAL
-
-            "spies": {
-                "price": 25000, # Cost 25k
-                "resources": {"rations": 50}, # Costs 50 rations
-                "manpower": 0,
-            },
-
-            "icbms": {
-                "price": 4000000, # Cost 4 million
-                "resource": {"steel": 350}, # Costs 350 steel
-                "manpower": 0,
-            },
-
-            "nukes": {
-                "price": 12000000, # Cost 12 million
-                "resource": {"uranium": 800, "steel": 600}, # Costs 800 uranium
-                "manpower": 0,
-            }
-        }
-
         if units == "soldiers":
             db.execute("SELECT widespreadpropaganda FROM upgrades WHERE user_id=%s", (cId,))
             wp = db.fetchone()[0]
             if wp:
-                mil_dict["soldiers"]["price"] *= 0.65
+                MILDICT["soldiers"]["price"] *= 0.65
 
         # TODO: clear this mess i called code once i get the time
         # if you're reading this please excuse the messiness 
 
-        price = mil_dict[units]["price"]
+        price = MILDICT[units]["price"]
 
         db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
         gold = db.fetchone()[0]
@@ -163,7 +82,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         db.execute(curUnStat, (cId,))
         currentUnits = db.fetchone()[0]
 
-        resources = mil_dict[units]["resources"]
+        resources = MILDICT[units]["resources"]
 
         if way == "sell":
 
@@ -178,7 +97,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             unitUpd = f"UPDATE military SET {units}={units}" + "-%s WHERE id=%s"
             db.execute(unitUpd, (wantedUnits, cId,))
             db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (totalPrice, cId,))
-            db.execute("UPDATE military SET manpower=manpower+%s WHERE id=%s", (wantedUnits*mil_dict[units]["manpower"], cId))
+            db.execute("UPDATE military SET manpower=manpower+%s WHERE id=%s", (wantedUnits*MILDICT[units]["manpower"], cId))
 
             # flash(f"You sold {wantedUnits} {units}")
         elif way == "buy":
@@ -215,7 +134,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             updMil = f"UPDATE military SET {units}={units}" + "+%s WHERE id=%s"
             db.execute(updMil, (wantedUnits, cId))
 
-            db.execute("UPDATE military SET manpower=manpower-%s WHERE id=%s", (wantedUnits*mil_dict[units]["manpower"], cId))
+            db.execute("UPDATE military SET manpower=manpower-%s WHERE id=%s", (wantedUnits*MILDICT[units]["manpower"], cId))
 
         else:
             return error(404, "Page not found")

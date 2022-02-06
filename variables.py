@@ -192,3 +192,81 @@ INFRA = {
     'oil_refineries_plus': {'gasoline': 11},
     'oil_refineries_effect': [{'pollution': 6}]
 }
+
+MILDICT = {
+    ## LAND
+    "soldiers": {
+        "price": 200,
+        "resources": {},
+        "manpower": 1
+    },
+
+    "tanks": {
+        "price": 8000,
+        "resources": {"steel": 5, "components": 5},
+        "manpower": 4
+    },
+
+    "artillery": {
+        "price": 16000,
+        "resources": {"steel": 12, "components": 3},
+        "manpower": 2
+    },
+
+    ## AIR
+    "bombers": {
+        "price": 25000,
+        "resources": {"aluminium": 20, "steel": 5, "components": 6},
+        "manpower": 1,
+    },
+
+    "fighters": {
+        "price": 35000, 
+        "resources": {"aluminium": 12, "components": 3},
+        "manpower": 1,
+    },
+
+    "apaches": {
+        "price": 32000,
+        "resources": {"aluminium": 8, "steel": 2, "components": 4},
+        "manpower": 1,
+    },
+
+    ## WATER
+    "destroyers": {
+        "price": 30000,
+        "resources": {"steel": 30, "components": 7},
+        "manpower": 6,
+    },
+
+    "cruisers": {
+        "price": 55000, 
+        "resources": {"steel": 25, "components": 4},
+        "manpower": 5,
+    },
+
+    "submarines": {
+        "price": 45000,
+        "resources": {"steel": 20, "components": 8},
+        "manpower": 6,
+    },
+
+    ## SPECIAL
+    "spies": {
+        "price": 25000, # Cost 25k
+        "resources": {"rations": 50}, # Costs 50 rations
+        "manpower": 0,
+    },
+
+    "icbms": {
+        "price": 4000000, # Cost 4 million
+        "resources": {"steel": 350}, # Costs 350 steel
+        "manpower": 0,
+    },
+
+    "nukes": {
+        "price": 12000000, # Cost 12 million
+        "resources": {"uranium": 800, "steel": 600}, # Costs 800 uranium
+        "manpower": 0,
+    }
+}

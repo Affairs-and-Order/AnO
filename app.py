@@ -12,6 +12,7 @@ import string
 from datetime import datetime
 from psycopg2.extras import RealDictCursor
 from flaskext.markdown import Markdown
+from variables import MILDICT
 
 app = Flask(__name__)
 
@@ -161,6 +162,16 @@ def commas(value):
     except:
         returned = value
     return returned
+
+# Jinja2 filter to render military unit resource strings
+@app.template_filter()
+def milres(unit):
+    try:
+        resources = ", ".join([f"{i[1]} {i[0]}" for i in MILDICT[unit]["resources"].items()])
+        full = f"{unit.capitalize()} cost { commas(MILDICT[unit]['price']) }, { resources } each"
+    except:
+        full = f"{unit.capitalize()} cost { commas(MILDICT[unit]['price']) } each"
+    return full
 
 def get_resources():
     conn = psycopg2.connect(

@@ -48,9 +48,9 @@
                         <p class="templatecontentpleft">Soldiers are cheap and expendable. They require 1 munitions per 5000 soldiers to fight at 100% effectiveness, but will go into battle without, at 10% effectiveness. They counter artillery, apaches, and can obtain resource control.</p>
 
                         {% if upgrades["widespreadpropaganda"] %}
-                        <ul>Soldiers cost {{ (200 * 0.65 ) | commas }} each</ul>
+                        <ul>Soldiers cost {{ (mildict["soldiers"]["price"] * 0.65 ) | commas }} each</ul>
                         {% else %}
-                        <ul>Soldiers cost 200 each</ul>
+                        <ul>Soldiers cost {{ mildict["soldiers"]["price"] }} each</ul>
                         {% endif %}
 
                         <form action="/soldiers" method="POST">
@@ -99,7 +99,7 @@
 
                         <p class="templatecontentpleft">Artillery are expensive, but make it up with their incredible effectiveness against tanks. They require 5 munitions and 1 gasoline per 100 artillery to fight, and can also obtain field control.</p>
 
-                        <ul>Artillery cost 16,000, 12 steel, 3 components each
+                        <ul>{{ "artillery" | milres }}
                         </ul>
                         <form action="/artillery" method="POST">
                             <div class="purchasemilitarydiv">
@@ -144,7 +144,7 @@
 
                         <p class="templatecontentpleft">Tanks are mediocre in both cost and power, and cost 1 munitions and 2 gasoline per 100 tanks in battle. This makes them perfect for taking on soldiers, and for obtaining field and city control.</p>
 
-                        <ul>Tanks cost 8,000, 5 steel, 5 components each
+                        <ul>{{ "tanks" | milres }}
                         </ul>
                         <form action="/tanks" method="POST">
                             <div class="purchasemilitarydiv">
@@ -195,7 +195,7 @@
 
                         <p class="templatecontentpleft">Fighter jets are incredibly powerful in the air. They are strong against bombers, and can obtain air superiority.</p>
 
-                        <ul>Fighter Jets cost 35,000, 12 aluminium, 3 components each
+                        <ul>{{ "fighters" | milres }}
                         </ul>
                         <form method="POST">
                             <div class="purchasemilitarydiv">
@@ -244,7 +244,7 @@
 
                         <p class="templatecontentpleft">Bombers are air units that can deal massive damage to units below, and cost 4 munitions and 10 gasoline per 100 bombers for each attack. They annihilate soldiers, destroyers, and submarines. They may also obtain field control.</p>
 
-                        <ul>Bombers cost 25,000, 20 aluminium, 5 steel, 6 components each
+                        <ul>{{ "bombers" | milres }}
                         </ul>
                         <form action="/bombers" method="POST">
                             <div class="purchasemilitarydiv">
@@ -293,7 +293,7 @@
 
                         <p class="templatecontentpleft">Attack Helicopters are devistating helicopters that can take on both land and air. They counter tanks, bombers, and fighter jets. Furthermore, they are capable of obtaining city control.</p>
 
-                        <ul>Attack Helicopters cost 32,000, 8 aluminium, 2 steel, 4 components each
+                        <ul>{{ "apaches" | milres }}
                         </ul>
                         <form action="/apaches" method="POST">
                             <div class="purchasemilitarydiv">
@@ -346,7 +346,7 @@
 
                         <p class="templatecontentpleft">Submarines are very useful for ocean combat, and use thier ability to hide to counter cruisers. They are able to obtain depth control.</p>
 
-                        <ul>Subamrines cost 45,000, 20 steel, 8 components each
+                        <ul>{{ "submarines" | milres }}
                         </ul>
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
@@ -391,7 +391,7 @@
                         <h2 class="templatecontentheadercenter">You have {{ units["cruisers"] }} Cruisers</h2>
                         <p class="templatecontentpleft">Cruisers are the powerhouse of the ocean, and are very expensive. Cruisers counter destroyers, figher jets, apaches, and can obtain a naval blockade on the enemy.</p>
 
-                        <ul>Cruisers cost 55,000, 60 steel, 12 components each
+                        <ul>{{ "cruisers" | milres }}
                         </ul>
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
@@ -439,7 +439,7 @@
 
                         <p class="templatecontentpleft">Destroyers are equiped with advanced radars, allowing them to detect and succesfully counter submarines. They are also able to obtain a naval blockade on the enemy.</p>
 
-                        <ul>Destroyers cost 30,000, 30 steel, 7 components each
+                        <ul>{{ "destroyers" | milres }}
                         </ul>
                         <form action="/destroyers" method="POST">
                             <div class="purchasemilitarydiv">
@@ -491,7 +491,7 @@
 
                         <p class="templatecontentpleft">Spies are agents for your country that allow you to acquire information on your adversaries.</p>
 
-                        <ul>Spies cost 250,000, 50 rations each
+                        <ul>{{ "spies" | milres }}
                         </ul>
                         <form action="/icbm" method="POST">
                             <div class="purchasemilitarydiv">
@@ -539,7 +539,7 @@
 
                         <p class="templatecontentpleft">Ballistic Missiles are devistating missiles. They can obliterate an enemies infrastructure effectively collapsing their economy.</p>
 
-                        <ul>Ballistic Missiles cost 16,000,000, 550 steel each
+                        <ul>{{ "icbms" | milres }}
                         </ul>
                         <form action="/icbm" method="POST">
                             <div class="purchasemilitarydiv">
@@ -587,7 +587,7 @@
 
                         <p class="templatecontentpleft">Nukes are tools to annihilate everything your enemies love. These bombs should be saved for your most hated adversary.</p>
 
-                        <ul>Nukes cost 80,000,000, 1,200 uranium, 900 steel each
+                        <ul>{{ "nukes" | milres }}
                         </ul>
                         <form action="/icbm" method="POST">
                             <div class="purchasemilitarydiv">
