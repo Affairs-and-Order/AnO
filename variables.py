@@ -197,7 +197,7 @@ MILDICT = {
     ## LAND
     "soldiers": {
         "price": 200,
-        "resources": {},
+        "resources": {"rations": 2},
         "manpower": 1
     },
 
@@ -241,7 +241,7 @@ MILDICT = {
 
     "cruisers": {
         "price": 55000, 
-        "resources": {"steel": 25, "components": 4},
+        "resources": {"steel": 60, "components": 12},
         "manpower": 5,
     },
 
@@ -259,14 +259,14 @@ MILDICT = {
     },
 
     "icbms": {
-        "price": 4000000, # Cost 4 million
-        "resources": {"steel": 350}, # Costs 350 steel
+        "price": 16000000, # Cost 16 million
+        "resources": {"steel": 550}, 
         "manpower": 0,
     },
 
     "nukes": {
-        "price": 12000000, # Cost 12 million
-        "resources": {"uranium": 800, "steel": 600}, # Costs 800 uranium
+        "price": 80000000, 
+        "resources": {"uranium": 1200, "steel": 900}, 
         "manpower": 0,
     }
 }
