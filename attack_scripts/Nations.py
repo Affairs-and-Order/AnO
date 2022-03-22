@@ -111,7 +111,7 @@ class Economy:
             return "Invalid resource"
 
         # get amount of resource
-        resource_sel_stat = f"SELECT {resource} FROM resources WHERE id=%s"
+        resource_sel_stat = f"SELECT {resource} FROM resources" + " WHERE id=%s"
 
         db.execute(resource_sel_stat, (self.nationID,))
         originalUser = int(db.fetchone()[0])
@@ -123,7 +123,14 @@ class Economy:
         destinationUser += amount
 
         # writes changes in db
-        db.execute(f"UPDATE resources SET {resource}=(%s) WHERE id=(%s)", (originalUser, self.nationID))
+        try:
+            removeStatement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
+            db.execute(removeStatement, (originalUser, self.nationID))
+        except: 
+            connection.rollback()
+            setToZero = f"UPDATE resources SET {resource}=0" + " WHERE id=%s"
+            db.execute(setToZero, (self.nationID,))
+
         db.execute(f"UPDATE resources SET {resource}=(%s) WHERE id=(%s)", (destinationUser, destinationID))
 
         connection.commit()

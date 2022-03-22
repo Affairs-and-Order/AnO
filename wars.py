@@ -793,6 +793,7 @@ def warResult():
                   db.execute("SELECT gold FROM stats WHERE id=(%s)", (defender.user_id,))
                   available_resource = db.fetchone()[0]
 
+                  print(available_resource*0.1)
                   # max lootable is 10% of available resources
                   loot = random.randint(0, available_resource*0.1)
                   attacker_result["loot"] = {"money": loot}

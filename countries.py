@@ -510,6 +510,8 @@ def countries():
         upperinf = target["upper"]
         province_range = target["province_range"]
 
+    print(province_range)
+
     db.execute("""SELECT users.id, users.username, users.date, users.flag, COALESCE(SUM(provinces.population), 0) AS province_population,
 coalitions.colId, colNames.name, COUNT(provinces.id) as provinces_count
 FROM USERS
@@ -517,7 +519,8 @@ LEFT JOIN provinces ON users.id = provinces.userId
 LEFT JOIN coalitions ON users.id = coalitions.userId
 LEFT JOIN colNames ON colNames.id = coalitions.colId
 WHERE users.id != %s
-GROUP BY users.id, coalitions.colId, colNames.name;""", (cId,))
+GROUP BY users.id, coalitions.colId, colNames.name
+HAVING COUNT(provinces.id) >= %s;""", (cId, province_range,))
     dbResults = db.fetchall()
 
     connection.close()
