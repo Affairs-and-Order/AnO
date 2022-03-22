@@ -119,6 +119,9 @@ class Economy:
         destinationUser = int(db.fetchone()[0])
 
         # subtracts the resource from one nation to another
+        if amount > originalUser:
+            amount = originalUser
+
         originalUser -= amount
         destinationUser += amount
 
@@ -494,7 +497,7 @@ class Military(Nation):
 
             for resource in Economy.resources:
 
-                resource_sel_stat = f"SELECT {resource} FROM resources " + "WHERE id=%s"
+                resource_sel_stat = f"SELECT {resource} FROM resources WHERE id=%s"
                 db.execute(resource_sel_stat, (loser.user_id,))
                 resource_amount = db.fetchone()[0]
 
