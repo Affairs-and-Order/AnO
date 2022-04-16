@@ -510,7 +510,8 @@ def countries():
         upperinf = target["upper"]
         province_range = target["province_range"]
 
-    print(province_range)
+    if not province_range:
+        province_range = 0
 
     db.execute("""SELECT users.id, users.username, users.date, users.flag, COALESCE(SUM(provinces.population), 0) AS province_population,
 coalitions.colId, colNames.name, COUNT(provinces.id) as provinces_count
