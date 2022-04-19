@@ -506,7 +506,12 @@ def province_sell_buy(way, units, province_id):
                 new_resource = current_resource - (amount * wantedUnits)
 
                 if new_resource < 0:
-                    return 1
+                    return {
+                        "fail": True,
+                        "resource": resource,
+                        "current_amount": current_resource,
+                        "difference": current_resource - (amount * wantedUnits)
+                    }
 
                 resource_update_stat = f"UPDATE resources SET {resource}=" + "%s WHERE id=%s"
                 db.execute(resource_update_stat, (new_resource, cId,))
@@ -545,8 +550,9 @@ def province_sell_buy(way, units, province_id):
             return error(400, f"You don't have enough {slot_type} to buy {wantedUnits} units. Buy more {slot_type} to fix this problem")
 
         res_error = resource_stuff()
-        if res_error == 1:
-            return error(400, "You don't have enough resources")
+        if res_error:
+            print(res_error)
+            return error(400, f"Not enough resources. Missing {res_error['difference']*-1} {res_error['resource']}.")
 
         db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
 
