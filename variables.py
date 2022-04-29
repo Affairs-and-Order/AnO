@@ -107,7 +107,7 @@ INFRA = {
     'libraries_effect': [{'happiness': 5}, {'productivity': 3}],
     'libraries_money': 60000,
 
-    'hospitals_effect': {'happiness': 8},   
+    'hospitals_effect': [{'happiness': 8}],   
     'hospitals_money': 85000,
 
     'universities_effect': [{'productivity': 10}, {'happiness': 4}],
