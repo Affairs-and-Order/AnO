@@ -461,8 +461,7 @@
                                 <ul>Coal power plants cost {{ infra["coal_burners_money"] | commas }} per hour, takes {{ infra["coal_burners_convert_minus"][0]["coal"] }} coal per hour, and produces +{{ infra["coal_burners_plus"]["energy"] }} electricity
                                     and +{{ infra["coal_burners_effect"][0]["pollution"] }}% pollution
                                 </ul>
-                                <ul>Coal power plants cost 200,000, 45 aluminium each
-                                </ul>
+                                <ul>{{ "coal_burners" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="coal_burners" type="number" placeholder="Amount" />
@@ -510,7 +509,7 @@
                                 <ul>Oil power plants cost {{ infra["oil_burners_money"] | commas }} per hour, takes {{ infra["oil_burners_convert_minus"][0]["oil"] }} oil per hour, and contributes +{{ infra["oil_burners_plus"]["energy"] }} electricity and
                                     +{{ infra["oil_burners_effect"][0]["pollution"] }}% pollution
                                 </ul>
-                                <ul>Oil power plants cost 350,000, 50 aluminium each
+                                <ul>{{ "oil_burners" | prores }}
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -559,7 +558,7 @@
 
                                 <ul>Solar cost {{ infra["solar_fields_money"] | commas }} per hour and contribute +{{ infra["solar_fields_plus"]["energy"]}} electricity
                                 </ul>
-                                <ul>Solar fields cost 500,000, 55 steel each
+                                <ul>{{ "solar_fields" | prores }}
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -603,7 +602,7 @@
 
                                 <ul>Hydro dams cost {{ infra["hydro_dams_money"] }} per hour and contribute +{{ infra["hydro_dams_plus"]["energy"] }} electricity
                                 </ul>
-                                <ul>Hydro damns cost 2.2M, 120 steel, 60 aluminium each
+                                <ul>{{ "hydro_dams" | prores }}
                                 </ul>
 
                                 <div class="purchasemilitarydiv">
@@ -653,7 +652,7 @@
                                 {% else %}
                                 <ul>Nuclear reactors cost {{ infra["nuclear_reactors_money"] | commas }}, {{ infra["nuclear_reactors_convert_minus"][0]["uranium"] }} uranium per hour and contribute {{ infra["nuclear_reactors_plus"]["energy"] }} electricity</ul>
                                 {% endif %}
-                                <ul>Nuclear reactors cost 8.5M, 250 steel each</ul>
+                                <ul>{{ "nuclear_reactors" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="nuclear_reactors" type="number" placeholder="Amount" />
@@ -719,7 +718,7 @@
                                     * 0.75) | commas }}% pollution</ul>
                                 {% else %} as well as +{{ infra["gas_stations_effect"][0]["pollution"] }}% pollution</ul>
                                 {% endif %}
-                                <ul>Gas stations cost 550,000, 50 steel, 35 aluminium each</ul>
+                                <ul>{{ "gas_stations" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="gas_stations" type="number" placeholder="Amount" />
@@ -767,7 +766,7 @@
                                     +{{ (infra["general_stores_effect"][0]["pollution"] * 0.75) | commas }}% pollution</ul>
                                 {% else %} +{{ infra["general_stores_effect"][0]["pollution"] }}% pollution</ul>
                                 {% endif %}
-                                <ul>General stores cost 1.2M, 60 steel, 70 aluminium each</ul>
+                                <ul>{{ "general_stores" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="general_stores" type="number" placeholder="Amount" />
@@ -815,7 +814,7 @@
                                     %} +{{ (infra["farmers_markets_effect"][0]["pollution"] * 0.75) | commas }}% pollution</ul>
                                 {% else %} +{{ infra["farmers_markets_effect"][0]["pollution"] }}% pollution</ul>
                                 {% endif %}
-                                <ul>Farmers markets cost 3.5M, 75 steel, 80 aluminium each</ul>
+                                <ul>{{ "farmers_markets" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="farmers_markets" type="number" placeholder="Amount" />
@@ -857,7 +856,7 @@
                                 <p class="templatecontentpleft">Banks help produce a thriving debt-based economy that drastically increases production of consumer goods. Banks produce no pollution.</p>
 
                                 <ul>Banks cost {{ infra["banks_money"] | commas }} per hour and contribute +{{ infra["banks_plus"]["consumer_goods"] }} consumer goods per hour</ul>
-                                <ul>Banks cost 9M, 225 steel, 110 aluminium each</ul>
+                                <ul>{{ "banks" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="banks" type="number" placeholder="Amount" />
@@ -908,7 +907,7 @@
                                     {% else %} +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
                                 {% endif %}
 
-                                <ul>{{ malls_name }} cost 15.5M, 360 steel, 240 aluminium each</ul>
+                                <ul>{{ "malls" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
@@ -958,7 +957,7 @@
                                 <p class="templatecontentpleft">City parks are perfect establishments to increase happiness of your population, and to absorb some pollution.</p>
 
                                 <ul>City parks cost {{ infra["city_parks_money"] | commas }} per hour and contribute +{{ infra["city_parks_effect"][0]["happiness"] }}% happiness and -{{ infra["city_parks_effect_minus"]["pollution"] }}% pollution</ul>
-                                <ul>City parks cost 350,000, 15 steel each</ul>
+                                <ul>{{ "city_parks" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="city_parks" type="number" placeholder="Amount" />
@@ -1003,7 +1002,7 @@
                                 <p class="templatecontentpleft">Libraries are places for your citizens to enjoy a book and learn from them to become more productive.</p>
 
                                 <ul>Libraries cost {{ infra["libraries_money"] | commas }} per hour and contribute +{{ infra["libraries_effect"][0]["happiness"] }}% happiness and +{{ infra["libraries_effect"][1]["productivity"] }}% productivity</ul>
-                                <ul>Libraries cost 800,000, 55 steel, 40 aluminium each</ul>
+                                <ul>{{ "libraries" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="libraries" type="number" placeholder="Amount" />
@@ -1047,7 +1046,7 @@
                                 <ul>Hospitals cost {{ infra["hospitals_money"] | commas }} per hour and {% if upgrades["nationalhealthinstitution"] %} contribute +{{ infra["hospitals_effect"]["happiness"] * 1.3 }}% happiness</ul>
                                 {% else %} contribute +{{ infra["hospitals_effect"]["happiness"] }}% happiness</ul>
                                 {% endif %}
-                                <ul>Hospitals cost 2.3M, 140 steel, 85 aluminium each</ul>
+                                <ul>{{ "hospitals" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="hospitals" type="number" placeholder="Amount" />
@@ -1092,7 +1091,7 @@
                                 <p class="templatecontentpleft">Universities help educate your population, making them far more productive. University gives their students some great memories.</p>
 
                                 <ul>Universities cost {{ infra["universities_money"] | commas }} per hour and contribute +{{ infra["universities_effect"][0]["productivity"] }}% productivity and +{{ infra["universities_effect"][0]["happiness"] }}% happiness</ul>
-                                <ul>Universities cost 6.8M, 210 steel, 105 aluminium each</ul>
+                                <ul>{{ "universities" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="universities" type="number" placeholder="Amount" />
@@ -1138,7 +1137,7 @@
 
                                 <ul>{{ monorails_name }} cost {{ infra["monorails_money"] | commas }} per hour and {% if upgrades["highspeedrail"] %} contribute +{{ infra["monorails_effect"][0]["productivity"] * 1.2 }}% productivity {% else %} contribute
                                     +{{ infra["monorails_effect"][0]["productivity"] }}% productivity {% endif %} and -{{ infra["monorails_effect_minus"]["pollution"] }}% pollution</ul>
-                                <ul>{{ monorails_name }} cost 17.5M, 390 steel, 195 aluminium each</ul>
+                                <ul>{{ "monorails" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="monorails" type="number" placeholder="Amount" />
@@ -1278,7 +1277,7 @@
                                 <p class="templatecontentpleft">Army bases allow you to recruit and house soldiers, and to store tanks and artillery.</p>
 
                                 <ul>Army bases cost 25,000 per hour</ul>
-                                <ul>Army bases cost 650,000 and 80 wood</ul>
+                                <ul>{{ "army_bases" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="army_bases" type="number" placeholder="Amount" />
@@ -1326,7 +1325,7 @@
                                 <p class="templatecontentpleft">Air Bases allow for the storage and production of all air units.</p>
 
                                 <ul>Air Bases cost 55,000 per hour</ul>
-                                <ul>Air Bases cost 1.4M, 165 steel, 40 aluminium each</ul>
+                                <ul>{{ "aerodomes" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="aerodomes" type="number" placeholder="Amount" />
@@ -1373,7 +1372,7 @@
                                 <p class="templatecontentpleft">Naval Bases allow for the storage and production of all naval units.</p>
 
                                 <ul>Naval Bases cost 35,000 per hour</ul>
-                                <ul>Naval Bases cost 1.2M, 210 steel each</ul>
+                                <ul>{{ "harbours" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="harbours" type="number" placeholder="Amount" />
@@ -1419,7 +1418,7 @@
                                 <p class="templatecontentpleft">Admin buildings provide capabilities to recruit spies and perform opperations on adversaries.</p>
 
                                 <ul>Admin buildings cost 90,000 per hour</ul>
-                                <ul>Admin buildings cost 3.6M, 90 steel, 75 aluminium each</ul>
+                                <ul>{{ "admin_buildings" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="admin_buildings" type="number" placeholder="Amount" />
@@ -1465,7 +1464,7 @@
                                 <p class="templatecontentpleft">Silos allow for the production, storage, and launch of Ballistic Missiles and nukes once prerequisites are acquired.</p>
 
                                 <ul>Silos cost 340,000 per hour</ul>
-                                <ul>Silos cost 21M, 540 steel, 240 aluminium each</ul>
+                                <ul>{{ "silos" | prores }}/ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="silos" type="number" placeholder="Amount" />
@@ -1517,7 +1516,7 @@
                                 <ul>Farms cost {{ (3000 * 0.8) | commas}} per hour {% else %}
                                     <ul>Farms cost 3,000 per hour {% endif %} {% if upgrades["advancedmachinery"] %} and contribute +{{ (2 * 1.5) | commas }} food for every land slot in the province, {% else %} and contribute +2 food for every land slot in
                                         the province, {% endif %} and add +1% pollution</ul>
-                                    <ul>Farms cost 140,000 and 10 wood each</ul>
+                                    <ul>{{ "farms" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="farms" type="number" placeholder="Amount" />
@@ -1571,7 +1570,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Iron mines cost {{ (12000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Iron mines cost 12,000 per hour {% endif %} and produce 25 iron per hour, as well as +1.5% pollution</ul>
-                                    <ul>Iron mines cost 310,000 and 20 wood each</ul>
+                                    <ul>{{ "iron_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="iron_mines" type="number" placeholder="Amount" />
@@ -1623,7 +1622,7 @@
                                 <ul>Coal mines cost {{ (8000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Coal mines cost 8,000 per hour {% endif %}
                                         <ul>and produce 26 coal per hour, as well as +2% pollution</ul>
-                                        <ul>Coal mines cost 290,000 and 30 wood each</ul>
+                                        <ul>{{ "coal_mines" | prores }}</ul>
 
                                         <div class="purchasemilitarydiv">
                                             <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1674,7 +1673,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Copper mines cost {{ (8000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Copper mines cost 8,000 per hour {% endif %} and produce 32 copper per hour, as well as +1.5% pollution</ul>
-                                    <ul>Copper mines cost 245,000 and 25 wood each</ul>
+                                    <ul>{{ "copper_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="copper_mines" type="number" placeholder="Amount" />
@@ -1722,7 +1721,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Pumpjacks cost {{ (10000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Pumpjacks cost 10,000 per hour {% endif %} and produce 23 oil per hour, as well as +1.5% pollution</ul>
-                                    <ul>Pumpjacks cost 250,000 and 15 steel each</ul>
+                                    <ul>{{ "pumpjacks" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -1769,7 +1768,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Lumber mills cost {{ (7500 * 0.8) | commas }} per hour {% else %}
                                     <ul>Lumber mills cost 7,500 per hour {% endif %} and produce 32 lumber per hour, as well as +1% pollution</ul>
-                                    <ul>Lumber mills cost 180,000 each</ul>
+                                    <ul>{{ "lumber_mills" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
@@ -1818,7 +1817,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Lead mines cost {{ (12000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Lead mines cost 12,000 per hour {% endif %} and produce 18 lead per hour, as well as +1.5% pollution</ul>
-                                    <ul>Lead mines cost 220,000 and 25 wood each</ul>
+                                    <ul>{{ "lead_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="lead_mines" type="number" placeholder="Amount" />
@@ -1866,7 +1865,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Bauxite mines cost {{ (8000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Bauxite mines cost 8,000 per hour {% endif %} and produce {{ (20 * 1.45) | commas}} bauxite per hour, as well as +1.5% pollution</ul>
-                                    <ul>Bauxite mines cost 260,000 and 20 wood each</ul>
+                                    <ul>{{ "bauxite_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -1914,7 +1913,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Coal mines cost {{ (8000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Coal mines cost 8,000 per hour {% endif %} and produce 26 coal per hour, as well as +2% pollution</ul>
-                                    <ul>Coal mines cost 290,000 and 30 wood each</ul>
+                                    <ul>{{ "coal_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -1965,7 +1964,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Pumpjacks cost {{ (10000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Pumpjacks cost 10,000 per hour {% endif %} and produce 23 oil per hour, as well as +1.5% pollution</ul>
-                                    <ul>Pumpjacks cost 250,000 and 15 steel each</ul>
+                                    <ul>{{ "pumpjacks" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="pumpjacks" type="number" placeholder="Amount" />
@@ -2012,7 +2011,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Lumber mills cost {{ (7500 * 0.8) | commas }} per hour {% else %}
                                     <ul>Lumber mills cost 7,500 per hour {% endif %} and produce 32 lumber per hour, as well as +1% pollution</ul>
-                                    <ul>Lumber mills cost 180,000 each</ul>
+                                    <ul>{{ "lumber_mills" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
@@ -2058,7 +2057,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Uranium mines cost {{ (18000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Uranium mines cost 18,000 per hour {% endif %} and produce 12 uranium per hour, as well as +1% pollution</ul>
-                                    <ul>Uranium mines cost 380,000 and 35 steel each</ul>
+                                    <ul>{{ "uranium_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="uranium_mines" type="number" placeholder="Amount" />
@@ -2105,7 +2104,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Bauxite mines cost {{ (8000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Bauxite mines cost 8,000 per hour {% endif %} and produce 20 bauxite per hour, as well as +1.5% pollution</ul>
-                                    <ul>Bauxite mines cost 260,000 and 20 wood each</ul>
+                                    <ul>{{ "bauxite_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="bauxite_mines" type="number" placeholder="Amount" />
@@ -2153,7 +2152,7 @@
                                 {% if upgrades["cheapermaterials"] %}
                                 <ul>Coal mines cost {{ (8000 * 0.8) | commas }} per hour {% else %}
                                     <ul>Coal mines cost 8,000 per hour {% endif %} and produce 26 coal per hour, as well as +2% pollution</ul>
-                                    <ul>Coal mines cost 290,000 and 30 wood each</ul>
+                                    <ul>{{ "coal_mines" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
                                         <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
@@ -2207,7 +2206,7 @@
                                 {% else %}
                                 <ul>Components factories cost 220,000 per hour, and convert 20 copper, 10 steel, and 15 aluminium into 5 components per hour, producing +5% pollution</ul>
                                 {% endif %}
-                                <ul>Components factories cost 1.2M, 20 steel, 20 aluminium each</ul>
+                                <ul>{{ "component_factories" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="component_factories" type="number" placeholder="Amount" />
@@ -2256,7 +2255,7 @@
                                 {% else %}
                                 <ul>Steel mills cost 180,000 per hour and convert 35 iron and 35 coal into 15 steel per hour, producing +4% pollution</ul>
                                 {% endif %}
-                                <ul>Steel mills cost 900,000, 60 aluminium each</ul>
+                                <ul>{{ "steel_mills" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="steel_mills" type="number" placeholder="Amount" />
@@ -2303,7 +2302,7 @@
                                 <p class="templatecontentpleft">Ammunition factories allows you to convert copper and lead into ammunition, which is necessary for war machines and useful for soldiers to fight in war.</p>
 
                                 <ul>Ammunition factories cost 140,000 per hour and convert 10 copper and 20 lead into 10 ammunition per hour, producing +3% pollution</ul>
-                                <ul>Ammunition factories cost 750,000 each</ul>
+                                <ul>{{ "ammunition_factories" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="ammunition_factories" type="number" placeholder="Amount" />
@@ -2348,7 +2347,7 @@
                                 <p class="templatecontentpleft">Aluminium refineries allow you to convert bauxite into aluminium, a general use material.</p>
 
                                 <ul>Aluminium refineries cost 150,000 per hour and convert 15 bauxite into 12 aluminium per hour, producing +3% pollution</ul>
-                                <ul>Aluminium refineries cost 820,000 each</ul>
+                                <ul>{{ "aluminium_refineries" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="aluminium_refineries" type="number" placeholder="Amount" />
@@ -2392,7 +2391,7 @@
                                 <p class="templatecontentpleft">Oil refineries convert oil into gasoline, used for fueling your war machines.</p>
 
                                 <ul>Oil refineries cost 160,000 per hour and convert 20 oil into 8 gas per hour, producing +6% pollution</ul>
-                                <ul>Oil refineries cost 680,000 each</ul>
+                                <ul>{{ "oil_refineries" | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="oil_refineries" type="number" placeholder="Amount" />

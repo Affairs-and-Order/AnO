@@ -12,7 +12,7 @@ import string
 from datetime import datetime
 from psycopg2.extras import RealDictCursor
 from flaskext.markdown import Markdown
-from variables import MILDICT
+from variables import MILDICT, PROVINCE_UNIT_PRICES
 
 app = Flask(__name__)
 
@@ -162,6 +162,27 @@ def commas(value):
     except:
         returned = value
     return returned
+
+# Jinja2 filter to render province building resource strings
+@app.template_filter()
+def prores(unit):
+    change_price = False
+    if "," in unit:
+        split_unit = unit.split(", ")
+        unit = split_unit[0]
+        change_price = float(split_unit[1])
+
+    unit_name = unit.replace("_", " ").capitalize()
+    if unit_name == "Coal burners": unit_name = "Coal power plants"
+
+    price = PROVINCE_UNIT_PRICES[f'{unit}_price']
+    if change_price: price = price * change_price
+    try:
+        resources = ", ".join([f"{i[1]} {i[0]}" for i in PROVINCE_UNIT_PRICES[f"{unit}_resource"].items()])
+        full = f"{unit_name} cost { commas(price) }, { resources } each"
+    except:
+        full = f"{unit_name} cost { commas(price) } each"
+    return full
 
 # Jinja2 filter to render military unit resource strings
 @app.template_filter()
