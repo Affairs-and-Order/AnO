@@ -166,11 +166,18 @@ def commas(value):
 # Jinja2 filter to render military unit resource strings
 @app.template_filter()
 def milres(unit):
+    change_price = False
+    if "," in unit:
+        split_unit = unit.split(", ")
+        unit = split_unit[0]
+        change_price = float(split_unit[1])
+    price = MILDICT[unit]['price']
+    if change_price: price = price * change_price
     try:
         resources = ", ".join([f"{i[1]} {i[0]}" for i in MILDICT[unit]["resources"].items()])
-        full = f"{unit.capitalize()} cost { commas(MILDICT[unit]['price']) }, { resources } each"
+        full = f"{unit.capitalize()} cost { commas(price) }, { resources } each"
     except:
-        full = f"{unit.capitalize()} cost { commas(MILDICT[unit]['price']) } each"
+        full = f"{unit.capitalize()} cost { commas(price) } each"
     return full
 
 def get_resources():

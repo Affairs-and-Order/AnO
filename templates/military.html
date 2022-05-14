@@ -48,9 +48,9 @@
                         <p class="templatecontentpleft">Soldiers are cheap and expendable. They require 1 munitions per 5000 soldiers to fight at 100% effectiveness, but will go into battle without, at 10% effectiveness. They counter artillery, apaches, and can obtain resource control.</p>
 
                         {% if upgrades["widespreadpropaganda"] %}
-                        <ul>Soldiers cost {{ (mildict["soldiers"]["price"] * 0.65 ) | commas }} each</ul>
+                        <ul>{{ "soldiers, 0.65" | milres }}</ul>
                         {% else %}
-                        <ul>Soldiers cost {{ mildict["soldiers"]["price"] }} each</ul>
+                        <ul>{{ "soldiers" | milres }}</ul>
                         {% endif %}
 
                         <form action="/soldiers" method="POST">
