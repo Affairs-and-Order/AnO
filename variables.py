@@ -283,8 +283,7 @@ PROVINCE_UNIT_PRICES = {
         "oil_burners_resource": {"aluminium": 50},
 
         "hydro_dams_price": 2200000,
-        "hydro_dams_resource": {"steel": 120},
-        "hydro_dams_resource2": {"aluminium": 60},
+        "hydro_dams_resource": {"steel": 120, "aluminium": 60},
 
         "nuclear_reactors_price": 8500000,
         "nuclear_reactors_resource": {"steel": 250},
@@ -293,43 +292,34 @@ PROVINCE_UNIT_PRICES = {
         "solar_fields_resource": {"steel": 55},
 
         "gas_stations_price": 550000,
-        "gas_stations_resource": {"steel": 50},
-        "gas_stations_resource2": {"aluminium": 35},
+        "gas_stations_resource": {"steel": 50, "aluminium": 35},
 
         "general_stores_price": 1200000,
-        "general_stores_resource": {"steel": 60},
-        "general_stores_resource2": {"aluminium": 70},
+        "general_stores_resource": {"steel": 60, "aluminium": 70},
 
         "farmers_markets_price": 350000,
-        "farmers_markets_resource": {"steel": 75},
-        "farmers_markets_resource2": {"aluminium": 80},
+        "farmers_markets_resource": {"steel": 75, "aluminium": 80},
 
         "malls_price": 15500000, # Costs 12.5m
-        "malls_resource": {"steel": 360},
-        "malls_resource2": {"aluminium": 240},
+        "malls_resource": {"steel": 360, "aluminium": 240},
 
         "banks_price": 9000000,
-        "banks_resource": {"steel": 225},
-        "banks_resource2": {"aluminium": 110},
+        "banks_resource": {"steel": 225, "aluminium": 110},
 
         "city_parks_price": 350000,
         "city_parks_resource": {"steel": 15},
 
         "hospitals_price": 2300000,
-        "hospitals_resource": {"steel": 140},
-        "hospitals_resource2": {"aluminium": 85},
+        "hospitals_resource": {"steel": 140, "aluminium": 85},
 
         "libraries_price": 800000,
-        "libraries_resource": {"steel": 55},
-        "libraries_resource2": {"aluminium": 40},
+        "libraries_resource": {"steel": 55, "aluminium": 40},
 
         "universities_price": 6800000, # Costs 12.5m
-        "universities_resource": {"steel": 210},
-        "universities_resource2": {"aluminium": 105},
+        "universities_resource": {"steel": 210, "aluminium": 105},
 
         "monorails_price": 17500000,
-        "monorails_resource": {"steel": 390},
-        "monorails_resource2": {"aluminium": 195},
+        "monorails_resource": {"steel": 390, "aluminium": 195},
 
         "army_bases_price": 650000,
         "army_bases_resource": {"lumber": 80},
@@ -338,16 +328,13 @@ PROVINCE_UNIT_PRICES = {
         "harbours_resource": {"steel": 210},
 
         "aerodomes_price": 1400000,
-        "aerodomes_resource": {"aluminium": 40},
-        "aerodomes_resource2": {"steel": 165},
+        "aerodomes_resource": {"aluminium": 40, "steel": 165},
 
         "admin_buildings_price": 3600000,
-        "admin_buildings_resource": {"steel": 90},
-        "admin_buildings_resource2": {"aluminium": 75},
+        "admin_buildings_resource": {"steel": 90, "aluminium": 75},
 
         "silos_price": 21000000,
-        "silos_resource": {"steel": 540},
-        "silos_resource2": {"aluminium": 240},
+        "silos_resource": {"steel": 540, "aluminium": 240},
 
         "farms_price": 140000,
         "farms_resource": {"lumber": 10},
@@ -376,8 +363,7 @@ PROVINCE_UNIT_PRICES = {
         "lumber_mills_price": 180000,
 
         "component_factories_price": 1200000,
-        "component_factories_resource": {"steel": 20},
-        "component_factories_resource2": {"aluminium": 20},
+        "component_factories_resource": {"steel": 20, "aluminium": 20},
 
         "steel_mills_price": 900000,
         "steel_mills_resource": {"aluminium": 60},

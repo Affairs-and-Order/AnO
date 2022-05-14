@@ -100,12 +100,13 @@ def province(pId):
     energy["consumption"], energy["production"] = energy_info(pId)
 
     infra = variables.INFRA
+    prices = variables.PROVINCE_UNIT_PRICES
 
     connection.close()
 
     return render_template("province.html", province=province, units=units,
     enough_consumer_goods=enough_consumer_goods, enough_rations=enough_rations, has_power=has_power,
-    energy=energy, infra=infra, upgrades=upgrades)
+    energy=energy, infra=infra, upgrades=upgrades, prices=prices)
 
 def get_province_price(user_id):
 
@@ -274,7 +275,7 @@ def province_sell_buy(way, units, province_id):
     ]
 
     db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-    gold = int(db.fetchone()[0])
+    gold = db.fetchone()[0]
 
     try:
         wantedUnits = int(request.form.get(units))
@@ -307,7 +308,6 @@ def province_sell_buy(way, units, province_id):
     else:
         land_price = 0
 
-
     # All the unit prices in this format:
     """
     unit_price: <the of the unit>,
@@ -322,10 +322,9 @@ def province_sell_buy(way, units, province_id):
     if units not in allUnits:
         return error("No such unit exists.", 400)
 
+    table = "proInfra"
     if units in ["land", "cityCount"]:
         table = "provinces"
-    else:
-        table = "proInfra"
 
     price = unit_prices[f"{units}_price"]
 
@@ -343,23 +342,14 @@ def province_sell_buy(way, units, province_id):
         price *= 1.14
 
     if units not in ["cityCount", "land"]:
-        totalPrice = int(wantedUnits * price)
+        totalPrice = wantedUnits * price
     else:
         totalPrice = price
 
-    resources_used = []
+    print(totalPrice, wantedUnits, price)
 
     try:
-        resource_data = list(unit_prices[f'{units}_resource'].items())[0]
-
-        resources_used.append(resource_data)
-    except KeyError:
-        pass
-
-    try:
-        resource2_data = list(unit_prices[f'{units}_resource2'].items())[0]
-
-        resources_used.append(resource2_data)
+        resources_data = unit_prices[f'{units}_resource'].items()
     except KeyError:
         pass
 
@@ -380,10 +370,8 @@ def province_sell_buy(way, units, province_id):
 
     def resource_stuff():
 
-        for resource_data in resources_used:
-
-            resource = resource_data[0]
-            amount = resource_data[1]
+        for resource, amount in resources_data:
+            print(resource, amount)
 
             if way == "buy":
 
@@ -431,8 +419,10 @@ def province_sell_buy(way, units, province_id):
 
     elif way == "buy":
 
-        if int(totalPrice) > int(gold): # Checks if user wants to buy more units than he has gold
+        if totalPrice > gold: # Checks if user wants to buy more units than he has gold
             return error("You don't have enough money", 400)
+
+        print(totalPrice)
 
         if free_slots < wantedUnits and units not in ["cityCount", "land"]:
             return error(400, f"You don't have enough {slot_type} to buy {wantedUnits} units. Buy more {slot_type} to fix this problem")
@@ -442,7 +432,7 @@ def province_sell_buy(way, units, province_id):
             print(res_error)
             return error(400, f"Not enough resources. Missing {res_error['difference']*-1} {res_error['resource']}.")
 
-        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (int(gold)-int(totalPrice), cId,))
+        db.execute("UPDATE stats SET gold=gold-%s WHERE id=(%s)", (totalPrice, cId,))
 
         updStat = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
         db.execute(updStat, ((currentUnits + wantedUnits), province_id))
