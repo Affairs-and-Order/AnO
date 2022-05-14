@@ -107,12 +107,6 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
             if wantedUnits > limits[units]:
                 return error(400, f"You exceeded the unit buy limit, you might want to buy more military buildings. You can buy {limits[units]}/{wantedUnits} {units}.")
 
-            if units == "soldiers":
-                db.execute("SELECT widespreadpropaganda FROM upgrades WHERE user_id=%s", (cId,))
-                wp = db.fetchone()[0]
-                if wp:
-                    totalPrice *= 0.65
-
             if totalPrice > gold:  # checks if user wants to buy more units than he has gold
                 return error(400, f"You don't have enough money for that ({gold}/{totalPrice}). You need {totalPrice-gold} more money.")
 
@@ -129,6 +123,8 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
                 requiredResources = amount * wantedUnits
                 updateResource = f"UPDATE resources SET {resource}={resource}" + "-%s WHERE id=%s"
                 db.execute(updateResource, (requiredResources, cId)) 
+
+            print(totalPrice)
 
             db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (totalPrice, cId))
             updMil = f"UPDATE military SET {units}={units}" + "+%s WHERE id=%s"
