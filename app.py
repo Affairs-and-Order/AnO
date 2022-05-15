@@ -88,7 +88,7 @@ def task_tax_income(): tax_income()
 @celery.task()
 def task_generate_province_revenue(): generate_province_revenue()
 
-# Runs one a day
+# Runs once a day
 # Transfer X% of all resources (could depends on conditions like Raze war_type) to the winner side after a war
 @celery.task()
 def task_war_reparation_tax(): war_reparation_tax()
