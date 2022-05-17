@@ -907,7 +907,7 @@
                                     {% else %} +{{ infra["malls_effect"][0]["pollution"] }}% pollution</ul>
                                 {% endif %}
 
-                                <ul>{{ "malls" | prores }}</ul>
+                                <ul>{{ malls_name | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="malls" type="number" placeholder="Amount" />
@@ -1137,7 +1137,7 @@
 
                                 <ul>{{ monorails_name }} cost {{ infra["monorails_money"] | commas }} per hour and {% if upgrades["highspeedrail"] %} contribute +{{ infra["monorails_effect"][0]["productivity"] * 1.2 }}% productivity {% else %} contribute
                                     +{{ infra["monorails_effect"][0]["productivity"] }}% productivity {% endif %} and -{{ infra["monorails_effect_minus"]["pollution"] }}% pollution</ul>
-                                <ul>{{ "monorails" | prores }}</ul>
+                                <ul>{{ monorails_name | prores }}</ul>
 
                                 <div class="purchasemilitarydiv">
                                     <input class="loginsignupinput" autocomplete="off" name="monorails" type="number" placeholder="Amount" />

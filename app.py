@@ -167,13 +167,24 @@ def commas(value):
 @app.template_filter()
 def prores(unit):
     change_price = False
+    unit = unit.lower()
     if "," in unit:
         split_unit = unit.split(", ")
         unit = split_unit[0]
         change_price = float(split_unit[1])
 
+    renames = {
+        "Fulfillment centers": "malls",
+        "Bullet trains": "monorails"
+    }
+
+    print(unit)
     unit_name = unit.replace("_", " ").capitalize()
     if unit_name == "Coal burners": unit_name = "Coal power plants"
+    try:
+        unit = renames[unit_name]
+    except KeyError:
+        ...
 
     price = PROVINCE_UNIT_PRICES[f'{unit}_price']
     if change_price: price = price * change_price
