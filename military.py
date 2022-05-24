@@ -87,7 +87,7 @@ def military_sell_buy(way, units):  # WARNING: function used only for military
         if way == "sell":
 
             if wantedUnits > currentUnits: 
-                return error(400, f"You don't have enough {units} to sell ({wantedUnits}/{currentUnits}.")
+                return error(400, f"You don't have enough {units} to sell ({wantedUnits}/{currentUnits})")
 
             for resource, amount in resources.items():
                 addResources = wantedUnits * amount
