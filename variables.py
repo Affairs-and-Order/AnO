@@ -379,7 +379,7 @@ PROVINCE_UNIT_PRICES = {
 NEW_INFRA = { # (NEW INFRA)
     """
     * plus - energy or resource increase
-    * cminus - formerly convert_minus, what resource to remove for upkeep
+    * minus - formerly convert_minus, what resource to remove for upkeep
     * money - monetary upkeep cost
     * eff - effect that's added, for example pollution
     * 
@@ -388,13 +388,13 @@ NEW_INFRA = { # (NEW INFRA)
     # ELECTRICITY
     'coal_burners': {
         'plus': {'energy': 4},
-        'cminus': {'coal': 48},
+        'minus': {'coal': 48},
         'money': 7800,
         'eff': {'pollution': 7}
     },
     'oil_burners': {
         'plus': {'energy': 5},
-        'cminus': {'oil': 56},
+        'minus': {'oil': 56},
         'money': 11700,
         'eff': {'pollution': 5}
     },
@@ -404,7 +404,7 @@ NEW_INFRA = { # (NEW INFRA)
     },
     'nuclear_reactors': {
         'plus': {'energy': 15}, 
-        'cminus': {'uranium': 32},
+        'minus': {'uranium': 32},
         'money': 111000, 
     },
     'solar_fields': {
@@ -435,97 +435,112 @@ NEW_INFRA = { # (NEW INFRA)
         'plus': {'consumer_goods': 30},
         'eff': {'pollution': 10},
         'money': 450000, 
-    }
+    },
     # PUBLIC WORKS
-    'city_parks_effect': [{'happiness': 5}],
-    'city_parks_effect_minus': {'pollution': 6},
-    'city_parks_money': 25000,
+    'city_parks': {
+        'eff': {'happiness': 5},
+        'effminus': {'pollution': 6},
+        'money': 25000,
+    },
+    'libraries': {
+        'eff': {'happiness': 5, 'productivity': 3},
+        'money': 60000,
+    },
+    'hospitals': {
+        'eff': {'happiness': 8},   
+        'money': 85000,
+    },
+    'universities': {
+        'eff': {'productivity': 10, 'happiness': 4},
+        'money': 175000,
+    },
+    'monorails': {
+        'eff': {'productivity': 16},
+        'effminus': {'pollution': 20},
+        'money': 270000,
+    },
+    # MILITARY
+    'army_bases': { 'money': 25000 },
+    'harbours': { 'money': 35000 },
+    'aerodomes': { 'money': 55000 },
+    'admin_buildings': { 'money': 90000 },
+    'silos': { 'money': 340000 },
 
-    'libraries_effect': [{'happiness': 5}, {'productivity': 3}],
-    'libraries_money': 60000,
-
-    'hospitals_effect': [{'happiness': 8}],   
-    'hospitals_money': 85000,
-
-    'universities_effect': [{'productivity': 10}, {'happiness': 4}],
-    'universities_money': 175000,
-
-    'monorails_effect': [{'productivity': 16}],
-    'monorails_effect_minus': {'pollution': 20},
-    'monorails_money': 270000,
-    ###################
-
-    ### Military (Done) ###
-    'army_bases_money': 25000, # Costs $25k
-    'harbours_money': 35000,
-    'aerodomes_money': 55000,
-    'admin_buildings_money': 90000,
-    'silos_money': 340000,
-    ################
-
-    ### Industry (Done) ###
-
-    'farms_money': 3000, # Costs $3k
-    'farms_plus': {'rations': 20},
-    'farms_effect': [{'pollution': 1}],
-
-    'pumpjacks_money': 9500,
-    'pumpjacks_plus': {'oil': 25},
-    'pumpjacks_effect': [{'pollution': 2}],
-
-    'coal_mines_money': 4200, # Costs $10k
-    'coal_mines_plus': {'coal': 25},
-    'coal_mines_effect': [{'pollution': 2}],
-
-    'bauxite_mines_money': 8000, # Costs $8k
-    'bauxite_mines_plus': {'bauxite': 20},
-    'bauxite_mines_effect': [{'pollution': 2}],
-
-    'copper_mines_money': 5000, # Costs $8k
-    'copper_mines_plus': {'copper': 25},
-    'copper_mines_effect': [{'pollution': 2}],
-
-    'uranium_mines_money': 45000, # Costs $18k
-    'uranium_mines_plus': {'uranium': 12},
-    'uranium_mines_effect': [{'pollution': 1}],
-
-    'lead_mines_money': 7200,
-    'lead_mines_plus': {'lead': 16},
-    'lead_mines_effect': [{'pollution': 2}],
-
-    'iron_mines_money': 11000,
-    'iron_mines_plus': {'iron': 25},
-    'iron_mines_effect': [{'pollution': 2}],
-
-    'lumber_mills_money': 7500,
-    'lumber_mills_plus': {'lumber': 30},
-    'lumber_mills_effect': [{'pollution': 1}],
-
-    ################
-
-    ### Processing (Done) ###
-    'component_factories_money': 80000, # Costs $220k
-    'component_factories_convert_minus': [{'copper': 20}, {'steel': 10}, {'aluminium': 15}],
-    'component_factories_plus': {'components': 5},
-    'component_factories_effect': [{'pollution': 5}],
-
-    'steel_mills_money': 90000,
-    'steel_mills_convert_minus': [{'coal': 35}, {'iron': 35}],
-    'steel_mills_plus': {'steel': 12},
-    'steel_mills_effect': [{'pollution': 4}],
-
-    'ammunition_factories_money': 30000,
-    'ammunition_factories_convert_minus': [{'copper': 10}, {'lead': 20}],
-    'ammunition_factories_plus': {'ammunition': 12},
-    'ammunition_factories_effect': [{'pollution': 3}],
-
-    'aluminium_refineries_money': 72000,
-    'aluminium_refineries_convert_minus': [{'bauxite': 15}],
-    'aluminium_refineries_plus': {'aluminium': 16},
-    'aluminium_refineries_effect': [{'pollution': 3}],
-
-    'oil_refineries_money': 55000,
-    'oil_refineries_convert_minus': [{'oil': 20}],
-    'oil_refineries_plus': {'gasoline': 11},
-    'oil_refineries_effect': [{'pollution': 6}]
+    # INDUSTRY
+    'farms': { 
+        'money': 3000,
+        'plus': {'rations': 20},
+        'eff': {'pollution': 1},
+    },
+    'pumpjacks': {
+        'money': 9500,
+        'plus': {'oil': 25},
+        'eff': {'pollution': 2}
+    },
+    'coal_mines': {
+        'money': 4200, # Costs $10k
+        'plus': {'coal': 25},
+        'eff': {'pollution': 2},
+    },
+    'bauxite_mines': {
+        'money': 8000, # Costs $8k
+        'plus': {'bauxite': 20},
+        'eff': {'pollution': 2},
+    },
+    'copper_mines': {
+        'money': 5000,
+        'plus': {'copper': 25},
+        'eff': {'pollution': 2},
+    },
+    'uranium_mines': {
+        'money': 45000, # Costs $18k
+        'plus': {'uranium': 12},
+        'eff': {'pollution': 1},
+    },
+    'lead_mines': {
+        'money': 7200,
+        'plus': {'lead': 16},
+        'eff': {'pollution': 2},
+    },
+    'iron_mines': {
+        'money': 11000,
+        'plus': {'iron': 25},
+        'eff': {'pollution': 2},
+    },
+    'lumber_mills': {
+        'money': 7500,
+        'plus': {'lumber': 30},
+        'eff': {'pollution': 1},
+    },
+    # PROCESSING
+    'component_factories': {
+        'money': 80000, # Costs $220k
+        'minus': {'copper': 20, 'steel': 10, 'aluminium': 15},
+        'plus': {'components': 5},
+        'eff': {'pollution': 5}, 
+    },
+    'steel_mills': {
+        'money': 90000,
+        'minus': {'coal': 35, 'iron': 35},
+        'plus': {'steel': 12},
+        'eff': {'pollution': 4},
+    },
+    'ammunition_factories': {
+        'money': 30000,
+        'minus': {'copper': 10, 'lead': 20},
+        'plus': {'ammunition': 12},
+        'eff': {'pollution': 3},
+    },
+    'aluminium_refineries': {
+        'money': 72000,
+        'minus': {'bauxite': 15},
+        'plus': {'aluminium': 16},
+        'eff': {'pollution': 3},
+    },
+    'oil_refineries': {
+        'money': 55000,
+        'minus': {'oil': 20},
+        'plus': {'gasoline': 11},
+        'eff': {'pollution': 6}
+    }
 }
