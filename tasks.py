@@ -34,10 +34,8 @@ def rations_needed(cId):
 
     total_rations = 0
     for population, _ in provinces:
-
         rations_needed = population // variables.RATIONS_PER
         total_rations += rations_needed
-    
     return total_rations
 
 # Returns energy production and consumption from a certain province
@@ -477,9 +475,6 @@ def generate_province_revenue(): # Runs each hour
             db.execute("UPDATE provinces SET happiness=happiness*0.89 WHERE id=%s", (province_id,))
 
         for unit in columns:
-
-            unit_category = find_unit_category(unit)
-
             try:
                 unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
                 db.execute(unit_amount_stat, (province_id,))
@@ -492,12 +487,12 @@ def generate_province_revenue(): # Runs each hour
             if unit_amount == 0:
                 continue
             else:
+                unit_category = find_unit_category(unit)
                 try:
                     try:
                         effect_minus_data = list(infra[f'{unit}_effect_minus'].items())[0]
 
-                        effect_minus = effect_minus_data[0]
-                        effect_minus_amount = effect_minus_data[1]
+                        effect_minus, effect_minus_amount  = effect_minus_data
                     except KeyError:
                         effect_minus = None
 
@@ -516,25 +511,16 @@ def generate_province_revenue(): # Runs each hour
                     if 6 in policies and unit == "universities":
                         operating_costs *= 0.93
 
-                    ### lARGER FORGES
-                    db.execute("SELECT largerforges FROM upgrades WHERE user_id=%s", (user_id,))
-                    lf = db.fetchone()[0]
-                    if lf:
-                        operating_costs *= 0.7
-                        operating_costs = int(operating_costs)
-
                     ### CHEAPER MATERIALS
                     if unit_category == "industry":
                         db.execute("SELECT cheapermaterials FROM upgrades WHERE user_id=%s", (user_id,))
                         cheaper_materials = db.fetchone()[0]
-                        if cheaper_materials:
-                            operating_costs *= 0.8
+                        if cheaper_materials: operating_costs *= 0.8
                     ### ONLINE SHOPPING
                     if unit == "malls":
                         db.execute("SELECT onlineshopping FROM upgrades WHERE user_id=%s", (user_id,))
                         online_shopping = db.fetchone()[0]
-                        if online_shopping:
-                            operating_costs *= 0.7
+                        if online_shopping: operating_costs *= 0.7
                     ###
 
                     # Removing money operating costs (if user has the money)
@@ -626,10 +612,7 @@ def generate_province_revenue(): # Runs each hour
 
                     try:
                         plus_data = list(infra[f'{unit}_plus'].items())[0]
-
-                        plus_resource = plus_data[0]
-                        plus_amount = plus_data[1]
-
+                        plus_resource, plus_amount = plus_data
                     except KeyError:
                         plus_data = None
 
@@ -674,15 +657,13 @@ def generate_province_revenue(): # Runs each hour
                     if unit == "bauxite_mines":
                         db.execute("SELECT strongerexplosives FROM upgrades WHERE user_id=%s", (user_id,))
                         se = db.fetchone()[0]
-                        if se:
-                            plus_amount *= 1.45
+                        if se: plus_amount *= 1.45
 
                     if unit == "farms":
 
                         db.execute("SELECT advancedmachinery FROM upgrades WHERE user_id=%s", (user_id,))
                         am = db.fetchone()[0]
-                        if am:
-                            plus_amount *= 1.5
+                        if am: plus_amount *= 1.5
 
                         db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
                         land = db.fetchone()[0]
@@ -832,3 +813,5 @@ def war_reparation_tax():
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
 
     conn.commit()
+
+generate_province_revenue()

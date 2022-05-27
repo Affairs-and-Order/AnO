@@ -152,7 +152,7 @@ def createprovince():
         province_price = get_province_price(cId)
 
         if province_price > current_user_money:
-            return error(400, "You don't have enough money")
+            return error(400, "You don't have enough money.")
 
         db.execute("INSERT INTO provinces (userId, provinceName) VALUES (%s, %s) RETURNING id", (cId, pName))
         province_id = db.fetchone()[0]
@@ -406,7 +406,7 @@ def province_sell_buy(way, units, province_id):
     if way == "sell":
 
         if wantedUnits > currentUnits:  # Checks if user has enough units to sell
-            return error("You don't have enough units", 400)
+            return error("You don't have enough units.", 400)
 
         unitUpd = f"UPDATE {table} SET {units}" + "=%s WHERE id=%s"
         db.execute(unitUpd, ((currentUnits - wantedUnits), province_id))
@@ -420,7 +420,7 @@ def province_sell_buy(way, units, province_id):
     elif way == "buy":
 
         if totalPrice > gold: # Checks if user wants to buy more units than he has gold
-            return error("You don't have enough money", 400)
+            return error("You don't have enough money.", 400)
 
         print(totalPrice)
 
