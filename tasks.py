@@ -450,18 +450,13 @@ def generate_province_revenue(): # Runs each hour
     infra = variables.NEW_INFRA
 
     try:
-        db.execute("SELECT id FROM proInfra ORDER BY id ASC")
+        db.execute("SELECT proInfra.id, provinces.userId FROM proInfra INNER JOIN provinces ON proInfra.id=provinces.id ORDER BY id ASC")
         infra_ids = db.fetchall()
     except:
         infra_ids = []
 
-    for province_id in infra_ids:
-        province_id = province_id[0]
-
+    for province_id, user_id in infra_ids:
         db.execute("UPDATE provinces SET energy=0 WHERE id=%s", (province_id,)) # So energy would reset each turn
-
-        db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
-        user_id = db.fetchone()[0]
 
         dbdict.execute("SELECT * FROM upgrades WHERE user_id=%s", (user_id, ))
         upgrades = dict(dbdict.fetchone())
@@ -471,214 +466,209 @@ def generate_province_revenue(): # Runs each hour
             policies = db.fetchone()[0]
         except:
             policies = []
-
-        # TODO: test this
-        if 5 in policies:
-            db.execute("UPDATE provinces SET productivity=productivity*0.91 WHERE id=%s", (province_id,))
-        if 4 in policies:
-            db.execute("UPDATE provinces SET productivity=productivity*1.05 WHERE id=%s", (province_id,))
-        if 2 in policies:
-            db.execute("UPDATE provinces SET happiness=happiness*0.89 WHERE id=%s", (province_id,))
+        
+        dbdict.execute("SELECT * FROM proInfra WHERE id=%s", (province_id, ))
+        units = dict(dbdict.fetchone())
 
         for unit in columns:
-            try:
-                unit_amount_stat = f"SELECT {unit} FROM proInfra " + "WHERE id=%s"
-                db.execute(unit_amount_stat, (province_id,))
-                unit_amount = db.fetchone()[0]
-            except:
-                conn.rollback()
-                continue
-
-            # If that user doesn't have any units of this type, skip
+            unit_amount = units[unit]
+            
             if unit_amount == 0:
                 continue
-            else:
-                unit_category = find_unit_category(unit)
-                try:
-                    effminus = infra[unit].get('effminus', {})
-                    minus = infra[unit].get('minus', {})
 
-                    operating_costs = infra[unit]['money'] * unit_amount
+            unit_category = find_unit_category(unit)
+            try:
+                effminus = infra[unit].get('effminus', {})
+                minus = infra[unit].get('minus', {})
 
-                    if 1 in policies and unit == "universities": operating_costs *= 1.14
-                    if 3 in policies and unit == "universities": operating_costs *= 1.18
-                    if 6 in policies and unit == "universities": operating_costs *= 0.93
+                operating_costs = infra[unit]['money'] * unit_amount
 
-                    ### CHEAPER MATERIALS
-                    if unit_category == "industry":
-                        if upgrades["cheapermaterials"]: operating_costs *= 0.8
-                    ### ONLINE SHOPPING
-                    if unit == "malls":
-                        if upgrades["onlineshopping"]: operating_costs *= 0.7
+                if 1 in policies and unit == "universities": operating_costs *= 1.14
+                if 3 in policies and unit == "universities": operating_costs *= 1.18
+                if 6 in policies and unit == "universities": operating_costs *= 0.93
 
-                    # Removing money operating costs (if user has the money)
-                    db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
-                    current_money = db.fetchone()[0]
+                ### CHEAPER MATERIALS
+                if unit_category == "industry":
+                    if upgrades["cheapermaterials"]: operating_costs *= 0.8
+                ### ONLINE SHOPPING
+                if unit == "malls":
+                    if upgrades["onlineshopping"]: operating_costs *= 0.7
 
-                    operating_costs = int(operating_costs)
+                # Removing money operating costs (if user has the money)
+                db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
+                current_money = db.fetchone()[0]
 
-                    # Boolean for whether a player has enough resources, energy, money to power his building
-                    has_enough_stuff = True
+                operating_costs = int(operating_costs)
 
-                    if current_money < operating_costs:
-                        print(f"Couldn't update {unit} for {province_id} as they don't have enough money")
+                # Boolean for whether a player has enough resources, energy, money to power his building
+                has_enough_stuff = True
+
+                if current_money < operating_costs:
+                    print(f"Couldn't update {unit} for {province_id} as they don't have enough money")
+                    has_enough_stuff = False
+                else:
+                    new_money = current_money - operating_costs
+                    try:
+                        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
+                    except:
+                        conn.rollback()
+                        pass
+
+                # Rewritten until this part.
+
+                # TODO: make sure this works correctly
+                if unit in energy_consumers:
+                    db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
+                    current_energy = db.fetchone()[0]
+
+                    new_energy = current_energy - unit_amount
+
+                    if new_energy < 0:
                         has_enough_stuff = False
+                        new_energy = 0
+
+                    db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id))
+
+                for resource, amount in minus.items():
+                    resource_statement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
+                    db.execute(resource_statement, (user_id,))
+                    current_resource = db.fetchone()[0]
+
+                    ### AUTOMATION INTEGRATION
+                    if unit == "component_factories":
+                        if upgrades["automationintegration"]: amount *= 0.75
+
+                    ### LARGER FORGES
+                    if unit == "steel_mills":
+                        if upgrades["SELECT largerforges FROM upgrades WHERE user_id=%s"]: amount *= 0.7
+
+                    new_resource = current_resource - amount
+
+                    if new_resource < 0:
+                        has_enough_stuff = False
+                        new_resource = 0
                     else:
-                        new_money = current_money - operating_costs
-                        try:
-                            db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
-                        except:
-                            conn.rollback()
-                            pass
+                        has_enough_stuff = True
+                        resource_u_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
+                        db.execute(resource_u_statement, (new_resource, user_id,))
 
-                    # Rewritten until this part.
-
-                    # TODO: make sure this works correctly
-                    if unit in energy_consumers:
-                        db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
-                        current_energy = db.fetchone()[0]
-
-                        new_energy = current_energy - unit_amount
-
-                        if new_energy < 0:
-                            has_enough_stuff = False
-                            new_energy = 0
-
-                        db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id))
-
-                    for resource, amount in minus.items():
-                        resource_statement = f"SELECT {resource} FROM resources " + "WHERE id=%s"
-                        db.execute(resource_statement, (user_id,))
-                        current_resource = db.fetchone()[0]
-
-                        ### AUTOMATION INTEGRATION
-                        if unit == "component_factories":
-                            if upgrades["automationintegration"]: amount *= 0.75
-
-                        ### LARGER FORGES
-                        if unit == "steel_mills":
-                            if upgrades["SELECT largerforges FROM upgrades WHERE user_id=%s"]: amount *= 0.7
-
-                        new_resource = current_resource - amount
-
-                        if new_resource < 0:
-                            has_enough_stuff = False
-                            new_resource = 0
-                        else:
-                            has_enough_stuff = True
-                            resource_u_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-                            db.execute(resource_u_statement, (new_resource, user_id,))
-
-                    if not has_enough_stuff:
-                        print(f"Couldn't update {unit} for province id: {province_id} as they don't have enough stuff")
-                        continue
-
-                    plus = infra[unit].get('plus', {})
-
-                    ### BETTER ENGINEERING
-                    if unit == "nuclear_reactors":
-                        if upgrades["betterengineering"]: # TODO: fix this
-                            plus['energy'] += 6
-
-                    eff = infra[unit].get('eff', None)
-
-                    if unit == "universities" and 3 in policies:
-                        eff["productivity"] *= 1.10
-                        eff["happiness"] *= 1.10
-
-                    if unit == "hospitals":
-                        if upgrades["nationalhealthinstitution"]:
-                            eff["happiness"] *= 1.3
-                            eff["happiness"] = int(eff["happiness"])
-
-                    if unit == "monorails":
-                        if upgrades["highspeedrail"]:
-                            eff["productivity"] *= 1.2
-                            eff["productivity"] = int(eff["productivity"])
-
-                    """
-                    print(f"Unit: {unit}")
-                    print(f"Add {plus_amount} to {plus_resource}")
-                    print(f"Remove ${operating_costs} as operating costs")
-                    print(f"\n")
-                    """
-                    if unit == "bauxite_mines":
-                        if upgrades["strongerexplosives"]: plus_amount *= 1.45
-
-                    if unit == "farms":
-                        if upgrades["advancedmachinery"]: plus_amount *= 1.5
-
-                        db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
-                        land = db.fetchone()[0]
-
-                        plus_amount *= (land / 2)
-                        plus_amount = int(plus_amount)
-
-                    # Function for _plus
-                    for resource, amount in plus.items():
-                        amount *= unit_amount
-                        if resource in province_resources:
-
-                            cpr_statement = f"SELECT {resource} FROM provinces" + " WHERE id=%s"
-                            db.execute(cpr_statement, (province_id,))
-                            current_plus_resource = db.fetchone()[0]
-
-                            # Adding resource
-                            new_resource_number = current_plus_resource + plus_amount
-
-                            if resource in percentage_based and new_resource_number > 100: new_resource_number = 100
-                            if new_resource_number < 0: new_resource_number = 0 # TODO: is this line really necessary?
-
-                            upd_prov_statement = f"UPDATE provinces SET {resource}" + "=%s WHERE id=%s"
-                            db.execute(upd_prov_statement, (new_resource_number, province_id))
-
-                        elif resource in user_resources:
-                            upd_res_statement = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
-                            db.execute(upd_res_statement, (plus_amount, user_id,))
-
-                    # Function for completing an effect (adding pollution, etc)
-                    def do_effect(eff, eff_amount, sign):
-
-                        effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
-                        db.execute(effect_select, (province_id,))
-                        current_effect = db.fetchone()[0]
-
-                        ### GOVERNMENT REGULATION
-                        if unit_category == "retail":
-                            if upgrades["governmentregulation"]:
-                                if eff == "pollution" and sign == "+": eff_amount *= 0.75
-                        ###
-                        if unit == "universities":
-                            if 3 in policies: eff_amount *= 1.1
-
-                        eff_amount = math.ceil(eff_amount) # Using math.ceil so universities +18% would work
-
-                        if sign == "+": new_effect = current_effect + eff_amount
-                        elif sign == "-": new_effect = current_effect - eff_amount
-
-                        if eff in percentage_based:
-                            if new_effect > 100: new_effect = 100
-                            if new_effect < 0: new_effect = 0
-                        else:
-                            if new_effect < 0: new_effect = 0
-
-                        eff_update = f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s"
-                        db.execute(eff_update, (new_effect, province_id))
-
-                    for effect, amount in eff.items():
-                        amount *= unit_amount
-                        do_effect(effect, amount, "+")
-
-                    for effect, amount in effminus.items():
-                        amount *= unit_amount
-                        do_effect(effect, amount, "-")
-
-                    conn.commit() # Commits the changes
-                
-                except Exception as e:
-                    conn.rollback()
-                    handle_exception(e)
+                if not has_enough_stuff:
+                    print(f"Couldn't update {unit} for province id: {province_id} as they don't have enough stuff")
                     continue
+
+                plus = infra[unit].get('plus', {})
+
+                ### BETTER ENGINEERING
+                if unit == "nuclear_reactors":
+                    if upgrades["betterengineering"]: # TODO: fix this
+                        plus['energy'] += 6
+
+                eff = infra[unit].get('eff', None)
+
+                if unit == "universities" and 3 in policies:
+                    eff["productivity"] *= 1.10
+                    eff["happiness"] *= 1.10
+
+                if unit == "hospitals":
+                    if upgrades["nationalhealthinstitution"]:
+                        eff["happiness"] *= 1.3
+                        eff["happiness"] = int(eff["happiness"])
+
+                if unit == "monorails":
+                    if upgrades["highspeedrail"]:
+                        eff["productivity"] *= 1.2
+                        eff["productivity"] = int(eff["productivity"])
+
+                """
+                print(f"Unit: {unit}")
+                print(f"Add {plus_amount} to {plus_resource}")
+                print(f"Remove ${operating_costs} as operating costs")
+                print(f"\n")
+                """
+                if unit == "bauxite_mines":
+                    if upgrades["strongerexplosives"]: plus_amount *= 1.45
+
+                if unit == "farms":
+                    if upgrades["advancedmachinery"]: plus_amount *= 1.5
+
+                    db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                    land = db.fetchone()[0]
+
+                    plus_amount *= (land / 2)
+                    plus_amount = int(plus_amount)
+
+                # Function for _plus
+                for resource, amount in plus.items():
+                    amount *= unit_amount
+                    if resource in province_resources:
+
+                        cpr_statement = f"SELECT {resource} FROM provinces" + " WHERE id=%s"
+                        db.execute(cpr_statement, (province_id,))
+                        current_plus_resource = db.fetchone()[0]
+
+                        # Adding resource
+                        new_resource_number = current_plus_resource + plus_amount
+
+                        if resource in percentage_based and new_resource_number > 100: new_resource_number = 100
+                        if new_resource_number < 0: new_resource_number = 0 # TODO: is this line really necessary?
+
+                        upd_prov_statement = f"UPDATE provinces SET {resource}" + "=%s WHERE id=%s"
+                        db.execute(upd_prov_statement, (new_resource_number, province_id))
+
+                    elif resource in user_resources:
+                        upd_res_statement = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
+                        db.execute(upd_res_statement, (plus_amount, user_id,))
+
+                # Function for completing an effect (adding pollution, etc)
+                def do_effect(eff, eff_amount, sign):
+
+                    effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
+                    db.execute(effect_select, (province_id,))
+                    current_effect = db.fetchone()[0]
+
+                    ### GOVERNMENT REGULATION
+                    if unit_category == "retail":
+                        if upgrades["governmentregulation"]:
+                            if eff == "pollution" and sign == "+": eff_amount *= 0.75
+                    ###
+                    if unit == "universities":
+                        if 3 in policies: eff_amount *= 1.1
+
+                    eff_amount = math.ceil(eff_amount) # Using math.ceil so universities +18% would work
+
+                    if sign == "+": new_effect = current_effect + eff_amount
+                    elif sign == "-": new_effect = current_effect - eff_amount
+
+                    if eff in percentage_based:
+                        if new_effect > 100: new_effect = 100
+                        if new_effect < 0: new_effect = 0
+                    else:
+                        if new_effect < 0: new_effect = 0
+
+                    eff_update = f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s"
+                    db.execute(eff_update, (new_effect, province_id))
+
+                for effect, amount in eff.items():
+                    amount *= unit_amount
+                    do_effect(effect, amount, "+")
+
+                for effect, amount in effminus.items():
+                    amount *= unit_amount
+                    do_effect(effect, amount, "-")
+            
+                if 5 in policies:
+                    db.execute("UPDATE provinces SET productivity=productivity*0.91 WHERE id=%s", (province_id,))
+                if 4 in policies:
+                    db.execute("UPDATE provinces SET productivity=productivity*1.05 WHERE id=%s", (province_id,))
+                if 2 in policies:
+                    db.execute("UPDATE provinces SET happiness=happiness*0.89 WHERE id=%s", (province_id,))
+
+                conn.commit() # Commits the changes
+
+            except Exception as e:
+                conn.rollback()
+                handle_exception(e)
+                continue
 
     conn.close() # Closes the connection
 
