@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from attack_scripts import Economy
 import math
 import variables
+from psycopg2.extras import RealDictCursor
 load_dotenv()
 
 # Handles exception for an error
@@ -437,6 +438,7 @@ def generate_province_revenue(): # Runs each hour
         port=os.getenv("PG_PORT"))
 
     db = conn.cursor()
+    dbdict = conn.cursor(cursor_factory=RealDictCursor)
 
     columns = variables.BUILDINGS
 
@@ -461,12 +463,16 @@ def generate_province_revenue(): # Runs each hour
         db.execute("SELECT userId FROM provinces WHERE id=%s", (province_id,))
         user_id = db.fetchone()[0]
 
+        dbdict.execute("SELECT * FROM upgrades WHERE user_id=%s", (user_id, ))
+        upgrades = dict(dbdict.fetchone())
+
         try:
             db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
             policies = db.fetchone()[0]
         except:
             policies = []
 
+        # TODO: test this
         if 5 in policies:
             db.execute("UPDATE provinces SET productivity=productivity*0.91 WHERE id=%s", (province_id,))
         if 4 in policies:
@@ -494,24 +500,16 @@ def generate_province_revenue(): # Runs each hour
 
                     operating_costs = infra[unit]['money'] * unit_amount
 
-                    if 1 in policies and unit == "universities":
-                        operating_costs *= 1.14
-                    if 3 in policies and unit == "universities":
-                        operating_costs *= 1.18
-                    if 6 in policies and unit == "universities":
-                        operating_costs *= 0.93
+                    if 1 in policies and unit == "universities": operating_costs *= 1.14
+                    if 3 in policies and unit == "universities": operating_costs *= 1.18
+                    if 6 in policies and unit == "universities": operating_costs *= 0.93
 
                     ### CHEAPER MATERIALS
                     if unit_category == "industry":
-                        db.execute("SELECT cheapermaterials FROM upgrades WHERE user_id=%s", (user_id,))
-                        cheaper_materials = db.fetchone()[0]
-                        if cheaper_materials: operating_costs *= 0.8
+                        if upgrades["cheapermaterials"]: operating_costs *= 0.8
                     ### ONLINE SHOPPING
                     if unit == "malls":
-                        db.execute("SELECT onlineshopping FROM upgrades WHERE user_id=%s", (user_id,))
-                        online_shopping = db.fetchone()[0]
-                        if online_shopping: operating_costs *= 0.7
-                    ###
+                        if upgrades["onlineshopping"]: operating_costs *= 0.7
 
                     # Removing money operating costs (if user has the money)
                     db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
@@ -555,15 +553,11 @@ def generate_province_revenue(): # Runs each hour
 
                         ### AUTOMATION INTEGRATION
                         if unit == "component_factories":
-                            db.execute("SELECT automationintegration FROM upgrades WHERE user_id=%s", (user_id,))
-                            ai = db.fetchone()[0]
-                            if ai: amount *= 0.75
+                            if upgrades["automationintegration"]: amount *= 0.75
 
                         ### LARGER FORGES
                         if unit == "steel_mills":
-                            db.execute("SELECT largerforges FROM upgrades WHERE user_id=%s", (user_id,))
-                            lf = db.fetchone()[0]
-                            if lf: amount *= 0.7
+                            if upgrades["SELECT largerforges FROM upgrades WHERE user_id=%s"]: amount *= 0.7
 
                         new_resource = current_resource - amount
 
@@ -583,12 +577,8 @@ def generate_province_revenue(): # Runs each hour
 
                     ### BETTER ENGINEERING
                     if unit == "nuclear_reactors":
-                        db.execute("SELECT betterengineering FROM upgrades WHERE user_id=%s", (user_id,))
-                        betterengineering = db.fetchone()[0]
-
-                        if betterengineering:
-                            plus_amount += 6
-                    ###
+                        if upgrades["betterengineering"]: # TODO: fix this
+                            plus['energy'] += 6
 
                     eff = infra[unit].get('eff', None)
 
@@ -597,16 +587,12 @@ def generate_province_revenue(): # Runs each hour
                         eff["happiness"] *= 1.10
 
                     if unit == "hospitals":
-                        db.execute("SELECT nationalhealthinstitution FROM upgrades WHERE user_id=%s", (user_id,))
-                        nhi = db.fetchone()[0]
-                        if nhi:
+                        if upgrades["nationalhealthinstitution"]:
                             eff["happiness"] *= 1.3
                             eff["happiness"] = int(eff["happiness"])
 
                     if unit == "monorails":
-                        db.execute("SELECT highspeedrail FROM upgrades WHERE user_id=%s", (user_id,))
-                        hsr = db.fetchone()[0]
-                        if hsr:
+                        if upgrades["highspeedrail"]:
                             eff["productivity"] *= 1.2
                             eff["productivity"] = int(eff["productivity"])
 
@@ -617,14 +603,10 @@ def generate_province_revenue(): # Runs each hour
                     print(f"\n")
                     """
                     if unit == "bauxite_mines":
-                        db.execute("SELECT strongerexplosives FROM upgrades WHERE user_id=%s", (user_id,))
-                        se = db.fetchone()[0]
-                        if se: plus_amount *= 1.45
+                        if upgrades["strongerexplosives"]: plus_amount *= 1.45
 
                     if unit == "farms":
-                        db.execute("SELECT advancedmachinery FROM upgrades WHERE user_id=%s", (user_id,))
-                        am = db.fetchone()[0]
-                        if am: plus_amount *= 1.5
+                        if upgrades["advancedmachinery"]: plus_amount *= 1.5
 
                         db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
                         land = db.fetchone()[0]
@@ -663,9 +645,7 @@ def generate_province_revenue(): # Runs each hour
 
                         ### GOVERNMENT REGULATION
                         if unit_category == "retail":
-                            db.execute("SELECT governmentregulation FROM upgrades WHERE user_id=%s", (user_id,))
-                            government_regulation = db.fetchone()[0]
-                            if government_regulation:
+                            if upgrades["governmentregulation"]:
                                 if eff == "pollution" and sign == "+": eff_amount *= 0.75
                         ###
                         if unit == "universities":
