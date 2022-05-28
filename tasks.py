@@ -645,7 +645,6 @@ def generate_province_revenue(): # Runs each hour
                             new_resource_number = current_plus_resource + plus_amount
 
                             if resource in percentage_based and new_resource_number > 100: new_resource_number = 100
-
                             if new_resource_number < 0: new_resource_number = 0 # TODO: is this line really necessary?
 
                             upd_prov_statement = f"UPDATE provinces SET {resource}" + "=%s WHERE id=%s"
@@ -660,49 +659,39 @@ def generate_province_revenue(): # Runs each hour
 
                         effect_select = f"SELECT {eff} FROM provinces " + "WHERE id=%s"
                         db.execute(effect_select, (province_id,))
-                        current_effect = int(db.fetchone()[0])
+                        current_effect = db.fetchone()[0]
 
                         ### GOVERNMENT REGULATION
                         if unit_category == "retail":
                             db.execute("SELECT governmentregulation FROM upgrades WHERE user_id=%s", (user_id,))
                             government_regulation = db.fetchone()[0]
                             if government_regulation:
-                                if eff == "pollution" and sign == "+":
-                                    eff_amount *= 0.75
+                                if eff == "pollution" and sign == "+": eff_amount *= 0.75
                         ###
                         if unit == "universities":
-                            if 3 in policies:
-                                eff_amount *= 1.1
+                            if 3 in policies: eff_amount *= 1.1
 
                         eff_amount = math.ceil(eff_amount) # Using math.ceil so universities +18% would work
-                        if sign == "+":
-                            new_effect = current_effect + eff_amount
-                        elif sign == "-":
-                            new_effect = current_effect - eff_amount
+
+                        if sign == "+": new_effect = current_effect + eff_amount
+                        elif sign == "-": new_effect = current_effect - eff_amount
 
                         if eff in percentage_based:
-                            if new_effect > 100:
-                                new_effect = 100
-                            if new_effect < 0:
-                                new_effect = 0
+                            if new_effect > 100: new_effect = 100
+                            if new_effect < 0: new_effect = 0
                         else:
-                            if new_effect < 0:
-                                new_effect = 0
+                            if new_effect < 0: new_effect = 0
 
                         eff_update = f"UPDATE provinces SET {eff}" + "=%s WHERE id=%s"
                         db.execute(eff_update, (new_effect, province_id))
 
-                    for data in effect:
+                    for effect, amount in eff.items():
+                        amount *= unit_amount
+                        do_effect(effect, amount, "+")
 
-                        data = list(data.items())[0]
-
-                        effect_resource = data[0]
-                        effect_amount = data[1] * unit_amount
-                        do_effect(effect_resource, effect_amount, "+")
-
-                    if effect_minus is not None:
-                        effect_minus_amount *= unit_amount
-                        do_effect(effect_minus, effect_minus_amount, "-")
+                    for effect, amount in effminus.items():
+                        amount *= unit_amount
+                        do_effect(effect, amount, "-")
 
                     conn.commit() # Commits the changes
                 
