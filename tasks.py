@@ -509,7 +509,7 @@ def generate_province_revenue(): # Runs each hour
                 else:
                     new_money = current_money - operating_costs
                     try:
-                        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, user_id))
+                        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_money, user_id))
                     except:
                         conn.rollback()
                         pass
@@ -529,10 +529,10 @@ def generate_province_revenue(): # Runs each hour
 
                     db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id))
 
-                dbdict.execute("SELECT * FROM resources WHERE id=%s", (user_id, ))
-                resources = dict(db.fetchone())
+                dbdict.execute("SELECT * FROM resources WHERE id=%s", (user_id,))
+                resources = dict(dbdict.fetchone())
                 for resource, amount in minus.items():
-                    current_resource = resources[dbdict]
+                    current_resource = resources[resource]
 
                     ### AUTOMATION INTEGRATION
                     if unit == "component_factories" and upgrades["automationintegration"]: amount *= 0.75
@@ -581,13 +581,13 @@ def generate_province_revenue(): # Runs each hour
                 """
                 if unit == "bauxite_mines" and upgrades["strongerexplosives"]:
                     # TODO: fix this plus_amount variable
-                    plus_amount *= 1.45
+                    plus[next(iter(plus))] *= 1.45
 
                 if unit == "farms":
-                    if upgrades["advancedmachinery"]: plus_amount *= 1.5
+                    if upgrades["advancedmachinery"]: plus[next(iter(plus))] *= 1.5
 
-                    plus_amount *= (land / 2)
-                    plus_amount = int(plus_amount)
+                    plus[next(iter(plus))] *= (land / 2)
+                    plus[next(iter(plus))] = int(plus[next(iter(plus))])
 
                 # Function for _plus
                 for resource, amount in plus.items():
@@ -600,7 +600,7 @@ def generate_province_revenue(): # Runs each hour
                         current_plus_resource = db.fetchone()[0]
 
                         # Adding resource
-                        new_resource_number = current_plus_resource + plus_amount
+                        new_resource_number = current_plus_resource + plus[next(iter(plus))]
 
                         if resource in percentage_based and new_resource_number > 100: new_resource_number = 100
                         if new_resource_number < 0: new_resource_number = 0 # TODO: is this line really necessary?
@@ -610,7 +610,7 @@ def generate_province_revenue(): # Runs each hour
 
                     elif resource in user_resources:
                         upd_res_statement = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
-                        db.execute(upd_res_statement, (plus_amount, user_id,))
+                        db.execute(upd_res_statement, (plus[next(iter(plus))], user_id,))
 
                 # Function for completing an effect (adding pollution, etc)
                 def do_effect(eff, eff_amount, sign):

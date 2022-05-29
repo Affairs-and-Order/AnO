@@ -376,15 +376,14 @@ PROVINCE_UNIT_PRICES = {
         "oil_refineries_price": 680000
 }
 
+"""
+* plus - energy or resource increase
+* minus - formerly convert_minus, what resource to remove for upkeep
+* money - monetary upkeep cost
+* eff - effect that's added, for example pollution
+* 
+"""
 NEW_INFRA = { # (NEW INFRA)
-    """
-    * plus - energy or resource increase
-    * minus - formerly convert_minus, what resource to remove for upkeep
-    * money - monetary upkeep cost
-    * eff - effect that's added, for example pollution
-    * 
-    """
-
     # ELECTRICITY
     'coal_burners': {
         'plus': {'energy': 4},
