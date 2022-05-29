@@ -488,11 +488,11 @@ def generate_province_revenue(): # Runs each hour
                 if 6 in policies and unit == "universities": operating_costs *= 0.93
 
                 ### CHEAPER MATERIALS
-                if unit_category == "industry":
-                    if upgrades["cheapermaterials"]: operating_costs *= 0.8
+                if unit_category == "industry" and upgrades["cheapermaterials"]:
+                    operating_costs *= 0.8
                 ### ONLINE SHOPPING
-                if unit == "malls":
-                    if upgrades["onlineshopping"]: operating_costs *= 0.7
+                if unit == "malls" and upgrades["onlineshopping"]:
+                    operating_costs *= 0.7
 
                 # Removing money operating costs (if user has the money)
                 db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
@@ -507,14 +507,11 @@ def generate_province_revenue(): # Runs each hour
                     print(f"Couldn't update {unit} for {province_id} as they don't have enough money")
                     has_enough_stuff = False
                 else:
-                    new_money = current_money - operating_costs
                     try:
-                        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (new_money, user_id))
+                        db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (operating_costs, user_id))
                     except:
                         conn.rollback()
-                        pass
-
-                # Rewritten until this part.
+                        continue
 
                 # TODO: make sure this works correctly
                 if unit in energy_consumers:
@@ -549,7 +546,7 @@ def generate_province_revenue(): # Runs each hour
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
                 if not has_enough_stuff:
-                    print(f"Couldn't update {unit} for province id: {province_id} as they don't have enough stuff")
+                    print(f"USER: {user_id} | PROVINCE: {province_id} | Couldn't update {unit} as they don't have enough stuff")
                     continue
 
                 plus = infra[unit].get('plus', {})
@@ -557,7 +554,7 @@ def generate_province_revenue(): # Runs each hour
                 ### BETTER ENGINEERING
                 if unit == "nuclear_reactors" and upgrades["betterengineering"]: plus['energy'] += 6
 
-                eff = infra[unit].get('eff', None)
+                eff = infra[unit].get('eff', {})
 
                 if unit == "universities" and 3 in policies:
                     eff["productivity"] *= 1.10
