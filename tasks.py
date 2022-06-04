@@ -501,11 +501,12 @@ def generate_province_revenue(): # Runs each hour
                 operating_costs = int(operating_costs)
 
                 # Boolean for whether a player has enough resources, energy, money to power his building
-                has_enough_stuff = True
+                has_enough_stuff = { "status": True, "issues": [] }
 
                 if current_money < operating_costs:
                     print(f"Couldn't update {unit} for {province_id} as they don't have enough money")
-                    has_enough_stuff = False
+                    has_enough_stuff["status"] = False
+                    has_enough_stuff["issues"].append("money")
                 else:
                     try:
                         db.execute("UPDATE stats SET gold=gold-%s WHERE id=%s", (operating_costs, user_id))
@@ -518,10 +519,11 @@ def generate_province_revenue(): # Runs each hour
                     db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
                     current_energy = db.fetchone()[0]
 
-                    new_energy = current_energy - unit_amount
+                    new_energy = current_energy - unit_amount # Each unit consumes 1 energy
 
                     if new_energy < 0:
-                        has_enough_stuff = False
+                        has_enough_stuff["status"] = False
+                        has_enough_stuff["issues"].append("energy")
                         new_energy = 0
 
                     db.execute("UPDATE provinces SET energy=%s WHERE id=%s", (new_energy, province_id))
@@ -539,14 +541,15 @@ def generate_province_revenue(): # Runs each hour
                     new_resource = current_resource - amount
 
                     if new_resource < 0:
-                        has_enough_stuff = False
+                        has_enough_stuff["status"] = False
+                        has_enough_stuff["issues"].append(resource)
                     else:
                         has_enough_stuff = True
                         resource_u_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
-                if not has_enough_stuff:
-                    print(f"USER: {user_id} | PROVINCE: {province_id} | Couldn't update {unit} as they don't have enough stuff")
+                if not has_enough_stuff["status"]:
+                    print(f"USER: {user_id} | PROVINCE: {province_id} | Couldn't update {unit} as they don't have enough {', '.join(has_enough_stuff['issues'])}")
                     continue
 
                 plus = infra[unit].get('plus', {})
