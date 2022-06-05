@@ -351,16 +351,14 @@ def province_sell_buy(way, units, province_id):
     try:
         resources_data = unit_prices[f'{units}_resource'].items()
     except KeyError:
-        pass
+        resources_data = {}
 
     curUnStat = f"SELECT {units} FROM {table} " +  "WHERE id=%s"
     db.execute(curUnStat, (province_id,))
-    currentUnits = int(db.fetchone()[0])
+    currentUnits = db.fetchone()[0]
 
-    if units in city_units:
-        slot_type = "city"
-    elif units in land_units:
-        slot_type = "land"
+    if units in city_units: slot_type = "city"
+    elif units in land_units: slot_type = "land"
     else: # If unit is cityCount or land
         free_slots = 0
         slot_type = None
@@ -368,10 +366,9 @@ def province_sell_buy(way, units, province_id):
     if slot_type is not None:
         free_slots = get_free_slots(province_id, slot_type)
 
-    def resource_stuff():
+    def resource_stuff(resources_data, way):
 
         for resource, amount in resources_data:
-            print(resource, amount)
 
             if way == "buy":
 
@@ -396,7 +393,7 @@ def province_sell_buy(way, units, province_id):
 
                 current_resource_stat = f"SELECT {resource} FROM resources" + " WHERE id=%s"
                 db.execute(current_resource_stat, (cId,))
-                current_resource = int(db.fetchone()[0])
+                current_resource = db.fetchone()[0]
 
                 new_resource = current_resource + (amount * wantedUnits)
 
@@ -415,7 +412,7 @@ def province_sell_buy(way, units, province_id):
 
         db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, cId))
 
-        resource_stuff()
+        resource_stuff(resources_data, way)
 
     elif way == "buy":
 
@@ -427,7 +424,7 @@ def province_sell_buy(way, units, province_id):
         if free_slots < wantedUnits and units not in ["cityCount", "land"]:
             return error(400, f"You don't have enough {slot_type} to buy {wantedUnits} units. Buy more {slot_type} to fix this problem")
 
-        res_error = resource_stuff()
+        res_error = resource_stuff(resources_data, way)
         if res_error:
             print(res_error)
             return error(400, f"Not enough resources. Missing {res_error['difference']*-1} {res_error['resource']}.")
