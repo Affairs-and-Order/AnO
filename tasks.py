@@ -428,6 +428,15 @@ def find_unit_category(unit):
             return name
     return False
 
+"""
+Tested features:
+- resource giving 
+- unit with enough resources selection
+- energy didnt change
+- removal of resources
+- good monetary removal
+"""
+
 def generate_province_revenue(): # Runs each hour
 
     conn = psycopg2.connect(
@@ -548,10 +557,10 @@ def generate_province_revenue(): # Runs each hour
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
                 if not has_enough_stuff["status"]:
-                    print(f"F | USER: {user_id} | PROVINCE: {province_id} | {unit} | Not enough {', '.join(has_enough_stuff['issues'])}")
+                    print(f"F | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | Not enough {', '.join(has_enough_stuff['issues'])}")
                     continue
                 else:
-                    print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} | Will update")
+                    print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | Will update")
 
                 plus = infra[unit].get('plus', {})
 
@@ -607,10 +616,12 @@ def generate_province_revenue(): # Runs each hour
                         if new_resource_number < 0: new_resource_number = 0 # TODO: is this line really necessary?
 
                         upd_prov_statement = f"UPDATE provinces SET {resource}" + "=%s WHERE id=%s"
+                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {plus[next(iter(plus))]}")
                         db.execute(upd_prov_statement, (new_resource_number, province_id))
 
                     elif resource in user_resources:
                         upd_res_statement = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
+                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {plus[next(iter(plus))]}")
                         db.execute(upd_res_statement, (plus[next(iter(plus))], user_id,))
 
                 # Function for completing an effect (adding pollution, etc)
