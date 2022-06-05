@@ -544,13 +544,14 @@ def generate_province_revenue(): # Runs each hour
                         has_enough_stuff["status"] = False
                         has_enough_stuff["issues"].append(resource)
                     else:
-                        has_enough_stuff = True
                         resource_u_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
                 if not has_enough_stuff["status"]:
-                    print(f"USER: {user_id} | PROVINCE: {province_id} | Couldn't update {unit} as they don't have enough {', '.join(has_enough_stuff['issues'])}")
+                    print(f"F | USER: {user_id} | PROVINCE: {province_id} | {unit} | Not enough {', '.join(has_enough_stuff['issues'])}")
                     continue
+                else:
+                    print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} | Will update")
 
                 plus = infra[unit].get('plus', {})
 
@@ -711,5 +712,3 @@ def war_reparation_tax():
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
 
     conn.commit()
-
-generate_province_revenue()
