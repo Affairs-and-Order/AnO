@@ -330,18 +330,15 @@ def country(cId):
     db = connection.cursor()
 
     try:
-        db.execute(
-            "SELECT username, description, date FROM users WHERE id=%s", (cId,))
+        db.execute("SELECT username, description, date FROM users WHERE id=%s", (cId,))
         username, description, dateCreated = db.fetchall()[0]
     except:
         return error(404, "Country doesn't exit")
 
     policies = get_user_policies(cId)
-    print(policies)
     influence = get_influence(cId)
 
-    db.execute(
-        "SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
+    db.execute("SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
     population, happiness, productivity, provinceCount = db.fetchall()[0]
 
     db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
@@ -499,20 +496,15 @@ HAVING COUNT(provinces.id) >= %s;""", (cId, province_range,))
 
         user.append(influence)
         user.append(unix)
-        if search:
-            username = user[1]
-            if search not in username:
-                addUser = False
-        if lowerinf:
-            if influence < float(lowerinf):
-                addUser = False
-        if upperinf:
-            if influence > float(upperinf):
-                addUser = False
-        if province_range:
-            province_count = user[7]
-            if province_count > int(province_range):
-                addUser = False
+        if search and search not in user[1]: # user[1] - username
+            addUser = False
+        if lowerinf and influence < float(lowerinf):
+            addUser = False
+        if upperinf and influence > float(upperinf):
+            addUser = False
+        if province_range and user[7] > int(province_range): # user[7] - province count
+            addUser = False
+
         if addUser:
             results.append(user)
 
@@ -553,8 +545,7 @@ def update_info():
     description = request.form["description"]
 
     if description not in ["None", ""]:
-        db.execute("UPDATE users SET description=%s WHERE id=%s",
-                   (description, cId))
+        db.execute("UPDATE users SET description=%s WHERE id=%s", (description, cId))
 
     # Flag changing
     ALLOWED_EXTENSIONS = ['png', 'jpg']
@@ -628,37 +619,18 @@ def update_info():
         provinces = db.fetchall()
 
         for province_id in provinces:
-
             province_id = province_id[0]
+            db.execute("UPDATE proInfra SET pumpjacks=0, coal_mines=0, bauxite_mines=0, copper_mines=0, uranium_mines=0, lead_mines=0, iron_mines=0, lumber_mills=0 WHERE id=%s", (province_id,))
+        db.execute("UPDATE stats SET location=%s WHERE id=%s", (new_location, cId))
 
-            db.execute(
-                "UPDATE proInfra SET pumpjacks=0 WHERE id=%s", (province_id,))
-            db.execute(
-                "UPDATE proInfra SET coal_mines=0 WHERE id=%s", (province_id,))
-            db.execute(
-                "UPDATE proInfra SET bauxite_mines=0 WHERE id=%s", (province_id,))
-            db.execute(
-                "UPDATE proInfra SET copper_mines=0 WHERE id=%s", (province_id,))
-            db.execute(
-                "UPDATE proInfra SET uranium_mines=0 WHERE id=%s", (province_id,))
-            db.execute(
-                "UPDATE proInfra SET lead_mines=0 WHERE id=%s", (province_id,))
-            db.execute(
-                "UPDATE proInfra SET iron_mines=0 WHERE id=%s", (province_id,))
-            db.execute(
-                "UPDATE proInfra SET lumber_mills=0 WHERE id=%s", (province_id,))
-
-        db.execute("UPDATE stats SET location=(%s) WHERE id=(%s)",
-                   (new_location, cId))
-
-    connection.commit()  # Commits the data
-    connection.close()  # Closes the connection
+    connection.commit() 
+    connection.close() 
 
     return redirect(f"/country/id={cId}")  # Redirects the user to his country
 
-
-@ app.route("/delete_own_account", methods=["POST"])
-@ login_required
+# TODO: check if you can DELETE with one statement
+@app.route("/delete_own_account", methods=["POST"])
+@login_required
 def delete_own_account():
 
     connection = psycopg2.connect(
@@ -692,8 +664,7 @@ def delete_own_account():
     db.execute("DELETE FROM trades WHERE offeree=%s OR offerer=%s", (cId, cId))
     db.execute("DELETE FROM spyinfo WHERE spyer=%s OR spyee=%s", (cId, cId))
     db.execute("DELETE FROM requests WHERE reqId=%s", (cId,))
-    db.execute(
-        "DELETE FROM reparation_tax WHERE loser=%s OR winner=%s", (cId, cId))
+    db.execute("DELETE FROM reparation_tax WHERE loser=%s OR winner=%s", (cId, cId))
     db.execute("DELETE FROM peace WHERE author=%s", (cId,))
 
     try:
@@ -707,20 +678,16 @@ def delete_own_account():
         db.execute("SELECT colId FROM coalitions WHERE userId=%s", (cId,))
         user_coalition = db.fetchone()[0]
 
-        db.execute(
-            "SELECT COUNT(userId) FROM coalitions WHERE role='leader' AND colId=%s", (user_coalition,))
-        leader_count = int(db.fetchone()[0])
+        db.execute("SELECT COUNT(userId) FROM coalitions WHERE role='leader' AND colId=%s", (user_coalition,))
+        leader_count = db.fetchone()[0]
 
         if leader_count != 1:
             pass
         else:
-            db.execute("DELETE FROM coalitions WHERE colId=%s",
-                       (user_coalition,))
+            db.execute("DELETE FROM coalitions WHERE colId=%s", (user_coalition,))
             db.execute("DELETE FROM colNames WHERE id=%s", (user_coalition,))
-            db.execute("DELETE FROM colBanks WHERE colid=%s",
-                       (user_coalition,))
-            db.execute("DELETE FROM requests WHERE colId=%s",
-                       (user_coalition,))
+            db.execute("DELETE FROM colBanks WHERE colid=%s", (user_coalition,))
+            db.execute("DELETE FROM requests WHERE colId=%s", (user_coalition,))
 
     db.execute("DELETE FROM coalitions WHERE userId=%s", (cId,))
     db.execute("DELETE FROM colBanksRequests WHERE reqId=%s", (cId,))
