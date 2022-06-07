@@ -61,10 +61,7 @@ def coalition(colId):
     except:
         members_count = 0
 
-    try:
-        total_influence = get_coalition_influence(colId)
-    except:
-        total_influence = 0
+    total_influence = get_coalition_influence(colId)
 
     try:
         average_influence = total_influence // members_count

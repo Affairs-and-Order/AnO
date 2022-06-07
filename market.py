@@ -343,7 +343,7 @@ def post_offer(offer_type):
         current_money = db.fetchone()[0]
 
         if current_money < money_to_take_away:
-            return error(400, "You don't have enough money")
+            return error(400, "You don't have enough money.")
 
         give_resource(cId, "bank", "money", money_to_take_away)
 
@@ -504,7 +504,7 @@ def trade_offer(offer_type, offeree_id):
             db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
             current_money = db.fetchone()[0]
             if current_money < money_to_take_away:
-                return error(400, "You don't have enough money")
+                return error(400, "You don't have enough money.")
             new_money = current_money - money_to_take_away
 
             db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_money, cId))
@@ -624,26 +624,16 @@ def transfer(transferee):
     if resource in ["gold", "money"]:
 
         db.execute("SELECT gold FROM stats WHERE id=(%s)", (cId,))
-        user_money = int(db.fetchone()[0])
+        user_money = db.fetchone()[0]
 
         if amount > user_money:
-            return error(400, "You don't have enough money")
-
-        # Calculates the amount of money the user should have
-        new_user_money_amount = user_money - amount
+            return error(400, "You don't have enough money.")
 
         # Removes the money from the user
-        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_user_money_amount, cId))
-
-        # Sees how much money the transferee has
-        db.execute("SELECT gold FROM stats WHERE id=(%s)", (transferee,))
-        transferee_money = int(db.fetchone()[0])
-
-        # Calculates the amount of money the transferee should have
-        new_transferee_resource_amount = amount + transferee_money
+        db.execute("UPDATE stats SET gold=gold-%s WHERE id=(%s)", (amount, cId))
 
         # Gives the money to the transferee
-        db.execute("UPDATE stats SET gold=(%s) WHERE id=(%s)", (new_transferee_resource_amount, transferee))
+        db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (amount, transferee))
 
     else:
 
@@ -652,7 +642,7 @@ def transfer(transferee):
         user_resource = int(db.fetchone()[0])
 
         if amount > user_resource:
-            return error(400, "You don't have enough resources")
+            return error(400, "You don't have enough resources.")
 
         # Calculates the amount of resource the user should have
         new_user_resource_amount = user_resource - amount

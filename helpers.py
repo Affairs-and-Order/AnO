@@ -166,10 +166,14 @@ def get_coalition_influence(coalition_id):
 
     total_influence = 0
 
-    db.execute("SELECT userId FROM coalitions WHERE colId=(%s)", (coalition_id,))
-    members = db.fetchall()
-    for i in members:
-        member_influence = get_influence(i[0])
+    try:
+        db.execute("SELECT userId FROM coalitions WHERE colId=(%s)", (coalition_id,))
+        members = db.fetchall()
+    except:
+        return 0
+
+    for member in members:
+        member_influence = get_influence(member[0])
         total_influence += member_influence
 
     return total_influence
