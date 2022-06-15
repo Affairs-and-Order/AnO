@@ -1,7 +1,7 @@
 CREATE TABLE spyinfo (
         id      SERIAL PRIMARY KEY NOT NULL,
-        spyer   INTEGER NOT NULL UNIQUE,
-        spyee   INTEGER NOT NULL UNIQUE,
+        spyer   INTEGER NOT NULL,
+        spyee   INTEGER NOT NULL,
         soldiers        TEXT NOT NULL DEFAULT 'false',
         tanks   TEXT NOT NULL DEFAULT 'false',
         artillery       TEXT NOT NULL DEFAULT 'false',

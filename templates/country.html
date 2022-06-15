@@ -1707,7 +1707,7 @@
                 -->
         </form>
         <form action="/spyResult" method="POST">
-            <input type="hidden" name="spy_country" value="{{ cId }}">
+            <input type="hidden" name="country" value="{{ cId }}">
             <h2 class="templatecontentheaderleft ">Espionage</h2>
 
             <div class="infodiv ">
@@ -1715,10 +1715,10 @@
                     <div class="templatedivflex2left ">
                         <label for="warType ">Choose operation</label>
                         <select class="templateselect" name="spy_type">
-                            <option value="unit_amounts" class="templateoption ">Spy on unit amounts</option>
-                            <option value="defending_units" class="templateoption ">Spy on defending units</option>
+                            <option value="unit_amount" class="templateoption ">Spy on unit amounts</option>
+                            <!-- <option value="defending_units" class="templateoption ">Spy on defending units</option> -->
                             <option value="resources" class="templateoption ">Spy on resources</option>
-                            <option value="assasinate_spies" class="templateoption ">Assasinate spies</option>
+                            <!-- <option value="assasinate_spies" class="templateoption ">Assasinate spies</option> -->
                         </select>
                     </div>
                     <div class="templatedivflex2left ">
