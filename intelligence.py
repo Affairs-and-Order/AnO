@@ -139,9 +139,24 @@ def spyAmount():
         return redirect("/spyResult")
 
 
-@app.route("/spyResult", methods=["GET"])
+@app.route("/spyResult", methods=["GET", "POST"])
 @login_required
 def spyResult():
-    spyEntry = session["spyEntry"]
-    # You've conducted a spy operation on {{enemyNation}} and revealed the following information {{spyEntry}}.
-    return render_template("spyResult.html", enemyNation=enemyNation, spyEntry=spyEntry)
+    if request.method == "GET":
+        spyEntry = session["spyEntry"]
+        # You've conducted a spy operation on {{enemyNation}} and revealed the following information {{spyEntry}}.
+        return render_template("spyResult.html", enemyNation=enemyNation, spyEntry=spyEntry)
+    if request.method == "POST":
+
+        country = request.form.get("country")
+        spies = request.form.get("spies")
+        spy_type = request.form.get("spy_type")
+
+        connection = psycopg2.connect(
+            database=os.getenv("PG_DATABASE"),
+            user=os.getenv("PG_USER"),
+            password=os.getenv("PG_PASSWORD"),
+            host=os.getenv("PG_HOST"),
+            port=os.getenv("PG_PORT"))
+
+        db = connection.cursor()
