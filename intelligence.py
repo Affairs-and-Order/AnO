@@ -12,6 +12,7 @@ from dotenv import load_dotenv
 import variables
 import random as rand
 import time
+from psycopg2.extras import RealDictCursor
 load_dotenv()
 
 @app.route("/intelligence", methods=["GET"])
@@ -24,7 +25,8 @@ def intelligence():
             user=os.getenv("PG_USER"),
             password=os.getenv("PG_PASSWORD"),
             host=os.getenv("PG_HOST"),
-            port=os.getenv("PG_PORT"))
+            port=os.getenv("PG_PORT"),
+            cursor_factory=RealDictCursor)
         db = connection.cursor()
         cId = session["user_id"]
 
@@ -32,52 +34,20 @@ def intelligence():
         # db.execute("DELETE FROM spyentries WHERE date<%s",
         #            (floor(time.time())-86400*14,))
 
-        db.execute("SELECT username FROM users WHERE id=%s", (cId,))
-        yourCountry = db.fetchone()[0]
+        try:
+            db.execute("SELECT * FROM spyinfo WHERE spyer=%s", (cId, ))
+            info = dict(db.fetchone())
+        except TypeError:
+            return render_template("intelligence.html", info={}, enemy="")
 
-        emptyCountryDict = {'eName': 'placeholder'}
-        for unittype in Military.allUnits:
-            emptyCountryDict[unittype] = 'Unknown'
+        for k, v in info.items():
+            if v == "false": info[k] = "?"
 
-        resources = variables.RESOURCES
-
-        for resource in resources:
-            emptyCountryDict[resource] = "Unknown"
-
-        db.execute("SELECT * FROM spyinfo WHERE spyer=%s", (cId,))
-        spyinfodb = db.fetchall()
-
-        spyEntries = []
-        for i, tupleEntry in enumerate(spyinfodb, start=0):
-
-            spyEntries.append(emptyCountryDict)
-
-            try:
-                eId = tupleEntry[2]
-
-                db.execute("SELECT username FROM users WHERE id=%s", (eId,))
-                spyEntries[i]['eName'] = db.fetchone()[0]
-
-                for j, unittype in enumerate(Military.allUnits):
-                    if tupleEntry[j+2] == 'true':
-
-                        db.execute("SELECT %s FROM military WHERE id=%s", (unittype, eId,))
-                        spyEntries[i][unittype] = db.fetchone()[0]
-                        
-                for j, resource in enumerate(resources):
-                    if tupleEntry[j+14] == 'true':
-
-                        db.execute("SELECT %s FROM resources WHERE id=%s", (resource, eId,))
-                        spyEntries[i][resource] = db.fetchone()[0]
-            except:
-                spyEntries[i]['eName'] = 'Enemy Nation Name'
-                # delete the spy entry if the spyee doesnt exist anymore
-                # db.execute("DELETE FROM spyentries WHERE id=%s", (eId,))
-                # commented so we dont delete test spyentries
-                # return "enemy nation doesn't exist"
+        db.execute("SELECT username FROM users WHERE id=%s", (info["spyee"], ))
+        enemy = dict(db.fetchone())["username"]
 
         connection.close()
-        return render_template("intelligence.html", yourCountry=yourCountry, spyEntries=spyEntries)
+        return render_template("intelligence.html", info=info, enemy=enemy)
 
 
 @app.route("/spyAmount", methods=["GET", "POST"])

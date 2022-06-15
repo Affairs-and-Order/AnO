@@ -11,8 +11,8 @@
 
     <div class="templatedivcontent">
         <!-- if you have up-to-date intelligence -->
-        {% if spyEntries|length %} {% for dictEntry in spyEntries %}
-        <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Military</h2>
+        {% if info %}
+        <h2 class="templatecontentheadercenter">{{ enemy }}'s military</h2>
 
         <div class="templateoutertablediv">
             <table class="templatetable templatetable2">
@@ -23,27 +23,27 @@
                     <th>Special</th>
                 </tr>
                 <tr>
-                    <td>[[ spyentries["soldiers"]] Soldiers</td>
-                    <td>[[ spyentries["fighters"]] Fighter Jets</td>
-                    <td>[[ spyentries["submarines"]] Submarines</td>
-                    <td>[[ spyentries["spies"]] Spies</td>
+                    <td>{{ info["soldiers"] }} Soldiers</td>
+                    <td>{{ info["fighters"] }} Fighter Jets</td>
+                    <td>{{ info["submarines"] }} Submarines</td>
+                    <td>{{ info["spies"] }} Spies</td>
                 </tr>
                 <tr>
-                    <td>[[ spyentries["artillery"]] Artillery</td>
-                    <td>[[ spyentries["bombers"]] Bombers</td>
-                    <td>[[ spyentries["cruisers"]] Cruisers</td>
-                    <td>[[ spyentries["icbms"]] Ballistic Missiles</td>
+                    <td>{{ info["artillery"] }} Artillery</td>
+                    <td>{{ info["bombers"] }} Bombers</td>
+                    <td>{{ info["cruisers"] }} Cruisers</td>
+                    <td>{{ info["icbms"] }} Ballistic Missiles</td>
                 </tr>
                 <tr>
-                    <td>[[ spyentries["tanks"]] Tanks</td>
-                    <td>[[ spyentries["apaches"]] Attack Helicopters</td>
-                    <td>[[ spyentries["destroyers"]] Destroyers</td>
-                    <td>[[ spyentries["nukes"]] Nukes</td>
+                    <td>{{ info["tanks"] }} Tanks</td>
+                    <td>{{ info["apaches"] }} Attack Helicopters</td>
+                    <td>{{ info["destroyers"] }} Destroyers</td>
+                    <td>{{ info["nukes"] }} Nukes</td>
                 </tr>
             </table>
         </div>
 
-        <h2 class="templatecontentheadercenter">{{ dictEntry["eName"] }}'s known Resources</h2>
+        <h2 class="templatecontentheadercenter">{{ enemy }}'s Resources</h2>
 
         <table class="templatetable">
             <tr>
@@ -53,72 +53,71 @@
             </tr>
             <tr>
                 <td>Money:</td>
-                <td>{{ gross }}%</td>
+                <td>{{ info["money"] }}</td>
             </tr>
             <tr>
                 <td>Rations:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["rations"] }}</td>
             </tr>
             <tr>
                 <td>Oil:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["oil"] }}</td>
             </tr>
             <tr>
                 <td>Coal:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["coal"] }}</td>
             </tr>
             <tr>
                 <td>Uranium:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["uranium"] }}</td>
             </tr>
             <tr>
                 <td>Iron:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["iron"] }}</td>
             </tr>
             <tr>
                 <td>Lead:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["lead"] }}</td>
             </tr>
             <tr>
                 <td>Bauxite:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["bauxite"] }}</td>
             </tr>
             <tr>
                 <td>Copper:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["copper"] }}</td>
             </tr>
             <tr>
                 <td>Lumber:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["lumber"] }}</td>
             </tr>
             <tr>
                 <td>Components:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["components"] }}</td>
             </tr>
             <tr>
                 <td>Steel:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["steel"] }}</td>
             </tr>
             <tr>
                 <td>Consumer goods:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["consumer_goods"] }}</td>
             </tr>
             <tr>
-                <td>Aluminum:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>Aluminium:</td>
+                <td>{{ info["aluminium"] }}</td>
             </tr>
             <tr>
                 <td>Gasoline:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["gasoline"] }}</td>
             </tr>
             <tr>
                 <td>Ammunition:</td>
-                <td>{{ rationsGross }}%</td>
+                <td>{{ info["ammunition"] }}</td>
             </tr>
         </table>
-        {% endfor %}
-        <!--If you have no up-to-date intelligence-->
         {% else %}
+        <!--If you have no up-to-date intelligence-->
         <h2 class="templatecontentheadercenter">No up-to-date intelligence</h2>
         {% endif %}
     </div>

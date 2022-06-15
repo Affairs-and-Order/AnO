@@ -14,7 +14,7 @@ CREATE TABLE spyinfo (
         spies   TEXT NOT NULL DEFAULT 'false',
         ICBMs   TEXT NOT NULL DEFAULT 'false',
         nukes   TEXT NOT NULL DEFAULT 'false',
-        gold    TEXT NOT NULL DEFAULT 'false',
+        rations    TEXT NOT NULL DEFAULT 'false',
         bauxite TEXT NOT NULL DEFAULT 'false',
         uranium TEXT NOT NULL DEFAULT 'false',
         iron    TEXT NOT NULL DEFAULT 'false',
