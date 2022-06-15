@@ -53,8 +53,10 @@ def intelligence():
         for info in data:
             date = info["date"]
             for k, v in info.items():
-                if sorted_data[k] == "false": sorted_data[k] = v
-                if date > sorted_data["date"]: sorted_data[k] = v
+                if info[k] != "false":
+                    if sorted_data[k] == "false": sorted_data[k] = v
+                    if date > sorted_data["date"]: sorted_data[k] = v
+
 
         print(sorted_data)
 
@@ -158,7 +160,6 @@ def spyResult():
         if spies > actual_spies:
             return error(400, f"You don't have enough spies ({spies}/{actual_spies}). Missing {actual_spies-spies} spies")
 
-
         db.execute("SELECT spies FROM military WHERE id=%s", (eId,))
         enemy_spies = db.fetchone()[0]
 
@@ -168,43 +169,48 @@ def spyResult():
         uncovered_spies = 0 # ADD NOTIFICATION FOR THIS
         uncovered = {}
 
-        if spy_type == "resources":
-            for resource in variables.RESOURCES:
-                if spies - executed_spies > 0:
-                    own_rand = round(rand.uniform(0, 1), 3)
-                    enemy_rand = round(rand.uniform(0, 1), 3)
+        db.execute("INSERT INTO spyinfo (spyer, spyee, date) VALUES (%s, %s, %s) RETURNING id", (cId, eId, time.time()))
+        operation_id = db.fetchone()[0]
 
-                    own_score = own_rand * spies
-                    enemy_score = enemy_rand * enemy_spies
+        object_list = variables.RESOURCES
+        table = "resources"
+        if spy_type == "units": 
+            object_list = variables.UNITS
+            table = "military"
 
-                    if own_score == 0: own_score = 0.0001
-                    if enemy_score == 0: enemy_score = 0.0001
+        for object in object_list:
+            if spies - executed_spies > 0:
+                own_rand = round(rand.uniform(0, 1), 3)
+                enemy_rand = round(rand.uniform(0, 1), 3)
 
-                    multiplier = enemy_score / own_score
+                own_score = own_rand * spies
+                enemy_score = enemy_rand * enemy_spies
 
-                    if multiplier > 10:
-                        executed_spies += 1
-                    if multiplier > 2:
-                        uncovered_spies += 1
-                    if multiplier > 1: # Enemy won
-                        uncovered[resource] = False
-                    elif multiplier <= 1: # Own won
-                        uncovered[resource] = True
+                if own_score == 0: own_score = 0.0001
+                if enemy_score == 0: enemy_score = 0.0001
 
-            uncovered_resources = [k for k,v in uncovered.items() if v]
-            uncover_statement = f"SELECT {', '.join(uncovered_resources)}" + " FROM resources WHERE id=%s"
+                multiplier = enemy_score / own_score
+
+                if multiplier > 10:
+                    executed_spies += 1
+                if multiplier > 2:
+                    uncovered_spies += 1
+                if multiplier > 1: # Enemy won
+                    uncovered[object] = False
+                elif multiplier <= 1: # Own won
+                    uncovered[object] = True
+
+            uncovered_objects = [k for k,v in uncovered.items() if v]
+            uncover_statement = f"SELECT {', '.join(uncovered_objects)} FROM {table}" + " WHERE id=%s"
             db.execute(uncover_statement, (eId,))
-            resources = db.fetchall()[0]
+            objects = db.fetchall()[0]
 
-            db.execute("INSERT INTO spyinfo (spyer, spyee, date) VALUES (%s, %s, %s) RETURNING id", (cId, eId, time.time()))
-            operation_id = db.fetchone()[0]
+            update_objects = []
+            for res, amo in zip(uncovered_objects, objects):
+                update_objects.append(f"{res}={amo}")
+            update_objects_string = ", ".join(update_objects)
 
-            update_resources = []
-            for res, amo in zip(uncovered_resources, resources):
-                update_resources.append(f"{res}={amo}")
-            update_resources_string = ", ".join(update_resources)
-
-            spyinfo_update = f"UPDATE spyinfo SET {update_resources_string}" + " WHERE id=%s"
+            spyinfo_update = f"UPDATE spyinfo SET {update_objects_string}" + " WHERE id=%s"
             db.execute(spyinfo_update, (operation_id,))
             
         db.execute("UPDATE military SET spies=spies-%s WHERE id=%s", (executed_spies, cId))

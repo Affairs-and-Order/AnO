@@ -9,6 +9,10 @@ RATIONS_PER = 200000  # 1 Ration per x population
 NO_ENERGY_MULTIPLIER = 0.6 # How much the tax income will decrease if there's no energy
 NO_FOOD_MULTIPLIER = 0.4 # How much the tax income will decrease if there's no food
 
+UNITS = [
+    "soldiers", "tanks", "artillery", "bombers", "fighters", "apaches",
+    "destroyers", "cruisers", "submarines", "spies", "icbms", "nukes"
+]
 RESOURCES = [
     "rations", "oil", "coal", "uranium", "bauxite", "lead", "copper", "iron",
     "lumber", "components", "steel", "consumer_goods", "aluminium",
