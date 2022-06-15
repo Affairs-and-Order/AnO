@@ -15,6 +15,7 @@ import time
 from psycopg2.extras import RealDictCursor
 load_dotenv()
 
+# TODO: add complex operation sorting by date and merging
 @app.route("/intelligence", methods=["GET"])
 @login_required
 def intelligence():
@@ -30,24 +31,41 @@ def intelligence():
         db = connection.cursor()
         cId = session["user_id"]
 
-        # delete entries older than 14 days
-        # db.execute("DELETE FROM spyentries WHERE date<%s",
-        #            (floor(time.time())-86400*14,))
+        """
+        delete entries older than 14 days
+        db.execute("DELETE FROM spyentries WHERE date<%s", (floor(time.time())-86400*14,))
+        connection.commit()
+        """
 
+        data = []
+        sorted_data = {}
         try:
-            db.execute("SELECT * FROM spyinfo WHERE spyer=%s", (cId, ))
-            info = dict(db.fetchone())
+            db.execute("SELECT * FROM spyinfo WHERE spyer=%s ORDER BY date ASC", (cId, ))
+            info = db.fetchall()
+
+            for row in info:
+                data.append(dict(row))
+
         except TypeError:
             return render_template("intelligence.html", info={}, enemy="")
 
-        for k, v in info.items():
-            if v == "false": info[k] = "?"
+        sorted_data = data[0] # By default
+        for info in data:
+            date = info["date"]
+            for k, v in info.items():
+                if sorted_data[k] == "false": sorted_data[k] = v
+                if date > sorted_data["date"]: sorted_data[k] = v
 
-        db.execute("SELECT username FROM users WHERE id=%s", (info["spyee"], ))
+        print(sorted_data)
+
+        for k, v in sorted_data.items():
+            if v == "false": sorted_data[k] = "?"
+
+        db.execute("SELECT username FROM users WHERE id=%s", (sorted_data["spyee"], ))
         enemy = dict(db.fetchone())["username"]
 
         connection.close()
-        return render_template("intelligence.html", info=info, enemy=enemy)
+        return render_template("intelligence.html", info=sorted_data, enemy=enemy)
 
 
 @app.route("/spyAmount", methods=["GET", "POST"])
