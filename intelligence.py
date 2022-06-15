@@ -182,47 +182,44 @@ def spyResult():
 
         if spy_type == "resources":
             for resource in variables.RESOURCES:
-                own_rand = round(rand.uniform(0, 1), 3)
-                enemy_rand = round(rand.uniform(0, 1), 3)
+                if spies - executed_spies > 0:
+                    own_rand = round(rand.uniform(0, 1), 3)
+                    enemy_rand = round(rand.uniform(0, 1), 3)
 
-                own_score = own_rand * spies
-                enemy_score = enemy_rand * enemy_spies
+                    own_score = own_rand * spies
+                    enemy_score = enemy_rand * enemy_spies
 
-                if own_score == 0: own_score = 0.0001
-                if enemy_score == 0: enemy_score = 0.0001
+                    if own_score == 0: own_score = 0.0001
+                    if enemy_score == 0: enemy_score = 0.0001
 
-                multiplier = enemy_score / own_score
+                    multiplier = enemy_score / own_score
 
-                if multiplier > 10:
-                    executed_spies += 1
-                if multiplier > 2:
-                    uncovered_spies += 1
-                if multiplier > 1: # Enemy won
-                    uncovered[resource] = False
-                elif multiplier <= 1: # Own won
-                    uncovered[resource] = True
+                    if multiplier > 10:
+                        executed_spies += 1
+                    if multiplier > 2:
+                        uncovered_spies += 1
+                    if multiplier > 1: # Enemy won
+                        uncovered[resource] = False
+                    elif multiplier <= 1: # Own won
+                        uncovered[resource] = True
 
             uncovered_resources = [k for k,v in uncovered.items() if v]
             uncover_statement = f"SELECT {', '.join(uncovered_resources)}" + " FROM resources WHERE id=%s"
             db.execute(uncover_statement, (eId,))
             resources = db.fetchall()[0]
 
-            print(uncovered_resources)
-            print(resources)
-
-            # db.execute("INSERT INTO spyinfo (spyer, spyee, date) VALUES (%s, %s, %s)", (cId, eId, time.time()))
+            db.execute("INSERT INTO spyinfo (spyer, spyee, date) VALUES (%s, %s, %s) RETURNING id", (cId, eId, time.time()))
+            operation_id = db.fetchone()[0]
 
             update_resources = []
             for res, amo in zip(uncovered_resources, resources):
                 update_resources.append(f"{res}={amo}")
-            print(update_resources)
             update_resources_string = ", ".join(update_resources)
-            print(update_resources_string)
 
             spyinfo_update = f"UPDATE spyinfo SET {update_resources_string}" + " WHERE id=%s"
-
+            db.execute(spyinfo_update, (operation_id,))
             
-        # db.execute("UPDATE military SET spies=spies-%s WHERE id=%s", (executed_spies, cId))
+        db.execute("UPDATE military SET spies=spies-%s WHERE id=%s", (executed_spies, cId))
 
         connection.commit()
         connection.close()

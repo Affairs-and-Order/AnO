@@ -25,9 +25,10 @@ CREATE TABLE spyinfo (
         lumber  TEXT NOT NULL DEFAULT 'false',
         components      TEXT NOT NULL DEFAULT 'false',
         steel   TEXT NOT NULL DEFAULT 'false',
-        aluminum        TEXT NOT NULL DEFAULT 'false',
+        aluminium        TEXT NOT NULL DEFAULT 'false',
         gasoline        TEXT NOT NULL DEFAULT 'false',
         ammunition      TEXT NOT NULL DEFAULT 'false',
         consumer_goods  TEXT NOT NULL DEFAULT 'false',
+        money  TEXT NOT NULL DEFAULT 'false',
         defense TEXT NOT NULL DEFAULT 'false',
         date    INTEGER NOT NULL);
