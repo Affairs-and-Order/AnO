@@ -100,8 +100,6 @@ def spyAmount():
         eSpies = db.fetchone()[0]
 
         # calculate what values have been revealed based on prep, amount, edefcon, espies
-
-
         resources = variables.RESOURCES
                      
         revealChance = prep * spies / (eDefcon * eSpies)
@@ -154,6 +152,11 @@ def spyResult():
 
         db = connection.cursor()
 
+        db.execute("SELECT spyee, date FROM spyinfo WHERE spyer=%s ORDER BY date DESC", (cId,))
+        spyee, date = db.fetchone()
+
+        print(spyee, date)
+
         db.execute("SELECT spies FROM military WHERE id=%s", (cId,))
         actual_spies = db.fetchone()[0]
 
@@ -165,8 +168,8 @@ def spyResult():
 
         print(eId, enemy_spies)
 
-        executed_spies = 0 # ADD NOTIFICATION FOR THIS
-        uncovered_spies = 0 # ADD NOTIFICATION FOR THIS
+        executed_spies = 0 # TODO: ADD NOTIFICATION FOR THIS
+        uncovered_spies = 0 # TODO: ADD NOTIFICATION FOR THIS
         uncovered = {}
 
         db.execute("INSERT INTO spyinfo (spyer, spyee, date) VALUES (%s, %s, %s) RETURNING id", (cId, eId, time.time()))
@@ -210,8 +213,9 @@ def spyResult():
                 update_objects.append(f"{res}={amo}")
             update_objects_string = ", ".join(update_objects)
 
-            spyinfo_update = f"UPDATE spyinfo SET {update_objects_string}" + " WHERE id=%s"
-            db.execute(spyinfo_update, (operation_id,))
+            if len(update_objects) > 0:
+                spyinfo_update = f"UPDATE spyinfo SET {update_objects_string}" + " WHERE id=%s"
+                db.execute(spyinfo_update, (operation_id,))
             
         db.execute("UPDATE military SET spies=spies-%s WHERE id=%s", (executed_spies, cId))
 
