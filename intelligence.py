@@ -155,7 +155,9 @@ def spyResult():
         db.execute("SELECT spyee, date FROM spyinfo WHERE spyer=%s ORDER BY date DESC", (cId,))
         spyee, date = db.fetchone()
 
-        print(spyee, date)
+        current_time = time.time()
+        if spyee != eId and current_time - date < 3600 * 12:
+            return error(400, f"12 hour cooldown for spying on another country. {current_time-date} seconds left.")
 
         db.execute("SELECT spies FROM military WHERE id=%s", (cId,))
         actual_spies = db.fetchone()[0]
