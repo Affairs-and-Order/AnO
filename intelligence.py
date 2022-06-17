@@ -178,6 +178,7 @@ def spyResult():
         operation_id = db.fetchone()[0]
 
         object_list = variables.RESOURCES
+        object_list.remove("money")
         table = "resources"
         if spy_type == "units": 
             object_list = variables.UNITS
