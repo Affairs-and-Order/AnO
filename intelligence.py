@@ -38,7 +38,6 @@ def intelligence():
         """
 
         data = []
-        sorted_data = {}
         try:
             db.execute("SELECT * FROM spyinfo WHERE spyer=%s ORDER BY date ASC", (cId, ))
             info = db.fetchall()
@@ -49,6 +48,18 @@ def intelligence():
         except TypeError:
             return render_template("intelligence.html", info={}, enemy="")
 
+        sorted_data = {}
+
+        for row in data:
+            if row["spyee"] in sorted_data.keys():
+                sorted_data[row["spyee"]].append(row)
+            else:
+                sorted_data[row["spyee"]] = []
+                sorted_data[row["spyee"]].append(row)
+
+        print(sorted_data)
+
+        """
         sorted_data = data[0] # By default
         for info in data:
             date = info["date"]
@@ -57,11 +68,11 @@ def intelligence():
                     if sorted_data[k] == "false": sorted_data[k] = v
                     if date > sorted_data["date"]: sorted_data[k] = v
 
-
         print(sorted_data)
 
         for k, v in sorted_data.items():
             if v == "false": sorted_data[k] = "?"
+        """
 
         db.execute("SELECT username FROM users WHERE id=%s", (sorted_data["spyee"], ))
         enemy = dict(db.fetchone())["username"]

@@ -11,7 +11,8 @@
 
     <div class="templatedivcontent">
         <!-- if you have up-to-date intelligence -->
-        {% if info %}
+        {% if all_info %}
+        {% for info in all_info %}
         <h2 class="templatecontentheadercenter">{{ enemy }}'s military</h2>
 
         <div class="templateoutertablediv">
@@ -50,10 +51,6 @@
                 <th><span class="material-icons-outlined">
                         article
                         </span>Resources</th>
-            </tr>
-            <tr>
-                <td>Money:</td>
-                <td>{{ info["money"] }}</td>
             </tr>
             <tr>
                 <td>Rations:</td>
@@ -116,6 +113,7 @@
                 <td>{{ info["ammunition"] }}</td>
             </tr>
         </table>
+        {% endfor %}
         {% else %}
         <!--If you have no up-to-date intelligence-->
         <h2 class="templatecontentheadercenter">No up-to-date intelligence</h2>
