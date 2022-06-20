@@ -31,11 +31,8 @@ def intelligence():
         db = connection.cursor()
         cId = session["user_id"]
 
-        """
-        delete entries older than 14 days
-        db.execute("DELETE FROM spyentries WHERE date<%s", (floor(time.time())-86400*14,))
+        db.execute("DELETE FROM spyentries WHERE date<%s", (time.time())-86400*7,)
         connection.commit()
-        """
 
         data = []
         try:
@@ -74,8 +71,6 @@ def intelligence():
         for resource in required_data:
             for user, data in fully_sorted.items():
                 if resource not in data: fully_sorted[user][resource] = "?"
-
-        print(fully_sorted)
 
         connection.close()
         return render_template("intelligence.html", info=fully_sorted)
