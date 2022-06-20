@@ -13,7 +13,7 @@
         <!-- if you have up-to-date intelligence -->
         {% if info %}
             {% for user, data in info.items() %}
-            <h2 class="templatecontentheadercenter">{{ data["spyee"] }}'s military</h2>
+            <h2 class="templatecontentheadercenter"><a href="/country/id={{ data['spyee'] }}">{{ data["username"] }}</a>'s military</h2>
 
             <div class="templateoutertablediv">
                 <table class="templatetable templatetable2">
@@ -44,7 +44,7 @@
                 </table>
             </div>
 
-            <h2 class="templatecontentheadercenter">{{ data["spyee"] }}'s Resources</h2>
+            <h2 class="templatecontentheadercenter"><a href="/country/id={{ data['spyee'] }}">{{ data["username"] }}</a>'s Resources</h2>
 
             <table class="templatetable">
                 <tr>

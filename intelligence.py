@@ -39,7 +39,7 @@ def intelligence():
 
         data = []
         try:
-            db.execute("SELECT * FROM spyinfo WHERE spyer=%s ORDER BY date ASC", (cId, ))
+            db.execute("SELECT spyinfo.*, users.username FROM spyinfo LEFT JOIN users ON spyinfo.spyee=users.id WHERE spyinfo.spyer=%s ORDER BY date ASC", (cId, ))
             info = db.fetchall()
 
             for row in info:
@@ -74,6 +74,8 @@ def intelligence():
         for resource in required_data:
             for user, data in fully_sorted.items():
                 if resource not in data: fully_sorted[user][resource] = "?"
+
+        print(fully_sorted)
 
         connection.close()
         return render_template("intelligence.html", info=fully_sorted)
