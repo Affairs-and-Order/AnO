@@ -381,23 +381,21 @@ def country(cId):
     except:
         flag = None
 
-    spyCount = 0
-    successChance = 0
+    ############ OLD SPY CODE ###################
+    spy = {}
+    uId = session["user_id"]
+    db.execute("SELECT military.spies, stats.gold FROM military INNER JOIN stats ON military.id=stats.id WHERE military.id=(%s)", (uId,))
+    spy["count"], spy["money"] = db.fetchone()
+    spy["prep"] = 1 # this is an integer from 1 to 5, alter the stats table to include this data
 
-    """
-    uId == str(session["user_id"])
-    db.execute("SELECT spies FROM military WHERE id=(%s)", (uId,))
-    spyCount = db.fetchone()[0]
-    spyPrep = 1 # this is an integer from 1 to 5, alter the stats table to include this data
+    db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
+    spy["e_count"] = db.fetchone()[0]
+    spy["e_defcon"] = 1 # this is an integer from 1 to 5, alter the stats table to include this data
 
-    eSpyCount = db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
-    eDefcon = 1 # this is an integer from 1 to 5, alter the stats table to include this data
-
-    if eSpyCount == 0:
-        successChance = 100
-    else:
-        successChance = spyCount * spyPrep / eSpyCount / eDefcon
-    """
+    if spy["e_count"] == 0: spy["success"] = 100
+    else: spy["success"] = spy["count"] * spy["prep"] / spy["e_count"] * spy["e_defcon"]
+    
+    ############ OLD SPY CODE ###################
 
     # News page
     idd = int(cId)
@@ -405,9 +403,7 @@ def country(cId):
     news_amount = 0
     if idd == session["user_id"]:
         # TODO: handle this as country/id=<int:cId>
-        db.execute(
-            "SELECT message,date,id FROM news WHERE destination_id=(%s)", (cId,))
-
+        db.execute("SELECT message,date,id FROM news WHERE destination_id=(%s)", (cId,))
         # data order in the tuple appears as in the news schema (notice this when work with this data using jija)
         news = db.fetchall()
         news_amount = len(news)
@@ -415,9 +411,7 @@ def country(cId):
     # Revenue stuff
     if status:
         revenue = get_revenue(cId)
-
-        db.execute(
-            "SELECT name, type, resource, amount, date FROM revenue WHERE user_id=%s", (cId,))
+        db.execute("SELECT name, type, resource, amount, date FROM revenue WHERE user_id=%s", (cId,))
         expenses = db.fetchall()
 
         statistics = get_econ_statistics(cId)
@@ -433,7 +427,7 @@ def country(cId):
     return render_template("country.html", username=username, cId=cId, description=description,
                            happiness=happiness, population=population, location=location, status=status,
                            provinceCount=provinceCount, colName=colName, dateCreated=dateCreated, influence=influence,
-                           provinces=provinces, colId=colId, flag=flag, spyCount=spyCount, successChance=successChance,
+                           provinces=provinces, colId=colId, flag=flag, spy=spy,
                            colFlag=colFlag, colRole=colRole, productivity=productivity, revenue=revenue, news=news, news_amount=news_amount,
                            cg_needed=cg_needed, rations_need=rations_need, expenses=expenses, statistics=statistics, policies=policies)
 

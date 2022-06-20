@@ -1724,10 +1724,16 @@
                     <div class="templatedivflex2left ">
 
                         <label for="countryName ">Number of spies</label>
-                        <input class="loginsignupinput" name="spies" placeholder="{{ spyCount }}" />
+                        <input class="loginsignupinput" name="spies" placeholder="{{ spy['count'] }}" />
 
                     </div>
-                </div> <label for="warType ">{{ successChance }}% success chance</label>
+                    <div class="templatedivflex2left ">
+
+                        <label for="countryName ">Money for spy operations</label>
+                        <input class="loginsignupinput" name="money" placeholder="{{ spy['money'] }}" />
+
+                    </div>
+                </div> <label for="warType ">{{ spy['success'] }}% success chance (for each resource/unit & max resources and spies)</label>
 
                 <button class="templatedivbutton templatecenteredbutton" type="submit "><span class="material-icons-outlined ">
                         check
