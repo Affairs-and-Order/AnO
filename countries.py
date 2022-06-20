@@ -381,21 +381,10 @@ def country(cId):
     except:
         flag = None
 
-    ############ OLD SPY CODE ###################
     spy = {}
     uId = session["user_id"]
-    db.execute("SELECT military.spies, stats.gold FROM military INNER JOIN stats ON military.id=stats.id WHERE military.id=(%s)", (uId,))
-    spy["count"], spy["money"] = db.fetchone()
-    spy["prep"] = 1 # this is an integer from 1 to 5, alter the stats table to include this data
-
-    db.execute("SELECT spies FROM military WHERE id=(%s)", (cId,))
-    spy["e_count"] = db.fetchone()[0]
-    spy["e_defcon"] = 1 # this is an integer from 1 to 5, alter the stats table to include this data
-
-    if spy["e_count"] == 0: spy["success"] = 100
-    else: spy["success"] = spy["count"] * spy["prep"] / spy["e_count"] * spy["e_defcon"]
-    
-    ############ OLD SPY CODE ###################
+    db.execute("SELECT spies FROM military WHERE military.id=(%s)", (uId,))
+    spy["count"] = db.fetchone()[0]
 
     # News page
     idd = int(cId)
