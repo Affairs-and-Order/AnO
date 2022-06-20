@@ -11,109 +11,111 @@
 
     <div class="templatedivcontent">
         <!-- if you have up-to-date intelligence -->
-        {% if all_info %}
-        {% for info in all_info %}
-        <h2 class="templatecontentheadercenter">{{ enemy }}'s military</h2>
+        {% if info %}
+            {% for user, data in info.items() %}
+            <h2 class="templatecontentheadercenter">{{ data["spyee"] }}'s military</h2>
 
-        <div class="templateoutertablediv">
-            <table class="templatetable templatetable2">
+            <div class="templateoutertablediv">
+                <table class="templatetable templatetable2">
+                    <tr>
+                        <th>Army</th>
+                        <th>Air Force</th>
+                        <th>Navy</th>
+                        <th>Special</th>
+                    </tr>
+                    <tr>
+                        <td>{{ data["soldiers"] }} Soldiers</td>
+                        <td>{{ data["fighters"] }} Fighter Jets</td>
+                        <td>{{ data["submarines"] }} Submarines</td>
+                        <td>{{ data["spies"] }} Spies</td>
+                    </tr>
+                    <tr>
+                        <td>{{ data["artillery"] }} Artillery</td>
+                        <td>{{ data["bombers"] }} Bombers</td>
+                        <td>{{ data["cruisers"] }} Cruisers</td>
+                        <td>{{ data["icbms"] }} Ballistic Missiles</td>
+                    </tr>
+                    <tr>
+                        <td>{{ data["tanks"] }} Tanks</td>
+                        <td>{{ data["apaches"] }} Attack Helicopters</td>
+                        <td>{{ data["destroyers"] }} Destroyers</td>
+                        <td>{{ data["nukes"] }} Nukes</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h2 class="templatecontentheadercenter">{{ data["spyee"] }}'s Resources</h2>
+
+            <table class="templatetable">
                 <tr>
-                    <th>Army</th>
-                    <th>Air Force</th>
-                    <th>Navy</th>
-                    <th>Special</th>
+                    <th><span class="material-icons-outlined">
+                            article
+                            </span>Resources</th>
                 </tr>
                 <tr>
-                    <td>{{ info["soldiers"] }} Soldiers</td>
-                    <td>{{ info["fighters"] }} Fighter Jets</td>
-                    <td>{{ info["submarines"] }} Submarines</td>
-                    <td>{{ info["spies"] }} Spies</td>
+                    <td>Rations:</td>
+                    <td>{{ data["rations"] }}</td>
                 </tr>
                 <tr>
-                    <td>{{ info["artillery"] }} Artillery</td>
-                    <td>{{ info["bombers"] }} Bombers</td>
-                    <td>{{ info["cruisers"] }} Cruisers</td>
-                    <td>{{ info["icbms"] }} Ballistic Missiles</td>
+                    <td>Oil:</td>
+                    <td>{{ data["oil"] }}</td>
                 </tr>
                 <tr>
-                    <td>{{ info["tanks"] }} Tanks</td>
-                    <td>{{ info["apaches"] }} Attack Helicopters</td>
-                    <td>{{ info["destroyers"] }} Destroyers</td>
-                    <td>{{ info["nukes"] }} Nukes</td>
+                    <td>Coal:</td>
+                    <td>{{ data["coal"] }}</td>
+                </tr>
+                <tr>
+                    <td>Uranium:</td>
+                    <td>{{ data["uranium"] }}</td>
+                </tr>
+                <tr>
+                    <td>Iron:</td>
+                    <td>{{ data["iron"] }}</td>
+                </tr>
+                <tr>
+                    <td>Lead:</td>
+                    <td>{{ data["lead"] }}</td>
+                </tr>
+                <tr>
+                    <td>Bauxite:</td>
+                    <td>{{ data["bauxite"] }}</td>
+                </tr>
+                <tr>
+                    <td>Copper:</td>
+                    <td>{{ data["copper"] }}</td>
+                </tr>
+                <tr>
+                    <td>Lumber:</td>
+                    <td>{{ data["lumber"] }}</td>
+                </tr>
+                <tr>
+                    <td>Components:</td>
+                    <td>{{ data["components"] }}</td>
+                </tr>
+                <tr>
+                    <td>Steel:</td>
+                    <td>{{ data["steel"] }}</td>
+                </tr>
+                <tr>
+                    <td>Consumer goods:</td>
+                    <td>{{ data["consumer_goods"] }}</td>
+                </tr>
+                <tr>
+                    <td>Aluminium:</td>
+                    <td>{{ data["aluminium"] }}</td>
+                </tr>
+                <tr>
+                    <td>Gasoline:</td>
+                    <td>{{ data["gasoline"] }}</td>
+                </tr>
+                <tr>
+                    <td>Ammunition:</td>
+                    <td>{{ data["ammunition"] }}</td>
                 </tr>
             </table>
-        </div>
-
-        <h2 class="templatecontentheadercenter">{{ enemy }}'s Resources</h2>
-
-        <table class="templatetable">
-            <tr>
-                <th><span class="material-icons-outlined">
-                        article
-                        </span>Resources</th>
-            </tr>
-            <tr>
-                <td>Rations:</td>
-                <td>{{ info["rations"] }}</td>
-            </tr>
-            <tr>
-                <td>Oil:</td>
-                <td>{{ info["oil"] }}</td>
-            </tr>
-            <tr>
-                <td>Coal:</td>
-                <td>{{ info["coal"] }}</td>
-            </tr>
-            <tr>
-                <td>Uranium:</td>
-                <td>{{ info["uranium"] }}</td>
-            </tr>
-            <tr>
-                <td>Iron:</td>
-                <td>{{ info["iron"] }}</td>
-            </tr>
-            <tr>
-                <td>Lead:</td>
-                <td>{{ info["lead"] }}</td>
-            </tr>
-            <tr>
-                <td>Bauxite:</td>
-                <td>{{ info["bauxite"] }}</td>
-            </tr>
-            <tr>
-                <td>Copper:</td>
-                <td>{{ info["copper"] }}</td>
-            </tr>
-            <tr>
-                <td>Lumber:</td>
-                <td>{{ info["lumber"] }}</td>
-            </tr>
-            <tr>
-                <td>Components:</td>
-                <td>{{ info["components"] }}</td>
-            </tr>
-            <tr>
-                <td>Steel:</td>
-                <td>{{ info["steel"] }}</td>
-            </tr>
-            <tr>
-                <td>Consumer goods:</td>
-                <td>{{ info["consumer_goods"] }}</td>
-            </tr>
-            <tr>
-                <td>Aluminium:</td>
-                <td>{{ info["aluminium"] }}</td>
-            </tr>
-            <tr>
-                <td>Gasoline:</td>
-                <td>{{ info["gasoline"] }}</td>
-            </tr>
-            <tr>
-                <td>Ammunition:</td>
-                <td>{{ info["ammunition"] }}</td>
-            </tr>
-        </table>
-        {% endfor %}
+            <!-- Remove this -->
+            <h1>--------------------------------------------------------------------------------------------------------------------------------------------------------------------</h1>
+            {% endfor %}
         {% else %}
         <!--If you have no up-to-date intelligence-->
         <h2 class="templatecontentheadercenter">No up-to-date intelligence</h2>

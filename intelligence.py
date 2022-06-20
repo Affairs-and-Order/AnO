@@ -46,9 +46,10 @@ def intelligence():
                 data.append(dict(row))
 
         except TypeError:
-            return render_template("intelligence.html", info={}, enemy="")
+            return render_template("intelligence.html", info={})
 
         sorted_data = {}
+        fully_sorted = {}
 
         for row in data:
             if row["spyee"] in sorted_data.keys():
@@ -57,28 +58,25 @@ def intelligence():
                 sorted_data[row["spyee"]] = []
                 sorted_data[row["spyee"]].append(row)
 
-        print(sorted_data)
+        for user, data in sorted_data.items():
+            for info in data:
+                date = info["date"]
+                for k, v in info.items():
+                    if info[k] != "false":
+                        if not fully_sorted.get(user, False):
+                            fully_sorted[user] = {}
 
-        """
-        sorted_data = data[0] # By default
-        for info in data:
-            date = info["date"]
-            for k, v in info.items():
-                if info[k] != "false":
-                    if sorted_data[k] == "false": sorted_data[k] = v
-                    if date > sorted_data["date"]: sorted_data[k] = v
+                        if not fully_sorted[user].get(k, False): fully_sorted[user][k] = v
+                        if fully_sorted[user].get("date", False):
+                            if date > fully_sorted[user]["date"]: fully_sorted[user][k] = v
 
-        print(sorted_data)
-
-        for k, v in sorted_data.items():
-            if v == "false": sorted_data[k] = "?"
-        """
-
-        db.execute("SELECT username FROM users WHERE id=%s", (sorted_data["spyee"], ))
-        enemy = dict(db.fetchone())["username"]
+        required_data = variables.RESOURCES + variables.UNITS
+        for resource in required_data:
+            for user, data in fully_sorted.items():
+                if resource not in data: fully_sorted[user][resource] = "?"
 
         connection.close()
-        return render_template("intelligence.html", info=sorted_data, enemy=enemy)
+        return render_template("intelligence.html", info=fully_sorted)
 
 
 @app.route("/spyAmount", methods=["GET", "POST"])
@@ -189,7 +187,7 @@ def spyResult():
         operation_id = db.fetchone()[0]
 
         object_list = variables.RESOURCES
-        object_list.remove("money")
+        
         table = "resources"
         if spy_type == "units": 
             object_list = variables.UNITS
