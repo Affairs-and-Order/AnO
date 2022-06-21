@@ -13,8 +13,11 @@ from datetime import datetime
 from psycopg2.extras import RealDictCursor
 from flaskext.markdown import Markdown
 from variables import MILDICT, PROVINCE_UNIT_PRICES
+import logging
 
 app = Flask(__name__)
+
+logging.basicConfig(level=logging.ERROR, format=f'%(levelname)s: %(asctime)s %(name)s %(threadName)s : %(message)s', filename='errors.log',)
 
 Markdown(app)
 
@@ -319,4 +322,4 @@ def mass_purchase():
     return render_template("mass_purchase.html")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', use_reloader=True)
+    app.run(host='0.0.0.0', use_reloader=False)

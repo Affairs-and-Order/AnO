@@ -45,6 +45,8 @@ def intelligence():
         except TypeError:
             return render_template("intelligence.html", info={})
 
+        res = 100 / 0
+
         sorted_data = {}
         fully_sorted = {}
 

@@ -24,3 +24,6 @@ venv.bak/
 # Local config files
 .env
 .env.postgresql
+
+# Local logging files
+errors.log
