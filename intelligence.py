@@ -31,7 +31,7 @@ def intelligence():
         db = connection.cursor()
         cId = session["user_id"]
 
-        db.execute("DELETE FROM spyentries WHERE date<%s", (time.time())-86400*7,)
+        db.execute("DELETE FROM spyentries WHERE date<%s", ((int(time.time()))-86400*7),)
         connection.commit()
 
         data = []
@@ -45,7 +45,6 @@ def intelligence():
         except TypeError:
             return render_template("intelligence.html", info={})
 
-        res = 100 / 0
 
         sorted_data = {}
         fully_sorted = {}
