@@ -330,8 +330,8 @@ def country(cId):
     db = connection.cursor()
 
     try:
-        db.execute("SELECT username, description, date FROM users WHERE id=%s", (cId,))
-        username, description, dateCreated = db.fetchall()[0]
+        db.execute("SELECT users.username, stats.location, users.description, users.date, users.flag FROM users INNER JOIN stats ON users.id=stats.id WHERE users.id=%s", (cId,))
+        username, location, description, dateCreated, flag = db.fetchall()[0]
     except:
         return error(404, "Country doesn't exit")
 
@@ -340,9 +340,6 @@ def country(cId):
 
     db.execute("SELECT SUM(population), AVG(happiness), AVG(productivity), COUNT(id) FROM provinces WHERE userId=%s", (cId,))
     population, happiness, productivity, provinceCount = db.fetchall()[0]
-
-    db.execute("SELECT location FROM stats WHERE id=%s", (cId,))
-    location = db.fetchone()[0]
 
     db.execute("SELECT provinceName, id, population, cityCount, land, happiness, productivity FROM provinces WHERE userId=(%s) ORDER BY id ASC", (cId,))
     provinces = db.fetchall()
@@ -355,31 +352,10 @@ def country(cId):
         status = False
 
     try:
-        db.execute("SELECT colId, role FROM coalitions WHERE userId=(%s)", (cId,))
-        coalition_data = db.fetchall()[0]
-
-        colId = coalition_data[0]
-        colRole = coalition_data[1]
-
-        db.execute("SELECT name FROM colNames WHERE id =%s", (colId,))
-        colName = db.fetchone()[0]
-
+        db.execute("SELECT coalitions.colId, coalitions.role, colNames.name, colNames.flag FROM coalitions INNER JOIN colNames ON coalitions.colId=colNames.id WHERE coalitions.userId=%s", (cId,))
+        colId, colRole, colName, colFlag = db.fetchall()[0]
     except:
-        colId = 0
-        colRole = None
-        colName = ""
-
-    try:
-        db.execute("SELECT flag FROM colNames WHERE id=%s", (colId,))
-        colFlag = db.fetchone()[0]
-    except:
-        colFlag = None
-
-    try:
-        db.execute("SELECT flag FROM users WHERE id=(%s)", (cId,))
-        flag = db.fetchone()[0]
-    except:
-        flag = None
+        colId = 0; colRole = None; colName = ""; colFlag = None
 
     spy = {}
     uId = session["user_id"]
