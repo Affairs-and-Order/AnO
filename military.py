@@ -1,6 +1,4 @@
-from turtle import update
 from flask import request, render_template, session, redirect, flash
-from numpy import require
 from helpers import login_required, error
 import psycopg2
 from app import app
