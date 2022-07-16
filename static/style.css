@@ -1368,6 +1368,7 @@ label {
     color: var(--colorOne);
     border-radius: 4px;
     font-weight: normal;
+    text-align: center;
 }
 
 .templatecontentheadercenter {
