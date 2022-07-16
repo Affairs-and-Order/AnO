@@ -87,8 +87,7 @@ def get_econ_statistics(cId):
 
     def check_for_resource_upkeep(unit, amount):
         try:
-            convert_minus = list(
-                variables.INFRA[f'{unit}_convert_minus'][0].items())[0]
+            convert_minus = list(variables.INFRA[f'{unit}_convert_minus'][0].items())[0]
             minus = convert_minus[0]
             minus_amount = convert_minus[1] * amount
         except KeyError:
@@ -107,7 +106,8 @@ def get_econ_statistics(cId):
         expenses[unit_type]["money"] += operating_costs
 
     for unit, amount in total.items():
-        if amount != 0:
+        print(unit, amount)
+        if amount != 0 and amount is not None:
             check_for_resource_upkeep(unit, amount)
             check_for_monetary_upkeep(unit, amount)
 
