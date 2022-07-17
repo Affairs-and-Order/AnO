@@ -28,6 +28,7 @@
         }
     }
 </script>
+<script src="{{ url_for('static', filename='countdown.js') }}"></script>
 <style>
     .navbarparent {
         background: #36394500;
@@ -36,9 +37,18 @@
 </style>
 <div class="templatediv landingpagediv">
 
+
     <div class="landingtopper">
+
         <div class="landingparent parallaxifyBg">
+            
             <div class="landingchild landingchildleft">
+
+                <div id="countdown" style="background-color: white; height: 400px; ">
+                    <h1 style="text-align: center;">PRIVATE BETA LAUNCH</h1>
+                    <h1 id="count" style="text-align: center;">time</h1>
+                </div>
+
                 <h1 class="landingheader"><strong class="landingblueheader">Massively Multiplayer</strong> <strong class="landingwhiteheader">Nation Simulator</strong></h1>
 
                 <h2 class="landingcontent">Affairs and Order is a browser-based massively multiplayer nation building game where you can simulate your very own country.<br /><br />Please note that the game is not yet released. Stay up to date on the release date through our <a class="templatelink" href="https://discord.gg/94CstV2" target="blank" aria-label="discord" rel="noreferrer">discord server</a>.</h2>
