@@ -339,11 +339,12 @@ body::-webkit-scrollbar-thumb:hover {
     background: #36394580;
 }
 
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 body {
     background: var(--background) !important;
     padding: 0;
     margin: 0;
-    font-family: 'Roboto', sans-serif !important;
     animation: textload 0.5s;
     transition: all 0.3s ease;
     overflow-x: hidden;
@@ -351,6 +352,7 @@ body {
 
 * {
     scroll-behavior: smooth;
+    font-family: 'Raleway', sans-serif;
 }
 
 a {
@@ -1368,6 +1370,7 @@ label {
     color: var(--colorOne);
     border-radius: 4px;
     font-weight: normal;
+    text-align: center;
 }
 
 .templatecontentheadercenter {
@@ -1800,7 +1803,6 @@ label {
     max-width: 40vw;
     max-height: 40vh;
     box-shadow: rgba(39, 41, 59, 0.15) 0px 2px 5px 0px;
-    font-family: sans-serif;
     transition: all 0.3s ease-in-out;
     background: linear-gradient(-90deg, var(--foregroundFive) 50%, var(--foregroundFour) 50%);
     border: 1.5px solid var(--border);
