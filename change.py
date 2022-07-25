@@ -77,8 +77,7 @@ def request_password_reset():
         except:
             return error(400, "No account with the provided email exists.")
         
-    db.execute("INSERT INTO reset_codes (url_code, user_id, created_at) VALUES (%s, %s, %s)", 
-    (code, cId, int(datetime.now().timestamp())))
+    db.execute("INSERT INTO reset_codes (url_code, user_id, created_at) VALUES (%s, %s, %s)", (code, cId, int(datetime.now().timestamp())))
     sendEmail(email, code)
 
     connection.commit()

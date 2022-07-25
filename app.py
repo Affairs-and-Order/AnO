@@ -17,7 +17,7 @@ import logging
 
 app = Flask(__name__)
 
-logging.basicConfig(level=logging.ERROR, format=f'%(levelname)s: %(asctime)s %(name)s %(threadName)s : %(message)s', filename='errors.log',)
+logging.basicConfig(level=logging.ERROR, format='====\n%(levelname)s (%(created)f - %(asctime)s) (%(filename)s - %(funcName)s): %(message)s', filename='errors.log',)
 
 Markdown(app)
 
