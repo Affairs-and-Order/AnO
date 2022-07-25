@@ -19,14 +19,17 @@ import requests
 app = Flask(__name__)
 
 ### LOGGING
-logging.basicConfig(level=logging.ERROR, format='====\n%(levelname)s (%(created)f - %(asctime)s) (%(filename)s - %(funcName)s): %(message)s', filename='errors.log',)
+logging_format = '====\n%(levelname)s (%(created)f - %(asctime)s) (LINE %(lineno)d - %(filename)s - %(funcName)s): %(message)s'
+logging.basicConfig(level=logging.ERROR, format=logging_format, filename='errors.log',)
 logger = logging.getLogger(__name__)
 
 class RequestsHandler(logging.Handler):
     def send_discord_webhook(self, record):
-        url = "https://discord.com/api/webhooks/1001126540542758923/UXQNtImgFdGu7n70WJVdPoWb9PazG5WnEtqnPfg9Vhg7NPI9UCWtOpnuSUwSBnYljY4q"
+        formatter = logging.Formatter(logging_format)
+        message = formatter.format(record)
+        url = os.getenv("DISCORD_WEBHOOK_URL")
         data = {
-            "content" : record.getMessage(),
+            "content" : message,
             "username" : "A&O"
         }
         requests.post(url, json = data)
@@ -35,11 +38,13 @@ class RequestsHandler(logging.Handler):
         """Send the log records (created by loggers) to
         the appropriate destination.
         """
-        self.send_discord_webhook(record)
+        try:
+            environment = os.getenv("ENVIRONMENT")
+        except:
+            environment = "DEV"
 
-
-handler = RequestsHandler()
-logger.addHandler(handler)
+        if environment == "PROD":
+            self.send_discord_webhook(record)
 ###
 
 Markdown(app)
@@ -51,6 +56,9 @@ except:
 
 if environment == "PROD":
     app.secret_key = os.getenv("SECRET_KEY")
+        
+    handler = RequestsHandler()
+    logger.addHandler(handler)
 
 # Import written packages 
 # Don't put these above app = Flask(__name__), because it will cause a circular import error

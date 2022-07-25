@@ -15,7 +15,6 @@ def login():
 
     if request.method == "POST":
 
-        asdas;
 
         app.config["SESSION_PERMANENT"] = True
         app.permanent_session_lifetime = datetime.timedelta(days=365)
