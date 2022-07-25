@@ -30,7 +30,7 @@ class RequestsHandler(logging.Handler):
         url = os.getenv("DISCORD_WEBHOOK_URL")
         data = {
             "content" : message,
-            "username" : "A&O"
+            "username" : "A&O ERROR"
         }
         requests.post(url, json = data)
 
@@ -38,13 +38,7 @@ class RequestsHandler(logging.Handler):
         """Send the log records (created by loggers) to
         the appropriate destination.
         """
-        try:
-            environment = os.getenv("ENVIRONMENT")
-        except:
-            environment = "DEV"
-
-        if environment == "PROD":
-            self.send_discord_webhook(record)
+        self.send_discord_webhook(record)
 ###
 
 Markdown(app)
