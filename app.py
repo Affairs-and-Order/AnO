@@ -14,10 +14,33 @@ from psycopg2.extras import RealDictCursor
 from flaskext.markdown import Markdown
 from variables import MILDICT, PROVINCE_UNIT_PRICES
 import logging
+import requests
 
 app = Flask(__name__)
 
+### LOGGING
 logging.basicConfig(level=logging.ERROR, format='====\n%(levelname)s (%(created)f - %(asctime)s) (%(filename)s - %(funcName)s): %(message)s', filename='errors.log',)
+logger = logging.getLogger(__name__)
+
+class RequestsHandler(logging.Handler):
+    def send_discord_webhook(self, record):
+        url = "https://discord.com/api/webhooks/1001126540542758923/UXQNtImgFdGu7n70WJVdPoWb9PazG5WnEtqnPfg9Vhg7NPI9UCWtOpnuSUwSBnYljY4q"
+        data = {
+            "content" : record.getMessage(),
+            "username" : "A&O"
+        }
+        requests.post(url, json = data)
+
+    def emit(self, record):
+        """Send the log records (created by loggers) to
+        the appropriate destination.
+        """
+        self.send_discord_webhook(record)
+
+
+handler = RequestsHandler()
+logger.addHandler(handler)
+###
 
 Markdown(app)
 
