@@ -8,18 +8,11 @@ import bcrypt
 from string import ascii_uppercase, ascii_lowercase, digits
 from datetime import datetime
 from random import SystemRandom
-from flask_mail import Mail, Message
 load_dotenv()
 
-# Email config
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = os.getenv("MAIL_USERNAME")
-app.config['MAIL_PASSWORD'] = os.getenv("MAIL_PASSWORD")
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-
-mail = Mail(app)
+import os
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 def generateResetCode():
     length = 64
@@ -41,11 +34,20 @@ def generateUrlFromCode(code):
 
 def sendEmail(recipient, code):
     url = generateUrlFromCode(code)
-    msg = Message(f"Password change request")
-    msg.sender = os.getenv("MAIL_USERNAME")
-    msg.recipients = [recipient]
-    msg.body = f"Click this URL and complete further steps to change your password. {url}. If you did not request a password change, ignore this email."
-    mail.send(msg)
+    
+    message = Mail(
+        from_email=os.getenv("MAIL_USERNAME"),
+        to_emails=recipient,
+        subject='Affairs & Order | Password change request',
+        html_content=f'Click this URL and complete further steps to change your password. {url}. If you did not request a password change, ignore this email.')
+    try:
+        sg = SendGridAPIClient(os.getenv("SENDGRID_API_KEY"))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e.message)
 
 # Route for requesting the reset of a password, after which the user can reset his password.
 @app.route("/request_password_reset", methods=["POST"])
