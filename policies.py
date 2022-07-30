@@ -1,4 +1,4 @@
-from app import app
+from app import flapp as app
 from flask import request, redirect, session
 import psycopg2
 import os

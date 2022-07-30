@@ -16,7 +16,7 @@ from variables import MILDICT, PROVINCE_UNIT_PRICES
 import logging
 import requests
 
-app = Flask(__name__)
+flapp = Flask(__name__)
 
 ### LOGGING
 logging_format = '====\n%(levelname)s (%(created)f - %(asctime)s) (LINE %(lineno)d - %(filename)s - %(funcName)s): %(message)s'
@@ -41,7 +41,7 @@ class RequestsHandler(logging.Handler):
         self.send_discord_webhook(record)
 ###
 
-Markdown(app)
+Markdown(flapp)
 
 try:
     environment = os.getenv("ENVIRONMENT")
@@ -49,7 +49,7 @@ except:
     environment = "DEV"
 
 if environment == "PROD":
-    app.secret_key = os.getenv("SECRET_KEY")
+    flapp.secret_key = os.getenv("SECRET_KEY")
         
     handler = RequestsHandler()
     logger.addHandler(handler)
@@ -70,36 +70,36 @@ from intelligence import intelligence
 from upgrades import upgrades
 from change import change
 
-app.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
-app.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
+flapp.config["CELERY_BROKER_URL"] = os.getenv("CELERY_BROKER_URL")
+flapp.config["CELERY_RESULT_BACKEND"] = os.getenv("CELERY_RESULT_BACKEND")
 
 celery_beat_schedule = {
     "population_growth": {
-        "task": "app.task_population_growth",
+        "task": "flapp.task_population_growth",
         "schedule": crontab(minute=0, hour='*/1'), # Run hourly
     },
     "generate_province_revenue": {
-        "task": "app.task_generate_province_revenue",
+        "task": "flapp.task_generate_province_revenue",
         "schedule": crontab(minute=0, hour='*/1'), # Run hourly
     },
     "tax_income": {
-        "task": "app.task_tax_income",
+        "task": "flapp.task_tax_income",
         "schedule": crontab(minute=0, hour='*/1'), # Run hourly
     },
     "war_reparation_tax": {
-        "task": "app.task_war_reparation_tax",
+        "task": "flapp.task_war_reparation_tax",
         "schedule": crontab(minute=0, hour=0) # Run every day at midnight (UTC)
     },
     "manpower_increase": {
-        "task": "app.task_manpower_increase",
+        "task": "flapp.task_manpower_increase",
         "schedule": crontab(minute=0, hour=0) # Run everyday at midnight (UTC)
     }
 }
 
-celery = Celery(app.name)
+celery = Celery(flapp.name)
 celery.conf.update(
-    result_backend=app.config["CELERY_RESULT_BACKEND"],
-    broker_url=app.config["CELERY_BROKER_URL"],
+    result_backend=flapp.config["CELERY_RESULT_BACKEND"],
+    broker_url=flapp.config["CELERY_BROKER_URL"],
     timezone="UTC",
     task_serializer="json",
     accept_content=["json"],
@@ -161,11 +161,11 @@ def generate_error_code():
     full = f"{code}-{time}"
     return full
 
-@app.errorhandler(404)
+@flapp.errorhandler(404)
 def page_not_found(error):
     return render_template("error.html", code=404, message="Page not found!")
 
-@app.errorhandler(405)
+@flapp.errorhandler(405)
 def method_not_allowed(error):
     method = request.method
     if method == "POST": correct_method = "GET"
@@ -174,7 +174,7 @@ def method_not_allowed(error):
     message = f"Sorry, this method is not allowed! The correct method is {correct_method}"
     return render_template("error.html", code=405, message=message)
 
-@app.errorhandler(500)
+@flapp.errorhandler(500)
 def invalid_server_error(error):
     error_message = "Invalid Server Error. Sorry about that."
     error_code = generate_error_code()
@@ -182,7 +182,7 @@ def invalid_server_error(error):
     return render_template("error.html", code=500, message=error_message, error_code=error_code)
 
 # Jinja2 filter to add commas to numbers
-@app.template_filter()
+@flapp.template_filter()
 def commas(value):
     try:
         rounded = round(value)
@@ -192,7 +192,7 @@ def commas(value):
     return returned
 
 # Jinja2 filter to render province building resource strings
-@app.template_filter()
+@flapp.template_filter()
 def prores(unit):
     change_price = False
     unit = unit.lower()
@@ -224,7 +224,7 @@ def prores(unit):
     return full
 
 # Jinja2 filter to render military unit resource strings
-@app.template_filter()
+@flapp.template_filter()
 def milres(unit):
     change_price = False
     if "," in unit:
@@ -259,19 +259,19 @@ def get_resources():
     except TypeError:
         return {}
 
-@app.context_processor
+@flapp.context_processor
 def inject_user():
     return dict(get_resources=get_resources)
 
-@app.route("/", methods=["GET"])
+@flapp.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
 
-@app.route("/robots.txt")
+@flapp.route("/robots.txt")
 def robots():
     return send_from_directory("static", "robots.txt")
 
-@app.route("/account", methods=["GET"])
+@flapp.route("/account", methods=["GET"])
 @login_required
 def account():
     conn = psycopg2.connect(
@@ -291,24 +291,24 @@ def account():
 
     return render_template("account.html", user=user)
 
-@app.route("/recruitments", methods=["GET"])
+@flapp.route("/recruitments", methods=["GET"])
 @login_required
 def recruitments():
     return render_template("recruitments.html")
 
-@app.route("/businesses", methods=["GET"])
+@flapp.route("/businesses", methods=["GET"])
 @login_required
 def businesses():
     return render_template("businesses.html")
 
 """
 @login_required
-@app.route("/assembly", methods=["GET"])
+@flapp.route("/assembly", methods=["GET"])
 def assembly():
     return render_template("assembly.html")
 """
 
-@app.route("/logout")
+@flapp.route("/logout")
 def logout():
     if session.get('user_id') is not None:
         session.clear()
@@ -316,11 +316,11 @@ def logout():
         pass
     return redirect("/")
 
-@app.route("/tutorial", methods=["GET"])
+@flapp.route("/tutorial", methods=["GET"])
 def tutorial():
     return render_template("tutorial.html")
 
-@app.route("/forgot_password", methods=["GET"])
+@flapp.route("/forgot_password", methods=["GET"])
 def forget_password():
     return render_template("forgot_password.html")
 
@@ -330,21 +330,21 @@ def statistics():
     return render_template("statistics.html")
 """
 
-@app.route("/my_offers", methods=["GET"])
+@flapp.route("/my_offers", methods=["GET"])
 def myoffers():
     return render_template("my_offers.html")
 
-@app.route("/war", methods=["GET"])
+@flapp.route("/war", methods=["GET"])
 def war():
     return render_template("war.html")
 
-@app.route("/warresult", methods=["GET"])
+@flapp.route("/warresult", methods=["GET"])
 def warresult():
     return render_template("warresult.html")
 
-@app.route("/mass_purchase", methods=["GET"])
+@flapp.route("/mass_purchase", methods=["GET"])
 def mass_purchase():
     return render_template("mass_purchase.html")
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', use_reloader=False)
+    flapp.run(host='0.0.0.0', use_reloader=False)

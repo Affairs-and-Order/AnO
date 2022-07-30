@@ -3,7 +3,7 @@ from helpers import login_required, error
 import psycopg2
 import os
 # Game.ping() # temporarily removed this line because it might make celery not work
-from app import app
+from app import flapp as app
 from dotenv import load_dotenv
 load_dotenv()
 from psycopg2.extras import RealDictCursor

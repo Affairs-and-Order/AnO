@@ -1,6 +1,6 @@
 # FULLY MIGRATED
 
-from app import app
+from app import flapp as app
 from flask import request, render_template, session, redirect
 from helpers import login_required, error
 from attack_scripts import Military

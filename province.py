@@ -1,7 +1,7 @@
 from flask import request, render_template, session, redirect
 from helpers import login_required, error
 import psycopg2
-from app import app
+from app import flapp as app
 from dotenv import load_dotenv
 import os
 import variables
