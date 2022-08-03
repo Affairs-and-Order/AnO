@@ -1,6 +1,6 @@
 # FULLY MIGRATED
 import random
-from app import flapp as app
+from app import app
 from flask import request, render_template, session, redirect
 import psycopg2
 from helpers import login_required, error, get_flagname

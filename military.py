@@ -1,7 +1,7 @@
 from flask import request, render_template, session, redirect, flash
 from helpers import login_required, error
 import psycopg2
-from app import flapp as app
+from app import app
 from attack_scripts import Military
 from dotenv import load_dotenv
 load_dotenv()

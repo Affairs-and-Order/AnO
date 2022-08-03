@@ -5,7 +5,7 @@ import datetime
 from helpers import error
 import psycopg2
 # Game.ping() # temporarily removed this line because it might make celery not work
-from app import flapp as app
+from app import app
 import bcrypt
 from requests_oauthlib import OAuth2Session
 import os

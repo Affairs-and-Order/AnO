@@ -2,7 +2,7 @@ from flask import request, render_template, session, redirect
 from helpers import error
 import psycopg2
 # Game.ping() # temporarily removed this line because it might make celery not work
-from app import flapp as app
+from app import app
 import bcrypt
 import os
 from requests_oauthlib import OAuth2Session

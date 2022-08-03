@@ -2,7 +2,7 @@ from flask import request, render_template, session, redirect
 from helpers import login_required
 import psycopg2
 from helpers import get_influence, error
-from app import flapp as app
+from app import app
 import os
 import variables
 from dotenv import load_dotenv
