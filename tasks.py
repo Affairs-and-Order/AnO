@@ -1,4 +1,5 @@
 from celery import Celery
+from app import app as flask_app
 import psycopg2
 import os
 import time
@@ -8,7 +9,6 @@ import math
 import variables
 from psycopg2.extras import RealDictCursor
 from celery.schedules import crontab
-from app import app as flask_app
 load_dotenv()
 
 flask_app.config['CELERY_BROKER_URL'] = os.getenv("broker_url")

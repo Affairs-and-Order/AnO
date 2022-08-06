@@ -1,11 +1,9 @@
 from flask import Flask, request, render_template, session, redirect, send_from_directory
-from celery import Celery
 from helpers import login_required
 import psycopg2
 from dotenv import load_dotenv
 load_dotenv()
 import os
-from celery.schedules import crontab
 import datetime
 import random
 import string
@@ -65,7 +63,7 @@ from coalitions import leave_col, join_col, coalitions, coalition, establish_coa
 from military import military, military_sell_buy
 from province import createprovince, province, provinces, province_sell_buy
 from market import market, buy_market_offer, marketoffer, my_offers
-from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax
+from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax, celery
 from intelligence import intelligence
 from upgrades import upgrades
 from change import change

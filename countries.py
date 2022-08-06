@@ -2,12 +2,12 @@ from flask import request, render_template, session, redirect
 from helpers import login_required
 import psycopg2
 from helpers import get_influence, error
+from tasks import calc_pg, calc_ti, rations_needed
 from app import app
 import os
 import variables
 from dotenv import load_dotenv
 from coalitions import get_user_role
-from tasks import calc_pg, calc_ti, rations_needed
 from collections import defaultdict
 from policies import get_user_policies
 from operator import itemgetter
