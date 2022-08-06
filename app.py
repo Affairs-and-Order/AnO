@@ -1,25 +1,40 @@
+from change import change
+from upgrades import upgrades
+from intelligence import intelligence
+from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax
+from market import market, buy_market_offer, marketoffer, my_offers
+from province import createprovince, province, provinces, province_sell_buy
+from military import military, military_sell_buy
+from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
+from countries import country, countries, update_info
+from signup import signup
+from login import login
+from wars import wars, find_targets
+from policies import policies
+import requests
+import logging
+from variables import MILDICT, PROVINCE_UNIT_PRICES
+from flaskext.markdown import Markdown
+from psycopg2.extras import RealDictCursor
+from datetime import datetime
+import string
+import random
+import datetime
+import os
 from flask import Flask, request, render_template, session, redirect, send_from_directory
 from helpers import login_required
 import psycopg2
 from dotenv import load_dotenv
 load_dotenv()
-import os
-import datetime
-import random
-import string
-from datetime import datetime
-from psycopg2.extras import RealDictCursor
-from flaskext.markdown import Markdown
-from variables import MILDICT, PROVINCE_UNIT_PRICES
-import logging
-import requests
 
 app = Flask(__name__)
 
-### LOGGING
+# LOGGING
 logging_format = '====\n%(levelname)s (%(created)f - %(asctime)s) (LINE %(lineno)d - %(filename)s - %(funcName)s): %(message)s'
-logging.basicConfig(level=logging.ERROR, format=logging_format, filename='errors.log',)
+logging.basicConfig(level=logging.ERROR,
+                    format=logging_format, filename='errors.log',)
 logger = logging.getLogger(__name__)
+
 
 class RequestsHandler(logging.Handler):
     def send_discord_webhook(self, record):
@@ -27,10 +42,10 @@ class RequestsHandler(logging.Handler):
         message = formatter.format(record)
         url = os.getenv("DISCORD_WEBHOOK_URL")
         data = {
-            "content" : message,
-            "username" : "A&O ERROR"
+            "content": message,
+            "username": "A&O ERROR"
         }
-        requests.post(url, json = data)
+        requests.post(url, json=data)
 
     def emit(self, record):
         """Send the log records (created by loggers) to
@@ -38,6 +53,7 @@ class RequestsHandler(logging.Handler):
         """
         self.send_discord_webhook(record)
 ###
+
 
 Markdown(app)
 
@@ -48,92 +64,39 @@ except:
 
 if environment == "PROD":
     app.secret_key = os.getenv("SECRET_KEY")
-        
+
     handler = RequestsHandler()
     logger.addHandler(handler)
 
-# Import written packages 
+# Import written packages
 # Don't put these above app = Flask(__name__), because it will cause a circular import error
-from policies import policies
-from wars import wars, find_targets
-from login import login
-from signup import signup
-from countries import country, countries, update_info
-from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
-from military import military, military_sell_buy
-from province import createprovince, province, provinces, province_sell_buy
-from market import market, buy_market_offer, marketoffer, my_offers
-from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax, celery
-from intelligence import intelligence
-from upgrades import upgrades
-from change import change
 
-@celery.task()
-def task_population_growth(): population_growth()
-
-@celery.task()
-def task_tax_income(): tax_income()
-
-@celery.task()
-def task_generate_province_revenue(): generate_province_revenue()
-
-# Runs once a day
-# Transfer X% of all resources (could depends on conditions like Raze war_type) to the winner side after a war
-@celery.task()
-def task_war_reparation_tax(): war_reparation_tax()
-
-@celery.task()
-def task_manpower_increase():
-    conn = psycopg2.connect(
-    database=os.getenv("PG_DATABASE"),
-    user=os.getenv("PG_USER"),
-    password=os.getenv("PG_PASSWORD"),
-    host=os.getenv("PG_HOST"),
-    port=os.getenv("PG_PORT"))
-    db = conn.cursor()
-
-    db.execute("SELECT id FROM users")
-    user_ids = db.fetchall()
-    for id in user_ids:
-        db.execute("SELECT SUM(population) FROM provinces WHERE userid=(%s)", (id[0],))
-        population = db.fetchone()[0]
-        if population:
-            capable_population = population*0.2
-
-            # Currently this is a constant
-            army_tradition = 0.1
-            produced_manpower = int(capable_population*army_tradition)
-
-            db.execute("SELECT manpower FROM military WHERE id=(%s)", (id[0],))
-            manpower = db.fetchone()[0]
-
-            if manpower+produced_manpower >= population:
-                produced_manpower = 0
-
-            db.execute("UPDATE military SET manpower=manpower+(%s) WHERE id=(%s)",(produced_manpower, id[0]))
-
-    conn.commit()
-    conn.close()
 
 def generate_error_code():
     numbers = 20
-    code = ''.join(random.choice(string.ascii_lowercase + string.digits) for _ in range(numbers))
+    code = ''.join(random.choice(string.ascii_lowercase + string.digits)
+                   for _ in range(numbers))
     time = int(datetime.now().timestamp())
     full = f"{code}-{time}"
     return full
+
 
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template("error.html", code=404, message="Page not found!")
 
+
 @app.errorhandler(405)
 def method_not_allowed(error):
     method = request.method
-    if method == "POST": correct_method = "GET"
-    elif method == "GET": correct_method = "POST"
+    if method == "POST":
+        correct_method = "GET"
+    elif method == "GET":
+        correct_method = "POST"
 
     message = f"Sorry, this method is not allowed! The correct method is {correct_method}"
     return render_template("error.html", code=405, message=message)
+
 
 @app.errorhandler(500)
 def invalid_server_error(error):
@@ -143,6 +106,8 @@ def invalid_server_error(error):
     return render_template("error.html", code=500, message=error_message, error_code=error_code)
 
 # Jinja2 filter to add commas to numbers
+
+
 @app.template_filter()
 def commas(value):
     try:
@@ -153,6 +118,8 @@ def commas(value):
     return returned
 
 # Jinja2 filter to render province building resource strings
+
+
 @app.template_filter()
 def prores(unit):
     change_price = False
@@ -169,22 +136,27 @@ def prores(unit):
 
     print(unit)
     unit_name = unit.replace("_", " ").capitalize()
-    if unit_name == "Coal burners": unit_name = "Coal power plants"
+    if unit_name == "Coal burners":
+        unit_name = "Coal power plants"
     try:
         unit = renames[unit_name]
     except KeyError:
         ...
 
     price = PROVINCE_UNIT_PRICES[f'{unit}_price']
-    if change_price: price = price * change_price
+    if change_price:
+        price = price * change_price
     try:
-        resources = ", ".join([f"{i[1]} {i[0]}" for i in PROVINCE_UNIT_PRICES[f"{unit}_resource"].items()])
+        resources = ", ".join(
+            [f"{i[1]} {i[0]}" for i in PROVINCE_UNIT_PRICES[f"{unit}_resource"].items()])
         full = f"{unit_name} cost { commas(price) }, { resources } each"
     except:
         full = f"{unit_name} cost { commas(price) } each"
     return full
 
 # Jinja2 filter to render military unit resource strings
+
+
 @app.template_filter()
 def milres(unit):
     change_price = False
@@ -193,13 +165,16 @@ def milres(unit):
         unit = split_unit[0]
         change_price = float(split_unit[1])
     price = MILDICT[unit]['price']
-    if change_price: price = price * change_price
+    if change_price:
+        price = price * change_price
     try:
-        resources = ", ".join([f"{i[1]} {i[0]}" for i in MILDICT[unit]["resources"].items()])
+        resources = ", ".join(
+            [f"{i[1]} {i[0]}" for i in MILDICT[unit]["resources"].items()])
         full = f"{unit.capitalize()} cost { commas(price) }, { resources } each"
     except:
         full = f"{unit.capitalize()} cost { commas(price) } each"
     return full
+
 
 def get_resources():
     conn = psycopg2.connect(
@@ -213,24 +188,29 @@ def get_resources():
     cId = session["user_id"]
 
     try:
-        db.execute("SELECT * FROM resources INNER JOIN stats ON resources.id=stats.id WHERE stats.id=%s", (cId,))
+        db.execute(
+            "SELECT * FROM resources INNER JOIN stats ON resources.id=stats.id WHERE stats.id=%s", (cId,))
         resources = dict(db.fetchone())
         conn.close()
         return resources
     except TypeError:
         return {}
 
+
 @app.context_processor
 def inject_user():
     return dict(get_resources=get_resources)
+
 
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
 
+
 @app.route("/robots.txt")
 def robots():
     return send_from_directory("static", "robots.txt")
+
 
 @app.route("/account", methods=["GET"])
 @login_required
@@ -252,15 +232,18 @@ def account():
 
     return render_template("account.html", user=user)
 
+
 @app.route("/recruitments", methods=["GET"])
 @login_required
 def recruitments():
     return render_template("recruitments.html")
 
+
 @app.route("/businesses", methods=["GET"])
 @login_required
 def businesses():
     return render_template("businesses.html")
+
 
 """
 @login_required
@@ -268,6 +251,7 @@ def businesses():
 def assembly():
     return render_template("assembly.html")
 """
+
 
 @app.route("/logout")
 def logout():
@@ -277,13 +261,16 @@ def logout():
         pass
     return redirect("/")
 
+
 @app.route("/tutorial", methods=["GET"])
 def tutorial():
     return render_template("tutorial.html")
 
+
 @app.route("/forgot_password", methods=["GET"])
 def forget_password():
     return render_template("forgot_password.html")
+
 
 """
 @app.route("/statistics", methods=["GET"])
@@ -291,21 +278,26 @@ def statistics():
     return render_template("statistics.html")
 """
 
+
 @app.route("/my_offers", methods=["GET"])
 def myoffers():
     return render_template("my_offers.html")
+
 
 @app.route("/war", methods=["GET"])
 def war():
     return render_template("war.html")
 
+
 @app.route("/warresult", methods=["GET"])
 def warresult():
     return render_template("warresult.html")
 
+
 @app.route("/mass_purchase", methods=["GET"])
 def mass_purchase():
     return render_template("mass_purchase.html")
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', use_reloader=False)

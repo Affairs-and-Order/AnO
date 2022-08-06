@@ -1,5 +1,4 @@
 from celery import Celery
-from app import app as flask_app
 import psycopg2
 import os
 import time
@@ -11,27 +10,30 @@ from psycopg2.extras import RealDictCursor
 from celery.schedules import crontab
 load_dotenv()
 
-flask_app.config['CELERY_BROKER_URL'] = os.getenv("broker_url")
-flask_app.config['result_backend'] = os.getenv("broker_url")
-celery = Celery(flask_app.name, broker=flask_app.config['CELERY_BROKER_URL'])
-celery.conf.update(flask_app.config)
+celery = Celery("tasks", broker=os.getenv("broker_url"))
+celery.conf.update(
+    broker_url=os.getenv("broker_url"),
+    result_backend=os.getenv("broker_url"),
+    CELERY_BROKER_URL=os.getenv("broker_url")
+)
 
 celery_beat_schedule = {
     "population_growth": {
-        "task": "app.task_population_growth",
-        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
+        "task": "tasks.task_population_growth",
+        "schedule": crontab(minute=0, hour='*/1'),  # Run hourly
     },
     "generate_province_revenue": {
-        "task": "app.task_generate_province_revenue",
-        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
+        "task": "tasks.task_generate_province_revenue",
+        "schedule": crontab(minute=0, hour='*/1'),  # Run hourly
     },
     "tax_income": {
-        "task": "app.task_tax_income",
-        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
+        "task": "tasks.task_tax_income",
+        "schedule": crontab(minute=0, hour='*/1'),  # Run hourly
     },
     "war_reparation_tax": {
-        "task": "app.task_war_reparation_tax",
-        "schedule": crontab(minute=0, hour=0) # Run every day at midnight (UTC)
+        "task": "tasks.task_war_reparation_tax",
+        # Run every day at midnight (UTC)
+        "schedule": crontab(minute=0, hour=0)
     },
     "manpower_increase": {
         "task": "app.task_manpower_increase",
@@ -761,3 +763,58 @@ def war_reparation_tax():
                     eco.transfer_resources(resource, resource_amount*(1/5), winner)
 
     conn.commit()
+
+
+@celery.task()
+def task_population_growth(): population_growth()
+
+
+@celery.task()
+def task_tax_income(): tax_income()
+
+
+@celery.task()
+def task_generate_province_revenue(): generate_province_revenue()
+
+# Runs once a day
+# Transfer X% of all resources (could depends on conditions like Raze war_type) to the winner side after a war
+
+
+@celery.task()
+def task_war_reparation_tax(): war_reparation_tax()
+
+
+@celery.task()
+def task_manpower_increase():
+    conn = psycopg2.connect(
+        database=os.getenv("PG_DATABASE"),
+        user=os.getenv("PG_USER"),
+        password=os.getenv("PG_PASSWORD"),
+        host=os.getenv("PG_HOST"),
+        port=os.getenv("PG_PORT"))
+    db = conn.cursor()
+
+    db.execute("SELECT id FROM users")
+    user_ids = db.fetchall()
+    for id in user_ids:
+        db.execute(
+            "SELECT SUM(population) FROM provinces WHERE userid=(%s)", (id[0],))
+        population = db.fetchone()[0]
+        if population:
+            capable_population = population*0.2
+
+            # Currently this is a constant
+            army_tradition = 0.1
+            produced_manpower = int(capable_population*army_tradition)
+
+            db.execute("SELECT manpower FROM military WHERE id=(%s)", (id[0],))
+            manpower = db.fetchone()[0]
+
+            if manpower+produced_manpower >= population:
+                produced_manpower = 0
+
+            db.execute("UPDATE military SET manpower=manpower+(%s) WHERE id=(%s)",
+                       (produced_manpower, id[0]))
+
+    conn.commit()
+    conn.close()
