@@ -17,40 +17,6 @@ import logging
 import requests
 
 app = Flask(__name__)
-app.config['CELERY_BROKER_URL'] = os.getenv("CELERY_BROKER_URL")
-app.config['CELERY_RESULT_BACKEND'] = os.getenv("CELERY_RESULT_BACKEND")
-celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'])
-celery.conf.update(app.config)
-
-celery_beat_schedule = {
-    "population_growth": {
-        "task": "app.task_population_growth",
-        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
-    },
-    "generate_province_revenue": {
-        "task": "app.task_generate_province_revenue",
-        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
-    },
-    "tax_income": {
-        "task": "app.task_tax_income",
-        "schedule": crontab(minute=0, hour='*/1'), # Run hourly
-    },
-    "war_reparation_tax": {
-        "task": "app.task_war_reparation_tax",
-        "schedule": crontab(minute=0, hour=0) # Run every day at midnight (UTC)
-    },
-    "manpower_increase": {
-        "task": "app.task_manpower_increase",
-        "schedule": crontab(minute=0, hour=0) # Run everyday at midnight (UTC)
-    }
-}
-
-celery.conf.update(timezone="UTC",
-    task_serializer="json",
-    accept_content=["json"],
-    result_serializer="json",
-    beat_schedule=celery_beat_schedule,
-)
 
 ### LOGGING
 logging_format = '====\n%(levelname)s (%(created)f - %(asctime)s) (LINE %(lineno)d - %(filename)s - %(funcName)s): %(message)s'
