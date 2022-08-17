@@ -1,10 +1,13 @@
-from change import change
+from flask import Flask, request, render_template, session, redirect, send_from_directory
+app = Flask(__name__)
+
 from upgrades import upgrades
 from intelligence import intelligence
 from tasks import tax_income, population_growth, generate_province_revenue, war_reparation_tax
 from market import market, buy_market_offer, marketoffer, my_offers
 from province import createprovince, province, provinces, province_sell_buy
 from military import military, military_sell_buy
+from change import request_password_reset
 from coalitions import leave_col, join_col, coalitions, coalition, establish_coalition, my_coalition, removing_requests, adding
 from countries import country, countries, update_info
 from signup import signup
@@ -21,13 +24,11 @@ import string
 import random
 import datetime
 import os
-from flask import Flask, request, render_template, session, redirect, send_from_directory
 from helpers import login_required
 import psycopg2
 from dotenv import load_dotenv
 load_dotenv()
 
-app = Flask(__name__)
 
 # LOGGING
 logging_format = '====\n%(levelname)s (%(created)f - %(asctime)s) (LINE %(lineno)d - %(filename)s - %(funcName)s): %(message)s'
