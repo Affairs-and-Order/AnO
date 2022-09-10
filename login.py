@@ -29,12 +29,14 @@ def login():
         db = connection.cursor()  # creates the cursor for db connection
 
         # gets the password input from the form
-        password = request.form.get("password").encode("utf-8")
+        password = request.form.get("password")
         # gets the username input from the forms
         username = request.form.get("username")
 
         if not username or not password:  # checks if inputs are blank
             return error(400, "No Password or Username")
+
+        password = password.encode("utf-8")
 
         # selects data about user, from users
         # to run locally remove "AND auth_type='normal'", type it back in before pushing to github

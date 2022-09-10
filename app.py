@@ -89,13 +89,7 @@ def page_not_found(error):
 
 @app.errorhandler(405)
 def method_not_allowed(error):
-    method = request.method
-    if method == "POST":
-        correct_method = "GET"
-    elif method == "GET":
-        correct_method = "POST"
-
-    message = f"Sorry, this method is not allowed! The correct method is {correct_method}"
+    message = f"This request method is not allowed!"
     return render_template("error.html", code=405, message=message)
 
 
