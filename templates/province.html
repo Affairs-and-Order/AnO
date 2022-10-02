@@ -1605,7 +1605,7 @@
                         </div>
 
                     </div>
-                    {% elif province['location'] in ["Savanna", "Jungle", "Mountain Range"] %}
+                    {% elif province['location'] in ["Savanna", "Mountain Range", "Jungle"] %}
                     <!-- Coal mines -->
                     <div class="menudiv">
 
@@ -1753,7 +1753,7 @@
                         </div>
 
                     </div>
-                    {% elif province['location'] in ["Jungle", "Boreal Forest"] %}
+                    {% elif province['location'] in ["Boreal Forest"] %}
                     <!-- Lumber mills -->
                     <div class="menudiv">
                         <h2 class="templatecontentheaderleft">Lumber Mills</h2>
@@ -1898,30 +1898,29 @@
 
                     </div>
                     {% elif province['location'] in ["Jungle"] %}
-                    <!-- Coal mines -->
+                    <!-- Lumber mills -->
                     <div class="menudiv">
-
-                        <h2 class="templatecontentheaderleft">Coal Mines</h2>
+                        <h2 class="templatecontentheaderleft">Lumber Mills</h2>
 
                         <div class="templatedivflex2 menuflex warflexparentcolors">
                             <div class="templatedivflex2left">
 
-                                <h3 class="templatecontentheadercenter">You have {{ units["coal_mines"] }} Coal Mines</h3>
+                                <h3 class="templatecontentheadercenter">You have {{ units["lumber_mills"] }} Lumber Mills</h3>
 
-                                <p class="templatecontentpleft">Coal mines produce coal. Coal can be used to fuel coal power plants, or can be combined with iron to produce steel.</p>
+                                <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
                                 {% if upgrades["cheapermaterials"] %}
-                                <ul>Coal mines cost {{ (8000 * 0.8) | commas }} per hour {% else %}
-                                    <ul>Coal mines cost 8,000 per hour {% endif %} and produce 26 coal per hour, as well as +2% pollution</ul>
-                                    <ul>{{ "coal_mines" | prores }}</ul>
+                                <ul>Lumber mills cost {{ (7500 * 0.8) | commas }} per hour {% else %}
+                                    <ul>Lumber mills cost 7,500 per hour {% endif %} and produce 32 lumber per hour, as well as +1% pollution</ul>
+                                    <ul>{{ "lumber_mills" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
-                                        <input class="loginsignupinput" autocomplete="off" name="coal_mines" type="number" placeholder="Amount" />
+                                        <input class="loginsignupinput" autocomplete="off" name="lumber_mills" type="number" placeholder="Amount" />
 
                                         <div class="templatedivflex2 divflex2center">
                                             <div class="templatedivflex2left flexchildvanilla">
 
-                                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/coal_mines/{{ province['id'] }}"><span
+                                                <button class="templatedivbutton templatecenteredbutton" formaction="/buy/lumber_mills/{{ province['id'] }}"><span
                                                 class="material-icons-outlined">
                                                 add_circle_outline
                                             </span>Buy</button>
@@ -1929,21 +1928,19 @@
                                             </div>
                                             <div class="templatedivflex2left flexchildvanilla">
 
-                                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/coal_mines/{{ province['id'] }}"><span class="material-icons-outlined">
+                                                <button class="templatedivbutton templatecenteredbutton" formaction="/sell/lumber_mills/{{ province['id'] }}"><span
+                                                class="material-icons-outlined">
                                                 remove_circle_outline
                                             </span>Sell</button>
 
                                             </div>
                                         </div>
                                     </div>
-
                             </div>
-
                             <div class="templatedivflex2left">
-                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/coalmine.jpg') }}" />
+                                <img tabindex="0" class="unitimage" src="{{ url_for('static', filename='images/lumbermill.jpg') }}" />
                             </div>
                         </div>
-
                     </div>
                     {% endif %}
 
@@ -2009,8 +2006,9 @@
                                 <p class="templatecontentpleft">Lumber mills produce lumber, a useful raw resource used to mines and farms.</p>
 
                                 {% if upgrades["cheapermaterials"] %}
-                                <ul>Lumber mills cost {{ (7500 * 0.8) | commas }} per hour {% else %}
-                                    <ul>Lumber mills cost 7,500 per hour {% endif %} and produce 32 lumber per hour, as well as +1% pollution</ul>
+                                <ul>Lumber mills cost {{ (7500 * 0.8) | commas }} per hour 
+                                {% else %}
+                                <ul>Lumber mills cost 7,500 per hour {% endif %} and produce 32 lumber per hour, as well as +1% pollution</ul>
                                     <ul>{{ "lumber_mills" | prores }}</ul>
 
                                     <div class="purchasemilitarydiv">
