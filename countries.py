@@ -150,18 +150,20 @@ def get_revenue(cId):
         port=os.getenv("PG_PORT"))
 
     db = conn.cursor()
+    dbd = conn.cursor(cursor_factory=RealDictCursor)
 
     cg_needed = cg_need(cId)
 
     db.execute("SELECT id FROM provinces WHERE userId=%s", (cId,))
-    provinces_list = db.fetchall()
+    provinces = db.fetchall()
 
     revenue = {
         "gross": {},
         "net": {}
     }
 
-    infra = variables.INFRA
+    """
+    infra = variables.NEW_INFRA
     resources = variables.RESOURCES
     resources.append("money")
     for resource in resources:
@@ -172,48 +174,82 @@ def get_revenue(cId):
         province_id = province_id[0]
 
         buildings = variables.BUILDINGS
+        
 
         for building in buildings:
-            building_query = f"SELECT {building}" + \
-                " FROM proInfra WHERE id=%s"
+            building_query = f"SELECT {building}" + " FROM proInfra WHERE id=%s"
             db.execute(building_query, (province_id,))
             building_count = db.fetchone()[0]
 
             # Gross and initial net calculations
-            try:
-                plus_data = list(infra[f'{building}_plus'].items())[0]
+            plus = infra[building]["plus"]
+            presource = list(plus.keys())[0]
+            pamount = plus[resource]
 
-                plus_resource = plus_data[0]
-                plus_amount = plus_data[1]
+            if building == "farms":
+                db.execute("SELECT land FROM provinces WHERE id=%s", (province_id,))
+                land = db.fetchone()[0]
+                pamount *= land
 
-                if building == "farms":
-                    db.execute(
-                        "SELECT land FROM provinces WHERE id=%s", (province_id,))
-                    land = db.fetchone()[0]
-                    plus_amount *= land
+            total = building_count * pamount
+            revenue["gross"][presource] += total
+            revenue["net"][presource] += total
 
-                total = building_count * plus_amount
-                revenue["gross"][plus_resource] += total
-                revenue["net"][plus_resource] += total
-            except:
-                pass
-
-            operating_costs = infra[f'{building}_money'] * building_count
+            operating_costs = infra[building]["money"] * building_count
             revenue["net"]["money"] -= operating_costs
 
             # Net removal from initial net
-            try:
-                convert_minus = infra[f'{building}_convert_minus']
-                for data in convert_minus:
-                    minus_resource, minus_amount = list(data.items())[0]
-                    total = building_count * minus_amount
-                    revenue["net"][minus_resource] -= total
-            except:
-                pass
+            minus = infra[building]["minus"]
+            mresource = list(minus.keys())[0]
+            mamount = minus[mresource]
 
+            total = building_count * mamount
+            revenue["net"][presource] -= total
+    """
+    infra = variables.NEW_INFRA
+    resources = variables.RESOURCES
+    resources.extend(["money", "energy"])
+    for resource in resources:
+        revenue["gross"][resource] = 0
+        revenue["net"][resource] = 0
+    for province in provinces:
+        province = province[0]
+
+        dbd.execute("SELECT * FROM proInfra WHERE id=%s", (province,))
+        buildings = dict(dbd.fetchone())
+
+        for building, build_count in buildings.items():
+            if building == "id": continue
+
+            operating_costs = infra[building]["money"] * build_count
+            revenue["net"]["money"] -= operating_costs
+
+            try:
+                plus = infra[building]["plus"]
+            except KeyError:
+                plus = {}
+            for resource, amount in plus.items():
+                if building == "farms":
+                    db.execute("SELECT land FROM provinces WHERE id=%s", (province,))
+                    land = db.fetchone()[0]
+                    amount *= land
+
+                total = build_count * amount
+                revenue["gross"][resource] += total
+                revenue["net"][resource] += total
+
+            try:
+                minus = infra[building]["minus"]
+            except KeyError:
+                minus = {}
+            for resource, amount in minus.items():
+
+                total = build_count * amount
+                revenue["net"][resource] -= total
+                
     db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
     current_cg = db.fetchone()[0]
-    current_cg += revenue["gross"]["consumer_goods"]
+    current_cg += revenue["net"]["consumer_goods"]
 
     ti_money, ti_cg = calc_ti(cId, current_cg)
 
@@ -225,15 +261,14 @@ def get_revenue(cId):
     revenue["net"]["money"] += ti_money - current_money
 
     if current_cg - ti_cg == cg_needed:
-        revenue["net"]["consumer_goods"] = cg_needed * - \
-            1 + revenue["gross"]["consumer_goods"]
+        revenue["net"]["consumer_goods"] = cg_needed * - 1 + revenue["gross"]["consumer_goods"]
     elif current_cg > ti_cg:
         revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
 
     db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
     current_rations = db.fetchone()[0]
 
-    prod_rations = revenue["gross"]["rations"]
+    prod_rations = revenue["net"]["rations"]
     new_rations = next_turn_rations(cId, prod_rations)
     revenue["net"]["rations"] = new_rations - current_rations
 
@@ -258,7 +293,6 @@ def next_turn_rations(cId, prod_rations):
     current_rations = db.fetchone()[0] + prod_rations
 
     for pId in provinces:
-
         rations, _ = calc_pg(pId, current_rations)
         current_rations = rations
 

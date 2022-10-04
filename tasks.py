@@ -505,6 +505,7 @@ def generate_province_revenue(): # Runs each hour
         infra_ids = []
 
     for province_id, user_id, land in infra_ids:
+        if user_id != 8: continue
         db.execute("UPDATE provinces SET energy=0 WHERE id=%s", (province_id,)) # So energy would reset each turn
 
         dbdict.execute("SELECT * FROM upgrades WHERE user_id=%s", (user_id, ))
@@ -520,6 +521,7 @@ def generate_province_revenue(): # Runs each hour
         units = dict(dbdict.fetchone())
 
         for unit in columns:
+            if unit != "farms": continue
             unit_amount = units[unit]
             
             if unit_amount == 0:
@@ -636,7 +638,7 @@ def generate_province_revenue(): # Runs each hour
                 if unit == "farms":
                     if upgrades["advancedmachinery"]: plus[next(iter(plus))] *= 1.5
 
-                    plus[next(iter(plus))] *= (land / 2)
+                    plus[next(iter(plus))] += (land * 8)
                     plus[next(iter(plus))] = int(plus[next(iter(plus))])
 
                 # Function for _plus
@@ -818,3 +820,6 @@ def task_manpower_increase():
 
     conn.commit()
     conn.close()
+
+for i in range(10):
+    generate_province_revenue()
