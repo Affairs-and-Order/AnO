@@ -236,16 +236,13 @@ def get_revenue(cId):
 
                 total = build_count * amount
                 revenue["gross"][resource] += total
-                revenue["net"][resource] += total
-
             try:
                 minus = infra[building]["minus"]
             except KeyError:
                 minus = {}
             for resource, amount in minus.items():
-
                 total = build_count * amount
-                revenue["net"][resource] -= total
+                revenue["net"][resource] = revenue["gross"][resource] - total
                 
     db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
     current_cg = db.fetchone()[0]
@@ -265,12 +262,9 @@ def get_revenue(cId):
     elif current_cg > ti_cg:
         revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
 
-    db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
-    current_rations = db.fetchone()[0]
-
-    prod_rations = revenue["net"]["rations"]
+    prod_rations = revenue["gross"]["rations"]
     new_rations = next_turn_rations(cId, prod_rations)
-    revenue["net"]["rations"] = new_rations - current_rations
+    revenue["net"]["rations"] = prod_rations - new_rations
 
     return revenue
 
