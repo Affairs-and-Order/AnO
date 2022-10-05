@@ -636,7 +636,7 @@ def generate_province_revenue(): # Runs each hour
                 if unit == "farms":
                     if upgrades["advancedmachinery"]: plus[next(iter(plus))] *= 1.5
 
-                    plus[next(iter(plus))] += (land * 8)
+                    plus[next(iter(plus))] += (land * variables.LAND_FARM_MULTIPLIER)
                     plus[next(iter(plus))] = int(plus[next(iter(plus))])
 
                 # Function for _plus
