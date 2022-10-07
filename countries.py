@@ -244,8 +244,8 @@ def get_revenue(cId):
                 total = build_count * amount
                 revenue["net"][resource] = revenue["gross"][resource] - total
                 
-    db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (cId,))
-    current_cg = db.fetchone()[0]
+    db.execute("SELECT consumer_goods, rations FROM resources WHERE id=%s", (cId,))
+    current_cg, current_rations = db.fetchone()
     current_cg += revenue["net"]["consumer_goods"]
 
     ti_money, ti_cg = calc_ti(cId, current_cg)
@@ -264,7 +264,7 @@ def get_revenue(cId):
 
     prod_rations = revenue["gross"]["rations"]
     new_rations = next_turn_rations(cId, prod_rations)
-    revenue["net"]["rations"] = prod_rations - new_rations
+    revenue["net"]["rations"] = new_rations - current_rations
 
     return revenue
 
