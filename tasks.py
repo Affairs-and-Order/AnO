@@ -219,11 +219,8 @@ def calc_ti(user_id, consumer_goods):
             cg_increase = 0.75
         
         # If the player has more consumer goods than what is needed
-        if consumer_goods > cg_needed:
+        if consumer_goods >= cg_needed:
             new_cg = consumer_goods - cg_needed
-        # If the player has just as much consumer goods as is needed
-        elif consumer_goods == cg_needed:
-            new_cg = 0
         # If the player has less consumer goods than what is needed
         else:
             new_cg = 0
