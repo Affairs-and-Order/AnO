@@ -9,6 +9,7 @@ from tasks import energy_info
 from helpers import get_date
 from upgrades import get_upgrades
 from psycopg2.extras import RealDictCursor
+import math
 load_dotenv()
 
 @app.route("/provinces", methods=["GET"])
@@ -70,33 +71,30 @@ def province(pId):
     db.execute("""SELECT * FROM proInfra WHERE id=%s""", (pId,))
     units = dict(db.fetchone())
 
-    def enough_consumer_goods(user_id):
-        db.execute("SELECT SUM(population) AS population FROM provinces WHERE userId=%s", (user_id,))
-        population = dict(db.fetchone())["population"]
+    def has_enough_cg(user_id):
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-        consumer_goods = (dict(db.fetchone()))["consumer_goods"]
-        consumer_goods_needed = round(population * 0.000003)
-        new_consumer_goods = consumer_goods - consumer_goods_needed
-        return new_consumer_goods > 0
+        consumer_goods = dict(db.fetchone())["consumer_goods"]
+        max_cg = math.ceil(province["population"] / variables.CG_PER)
+        return consumer_goods >= max_cg
 
-    enough_consumer_goods = enough_consumer_goods(province["user"])
+    enough_consumer_goods = has_enough_cg(province["user"])
 
-    def enough_rations(user_id):
+    def has_enough_rations(user_id):
         db.execute("SELECT rations FROM resources WHERE id=%s", (user_id,))
         rations = dict(db.fetchone())["rations"]
         rations_minus = province["population"] // variables.RATIONS_PER
         return rations - rations_minus > 1
 
-    enough_rations = enough_rations(province["user"])
+    enough_rations = has_enough_rations(province["user"])
 
-    def has_power(province_id):
+    def has_enough_power(province_id):
         db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
         energy = (dict(db.fetchone()))["energy"]
         return energy > 0
 
     energy = {}
 
-    has_power = has_power(pId)
+    has_power = has_enough_power(pId)
     energy["consumption"], energy["production"] = energy_info(pId)
 
     infra = variables.INFRA
