@@ -156,7 +156,7 @@
                     <tr>
                         <td>
                             <strong class="tooltipparent">
-                                <div class="tooltip">Every 20 citizens pay $1 of taxes</div><span class="material-icons-outlined">
+                                <div class="tooltip">By default, every 20 citizens pay $1 of taxes</div><span class="material-icons-outlined">
                                 people_alt
                             </span>Population:</strong>
                         </td>
@@ -209,7 +209,7 @@
                             </tr>
                             <tr>
                                 <td><strong class="tooltipparent">
-                            <div class="tooltip">Each city slot allows construction of an additional city infrastructure</div><span class="material-icons-outlined">
+                            <div class="tooltip">Each city slot allows construction of one additional city infrastructure</div><span class="material-icons-outlined">
                                 business
                             </span>City slots:</strong></td>
                                 <td>{{ province['free_cityCount']}} / {{ province['citycount'] }}</td>
@@ -217,7 +217,7 @@
                             </tr>
                             <tr>
                                 <td><strong class="tooltipparent">
-                            <div class="tooltip">Each land slot allows construction of an additional land infrastructure</div><span class="material-icons-outlined">
+                            <div class="tooltip">Each land slot allows construction of one additional land infrastructure</div><span class="material-icons-outlined">
                                 landscape
                             </span>Land slots:</strong></td>
                                 <td>{{ province['free_land'] }} / {{ province['land'] }}</td>
@@ -225,7 +225,7 @@
                             </tr>
                             <tr>
                                 <td><strong class="tooltipparent">
-                            <div class="tooltip">Electricity is required for certain infrastructure to function</div><span class="material-icons-outlined">
+                            <div class="tooltip">Electricity allows for certain infrastructure to function, and affects tax income</div><span class="material-icons-outlined">
                             power
                             </span>Electricity:</strong></td>
                                 <td>{{ energy['consumption'] | commas }} / {{ energy['production'] | commas }}</td>
