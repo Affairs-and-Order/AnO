@@ -13,6 +13,7 @@ from policies import get_user_policies
 from operator import itemgetter
 from datetime import datetime
 from wars import target_data
+import math
 load_dotenv()
 
 from psycopg2.extras import RealDictCursor
@@ -326,7 +327,7 @@ def cg_need(user_id):
         population = 0
 
     # How many consumer goods are needed to feed a nation
-    cg_needed = population // variables.CG_PER
+    cg_needed = math.ceil(population / variables.CG_PER)
 
     return cg_needed
 
