@@ -184,8 +184,6 @@ def energy_stats(user_id):
 
     return score
 
-
-
 # Function for calculating tax income
 def calc_ti(user_id):
 
@@ -202,6 +200,12 @@ def calc_ti(user_id):
     consumer_goods = db.fetchone()[0]
 
     try:
+        db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
+        policies = db.fetchone()[0]
+    except: 
+        policies = []
+
+    try:
         db.execute("SELECT population, land FROM provinces WHERE userId=%s", (user_id,))
         provinces = db.fetchall()
 
@@ -214,7 +218,15 @@ def calc_ti(user_id):
             land_multiplier = (land-1) * 0.02
             if land_multiplier > 1: land_multiplier = 1 # Cap 100% 
 
-            multiplier = 0.01*(1+(land_multiplier))
+            base_multiplier = 0.01
+            if 1 in policies: # 1 Policy (1)
+                base_multiplier *= 1.01 # Citizens pay 1% more tax)
+            if 6 in policies: # 6 Policy (2)
+                base_multiplier *= 0.98
+            if 4 in policies: # 4 Policy (2)
+                base_multiplier *= 0.98
+            multiplier = base_multiplier*(1+(land_multiplier))
+                
             income += (multiplier*population)
 
         # Consumer goods
@@ -231,6 +243,8 @@ def calc_ti(user_id):
     except Exception as e:
         handle_exception(e)
         return False, False
+
+# print(calc_ti(24))
 
 # (x, y) - (income, removed_consumer_goods)
 # * Tested no provinces
