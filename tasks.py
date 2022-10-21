@@ -568,8 +568,10 @@ def generate_province_revenue(): # Runs each hour
                     if new_resource < 0:
                         has_enough_stuff["status"] = False
                         has_enough_stuff["issues"].append(resource)
+                        print(f"F | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | Failed to minus {amount} of {resource} ({current_resource})")
                     else:
                         resource_u_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
+                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | {resource} ({current_resource}) = {new_resource}")
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
                 if not has_enough_stuff["status"]:
