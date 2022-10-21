@@ -231,14 +231,15 @@ def calc_ti(user_id):
 
         # Consumer goods
         max_cg = math.ceil(population / variables.CG_PER)
-        if max_cg < consumer_goods:
-            new_cg -= max_cg
-            income *= 1.5
-        else:
-            multiplier = consumer_goods / max_cg
-            income *= 1+(0.5*multiplier)
-            new_cg -= consumer_goods
-        
+        if consumer_goods != 0 and max_cg != 0:
+            if max_cg < consumer_goods:
+                new_cg -= max_cg
+                income *= 1.5
+            else:
+                multiplier = consumer_goods / max_cg
+                income *= 1+(0.5*multiplier)
+                new_cg -= consumer_goods
+            
         return math.floor(income), new_cg
     except Exception as e:
         handle_exception(e)
