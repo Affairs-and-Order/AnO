@@ -3,7 +3,7 @@
 from re import M
 
 
-CG_PER = 250000 # 1 Consumer good per x population
+CG_PER = 20000 # 1 Consumer good per x population
 RATIONS_PER = 200000  # 1 Ration per x population
 
 LAND_FARM_MULTIPLIER = 2

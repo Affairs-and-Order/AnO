@@ -248,19 +248,13 @@ def get_revenue(cId):
     current_cg, current_rations = db.fetchone()
     current_cg += revenue["net"]["consumer_goods"]
 
-    ti_money, ti_cg = calc_ti(cId, current_cg)
+    ti_money, ti_cg = calc_ti(cId)
 
     # Updates money
-    db.execute("SELECT gold FROM stats WHERE id=%s", (cId,))
-    current_money = db.fetchone()[0]
+    revenue["gross"]["money"] += ti_money
+    revenue["net"]["money"] += ti_money
 
-    revenue["gross"]["money"] += ti_money - current_money
-    revenue["net"]["money"] += ti_money - current_money
-
-    if current_cg - ti_cg == cg_needed:
-        revenue["net"]["consumer_goods"] = cg_needed * - 1 + revenue["gross"]["consumer_goods"]
-    elif current_cg > ti_cg:
-        revenue["net"]["consumer_goods"] = revenue["gross"]["consumer_goods"] * -1
+    revenue["net"]["consumer_goods"] -= ti_cg
 
     prod_rations = revenue["gross"]["rations"]
     new_rations = next_turn_rations(cId, prod_rations)

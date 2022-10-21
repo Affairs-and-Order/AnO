@@ -8,6 +8,7 @@ import math
 import variables
 from psycopg2.extras import RealDictCursor
 from celery.schedules import crontab
+import math
 load_dotenv()
 
 celery = Celery("tasks", broker=os.getenv("broker_url"))
@@ -183,8 +184,10 @@ def energy_stats(user_id):
 
     return score
 
+
+
 # Function for calculating tax income
-def calc_ti(user_id, consumer_goods):
+def calc_ti(user_id):
 
     conn = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -195,87 +198,46 @@ def calc_ti(user_id, consumer_goods):
 
     db = conn.cursor()
 
-    db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
-    current_money = db.fetchone()[0]
+    db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
+    consumer_goods = db.fetchone()[0]
 
     try:
-        db.execute("SELECT SUM(population) FROM provinces WHERE userId=%s", (user_id,))
-        population = db.fetchone()[0]
+        db.execute("SELECT population, land FROM provinces WHERE userId=%s", (user_id,))
+        provinces = db.fetchall()
 
-        if population is None or population < 100000:
-            population = 100000 # Say a base population
+        if provinces == []: # User doesn't have any provinces
+            return False, False
 
-        population = int(population)
+        income = 0
+        new_cg = 0
+        for population, land in provinces: # Base and land calculation
+            land_multiplier = (land-1) * 0.02
+            if land_multiplier > 1: land_multiplier = 1 # Cap 100% 
 
-        # How many consumer goods are needed to feed a nation 
-        cg_needed = population // variables.CG_PER
+            multiplier = 0.01*(1+(land_multiplier))
+            income += (multiplier*population)
 
-        if consumer_goods == 0: consumer_goods = 1
-        if cg_needed == 0: cg_needed = 1
-
-        cg_needed_percent = consumer_goods / cg_needed
-        cg_increase = round(cg_needed_percent * 0.75, 2)
-        if cg_increase > 0.75:
-            cg_increase = 0.75
-        
-        # If the player has more consumer goods than what is needed
-        if consumer_goods > cg_needed:
-            new_cg = consumer_goods - cg_needed
-        # If the player has just as much consumer goods as is needed
-        elif consumer_goods == cg_needed:
-            new_cg = 0
-        # If the player has less consumer goods than what is needed
+        # Consumer goods
+        max_cg = math.ceil(population / variables.CG_PER)
+        if max_cg < consumer_goods:
+            new_cg -= max_cg
+            income *= 1.5
         else:
-            new_cg = 0
-
-        population_score = int(population * 0.05)
-
-        db.execute("SELECT SUM(land) FROM provinces WHERE userId=%s", (user_id,))
-        land = db.fetchone()[0]
-        if land is None:
-            land = 0
-
-        land = int(land)
-        land_percentage = land * 0.02 # Land percentage up to 100% 
-
-        if land_percentage > 1:
-            land_percentage = 1
-
-        cg_increase_full = 1 + cg_increase
-
-        new_income = 0
-        new_income += population_score
-        new_income = int(new_income)
-        new_income *= land_percentage
-        new_income = int(new_income)
-        new_income *= cg_increase_full
-
-        energy_score = energy_stats(user_id) # From -1 to to -1.6
-        food_score = food_stats(user_id) # From -1 to -1.4
-
-        new_income = int(new_income * 3 + (new_income * (energy_score + food_score)))
-
-        try:
-            db.execute("SELECT education FROM policies WHERE user_id=%s", (user_id,))
-            policies = db.fetchone()[0]
-        except: 
-            policies = []
-        print(f"First income: {new_income}")
-        if 1 in policies: # 1 Policy (1)
-            new_income *= 1.01 # Income is 101% of actual (citizens pay 1% more tax)
-        if 6 in policies: # 6 Policy (2)
-            new_income *= 0.98
-        if 4 in policies: # 4 Policy (2)
-            new_income *= 0.98
-        print(f"Last income: {new_income}")
-
-        new_money = int(current_money + new_income)
+            multiplier = consumer_goods / max_cg
+            income *= 1+(0.5*multiplier)
+            new_cg -= consumer_goods
         
-        return new_money, new_cg
+        return math.floor(income), new_cg
     except Exception as e:
         handle_exception(e)
-        return current_money, consumer_goods
+        return False, False
 
+# (x, y) - (income, removed_consumer_goods)
+# * Tested no provinces
+# * Tested population=100, land=1, consumer_goods=0 (1, 0)
+# * Tested population=100, land=51, consumer_goods=0 (2, 0)
+# * Tested population=100000, land=10, consumer_goods=10 (1770, -5)
+# * Tested population=100000, land=1, consumer_goods=0 (1000, 0)
 
 # Function for actually giving money to players
 def tax_income():
@@ -299,15 +261,14 @@ def tax_income():
         db.execute("SELECT gold FROM stats WHERE id=%s", (user_id,))
         current_money = db.fetchone()[0]
 
-        db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
-        current_cgoods = db.fetchone()[0]
-
-        money, consumer_goods = calc_ti(user_id, current_cgoods)
+        money, consumer_goods = calc_ti(user_id)
+        if not money and not consumer_goods: # Error while calculating or user doesn't have any provinces
+            continue
 
         print(f"Updated money for user id: {user_id}. Set {current_money} money to {money} money. ({money-current_money})")
 
-        db.execute("UPDATE stats SET gold=%s WHERE id=%s", (money, user_id))
-        db.execute("UPDATE resources SET consumer_goods=%s WHERE id=%s", (consumer_goods, user_id))
+        db.execute("UPDATE stats SET gold=gold+%s WHERE id=%s", (money, user_id))
+        db.execute("UPDATE resources SET consumer_goods=consumer_goods-%s WHERE id=%s", (consumer_goods, user_id))
 
         conn.commit()
 
