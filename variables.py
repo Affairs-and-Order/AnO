@@ -2,7 +2,7 @@
 
 from re import M
 
-DEFAULT_TAX_INCOME = 0.05
+DEFAULT_TAX_INCOME = 0.025
 CONSUMER_GOODS_TAX_MULTIPLIER = 1.5
 NO_ENERGY_TAX_MULTIPLIER = 0.85 # How much the tax income will decrease if there's no energy -15%
 NO_FOOD_TAX_MULTIPLIER = 0.7 # How much the tax income will decrease if there's no food -30%
@@ -307,7 +307,7 @@ PROVINCE_UNIT_PRICES = {
         "nuclear_reactors_price": 8500000,
         "nuclear_reactors_resource": {"steel": 250},
 
-        "solar_fields_price": 500000,
+        "solar_fields_price": 600000,
         "solar_fields_resource": {"steel": 55},
 
         "gas_stations_price": 550000,
@@ -403,15 +403,15 @@ NEW_INFRA = { # (NEW INFRA)
     # ELECTRICITY
     'coal_burners': {
         'plus': {'energy': 4},
-        'minus': {'coal': 48},
+        'minus': {'coal': 11},
         'money': 7800,
-        'eff': {'pollution': 7}
+        'eff': {'pollution': 6}
     },
     'oil_burners': {
         'plus': {'energy': 5},
-        'minus': {'oil': 56},
+        'minus': {'oil': 16},
         'money': 11700,
-        'eff': {'pollution': 5}
+        'eff': {'pollution': 4}
     },
     'hydro_dams': {
         'plus': {'energy': 6},
@@ -423,8 +423,8 @@ NEW_INFRA = { # (NEW INFRA)
         'money': 111000, 
     },
     'solar_fields': {
-        'plus': {'energy': 4},
-        'money': 11000
+        'plus': {'energy': 3},
+        'money': 13000
     },
     # RETAIL
     'gas_stations': {
@@ -448,7 +448,7 @@ NEW_INFRA = { # (NEW INFRA)
     },
     'malls': {
         'plus': {'consumer_goods': 30},
-        'eff': {'pollution': 10},
+        'eff': {'pollution': 9},
         'money': 450000, 
     },
     # PUBLIC WORKS
@@ -489,12 +489,12 @@ NEW_INFRA = { # (NEW INFRA)
     },
     'pumpjacks': {
         'money': 9500,
-        'plus': {'oil': 25},
+        'plus': {'oil': 24},
         'eff': {'pollution': 2}
     },
     'coal_mines': {
         'money': 4200, # Costs $10k
-        'plus': {'coal': 25},
+        'plus': {'coal': 31},
         'eff': {'pollution': 2},
     },
     'bauxite_mines': {
@@ -514,46 +514,46 @@ NEW_INFRA = { # (NEW INFRA)
     },
     'lead_mines': {
         'money': 7200,
-        'plus': {'lead': 16},
+        'plus': {'lead': 19},
         'eff': {'pollution': 2},
     },
     'iron_mines': {
         'money': 11000,
-        'plus': {'iron': 25},
+        'plus': {'iron': 23},
         'eff': {'pollution': 2},
     },
     'lumber_mills': {
         'money': 7500,
-        'plus': {'lumber': 30},
+        'plus': {'lumber': 35},
         'eff': {'pollution': 1},
     },
     # PROCESSING
     'component_factories': {
-        'money': 80000, # Costs $220k
+        'money': 50000, # Costs $220k
         'minus': {'copper': 20, 'steel': 10, 'aluminium': 15},
         'plus': {'components': 5},
         'eff': {'pollution': 5}, 
     },
     'steel_mills': {
-        'money': 90000,
+        'money': 60000,
         'minus': {'coal': 35, 'iron': 35},
         'plus': {'steel': 12},
         'eff': {'pollution': 4},
     },
     'ammunition_factories': {
-        'money': 30000,
+        'money': 15000,
         'minus': {'copper': 10, 'lead': 20},
         'plus': {'ammunition': 12},
         'eff': {'pollution': 3},
     },
     'aluminium_refineries': {
-        'money': 72000,
+        'money': 42000,
         'minus': {'bauxite': 15},
         'plus': {'aluminium': 16},
         'eff': {'pollution': 3},
     },
     'oil_refineries': {
-        'money': 55000,
+        'money': 35000,
         'minus': {'oil': 20},
         'plus': {'gasoline': 11},
         'eff': {'pollution': 6}

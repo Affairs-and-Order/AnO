@@ -213,7 +213,6 @@ def calc_ti(user_id):
             return False, False
 
         income = 0
-        new_cg = 0
         for population, land in provinces: # Base and land calculation
             land_multiplier = (land-1) * variables.DEFAULT_LAND_TAX_MULTIPLIER
             if land_multiplier > 1: land_multiplier = 1 # Cap 100% 
@@ -230,17 +229,19 @@ def calc_ti(user_id):
             income += (multiplier*population)
 
         # Consumer goods
+        new_consumer_goods = 0
         max_cg = math.ceil(population / variables.CONSUMER_GOODS_PER)
+        
         if consumer_goods != 0 and max_cg != 0:
             if max_cg <= consumer_goods:
-                new_cg -= max_cg
+                new_consumer_goods -= max_cg
                 income *= variables.CONSUMER_GOODS_TAX_MULTIPLIER
             else:
                 multiplier = consumer_goods / max_cg
                 income *= 1+(0.5*multiplier)
-                new_cg -= consumer_goods
+                new_consumer_goods -= consumer_goods
             
-        return math.floor(income), new_cg
+        return math.floor(income), new_consumer_goods
     except Exception as e:
         handle_exception(e)
         return False, False
