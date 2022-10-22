@@ -538,26 +538,24 @@ def give_position():
 
     role = request.form.get("role")
 
+    if role not in roles:
+        return error(400, "No such role exists")
+
     username = request.form.get("username")
 
     # The user id for the person being given the role
     try:
-        db.execute("SELECT id FROM users WHERE username=%s", (username,))
-        roleer = db.fetchone()[0]
-    except:
-        return error(400, f"Cannot find user {username}")
+        db.execute("SELECT users.id, coalitions.colid, coalitions.role FROM users INNER JOIN coalitions ON users.id=coalitions.userid WHERE users.username=%s", (username,))
+        roleer, roleer_col, current_roleer_role = db.fetchone()
 
-    try:
-        db.execute("SELECT colId FROM coalitions WHERE colId=%s AND userId=%s", (colId, roleer))
-        db.fetchone()[0]
-    except:
-        return error(400, "There is no such user in the coalition")
+        if roleer_col != colId:
+            return error(400, "User isn't in your coalition.")
 
-    db.execute("SELECT role FROM coalitions WHERE userId=%s", (roleer,))
-    current_roleer_role = db.fetchone()[0]
+        if roleer == cId:
+            return error(400, "You can't change your own position.")
 
-    if role not in roles:
-        return error(400, "No such role exists")
+    except TypeError:
+        return error(400, "No such user found")
 
     # If the user role is lower up the hierarchy than the giving role
     # Or if the current role of the person being given the role is higher up the hierarchy than the user giving the role
