@@ -775,9 +775,10 @@ def deposit_into_bank(colId):
         except:
             resource = ""
 
-        if resource != "" and int(resource) > 0:
-            res_tuple = (res, int(resource))
-            deposited_resources.append(res_tuple)
+        if resource is not None and resource != "":
+            if int(resource) > 0:
+                res_tuple = (res, int(resource))
+                deposited_resources.append(res_tuple)
 
     def deposit(resource, amount):
 
