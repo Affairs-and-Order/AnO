@@ -156,7 +156,7 @@
                     <tr>
                         <td>
                             <strong class="tooltipparent">
-                                <div class="tooltip">By default, every 20 citizens pay $1 of taxes</div><span class="material-icons-outlined">
+                                <div class="tooltip">By default, every citizen pays $0.05 each turn</div><span class="material-icons-outlined">
                                 people_alt
                             </span>Population:</strong>
                         </td>
@@ -180,7 +180,7 @@
                         </tr> {% endif %} {% if province['productivity']
                         < 50 %} <tr>
                             <td><strong class="tooltipparent">
-                            <div class="tooltip">Each percent of productivity increases resource output by x</div><span class="material-icons-outlined">
+                            <div class="tooltip">Each percent of productivity increases resource output by 0.9%</div><span class="material-icons-outlined">
                                  arrow_circle_down
                             </span>Productivity:</strong></td>
                             <td>{{ province['productivity'] }}%</td>
@@ -188,14 +188,14 @@
                             {% else %}
                             <tr>
                                 <td><strong class="tooltipparent">
-                                <div class="tooltip">Each percent of productivity increases resource output by x</div><span class="material-icons-outlined">
+                                <div class="tooltip">Each percent of productivity increases resource output by 0.9%</div><span class="material-icons-outlined">
                                     arrow_circle_up
                                 </span>Productivity:</strong></td>
                                 <td>{{ province['productivity'] }}%</td>
                             </tr>{% endif %}
                             <tr>
                                 <td><strong class="tooltipparent">
-                            <div class="tooltip">When consumer spending is 100%, tax income is increased by 120%</div><span class="material-icons-outlined">
+                            <div class="tooltip">When consumer spending is 100%, tax income is increased by 150%</div><span class="material-icons-outlined">
                                 attach_money
                             </span>Consumer Spending:</strong></td>
                                 <td>{{ province['consumer_spending'] }}%</td>
@@ -209,7 +209,7 @@
                             </tr>
                             <tr>
                                 <td><strong class="tooltipparent">
-                            <div class="tooltip">Each city slot allows construction of one additional city infrastructure</div><span class="material-icons-outlined">
+                            <div class="tooltip">Each city slot allows construction of one additional city infrastructure, and increases max population by 750,000</div><span class="material-icons-outlined">
                                 business
                             </span>City slots:</strong></td>
                                 <td>{{ province['free_cityCount']}} / {{ province['citycount'] }}</td>
@@ -217,7 +217,7 @@
                             </tr>
                             <tr>
                                 <td><strong class="tooltipparent">
-                            <div class="tooltip">Each land slot allows construction of one additional land infrastructure</div><span class="material-icons-outlined">
+                            <div class="tooltip">Each land slot allows construction of one additional land infrastructure, increases max population by 120,000 and increases tax income by 2%</div><span class="material-icons-outlined">
                                 landscape
                             </span>Land slots:</strong></td>
                                 <td>{{ province['free_land'] }} / {{ province['land'] }}</td>

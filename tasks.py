@@ -144,7 +144,7 @@ def food_stats(user_id):
     rcp = (current_rations / needed_rations) - 1 # Normalizes the score to 0.
     if rcp > 0: rcp = 0
 
-    score = -1 + (rcp * variables.NO_FOOD_MULTIPLIER)
+    score = -1 + (rcp * variables.NO_FOOD_TAX_MULTIPLIER)
 
     return score
 
@@ -180,7 +180,7 @@ def energy_stats(user_id):
     tcp = (total_energy_production / total_energy_consumption) - 1 # Normalizes the score to 0.
     if tcp > 0: tcp = 0
 
-    score = -1 + (tcp * variables.NO_ENERGY_MULTIPLIER)
+    score = -1 + (tcp * variables.NO_ENERGY_TAX_MULTIPLIER)
 
     return score
 
@@ -215,10 +215,10 @@ def calc_ti(user_id):
         income = 0
         new_cg = 0
         for population, land in provinces: # Base and land calculation
-            land_multiplier = (land-1) * 0.02
+            land_multiplier = (land-1) * variables.DEFAULT_LAND_TAX_MULTIPLIER
             if land_multiplier > 1: land_multiplier = 1 # Cap 100% 
 
-            base_multiplier = 0.01
+            base_multiplier = variables.DEFAULT_TAX_INCOME
             if 1 in policies: # 1 Policy (1)
                 base_multiplier *= 1.01 # Citizens pay 1% more tax)
             if 6 in policies: # 6 Policy (2)
@@ -230,11 +230,11 @@ def calc_ti(user_id):
             income += (multiplier*population)
 
         # Consumer goods
-        max_cg = math.ceil(population / variables.CG_PER)
+        max_cg = math.ceil(population / variables.CONSUMER_GOODS_PER)
         if consumer_goods != 0 and max_cg != 0:
             if max_cg <= consumer_goods:
                 new_cg -= max_cg
-                income *= 1.5
+                income *= variables.CONSUMER_GOODS_TAX_MULTIPLIER
             else:
                 multiplier = consumer_goods / max_cg
                 income *= 1+(0.5*multiplier)
@@ -304,7 +304,7 @@ def calc_pg(pId, rations):
     db.execute("SELECT population FROM provinces WHERE id=%s", (pId,))
     curPop = db.fetchone()[0]
 
-    maxPop = 1000000 # Base max population: 1 million
+    maxPop = variables.DEFAULT_MAX_POPULATION # Base max population: 1 million
 
     try:
         db.execute("SELECT cityCount FROM provinces WHERE id=%s", (pId,))
@@ -313,7 +313,7 @@ def calc_pg(pId, rations):
         conn.rollback()
         cities = 0
 
-    maxPop += cities * 750000 # Each city adds 750,000 population
+    maxPop += cities * variables.CITY_MAX_POPULATION_ADDITION # Each city adds 750,000 population
         
     try:
         db.execute("SELECT land FROM provinces WHERE id=%s", (pId,))
@@ -322,7 +322,7 @@ def calc_pg(pId, rations):
         conn.rollback()
         land = 0
 
-    maxPop += land * 120000 # Each land slot adds 120,000 population
+    maxPop += land * variables.LAND_MAX_POPULATION_ADDITION # Each land slot adds 120,000 population
 
     try:
         db.execute("SELECT happiness FROM provinces WHERE id=%s", (pId,))
@@ -346,21 +346,21 @@ def calc_pg(pId, rations):
         productivity = 0
 
     # Each % increases / decreases max population by 
-    happiness = round((happiness - 50) * 0.012, 2) # The more you have the better
+    happiness = round((happiness - 50) * variables.DEFAULT_HAPPINESS_TAX_MULTIPLIER, 2) # The more you have the better
 
     # Each % increases / decreases max population by 
-    pollution = round((pollution - 50) * - 0.0085, 2) # The less you have the better
+    pollution = round((pollution - 50) * - variables.DEFAULT_POLLUTION_MAX_POPULATION_MULTIPLIER, 2) # The less you have the better
 
     # Each % increases / decreases resource output by 
-    productivity = round((productivity - 50) * 0.009, 2) # The more you have the better
+    productivity = round((productivity - 50) * variables.DEFAULT_PRODUCTIVITY_PRODUCTION_MUTLIPLIER, 2) # The more you have the better
 
     maxPop += (maxPop * happiness) + (maxPop * pollution)
     maxPop = round(maxPop)
 
-    if maxPop < 1000000:
-        maxPop = 1000000
+    if maxPop < variables.DEFAULT_MAX_POPULATION:
+        maxPop = variables.DEFAULT_MAX_POPULATION
 
-    rations_increase = -1 # Default rations increase. If user has no rations it will decrease by 1% of maxPop 
+    rations_increase = 0 # Default rations increase. If user has no rations it will decrease by 1% of maxPop 
     rations_needed = curPop // variables.RATIONS_PER
 
     if rations_needed < 1: rations_needed = 1 # Trying to not get division by zero error
@@ -614,7 +614,7 @@ def generate_province_revenue(): # Runs each hour
                 if unit == "farms":
                     if upgrades["advancedmachinery"]: plus[next(iter(plus))] *= 1.5
 
-                    plus[next(iter(plus))] += (land * variables.LAND_FARM_MULTIPLIER)
+                    plus[next(iter(plus))] += (land * variables.LAND_FARM_PRODUCTION_MULTIPLIER)
                     plus[next(iter(plus))] = int(plus[next(iter(plus))])
 
                 # Function for _plus

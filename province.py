@@ -74,7 +74,7 @@ def province(pId):
     def has_enough_cg(user_id):
         db.execute("SELECT consumer_goods FROM resources WHERE id=%s", (user_id,))
         consumer_goods = dict(db.fetchone())["consumer_goods"]
-        max_cg = math.ceil(province["population"] / variables.CG_PER)
+        max_cg = math.ceil(province["population"] / variables.CONSUMER_GOODS_PER)
         return consumer_goods >= max_cg
 
     enough_consumer_goods = has_enough_cg(province["user"])

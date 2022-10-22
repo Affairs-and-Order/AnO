@@ -2,13 +2,24 @@
 
 from re import M
 
+DEFAULT_TAX_INCOME = 0.05
+CONSUMER_GOODS_TAX_MULTIPLIER = 1.5
+NO_ENERGY_TAX_MULTIPLIER = 0.85 # How much the tax income will decrease if there's no energy -15%
+NO_FOOD_TAX_MULTIPLIER = 0.7 # How much the tax income will decrease if there's no food -30%
+DEFAULT_LAND_TAX_MULTIPLIER = 0.02 # Multiplier of tax income per land slot
+DEFAULT_HAPPINESS_TAX_MULTIPLIER = 0.012
 
-CG_PER = 20000 # 1 Consumer good per x population
-RATIONS_PER = 200000  # 1 Ration per x population
+DEFAULT_MAX_POPULATION = 1000000
+DEFAULT_POLLUTION_MAX_POPULATION_MULTIPLIER = 0.0085
+CITY_MAX_POPULATION_ADDITION = 750000
+LAND_MAX_POPULATION_ADDITION = 120000
 
-LAND_FARM_MULTIPLIER = 2
-NO_ENERGY_MULTIPLIER = 0.6 # How much the tax income will decrease if there's no energy
-NO_FOOD_MULTIPLIER = 0.4 # How much the tax income will decrease if there's no food
+DEFAULT_PRODUCTIVITY_PRODUCTION_MUTLIPLIER = 0.009 # 9%
+
+LAND_FARM_PRODUCTION_MULTIPLIER = 2
+
+CONSUMER_GOODS_PER = 80000 # 1 Consumer good per x population
+RATIONS_PER = 30000  # 1 Ration per x population
 
 UNITS = [
     "soldiers", "tanks", "artillery", "bombers", "fighters", "apaches",
