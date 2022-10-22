@@ -237,17 +237,17 @@ def get_revenue(cId):
 
                 total = build_count * amount
                 revenue["gross"][resource] += total
+                revenue["net"][resource] += total
             try:
                 minus = infra[building]["minus"]
             except KeyError:
                 minus = {}
             for resource, amount in minus.items():
                 total = build_count * amount
-                revenue["net"][resource] = revenue["gross"][resource] - total
+                revenue["net"][resource] -= total
                 
-    db.execute("SELECT consumer_goods, rations FROM resources WHERE id=%s", (cId,))
-    current_cg, current_rations = db.fetchone()
-    current_cg += revenue["net"]["consumer_goods"]
+    db.execute("SELECT rations FROM resources WHERE id=%s", (cId,))
+    current_rations = db.fetchone()[0]
 
     ti_money, ti_cg = calc_ti(cId)
 
