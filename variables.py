@@ -16,10 +16,10 @@ LAND_MAX_POPULATION_ADDITION = 120000
 
 DEFAULT_PRODUCTIVITY_PRODUCTION_MUTLIPLIER = 0.009 # 9%
 
-LAND_FARM_PRODUCTION_MULTIPLIER = 2
+LAND_FARM_PRODUCTION_ADDITION = 3
 
 CONSUMER_GOODS_PER = 80000 # 1 Consumer good per x population
-RATIONS_PER = 30000  # 1 Ration per x population
+RATIONS_PER = 25000  # 1 Ration per x population
 
 UNITS = [
     "soldiers", "tanks", "artillery", "bombers", "fighters", "apaches",
@@ -484,7 +484,7 @@ NEW_INFRA = { # (NEW INFRA)
     # INDUSTRY
     'farms': { 
         'money': 3000,
-        'plus': {'rations': 20},
+        'plus': {'rations': 12},
         'eff': {'pollution': 1},
     },
     'pumpjacks': {

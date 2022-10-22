@@ -233,7 +233,7 @@ def get_revenue(cId):
                 if building == "farms":
                     db.execute("SELECT land FROM provinces WHERE id=%s", (province,))
                     land = db.fetchone()[0]
-                    amount += (land * variables.LAND_FARM_PRODUCTION_MULTIPLIER)
+                    amount += (land * variables.LAND_FARM_PRODUCTION_ADDITION)
 
                 total = build_count * amount
                 revenue["gross"][resource] += total
