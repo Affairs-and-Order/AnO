@@ -534,8 +534,9 @@
 
             <h2 class="templatecontentheaderleft">Upkeep Costs</h2>
 
-            <div class="templateoutertablediv">
-                <table class="templatetable templatetable2">
+            <div class="templatedivflex2">
+                <div class="templatedivflex2left">
+                <table class="templatetable">
                     <tr>
                         <th>Consumer</th>
                         <th>Resources</th>
@@ -545,40 +546,42 @@
                         <td>{{ rations_need | commas}} rations, {{ cg_needed | commas }} consumer goods</td>
                     </tr>
                 </table>
-            </div>
 
-            <div>
-                <table class="templatetable">
-                    <tr>
-                        <th>Infrastructure</th>
-                    </tr>
-                    <tr>
-                        <td>Electricity:</td>
-                        <td>{{ statistics["electricity"] | commas }}</td>
-                    </tr>
-                    <tr>
-                        <td>Retail:</td>
-                        <td>{{ statistics["retail"] | commas }}</td>
-                    </tr>
-                    <tr>
-                        <td>Public Works:</td>
-                        <td>{{ statistics["public_works"] | commas }}</td>
-                    </tr>
-                    <tr>
-                        <td>Military:</td>
-                        <td>{{ statistics["military"] | commas }}</td>
-                    </tr>
-                    <tr>
-                        <td>Industry:</td>
-                        <td>{{ statistics["industry"] | commas }}</td>
-                    </tr>
+                </div>
+                <div class="templatedivflex2right">
 
-                    <tr>
-                        <td>Processing:</td>
-                        <td>{{ statistics["processing"] | commas }}</td>
-                    </tr>
-                </table>
-            </div>
+                    <table class="templatetable">
+                        <tr>
+                            <th>Infrastructure</th>
+                        </tr>
+                        <tr>
+                            <td>Electricity:</td>
+                            <td>{{ statistics["electricity"] | commas }}</td>
+                        </tr>
+                        <tr>
+                            <td>Retail:</td>
+                            <td>{{ statistics["retail"] | commas }}</td>
+                        </tr>
+                        <tr>
+                            <td>Public Works:</td>
+                            <td>{{ statistics["public_works"] | commas }}</td>
+                        </tr>
+                        <tr>
+                            <td>Military:</td>
+                            <td>{{ statistics["military"] | commas }}</td>
+                        </tr>
+                        <tr>
+                            <td>Industry:</td>
+                            <td>{{ statistics["industry"] | commas }}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Processing:</td>
+                            <td>{{ statistics["processing"] | commas }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>  
 
             {% if expenses != [] %}
             <h2 class="templatecontentheaderleft">Purchases</h2>

@@ -233,7 +233,7 @@ def get_revenue(cId):
                 if building == "farms":
                     db.execute("SELECT land FROM provinces WHERE id=%s", (province,))
                     land = db.fetchone()[0]
-                    amount += (land * variables.LAND_FARM_MULTIPLIER)
+                    amount += (land * variables.LAND_FARM_PRODUCTION_MULTIPLIER)
 
                 total = build_count * amount
                 revenue["gross"][resource] += total
@@ -327,7 +327,7 @@ def cg_need(user_id):
         population = 0
 
     # How many consumer goods are needed to feed a nation
-    cg_needed = math.ceil(population / variables.CG_PER)
+    cg_needed = math.ceil(population / variables.CONSUMER_GOODS_PER)
 
     return cg_needed
 
