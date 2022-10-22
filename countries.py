@@ -255,7 +255,7 @@ def get_revenue(cId):
     revenue["gross"]["money"] += ti_money
     revenue["net"]["money"] += ti_money
 
-    revenue["net"]["consumer_goods"] -= ti_cg
+    revenue["net"]["consumer_goods"] += ti_cg
 
     prod_rations = revenue["gross"]["rations"]
     new_rations = next_turn_rations(cId, prod_rations)

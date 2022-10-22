@@ -232,7 +232,7 @@ def calc_ti(user_id):
         # Consumer goods
         max_cg = math.ceil(population / variables.CG_PER)
         if consumer_goods != 0 and max_cg != 0:
-            if max_cg < consumer_goods:
+            if max_cg <= consumer_goods:
                 new_cg -= max_cg
                 income *= 1.5
             else:
