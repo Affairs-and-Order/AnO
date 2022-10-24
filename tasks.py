@@ -224,8 +224,8 @@ def calc_ti(user_id):
                 base_multiplier *= 0.98
             if 4 in policies: # 4 Policy (2)
                 base_multiplier *= 0.98
-            multiplier = base_multiplier*(1+(land_multiplier))
-                
+
+            multiplier = base_multiplier+(base_multiplier*land_multiplier)
             income += (multiplier*population)
 
         # Consumer goods

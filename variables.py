@@ -1,7 +1,5 @@
 # File for variables that are repeated multiple times in other files (for example, the resources list)
 
-from re import M
-
 DEFAULT_TAX_INCOME = 0.025
 CONSUMER_GOODS_TAX_MULTIPLIER = 1.5
 NO_ENERGY_TAX_MULTIPLIER = 0.85 # How much the tax income will decrease if there's no energy -15%
