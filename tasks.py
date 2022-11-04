@@ -613,6 +613,7 @@ def generate_province_revenue(): # Runs each hour
 
                 # Function for _plus
                 for resource, amount in plus.items():
+                    plus[next(iter(plus))] *= unit_amount
                     amount *= unit_amount
                     if resource in province_resources:
 
@@ -622,6 +623,7 @@ def generate_province_revenue(): # Runs each hour
                         current_plus_resource = db.fetchone()[0]
 
                         # Adding resource
+                        print(amount, plus[next(iter(plus))])
                         new_resource_number = current_plus_resource + plus[next(iter(plus))]
 
                         if resource in percentage_based and new_resource_number > 100: new_resource_number = 100
@@ -688,6 +690,8 @@ def generate_province_revenue(): # Runs each hour
                 continue
 
     conn.close() # Closes the connection
+
+generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
