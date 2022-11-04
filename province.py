@@ -87,15 +87,10 @@ def province(pId):
 
     enough_rations = has_enough_rations(province["user"])
 
-    def has_enough_power(province_id):
-        db.execute("SELECT energy FROM provinces WHERE id=%s", (province_id,))
-        energy = (dict(db.fetchone()))["energy"]
-        return energy > 0
-
     energy = {}
 
-    has_power = has_enough_power(pId)
     energy["consumption"], energy["production"] = energy_info(pId)
+    has_power = energy["production"] >= energy["consumption"]
 
     infra = variables.INFRA
     new_infra = variables.NEW_INFRA

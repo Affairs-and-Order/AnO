@@ -81,7 +81,7 @@ def rations_needed(cId):
     return total_rations
 
 # Returns energy production and consumption from a certain province
-def energy_info(province_id):
+def energy_info(province_id): # TODO: Rewrite this function
 
     connection = psycopg2.connect(
         database=os.getenv("PG_DATABASE"),
@@ -246,7 +246,7 @@ def calc_ti(user_id):
         handle_exception(e)
         return False, False
 
-# print(calc_ti(24))
+print(calc_ti(8))
 
 # (x, y) - (income, removed_consumer_goods)
 # * Tested no provinces
