@@ -97,26 +97,19 @@ def energy_info(province_id): # TODO: Rewrite this function
 
     consumers = variables.ENERGY_CONSUMERS
     producers = variables.ENERGY_UNITS
-    infra = variables.INFRA
+    
+    infra = variables.NEW_INFRA
 
-    for consumer in consumers:
-
-        consumer_query = f"SELECT {consumer}" + " FROM proInfra WHERE id=%s"
-        db.execute(consumer_query, (province_id,))
-        consumer_count = db.fetchone()[0]
-
-        consumption += consumer_count
+    consumer_query = f"SELECT {'+'.join(consumers)}" + " FROM proInfra WHERE id=%s"
+    db.execute(consumer_query, (province_id,))
+    consumption = db.fetchone()[0]
 
     for producer in producers:
-
         producer_query = f"SELECT {producer}" + " FROM proInfra WHERE id=%s"
         db.execute(producer_query, (province_id,))
         producer_count = db.fetchone()[0]
 
-        plus_data = list(infra[f'{producer}_plus'].items())[0]
-        plus_amount = plus_data[1]
-
-        production += producer_count * plus_amount
+        production += producer_count * infra[producer]["plus"]["energy"]
 
     return consumption, production
 
