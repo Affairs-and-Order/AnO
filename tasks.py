@@ -501,6 +501,8 @@ def generate_province_revenue(): # Runs each hour
                 minus = infra[unit].get('minus', {})
 
                 operating_costs = infra[unit]['money'] * unit_amount
+                plus_amount = 0
+                plus_amount_multiplier = 1
 
                 if 1 in policies and unit == "universities": operating_costs *= 1.14
                 if 3 in policies and unit == "universities": operating_costs *= 1.18
@@ -603,18 +605,18 @@ def generate_province_revenue(): # Runs each hour
                 """
                 if unit == "bauxite_mines" and upgrades["strongerexplosives"]:
                     # TODO: fix this plus_amount variable
-                    plus[next(iter(plus))] *= 1.45
+                    plus_amount_multiplier += 0.45
 
                 if unit == "farms":
-                    if upgrades["advancedmachinery"]: plus[next(iter(plus))] *= 1.5
+                    if upgrades["advancedmachinery"]: plus_amount_multiplier += 0.5
 
-                    plus[next(iter(plus))] += (land * variables.LAND_FARM_PRODUCTION_ADDITION)
-                    plus[next(iter(plus))] = int(plus[next(iter(plus))])
+                    plus_amount += int(land * variables.LAND_FARM_PRODUCTION_ADDITION)
 
                 # Function for _plus
                 for resource, amount in plus.items():
-                    plus[next(iter(plus))] *= unit_amount
+                    amount += plus_amount
                     amount *= unit_amount
+                    amount *= plus_amount_multiplier
                     if resource in province_resources:
 
                         # TODO: make this optimized
@@ -623,20 +625,19 @@ def generate_province_revenue(): # Runs each hour
                         current_plus_resource = db.fetchone()[0]
 
                         # Adding resource
-                        print(amount, plus[next(iter(plus))])
-                        new_resource_number = current_plus_resource + plus[next(iter(plus))]
+                        new_resource_number = current_plus_resource + amount
 
                         if resource in percentage_based and new_resource_number > 100: new_resource_number = 100
                         if new_resource_number < 0: new_resource_number = 0 # TODO: is this line really necessary?
 
                         upd_prov_statement = f"UPDATE provinces SET {resource}" + "=%s WHERE id=%s"
-                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {plus[next(iter(plus))]}")
+                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {amount}")
                         db.execute(upd_prov_statement, (new_resource_number, province_id))
 
                     elif resource in user_resources:
                         upd_res_statement = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
-                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {plus[next(iter(plus))]}")
-                        db.execute(upd_res_statement, (plus[next(iter(plus))], user_id,))
+                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {amount}")
+                        db.execute(upd_res_statement, (amount, user_id,))
 
                 # Function for completing an effect (adding pollution, etc)
                 def do_effect(eff, eff_amount, sign):
@@ -690,6 +691,8 @@ def generate_province_revenue(): # Runs each hour
                 continue
 
     conn.close() # Closes the connection
+
+generate_province_revenue()
 
 def war_reparation_tax():
     conn = psycopg2.connect(
