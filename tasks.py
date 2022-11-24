@@ -552,6 +552,7 @@ def generate_province_revenue(): # Runs each hour
                 dbdict.execute("SELECT * FROM resources WHERE id=%s", (user_id,))
                 resources = dict(dbdict.fetchone())
                 for resource, amount in minus.items():
+                    amount *= unit_amount
                     current_resource = resources[resource]
 
                     ### AUTOMATION INTEGRATION
@@ -567,14 +568,12 @@ def generate_province_revenue(): # Runs each hour
                         print(f"F | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | Failed to minus {amount} of {resource} ({current_resource})")
                     else:
                         resource_u_statement = f"UPDATE resources SET {resource}" + "=%s WHERE id=%s"
-                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | {resource} ({current_resource}) = {new_resource}")
+                        print(f"S | MINUS | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | {resource} {current_resource}={new_resource} (-{current_resource-new_resource})")
                         db.execute(resource_u_statement, (new_resource, user_id,))
 
                 if not has_enough_stuff["status"]:
                     print(f"F | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | Not enough {', '.join(has_enough_stuff['issues'])}")
                     continue
-                else:
-                    print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | Will update")
 
                 plus = infra[unit].get('plus', {})
 
@@ -631,12 +630,12 @@ def generate_province_revenue(): # Runs each hour
                         if new_resource_number < 0: new_resource_number = 0 # TODO: is this line really necessary?
 
                         upd_prov_statement = f"UPDATE provinces SET {resource}" + "=%s WHERE id=%s"
-                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {amount}")
+                        print(f"S | PLUS |USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {amount}")
                         db.execute(upd_prov_statement, (new_resource_number, province_id))
 
                     elif resource in user_resources:
                         upd_res_statement = f"UPDATE resources SET {resource}={resource}" + "+%s WHERE id=%s"
-                        print(f"S | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {amount}")
+                        print(f"S | PLUS | USER: {user_id} | PROVINCE: {province_id} | {unit} ({unit_amount}) | ADDING | {resource} | {amount}")
                         db.execute(upd_res_statement, (amount, user_id,))
 
                 # Function for completing an effect (adding pollution, etc)
